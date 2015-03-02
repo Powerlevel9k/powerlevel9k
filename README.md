@@ -9,6 +9,10 @@
 requiring any external tools. It utilizes `zsh/zpty` to launch a pseudo-terminal
 in which all commands get executed without blocking any other processes.
 
+This is the bridge between children and disowned children. Regular children
+clutter the terminal with output about their state, and disowned children take
+their rights into their own hands and you lose control. Now you can have both!
+
 ## Usage
 
 ```zsh
@@ -38,6 +42,12 @@ sleep 1
 
 # Get results from worker by passing them to callback
 async_process_results my_worker my_callback_function
+
+# Oops?
+async_job my_worker my_cpu_burn_function
+# Better correct that:
+async_job my_worker killjobs
+# PS. the 'killjobs' parameter will probably change.
 ```
 
 ## Testing
