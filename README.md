@@ -26,38 +26,21 @@ callback function:
 ```zsh
 source ./async.zsh.sh
 
-my_function() {
-	echo hello
-}
-
-my_other_function() {
-	echo world
-}
-
-my_callback_function() {
-	echo $@
-}
-
 # Initialize a new worker
 async_start_worker my_worker
 
 # Give the worker some commands
-async_job my_worker my_function
-async_job my_worker my_other_function
+async_job my_worker echo hello
+async_job my_worker echo world
 
 # Wait for the worker to finnish its job
-sleep 1
+sleep 0.1
 
 # Get results from worker by passing them to callback
-async_process_results my_worker my_callback_function
-# Or just an echo for the output
 async_process_results my_worker echo
-
-# Oops?
-async_job my_worker my_cpu_burn_function
-# Better correct that:
-async_job my_worker killjobs
-# PS. the 'killjobs' parameter will probably change.
+# Output:
+# 	echo 0 world 0.0010211467742919922
+# 	echo 0 hello 0.0015280246734619141
 ```
 
 ## Testing
