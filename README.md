@@ -15,6 +15,14 @@ their rights into their own hands and you lose control. Now you can have both!
 
 ## Usage
 
+When fetching the results from the worker, four parameters will be fed into the
+callback function:
+
+* Job name
+* Return code
+* Result
+* Execution time
+
 ```zsh
 source ./async.zsh.sh
 
@@ -42,6 +50,8 @@ sleep 1
 
 # Get results from worker by passing them to callback
 async_process_results my_worker my_callback_function
+# Or just an echo for the output
+async_process_results my_worker echo
 
 # Oops?
 async_job my_worker my_cpu_burn_function
@@ -58,8 +68,13 @@ async_job my_worker killjobs
 
 ## Limitations
 
-At this moment only custom functions can be passed to the worker. Trying to run
-the following command will result in an error (command git not found):
+The output from multiple commands might intersect with each other resulting in
+mixed output and incorrect parsing. This will be fixed as soon as I can figure
+it out :).
+
+This has been fixed in the latest commit.
+~~At this moment only custom functions can be passed to the worker. Trying to
+run the following command will result in an error (command git not found):~~
 
 ```zsh
 async_job my_worker git status
