@@ -12,7 +12,7 @@ _async_job() {
 	local start=$EPOCHREALTIME
 
 	# run the command
-	out=$($@)
+	out=$($job $@ 2>&1)
 	local ret=$?
 
 	# return output
@@ -23,17 +23,16 @@ _async_job() {
 # The background worker does some processing for us without locking up the terminal
 _async_worker() {
 	local opt=$1
-	local storage
-	typeset -A storage
+	local -A storage
 
-	while read -r line; do
-		[[ $line == "killjobs" ]] && {
+	while read -r cmd; do
+		[[ $cmd == "killjobs" ]] && {
 			kill ${${(v)jobstates##*:*:}%=*} &>/dev/null
 			continue
 		}
-		line+=" "
-		local job=${line% *}
-		local params=${line#* }
+		# Separate on spaces into an array
+		cmd=(${=cmd})
+		local job=$cmd[1]
 
 		# If worker should perform unique jobs
 		[[ $opt == "unique" ]] && {
@@ -46,7 +45,7 @@ _async_worker() {
 		}
 
 		# run task in background
-		_async_job ${job} ${job} ${params} &
+		_async_job $cmd &
 		# store pid because zsh job manager is extremely unflexible (show jobname as non-unique '$job')...
 		storage[$job]=$!
 	done
