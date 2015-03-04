@@ -51,9 +51,10 @@ async_process_results my_worker echo
 
 ## Limitations
 
-The output from multiple commands might intersect with each other resulting in
+This has been fixed in the latest commit.
+~~The output from multiple commands might intersect with each other resulting in
 mixed output and incorrect parsing. This will be fixed as soon as I can figure
-it out :).
+it out :).~~
 
 This has been fixed in the latest commit.
 ~~At this moment only custom functions can be passed to the worker. Trying to
