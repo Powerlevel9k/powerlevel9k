@@ -15,8 +15,14 @@ _async_job() {
 	out=$($job $@ 2>&1)
 	local ret=$?
 
+	# Grab mutex lock
+	read -ep >/dev/null
+
 	# return output
 	print -r -N -n -- $job $ret $out $(( $EPOCHREALTIME - $start )) ""
+
+	# Unlock mutex
+	print -p "t"
 }
 
 # Internal use only!
@@ -24,6 +30,11 @@ _async_job() {
 _async_worker() {
 	local opt=$1
 	local -A storage
+
+	# Create a mutex for writing to the terminal through coproc
+	coproc cat
+	# Insert token into coproc
+	print -p "t"
 
 	while read -r cmd; do
 		[[ $cmd == "killjobs" ]] && {
