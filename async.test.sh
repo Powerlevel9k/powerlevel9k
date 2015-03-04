@@ -10,6 +10,11 @@ git_status() {
 	git status --porcelain
 }
 
+simple_result() {
+	print
+	print -l -- $1: $3
+}
+
 result() {
 	print
 	print -l -r -- "Compelted job: '$1'" "Return code: $2" "Duration: $4 seconds" "Output: '${3//$'\n'/\n}'"
@@ -21,8 +26,9 @@ async_init
 # Test a simple echo...
 async_start_worker async
 async_job async simple_echo
-sleep 0.1
-async_process_results async result
+async_job async git status
+sleep 0.2
+async_process_results async simple_result
 
 # Test uniqueness
 async_start_worker async2 unique
