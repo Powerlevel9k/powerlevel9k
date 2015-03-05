@@ -37,13 +37,14 @@ _async_worker() {
 	print -p "t"
 
 	while read -r cmd; do
-		[[ $cmd == "killjobs" ]] && {
-			kill ${${(v)jobstates##*:*:}%=*} &>/dev/null
-			continue
-		}
 		# Separate on spaces into an array
 		cmd=(${=cmd})
 		local job=$cmd[1]
+
+		[[ $job == "_killjobs" ]] && {
+			kill ${${(v)jobstates##*:*:}%=*} &>/dev/null
+			continue
+		}
 
 		# If worker should perform unique jobs
 		[[ $opt == "unique" ]] && {
@@ -115,6 +116,18 @@ async_job() {
 	1=""
 	async_start_worker $worker
 	zpty -w $worker $@
+}
+
+async_flush_jobs() {
+	# Send kill command to worker
+	zpty -w $1 "_killjobs"
+
+	# Clear all output buffers
+	while zpty -r $1 line; do done
+
+	# Clear any partial buffers
+	typeset -A ASYNC_PROCESS_BUFFER
+	ASYNC_PROCESS_BUFFER[$1]=""
 }
 
 # Start a new asynchronous worker
