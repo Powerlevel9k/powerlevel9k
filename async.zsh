@@ -19,7 +19,7 @@ _async_job() {
 	read -ep >/dev/null
 
 	# return output
-	print -r -N -n -- $job $ret $out $(( $EPOCHREALTIME - $start )) ""
+	print -r -N -n -- $job $ret $out $(( $EPOCHREALTIME - $start ))$'\0'
 
 	# Unlock mutex
 	print -p "t"
@@ -73,52 +73,35 @@ _async_worker() {
 # 	$4 = execution time, floating point e.g. 2.05 seconds
 async_process_results() {
 	integer count=0
-	integer index=1
-	local -a params
-	local newlines=0
+	local -a items
+	local IFS=$'\0'
 
+	typeset -A ASYNC_PROCESS_BUFFER
 	# Read output from zpty and parse it if available
 	while zpty -r $1 line; do
-		# Our data is separated by NULLs
-		IFS=$'\0' read -r -A line <<< $line
+		# Remove unwanted \r from output
+		ASYNC_PROCESS_BUFFER[$1]+=${line//$'\r'$'\n'/$'\n'}
+		# Split buffer on null characters, preserve empty elements
+		items=("${(@)=ASYNC_PROCESS_BUFFER[$1]}")
+		# Remove last element since it's due to the return string separator structure
+		items=("${(@)items[1,${#items}-1]}")
 
-		# Check every item in array
-		for item in $line; do
-			item=${item/$'\r'/$'\n'}
+		# Continue until we receive all information
+		(( ${#items} % 4 )) && continue
 
-			# Check if the output is incomplete, e.g. newlines in output
-			if ((${#line} == 1)); then
-				index+=-1
-				newlines=1
-			elif (($newlines)); then
-				index+=-1
-				newlines=0
-			fi
-
-			# Set parameter
-			params[$index]+=$item
-			index+=1
-
-			# If we have received 4 items, our result is complete
-			if (($index > 4)); then
-				local job=$params[1]
-				local ret=$params[2]
-				local result=$params[3]
-				local exec_time=${params[4]%$'\r'}
-
-				# Execute callback
-				eval '$2 $job $ret $result $exec_time'
-
-				# Reset env
-				index=1
-				params=()
-				count+=1
-			fi
+		# Work through all results
+		while ((${#items} > 0)); do
+			eval '$2 "${(@)=items[1,4]}"'
+			shift 4 items
+			count+=1
 		done
+
+		# Empty the buffer
+		ASYNC_PROCESS_BUFFER[$1]=""
 	done
 
 	# If we processed any results, return success
-	(($count > 0)) && return 0
+	(( $count )) && return 0
 
 	# No results were processed
 	return 1
