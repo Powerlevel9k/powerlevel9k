@@ -1,5 +1,13 @@
 #!/usr/bin/env zsh
 
+#
+# zsh-async
+#
+# version: 0.1.0
+# author: Mathias Fredriksson
+# url: https://github.com/mafredri/zsh-async
+#
+
 # Wrapper for jobs executed by the async worker, gives output in parseable format with execution time
 _async_job() {
 	local out
