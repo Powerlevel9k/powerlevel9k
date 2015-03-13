@@ -19,7 +19,7 @@ _async_job() {
 	read -ep >/dev/null
 
 	# return output
-	print -r -N -n -- $job $ret $out $(( $EPOCHREALTIME - $start ))$'\0'
+	print -r -N -n -- $job $ret "$out" $(( $EPOCHREALTIME - $start ))$'\0'
 
 	# Unlock mutex
 	print -p "t"
