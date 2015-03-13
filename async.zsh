@@ -151,6 +151,8 @@ async_job() {
 # 	async_flush_jobs <worker_name>
 #
 async_flush_jobs() {
+	zpty -t $worker &>/dev/null || return 1
+
 	# Send kill command to worker
 	zpty -w $1 "_killjobs"
 
