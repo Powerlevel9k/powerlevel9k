@@ -1,7 +1,6 @@
 #!/usr/bin/env zsh
 
-# Internal use only!
-# _async_job is a job wrapper for the async worker, outputs results with execution time
+# Wrapper for jobs executed by the async worker, gives output in parseable format with execution time
 _async_job() {
 	local out
 	# store the job identifier
@@ -25,8 +24,7 @@ _async_job() {
 	print -p "t"
 }
 
-# Internal use only!
-# The background worker does some processing for us without locking up the terminal
+# The background worker manages all tasks and runs them without interfering with other processes
 _async_worker() {
 	local -A storage
 	local unique=0
@@ -76,15 +74,19 @@ _async_worker() {
 	done
 }
 
-# Get results from finnished jobs and feed the to callback function
+#
+#  Get results from finnished jobs and pass it to the to callback function. This is the only way to reliably return the
+#  job name, return code, output and execution time and with minimal effort.
+#
 # usage:
-# 	async_process_results [worker_name] [callback_function]
+# 	async_process_results <worker_name> <callback_function>
 #
 # callback_function is called with the following parameters:
 # 	$1 = job name, e.g. the function passed to async_job
 # 	$2 = return code
 # 	$3 = resulting output from execution
 # 	$4 = execution time, floating point e.g. 2.05 seconds
+#
 async_process_results() {
 	integer count=0
 	local -a items
@@ -121,16 +123,25 @@ async_process_results() {
 	return 1
 }
 
-# Start a new asynchronous job, start the worker if it isn't running
+#
+# Start a new asynchronous job on specified worker, assumes the worker is running.
+#
 # usage:
-# 	async_job [worker_name] [my_function [params]]
+# 	async_job <worker_name> <my_function> [<function_params>]
+#
 async_job() {
 	local worker=$1
 	1=""
-	async_start_worker $worker
 	zpty -w $worker $@
 }
 
+#
+# Flush all current jobs running on a worker. This will terminate any and all running processes under the worker, use
+# with caution.
+#
+# usage:
+# 	async_flush_jobs <worker_name>
+#
 async_flush_jobs() {
 	# Send kill command to worker
 	zpty -w $1 "_killjobs"
@@ -143,22 +154,30 @@ async_flush_jobs() {
 	ASYNC_PROCESS_BUFFER[$1]=""
 }
 
-# Start a new asynchronous worker
+#
+# Start a new async worker with optional parameters, a worker can be told to only run unique tasks and to notify a
+# process when tasks are complete.
+#
 # usage:
-# 	async_start_worker [worker_name] [-un]
+# 	async_start_worker <worker_name> [-u] [-n] [-p <pid>]
+#
 # opts:
 # 	-u unique (only unique job names can run)
 # 	-n notify through SIGWINCH signal
 # 	-p pid to notify (defaults to current pid)
+#
 async_start_worker() {
 	local worker=$1
 	1=""
 	zpty -t $worker &>/dev/null || zpty -b $worker _async_worker -p $$ $@ || async_stop_worker $worker
 }
 
-# Stop a worker that is running
+#
+# Stop one or multiple workers that are running, all unfetched and incomplete work will be lost.
+#
 # usage:
-# 	async_stop_worker [worker_name_1] [worker_name_2]
+# 	async_stop_worker <worker_name_1> [<worker_name_2>]
+#
 async_stop_worker() {
 	local ret=0
 	for worker in $@; do
@@ -168,6 +187,12 @@ async_stop_worker() {
 	return $ret
 }
 
+#
+# Initialize the required modules for zsh-async. To be called before using the zsh-async library.
+#
+# usage:
+# 	async_init
+#
 async_init() {
 	zmodload zsh/zpty
 	zmodload zsh/datetime
