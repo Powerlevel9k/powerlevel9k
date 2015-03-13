@@ -205,3 +205,9 @@ async_init() {
 	zmodload zsh/zpty
 	zmodload zsh/datetime
 }
+
+async() {
+	async_init
+}
+
+async "$@"
