@@ -33,11 +33,11 @@ _async_worker() {
 
 	# Process option parameters passed to worker
 	while getopts "np:u" opt; do
-	    case "$opt" in
-	    n) trap 'kill -ALRM $ASYNC_WORKER_PARENT_PID' CHLD;;
-	    p) ASYNC_WORKER_PARENT_PID=$OPTARG;;
-	    u) unique=1;;
-	    esac
+		case "$opt" in
+		n) trap 'kill -ALRM $ASYNC_WORKER_PARENT_PID' CHLD;;
+		p) ASYNC_WORKER_PARENT_PID=$OPTARG;;
+		u) unique=1;;
+		esac
 	done
 
 	# Create a mutex for writing to the terminal through coproc
