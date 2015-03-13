@@ -50,20 +50,23 @@ _async_worker() {
 		cmd=(${=cmd})
 		local job=$cmd[1]
 
-		[[ $job == "_killjobs" ]] && {
+		# Check for non-job commands sent to worker
+		case "$job" in
+		_killjobs)
 			kill ${${(v)jobstates##*:*:}%=*} &>/dev/null
 			continue
-		}
+			;;
+		esac
 
 		# If worker should perform unique jobs
-		[[ $opt == "unique" ]] && {
+		if ((unique)); then
 			# Check if a previous job is still running, if yes, let it finnish
 			for pid in ${${(v)jobstates##*:*:}%=*}; do
-				[[ "${storage[$job]}" == "$pid" ]] && {
+				if [[ "${storage[$job]}" == "$pid" ]]; then
 					continue 2
-				}
+				fi
 			done
-		}
+		fi
 
 		# run task in background
 		_async_job $cmd &
