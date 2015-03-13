@@ -34,7 +34,8 @@ _async_worker() {
 	# Process option parameters passed to worker
 	while getopts "np:u" opt; do
 		case "$opt" in
-		n) trap 'kill -ALRM $ASYNC_WORKER_PARENT_PID' CHLD;;
+		# Use SIGWINCH since many others seem to cause zsh to freeze, e.g. ALRM, INFO, etc.
+		n) trap 'kill -WINCH $ASYNC_WORKER_PARENT_PID' CHLD;;
 		p) ASYNC_WORKER_PARENT_PID=$OPTARG;;
 		u) unique=1;;
 		esac
@@ -147,7 +148,7 @@ async_flush_jobs() {
 # 	async_start_worker [worker_name] [-un]
 # opts:
 # 	-u unique (only unique job names can run)
-# 	-n notify through SIGALRM signal
+# 	-n notify through SIGWINCH signal
 # 	-p pid to notify (defaults to current pid)
 async_start_worker() {
 	local worker=$1
