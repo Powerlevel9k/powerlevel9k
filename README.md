@@ -19,15 +19,22 @@ longer under control of the parent. Now you can have both!
 
 ## Usage
 
+### Installation
+
+You can either source the `async.zsh` script directly or insert under your
+`$fpath` as async and autoload it through `autoload -Uz async && async`.
+
+### Functions
+
 The `zsh-async` library has a bunch of functions that need to be used to
 perform async actions:
 
-### `async_init`
+#### `async_init`
 
 Initializes the async library (not required if using async from `$fpath` with
 autoload.)
 
-### `async_start_worker <worker_name> [-u] [-n] [-p <pid>]`
+#### `async_start_worker <worker_name> [-u] [-n] [-p <pid>]`
 
 Start a new async worker with optional parameters, a worker can be told to only
 run unique tasks and to notify a process when tasks are complete.
@@ -38,16 +45,16 @@ will have `git` as the unique job name identifier
 `trap '' WINCH` in the process defined by `-p`
 * `-p` pid to notify (defaults to current pid)
 
-### `async_stop_worker <worker_name_1> [<worker_name_2>]`
+#### `async_stop_worker <worker_name_1> [<worker_name_2>]`
 
 Simply stops a worker and all active jobs will be terminated immediately.
 
-### `async_job <worker_name> <my_function> [<function_params>]`
+#### `async_job <worker_name> <my_function> [<function_params>]`
 
 Start a new asynchronous job on specified worker, assumes the worker is
 running.
 
-### `async_process_results <worker_name> <callback_function>`
+#### `async_process_results <worker_name> <callback_function>`
 
 Get results from finnished jobs and pass it to the to callback function. This
 is the only way to reliably return the job name, return code, output and
@@ -60,7 +67,7 @@ The `callback_function` is called with the following parameters:
 * `$3` resulting (stdout) output from job execution
 * `$4` execution time, floating point e.g. 0.30631208419799805 seconds
 
-### `async_flush_jobs <worker_name>`
+#### `async_flush_jobs <worker_name>`
 
 Flush all current jobs running on a worker. This will terminate any and
 all running processes under the worker, use with caution.
