@@ -15,7 +15,7 @@ automatically whenever a process has finnished executing by notifying through a
 This library bridges the gap between spawning child processes and disowning
 them. Child proccesses launched by normal means clutter the terminal with
 output about their state, and disowned proccesses become separate entities, no
-long under control of the parent. Now you can have both!
+longer under control of the parent. Now you can have both!
 
 ## Usage
 
