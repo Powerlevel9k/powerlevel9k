@@ -100,7 +100,7 @@ async_process_results() {
 	local -a items
 	local IFS=$'\0'
 
-	typeset -A ASYNC_PROCESS_BUFFER
+	typeset -gA ASYNC_PROCESS_BUFFER
 	# Read output from zpty and parse it if available
 	while zpty -r $1 line; do
 		# Remove unwanted \r from output
@@ -194,7 +194,7 @@ async_flush_jobs() {
 	while zpty -r $1 line; do done
 
 	# Clear any partial buffers
-	typeset -A ASYNC_PROCESS_BUFFER
+	typeset -gA ASYNC_PROCESS_BUFFER
 	ASYNC_PROCESS_BUFFER[$1]=""
 }
 
