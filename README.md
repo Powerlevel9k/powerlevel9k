@@ -67,6 +67,15 @@ The `callback_function` is called with the following parameters:
 * `$3` resulting (stdout) output from job execution
 * `$4` execution time, floating point e.g. 0.30631208419799805 seconds
 
+#### `async_register_callback <worker_name> <callback_function>`
+
+Register a callback for completed jobs. As soon as a job is finnished, async_process_results will be called with the
+specified callback function. This requires that a worker is initialized with the -n (notify) option.
+
+#### `async_unregister_callback <worker_name>`
+
+Unregister the callback for a specific worker.
+
 #### `async_flush_jobs <worker_name>`
 
 Flush all current jobs running on a worker. This will terminate any and
@@ -89,8 +98,8 @@ completed_callback() {
 	print $@
 }
 
-# Trap the completion signal from worker, check for results
-trap 'async_process_results my_worker completed_callback' WINCH
+# Register callback function for the workers completed jobs
+async_register_callback my_worker completed_callback
 
 # Give the worker some tasks to perform
 async_job my_worker print hello
