@@ -97,7 +97,7 @@ async_process_results() {
 
 	typeset -gA ASYNC_PROCESS_BUFFER
 	# Read output from zpty and parse it if available
-	while zpty -rt $1 line; do
+	while zpty -rt $1 line 2>/dev/null; do
 		# Remove unwanted \r from output
 		ASYNC_PROCESS_BUFFER[$1]+=${line//$'\r'$'\n'/$'\n'}
 		# Split buffer on null characters, preserve empty elements
