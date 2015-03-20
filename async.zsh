@@ -3,7 +3,7 @@
 #
 # zsh-async
 #
-# version: 0.2.0
+# version: 0.2.1
 # author: Mathias Fredriksson
 # url: https://github.com/mafredri/zsh-async
 #
@@ -102,7 +102,7 @@ async_process_results() {
 
 	typeset -gA ASYNC_PROCESS_BUFFER
 	# Read output from zpty and parse it if available
-	while zpty -r $1 line; do
+	while zpty -rt $1 line; do
 		# Remove unwanted \r from output
 		ASYNC_PROCESS_BUFFER[$1]+=${line//$'\r'$'\n'/$'\n'}
 		# Split buffer on null characters, preserve empty elements
@@ -225,6 +225,7 @@ async_start_worker() {
 async_stop_worker() {
 	local ret=0
 	for worker in $@; do
+		async_unregister_callback $worker
 		zpty -d $worker 2>/dev/null || ret=$?
 	done
 
