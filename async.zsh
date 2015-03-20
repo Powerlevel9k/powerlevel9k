@@ -10,23 +10,18 @@
 
 # Wrapper for jobs executed by the async worker, gives output in parseable format with execution time
 _async_job() {
-	local out
-	# store the job identifier
-	local job=$1
-	# reset the identifier
-	1=""
 	# store start time
 	local start=$EPOCHREALTIME
 
 	# run the command
-	out=$($job $@ 2>&1)
+	local out=$($@ 2>&1)
 	local ret=$?
 
 	# Grab mutex lock
 	read -ep >/dev/null
 
-	# return output
-	print -r -N -n -- $job $ret "$out" $(( $EPOCHREALTIME - $start ))$'\0'
+	# return output (<job_name> <return_code> <output> <duration>)
+	print -r -N -n -- $1 $ret "$out" $(( $EPOCHREALTIME - $start ))$'\0'
 
 	# Unlock mutex
 	print -p "t"
