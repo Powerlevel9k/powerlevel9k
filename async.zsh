@@ -12,18 +12,17 @@
 _async_job() {
 	# store start time
 	local start=$EPOCHREALTIME
-	local job=$1
-	1=""
 
 	# run the command
-	local out=$($job $@ 2>&1)
+	local out
+	out=$($@ 2>&1)
 	local ret=$?
 
 	# Grab mutex lock
 	read -ep >/dev/null
 
 	# return output (<job_name> <return_code> <output> <duration>)
-	print -r -N -n -- $job $ret "$out" $(( $EPOCHREALTIME - $start ))$'\0'
+	print -r -N -n -- $1 $ret "$out" $(( $EPOCHREALTIME - $start ))$'\0'
 
 	# Unlock mutex
 	print -p "t"
