@@ -134,8 +134,7 @@ async_process_results() {
 # 	async_job <worker_name> <my_function> [<function_params>]
 #
 async_job() {
-	local worker=$1
-	1=""
+	local worker=$1; shift
 	zpty -w $worker $*
 }
 
@@ -207,8 +206,7 @@ async_flush_jobs() {
 # 	-p pid to notify (defaults to current pid)
 #
 async_start_worker() {
-	local worker=$1
-	1=""
+	local worker=$1; shift
 	zpty -t $worker &>/dev/null || zpty -b $worker _async_worker -p $$ $* || async_stop_worker $worker
 }
 
