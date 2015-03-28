@@ -15,7 +15,7 @@ _async_job() {
 
 	# run the command
 	local out
-	out=$($@ 2>&1)
+	out=$($* 2>&1)
 	local ret=$?
 
 	# Grab mutex lock
@@ -136,7 +136,7 @@ async_process_results() {
 async_job() {
 	local worker=$1
 	1=""
-	zpty -w $worker $@
+	zpty -w $worker $*
 }
 
 # This function traps notification signals and calls all registered callbacks
@@ -156,7 +156,7 @@ _async_notify_trap() {
 async_register_callback() {
 	typeset -gA ASYNC_CALLBACKS
 
-	ASYNC_CALLBACKS[$1]="${@[2,${#@}]}"
+	ASYNC_CALLBACKS[$1]="${*[2,${#*}]}"
 
 	trap '_async_notify_trap' WINCH
 }
@@ -209,7 +209,7 @@ async_flush_jobs() {
 async_start_worker() {
 	local worker=$1
 	1=""
-	zpty -t $worker &>/dev/null || zpty -b $worker _async_worker -p $$ $@ || async_stop_worker $worker
+	zpty -t $worker &>/dev/null || zpty -b $worker _async_worker -p $$ $* || async_stop_worker $worker
 }
 
 #
@@ -220,7 +220,7 @@ async_start_worker() {
 #
 async_stop_worker() {
 	local ret=0
-	for worker in $@; do
+	for worker in $*; do
 		async_unregister_callback $worker
 		zpty -d $worker 2>/dev/null || ret=$?
 	done
