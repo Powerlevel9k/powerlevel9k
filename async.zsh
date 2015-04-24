@@ -241,4 +241,4 @@ async() {
 	async_init
 }
 
-async "$@"
+async "$*"
