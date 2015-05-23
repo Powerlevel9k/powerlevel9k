@@ -43,6 +43,10 @@
 #   POWERLEVEL9K_COLOR_SCHEME='light'
 ################################################################
 
+# Fix: To display the correct colors, we need a terminal capable of displaying 
+# 256 colors.
+TERM=xterm-256color
+
 # The `CURRENT_BG` variable is used to remember what the last BG color used was
 # when building the left-hand prompt. Because the RPROMPT is created from
 # right-left but reads the opposite, this isn't necessary for the other side.
