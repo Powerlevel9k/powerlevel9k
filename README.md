@@ -118,6 +118,12 @@ coverage or any sophisticated stats. All this does is just to count your files
 and test files and calculate the ratio between them. Not more, but is may give
 a quick overview about the test situation of the project you are dealing with.
 
+#### The `rvm` segment
+
+This segment displays the ruby version of your currently used gemset, if the 
+gemset is not "default". If you set `POWERLEVEL9K_RVM_SHOW_ALWAYS` to true 
+in your `~/.zshrc`, the version number is displayed always.
+
 #### The 'time' segment
 
 By default the time is show in 'H:M:S' format. If you want to change it, 
