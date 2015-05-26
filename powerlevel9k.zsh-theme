@@ -329,9 +329,17 @@ prompt_rspec_stats() {
 
 # Ruby Version Manager information
 prompt_rvm() {
-  local rvm_prompt
-  rvm_prompt=`rvm-prompt`
-  if [ "$rvm_prompt" != "" ]; then
+  local rvm_prompt=$(rvm-prompt i v g 2> /dev/null)
+  local rvm_gemset=$(rvm gemset list 2> /dev/null)
+
+  # Fail fast: If no `rvm-prompt` is installed, show nothing.
+  [[ -z "$rvm_prompt" ]] && return
+
+  if [[ "$POWERLEVEL9K_RVM_SHOW_ALWAYS" == true ]]; then
+    $1_prompt_segment "240" $DEFAULT_COLOR "$rvm_prompt "
+  elif [[ -z "$rvm_gemset" ]]; then
+    $1_prompt_segmet red white "ERR: rvm gemset does not work!"
+  elif [[ -n "$rvm_gemset" ]] && [[ -z "$(echo $rvm_gemset | grep "=> (default)")" ]]; then
     $1_prompt_segment "240" $DEFAULT_COLOR "$rvm_prompt "
   fi
 }
