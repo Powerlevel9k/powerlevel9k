@@ -183,13 +183,16 @@ async_unregister_callback() {
 # 	async_flush_jobs <worker_name>
 #
 async_flush_jobs() {
-	zpty -t $worker &>/dev/null || return 1
+	local worker=$1; shift
+
+	# Check if the worker exists
+	zpty -t "$worker" &>/dev/null || return 1
 
 	# Send kill command to worker
-	zpty -w $1 "_killjobs"
+	zpty -w "$worker" "_killjobs"
 
 	# Clear all output buffers
-	while zpty -r $1 line; do done
+	while zpty -r "$worker" line; do true; done
 
 	# Clear any partial buffers
 	typeset -gA ASYNC_PROCESS_BUFFER
