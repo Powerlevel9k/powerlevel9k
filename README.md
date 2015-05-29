@@ -3,6 +3,14 @@
 	Because your terminal should be able to perform tasks asynchronously
 	without external tools!
 
+## Intro (TL;DR)
+
+With `zsh-async` you can run multiple asynchonous jobs, enforce unique jobs
+(multiple instances of the same job will not run), flush all currently running
+jobs and create multiple workers (each with their own jobs). For each worker
+you can register a callback-function through which you will be notified about
+the job results (job name, return code, output and execution time).
+
 ## Overview
 
 `zsh-async` is a small library for running asynchornous tasks in zsh without
