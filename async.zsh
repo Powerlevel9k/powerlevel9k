@@ -15,7 +15,7 @@ _async_job() {
 
 	# run the command
 	local out
-	out=$($* 2>&1)
+	out=$(eval "$@" 2>&1)
 	local ret=$?
 
 	# Grab mutex lock
