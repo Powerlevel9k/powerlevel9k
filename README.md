@@ -133,8 +133,8 @@ the TODO list.
 
 ## Limitations
 
-* Currently you cannot pass a job like `"sleep 1 && echo hi"`, it needs to be a
-single command
+* ~~Currently you cannot pass a job like `"sleep 1 && echo hi"`, it needs to be a
+single command~~. Fixed in [this commit](https://github.com/mafredri/zsh-async/commit/e6d70e0eea0a80b1624f407f60795cfb1a4524e1).
 * Tell me? :)
 
 ## Recommendations
