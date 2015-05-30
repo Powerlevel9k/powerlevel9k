@@ -56,7 +56,7 @@ _async_worker() {
 		# Check for non-job commands sent to worker
 		case "$job" in
 		_killjobs)
-			kill ${${(v)jobstates##*:*:}%=*} &>/dev/null
+			kill -KILL ${${(v)jobstates##*:*:}%\=*} &>/dev/null
 			continue
 			;;
 		esac
