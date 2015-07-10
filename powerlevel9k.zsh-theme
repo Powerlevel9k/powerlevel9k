@@ -76,7 +76,7 @@ case $POWERLEVEL9K_MODE in
     VCS_BOOKMARK_ICON="\uE87B" # 
     VCS_COMMIT_ICON="\uE821 " # 
     VCS_BRANCH_ICON=" \uE220" # 
-    VCS_REMOTE_BRANCH_ICON="\uE804" # 
+    VCS_REMOTE_BRANCH_ICON=" \uE804 " # 
     VCS_GIT_ICON="\uE20E " # 
     VCS_HG_ICON="\uE1C3 " # 
   ;;
@@ -132,7 +132,7 @@ case $POWERLEVEL9K_MODE in
     VCS_BOOKMARK_ICON="\uE87B" # 
     VCS_COMMIT_ICON="\uE821 " # 
     VCS_BRANCH_ICON=" \uE220" # 
-    VCS_REMOTE_BRANCH_ICON="\uE804" # 
+    VCS_REMOTE_BRANCH_ICON=" \uE804 " # 
     VCS_GIT_ICON="\uE20E " # 
     VCS_HG_ICON="\uE1C3 " # 
   ;;
