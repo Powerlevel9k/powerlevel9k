@@ -52,8 +52,10 @@ function print_icon() {
   local icon_name=$1
   local ICON_USER_VARIABLE=POWERLEVEL9K_${icon_name}
   local USER_ICON=${(P)ICON_USER_VARIABLE}
-  if [[ -n "$USER_ICON" ]]; then
+  if [[ -n "$USER_ICON" && "$USER_ICON" != false ]]; then
     echo -n $USER_ICON
+  elif [[ -n "$USER_ICON" && "$USER_ICON" == false ]]; then
+    # Do nothing! Icon disabled.
   else
     echo -n ${icons[$icon_name]}
   fi
