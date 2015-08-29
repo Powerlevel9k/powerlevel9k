@@ -414,6 +414,12 @@ This special prompt does not work on the right side, as it would be too long,
 and ZSH hides it automatically. Also have in mind, that the output depends on
 your `POWERLEVEL9K_MODE` settings.
 
+You can prevent rendering of an icon by setting the according icon variable to
+`false`. E.g. if you use a multiline prompt and do not want a special icon
+before the first line, just set:
+
+    POWERLEVEL9K_MULTILINE_FIRST_PROMPT_PREFIX=false
+
 #### Segment Color Customization
 
 For each segment in your prompt, you can specify a foreground and background
