@@ -477,8 +477,11 @@ Note that you can also use a colorcode value. Example:
 
     POWERLEVEL9K_VCS_FOREGROUND='021' # Dark blue
 
-For a full list of supported colors, run the `spectrum_ls` program in your
-terminal.
+For a full list of supported colors, run this little loop in your terminal:
+
+```zsh
+    for code ({000..255}) print -P -- "$code: %F{$code}This is how your text would look like%f"
+```
 
 #### Special Segment Colors
 
