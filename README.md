@@ -64,7 +64,7 @@ and then assign them to either the left or right prompt by adding the following
 variables to your `~/.zshrc`. If you don't customize this, the below
 configuration is the default:
 
-    POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(context dir rbenv vcs)
+    POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(context dir ruby_version vcs)
     POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status history time)
 
 #### Available Prompt Segments
@@ -79,7 +79,7 @@ The segments that are currently available are:
 * **node_version** - Show the version number of the installed Node.js.
 * **os_icon** - Display a nice little icon, depending on your operating system.
 * **php_version** - Show the current PHP version.
-* [rbenv](#rbenv) - Ruby environment information (if one is active).
+* [ruby_version](#ruby_version) - Ruby environment information (if one is active).
 * [rspec_stats](#rspec_stats) - Show a ratio of test classes vs code classes for RSpec.
 * [status](#status) - The return code of the previous command, and status of background jobs.
 * [symphony2_tests](#symphony2_tests) - Show a ratio of test classes vs code classes for Symfony2.
@@ -143,11 +143,17 @@ network interface by setting:
 
 See [Unit Test Ratios](#unit-test-ratios), below.
 
-##### rvm
+##### ruby_version
 
-This segment displays the ruby version of your currently used gemset, if the 
-gemset is not "default". If you set `POWERLEVEL9K_RVM_SHOW_ALWAYS` to true 
-in your `~/.zshrc`, the version number is displayed always.
+This segment displays the ruby version and checks by default for `rvm`, `rbenv`
+and `chruby`. You can influence the order of the checks by setting
+`POWERLEVEL9K_RUBY_VERSION_CHECKERS=(rbenv rvm)`. In this example we just check
+rbenv and rvm in that particular order.
+If you set `POWERLEVEL9K_RVM_SHOW_ALWAYS` to true in your `~/.zshrc`, the
+version number is displayed always. The specified checkers are asked asked, but
+lastly we display the version string of `ruby --version` directly.
+
+The rvm checker just displays the version if your gemset is not "default".
 
 ##### status
 

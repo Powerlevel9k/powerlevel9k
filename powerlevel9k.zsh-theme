@@ -752,13 +752,6 @@ prompt_php_version() {
   fi
 }
 
-# rbenv information
-prompt_rbenv() {
-  if [[ -n "$RBENV_VERSION" ]]; then
-    "$1_prompt_segment" "$0" "red" "$DEFAULT_COLOR" "$RBENV_VERSION"
-  fi
-}
-
 # RSpec test ratio
 prompt_rspec_stats() {
   if [[ (-d app && -d spec) ]]; then
@@ -770,20 +763,33 @@ prompt_rspec_stats() {
   fi
 }
 
-# Ruby Version Manager information
-prompt_rvm() {
-  local rvm_prompt=$(rvm-prompt i v g 2> /dev/null)
-  local rvm_gemset=$(rvm gemset list 2> /dev/null)
+# Ruby Version
+set_default POWERLEVEL9K_SHOW_RUBY_VERSION_ALWAYS false
+prompt_ruby_version() {
+  defined POWERLEVEL9K_RUBY_VERSION_CHECKERS || POWERLEVEL9K_RUBY_VERSION_CHECKERS=(rvm rbenv chruby)
 
-  # Fail fast: If no `rvm-prompt` is installed, show nothing.
-  [[ -z "$rvm_prompt" ]] && return
+  local result
+  for element in "${POWERLEVEL9K_RUBY_VERSION_CHECKERS[@]}"; do
+    if [[ "$element" == "rvm" ]]; then
+      local rvm_prompt=$(rvm-prompt i v g 2> /dev/null)
+      local rvm_gemset=$(rvm gemset list 2> /dev/null)
 
-  if [[ "$POWERLEVEL9K_RVM_SHOW_ALWAYS" == true ]]; then
-    "$1_prompt_segment" "240" $DEFAULT_COLOR "$rvm_prompt $(print_icon 'RUBY_ICON') "
-  elif [[ -z "$rvm_gemset" ]]; then
-    "$1_prompt_segmet" red white "ERR: rvm gemset does not work!"
-  elif [[ -n "$rvm_gemset" ]] && [[ -z "$(echo $rvm_gemset | grep "=> (default)")" ]]; then
-    "$1_prompt_segment" "240" $DEFAULT_COLOR "$rvm_prompt $(print_icon 'RUBY_ICON') "
+      if [[ -n "$rvm_gemset" ]] && [[ -z "$(echo $rvm_gemset | grep "=> (default)")" ]]; then
+        result=$rvm_prompt
+      fi
+    elif [[ "$element" == "rbenv" ]]; then
+      result=$RBENV_VERSION
+    elif [[ "$element" == "chruby" ]]; then
+      result=$(chruby | sed -e 's/ \* //')
+    fi
+  done
+
+  if [[ "$POWERLEVEL9K_SHOW_RUBY_VERSION_ALWAYS" == true ]] && [[ -n "$result" ]]; then
+    result=$(ruby --version | grep -oe "ruby [0-9.a-z]*" | grep -oe "[0-9.a-z]*$")
+  fi
+
+  if [[ "$POWERLEVEL9K_SHOW_RUBY_VERSION_ALWAYS" == true ]] || [[ -n "$result" ]]; then
+    "$1_prompt_segment" "240" $DEFAULT_COLOR "$result $(print_icon 'RUBY_ICON') "
   fi
 }
 
