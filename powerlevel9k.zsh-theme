@@ -777,6 +777,7 @@ prompt_nvm() {
 }
 
 # rbenv information
+# DEPRECATED! Use `ruby_version` instead!
 prompt_rbenv() {
   if [[ -n "$RBENV_VERSION" ]]; then
     "$1_prompt_segment" "$0" "red" "$DEFAULT_COLOR" "$RBENV_VERSION"
@@ -987,6 +988,12 @@ function zle-keymap-select {
   zle reset-prompt
 }
 
+function showWarningIfDeprecated() {
+  if in_array "$1" "${POWERLEVEL9K_LEFT_PROMPT_ELEMENTS[@]}" || in_array "$1" "${POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS[@]}"; then
+    print -P "%F{yellow}DEPRECATED!%f You use a deprecated segment '$1'. Please use '$2' instead!"
+  fi
+}
+
 powerlevel9k_init() {
   # Display a warning if the terminal does not support 256 colors
   local term_colors
@@ -995,6 +1002,9 @@ powerlevel9k_init() {
     print -P "%F{red}WARNING!%f Your terminal supports less than 256 colors!"
     print "You should set TERM=xterm-256colors in your ~/.zshrc"
   fi
+
+  showWarningIfDeprecated "rvm" "ruby_version"
+  showWarningIfDeprecated "rbenv" "ruby_version"
 
   setopt prompt_subst
   
