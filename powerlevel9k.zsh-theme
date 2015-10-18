@@ -825,6 +825,16 @@ prompt_ruby_version() {
   fi
 }
 
+# Ruby Version Manager information
+# DEPRECATED! Use `ruby_version` instead!
+prompt_rvm() {
+  local rvm_prompt
+  rvm_prompt=$(rvm-prompt)
+  if [ "$rvm_prompt" != "" ]; then
+    "$1_prompt_segment" "$0" "240" "$DEFAULT_COLOR" "$rvm_prompt $(print_icon 'RUBY_ICON') "
+  fi
+}
+
 # Status: (return code, root status, background jobs)
 set_default POWERLEVEL9K_STATUS_VERBOSE true
 prompt_status() {
