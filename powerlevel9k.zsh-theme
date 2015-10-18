@@ -215,6 +215,17 @@ function set_default() {
   defined "$varname" || typeset -g "$varname"="$default_value"
 }
 
+# Checks if an array contains a specific value.
+# First parameter: the searched value
+# Second parameter: array
+function in_array() {
+  local element
+  for element in "${@:2}"; do
+    [[ "$element" == "$1" ]] && return 0;
+  done
+  return 1
+}
+
 # Safety function for printing icons
 # Prints the named icon, or if that icon is undefined, the string name.
 function print_icon() {
