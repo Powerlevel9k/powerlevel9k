@@ -149,7 +149,7 @@ See [Unit Test Ratios](#unit-test-ratios), below.
 
 This segment displays the ruby version and checks by default for `rvm`, `rbenv`
 and `chruby`. You can influence the order of the checks by setting
-`POWERLEVEL9K_RUBY_VERSION_CHECKERS=(rbenv rvm)`. In this example we just check
+`POWERLEVEL9K_RUBY_VERSION_CHECKERS=('rbenv' 'rvm')`. In this example we just check
 rbenv and rvm in that particular order.
 If you set `POWERLEVEL9K_RVM_SHOW_ALWAYS` to true in your `~/.zshrc`, the
 version number is displayed always. The specified checkers are asked asked, but

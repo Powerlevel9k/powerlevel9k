@@ -798,7 +798,7 @@ prompt_rspec_stats() {
 # Ruby Version
 set_default POWERLEVEL9K_SHOW_RUBY_VERSION_ALWAYS false
 prompt_ruby_version() {
-  defined POWERLEVEL9K_RUBY_VERSION_CHECKERS || POWERLEVEL9K_RUBY_VERSION_CHECKERS=(rvm rbenv chruby)
+  defined POWERLEVEL9K_RUBY_VERSION_CHECKERS || POWERLEVEL9K_RUBY_VERSION_CHECKERS=('rvm' 'rbenv' 'chruby')
 
   local result
   for element in "${POWERLEVEL9K_RUBY_VERSION_CHECKERS[@]}"; do
