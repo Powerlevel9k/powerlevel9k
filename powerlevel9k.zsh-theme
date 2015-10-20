@@ -821,7 +821,7 @@ prompt_ruby_version() {
   fi
 
   if [[ "$POWERLEVEL9K_SHOW_RUBY_VERSION_ALWAYS" == true ]] || [[ -n "$result" ]]; then
-    "$1_prompt_segment" "240" $DEFAULT_COLOR "$result $(print_icon 'RUBY_ICON') "
+    "$1_prompt_segment" "$0" "red" "$DEFAULT_COLOR" "$result $(print_icon 'RUBY_ICON') "
   fi
 }
 
