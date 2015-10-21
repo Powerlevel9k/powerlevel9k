@@ -147,13 +147,19 @@ See [Unit Test Ratios](#unit-test-ratios), below.
 
 ##### ruby_version
 
-This segment displays the ruby version and checks by default for `rvm`, `rbenv`
-and `chruby`. You can influence the order of the checks by setting
+This segment displays the ruby version and checks by default for `rvm`, `rbenv`,
+`chruby` and `ruby` itself. You can influence the order of the checks by setting
 `POWERLEVEL9K_RUBY_VERSION_CHECKERS=('rbenv' 'rvm')`. In this example we just check
 rbenv and rvm in that particular order.
-If you set `POWERLEVEL9K_RVM_SHOW_ALWAYS` to true in your `~/.zshrc`, the
-version number is displayed always. The specified checkers are asked asked, but
-lastly we display the version string of `ruby --version` directly.
+You can specify how this segment knows when it should be displayed by setting
+`POWERLEVEL9K_RUBY_VERSION_CONDITION` to an valid callback. Note that this callback
+must be in single quotes as it gets evaluated later. Also this callback must echo
+'true' at the end. To display this segment always just set 
+`POWERLEVEL9K_RUBY_VERSION_CONDITION='echo true'`. A more complex example is:
+
+    # Just display this segment if we find at least one file named *.rb2 in this
+    # or a direct subfolder of the current working directory.
+    POWERLEVEL9K_RUBY_VERSION_CONDITION='[[ -n $(find . -name "*.rb2" -maxdepth 2 -print | head -n 1) ]] && echo true'
 
 The rvm checker just displays the version if your gemset is not "default".
 
