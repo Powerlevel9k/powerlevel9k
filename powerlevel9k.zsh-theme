@@ -1007,7 +1007,7 @@ function zle-keymap-select {
   zle reset-prompt
 }
 
-function showWarningIfDeprecated() {
+function show_warning_if_deprecated() {
   if in_array "$1" "${POWERLEVEL9K_LEFT_PROMPT_ELEMENTS[@]}" || in_array "$1" "${POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS[@]}"; then
     print -P "%F{yellow}DEPRECATED!%f You use a deprecated segment '$1'. Please use '$2' instead!"
   fi
@@ -1022,8 +1022,8 @@ powerlevel9k_init() {
     print "You should set TERM=xterm-256colors in your ~/.zshrc"
   fi
 
-  showWarningIfDeprecated "rvm" "ruby_version"
-  showWarningIfDeprecated "rbenv" "ruby_version"
+  show_warning_if_deprecated "rvm" "ruby_version"
+  show_warning_if_deprecated "rbenv" "ruby_version"
 
   setopt prompt_subst
   
