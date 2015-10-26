@@ -937,9 +937,9 @@ prompt_ruby_version() {
     elif [[ "$element" == "rbenv" ]]; then
       result=$RBENV_VERSION
     elif [[ "$element" == "chruby" ]]; then
-      result=$(chruby | sed -e 's/ \* //')
+      result=$(chruby 2> /dev/null | sed -e 's/ \* //')
     elif [[ "$element" == "ruby" ]]; then
-      result=$(ruby --version | grep -oe "ruby [0-9.a-z]*" | grep -oe "[0-9.a-z]*$")
+      result=$(ruby --version 2> /dev/null | grep -oe "ruby [0-9.a-z]*" | grep -oe "[0-9.a-z]*$")
     fi
   done
 
