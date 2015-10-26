@@ -41,7 +41,7 @@ case $POWERLEVEL9K_MODE in
       RIGHT_SUBSEGMENT_SEPARATOR     $'\UE0B3'              # 
       CARRIAGE_RETURN_ICON           $'\U21B5'              # ↵
       ROOT_ICON                      $'\UE801'              # 
-      RUBY_ICON                      $'\UE847'              # 
+      RUBY_ICON                      ' '$'\UE847 '          # 
       AWS_ICON                       $'\UE895'              # 
       BACKGROUND_JOBS_ICON           $'\UE82F '             # 
       TEST_ICON                      $'\UE891'              # 
@@ -91,7 +91,7 @@ case $POWERLEVEL9K_MODE in
       RIGHT_SUBSEGMENT_SEPARATOR     $'\UE0B3'              # 
       CARRIAGE_RETURN_ICON           $'\U21B5'              # ↵
       ROOT_ICON                      $'\uF201'              # 
-      RUBY_ICON                      $'\UF247'              # 
+      RUBY_ICON                      ' '$'\UF247 '          # 
       AWS_ICON                       $'\UF296'              # 
       BACKGROUND_JOBS_ICON           $'\UF013 '             # 
       TEST_ICON                      $'\UF291'              # 
@@ -944,7 +944,7 @@ prompt_ruby_version() {
   done
 
   if [[ -n "$result" ]]; then
-    "$1_prompt_segment" "$0" "red" "$DEFAULT_COLOR" "$result $(print_icon 'RUBY_ICON') "
+    "$1_prompt_segment" "$0" "red" "$DEFAULT_COLOR" "$result$(print_icon 'RUBY_ICON')"
   fi
 }
 
@@ -954,7 +954,7 @@ prompt_rvm() {
   local rvm_prompt
   rvm_prompt=$(rvm-prompt)
   if [ "$rvm_prompt" != "" ]; then
-    "$1_prompt_segment" "$0" "240" "$DEFAULT_COLOR" "$rvm_prompt $(print_icon 'RUBY_ICON') "
+    "$1_prompt_segment" "$0" "240" "$DEFAULT_COLOR" "$rvm_prompt$(print_icon 'RUBY_ICON')"
   fi
 }
 
