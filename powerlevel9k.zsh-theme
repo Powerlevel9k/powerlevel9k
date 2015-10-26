@@ -941,6 +941,11 @@ prompt_ruby_version() {
     elif [[ "$element" == "ruby" ]]; then
       result=$(ruby --version 2> /dev/null | grep -oe "ruby [0-9.a-z]*" | grep -oe "[0-9.a-z]*$")
     fi
+
+    if [[ -n "$result" ]]; then
+      # Exit for-loop, if we found a version.
+      break
+    fi
   done
 
   if [[ -n "$result" ]]; then
