@@ -913,16 +913,16 @@ prompt_rspec_stats() {
 set_default POWERLEVEL9K_SHOW_RUBY_VERSION_ALWAYS false
 prompt_ruby_version() {
   defined POWERLEVEL9K_RUBY_VERSION_CHECKERS || POWERLEVEL9K_RUBY_VERSION_CHECKERS=('rvm' 'rbenv' 'chruby' 'ruby')
-  defined POWERLEVEL9K_RUBY_VERSION_CONDITION || POWERLEVEL9K_RUBY_VERSION_CONDITION='[[ -n $(find . -name "*.rb" -maxdepth 2 -print | head -n 1) ]] && echo true'
+  defined POWERLEVEL9K_RUBY_VERSION_CONDITION || POWERLEVEL9K_RUBY_VERSION_CONDITION='[[ -n $(find . -name "*.rb" -maxdepth 2 | head -n 1) ]]'
 
-  if [[ "$(eval $POWERLEVEL9K_RUBY_VERSION_CONDITION)" != "true" ]]; then
+  if ! eval $POWERLEVEL9K_RUBY_VERSION_CONDITION; then
     # Fail fast: If we don't have a valid condition and therefore
     # have no idea how to render this segment, just exit. In the
     # opposite, this means if the user specified a "always true"
-    # condition (`echo true`), that we can proceed to render as
+    # condition (`true`), that we can proceed to render as
     # a version string will hopefully be found by one of the
     # checkers.
-    return
+    return 0
   fi
 
   local result
