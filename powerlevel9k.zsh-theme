@@ -928,12 +928,11 @@ prompt_ruby_version() {
   local result
   for element in "${POWERLEVEL9K_RUBY_VERSION_CHECKERS[@]}"; do
     if [[ "$element" == "rvm" ]]; then
-      local rvm_prompt=$(rvm-prompt i v g 2> /dev/null)
-      local rvm_gemset=$(rvm gemset list 2> /dev/null)
+      local gemset=$(echo $GEM_HOME | awk -F'@' '{print $2}')
+      [ "$gemset" != "" ] && gemset="@$gemset"
+      local version=$(echo $MY_RUBY_HOME | awk -F'-' '{print $2}')
 
-      if [[ -n "$rvm_gemset" ]] && [[ -z "$(echo $rvm_gemset | grep "=> (default)")" ]]; then
-        result=$rvm_prompt
-      fi
+      result="$version$gemset"
     elif [[ "$element" == "rbenv" ]]; then
       result=$RBENV_VERSION
     elif [[ "$element" == "chruby" ]]; then
