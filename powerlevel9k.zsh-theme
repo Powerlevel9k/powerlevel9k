@@ -341,6 +341,47 @@ if [[ "$OS" == 'OSX' ]]; then
   fi
 fi
 
+conditional_segment() {
+  local -A segment_definition
+  # Magic: We get the name of the array passed into
+  # this function and need to dereference it.
+  segment_definition=(${(kvP)1})
+  activated_checkers=(${(P)2})
+
+  if ! eval ${segment_definition[condition]}; then
+    # Fail fast: If we don't have a valid condition and therefore
+    # have no idea how to render this segment, just exit. In the
+    # opposite, this means if the user specified a "always true"
+    # condition (`true`), that we can proceed to render as
+    # a version string will hopefully be found by one of the
+    # checkers.
+    return 0
+  fi
+
+  local result
+  for key in "${=activated_checkers}"; do
+    # Check dynamically for checker-conditions
+    local checker_condition_name="POWERLEVEL9K_${(U)segment_definition[segment]#prompt_}_${(U)key}_CONDITION"
+    local check=false
+    if defined $checker_condition_name; then
+      check=${(P)checker_condition_name}
+    else
+      local default_key="checker_$key"
+      check=${segment_definition[$default_key]}
+    fi
+    [[ -n "$check" ]] && result=$(eval $check)
+
+    if [[ -n "$result" ]]; then
+      # Exit for-loop, if we found a version.
+      break
+    fi
+  done
+
+  if [[ -n "$result" ]]; then
+    "${segment_definition[position]}_prompt_segment" "${segment_definition[segment]}" "$segment_definition[color]" "$DEFAULT_COLOR" "$result${segment_definition[icon]}"
+  fi
+}
+
 ################################################################
 # Color Scheme
 ################################################################
@@ -910,46 +951,28 @@ prompt_rspec_stats() {
 }
 
 # Ruby Version
-set_default POWERLEVEL9K_SHOW_RUBY_VERSION_ALWAYS false
 prompt_ruby_version() {
   defined POWERLEVEL9K_RUBY_VERSION_CHECKERS || POWERLEVEL9K_RUBY_VERSION_CHECKERS=('rvm' 'rbenv' 'chruby' 'ruby')
   defined POWERLEVEL9K_RUBY_VERSION_CONDITION || POWERLEVEL9K_RUBY_VERSION_CONDITION='[[ -n $(find . -name "*.rb" -maxdepth 2 | head -n 1) ]]'
 
-  if ! eval $POWERLEVEL9K_RUBY_VERSION_CONDITION; then
-    # Fail fast: If we don't have a valid condition and therefore
-    # have no idea how to render this segment, just exit. In the
-    # opposite, this means if the user specified a "always true"
-    # condition (`true`), that we can proceed to render as
-    # a version string will hopefully be found by one of the
-    # checkers.
-    return 0
-  fi
-
-  local result
-  for element in "${POWERLEVEL9K_RUBY_VERSION_CHECKERS[@]}"; do
-    if [[ "$element" == "rvm" ]]; then
-      local gemset=$(echo $GEM_HOME | awk -F'@' '{print $2}')
+  typeset -Ah data
+  data=(
+    'segment'         $0
+    'color'           'red'
+    'position'        $1
+    'icon'            '$(print_icon "RUBY_ICON")'
+    'condition'       $POWERLEVEL9K_RUBY_VERSION_CONDITION
+    'checker_rvm'     'gemset=$(echo $GEM_HOME | awk -F"@" "{print \$2}")
       [ "$gemset" != "" ] && gemset="@$gemset"
-      local version=$(echo $MY_RUBY_HOME | awk -F'-' '{print $2}')
+      version=$(echo $MY_RUBY_HOME | awk -F"-" "{print \$2}")
+      echo "$version$gemset"
+    '
+    'checker_chruby'  'chruby 2> /dev/null | sed -e "s/ \* //"'
+    'checker_rbenv'   '$RBENV_VERSION'
+    'checker_ruby'    'ruby --version 2> /dev/null | grep -oe "ruby [0-9.a-z]*" | grep -oe "[0-9.a-z]*$"'
+  )
 
-      result="$version$gemset"
-    elif [[ "$element" == "rbenv" ]]; then
-      result=$RBENV_VERSION
-    elif [[ "$element" == "chruby" ]]; then
-      result=$(chruby 2> /dev/null | sed -e 's/ \* //')
-    elif [[ "$element" == "ruby" ]]; then
-      result=$(ruby --version 2> /dev/null | grep -oe "ruby [0-9.a-z]*" | grep -oe "[0-9.a-z]*$")
-    fi
-
-    if [[ -n "$result" ]]; then
-      # Exit for-loop, if we found a version.
-      break
-    fi
-  done
-
-  if [[ -n "$result" ]]; then
-    "$1_prompt_segment" "$0" "red" "$DEFAULT_COLOR" "$result$(print_icon 'RUBY_ICON')"
-  fi
+  conditional_segment data POWERLEVEL9K_RUBY_VERSION_CHECKERS
 }
 
 # Ruby Version Manager information

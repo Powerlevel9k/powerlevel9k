@@ -179,8 +179,12 @@ just set `POWERLEVEL9K_RUBY_VERSION_CONDITION='true'`. A more complex example is
     # Just display this segment if we find at least one file named *.rb2 in this
     # or a direct subfolder of the current working directory.
     POWERLEVEL9K_RUBY_VERSION_CONDITION='[[ -n $(find . -name "*.rb2" -maxdepth 2 -print | head -n 1) ]]'
+    # To change the behavior of a specific checker (here the `rbenv` one,
+    # we set the following variable. In this case the checker only is
+    # used, if the version is not '1.2.3'.
+    POWERLEVEL9K_RUBY_VERSION_RBENV_CONDITION='[[ "$RBENV_VERSION" != "1.2.3" ]] && echo "$RBENV_VERSION"'
 
-The rvm checker just displays the version if your gemset is not "default".
+The rvm checker also displays your gemset, if it is not "default".
 
 ##### status
 
