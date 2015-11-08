@@ -849,7 +849,20 @@ prompt_load() {
     FUNCTION_SUFFIX="_NORMAL"
   fi
 
-  "$1_prompt_segment" "$0$FUNCTION_SUFFIX" "$BACKGROUND_COLOR" "$DEFAULT_COLOR" "$(print_icon 'LOAD_ICON') $load_avg_5min"
+  defined POWERLEVEL9K_LOAD_CONDITION || POWERLEVEL9K_LOAD_CONDITION=true
+  POWERLEVEL9K_LOAD_CHECKERS=('default')
+
+  typeset -Ah data
+  data=(
+    'segment'           "$0$FUNCTION_SUFFIX"
+    'color'             "$BACKGROUND_COLOR"
+    'position'          $1
+    'icon'              '$(print_icon "LOAD_ICON")'
+    'condition'         $POWERLEVEL9K_LOAD_CONDITION
+    'checker_default'   'echo "$load_avg_5min"'
+  )
+
+  conditional_segment data POWERLEVEL9K_LOAD_CHECKERS
 }
 
 # Node version
