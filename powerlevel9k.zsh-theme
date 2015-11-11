@@ -378,7 +378,7 @@ conditional_segment() {
   done
 
   if [[ -n "$result" ]]; then
-    "${segment_definition[position]}_prompt_segment" "${segment_definition[segment]}" "$segment_definition[color]" "$DEFAULT_COLOR" "$result${segment_definition[icon]}"
+    "${segment_definition[position]}_prompt_segment" "${segment_definition[segment]}" "$segment_definition[color]" "$DEFAULT_COLOR" "$result${(e)segment_definition[icon]}"
   fi
 }
 
@@ -966,7 +966,7 @@ prompt_rspec_stats() {
 # Ruby Version
 prompt_ruby_version() {
   defined POWERLEVEL9K_RUBY_VERSION_CHECKERS || POWERLEVEL9K_RUBY_VERSION_CHECKERS=('rvm' 'rbenv' 'chruby' 'ruby')
-  defined POWERLEVEL9K_RUBY_VERSION_CONDITION || POWERLEVEL9K_RUBY_VERSION_CONDITION='[[ -n $(find . -name "*.rb" -maxdepth 2 | head -n 1) ]]'
+  defined POWERLEVEL9K_RUBY_VERSION_CONDITION || POWERLEVEL9K_RUBY_VERSION_CONDITION='[[ -n $(find . -maxdepth 2 -name "*.rb" | head -n 1) ]]'
 
   typeset -Ah data
   data=(
