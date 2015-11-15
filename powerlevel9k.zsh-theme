@@ -59,7 +59,7 @@ case $POWERLEVEL9K_MODE in
       SUNOS_ICON                     $'\U1F31E '            # 🌞
       HOME_ICON                      $'\UE12C '             # 
       NETWORK_ICON                   $'\UE1AD '             # 
-      LOAD_ICON                      $'\UE190 '             # 
+      LOAD_ICON                      ' '$'\UE190 '             # 
       #RAM_ICON                       $'\UE87D'             # 
       RAM_ICON                       $'\UE1E2 '             # 
       VCS_UNTRACKED_ICON             $'\UE16C'              # 
@@ -342,10 +342,10 @@ if [[ "$OS" == 'OSX' ]]; then
 fi
 
 conditional_segment() {
-  local -A segment_definition
+  local -A raw_segment_definition
   # Magic: We get the name of the array passed into
   # this function and need to dereference it.
-  segment_definition=(${(kvP)1})
+  raw_segment_definition=(${(kvP)1})
   activated_checkers=(${(P)2})
 
   if ! eval ${segment_definition[condition]}; then
@@ -358,27 +358,55 @@ conditional_segment() {
     return 0
   fi
 
+  # Check, if we have special data providers for our OS.
+  # This may be the case if we want to access data in our
+  # checkers.
+  local data_provider_key="${(L)OS}_data_provider"
+  local data=${(e)raw_segment_definition[$data_provider_key]}
+
+  # segment-global background color
+  local BACKGROUND_COLOR=${(e)raw_segment_definition[background_color]}
+
+  local FOREGROUND_COLOR=$DEFAULT_COLOR
+  # segment-global foreground color
+  [[ -n "${(e)raw_segment_definition[foreground_color]}" ]] && FOREGROUND_COLOR="${(e)raw_segment_definition[foreground_color]}" 
+
+  local FUNCTION_SUFFIX=''
+
   local result
   for key in "${=activated_checkers}"; do
-    # Check dynamically for checker-conditions
-    local checker_condition_name="POWERLEVEL9K_${(U)segment_definition[segment]#prompt_}_${(U)key}_CONDITION"
+    local checker_key="checker_$key"
+    # Check dynamically for user defined checker-conditions
+    local checker_condition_name="POWERLEVEL9K_${(U)raw_segment_definition[segment]#prompt_}_${(U)key}_CONDITION"
     local check=false
     if defined $checker_condition_name; then
       check=${(P)checker_condition_name}
     else
-      local default_key="checker_$key"
-      check=${segment_definition[$default_key]}
+      # No user defined checker-condition, so take the default one.
+      check=${raw_segment_definition[$checker_key]}
     fi
-    [[ -n "$check" ]] && result=$(eval $check)
+    if [[ -n "$check" ]]; then
+      result=$(eval $check)
+    fi
 
     if [[ -n "$result" ]]; then
+      # Checker can set background color
+      local checker_bg_color_key="${checker_key}_background"
+      [[ -n "${raw_segment_definition[$checker_bg_color_key]}" ]] && BACKGROUND_COLOR="${raw_segment_definition[$checker_bg_color_key]}"
+      # Checker can set foreground color
+      local checker_fg_color_key="${checker_key}_foreground"
+      [[ -n "${raw_segment_definition[$checker_fg_color_key]}" ]] && FOREGROUND_COLOR="${raw_segment_definition[$checker_fg_color_key]}"
+      # Every checker modifies the segment name, by adding its name.
+      # This directly affects the dynamic color overriding mechanism.
+      FUNCTION_SUFFIX="_${(U)key}"
+
       # Exit for-loop, if we found a version.
       break
     fi
   done
 
   if [[ -n "$result" ]]; then
-    "${segment_definition[position]}_prompt_segment" "${segment_definition[segment]}" "$segment_definition[color]" "$DEFAULT_COLOR" "$result${(e)segment_definition[icon]}"
+    "${raw_segment_definition[position]}_prompt_segment" "${raw_segment_definition[segment]}$FUNCTION_SUFFIX" "$BACKGROUND_COLOR" "$FOREGROUND_COLOR" "$result${(e)raw_segment_definition[icon]}"
   fi
 }
 
@@ -829,40 +857,27 @@ prompt_ip() {
 }
 
 prompt_load() {
-  if [[ "$OS" == "OSX" ]]; then
-    load_avg_5min=$(sysctl vm.loadavg | grep -o -E '[0-9]+(\.|,)[0-9]+' | head -n 1)
-  else
-    load_avg_5min=$(grep -o "[0-9.]*" /proc/loadavg | head -n 1)
-  fi
-
-  # Replace comma
-  load_avg_5min=${load_avg_5min//,/.}
-
-  if [[ "$load_avg_5min" -gt 10 ]]; then
-    BACKGROUND_COLOR="red"
-    FUNCTION_SUFFIX="_CRITICAL"
-  elif [[ "$load_avg_5min" -gt 3 ]]; then
-    BACKGROUND_COLOR="yellow"
-    FUNCTION_SUFFIX="_WARNING"
-  else
-    BACKGROUND_COLOR="green"
-    FUNCTION_SUFFIX="_NORMAL"
-  fi
-
   defined POWERLEVEL9K_LOAD_CONDITION || POWERLEVEL9K_LOAD_CONDITION=true
-  POWERLEVEL9K_LOAD_CHECKERS=('default')
+  defined POWERELVEL9K_LOAD_CHECKERS || POWERLEVEL9K_LOAD_CHECKERS=('critical' 'warning' 'normal')
 
-  typeset -Ah data
-  data=(
-    'segment'           "$0$FUNCTION_SUFFIX"
-    'color'             "$BACKGROUND_COLOR"
-    'position'          $1
-    'icon'              '$(print_icon "LOAD_ICON")'
-    'condition'         $POWERLEVEL9K_LOAD_CONDITION
-    'checker_default'   'echo "$load_avg_5min"'
+  typeset -Ah segment_definition
+  segment_definition=(
+    'segment'               "$0"
+    'color'                 '$BACKGROUND_COLOR'
+    'position'              $1
+    'icon'                  '$(print_icon "LOAD_ICON")'
+    'condition'             $POWERLEVEL9K_LOAD_CONDITION
+    'osx_data_provider'     '$(sysctl vm.loadavg | grep -o -E "[0-9]+(\.|,)[0-9]+" | head -n 1 | sed s/,/./)'
+    'linux_data_provider'   '$(grep -o "[0-9.]*" /proc/loadavg | head -n 1 | sed s/,/./)'
+    'checker_critical'      '(( $data >= 10 )) && echo "$data"'
+    'checker_critical_background' 'red'
+    'checker_warning'       '(( $data >= 3 )) && echo "$data"'
+    'checker_warning_background' 'yellow'
+    'checker_normal'        'echo "$data"'
+    'checker_normal_background' 'green'
   )
 
-  conditional_segment data POWERLEVEL9K_LOAD_CHECKERS
+  conditional_segment segment_definition POWERLEVEL9K_LOAD_CHECKERS
 }
 
 # Node version
@@ -968,8 +983,8 @@ prompt_ruby_version() {
   defined POWERLEVEL9K_RUBY_VERSION_CHECKERS || POWERLEVEL9K_RUBY_VERSION_CHECKERS=('rvm' 'rbenv' 'chruby' 'ruby')
   defined POWERLEVEL9K_RUBY_VERSION_CONDITION || POWERLEVEL9K_RUBY_VERSION_CONDITION='[[ -n $(find . -maxdepth 2 -name "*.rb" | head -n 1) ]]'
 
-  typeset -Ah data
-  data=(
+  typeset -Ah segment_definition
+  segment_definition=(
     'segment'         $0
     'color'           'red'
     'position'        $1
@@ -985,7 +1000,7 @@ prompt_ruby_version() {
     'checker_ruby'    'ruby --version 2> /dev/null | grep -oe "ruby [0-9.a-z]*" | grep -oe "[0-9.a-z]*$"'
   )
 
-  conditional_segment data POWERLEVEL9K_RUBY_VERSION_CHECKERS
+  conditional_segment segment_definition POWERLEVEL9K_RUBY_VERSION_CHECKERS
 }
 
 # Ruby Version Manager information
