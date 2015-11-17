@@ -451,6 +451,11 @@ left_prompt_end() {
     echo -n "%{%k%}"
   fi
   echo -n "%{%f%} "
+  if [[ -n $POWERLEVEL9K_PROMPT_END ]]; then
+    echo -n "%{%f%}$POWERLEVEL9K_PROMPT_END"
+  else
+    echo -n "%{%f%} "
+  fi
   CURRENT_BG=''
 }
 
