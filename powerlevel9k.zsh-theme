@@ -568,13 +568,23 @@ prompt_rbenv() {
 
 # print Rust version number
 prompt_rust_version() {
-  local rust_version
-  rust_version=$(rustc --version 2>&1 | grep -oe "^rustc\s*[^ ]*" | grep -o '[0-9.a-z\\\-]*$')
+  defined POWERLEVEL9K_RUST_CONDITION || POWERLEVEL9K_RUST_CONDITION=true
+  defined POWERELVEL9K_RUST_CHECKERS || POWERLEVEL9K_RUST_CHECKERS=('default')
 
-  if [[ -n "$rust_version" ]]; then
-    "$1_prompt_segment" "$0" "208" "$DEFAULT_COLOR" "Rust $rust_version"
-  fi
+  typeset -Ah segment_definition
+  segment_definition=(
+    'segment'               "$0"
+    'background_color'      '208'
+    'foreground_color'      $DEFAULT_COLOR
+    'position'              $1
+    'icon'                  ' Rust'
+    'condition'             $POWERLEVEL9K_RUST_CONDITION
+    'checker_default'      'rustc --version 2>&1 | grep -oe "^rustc\s*[^ ]*" | grep -o "[0-9.a-z\\\-]*$"'
+  )
+
+  conditional_segment segment_definition POWERLEVEL9K_RUST_CHECKERS
 }
+
 # RSpec test ratio
 prompt_rspec_stats() {
   if [[ (-d app && -d spec) ]]; then
