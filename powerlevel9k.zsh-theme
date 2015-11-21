@@ -395,7 +395,7 @@ prompt_go_version() {
     'foreground_color'      $DEFAULT_COLOR_INVERTED
     'position'              $1
     'condition'             $POWERLEVEL9K_GO_CONDITION
-    'checker_default'      'go version 2>&1 | grep -oe "^go[0-9.]*"'
+    'checker_default'      'go version 2>&1 | sed -E "s/.*(go[0-9.]*).*/\1/"'
   )
 
   conditional_segment segment_definition POWERLEVEL9K_GO_CHECKERS
