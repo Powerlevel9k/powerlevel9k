@@ -385,12 +385,20 @@ prompt_dir() {
 
 # GO-prompt
 prompt_go_version() {
-  local go_version
-  go_version=$(go version 2>&1 | grep -oe "^go[0-9.]*")
+  defined POWERLEVEL9K_GO_CONDITION || POWERLEVEL9K_GO_CONDITION=true
+  defined POWERELVEL9K_GO_CHECKERS || POWERLEVEL9K_GO_CHECKERS=('default')
 
-  if [[ -n "$go_version" ]]; then
-    "$1_prompt_segment" "$0" "green" "255" "$go_version"
-  fi
+  typeset -Ah segment_definition
+  segment_definition=(
+    'segment'               "$0"
+    'background_color'      'green'
+    'foreground_color'      $DEFAULT_COLOR_INVERTED
+    'position'              $1
+    'condition'             $POWERLEVEL9K_GO_CONDITION
+    'checker_default'      'go version 2>&1 | grep -oe "^go[0-9.]*"'
+  )
+
+  conditional_segment segment_definition POWERLEVEL9K_GO_CHECKERS
 }
 
 # Command number (in local history)
