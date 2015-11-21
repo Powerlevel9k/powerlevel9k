@@ -445,7 +445,7 @@ prompt_load() {
   typeset -Ah segment_definition
   segment_definition=(
     'segment'               "$0"
-    'color'                 '$BACKGROUND_COLOR'
+    'background_color'      '$BACKGROUND_COLOR'
     'position'              $1
     'icon'                  '$(print_icon "LOAD_ICON")'
     'condition'             $POWERLEVEL9K_LOAD_CONDITION
@@ -577,7 +577,7 @@ prompt_ruby_version() {
   typeset -Ah segment_definition
   segment_definition=(
     'segment'         $0
-    'color'           'red'
+    'background_color' 'red'
     'position'        $1
     'icon'            '$(print_icon "RUBY_ICON")'
     'condition'       $POWERLEVEL9K_RUBY_VERSION_CONDITION
