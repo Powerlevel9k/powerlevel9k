@@ -478,12 +478,21 @@ prompt_os_icon() {
 
 # print PHP version number
 prompt_php_version() {
-  local php_version
-  php_version=$(php -v 2>&1 | grep -oe "^PHP\s*[0-9.]*")
+  defined POWERLEVEL9K_PHP_CONDITION || POWERLEVEL9K_PHP_CONDITION=true
+  defined POWERELVEL9K_PHP_CHECKERS || POWERLEVEL9K_PHP_CHECKERS=('default')
 
-  if [[ -n "$php_version" ]]; then
-    "$1_prompt_segment" "$0" "013" "255" "$php_version"
-  fi
+  typeset -Ah segment_definition
+  segment_definition=(
+    'segment'               "$0"
+    'background_color'      '013'
+    'foreground_color'      $DEFAULT_COLOR_INVERTED
+    'position'              $1
+    'icon'                  '$(print_icon "PHP_ICON")'
+    'condition'             $POWERLEVEL9K_PHP_CONDITION
+    'checker_default'      'php -v 2>&1 | grep -oe "^PHP\s*[0-9.]*"'
+  )
+
+  conditional_segment segment_definition POWERLEVEL9K_PHP_CHECKERS
 }
 
 # Show free RAM and used Swap
