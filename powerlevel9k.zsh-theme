@@ -789,10 +789,20 @@ prompt_vi_mode() {
 # More information on virtualenv (Python):
 # https://virtualenv.pypa.io/en/latest/
 prompt_virtualenv() {
-  local virtualenv_path="$VIRTUAL_ENV"
-  if [[ -n "$virtualenv_path" && "$VIRTUAL_ENV_DISABLE_PROMPT" != true ]]; then
-    "$1_prompt_segment" "$0" "blue" "$DEFAULT_COLOR" "($(basename "$virtualenv_path"))"
-  fi
+  defined POWERLEVEL9K_VIRTUALENV_CONDITION || POWERLEVEL9K_VIRTUALENV_CONDITION='[[ -n "$VIRTUAL_ENV" && "$VIRTUAL_ENV_DISABLE_PROMPT" != true ]]'
+  defined POWERELVEL9K_VIRTUALENV_CHECKERS || POWERLEVEL9K_VIRTUALENV_CHECKERS=('default')
+
+  typeset -Ah segment_definition
+  segment_definition=(
+    'segment'               "$0"
+    'background_color'      'blue'
+    'foreground_color'      $DEFAULT_COLOR
+    'position'              $1
+    'condition'             $POWERLEVEL9K_VIRTUALENV_CONDITION
+    'checker_default'      'basename "$VIRTUAL_ENV"'
+  )
+
+  conditional_segment segment_definition POWERLEVEL9K_VIRTUALENV_CHECKERS
 }
 
 ################################################################
