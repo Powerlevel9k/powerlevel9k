@@ -61,6 +61,83 @@ source $script_location/functions/colors.zsh
 
 source $script_location/functions/vcs.zsh
 
+conditional_segment() {
+  local -A raw_segment_definition
+  # Magic: We get the name of the array passed into
+  # this function and need to dereference it.
+  raw_segment_definition=(${(kvP)1})
+  activated_checkers=(${(P)2})
+
+  if ! eval ${segment_definition[condition]}; then
+    # Fail fast: If we don't have a valid condition and therefore
+    # have no idea how to render this segment, just exit. In the
+    # opposite, this means if the user specified a "always true"
+    # condition (`true`), that we can proceed to render as
+    # a version string will hopefully be found by one of the
+    # checkers.
+    return 0
+  fi
+
+  # Check, if we have special data providers for our OS.
+  # This may be the case if we want to access data in our
+  # checkers.
+  local data_provider_key="${(L)OS}_data_provider"
+  local data=${(e)raw_segment_definition[$data_provider_key]}
+
+  # segment-global background color
+  local BACKGROUND_COLOR=${(e)raw_segment_definition[background_color]}
+
+  local FOREGROUND_COLOR=$DEFAULT_COLOR
+  # segment-global foreground color
+  [[ -n "${(e)raw_segment_definition[foreground_color]}" ]] && FOREGROUND_COLOR="${(e)raw_segment_definition[foreground_color]}" 
+
+  local FUNCTION_SUFFIX=''
+
+  local result
+  for key in "${=activated_checkers}"; do
+    local checker_key="checker_$key"
+    # Check dynamically for user defined checker-conditions
+    local checker_condition_name="POWERLEVEL9K_${(U)raw_segment_definition[segment]#prompt_}_${(U)key}_CONDITION"
+    local check=false
+    if defined $checker_condition_name; then
+      check=${(P)checker_condition_name}
+    else
+      # No user defined checker-condition, so take the default one.
+      check=${raw_segment_definition[$checker_key]}
+    fi
+    if [[ -n "$check" ]]; then
+      result=$(eval $check)
+    fi
+
+    if [[ -n "$result" ]]; then
+      # Checker can set background color
+      local checker_bg_color_key="${checker_key}_background"
+      [[ -n "${raw_segment_definition[$checker_bg_color_key]}" ]] && BACKGROUND_COLOR="${raw_segment_definition[$checker_bg_color_key]}"
+      # Checker can set foreground color
+      local checker_fg_color_key="${checker_key}_foreground"
+      [[ -n "${raw_segment_definition[$checker_fg_color_key]}" ]] && FOREGROUND_COLOR="${raw_segment_definition[$checker_fg_color_key]}"
+      # Every checker modifies the segment name, by adding its name.
+      # This directly affects the dynamic color overriding mechanism.
+      FUNCTION_SUFFIX="_${(U)key}"
+
+      # Exit for-loop, if we found a version.
+      break
+    fi
+  done
+
+  if [[ -n "$result" ]]; then
+    # On left segments, place the icon before,
+    # on right segments behind the result.
+    if [[ ${raw_segment_definition[position]} == "left" ]]; then
+      result="${(e)raw_segment_definition[icon]}$result"
+    else
+      result="$result${(e)raw_segment_definition[icon]}"
+    fi
+
+    "${raw_segment_definition[position]}_prompt_segment" "${raw_segment_definition[segment]}$FUNCTION_SUFFIX" "$BACKGROUND_COLOR" "$FOREGROUND_COLOR" "$result"
+  fi
+}
+
 ################################################################
 # Color Scheme
 ################################################################
@@ -201,11 +278,21 @@ CURRENT_BG='NONE'
 
 # AWS Profile
 prompt_aws() {
-  local aws_profile="$AWS_DEFAULT_PROFILE"
-  if [[ -n "$aws_profile" ]];
-  then
-    "$1_prompt_segment" "$0" red white "$(print_icon 'AWS_ICON') $aws_profile"
-  fi
+  defined POWERLEVEL9K_AWS_CONDITION || POWERLEVEL9K_AWS_CONDITION='[[ -n "$AWS_DEFAULT_PROFILE" ]]'
+  defined POWERLEVEL9K_AWS_CHECKERS || POWERLEVEL9K_AWS_CHECKERS=('default')
+
+  typeset -Ah segment_definition
+  segment_definition=(
+    'segment'         $0
+    'background_color' 'red'
+    'foreground_color' $DEFAULT_COLOR_INVERTED
+    'position'        $1
+    'icon'            ' $(print_icon "AWS_ICON")'
+    'condition'       $POWERLEVEL9K_AWS_CONDITION
+    'checker_default' 'echo $AWS_DEFAULT_PROFILE'
+  )
+
+  conditional_segment segment_definition POWERLEVEL9K_AWS_CHECKERS
 }
 
 prompt_battery() {
@@ -282,46 +369,72 @@ prompt_battery() {
 # Context: user@hostname (who am I and where am I)
 # Note that if $DEFAULT_USER is not set, this prompt segment will always print
 prompt_context() {
-  if [[ "$USER" != "$DEFAULT_USER" || -n "$SSH_CLIENT" ]]; then
-    if [[ $(print -P "%#") == '#' ]]; then
-      # Shell runs as root
-      "$1_prompt_segment" "$0_ROOT" "$DEFAULT_COLOR" "yellow" "$USER@%m"
-    else
-      "$1_prompt_segment" "$0_DEFAULT" "$DEFAULT_COLOR" "011" "$USER@%m"
-    fi
-  fi
+  defined POWERLEVEL9K_CONTEXT_CONDITION || POWERLEVEL9K_CONTEXT_CONDITION='[[ "$USER" != "$DEFAULT_USER" || -n "$SSH_CLIENT" ]]'
+  defined POWERLEVEL9K_CONTEXT_CHECKERS || POWERLEVEL9K_CONTEXT_CHECKERS=('root' 'default')
+
+  typeset -Ah segment_definition
+  segment_definition=(
+    'segment'         $0
+    'background_color' 'red'
+    'foreground_color' $DEFAULT_COLOR_INVERTED
+    'position'        $1
+    'icon'            ' $(print_icon "CONTEXT_ICON")'
+    'condition'       $POWERLEVEL9K_CONTEXT_CONDITION
+    'checker_root'    '[[ $(print -P "%#") == "#" ]] && print -P "$USER@%m"'
+    'checker_root_background' $DEFAULT_COLOR
+    'checker_root_foreground' 'yellow'
+    'checker_default' 'print -P "$USER@%m"'
+    'checker_default_background' $DEFAULT_COLOR
+    'checker_default_foreground' '011'
+  )
+
+  conditional_segment segment_definition POWERLEVEL9K_CONTEXT_CHECKERS
 }
 
 # Dir: current working directory
 prompt_dir() {
-  local current_path='%~'
-  if [[ -n "$POWERLEVEL9K_SHORTEN_DIR_LENGTH" ]]; then
+  defined POWERLEVEL9K_DIR_CONDITION || POWERLEVEL9K_DIR_CONDITION=true
+  defined POWERLEVEL9K_DIR_CHECKERS || POWERLEVEL9K_DIR_CHECKERS=('truncate_directories' 'truncate_middle' 'truncate_from_right' 'default')
 
-    case "$POWERLEVEL9K_SHORTEN_STRATEGY" in
-      truncate_middle)
-        current_path=$(pwd | sed -e "s,^$HOME,~," | sed $SED_EXTENDED_REGEX_PARAMETER "s/([^/]{$POWERLEVEL9K_SHORTEN_DIR_LENGTH})[^/]+([^/]{$POWERLEVEL9K_SHORTEN_DIR_LENGTH})\//\1\.\.\2\//g")
-      ;;
-      truncate_from_right)
-        current_path=$(pwd | sed -e "s,^$HOME,~," | sed $SED_EXTENDED_REGEX_PARAMETER "s/([^/]{$POWERLEVEL9K_SHORTEN_DIR_LENGTH})[^/]+\//\1..\//g")
-      ;;
-      *)
-        current_path="%$((POWERLEVEL9K_SHORTEN_DIR_LENGTH+1))(c:.../:)%${POWERLEVEL9K_SHORTEN_DIR_LENGTH}c"
-      ;;
-    esac
+  typeset -Ah segment_definition
+  segment_definition=(
+    'segment'         $0
+    'background_color' 'blue'
+    'foreground_color' $DEFAULT_COLOR
+    'position'        $1
+    'icon'            ' $(print_icon "HOME_ICON")'
+    'condition'       $POWERLEVEL9K_DIR_CONDITION
+    'checker_truncate_middle' 'if [[ -n "$POWERLEVEL9K_SHORTEN_DIR_LENGTH" ]]; then
+                                pwd | sed -e "s,^$HOME,~," | sed $SED_EXTENDED_REGEX_PARAMETER "s/([^/]{$POWERLEVEL9K_SHORTEN_DIR_LENGTH})[^/]+([^/]{$POWERLEVEL9K_SHORTEN_DIR_LENGTH})\//\1\.\.\2\//g"
+                              fi'
+    'checker_truncate_from_right' 'if [[ -n "$POWERLEVEL9K_SHORTEN_DIR_LENGTH" ]]; then
+                                    pwd | sed -e "s,^$HOME,~," | sed $SED_EXTENDED_REGEX_PARAMETER "s/([^/]{$POWERLEVEL9K_SHORTEN_DIR_LENGTH})[^/]+\//\1..\//g"
+                                  fi'
+    'checker_truncate_directories' 'if [[ -n "$POWERLEVEL9K_SHORTEN_DIR_LENGTH" ]]; then
+                                     print -P "%$((POWERLEVEL9K_SHORTEN_DIR_LENGTH+1))(c:.../:)%${POWERLEVEL9K_SHORTEN_DIR_LENGTH}c"
+                                   fi'
+    'checker_default' 'print -P "%~"'
+  )
 
-  fi
-
-  "$1_prompt_segment" "$0" "blue" "$DEFAULT_COLOR" "$(print_icon 'HOME_ICON')$current_path"
+  conditional_segment segment_definition POWERLEVEL9K_DIR_CHECKERS
 }
 
 # GO-prompt
 prompt_go_version() {
-  local go_version
-  go_version=$(go version 2>&1 | grep -oe "^go[0-9.]*")
+  defined POWERLEVEL9K_GO_CONDITION || POWERLEVEL9K_GO_CONDITION=true
+  defined POWERELVEL9K_GO_CHECKERS || POWERLEVEL9K_GO_CHECKERS=('default')
 
-  if [[ -n "$go_version" ]]; then
-    "$1_prompt_segment" "$0" "green" "255" "$go_version"
-  fi
+  typeset -Ah segment_definition
+  segment_definition=(
+    'segment'               "$0"
+    'background_color'      'green'
+    'foreground_color'      $DEFAULT_COLOR_INVERTED
+    'position'              $1
+    'condition'             $POWERLEVEL9K_GO_CONDITION
+    'checker_default'      'go version 2>&1 | sed -E "s/.*(go[0-9.]*).*/\1/"'
+  )
+
+  conditional_segment segment_definition POWERLEVEL9K_GO_CHECKERS
 }
 
 # Command number (in local history)
@@ -370,36 +483,52 @@ prompt_ip() {
 }
 
 prompt_load() {
-  if [[ "$OS" == "OSX" ]]; then
-    load_avg_5min=$(sysctl vm.loadavg | grep -o -E '[0-9]+(\.|,)[0-9]+' | head -n 1)
-  else
-    load_avg_5min=$(grep -o "[0-9.]*" /proc/loadavg | head -n 1)
-  fi
+  defined POWERLEVEL9K_LOAD_CONDITION || POWERLEVEL9K_LOAD_CONDITION=true
+  defined POWERELVEL9K_LOAD_CHECKERS || POWERLEVEL9K_LOAD_CHECKERS=('critical' 'warning' 'normal')
 
-  # Replace comma
-  load_avg_5min=${load_avg_5min//,/.}
+  typeset -Ah segment_definition
+  segment_definition=(
+    'segment'               "$0"
+    'background_color'      '$BACKGROUND_COLOR'
+    'position'              $1
+    'icon'                  '$(print_icon "LOAD_ICON")'
+    'condition'             $POWERLEVEL9K_LOAD_CONDITION
+    'osx_data_provider'     '$(sysctl vm.loadavg | grep -o -E "[0-9]+(\.|,)[0-9]+" | head -n 1 | sed s/,/./)'
+    'linux_data_provider'   '$(grep -o "[0-9.]*" /proc/loadavg | head -n 1 | sed s/,/./)'
+    'checker_critical'      '(( $data >= 10 )) && echo "$data"'
+    'checker_critical_background' 'red'
+    'checker_warning'       '(( $data >= 3 )) && echo "$data"'
+    'checker_warning_background' 'yellow'
+    'checker_normal'        'echo "$data"'
+    'checker_normal_background' 'green'
+  )
 
-  if [[ "$load_avg_5min" -gt 10 ]]; then
-    BACKGROUND_COLOR="red"
-    FUNCTION_SUFFIX="_CRITICAL"
-  elif [[ "$load_avg_5min" -gt 3 ]]; then
-    BACKGROUND_COLOR="yellow"
-    FUNCTION_SUFFIX="_WARNING"
-  else
-    BACKGROUND_COLOR="green"
-    FUNCTION_SUFFIX="_NORMAL"
-  fi
-
-  "$1_prompt_segment" "$0$FUNCTION_SUFFIX" "$BACKGROUND_COLOR" "$DEFAULT_COLOR" "$(print_icon 'LOAD_ICON') $load_avg_5min"
+  conditional_segment segment_definition POWERLEVEL9K_LOAD_CHECKERS
 }
 
 # Node version
 prompt_node_version() {
-  local nvm_prompt
-  nvm_prompt=$(node -v 2>/dev/null)
-  [[ -z "${nvm_prompt}" ]] && return
+  defined POWERLEVEL9K_NODE_VERSION_CONDITION || POWERLEVEL9K_NODE_VERSION_CONDITION=true
+  defined POWERELVEL9K_NODE_VERSION_CHECKERS || POWERLEVEL9K_NODE_VERSION_CHECKERS=('nvm' 'node')
 
-  "$1_prompt_segment" "$0" "green" "white" "${nvm_prompt:1} $(print_icon 'NODE_ICON')"
+  typeset -Ah segment_definition
+  segment_definition=(
+    'segment'               "$0"
+    'background_color'      'green'
+    'foreground_color'      'white'
+    'position'              $1
+    'icon'                  '$(print_icon "NODE_ICON")'
+    'condition'             $POWERLEVEL9K_NODE_VERSION_CONDITION
+    'checker_nvm'           '
+        local node_version=$(nvm current 2>/dev/null)
+        local nvm_default=$(cat $NVM_DIR/alias/default 2>/dev/null)
+        [[ -z "${node_version}" ]] && return
+        [[ "$node_version" =~ "$nvm_default" ]] && return
+        echo ${node_version:1}'
+    'checker_node'          'node -v 2>/dev/null'
+  )
+
+  conditional_segment segment_definition POWERLEVEL9K_NODE_VERSION_CHECKERS
 }
 
 # print a little OS icon
@@ -409,12 +538,21 @@ prompt_os_icon() {
 
 # print PHP version number
 prompt_php_version() {
-  local php_version
-  php_version=$(php -v 2>&1 | grep -oe "^PHP\s*[0-9.]*")
+  defined POWERLEVEL9K_PHP_CONDITION || POWERLEVEL9K_PHP_CONDITION=true
+  defined POWERELVEL9K_PHP_CHECKERS || POWERLEVEL9K_PHP_CHECKERS=('default')
 
-  if [[ -n "$php_version" ]]; then
-    "$1_prompt_segment" "$0" "013" "255" "$php_version"
-  fi
+  typeset -Ah segment_definition
+  segment_definition=(
+    'segment'               "$0"
+    'background_color'      '013'
+    'foreground_color'      $DEFAULT_COLOR_INVERTED
+    'position'              $1
+    'icon'                  '$(print_icon "PHP_ICON")'
+    'condition'             $POWERLEVEL9K_PHP_CONDITION
+    'checker_default'      'php -v 2>&1 | grep -oe "^PHP\s*[0-9.]*"'
+  )
+
+  conditional_segment segment_definition POWERLEVEL9K_PHP_CHECKERS
 }
 
 # Show free RAM and used Swap
@@ -463,16 +601,18 @@ prompt_ram() {
 
 # Node version from NVM
 # Only prints the segment if different than the default value
+# DEPRECATED! Use `node_version` instead!
 prompt_nvm() {
   local node_version=$(nvm current)
   local nvm_default=$(cat $NVM_DIR/alias/default)
   [[ -z "${node_version}" ]] && return
   [[ "$node_version" =~ "$nvm_default" ]] && return
-  NODE_ICON=$'\u2B22' # ⬢
-  $1_prompt_segment "$0" "green" "011" "${node_version:1} $NODE_ICON"
+
+  $1_prompt_segment "$0" "green" "011" "${node_version:1} $(print_icon 'NODE_ICON')"
 }
 
 # rbenv information
+# DEPRECATED! Use `ruby_version` instead!
 prompt_rbenv() {
   if [[ -n "$RBENV_VERSION" ]]; then
     "$1_prompt_segment" "$0" "red" "$DEFAULT_COLOR" "$RBENV_VERSION"
@@ -481,13 +621,23 @@ prompt_rbenv() {
 
 # print Rust version number
 prompt_rust_version() {
-  local rust_version
-  rust_version=$(rustc --version 2>&1 | grep -oe "^rustc\s*[^ ]*" | grep -o '[0-9.a-z\\\-]*$')
+  defined POWERLEVEL9K_RUST_CONDITION || POWERLEVEL9K_RUST_CONDITION=true
+  defined POWERELVEL9K_RUST_CHECKERS || POWERLEVEL9K_RUST_CHECKERS=('default')
 
-  if [[ -n "$rust_version" ]]; then
-    "$1_prompt_segment" "$0" "208" "$DEFAULT_COLOR" "Rust $rust_version"
-  fi
+  typeset -Ah segment_definition
+  segment_definition=(
+    'segment'               "$0"
+    'background_color'      '208'
+    'foreground_color'      $DEFAULT_COLOR
+    'position'              $1
+    'icon'                  ' Rust'
+    'condition'             $POWERLEVEL9K_RUST_CONDITION
+    'checker_default'      'rustc --version 2>&1 | grep -oe "^rustc\s*[^ ]*" | grep -o "[0-9.a-z\\\-]*$"'
+  )
+
+  conditional_segment segment_definition POWERLEVEL9K_RUST_CHECKERS
 }
+
 # RSpec test ratio
 prompt_rspec_stats() {
   if [[ (-d app && -d spec) ]]; then
@@ -499,7 +649,33 @@ prompt_rspec_stats() {
   fi
 }
 
+# Ruby Version
+prompt_ruby_version() {
+  defined POWERLEVEL9K_RUBY_VERSION_CHECKERS || POWERLEVEL9K_RUBY_VERSION_CHECKERS=('rvm' 'rbenv' 'chruby' 'ruby')
+  defined POWERLEVEL9K_RUBY_VERSION_CONDITION || POWERLEVEL9K_RUBY_VERSION_CONDITION='[[ -n $(find . -maxdepth 2 -name "*.rb" | head -n 1) ]]'
+
+  typeset -Ah segment_definition
+  segment_definition=(
+    'segment'         $0
+    'background_color' 'red'
+    'position'        $1
+    'icon'            '$(print_icon "RUBY_ICON")'
+    'condition'       $POWERLEVEL9K_RUBY_VERSION_CONDITION
+    'checker_rvm'     'gemset=$(echo $GEM_HOME | awk -F"@" "{print \$2}")
+      [ "$gemset" != "" ] && gemset="@$gemset"
+      version=$(echo $MY_RUBY_HOME | awk -F"-" "{print \$2}")
+      echo "$version$gemset"
+    '
+    'checker_chruby'  'chruby 2> /dev/null | sed -e "s/ \* //"'
+    'checker_rbenv'   '$RBENV_VERSION'
+    'checker_ruby'    'ruby --version 2> /dev/null | grep -oe "ruby [0-9.a-z]*" | grep -oe "[0-9.a-z]*$"'
+  )
+
+  conditional_segment segment_definition POWERLEVEL9K_RUBY_VERSION_CHECKERS
+}
+
 # Ruby Version Manager information
+# DEPRECATED! Use `ruby_version` instead!
 prompt_rvm() {
   local gemset=$(echo $GEM_HOME | awk -F'@' '{print $2}')
   [ "$gemset" != "" ] && gemset="@$gemset"
@@ -549,11 +725,21 @@ prompt_symfony2_tests() {
 
 # Symfony2-Version
 prompt_symfony2_version() {
-  if [[ -f app/bootstrap.php.cache ]]; then
-    local symfony2_version
-    symfony2_version=$(grep " VERSION " app/bootstrap.php.cache | sed -e 's/[^.0-9]*//g')
-    "$1_prompt_segment" "$0" "240" "$DEFAULT_COLOR" "$(print_icon 'SYMFONY_ICON') $symfony2_version"
-  fi
+  defined POWERLEVEL9K_SYMFONY2_VERSION_CONDITION || POWERLEVEL9K_SYMFONY2_VERSION_CONDITION='[[ -f app/bootstrap.php.cache ]]'
+  defined POWERLEVEL9K_SYMFONY2_VERSION_CHECKERS || POWERLEVEL9K_SYMFONY2_VERSION_CHECKERS=('default')
+
+  typeset -Ah segment_definition
+  segment_definition=(
+    'segment'         $0
+    'background_color' '240'
+    'foreground_color' $DEFAULT_COLOR
+    'position'        $1
+    'icon'            ' $(print_icon "SYMFONY_ICON")'
+    'condition'       $POWERLEVEL9K_SYMFONY2_VERSION_CONDITION
+    'checker_default' 'grep " VERSION " app/bootstrap.php.cache | sed -e "s/[^.0-9]*//g"'
+  )
+
+  conditional_segment segment_definition POWERLEVEL9K_SYMFONY2_VERSION_CHECKERS
 }
 
 # Show a ratio of tests vs code
@@ -666,10 +852,20 @@ prompt_vi_mode() {
 # More information on virtualenv (Python):
 # https://virtualenv.pypa.io/en/latest/
 prompt_virtualenv() {
-  local virtualenv_path="$VIRTUAL_ENV"
-  if [[ -n "$virtualenv_path" && "$VIRTUAL_ENV_DISABLE_PROMPT" != true ]]; then
-    "$1_prompt_segment" "$0" "blue" "$DEFAULT_COLOR" "($(basename "$virtualenv_path"))"
-  fi
+  defined POWERLEVEL9K_VIRTUALENV_CONDITION || POWERLEVEL9K_VIRTUALENV_CONDITION='[[ -n "$VIRTUAL_ENV" && "$VIRTUAL_ENV_DISABLE_PROMPT" != true ]]'
+  defined POWERELVEL9K_VIRTUALENV_CHECKERS || POWERLEVEL9K_VIRTUALENV_CHECKERS=('default')
+
+  typeset -Ah segment_definition
+  segment_definition=(
+    'segment'               "$0"
+    'background_color'      'blue'
+    'foreground_color'      $DEFAULT_COLOR
+    'position'              $1
+    'condition'             $POWERLEVEL9K_VIRTUALENV_CONDITION
+    'checker_default'      'basename "$VIRTUAL_ENV"'
+  )
+
+  conditional_segment segment_definition POWERLEVEL9K_VIRTUALENV_CHECKERS
 }
 
 ################################################################
@@ -750,6 +946,12 @@ function zle-keymap-select {
   zle -R
 }
 
+function show_warning_if_deprecated() {
+  if in_array "$1" "${POWERLEVEL9K_LEFT_PROMPT_ELEMENTS[@]}" || in_array "$1" "${POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS[@]}"; then
+    print -P "%F{yellow}DEPRECATED!%f You use a deprecated segment '$1'. Please use '$2' instead!"
+  fi
+}
+
 powerlevel9k_init() {
   # Display a warning if the terminal does not support 256 colors
   local term_colors
@@ -764,6 +966,9 @@ powerlevel9k_init() {
   # old => new
   deprecated_segments=(
     'longstatus'      'status'
+    'rvm'             'ruby_version'
+    'rbenv'           'ruby_version'
+    'nvm'             'node_version'
   )
   print_deprecation_warning deprecated_segments
 

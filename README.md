@@ -64,7 +64,7 @@ and then assign them to either the left or right prompt by adding the following
 variables to your `~/.zshrc`. If you don't customize this, the below
 configuration is the default:
 
-    POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(context dir rbenv vcs)
+    POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(context dir ruby_version vcs)
     POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status history time)
 
 #### Available Prompt Segments
@@ -82,8 +82,8 @@ The segments that are currently available are:
 * **nvm** - Show the version of Node that is currently active, if it differs from the version used by NVM
 * **os_icon** - Display a nice little icon, depending on your operating system.
 * **php_version** - Show the current PHP version.
+* [ruby_version](#ruby_version) - Ruby environment information (if one is active).
 * [ram](#ram) - Show free RAM and used Swap.
-* [rbenv](#rbenv) - Ruby environment information (if one is active).
 * [rspec_stats](#rspec_stats) - Show a ratio of test classes vs code classes for RSpec.
 * **rust_version** - Display the current rust version.
 * [status](#status) - The return code of the previous command, and status of background jobs.
@@ -144,9 +144,9 @@ to a certain length:
 To change the way how the current working directory is truncated, just set:
 
     # truncate the middle part
-    POWERLEVEL9K_SHORTEN_STRATEGY="truncate_middle"
+    POWERLEVEL9K_DIR_CHECKERS=("truncate_middle")
     # truncate from right, leaving the first X characters untouched
-    POWERLEVEL9K_SHORTEN_STRATEGY="truncate_from_right"
+    POWERLEVEL9K_DIR_CHECKERS=("truncate_from_right")
     # default behaviour is to truncate whole directories
 
 In each case you have to specify the length you want to shorten the directory
@@ -165,6 +165,27 @@ network interface by setting:
 ##### rspec_stats
 
 See [Unit Test Ratios](#unit-test-ratios), below.
+
+##### ruby_version
+
+This segment displays the ruby version and checks by default for `rvm`, `rbenv`,
+`chruby` and `ruby` itself. You can influence the order of the checks by setting
+`POWERLEVEL9K_RUBY_VERSION_CHECKERS=('rbenv' 'rvm')`. In this example we just check
+rbenv and rvm in that particular order.
+You can specify how this segment knows _when_ it should be displayed by setting
+`POWERLEVEL9K_RUBY_VERSION_CONDITION` to an valid callback. Note that this condition
+must be in single quotes as it gets evaluated later. To display this segment always
+just set `POWERLEVEL9K_RUBY_VERSION_CONDITION='true'`. A more complex example is:
+
+    # Just display this segment if we find at least one file named *.rb2 in this
+    # or a direct subfolder of the current working directory.
+    POWERLEVEL9K_RUBY_VERSION_CONDITION='[[ -n $(find . -name "*.rb2" -maxdepth 2 -print | head -n 1) ]]'
+    # To change the behavior of a specific checker (here the `rbenv` one,
+    # we set the following variable. In this case the checker only is
+    # used, if the version is not '1.2.3'.
+    POWERLEVEL9K_RUBY_VERSION_RBENV_CONDITION='[[ "$RBENV_VERSION" != "1.2.3" ]] && echo "$RBENV_VERSION"'
+
+The rvm checker also displays your gemset, if it is not "default".
 
 ##### status
 
