@@ -689,11 +689,21 @@ prompt_symfony2_tests() {
 
 # Symfony2-Version
 prompt_symfony2_version() {
-  if [[ -f app/bootstrap.php.cache ]]; then
-    local symfony2_version
-    symfony2_version=$(grep " VERSION " app/bootstrap.php.cache | sed -e 's/[^.0-9]*//g')
-    "$1_prompt_segment" "$0" "240" "$DEFAULT_COLOR" "$(print_icon 'SYMFONY_ICON') $symfony2_version"
-  fi
+  defined POWERLEVEL9K_SYMFONY2_VERSION_CONDITION || POWERLEVEL9K_SYMFONY2_VERSION_CONDITION='[[ -n $(find . -maxdepth 2 -name "*.rb" | head -n 1) ]]'
+  defined POWERLEVEL9K_SYMFONY2_VERSION_CHECKERS || POWERLEVEL9K_SYMFONY2_VERSION_CHECKERS=('default')
+
+  typeset -Ah segment_definition
+  segment_definition=(
+    'segment'         $0
+    'background_color' '240'
+    'foreground_color' $DEFAULT_COLOR
+    'position'        $1
+    'icon'            ' $(print_icon "SYMFONY_ICON")'
+    'condition'       $POWERLEVEL9K_SYMFONY2_VERSION_CONDITION
+    'checker_default' 'grep " VERSION " app/bootstrap.php.cache | sed -e "s/[^.0-9]*//g"'
+  )
+
+  conditional_segment segment_definition POWERLEVEL9K_SYMFONY2_VERSION_CHECKERS
 }
 
 # Show a ratio of tests vs code
