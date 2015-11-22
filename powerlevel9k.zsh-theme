@@ -472,10 +472,27 @@ prompt_load() {
 
 # Node version
 prompt_node_version() {
-  local node_version=$(node -v 2>/dev/null)
-  [[ -z "${node_version}" ]] && return
+  defined POWERLEVEL9K_NODE_VERSION_CONDITION || POWERLEVEL9K_NODE_VERSION_CONDITION=true
+  defined POWERELVEL9K_NODE_VERSION_CHECKERS || POWERLEVEL9K_NODE_VERSION_CHECKERS=('nvm' 'node')
 
-  "$1_prompt_segment" "$0" "green" "white" "${node_version:1} $(print_icon 'NODE_ICON')"
+  typeset -Ah segment_definition
+  segment_definition=(
+    'segment'               "$0"
+    'background_color'      'green'
+    'foreground_color'      'white'
+    'position'              $1
+    'icon'                  '$(print_icon "NODE_ICON")'
+    'condition'             $POWERLEVEL9K_NODE_VERSION_CONDITION
+    'checker_nvm'           '
+        local node_version=$(nvm current 2>/dev/null)
+        local nvm_default=$(cat $NVM_DIR/alias/default 2>/dev/null)
+        [[ -z "${node_version}" ]] && return
+        [[ "$node_version" =~ "$nvm_default" ]] && return
+        echo ${node_version:1}'
+    'checker_node'          'node -v 2>/dev/null'
+  )
+
+  conditional_segment segment_definition POWERLEVEL9K_NODE_VERSION_CHECKERS
 }
 
 # print a little OS icon
@@ -548,6 +565,7 @@ prompt_ram() {
 
 # Node version from NVM
 # Only prints the segment if different than the default value
+# DEPRECATED! Use `node_version` instead!
 prompt_nvm() {
   local node_version=$(nvm current)
   local nvm_default=$(cat $NVM_DIR/alias/default)
@@ -904,6 +922,7 @@ powerlevel9k_init() {
     'longstatus'      'status'
     'rvm'             'ruby_version'
     'rbenv'           'ruby_version'
+    'nvm'             'node_version'
   )
   print_deprecation_warning deprecated_segments
 
