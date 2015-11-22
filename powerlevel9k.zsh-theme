@@ -361,14 +361,26 @@ prompt_battery() {
 # Context: user@hostname (who am I and where am I)
 # Note that if $DEFAULT_USER is not set, this prompt segment will always print
 prompt_context() {
-  if [[ "$USER" != "$DEFAULT_USER" || -n "$SSH_CLIENT" ]]; then
-    if [[ $(print -P "%#") == '#' ]]; then
-      # Shell runs as root
-      "$1_prompt_segment" "$0_ROOT" "$DEFAULT_COLOR" "yellow" "$USER@%m"
-    else
-      "$1_prompt_segment" "$0_DEFAULT" "$DEFAULT_COLOR" "011" "$USER@%m"
-    fi
-  fi
+  defined POWERLEVEL9K_CONTEXT_CONDITION || POWERLEVEL9K_CONTEXT_CONDITION='[[ "$USER" != "$DEFAULT_USER" || -n "$SSH_CLIENT" ]]'
+  defined POWERLEVEL9K_CONTEXT_CHECKERS || POWERLEVEL9K_CONTEXT_CHECKERS=('root' 'default')
+
+  typeset -Ah segment_definition
+  segment_definition=(
+    'segment'         $0
+    'background_color' 'red'
+    'foreground_color' $DEFAULT_COLOR_INVERTED
+    'position'        $1
+    'icon'            ' $(print_icon "CONTEXT_ICON")'
+    'condition'       $POWERLEVEL9K_CONTEXT_CONDITION
+    'checker_root'    '[[ $(print -P "%#") == "#" ]] && print -P "$USER@%m"'
+    'checker_root_background' $DEFAULT_COLOR
+    'checker_root_foreground' 'yellow'
+    'checker_default' 'print -P "$USER@%m"'
+    'checker_default_background' $DEFAULT_COLOR
+    'checker_default_foreground' '011'
+  )
+
+  conditional_segment segment_definition POWERLEVEL9K_CONTEXT_CHECKERS
 }
 
 # Dir: current working directory
