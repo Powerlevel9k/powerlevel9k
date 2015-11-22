@@ -270,11 +270,21 @@ CURRENT_BG='NONE'
 
 # AWS Profile
 prompt_aws() {
-  local aws_profile="$AWS_DEFAULT_PROFILE"
-  if [[ -n "$aws_profile" ]];
-  then
-    "$1_prompt_segment" "$0" red white "$(print_icon 'AWS_ICON') $aws_profile"
-  fi
+  defined POWERLEVEL9K_AWS_CONDITION || POWERLEVEL9K_AWS_CONDITION='[[ -n "$AWS_DEFAULT_PROFILE" ]]'
+  defined POWERLEVEL9K_AWS_CHECKERS || POWERLEVEL9K_AWS_CHECKERS=('default')
+
+  typeset -Ah segment_definition
+  segment_definition=(
+    'segment'         $0
+    'background_color' 'red'
+    'foreground_color' $DEFAULT_COLOR_INVERTED
+    'position'        $1
+    'icon'            ' $(print_icon "AWS_ICON")'
+    'condition'       $POWERLEVEL9K_AWS_CONDITION
+    'checker_default' 'echo $AWS_DEFAULT_PROFILE'
+  )
+
+  conditional_segment segment_definition POWERLEVEL9K_AWS_CHECKERS
 }
 
 prompt_battery() {
