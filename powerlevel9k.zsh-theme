@@ -725,7 +725,7 @@ prompt_symfony2_tests() {
 
 # Symfony2-Version
 prompt_symfony2_version() {
-  defined POWERLEVEL9K_SYMFONY2_VERSION_CONDITION || POWERLEVEL9K_SYMFONY2_VERSION_CONDITION='[[ -n $(find . -maxdepth 2 -name "*.rb" | head -n 1) ]]'
+  defined POWERLEVEL9K_SYMFONY2_VERSION_CONDITION || POWERLEVEL9K_SYMFONY2_VERSION_CONDITION='[[ -f app/bootstrap.php.cache ]]'
   defined POWERLEVEL9K_SYMFONY2_VERSION_CHECKERS || POWERLEVEL9K_SYMFONY2_VERSION_CHECKERS=('default')
 
   typeset -Ah segment_definition
