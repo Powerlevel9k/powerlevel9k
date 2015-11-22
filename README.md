@@ -144,9 +144,9 @@ to a certain length:
 To change the way how the current working directory is truncated, just set:
 
     # truncate the middle part
-    POWERLEVEL9K_SHORTEN_STRATEGY="truncate_middle"
+    POWERLEVEL9K_DIR_CHECKERS=("truncate_middle")
     # truncate from right, leaving the first X characters untouched
-    POWERLEVEL9K_SHORTEN_STRATEGY="truncate_from_right"
+    POWERLEVEL9K_DIR_CHECKERS=("truncate_from_right")
     # default behaviour is to truncate whole directories
 
 In each case you have to specify the length you want to shorten the directory

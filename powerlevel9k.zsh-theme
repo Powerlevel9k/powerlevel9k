@@ -126,7 +126,15 @@ conditional_segment() {
   done
 
   if [[ -n "$result" ]]; then
-    "${raw_segment_definition[position]}_prompt_segment" "${raw_segment_definition[segment]}$FUNCTION_SUFFIX" "$BACKGROUND_COLOR" "$FOREGROUND_COLOR" "$result${(e)raw_segment_definition[icon]}"
+    # On left segments, place the icon before,
+    # on right segments behind the result.
+    if [[ ${raw_segment_definition[position]} == "left" ]]; then
+      result="${(e)raw_segment_definition[icon]}$result"
+    else
+      result="$result${(e)raw_segment_definition[icon]}"
+    fi
+
+    "${raw_segment_definition[position]}_prompt_segment" "${raw_segment_definition[segment]}$FUNCTION_SUFFIX" "$BACKGROUND_COLOR" "$FOREGROUND_COLOR" "$result"
   fi
 }
 
@@ -385,24 +393,30 @@ prompt_context() {
 
 # Dir: current working directory
 prompt_dir() {
-  local current_path='%~'
-  if [[ -n "$POWERLEVEL9K_SHORTEN_DIR_LENGTH" ]]; then
+  defined POWERLEVEL9K_DIR_CONDITION || POWERLEVEL9K_DIR_CONDITION=true
+  defined POWERLEVEL9K_DIR_CHECKERS || POWERLEVEL9K_DIR_CHECKERS=('truncate_directories' 'truncate_middle' 'truncate_from_right' 'default')
 
-    case "$POWERLEVEL9K_SHORTEN_STRATEGY" in
-      truncate_middle)
-        current_path=$(pwd | sed -e "s,^$HOME,~," | sed $SED_EXTENDED_REGEX_PARAMETER "s/([^/]{$POWERLEVEL9K_SHORTEN_DIR_LENGTH})[^/]+([^/]{$POWERLEVEL9K_SHORTEN_DIR_LENGTH})\//\1\.\.\2\//g")
-      ;;
-      truncate_from_right)
-        current_path=$(pwd | sed -e "s,^$HOME,~," | sed $SED_EXTENDED_REGEX_PARAMETER "s/([^/]{$POWERLEVEL9K_SHORTEN_DIR_LENGTH})[^/]+\//\1..\//g")
-      ;;
-      *)
-        current_path="%$((POWERLEVEL9K_SHORTEN_DIR_LENGTH+1))(c:.../:)%${POWERLEVEL9K_SHORTEN_DIR_LENGTH}c"
-      ;;
-    esac
+  typeset -Ah segment_definition
+  segment_definition=(
+    'segment'         $0
+    'background_color' 'blue'
+    'foreground_color' $DEFAULT_COLOR
+    'position'        $1
+    'icon'            ' $(print_icon "HOME_ICON")'
+    'condition'       $POWERLEVEL9K_DIR_CONDITION
+    'checker_truncate_middle' 'if [[ -n "$POWERLEVEL9K_SHORTEN_DIR_LENGTH" ]]; then
+                                pwd | sed -e "s,^$HOME,~," | sed $SED_EXTENDED_REGEX_PARAMETER "s/([^/]{$POWERLEVEL9K_SHORTEN_DIR_LENGTH})[^/]+([^/]{$POWERLEVEL9K_SHORTEN_DIR_LENGTH})\//\1\.\.\2\//g"
+                              fi'
+    'checker_truncate_from_right' 'if [[ -n "$POWERLEVEL9K_SHORTEN_DIR_LENGTH" ]]; then
+                                    pwd | sed -e "s,^$HOME,~," | sed $SED_EXTENDED_REGEX_PARAMETER "s/([^/]{$POWERLEVEL9K_SHORTEN_DIR_LENGTH})[^/]+\//\1..\//g"
+                                  fi'
+    'checker_truncate_directories' 'if [[ -n "$POWERLEVEL9K_SHORTEN_DIR_LENGTH" ]]; then
+                                     print -P "%$((POWERLEVEL9K_SHORTEN_DIR_LENGTH+1))(c:.../:)%${POWERLEVEL9K_SHORTEN_DIR_LENGTH}c"
+                                   fi'
+    'checker_default' 'print -P "%~"'
+  )
 
-  fi
-
-  "$1_prompt_segment" "$0" "blue" "$DEFAULT_COLOR" "$(print_icon 'HOME_ICON')$current_path"
+  conditional_segment segment_definition POWERLEVEL9K_DIR_CHECKERS
 }
 
 # GO-prompt
