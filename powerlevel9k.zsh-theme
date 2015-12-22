@@ -280,6 +280,14 @@ prompt_aws() {
   fi
 }
 
+# Current Elastic Beanstalk environment
+prompt_aws_eb_env() {
+  if [ -e .elasticbeanstalk/config.yml ]; then
+    local eb_env=$(cat .elasticbeanstalk/config.yml | grep environment 2> /dev/null | awk '{print $2}')
+    "$1_prompt_segment" "$0" black green "$(print_icon 'AWS_EB_ICON')  $eb_env"
+  fi
+}
+
 # Custom: a way for the user to specify custom commands to run,
 # and display the output of.
 #
