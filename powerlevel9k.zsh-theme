@@ -421,7 +421,6 @@ prompt_dir() {
 
   fi
 
-  local current_icon=''
   if [[ $POWERLEVEL9K_SHOW_HOME_ICON == false ]]; then
     "$1_prompt_segment" "$0_HOME" "$2" "blue" "$DEFAULT_COLOR" "$current_path"
   elif [[ $(print -P "%~") == '~'* ]]; then
