@@ -643,7 +643,11 @@ prompt_dir() {
 
   fi
 
-  "$1_prompt_segment" "$0" "blue" "$DEFAULT_COLOR" "$(print_icon 'HOME_ICON')$current_path"
+  if [[ "$POWERLEVEL9K_SHOW_HOME_ICON" == false ]]; then
+    "$1_prompt_segment" "$0" "blue" "$DEFAULT_COLOR" "$current_path"
+  else
+    "$1_prompt_segment" "$0" "blue" "$DEFAULT_COLOR" "$(print_icon 'HOME_ICON')$current_path"
+  fi
 }
 
 # Command number (in local history)

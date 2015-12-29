@@ -129,8 +129,14 @@ To change the way how the current working directory is truncated, just set:
     # default behaviour is to truncate whole directories
 
 In each case you have to specify the length you want to shorten the directory
-to. So in some cases `POWERLEVEL9K_SHORTEN_DIR_LENGTH` means characters, in 
+to. So in some cases `POWERLEVEL9K_SHORTEN_DIR_LENGTH` means characters, in
 others whole directories.
+
+When using the Awesome or flat fonts, there is an icon of a house at the left
+edge of this segment. To hide this icon, set:
+
+    # Hide the home icon
+    POWERLEVEL9K_SHOW_HOME_ICON=false
 
 ##### ip
 
