@@ -206,6 +206,24 @@ In each case you have to specify the length you want to shorten the directory
 to. So in some cases `POWERLEVEL9K_SHORTEN_DIR_LENGTH` means characters, in
 others whole directories.
 
+Another option is to truncate the path such that it is shown relative to
+the current `name` property in a `package.json` file at the root of the current
+`git` project.  You can enable that with the following:
+
+    POWERLEVEL9K_SHORTEN_DIR_LENGTH=true
+    POWERLEVEL9K_SHORTEN_STRATEGY="truncate_with_package_name"
+
+For example, if you have a project in `~/projects/my-project` with a `package.json`
+that looks like this:
+
+    {
+      'name': 'My Cool Project'
+    }
+
+the prompt will display `My Cool Project`.  When you `cd` into a subdirectory,
+it will appear as `My Cool Project/subdirectory`.  Note: this requires
+[jq](https://stedolan.github.io/jq/) to be installed.
+
 ##### ip
 
 This segment shows you your current internal IP address. It tries to examine
