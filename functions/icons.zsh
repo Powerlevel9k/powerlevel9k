@@ -27,8 +27,9 @@ case $POWERLEVEL9K_MODE in
       RIGHT_SUBSEGMENT_SEPARATOR     $'\UE0B3'              # 
       CARRIAGE_RETURN_ICON           $'\U21B5'              # ↵
       ROOT_ICON                      $'\UE801'              # 
-      RUBY_ICON                      $'\UE847'              # 
+      RUBY_ICON                      $'\UE847 '             # 
       AWS_ICON                       $'\UE895'              # 
+      AWS_EB_ICON                    $'\U1F331 '            # 🌱
       BACKGROUND_JOBS_ICON           $'\UE82F '             # 
       TEST_ICON                      $'\UE891'              # 
       TODO_ICON                      $'\U2611'              # ☑
@@ -44,6 +45,7 @@ case $POWERLEVEL9K_MODE in
       LINUX_ICON                     $'\UE271'              # 
       SUNOS_ICON                     $'\U1F31E '            # 🌞
       HOME_ICON                      $'\UE12C'              # 
+      HOME_SUB_ICON                  $'\UE18D'              # 
       FOLDER_ICON                    $'\UE818'              # 
       NETWORK_ICON                   $'\UE1AD'              # 
       LOAD_ICON                      $'\UE190 '             # 
@@ -79,8 +81,9 @@ case $POWERLEVEL9K_MODE in
       RIGHT_SUBSEGMENT_SEPARATOR     $'\UE0B3'              # 
       CARRIAGE_RETURN_ICON           $'\U21B5'              # ↵
       ROOT_ICON                      $'\uF201'              # 
-      RUBY_ICON                      $'\UF247'              # 
+      RUBY_ICON                      $'\UF219 '             # 
       AWS_ICON                       $'\UF296'              # 
+      AWS_EB_ICON                    $'\U1F331 '            # 🌱
       BACKGROUND_JOBS_ICON           $'\UF013 '             # 
       TEST_ICON                      $'\UF291'              # 
       TODO_ICON                      $'\U2611'              # ☑
@@ -96,6 +99,7 @@ case $POWERLEVEL9K_MODE in
       LINUX_ICON                     $'\UF17C'              # 
       SUNOS_ICON                     $'\UF185 '             # 
       HOME_ICON                      $'\UF015'              # 
+      HOME_SUB_ICON                  $'\UF07C'              # 
       FOLDER_ICON                    $'\UF115'              # 
       NETWORK_ICON                   $'\UF09E'              # 
       LOAD_ICON                      $'\UF080 '             # 
@@ -128,6 +132,7 @@ case $POWERLEVEL9K_MODE in
       ROOT_ICON                      $'\u26A1'              # ⚡
       RUBY_ICON                      ''
       AWS_ICON                       'AWS:'
+      AWS_EB_ICON                    $'\U1F331 '            # 🌱
       BACKGROUND_JOBS_ICON           $'\u2699'              # ⚙
       TEST_ICON                      ''
       TODO_ICON                      $'\U2611'              # ☑
@@ -143,6 +148,7 @@ case $POWERLEVEL9K_MODE in
       LINUX_ICON                     'Lx'
       SUNOS_ICON                     'Sun'
       HOME_ICON                      ''
+      HOME_SUB_ICON                  ''
       FOLDER_ICON                    ''
       NETWORK_ICON                   'IP'
       LOAD_ICON                      'L'
@@ -202,4 +208,3 @@ get_icon_names() {
     echo "POWERLEVEL9K_$key: ${icons[$key]}"
   done
 }
-

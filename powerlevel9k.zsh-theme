@@ -51,7 +51,7 @@ fi
 # If this theme is sourced as a symlink, we need to locate the true URL
 if [[ -L $0 ]]; then
   # Script is a symlink
-  filename="$(realpath -P $0 2>/dev/null || readlink -f $0 2>/dev/null)"
+  filename="$(realpath -P $0 2>/dev/null || readlink -f $0 2>/dev/null || perl -MCwd=abs_path -le 'print abs_path readlink(shift);' $0 2>/dev/null)"
 elif [[ -f $0 ]]; then
   # Script is a file
   filename="$0"
@@ -147,7 +147,7 @@ left_prompt_segment() {
 
   local joined=$2
   if [[ $CURRENT_BG != 'NONE' ]] && ! isSameColor "$3" "$CURRENT_BG"; then
-    echo -n "%{$bg%F{$CURRENT_BG}%}"
+    echo -n "$bg%F{$CURRENT_BG}"
     if [[ $joined == false ]]; then
       # Middle segment
       echo -n "$(print_icon 'LEFT_SEGMENT_SEPARATOR')$POWERLEVEL9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS"
@@ -159,13 +159,13 @@ left_prompt_segment() {
     # enough contrast.
     local complement
     [[ -n "$4" ]] && complement="$4" || complement=$DEFAULT_COLOR
-    echo -n "%{$bg%F{$complement}%}"
+    echo -n "$bg%F{$complement}"
     if [[ $joined == false ]]; then
       echo -n "$(print_icon 'LEFT_SUBSEGMENT_SEPARATOR')$POWERLEVEL9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS"
     fi
   else
     # First segment
-    echo -n "%{$bg%}$POWERLEVEL9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS"
+    echo -n "${bg}$POWERLEVEL9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS"
   fi
 
   local visual_identifier
@@ -184,7 +184,7 @@ left_prompt_segment() {
   # Print the visual identifier
   echo -n "${visual_identifier}"
   # Print the content of the segment, if there is any
-  [[ -n "$5" ]] && echo -n "%{$fg%}${5}"
+  [[ -n "$5" ]] && echo -n "${fg}${5}"
   echo -n "${POWERLEVEL9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS}"
 
   CURRENT_BG=$3
@@ -193,11 +193,11 @@ left_prompt_segment() {
 # End the left prompt, closes the final segment.
 left_prompt_end() {
   if [[ -n $CURRENT_BG ]]; then
-    echo -n "%{%k%F{$CURRENT_BG}%}$(print_icon 'LEFT_SEGMENT_SEPARATOR')"
+    echo -n "%k%F{$CURRENT_BG}$(print_icon 'LEFT_SEGMENT_SEPARATOR')"
   else
     echo -n "%k"
   fi
-  echo -n "%{%f%}$(print_icon 'LEFT_SEGMENT_END_SEPARATOR')"
+  echo -n "%f$(print_icon 'LEFT_SEGMENT_END_SEPARATOR')"
   CURRENT_BG=''
 }
 
@@ -258,7 +258,7 @@ right_prompt_segment() {
     fi
   fi
 
-  echo -n "%{$bg%}%{$fg%}"
+  echo -n "${bg}${fg}"
 
   # Print whitespace only if segment is not joined or first right segment
   [[ $joined == false ]] || [[ "$CURRENT_RIGHT_BG" == "NONE" ]] && echo -n "${POWERLEVEL9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS}"
@@ -289,18 +289,25 @@ prompt_aws() {
   fi
 }
 
-# The 'custom` prompt provides a way for users to invoke commands and display
-# the output in a segment.
-prompt_custom() {
-  local command=POWERLEVEL9K_CUSTOM_$3:u
+# Current Elastic Beanstalk environment
+prompt_aws_eb_env() {
+  local eb_env=$(grep environment .elasticbeanstalk/config.yml 2> /dev/null | awk '{print $2}')
 
-  "$1_prompt_segment" "${0}_${3:u}" "$2" $DEFAULT_COLOR_INVERTED $DEFAULT_COLOR "$(eval ${(P)command})"
+  if [[ -n "$eb_env" ]]; then
+    "$1_prompt_segment" "$0" "$2" black green "$eb_env" 'AWS_EB_ICON'
+  fi
 }
 
 # Segment to indicate background jobs with an icon.
+set_default POWERLEVEL9K_BACKGROUND_JOBS_VERBOSE true
 prompt_background_jobs() {
-  if [[ $(jobs -l | wc -l) -gt 0 ]]; then
-    "$1_prompt_segment" "$0" "$2" "$DEFAULT_COLOR" "cyan" "" 'BACKGROUND_JOBS_ICON'
+  local background_jobs_number=${$(jobs -l | wc -l)// /}
+  if [[ background_jobs_number -gt 0 ]]; then
+    local background_jobs_number_print=""
+    if [[ "$POWERLEVEL9K_BACKGROUND_JOBS_VERBOSE" == "true" ]] && [[ "$background_jobs_number" -gt 1 ]]; then
+      background_jobs_number_print="$background_jobs_number"
+    fi
+    "$1_prompt_segment" "$0" "$2" "$DEFAULT_COLOR" "cyan" "$background_jobs_number_print" 'BACKGROUND_JOBS_ICON'
   fi
 }
 
@@ -320,7 +327,7 @@ prompt_battery() {
   if [[ $OS =~ OSX && -f /usr/sbin/ioreg && -x /usr/sbin/ioreg ]]; then
     # Pre-Grep as much information as possible to save some memory and
     # avoid pollution of the xtrace output.
-    local raw_data=$(ioreg -n AppleSmartBattery | grep -E "MaxCapacity|TimeRemaining|CurrentCapacity|ExternalConnected|IsCharging")
+    local raw_data="$(ioreg -n AppleSmartBattery | grep -E "MaxCapacity|TimeRemaining|CurrentCapacity|ExternalConnected|IsCharging")"
     # return if there is no battery on system
     [[ -z $(echo $raw_data | grep MaxCapacity) ]] && return
 
@@ -407,6 +414,14 @@ prompt_context() {
   fi
 }
 
+# The 'custom` prompt provides a way for users to invoke commands and display
+# the output in a segment.
+prompt_custom() {
+  local command=POWERLEVEL9K_CUSTOM_$3:u
+
+  "$1_prompt_segment" "${0}_${3:u}" "$2" $DEFAULT_COLOR_INVERTED $DEFAULT_COLOR "$(eval ${(P)command})"
+}
+
 # Dir: current working directory
 prompt_dir() {
   local current_path='%~'
@@ -429,8 +444,10 @@ prompt_dir() {
   fi
 
   local current_icon=''
-  if [[ $(print -P "%~") == '~'* ]]; then
+  if [[ $(print -P "%~") == '~' ]]; then
     "$1_prompt_segment" "$0_HOME" "$2" "blue" "$DEFAULT_COLOR" "$current_path" 'HOME_ICON'
+  elif [[ $(print -P "%~") == '~'* ]]; then
+    "$1_prompt_segment" "$0_HOME_SUBFOLDER" "$2" "blue" "$DEFAULT_COLOR" "$current_path" 'HOME_SUB_ICON'
   else
     "$1_prompt_segment" "$0_DEFAULT" "$2" "blue" "$DEFAULT_COLOR" "$current_path" 'FOLDER_ICON'
   fi
@@ -457,7 +474,7 @@ prompt_icons_test() {
     # the next color has enough contrast to read.
     local random_color=$((RANDOM % 8))
     local next_color=$((random_color+1))
-    "$1_prompt_segment" "$0" "$2" "$random_color" "$next_color" "$key: ${icons[$key]}"
+    "$1_prompt_segment" "$0" "$2" "$random_color" "$next_color" "$key" "$key"
   done
 }
 
@@ -492,6 +509,14 @@ prompt_ip() {
 }
 
 prompt_load() {
+  # The load segment can have three different states
+  local current_state="unknown"
+  typeset -AH load_states
+  load_states=(
+    'critical'      'red'
+    'warning'       'yellow'
+    'normal'        'green'
+  )
   if [[ "$OS" == "OSX" ]]; then
     load_avg_5min=$(sysctl vm.loadavg | grep -o -E '[0-9]+(\.|,)[0-9]+' | head -n 1)
   else
@@ -502,17 +527,14 @@ prompt_load() {
   load_avg_5min=${load_avg_5min//,/.}
 
   if [[ "$load_avg_5min" -gt 10 ]]; then
-    BACKGROUND_COLOR="red"
-    FUNCTION_SUFFIX="_CRITICAL"
+    current_state="critical"
   elif [[ "$load_avg_5min" -gt 3 ]]; then
-    BACKGROUND_COLOR="yellow"
-    FUNCTION_SUFFIX="_WARNING"
+    current_state="warning"
   else
-    BACKGROUND_COLOR="green"
-    FUNCTION_SUFFIX="_NORMAL"
+    current_state="normal"
   fi
 
-  "$1_prompt_segment" "$0$FUNCTION_SUFFIX" "$2" "$BACKGROUND_COLOR" "$DEFAULT_COLOR" "$load_avg_5min" 'LOAD_ICON'
+  "$1_prompt_segment" "${0}_${current_state}" "$2" "${load_states[$current_state]}" "$DEFAULT_COLOR" "$load_avg_5min" 'LOAD_ICON'
 }
 
 # Node version
@@ -525,13 +547,12 @@ prompt_node_version() {
 
 # Node version from NVM
 # Only prints the segment if different than the default value
-prompt_nvml() {
-  if [[ $(type nvm) =~ 'nvm is a shell function'* ]]; then
-    local node_version=$(nvm current)
-    local nvm_default=$(cat $NVM_DIR/alias/default)
-    [[ -z "${node_version}" ]] && return
-    [[ "$node_version" =~ "$nvm_default" ]] && return
-  fi
+prompt_nvm() {
+  [[ ! $(type nvm) =~ 'nvm is a shell function'* ]] && return
+  local node_version=$(nvm current)
+  local nvm_default=$(cat $NVM_DIR/alias/default)
+  [[ -z "${node_version}" ]] && return
+  [[ "$node_version" =~ "$nvm_default" ]] && return
 
   $1_prompt_segment "$0" "$2" "green" "011" "${node_version:1}" 'NODE_ICON'
 }
@@ -641,7 +662,7 @@ prompt_rvm() {
   fi
 }
 
-# Status: (return code, root status, background jobs)
+# Status: return code if verbose, otherwise just an icon if an error occurred
 set_default POWERLEVEL9K_STATUS_VERBOSE true
 prompt_status() {
   if [[ "$POWERLEVEL9K_STATUS_VERBOSE" == true ]]; then
@@ -845,7 +866,7 @@ powerlevel9k_prepare_prompts() {
   RETVAL=$?
 
   if [[ "$POWERLEVEL9K_PROMPT_ON_NEWLINE" == true ]]; then
-    PROMPT="$(print_icon 'MULTILINE_FIRST_PROMPT_PREFIX')%{%f%b%k%}$(build_left_prompt)
+    PROMPT="$(print_icon 'MULTILINE_FIRST_PROMPT_PREFIX')%f%b%k$(build_left_prompt)
 $(print_icon 'MULTILINE_SECOND_PROMPT_PREFIX')"
     if [[ "$POWERLEVEL9K_RPROMPT_ON_NEWLINE" != true ]]; then
       # The right prompt should be on the same line as the first line of the left
@@ -861,13 +882,13 @@ $(print_icon 'MULTILINE_SECOND_PROMPT_PREFIX')"
       RPROMPT_SUFFIX=''
     fi
   else
-    PROMPT="%{%f%b%k%}$(build_left_prompt)"
+    PROMPT="%f%b%k$(build_left_prompt)"
     RPROMPT_PREFIX=''
     RPROMPT_SUFFIX=''
   fi
 
   if [[ "$POWERLEVEL9K_DISABLE_RPROMPT" != true ]]; then
-    RPROMPT="$RPROMPT_PREFIX%{%f%b%k%}$(build_right_prompt)%{$reset_color%}$RPROMPT_SUFFIX"
+    RPROMPT="$RPROMPT_PREFIX%f%b%k$(build_right_prompt)%{$reset_color%}$RPROMPT_SUFFIX"
   fi
 }
 
