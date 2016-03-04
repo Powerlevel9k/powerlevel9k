@@ -92,15 +92,10 @@ source $script_location/functions/vcs.zsh
 if [[ "$POWERLEVEL9K_COLOR_SCHEME" == "light" ]]; then
   DEFAULT_COLOR=white
   DEFAULT_COLOR_INVERTED=black
-  DEFAULT_COLOR_DARK="252"
 else
   DEFAULT_COLOR=black
   DEFAULT_COLOR_INVERTED=white
-  DEFAULT_COLOR_DARK="236"
 fi
-
-set_default POWERLEVEL9K_VCS_FOREGROUND "$DEFAULT_COLOR"
-set_default POWERLEVEL9K_VCS_DARK_FOREGROUND "$DEFAULT_COLOR_DARK"
 
 ################################################################
 # Prompt Segment Constructors
@@ -123,14 +118,20 @@ CURRENT_BG='NONE'
 # Takes four arguments:
 #   * $1: Name of the function that was orginally invoked (mandatory).
 #         Necessary, to make the dynamic color-overwrite mechanism work.
-#   * $2: A flag if the segment should be joined with the previous one.
+#   * $2: The array index of the current segment
 #   * $3: Background color
 #   * $4: Foreground color
 #   * $5: The segment content
 #   * $6: An identifying icon (must be a key of the icons array)
 # The latter three can be omitted,
+set_default last_left_element_index 1
 set_default POWERLEVEL9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS " "
 left_prompt_segment() {
+  local current_index=$2
+  # Check if the segment should be joined with the previous one
+  local joined
+  segmentShouldBeJoined $current_index $last_left_element_index "$POWERLEVEL9K_LEFT_PROMPT_ELEMENTS" && joined=true || joined=false
+
   # Overwrite given background-color by user defined variable for this segment.
   local BACKGROUND_USER_VARIABLE=POWERLEVEL9K_${(U)1#prompt_}_BACKGROUND
   local BG_COLOR_MODIFIER=${(P)BACKGROUND_USER_VARIABLE}
@@ -145,7 +146,6 @@ left_prompt_segment() {
   [[ -n "$3" ]] && bg="%K{$3}" || bg="%k"
   [[ -n "$4" ]] && fg="%F{$4}" || fg="%f"
 
-  local joined=$2
   if [[ $CURRENT_BG != 'NONE' ]] && ! isSameColor "$3" "$CURRENT_BG"; then
     echo -n "$bg%F{$CURRENT_BG}"
     if [[ $joined == false ]]; then
@@ -188,6 +188,7 @@ left_prompt_segment() {
   echo -n "${POWERLEVEL9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS}"
 
   CURRENT_BG=$3
+  last_left_element_index=$current_index
 }
 
 # End the left prompt, closes the final segment.
@@ -207,14 +208,21 @@ CURRENT_RIGHT_BG='NONE'
 # Takes four arguments:
 #   * $1: Name of the function that was orginally invoked (mandatory).
 #         Necessary, to make the dynamic color-overwrite mechanism work.
-#   * $2: A flag if the segment should be joined with the previous one.
+#   * $2: The array index of the current segment
 #   * $3: Background color
 #   * $4: Foreground color
 #   * $5: The segment content
 #   * $6: An identifying icon (must be a key of the icons array)
 # No ending for the right prompt segment is needed (unlike the left prompt, above).
+set_default last_right_element_index 1
 set_default POWERLEVEL9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS " "
 right_prompt_segment() {
+  local current_index=$2
+
+  # Check if the segment should be joined with the previous one
+  local joined
+  segmentShouldBeJoined $current_index $last_right_element_index "$POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS" && joined=true || joined=false
+
   # Overwrite given background-color by user defined variable for this segment.
   local BACKGROUND_USER_VARIABLE=POWERLEVEL9K_${(U)1#prompt_}_BACKGROUND
   local BG_COLOR_MODIFIER=${(P)BACKGROUND_USER_VARIABLE}
@@ -229,7 +237,6 @@ right_prompt_segment() {
   [[ -n "$3" ]] && bg="%K{$3}" || bg="%k"
   [[ -n "$4" ]] && fg="%F{$4}" || fg="%f"
 
-  local joined=$2
   # If CURRENT_RIGHT_BG is "NONE", we are the first right segment.
   if [[ $joined == false ]] || [[ "$CURRENT_RIGHT_BG" == "NONE" ]]; then
     if isSameColor "$CURRENT_RIGHT_BG" "$3"; then
@@ -269,6 +276,7 @@ right_prompt_segment() {
   echo -n "${visual_identifier}${POWERLEVEL9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS}%f"
 
   CURRENT_RIGHT_BG=$3
+  last_right_element_index=$current_index
 }
 
 ################################################################
@@ -283,8 +291,8 @@ CURRENT_BG='NONE'
 # AWS Profile
 prompt_aws() {
   local aws_profile="$AWS_DEFAULT_PROFILE"
-  if [[ -n "$aws_profile" ]];
-  then
+
+  if [[ -n "$aws_profile" ]]; then
     "$1_prompt_segment" "$0" "$2" red white "$aws_profile" 'AWS_ICON'
   fi
 }
@@ -398,7 +406,9 @@ prompt_battery() {
   fi
 
   # Draw the prompt_segment
-  [[ -n $bat_percent ]] && "$1_prompt_segment" "${0}_${current_state}" "$2" "$DEFAULT_COLOR" "${battery_states[$current_state]}" "$message" 'BATTERY_ICON'
+  if [[ -n $bat_percent ]]; then
+    "$1_prompt_segment" "${0}_${current_state}" "$2" "$DEFAULT_COLOR" "${battery_states[$current_state]}" "$message" 'BATTERY_ICON'
+  fi
 }
 
 # Context: user@hostname (who am I and where am I)
@@ -427,7 +437,7 @@ prompt_dir() {
   local current_path='%~'
   if [[ -n "$POWERLEVEL9K_SHORTEN_DIR_LENGTH" ]]; then
 
-    set_default POWERLEVEL9K_SHORTEN_DELIMITER ".."
+    set_default POWERLEVEL9K_SHORTEN_DELIMITER $'\U2026'
 
     case "$POWERLEVEL9K_SHORTEN_STRATEGY" in
       truncate_middle)
@@ -456,7 +466,7 @@ prompt_dir() {
 # GO prompt
 prompt_go_version() {
   local go_version
-  go_version=$(go version 2>&1 | sed -E "s/.*(go[0-9.]*).*/\1/")
+  go_version=$(go version 2>/dev/null | sed -E "s/.*(go[0-9.]*).*/\1/")
 
   if [[ -n "$go_version" ]]; then
     "$1_prompt_segment" "$0" "$2" "green" "255" "$go_version"
@@ -557,6 +567,15 @@ prompt_nvm() {
   $1_prompt_segment "$0" "$2" "green" "011" "${node_version:1}" 'NODE_ICON'
 }
 
+# NodeEnv Prompt
+prompt_nodeenv() {
+  local nodeenv_path="$NODE_VIRTUAL_ENV"
+  if [[ -n "$nodeenv_path" && "$NODE_VIRTUAL_ENV_DISABLE_PROMPT" != true ]]; then
+    local info="$(node -v)[$(basename "$nodeenv_path")]"
+    "$1_prompt_segment" "$0" "$2" "black" "green" "$info" 'NODE_ICON' 
+  fi
+}
+
 # print a little OS icon
 prompt_os_icon() {
   "$1_prompt_segment" "$0" "$2" "black" "255" "$OS_ICON"
@@ -574,52 +593,43 @@ prompt_php_version() {
 
 # Show free RAM and used Swap
 prompt_ram() {
-  defined POWERLEVEL9K_RAM_ELEMENTS || POWERLEVEL9K_RAM_ELEMENTS=(ram_free swap_used)
+  local base=''
+  local ramfree=0
+  if [[ "$OS" == "OSX" ]]; then
+    ramfree=$(vm_stat | grep "Pages free" | grep -o -E '[0-9]+')
+    # Convert pages into Bytes
+    ramfree=$(( ramfree * 4096 ))
+  else
+    ramfree=$(grep -o -E "MemFree:\s+[0-9]+" /proc/meminfo | grep -o "[0-9]*")
+    base='K'
+  fi
 
-  local rendition base
-  for element in "${POWERLEVEL9K_RAM_ELEMENTS[@]}"; do
-    case $element in
-      ram_free)
-        if [[ "$OS" == "OSX" ]]; then
-          ramfree=$(vm_stat | grep "Pages free" | grep -o -E '[0-9]+')
-          # Convert pages into Bytes
-          ramfree=$(( ramfree * 4096 ))
-          base=''
-        else
-          ramfree=$(grep -o -E "MemFree:\s+[0-9]+" /proc/meminfo | grep -o "[0-9]*")
-          base=K
-        fi
-
-        rendition+="$(printSizeHumanReadable "$ramfree" $base) "
-      ;;
-      swap_used)
-        if [[ "$OS" == "OSX" ]]; then
-          raw_swap_used=$(sysctl vm.swapusage | grep -o "used\s*=\s*[0-9,.A-Z]*" | grep -o "[0-9,.A-Z]*$")
-          typeset -F 2 swap_used
-          swap_used=${$(echo $raw_swap_used | grep -o "[0-9,.]*")//,/.}
-          # Replace comma
-          swap_used=${swap_used//,/.}
-
-          base=$(echo "$raw_swap_used" | grep -o "[A-Z]*$")
-        else
-          swap_total=$(grep -o -E "SwapTotal:\s+[0-9]+" /proc/meminfo | grep -o "[0-9]*")
-          swap_free=$(grep -o -E "SwapFree:\s+[0-9]+" /proc/meminfo | grep -o "[0-9]*")
-          swap_used=$(( swap_total - swap_free ))
-          base=K
-        fi
-
-        rendition+="$(printSizeHumanReadable "$swap_used" $base) "
-      ;;
-    esac
-  done
-
-  "$1_prompt_segment" "$0" "$2" "yellow" "$DEFAULT_COLOR" "${rendition% }" 'RAM_ICON'
+  "$1_prompt_segment" "$0" "$2" "yellow" "$DEFAULT_COLOR" "$(printSizeHumanReadable "$ramfree" $base)" 'RAM_ICON'
 }
 
 # rbenv information
 prompt_rbenv() {
-  if [[ -n "$RBENV_VERSION" ]]; then
-    "$1_prompt_segment" "$0" "$2" "red" "$DEFAULT_COLOR" "$RBENV_VERSION" 'RUBY_ICON'
+  if which rbenv 2>/dev/null >&2; then
+    local rbenv_version_name="$(rbenv version-name)"
+    local rbenv_global="$(rbenv global)"
+
+    # Don't show anything if the current Ruby is the same as the global Ruby.
+    if [[ $rbenv_version_name == $rbenv_global ]]; then
+      return
+    fi
+
+    "$1_prompt_segment" "$0" "$2" "red" "$DEFAULT_COLOR" "$rbenv_version_name" 'RUBY_ICON'
+  fi
+}
+
+# chruby information
+# see https://github.com/postmodern/chruby/issues/245 for chruby_auto issue with ZSH
+prompt_chruby() {
+  local chruby_env
+  chrb_env="$(chruby 2> /dev/null | grep \* | tr -d '* ')"
+  # Don't show anything if the chruby did not change the default ruby
+  if [[ "${chrb_env:-system}" != "system" ]]; then
+    "$1_prompt_segment" "$0" "$2" "red" "$DEFAULT_COLOR" "${chrb_env}" 'RUBY_ICON'
   fi
 }
 
@@ -676,6 +686,30 @@ prompt_status() {
       "$1_prompt_segment" "$0_ERROR" "$2" "$DEFAULT_COLOR" "red" "" 'FAIL_ICON'
     fi
   fi
+}
+
+prompt_swap() {
+  local swap_used=0
+  local base=''
+
+  if [[ "$OS" == "OSX" ]]; then
+    local raw_swap_used
+    raw_swap_used=$(sysctl vm.swapusage | grep -o "used\s*=\s*[0-9,.A-Z]*" | grep -o "[0-9,.A-Z]*$")
+
+    typeset -F 2 swap_used
+    swap_used=${$(echo $raw_swap_used | grep -o "[0-9,.]*")//,/.}
+    # Replace comma
+    swap_used=${swap_used//,/.}
+
+    base=$(echo "$raw_swap_used" | grep -o "[A-Z]*$")
+  else
+    swap_total=$(grep -o -E "SwapTotal:\s+[0-9]+" /proc/meminfo | grep -o "[0-9]*")
+    swap_free=$(grep -o -E "SwapFree:\s+[0-9]+" /proc/meminfo | grep -o "[0-9]*")
+    swap_used=$(( swap_total - swap_free ))
+    base='K'
+  fi
+
+  "$1_prompt_segment" "$0" "$2" "yellow" "$DEFAULT_COLOR" "$(printSizeHumanReadable "$swap_used" $base)" 'SWAP_ICON'
 }
 
 # Symfony2-PHPUnit test ratio
@@ -739,6 +773,18 @@ prompt_vcs() {
   autoload -Uz vcs_info
 
   VCS_WORKDIR_DIRTY=false
+  VCS_WORKDIR_HALF_DIRTY=false
+
+  # The vcs segment can have three different states - defaults to 'clean'.
+  local current_state=""
+  typeset -AH vcs_states
+  vcs_states=(
+    'clean'         'green'
+    'modified'      'yellow'
+    'untracked'     'green'
+    'actionformat'  'red'
+  )
+
   VCS_CHANGESET_PREFIX=''
   if [[ "$POWERLEVEL9K_SHOW_CHANGESET" == true ]]; then
     # Default: Just display the first 12 characters of our changeset-ID.
@@ -747,22 +793,24 @@ prompt_vcs() {
       VCS_CHANGESET_HASH_LENGTH="$POWERLEVEL9K_CHANGESET_HASH_LENGTH"
     fi
 
-    VCS_CHANGESET_PREFIX="%F{$POWERLEVEL9K_VCS_DARK_FOREGROUND}$(print_icon 'VCS_COMMIT_ICON')%0.$VCS_CHANGESET_HASH_LENGTH""i%f "
+    VCS_CHANGESET_PREFIX="$(print_icon 'VCS_COMMIT_ICON')%0.$VCS_CHANGESET_HASH_LENGTH""i "
   fi
 
   zstyle ':vcs_info:*' enable git hg
   zstyle ':vcs_info:*' check-for-changes true
 
-  VCS_DEFAULT_FORMAT="$VCS_CHANGESET_PREFIX%F{$POWERLEVEL9K_VCS_FOREGROUND}%b%c%u%m%f"
+  VCS_DEFAULT_FORMAT="$VCS_CHANGESET_PREFIX%b%c%u%m"
   zstyle ':vcs_info:*' formats "$VCS_DEFAULT_FORMAT"
 
-  zstyle ':vcs_info:*' actionformats "%b %F{red}| %a%f"
+  zstyle ':vcs_info:*' actionformats "%b %F{${vcs_states[actionformat]}}| %a%f"
 
-  zstyle ':vcs_info:*' stagedstr " %F{$POWERLEVEL9K_VCS_FOREGROUND}$(print_icon 'VCS_STAGED_ICON')%f"
-  zstyle ':vcs_info:*' unstagedstr " %F{$POWERLEVEL9K_VCS_FOREGROUND}$(print_icon 'VCS_UNSTAGED_ICON')%f"
+  zstyle ':vcs_info:*' stagedstr " $(print_icon 'VCS_STAGED_ICON')"
+  zstyle ':vcs_info:*' unstagedstr " $(print_icon 'VCS_UNSTAGED_ICON')"
 
-  zstyle ':vcs_info:git*+set-message:*' hooks vcs-detect-changes git-untracked git-aheadbehind git-stash git-remotebranch git-tagname
-  zstyle ':vcs_info:hg*+set-message:*' hooks vcs-detect-changes
+  defined POWERLEVEL9K_VCS_GIT_HOOKS || POWERLEVEL9K_VCS_GIT_HOOKS=(vcs-detect-changes git-untracked git-aheadbehind git-stash git-remotebranch git-tagname)
+  zstyle ':vcs_info:git*+set-message:*' hooks $POWERLEVEL9K_VCS_GIT_HOOKS
+  defined POWERLEVEL9K_VCS_HG_HOOKS || POWERLEVEL9K_VCS_HG_HOOKS=(vcs-detect-changes)
+  zstyle ':vcs_info:hg*+set-message:*' hooks $POWERLEVEL9K_VCS_HG_HOOKS
 
   # For Hg, only show the branch name
   zstyle ':vcs_info:hg*:*' branchformat "$(print_icon 'VCS_BRANCH_ICON')%b"
@@ -783,10 +831,15 @@ prompt_vcs() {
     if [[ "$VCS_WORKDIR_DIRTY" == true ]]; then
       # $vcs_visual_identifier gets set in +vi-vcs-detect-changes in functions/vcs.zsh,
       # as we have there access to vcs_info internal hooks.
-      "$1_prompt_segment" "$0_MODIFIED" "$2" "yellow" "$DEFAULT_COLOR" "$vcs_prompt" "$vcs_visual_identifier"
+      current_state='modified'
     else
-      "$1_prompt_segment" "$0" "$2" "green" "$DEFAULT_COLOR" "$vcs_prompt" "$vcs_visual_identifier"
+      if [[ "$VCS_WORKDIR_HALF_DIRTY" == true ]]; then
+        current_state='untracked'
+      else
+        current_state='clean'
+      fi
     fi
+    "$1_prompt_segment" "${0}_${(U)current_state}" "$2" "${vcs_states[$current_state]}" "$DEFAULT_COLOR" "$vcs_prompt" "$vcs_visual_identifier"
   fi
 }
 
@@ -822,20 +875,20 @@ prompt_virtualenv() {
 build_left_prompt() {
   defined POWERLEVEL9K_LEFT_PROMPT_ELEMENTS || POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(context dir rbenv vcs)
 
+  local index=1
   for element in "${POWERLEVEL9K_LEFT_PROMPT_ELEMENTS[@]}"; do
-    # Check if the segment should be joined with the previous one
-    local joined=false
-    if [[ ${element[-7,-1]} == '_joined' ]]; then
-      element="${element[0,-8]}"
-      joined=true
-    fi
+    # Remove joined information in direct calls
+    element=${element%_joined}
+
     # Check if it is a custom command, otherwise interpet it as
     # a prompt.
     if [[ $element[0,7] =~ "custom_" ]]; then
-      "prompt_custom" "left" "$joined" $element[8,-1]
+      "prompt_custom" "left" "$index" $element[8,-1]
     else
-      "prompt_$element" "left" "$joined"
+      "prompt_$element" "left" "$index"
     fi
+
+    index=$((index + 1))
   done
 
   left_prompt_end
@@ -845,20 +898,20 @@ build_left_prompt() {
 build_right_prompt() {
   defined POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS || POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status root_indicator background_jobs history time)
 
+  local index=1
   for element in "${POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS[@]}"; do
-    # Check if the segment should be joined with the previous one
-    local joined=false
-    if [[ ${element[-7,-1]} == '_joined' ]]; then
-      element="${element[0,-8]}"
-      joined=true
-    fi
+    # Remove joined information in direct calls
+    element=${element%_joined}
+
     # Check if it is a custom command, otherwise interpet it as
     # a prompt.
     if [[ $element[0,7] =~ "custom_" ]]; then
-      "prompt_custom" "right" "$joined" $element[8,-1]
+      "prompt_custom" "right" "$index" $element[8,-1]
     else
-      "prompt_$element" "right" "$joined"
+      "prompt_$element" "right" "$index"
     fi
+
+    index=$((index + 1))
   done
 }
 

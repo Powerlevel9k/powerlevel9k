@@ -1,5 +1,6 @@
 ## powerlevel9k Theme for ZSH
 
+[![Build Status](https://travis-ci.org/bhilburn/powerlevel9k.svg?branch=next)](https://travis-ci.org/bhilburn/powerlevel9k)
 [![Join the chat at https://gitter.im/bhilburn/powerlevel9k](https://badges.gitter.im/bhilburn/powerlevel9k.svg)](https://gitter.im/bhilburn/powerlevel9k?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 Powerlevel9k is a theme for ZSH which uses [Powerline
@@ -94,15 +95,20 @@ The segments that are currently available are:
 * [ip](#ip) - Shows the current IP address.
 * **load** - Your machines 5 minute load average.
 * **node_version** - Show the version number of the installed Node.js.
+* **nodeenv** - [nodeenv](https://github.com/ekalinin/nodeenv) prompt for displaying node version and environment name.
 * **nvm** - Show the version of Node that is currently active, if it differs from the version used by NVM
 * **os_icon** - Display a nice little icon, depending on your operating system.
 * **php_version** - Show the current PHP version.
-* [ram](#ram) - Show free RAM and used Swap.
-* [rbenv](#rbenv) - Ruby environment information (if one is active).
+* **ram** - Show free RAM
+* [rbenv](#rbenv) - Ruby environment information using `rbenv` (if one is active).
+* [chruby](#chruby) - Ruby environment information using `chruby` (if
+  one is active; also, see
+  postmodern/chruby#245 for issue with auto switching of ruby).
 * **root_indicator** - An indicator if the user is root.
 * [rspec_stats](#rspec_stats) - Show a ratio of test classes vs code classes for RSpec.
 * **rust_version** - Display the current rust version.
 * [status](#status) - The return code of the previous command.
+* **swap** - Prints the current swap size.
 * [symfony2_tests](#symfony2_tests) - Show a ratio of test classes vs code classes for Symfony2.
 * **symfony2_version** - Show the current Symfony2 version, if you are in a Symfony2-Project dir.
 * [time](#time) - System time.
@@ -244,6 +250,15 @@ specify the correct network interface by setting:
 |----------|---------------|-------------|
 |`POWERLEVEL9K_IP_INTERFACE`|None|The NIC for which you wish to display the IP address. Example: `eth0`.|
 
+##### rbenv
+
+This segment shows the version of Ruby being used when using `rbenv` to change your current Ruby stack.
+
+It figures out the version being used by taking the output of the `rbenv version-name` command.
+
+* If `rbenv` is not in $PATH, nothing will be shown.
+* If the current Ruby version is the same as the global Ruby version, nothing will be shown.
+
 ##### rspec_stats
 
 See [Unit Test Ratios](#unit-test-ratios), below.
@@ -293,6 +308,7 @@ customization is provided via:
 |`POWERLEVEL9K_HIDE_BRANCH_ICON`|`false`|Set to `true` to hide the branch icon from the segment.|
 |`POWERLEVEL9K_SHOW_CHANGESET`|`false`|Set to `true` to display the hash / changeset in the segment.|
 |`POWERLEVEL9K_CHANGESET_HASH_LENGTH`|`12`|How many characters of the hash / changeset to display in the segment.|
+|`POWERLEVEL9K_VCS_SHOW_SUBMODULE_DIRTY`|`true`|Set to `false` to not reflect submodule status in the top-level repository prompt.|
 
 **vcs Symbols**
 
