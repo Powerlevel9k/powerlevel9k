@@ -814,6 +814,12 @@ prompt_virtualenv() {
   fi
 }
 
+
+prompt_ssh() {
+  if [[ -n $SSH_CONNECTION && "$SSH_DISABLE_PROMPT" != true ]]; then
+    "$1_prompt_segment" "$0" "$2" "red" "$DEFAULT_COLOR" "\e[3m(SSH) \e[23m"
+  fi
+}
 ################################################################
 # Prompt processing and drawing
 ################################################################
