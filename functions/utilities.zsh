@@ -137,7 +137,7 @@ print_deprecation_warning() {
 
 function ssh_connection() {
   if [[ -n $SSH_CLIENT ]]; then
-    echo "%{$fg_bold[red]%}\e[3m(ssh)\e[23m "
+    echo "%{$fg_bold[red]\e[3m(ssh)\e[23m %}"
   fi
 }
         
