@@ -104,16 +104,16 @@ case $POWERLEVEL9K_MODE in
       NETWORK_ICON                   $'\UF09E'              # 
       LOAD_ICON                      $'\UF080 '             # 
       RAM_ICON                       $'\UF0E4'              # 
-      VCS_UNTRACKED_ICON             $'\UF059'              # 
-      VCS_UNSTAGED_ICON              $'\UF06A'              # 
-      VCS_STAGED_ICON                $'\UF055'              # 
+      VCS_UNTRACKED_ICON             $'\UF059 '             # 
+      VCS_UNSTAGED_ICON              $'\UF06A '             # 
+      VCS_STAGED_ICON                $'\UF055 '             # 
       VCS_STASH_ICON                 $'\UF01C '             # 
       VCS_INCOMING_CHANGES_ICON      $'\UF0ED '             # 
       VCS_OUTGOING_CHANGES_ICON      $'\UF0EE '             # 
       VCS_TAG_ICON                   $'\UF412 '             # 
       VCS_BOOKMARK_ICON              $'\UF468 '             # 
       VCS_COMMIT_ICON                $'\UF417 '             # 
-      VCS_BRANCH_ICON                $'\UF418'              # 
+      VCS_BRANCH_ICON                $'\UF418 '             # 
       VCS_REMOTE_BRANCH_ICON         ' '$'\UF403 '          # 
       VCS_GIT_ICON                   $'\UF113 '             # 
       VCS_HG_ICON                    $'\UF0C3 '             # 
