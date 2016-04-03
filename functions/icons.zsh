@@ -98,7 +98,7 @@ case $POWERLEVEL9K_MODE in
       FREEBSD_ICON                   $'\U1F608 '            # 😈
       LINUX_ICON                     $'\UF17C'              # 
       SUNOS_ICON                     $'\UF185 '             # 
-      HOME_ICON                      $'\UF46E'              # 
+      HOME_ICON                      $'\UF46E '             # 
       HOME_SUB_ICON                  $''                    # 
       FOLDER_ICON                    $''                    # 
       NETWORK_ICON                   $'\UF09E'              # 

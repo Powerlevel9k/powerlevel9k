@@ -445,7 +445,7 @@ prompt_dir() {
 
   local current_icon=''
   if [[ $(print -P "%~") == '~' ]]; then
-    "$1_prompt_segment" "$0_DEFAULT" "$2" "045" "234" "$current_path" 'HOME_ICON'
+    "$1_prompt_segment" "$0_DEFAULT" "$2" "045" "234" "" 'HOME_ICON'
   else
     "$1_prompt_segment" "$0_DEFAULT" "$2" "045" "234" "$current_path" 'FOLDER_ICON'
   fi
