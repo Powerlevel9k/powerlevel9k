@@ -409,7 +409,7 @@ prompt_context() {
       # Shell runs as root
       "$1_prompt_segment" "$0_ROOT" "$2" "$DEFAULT_COLOR" "yellow" "$USER@%m"
     else
-      "$1_prompt_segment" "$0_DEFAULT" "$2" "$DEFAULT_COLOR" "011" "$USER@%m"
+      "$1_prompt_segment" "$0_DEFAULT" "$2" "$DEFAULT_COLOR" "046" "$USER"
     fi
   fi
 }
@@ -445,11 +445,9 @@ prompt_dir() {
 
   local current_icon=''
   if [[ $(print -P "%~") == '~' ]]; then
-    "$1_prompt_segment" "$0_HOME" "$2" "blue" "$DEFAULT_COLOR" "$current_path" 'HOME_ICON'
-  elif [[ $(print -P "%~") == '~'* ]]; then
-    "$1_prompt_segment" "$0_HOME_SUBFOLDER" "$2" "blue" "$DEFAULT_COLOR" "$current_path" 'HOME_SUB_ICON'
+    "$1_prompt_segment" "$0_DEFAULT" "$2" "045" "234" "$current_path" 'HOME_ICON'
   else
-    "$1_prompt_segment" "$0_DEFAULT" "$2" "blue" "$DEFAULT_COLOR" "$current_path" 'FOLDER_ICON'
+    "$1_prompt_segment" "$0_DEFAULT" "$2" "045" "234" "$current_path" 'FOLDER_ICON'
   fi
 }
 

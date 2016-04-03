@@ -88,8 +88,8 @@ case $POWERLEVEL9K_MODE in
       TEST_ICON                      $'\UF291'              # 
       TODO_ICON                      $'\U2611'              # ☑
       BATTERY_ICON                   $'\u1F50B'             # 🔋
-      OK_ICON                        $'\UF23A'              # 
-      FAIL_ICON                      $'\UF281'              # 
+      OK_ICON                        $'\UF00C'              # 
+      FAIL_ICON                      $'\UF00D'              # 
       SYMFONY_ICON                   'SF'
       NODE_ICON                      $'\U2B22'              # ⬢
       MULTILINE_FIRST_PROMPT_PREFIX  $'\U256D'$'\U2500'     # ╭─
@@ -98,9 +98,9 @@ case $POWERLEVEL9K_MODE in
       FREEBSD_ICON                   $'\U1F608 '            # 😈
       LINUX_ICON                     $'\UF17C'              # 
       SUNOS_ICON                     $'\UF185 '             # 
-      HOME_ICON                      $'\UF015'              # 
-      HOME_SUB_ICON                  $'\UF07C'              # 
-      FOLDER_ICON                    $'\UF115'              # 
+      HOME_ICON                      $'\UF46E'              # 
+      HOME_SUB_ICON                  $''                    # 
+      FOLDER_ICON                    $''                    # 
       NETWORK_ICON                   $'\UF09E'              # 
       LOAD_ICON                      $'\UF080 '             # 
       RAM_ICON                       $'\UF0E4'              # 
@@ -108,13 +108,13 @@ case $POWERLEVEL9K_MODE in
       VCS_UNSTAGED_ICON              $'\UF06A'              # 
       VCS_STAGED_ICON                $'\UF055'              # 
       VCS_STASH_ICON                 $'\UF01C '             # 
-      VCS_INCOMING_CHANGES_ICON      $'\UF01A '             # 
-      VCS_OUTGOING_CHANGES_ICON      $'\UF01B '             # 
-      VCS_TAG_ICON                   $'\UF217 '             # 
-      VCS_BOOKMARK_ICON              $'\UF27B'              # 
-      VCS_COMMIT_ICON                $'\UF221 '             # 
-      VCS_BRANCH_ICON                $'\UF126'              # 
-      VCS_REMOTE_BRANCH_ICON         ' '$'\UF204 '          # 
+      VCS_INCOMING_CHANGES_ICON      $'\UF0ED '             # 
+      VCS_OUTGOING_CHANGES_ICON      $'\UF0EE '             # 
+      VCS_TAG_ICON                   $'\UF412 '             # 
+      VCS_BOOKMARK_ICON              $'\UF468 '             # 
+      VCS_COMMIT_ICON                $'\UF417 '             # 
+      VCS_BRANCH_ICON                $'\UF418'              # 
+      VCS_REMOTE_BRANCH_ICON         ' '$'\UF403 '          # 
       VCS_GIT_ICON                   $'\UF113 '             # 
       VCS_HG_ICON                    $'\UF0C3 '             # 
     )
