@@ -280,6 +280,17 @@ right_prompt_segment() {
 # right-left but reads the opposite, this isn't necessary for the other side.
 CURRENT_BG='NONE'
 
+preexec() {
+  cmd_timestamp=`date +%s`
+}
+
+prompt_elapse() {
+  local stop=`date +%s`
+  local start=${cmd_timestamp:-$stop}
+  let local elapsed=$stop-$start
+  "$1_prompt_segment" "$0" "$2" red white "$elapsed" 'AWS_ICON'
+}
+
 # AWS Profile
 prompt_aws() {
   local aws_profile="$AWS_DEFAULT_PROFILE"
