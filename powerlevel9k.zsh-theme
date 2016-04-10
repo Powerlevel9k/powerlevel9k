@@ -285,7 +285,7 @@ prompt_aws() {
   local aws_profile="$AWS_DEFAULT_PROFILE"
   if [[ -n "$aws_profile" ]];
   then
-    "$1_prompt_segment" "$0" "$2" red white "\e[3m$aws_profile\e[23m" 'AWS_ICON'
+    "$1_prompt_segment" "$0" "$2" red white "$aws_profile" 'AWS_ICON'
   fi
 }
 
@@ -294,7 +294,7 @@ prompt_aws_eb_env() {
   local eb_env=$(grep environment .elasticbeanstalk/config.yml 2> /dev/null | awk '{print $2}')
 
   if [[ -n "$eb_env" ]]; then
-    "$1_prompt_segment" "$0" "$2" black green "\e[3m$eb_env\e[23m" 'AWS_EB_ICON'
+    "$1_prompt_segment" "$0" "$2" black green "$eb_env" 'AWS_EB_ICON'
   fi
 }
 
@@ -459,7 +459,7 @@ prompt_go_version() {
   go_version=$(go version 2>&1 | sed -E "s/.*(go[0-9.]*).*/\1/")
 
   if [[ -n "$go_version" ]]; then
-    "$1_prompt_segment" "$0" "$2" "green" "255" "\e[3m$go_version\e[23m"
+    "$1_prompt_segment" "$0" "$2" "green" "255" "$go_version"
   fi
 }
 
@@ -542,7 +542,7 @@ prompt_node_version() {
   local node_version=$(node -v 2>/dev/null)
   [[ -z "${node_version}" ]] && return
 
-  "$1_prompt_segment" "$0" "$2" "green" "white" "\e[3m${node_version:1}\e[23m" 'NODE_ICON'
+  "$1_prompt_segment" "$0" "$2" "green" "white" "${node_version:1}" 'NODE_ICON'
 }
 
 # Node version from NVM
@@ -554,7 +554,7 @@ prompt_nvm() {
   [[ -z "${node_version}" ]] && return
   [[ "$node_version" =~ "$nvm_default" ]] && return
 
-  $1_prompt_segment "$0" "$2" "green" "011" "\e[3m${node_version:1}\e[23m" 'NODE_ICON'
+  $1_prompt_segment "$0" "$2" "green" "011" "${node_version:1}" 'NODE_ICON'
 }
 
 # print a little OS icon
@@ -568,7 +568,7 @@ prompt_php_version() {
   php_version=$(php -v 2>&1 | grep -oe "^PHP\s*[0-9.]*")
 
   if [[ -n "$php_version" ]]; then
-    "$1_prompt_segment" "$0" "$2" "013" "255" "\e[3m$php_version\e[23m"
+    "$1_prompt_segment" "$0" "$2" "013" "255" "$php_version"
   fi
 }
 
@@ -646,7 +646,7 @@ prompt_rspec_stats() {
     code_amount=$(ls -1 app/**/*.rb | wc -l)
     tests_amount=$(ls -1 spec/**/*.rb | wc -l)
 
-    build_test_stats "$1" "$0" "$2" "\e[3m$code_amount\e[23m" "\e[3m$tests_amount\e[23m" "RSpec" 'TEST_ICON'
+    build_test_stats "$1" "$0" "$2" "$code_amount" "$tests_amount" "RSpec" 'TEST_ICON'
   fi
 }
 
@@ -658,7 +658,7 @@ prompt_rvm() {
   local version=$(echo $MY_RUBY_HOME | awk -F'-' '{print $2}')
 
   if [[ -n "$version$gemset" ]]; then
-    "$1_prompt_segment" "$0" "$2" "240" "$DEFAULT_COLOR" "\e[3m$version$gemset\e[23m" 'RUBY_ICON'
+    "$1_prompt_segment" "$0" "$2" "240" "$DEFAULT_COLOR" "$version$gemset" 'RUBY_ICON'
   fi
 }
 
@@ -708,9 +708,9 @@ build_test_stats() {
   typeset -F 2 ratio
   local ratio=$(( (tests_amount/code_amount) * 100 ))
 
-  (( ratio >= 75 )) && "$1_prompt_segment" "${2}_GOOD" "$3" "cyan" "$DEFAULT_COLOR" "$headline: \e[3m$ratio%%\e[23m" "$6"
+  (( ratio >= 75 )) && "$1_prompt_segment" "${2}_GOOD" "$3" "cyan" "$DEFAULT_COLOR" "$headline: $ratio%%" "$6"
   (( ratio >= 50 && ratio < 75 )) && "$1_prompt_segment" "$2_AVG" "$3" "yellow" "$DEFAULT_COLOR" "$headline: \e[3m$ratio%%\e[23m" "$6"
-  (( ratio < 50 )) && "$1_prompt_segment" "$2_BAD" "$3" "red" "$DEFAULT_COLOR" "$headline: \e[3m$ratio%%\e[23m" "$6"
+  (( ratio < 50 )) && "$1_prompt_segment" "$2_BAD" "$3" "red" "$DEFAULT_COLOR" "$headline: $ratio%%" "$6"
 }
 
 # System time
@@ -747,13 +747,13 @@ prompt_vcs() {
       VCS_CHANGESET_HASH_LENGTH="$POWERLEVEL9K_CHANGESET_HASH_LENGTH"
     fi
 
-    VCS_CHANGESET_PREFIX="%F{$POWERLEVEL9K_VCS_DARK_FOREGROUND}$(print_icon 'VCS_COMMIT_ICON')%0.$VCS_CHANGESET_HASH_LENGTH""i%f "
+    VCS_CHANGESET_PREFIX="%F{$POWERLEVEL9K_VCS_DARK_FOREGROUND}$(print_icon 'VCS_COMMIT_ICON')\e[3m%0.$VCS_CHANGESET_HASH_LENGTH""i\e[23m%f "
   fi
 
   zstyle ':vcs_info:*' enable git hg
   zstyle ':vcs_info:*' check-for-changes true
 
-  VCS_DEFAULT_FORMAT="\e[3m$VCS_CHANGESET_PREFIX%F{$POWERLEVEL9K_VCS_FOREGROUND}%b%c%u%m%f\e[23m"
+  VCS_DEFAULT_FORMAT="$VCS_CHANGESET_PREFIX%F{$POWERLEVEL9K_VCS_FOREGROUND}%b%c%u%m%f"
   zstyle ':vcs_info:*' formats "$VCS_DEFAULT_FORMAT"
 
   zstyle ':vcs_info:*' actionformats "%b %F{red}| %a%f"
