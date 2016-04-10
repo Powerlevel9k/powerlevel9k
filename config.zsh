@@ -11,4 +11,4 @@ POWERLEVEL9K_SHOW_CHANGESET=true
 POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=('os_icon' 'ssh' 'root_indicator' 'context' 'dir' 'vcs')
 POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=('status' 'rspec_stats' 'history' 'ip')
 ZSH_THEME="powerlevel9k/powerlevel9k"
-plugins=(git git-flow-avh osx zsh_reload colored-man-pages colorize github gpg-agent kitchen rake ssh-agent vagrant)
+plugins=(git git-flow-avh osx zsh_reload colored-man-pages colorize github kitchen rake ssh-agent vagrant)
