@@ -1,5 +1,6 @@
 ## powerlevel9k Theme for ZSH
 
+[![Build Status](https://travis-ci.org/bhilburn/powerlevel9k.svg?branch=next)](https://travis-ci.org/bhilburn/powerlevel9k)
 [![Join the chat at https://gitter.im/bhilburn/powerlevel9k](https://badges.gitter.im/bhilburn/powerlevel9k.svg)](https://gitter.im/bhilburn/powerlevel9k?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 Powerlevel9k is a theme for ZSH which uses [Powerline
@@ -82,34 +83,57 @@ your `~/.zshrc`:
 #### Available Prompt Segments
 The segments that are currently available are:
 
-* [aws](#aws) - The current AWS profile, if active.
-* **aws_eb_env** - The current Elastic Beanstalk Environment.
-* [background_jobs](#background_jobs) - Indicator for background jobs.
-* [battery](#battery) - Current battery status.
-* [context](#context) - Your username and host.
-* [custom_command](#custom_command) - A custom command to display the output of.
-* [dir](#dir) - Your current working directory.
-* **go_version** - Show the current GO version.
-* **history** - The command number for the current line.
-* [ip](#ip) - Shows the current IP address.
-* **load** - Your machines 5 minute load average.
-* **node_version** - Show the version number of the installed Node.js.
-* **nvm** - Show the version of Node that is currently active, if it differs from the version used by NVM
-* **os_icon** - Display a nice little icon, depending on your operating system.
-* **php_version** - Show the current PHP version.
-* [ram](#ram) - Show free RAM and used Swap.
-* [rbenv](#rbenv) - Ruby environment information (if one is active).
-* **root_indicator** - An indicator if the user is root.
-* [rspec_stats](#rspec_stats) - Show a ratio of test classes vs code classes for RSpec.
-* **rust_version** - Display the current rust version.
-* [status](#status) - The return code of the previous command.
-* [symfony2_tests](#symfony2_tests) - Show a ratio of test classes vs code classes for Symfony2.
-* **symfony2_version** - Show the current Symfony2 version, if you are in a Symfony2-Project dir.
-* [time](#time) - System time.
-* [todo](http://todotxt.com/) - Shows the number of tasks in your todo.txt tasks file.
-* [vi_mode](#vi_mode)- Vi editing mode (NORMAL|INSERT).
-* **virtualenv** - Your Python [VirtualEnv](https://virtualenv.pypa.io/en/latest/).
-* [vcs](#vcs) - Information about this `git` or `hg` repository (if you are in one).
+**System Status Segments:**
+* [`background_jobs`](#background_jobs) - Indicator for background jobs.
+* [`battery`](#battery) - Current battery status.
+* [`context`](#context) - Your username and host.
+* [`dir`](#dir) - Your current working directory.
+* `history` - The command number for the current line.
+* [`ip`](#ip) - Shows the current IP address.
+* `load` - Your machine's load averages.
+* `os_icon` - Display a nice little icon, depending on your operating system.
+* `ram` - Show free RAM.
+* `root_indicator` - An indicator if the user has superuser status.
+* [`status`](#status) - The return code of the previous command.
+* `swap` - Prints the current swap size.
+* [`time`](#time) - System time.
+* [`vi_mode`](#vi_mode)- Your prompt's Vi editing mode (NORMAL|INSERT).
+
+**Development Environment Segments:**
+* [`vcs`](#vcs) - Information about this `git` or `hg` repository (if you are in one).
+
+**Language Segments:**
+* **GoLang Segments:**
+    * `go_version` - Show the current GO version.
+* **Javascript / Node.js Segments:**
+    * `node_version` - Show the version number of the installed Node.js.
+    * `nodeenv` - [nodeenv](https://github.com/ekalinin/nodeenv) prompt for displaying node version and environment name.
+    * `nvm` - Show the version of Node that is currently active, if it differs from the version used by NVM
+* **PHP Segments:**
+    * `php_version` - Show the current PHP version.
+    * [`symfony2_tests`](#symfony2_tests) - Show a ratio of test classes vs code classes for Symfony2.
+    * `symfony2_version` - Show the current Symfony2 version, if you are in a Symfony2-Project dir.
+* **Python Segments:**
+    * `virtualenv` - Your Python [VirtualEnv](https://virtualenv.pypa.io/en/latest/).
+* **Ruby Segments:**
+    * [`chruby`](#chruby) - Ruby environment information using `chruby` (if one is active).
+    * [`rbenv`](#rbenv) - Ruby environment information using `rbenv` (if one is active).
+    * [`rspec_stats`](#rspec_stats) - Show a ratio of test classes vs code classes for RSpec.
+* **Rust Segments:**
+    * `rust_version` - Display the current rust version.
+
+**Cloud Segments:**
+* **AWS Segments:**
+    * [`aws`](#aws) - The current AWS profile, if active.
+    * `aws_eb_env` - The current Elastic Beanstalk Environment.
+* `docker_machine` - The current Docker Machine.
+
+**Other:**
+* [`custom_command`](#custom_command) - Create a custom segment to display the
+  output of an arbitrary command.
+* [`todo`](http://todotxt.com/) - Shows the number of tasks in your todo.txt tasks file.
+
+---------------------------------------------------------------------------------
 
 
 ##### aws
@@ -219,7 +243,7 @@ Customizations available are:
 | Variable | Default Value | Description |
 |----------|---------------|-------------|
 |`POWERLEVEL9K_SHORTEN_DIR_LENGTH`|`2`|If your shorten strategy, below, is entire directories, this field determines how many directories to leave at the end. If your shorten strategy is by character count, this field determines how many characters to allow per directory string.|
-|`POWERLEVEL9K_SHORTEN_STRATEGY`|None|How the directory strings should be truncated. By default, it will truncate whole directories. Other options are `truncate_middle`, which leaves the start and end of the directory strings, and `truncate_from_right`, which cuts starting from the end of the string.|
+|`POWERLEVEL9K_SHORTEN_STRATEGY`|None|How the directory strings should be truncated. By default, it will truncate whole directories. Other options are `truncate_middle`, which leaves the start and end of the directory strings, and `truncate_from_right`, which cuts starting from the end of the string.  You can also use `truncate_with_package_name` to use the `package.json` `name` field to abbreviate the directory path.|
 |`POWERLEVEL9K_SHORTEN_DELIMITER`|`..`|Delimiter to use in truncated strings. This can be any string you choose, including an empty string if you wish to have no delimiter.|
 
 For example, if you wanted the truncation behavior of the `fish` shell, which
@@ -233,6 +257,15 @@ In each case you have to specify the length you want to shorten the directory
 to. So in some cases `POWERLEVEL9K_SHORTEN_DIR_LENGTH` means characters, in
 others whole directories.
 
+The `truncate_with_package_name` strategy gives your directory path relative to the root of your project.  For example, if you have a project inside `$HOME/projects/my-project` with a `package.json` that looks like:
+
+```json
+{
+  "name": "my-cool-project"
+}
+```
+
+the path shown would be `my-cool-project`.  If you navigate to `$HOME/projects/my-project/src`, then the path shown would be `my-cool-project/src`.  Please note that this currently looks for `.git` directory to determine the root of the project.
 
 ##### ip
 
@@ -243,6 +276,15 @@ specify the correct network interface by setting:
 | Variable | Default Value | Description |
 |----------|---------------|-------------|
 |`POWERLEVEL9K_IP_INTERFACE`|None|The NIC for which you wish to display the IP address. Example: `eth0`.|
+
+##### rbenv
+
+This segment shows the version of Ruby being used when using `rbenv` to change your current Ruby stack.
+
+It figures out the version being used by taking the output of the `rbenv version-name` command.
+
+* If `rbenv` is not in $PATH, nothing will be shown.
+* If the current Ruby version is the same as the global Ruby version, nothing will be shown.
 
 ##### rspec_stats
 
@@ -293,6 +335,7 @@ customization is provided via:
 |`POWERLEVEL9K_HIDE_BRANCH_ICON`|`false`|Set to `true` to hide the branch icon from the segment.|
 |`POWERLEVEL9K_SHOW_CHANGESET`|`false`|Set to `true` to display the hash / changeset in the segment.|
 |`POWERLEVEL9K_CHANGESET_HASH_LENGTH`|`12`|How many characters of the hash / changeset to display in the segment.|
+|`POWERLEVEL9K_VCS_SHOW_SUBMODULE_DIRTY`|`true`|Set to `false` to not reflect submodule status in the top-level repository prompt.|
 
 **vcs Symbols**
 

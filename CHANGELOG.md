@@ -1,8 +1,64 @@
-## v0.4.0
+## v0.4.0 (next)
 
-### New segment `aws_eb_env` added
+### `vcs` changes
+
+The default state was renamed to `clean`. If you overrode foreground
+or background color in the past, you need to rename your variables to:
+
+```zsh
+POWERLEVEL9K_VCS_CLEAN_FOREGROUND='cyan'
+POWERLEVEL9K_VCS_CLEAN_BACKGROUND='white'
+```
+
+The foreground color of actionformat is now configurable via:
+```zsh
+POWERLEVEL9K_VCS_ACTIONFORMAT_FOREGROUND='green'
+```
+
+### `aws_eb_env` added
 
 This segment displays the current Elastic Beanstalk environment.
+
+### `ram` changes
+
+The `ram` segment was split up into `ram` and `swap`. The `POWERLEVEL9K_RAM_ELEMENTS`
+variable is void.
+
+### `dir` Shortening Strategies
+
+There is now a path shortening strategy that will use the `package.json` file to shorten your directory path. See the documentation for the `dir` segment for more details.
+
+### `chruby` Segment
+
+Added new `chruby` segment to support this version manager.
+
+### `node`, `nvm` Segments
+
+Improvements to speed / reliability.
+
+### `docker` Segment
+
+Added new `docker` segment that will show your Docker machine.
+
+## v0.3.2
+
+### `vcs` changes
+
+A new state `UNTRACKED` was added to the `vcs` segment. So we now
+have 3 states for repositories: `UNTRACKED`, `MODIFIED`, and the
+default state. The `UNTRACKED` state is active when there are files
+in the repository directory which have not been added to the repo
+(the same as when the `+` icon appears). The default color for the
+`UNTRACKED` state is now yellow, and the default color for the
+`MODIFIED` state is now read, but those colors can be changed by
+setting these variables, for example:
+
+```zsh
+POWERLEVEL9K_VCS_MODIFIED_FOREGROUND='black'
+POWERLEVEL9K_VCS_MODIFIED_BACKGROUND='white'
+POWERLEVEL9K_VCS_UNTRACKED_FOREGROUND='green'
+POWERLEVEL9K_VCS_UNTRACKED_BACKGROUND='blue'
+```
 
 ## v0.3.1
 
