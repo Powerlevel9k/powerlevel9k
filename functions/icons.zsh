@@ -49,9 +49,8 @@ case $POWERLEVEL9K_MODE in
       FOLDER_ICON                    $'\UE818'              # 
       NETWORK_ICON                   $'\UE1AD'              # 
       LOAD_ICON                      $'\UE190 '             # 
-      SWAP_ICON                      $'\UE87D'              # 
+      #RAM_ICON                       $'\UE87D'             # 
       RAM_ICON                       $'\UE1E2 '             # 
-      SERVER_ICON                    $'\UE895'              # 
       VCS_UNTRACKED_ICON             $'\UE16C'              # 
       VCS_UNSTAGED_ICON              $'\UE17C'              # 
       VCS_STAGED_ICON                $'\UE168'              # 
@@ -104,9 +103,7 @@ case $POWERLEVEL9K_MODE in
       FOLDER_ICON                    $'\UF115'              # 
       NETWORK_ICON                   $'\UF09E'              # 
       LOAD_ICON                      $'\UF080 '             # 
-      SWAP_ICON                      $'\UF0E4'              # 
       RAM_ICON                       $'\UF0E4'              # 
-      SERVER_ICON                    $'\UF296'              # 
       VCS_UNTRACKED_ICON             $'\UF059'              # 
       VCS_UNSTAGED_ICON              $'\UF06A'              # 
       VCS_STAGED_ICON                $'\UF055'              # 
@@ -156,9 +153,7 @@ case $POWERLEVEL9K_MODE in
       FOLDER_ICON                    ''
       NETWORK_ICON                   'IP'
       LOAD_ICON                      'L'
-      SWAP_ICON                      'SWP'
       RAM_ICON                       'RAM'
-      SERVER_ICON                    ''
       VCS_UNTRACKED_ICON             '?'
       VCS_UNSTAGED_ICON              $'\u25CF'              # ●
       VCS_STAGED_ICON                $'\u271A'              # ✚
