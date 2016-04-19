@@ -282,7 +282,7 @@ CURRENT_BG='NONE'
 
 # Anaconda Environment
 prompt_anaconda() {
-  local active_conda_env=$(where conda | ggrep -o -P '(?<=envs/)[\w-]+(?=/bin)')
+  local active_conda_env=$(where conda | grep -o -P '(?<=envs/)[\w-]+(?=/bin)')
   if [[ -n $active_conda_env ]]; then
     "$1_prompt_segment" "$0" "$2" "green" "black" "($active_conda_env)" ""
   fi
