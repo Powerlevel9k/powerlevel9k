@@ -511,7 +511,7 @@ prompt_ip() {
 prompt_load() {
   # The load segment can have three different states
   local current_state="unknown"
-  local cores=`nproc`
+  local cores=$(nproc)
 
   typeset -AH load_states
   load_states=(
@@ -528,9 +528,9 @@ prompt_load() {
   # Replace comma
   load_avg_1min=${load_avg_1min//,/.}
 
-  if [[ "$load_avg_1min" -gt `bc -l <<< "${cores} * 0.7"` ]]; then
+  if [[ "$load_avg_1min" -gt $(bc -l <<< "${cores} * 0.7") ]]; then
     current_state="critical"
-  elif [[ "$load_avg_1min" -gt `bc -l <<< "${cores} * 0.5"` ]]; then
+  elif [[ "$load_avg_1min" -gt $(bc -l <<< "${cores} * 0.5") ]]; then
     current_state="warning"
   else
     current_state="normal"
