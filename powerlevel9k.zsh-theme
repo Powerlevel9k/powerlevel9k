@@ -942,7 +942,7 @@ prompt_pyenv() {
   # get first word using `cut` to be consistent with other prompts
   # this reads better for devs familiar with sed/awk/grep/cut utilities
   # using shell expansion/substitution may hamper future maintainability
-  local pyenv_version="$(pyenv version 2>/dev/null | cut -d ' ' -f1)"
+  local pyenv_version="$(pyenv version 2>/dev/null | head -n1 | cut -d' ' -f1)"
   if [[ -n "$pyenv_version" && "${pyenv_version}" != "system" ]]; then
     "$1_prompt_segment" "$0" "$2" "blue" "$DEFAULT_COLOR" "${pyenv_version}"
   fi
