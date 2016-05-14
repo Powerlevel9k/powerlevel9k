@@ -934,6 +934,18 @@ prompt_virtualenv() {
   fi
 }
 
+# pyenv: current active python version (with restrictions)
+# More information on pyenv (Python version manager like rbenv and rvm):
+# https://github.com/yyuu/pyenv
+# the prompt parses output of pyenv version and only displays the first word
+prompt_pyenv() {
+  local pyenv_version="$(pyenv version 2>/dev/null)"
+  local python_name="${pyenv_version[(w)1]}"
+  if [[ -n "$pyenv_version" && "${python_name}" != "system" ]]; then
+    "$1_prompt_segment" "$0" "$2" "blue" "$DEFAULT_COLOR" "${python_name}"
+  fi
+}
+
 ################################################################
 # Prompt processing and drawing
 ################################################################
