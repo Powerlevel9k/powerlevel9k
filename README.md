@@ -116,7 +116,7 @@ The segments that are currently available are:
 * **Python Segments:**
     * `virtualenv` - Your Python [VirtualEnv](https://virtualenv.pypa.io/en/latest/).
     * [`anaconda`](#anaconda) - Your active [Anaconda](https://www.continuum.io/why-anaconda) environment.
-    * [`pyenv`](#pyenv) - Your active python version as indicated by the first word of `[pyenv](https://github.com/yyuu/pyenv) version` unless it is _system_.
+    * [`pyenv`](#pyenv) - Your active python version as indicated by [pyenv](https://github.com/yyuu/pyenv). Note that it simply displays the first word of `pyenv version` but skips the prompt if it is _system_.
 * **Ruby Segments:**
     * [`chruby`](#chruby) - Ruby environment information using `chruby` (if one is active).
     * [`rbenv`](#rbenv) - Ruby environment information using `rbenv` (if one is active).
