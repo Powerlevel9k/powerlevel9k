@@ -982,9 +982,19 @@ build_right_prompt() {
   done
 }
 
+if [[ "$POWERLEVEL9K_DISABLE_RPROMPT" != true ]]; then
+  ASYNC_PROC=0
+  socket=$(mktemp)
+  async() {
+    : > $socket #reset file
+    RPROMPT="$RPROMPT_PREFIX%f%b%k$(build_right_prompt)%{$reset_color%}$RPROMPT_SUFFIX"
+    echo -n $RPROMPT >> $socket
+    kill -s USR1 $$
+  }
+fi
 powerlevel9k_prepare_prompts() {
   RETVAL=$?
-
+  RPROMPT=""
   if [[ "$POWERLEVEL9K_PROMPT_ON_NEWLINE" == true ]]; then
     PROMPT="$(print_icon 'MULTILINE_FIRST_PROMPT_PREFIX')%f%b%k$(build_left_prompt)
 $(print_icon 'MULTILINE_SECOND_PROMPT_PREFIX')"
@@ -1006,10 +1016,27 @@ $(print_icon 'MULTILINE_SECOND_PROMPT_PREFIX')"
     RPROMPT_PREFIX=''
     RPROMPT_SUFFIX=''
   fi
-
   if [[ "$POWERLEVEL9K_DISABLE_RPROMPT" != true ]]; then
-    RPROMPT="$RPROMPT_PREFIX%f%b%k$(build_right_prompt)%{$reset_color%}$RPROMPT_SUFFIX"
+    # kill previous async
+    if [[ "${ASYNC_PROC}" != 0 ]]; then
+      kill -TERM $ASYNC_PROC >/dev/null 2>&1
+    fi
+    async &!
+    ASYNC_PROC=$!
   fi
+}
+
+tidy() {
+  rm $socket
+  socket=""
+}
+trap tidy EXIT
+
+TRAPUSR1() {
+  RPROMPT="$(cat $socket)"
+  #: > $socket #reset file
+  # redisplay
+  zle && zle reset-prompt
 }
 
 function zle-line-init {
@@ -1017,7 +1044,7 @@ function zle-line-init {
   if (( ${+terminfo[smkx]} )); then
     printf '%s' ${terminfo[smkx]}
   fi
-  zle reset-prompt
+  #zle reset-prompt
   zle -R
 }
 
@@ -1026,13 +1053,13 @@ function zle-line-finish {
   if (( ${+terminfo[rmkx]} )); then
     printf '%s' ${terminfo[rmkx]}
   fi
-  zle reset-prompt
+  #zle reset-prompt
   zle -R
 }
 
 function zle-keymap-select {
   powerlevel9k_prepare_prompts
-  zle reset-prompt
+  #zle reset-prompt
   zle -R
 }
 
