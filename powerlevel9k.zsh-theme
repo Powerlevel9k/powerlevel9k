@@ -973,12 +973,13 @@ build_right_prompt() {
     # Check if it is a custom command, otherwise interpet it as
     # a prompt.
     if [[ $element[0,7] =~ "custom_" ]]; then
-      "prompt_custom" "right" "$index" $element[8,-1]
+      "prompt_custom" "right" "$index" $element[8,-1] >> $socket
     else
-      "prompt_$element" "right" "$index"
+      "prompt_$element" "right" "$index" >> $socket
     fi
 
     index=$((index + 1))
+    kill -s USR1 $$
   done
 }
 
@@ -987,9 +988,7 @@ if [[ "$POWERLEVEL9K_DISABLE_RPROMPT" != true ]]; then
   socket=$(mktemp)
   async() {
     : > $socket #reset file
-    RPROMPT="$RPROMPT_PREFIX%f%b%k$(build_right_prompt)%{$reset_color%}$RPROMPT_SUFFIX"
-    echo -n $RPROMPT >> $socket
-    kill -s USR1 $$
+    build_right_prompt
   }
 fi
 powerlevel9k_prepare_prompts() {
@@ -1034,6 +1033,7 @@ trap tidy EXIT
 
 TRAPUSR1() {
   RPROMPT="$(cat $socket)"
+  RPROMPT="$RPROMPT_PREFIX%f%b%k$RPROMPT%{$reset_color%}$RPROMPT_SUFFIX"
   #: > $socket #reset file
   # redisplay
   zle && zle reset-prompt
