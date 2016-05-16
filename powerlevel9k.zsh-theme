@@ -979,8 +979,8 @@ build_right_prompt() {
     fi
 
     index=$((index + 1))
-    kill -s USR1 $$
   done
+  kill -s USR1 $$
 }
 
 if [[ "$POWERLEVEL9K_DISABLE_RPROMPT" != true ]]; then
