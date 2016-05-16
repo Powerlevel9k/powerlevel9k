@@ -979,8 +979,13 @@ build_right_prompt() {
     fi
 
     index=$((index + 1))
+    if [[ "$POWERLEVEL9K_RPROMPT_RENDER_ASAP" == true ]]; then
+      kill -s USR1 $$
+    fi
   done
-  kill -s USR1 $$
+  if [[ "$POWERLEVEL9K_RPROMPT_RENDER_ASAP" != true ]]; then
+    kill -s USR1 $$
+  fi
 }
 
 if [[ "$POWERLEVEL9K_DISABLE_RPROMPT" != true ]]; then
