@@ -987,7 +987,8 @@ if [[ "$POWERLEVEL9K_DISABLE_RPROMPT" != true ]]; then
   ASYNC_PROC=0
   socket=$(mktemp)
   async() {
-    : > $socket #reset file
+    rm -f $socket #reset file
+    touch $socket
     build_right_prompt
   }
 fi
@@ -1026,8 +1027,8 @@ $(print_icon 'MULTILINE_SECOND_PROMPT_PREFIX')"
 }
 
 tidy() {
-  rm $socket
-  socket=""
+  rm -f $socket
+  unset $socket
 }
 trap tidy EXIT
 
