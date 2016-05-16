@@ -992,8 +992,7 @@ if [[ "$POWERLEVEL9K_DISABLE_RPROMPT" != true ]]; then
   ASYNC_PROC=0
   socket=$(mktemp)
   async() {
-    rm -f $socket #reset file
-    touch $socket
+    : >! $socket #reset file
     build_right_prompt
   }
 fi
