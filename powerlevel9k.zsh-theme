@@ -982,9 +982,28 @@ build_right_prompt() {
   done
 }
 
+powerlevel9k_async_callback() {
+  local job=$1
+  local output=$3
+  local exec_time=$4
+  case "${job}" in
+    build_right_prompt)
+      RPROMPT="$RPROMPT_PREFIX%f%b%k$output%{$reset_color%}$RPROMPT_SUFFIX"
+      zle reset-prompt
+      zle -R
+      ;;
+  esac
+}
+
 powerlevel9k_prepare_prompts() {
+  RPROMPT=""
   RETVAL=$?
 
+  if declare -f async_start_worker >/dev/null; then
+    async_stop_worker "powerlevel9k"
+    async_start_worker "powerlevel9k"
+    async_register_callback "powerlevel9k" powerlevel9k_async_callback
+  fi
   if [[ "$POWERLEVEL9K_PROMPT_ON_NEWLINE" == true ]]; then
     PROMPT="$(print_icon 'MULTILINE_FIRST_PROMPT_PREFIX')%f%b%k$(build_left_prompt)
 $(print_icon 'MULTILINE_SECOND_PROMPT_PREFIX')"
@@ -1008,7 +1027,11 @@ $(print_icon 'MULTILINE_SECOND_PROMPT_PREFIX')"
   fi
 
   if [[ "$POWERLEVEL9K_DISABLE_RPROMPT" != true ]]; then
-    RPROMPT="$RPROMPT_PREFIX%f%b%k$(build_right_prompt)%{$reset_color%}$RPROMPT_SUFFIX"
+    if declare -f async_start_worker >/dev/null; then
+      async_job "powerlevel9k" build_right_prompt
+    else
+      RPROMPT="$RPROMPT_PREFIX%f%b%k$(build_right_prompt)%{$reset_color%}$RPROMPT_SUFFIX"
+    fi
   fi
 }
 
@@ -1070,9 +1093,11 @@ powerlevel9k_init() {
   # prepare prompts
   add-zsh-hook precmd powerlevel9k_prepare_prompts
 
-  zle -N zle-line-init
-  zle -N zle-line-finish
-  zle -N zle-keymap-select
+  if ! declare -f async_start_worker >/dev/null; then
+    zle -N zle-line-init
+    zle -N zle-line-finish
+    zle -N zle-keymap-select
+  fi
 }
 
 powerlevel9k_init "$@"
