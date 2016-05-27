@@ -987,6 +987,31 @@ powerlevel9k_async_callback() {
   local output=$3
   local exec_time=$4
   case "${job}" in
+    build_left_prompt)
+      if [[ "$POWERLEVEL9K_PROMPT_ON_NEWLINE" == true ]]; then
+        PROMPT="$(print_icon 'MULTILINE_FIRST_PROMPT_PREFIX')%f%b%k$output
+        $(print_icon 'MULTILINE_SECOND_PROMPT_PREFIX')"
+        if [[ "$POWERLEVEL9K_RPROMPT_ON_NEWLINE" != true ]]; then
+          # The right prompt should be on the same line as the first line of the left
+          # prompt.  To do so, there is just a quite ugly workaround: Before zsh draws
+          # the RPROMPT, we advise it, to go one line up. At the end of RPROMPT, we
+          # advise it to go one line down. See:
+          # http://superuser.com/questions/357107/zsh-right-justify-in-ps1
+          local LC_ALL="" LC_CTYPE="en_US.UTF-8" # Set the right locale to protect special characters
+          RPROMPT_PREFIX='%{'$'\e[1A''%}' # one line up
+          RPROMPT_SUFFIX='%{'$'\e[1B''%}' # one line down
+        else
+          RPROMPT_PREFIX=''
+          RPROMPT_SUFFIX=''
+        fi
+      else
+        PROMPT="%f%b%k$output"
+        RPROMPT_PREFIX=''
+        RPROMPT_SUFFIX=''
+      fi
+      zle reset-prompt
+      zle -R
+      ;;
     build_right_prompt)
       RPROMPT="$RPROMPT_PREFIX%f%b%k$output%{$reset_color%}$RPROMPT_SUFFIX"
       zle reset-prompt
@@ -996,40 +1021,43 @@ powerlevel9k_async_callback() {
 }
 
 powerlevel9k_prepare_prompts() {
+  RETVAL=$? #Check return value before resetting PROMPT
+  PROMPT=""
   RPROMPT=""
-  RETVAL=$?
 
   if declare -f async_start_worker >/dev/null; then
     async_stop_worker "powerlevel9k"
     async_start_worker "powerlevel9k"
     async_register_callback "powerlevel9k" powerlevel9k_async_callback
-  fi
-  if [[ "$POWERLEVEL9K_PROMPT_ON_NEWLINE" == true ]]; then
-    PROMPT="$(print_icon 'MULTILINE_FIRST_PROMPT_PREFIX')%f%b%k$(build_left_prompt)
-$(print_icon 'MULTILINE_SECOND_PROMPT_PREFIX')"
-    if [[ "$POWERLEVEL9K_RPROMPT_ON_NEWLINE" != true ]]; then
-      # The right prompt should be on the same line as the first line of the left
-      # prompt.  To do so, there is just a quite ugly workaround: Before zsh draws
-      # the RPROMPT, we advise it, to go one line up. At the end of RPROMPT, we
-      # advise it to go one line down. See:
-      # http://superuser.com/questions/357107/zsh-right-justify-in-ps1
-      local LC_ALL="" LC_CTYPE="en_US.UTF-8" # Set the right locale to protect special characters
-      RPROMPT_PREFIX='%{'$'\e[1A''%}' # one line up
-      RPROMPT_SUFFIX='%{'$'\e[1B''%}' # one line down
+
+    async_job "powerlevel9k" build_left_prompt
+    if [[ "$POWERLEVEL9K_DISABLE_RPROMPT" != true ]]; then
+      async_job "powerlevel9k" build_right_prompt
+    fi
+  else
+    if [[ "$POWERLEVEL9K_PROMPT_ON_NEWLINE" == true ]]; then
+      PROMPT="$(print_icon 'MULTILINE_FIRST_PROMPT_PREFIX')%f%b%k$(build_left_prompt)
+  $(print_icon 'MULTILINE_SECOND_PROMPT_PREFIX')"
+      if [[ "$POWERLEVEL9K_RPROMPT_ON_NEWLINE" != true ]]; then
+        # The right prompt should be on the same line as the first line of the left
+        # prompt.  To do so, there is just a quite ugly workaround: Before zsh draws
+        # the RPROMPT, we advise it, to go one line up. At the end of RPROMPT, we
+        # advise it to go one line down. See:
+        # http://superuser.com/questions/357107/zsh-right-justify-in-ps1
+        local LC_ALL="" LC_CTYPE="en_US.UTF-8" # Set the right locale to protect special characters
+        RPROMPT_PREFIX='%{'$'\e[1A''%}' # one line up
+        RPROMPT_SUFFIX='%{'$'\e[1B''%}' # one line down
+      else
+        RPROMPT_PREFIX=''
+        RPROMPT_SUFFIX=''
+      fi
     else
+      PROMPT="%f%b%k$(build_left_prompt)"
       RPROMPT_PREFIX=''
       RPROMPT_SUFFIX=''
     fi
-  else
-    PROMPT="%f%b%k$(build_left_prompt)"
-    RPROMPT_PREFIX=''
-    RPROMPT_SUFFIX=''
-  fi
 
-  if [[ "$POWERLEVEL9K_DISABLE_RPROMPT" != true ]]; then
-    if declare -f async_start_worker >/dev/null; then
-      async_job "powerlevel9k" build_right_prompt
-    else
+    if [[ "$POWERLEVEL9K_DISABLE_RPROMPT" != true ]]; then
       RPROMPT="$RPROMPT_PREFIX%f%b%k$(build_right_prompt)%{$reset_color%}$RPROMPT_SUFFIX"
     fi
   fi
