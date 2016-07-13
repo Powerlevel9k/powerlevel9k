@@ -404,4 +404,7 @@ portion of the wiki to get going.
 information!](https://github.com/bhilburn/powerlevel9k/wiki)
 
 ### License
-MIT
+Powerlevel9k: MIT
+
+### Subtrees
+The `zsh-async` directory contains the [zsh-async](https://github.com/mafredri/zsh-async) library, which is licensed under the MIT license.
