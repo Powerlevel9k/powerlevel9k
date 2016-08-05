@@ -752,7 +752,7 @@ prompt_status() {
     fi
   else
     if [[ "$RETVAL" -ne 0 ]]; then
-      "$1_prompt_segment" "$0_ERROR" "$2" "$DEFAULT_COLOR" "red" "" 'FAIL_ICON'
+      "$1_prompt_segment" "$0_ERROR" "$2" "red" "226" "$RETVAL" 'CARRIAGE_RETURN_ICON'
     fi
   fi
 }
