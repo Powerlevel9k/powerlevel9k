@@ -937,6 +937,23 @@ prompt_virtualenv() {
   fi
 }
 
+# pyenv: current active python version (with restrictions)
+# More information on pyenv (Python version manager like rbenv and rvm):
+# https://github.com/yyuu/pyenv
+# the prompt parses output of pyenv version and only displays the first word
+prompt_pyenv() {
+  # get first word using `cut` to be consistent with other prompts
+  # this reads better for devs familiar with sed/awk/grep/cut utilities
+  # using shell expansion/substitution may hamper future maintainability
+  local pyenv_version="$(pyenv version 2>/dev/null | head -n1 | cut -d' ' -f1)"
+  # for the sake of posterity, alternative is:
+  # local pyenv_version="$(pyenv version 2>/dev/null)"
+  # pyenv_version="${pyenv_version%% *}"
+  if [[ -n "$pyenv_version" && "${pyenv_version}" != "system" ]]; then
+    "$1_prompt_segment" "$0" "$2" "blue" "$DEFAULT_COLOR" "${pyenv_version}"
+  fi
+}
+
 ################################################################
 # Prompt processing and drawing
 ################################################################
