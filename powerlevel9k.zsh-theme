@@ -510,7 +510,11 @@ prompt_dir() {
   set_default POWERLEVEL9K_DIR_SPLIT_MODE false
   if [[ $POWERLEVEL9K_DIR_SPLIT_MODE == true ]]; then
     current_path=$(print -P $current_path)
-    current_path=$(echo $current_path | cut -c1 | sed "s,/,$(print_icon 'ICON_SLASH'),g")$(echo $current_path | cut -c2- | sed "s,/, $(print_icon 'LEFT_SUBSEGMENT_SEPARATOR') ,g" | sed "s,^\(.\), \1,")
+    if [[ $current_path == "/" ]]; then
+      current_path=$(print_icon 'ICON_SLASH')
+    else
+      current_path=$(echo $current_path | cut -c1 | sed "s,/,$(print_icon 'ICON_SLASH') ,g")$(echo $current_path | cut -c2- | sed "s,/, $(print_icon 'LEFT_SUBSEGMENT_SEPARATOR') ,g")
+    fi
   fi
 
   local current_icon=''
