@@ -455,7 +455,6 @@ prompt_custom() {
 prompt_dir() {
   local current_path='%~'
   if [[ -n "$POWERLEVEL9K_SHORTEN_DIR_LENGTH" ]]; then
-
     set_default POWERLEVEL9K_SHORTEN_DELIMITER $'\U2026'
 
     case "$POWERLEVEL9K_SHORTEN_STRATEGY" in
@@ -506,6 +505,12 @@ prompt_dir() {
       ;;
     esac
 
+  fi
+
+  set_default POWERLEVEL9K_DIR_SPLIT_MODE false
+  if [[ $POWERLEVEL9K_DIR_SPLIT_MODE == true ]]; then
+    current_path=$(print -P $current_path)
+    current_path=$(echo $current_path | cut -c1 | sed "s,/,$(print_icon 'ICON_SLASH') ,g")$(echo $current_path | cut -c2- | sed "s,/, $(print_icon 'LEFT_SUBSEGMENT_SEPARATOR') ,g")
   fi
 
   local current_icon=''
