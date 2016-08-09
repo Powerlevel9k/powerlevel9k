@@ -71,6 +71,7 @@ case $POWERLEVEL9K_MODE in
       VCS_HG_ICON                    $'\UE1C3 '             # 
       RUST_ICON                      ''
       PYTHON_ICON                    $'\U1F40D'             # 🐍
+      LOCK_ICON                      $'\UE138'              # 
     )
   ;;
   'awesome-fontconfig')
@@ -124,6 +125,7 @@ case $POWERLEVEL9K_MODE in
       VCS_HG_ICON                    $'\UF0C3 '             # 
       RUST_ICON                      $'\UE6A8'              # 
       PYTHON_ICON                    $'\U1F40D'             # 🐍
+      LOCK_ICON                      $'\UE138'              # 
     )
   ;;
   *)
@@ -177,6 +179,7 @@ case $POWERLEVEL9K_MODE in
       VCS_HG_ICON                    ''
       RUST_ICON                      ''
       PYTHON_ICON                    ''
+      LOCK_ICON                      $'\UE0A2'
     )
   ;;
 esac
