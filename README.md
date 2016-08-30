@@ -116,6 +116,7 @@ The segments that are currently available are:
 * **Python Segments:**
     * `virtualenv` - Your Python [VirtualEnv](https://virtualenv.pypa.io/en/latest/).
     * [`anaconda`](#anaconda) - Your active [Anaconda](https://www.continuum.io/why-anaconda) environment.
+    * `pyenv` - Your active python version as reported by the first word of [`pyenv version`](https://github.com/yyuu/pyenv). Note that the segment is not displayed if that word is _system_ i.e. the segment is inactive if you are using system python.
 * **Ruby Segments:**
     * [`chruby`](#chruby) - Ruby environment information using `chruby` (if one is active).
     * [`rbenv`](#rbenv) - Ruby environment information using `rbenv` (if one is active).
@@ -139,13 +140,21 @@ The segments that are currently available are:
 
 ##### anaconda
 
-This segment shows your active anaconda environment.
+This segment shows your active anaconda environment. It relies on either the
+`CONDA_ENV_PATH` or the `CONDA_PREFIX` (depending on the `conda` version)
+environment variable to be set which happens when you properly `source
+activate` an environment.
 
-*Note: This segment relies on a perl-regex with lookbehind.
-If `ack` is not available the segment will try to use `grep`.
-Recent versions of grep offer a `-P` option to handle such things.
-On OSX, however, you want to install gnu-grep (e.g. via `brew install grep`)
-and alias the newly installed `ggrep` to `grep`. Alternatively, `brew install ack`.*
+Special configuration variables:
+
+| Variable | Default Value | Description |
+|----------|---------------|-------------|
+|`POWERLEVEL9K_ANACONDA_LEFT_DELIMITER`|"("|The left delimiter just before the environment name.|
+|`POWERLEVEL9K_ANACONDA_RIGHT_DELIMITER`|")"|The right delimiter just after the environment name.|
+
+Additionally the following segment specific parameters can be used to customize
+it: `POWERLEVEL9K_PYTHON_ICON`, `POWERLEVEL9K_ANACONDA_BACKGROUND`, and
+`POWERLEVEL9K_ANACONDA_FOREGROUND`.
 
 ##### aws
 
@@ -177,6 +186,7 @@ requires `acpi` on Linux).
 |`POWERLEVEL9K_BATTERY_DISCONNECTED`|`$DEFAULT_COLOR`|Color to indicate absence of battery.|
 |`POWERLEVEL9K_BATTERY_LOW_THRESHOLD`|`10`|Threshold to consider battery level critical.|
 |`POWERLEVEL9K_BATTERY_LOW_COLOR`|`"red"`|Color to indicate critically low charge level.|
+|`POWERLEVEL9K_BATTERY_VERBOSE`|`true`|Display time remaining next to battery level.|
 
 Note that you can [modify the `_FOREGROUND`
 color](https://github.com/bhilburn/powerlevel9k/wiki/Stylizing-Your-Prompt#segment-color-customization)
@@ -347,8 +357,10 @@ customization is provided via:
 |`POWERLEVEL9K_SHOW_CHANGESET`|`false`|Set to `true` to display the hash / changeset in the segment.|
 |`POWERLEVEL9K_CHANGESET_HASH_LENGTH`|`12`|How many characters of the hash / changeset to display in the segment.|
 |`POWERLEVEL9K_VCS_SHOW_SUBMODULE_DIRTY`|`true`|Set to `false` to not reflect submodule status in the top-level repository prompt.|
+|`POWERLEVEL9K_VCS_HIDE_TAGS`|`false`|Set to `true` to stop tags being displayed in the segment.|
 
-**vcs Symbols**
+
+##### vcs symbols
 
 The `vcs` segment uses various symbols to tell you the state of your repository.
 These symbols depend on your installed font and selected `POWERLEVEL9K_MODE`
@@ -398,3 +410,6 @@ portion of the wiki to get going.
 
 [The Wiki also has a ton of other useful
 information!](https://github.com/bhilburn/powerlevel9k/wiki)
+
+### License
+MIT
