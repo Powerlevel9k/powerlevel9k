@@ -439,7 +439,7 @@ prompt_context() {
       # Shell runs as root
       "$1_prompt_segment" "$0_ROOT" "$2" "$DEFAULT_COLOR" "yellow" "$USER@%m"
     else
-      "$1_prompt_segment" "$0_DEFAULT" "$2" "$DEFAULT_COLOR" "011" "$USER@%m"
+      "$1_prompt_segment" "$0" "$2" "$3" "$4" "$USER@%m"
     fi
   fi
 }
