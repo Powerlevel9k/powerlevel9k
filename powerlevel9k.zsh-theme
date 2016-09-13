@@ -291,13 +291,14 @@ CURRENT_BG='NONE'
 
 # Anaconda Environment
 prompt_anaconda() {
-  if $(hash ack 2>/dev/null); then
-    local active_conda_env=$(where conda | ack -o '(?<=envs/)[\w-]+(?=/bin)')
-  else
-    local active_conda_env=$(where conda | grep -o -P '(?<=envs/)[\w-]+(?=/bin)')
-  fi
-  if [[ -n $active_conda_env ]]; then
-    "$1_prompt_segment" "$0" "$2" "green" "black" "($active_conda_env)" ""
+  # Depending on the conda version, either might be set. This
+  # variant works even if both are set.
+  _path=$CONDA_ENV_PATH$CONDA_PREFIX
+  if ! [ -z "$_path" ]; then
+    # config - can be overwritten in users' zshrc file.
+    set_default POWERLEVEL9K_ANACONDA_LEFT_DELIMITER "("
+    set_default POWERLEVEL9K_ANACONDA_RIGHT_DELIMITER ")"
+    "$1_prompt_segment" "$0" "$2" "$3" "$4" "$POWERLEVEL9K_ANACONDA_LEFT_DELIMITER$(basename $_path)$POWERLEVEL9K_ANACONDA_RIGHT_DELIMITER" 'PYTHON_ICON'
   fi
 }
 
@@ -465,7 +466,7 @@ prompt_dir() {
         current_path=$(pwd | sed -e "s,^$HOME,~," | sed $SED_EXTENDED_REGEX_PARAMETER "s/([^/]{$POWERLEVEL9K_SHORTEN_DIR_LENGTH})[^/]+([^/]{$POWERLEVEL9K_SHORTEN_DIR_LENGTH})\//\1$POWERLEVEL9K_SHORTEN_DELIMITER\2\//g")
       ;;
       truncate_from_right)
-        current_path=$(truncatePathFromRight $(pwd | sed -e "s,^$HOME,~,") )
+        current_path=$(truncatePathFromRight "$(pwd | sed -e "s,^$HOME,~,")" )
       ;;
       truncate_with_package_name)
         local name repo_path package_path current_dir zero
@@ -492,7 +493,7 @@ prompt_dir() {
           # from the package.json and append the current subdirectory
           current_path="`echo $name | tr -d '"'`$subdirectory_path"
         else
-          current_path=$(truncatePathFromRight $(pwd | sed -e "s,^$HOME,~,") )
+          current_path=$(truncatePathFromRight "$(pwd | sed -e "s,^$HOME,~,")" )
         fi
       ;;
       truncate_with_folder_marker)
@@ -865,7 +866,7 @@ prompt_todo() {
 set_default POWERLEVEL9K_VCS_ACTIONFORMAT_FOREGROUND "red"
 # Default: Just display the first 8 characters of our changeset-ID.
 set_default POWERLEVEL9K_VCS_INTERNAL_HASH_LENGTH "8"
-prompt_vcs() {
+powerlevel9k_vcs_init() {
   if [[ -n "$POWERLEVEL9K_CHANGESET_HASH_LENGTH" ]]; then
     POWERLEVEL9K_VCS_INTERNAL_HASH_LENGTH="$POWERLEVEL9K_CHANGESET_HASH_LENGTH"
   fi
@@ -877,8 +878,7 @@ prompt_vcs() {
   VCS_WORKDIR_HALF_DIRTY=false
 
   # The vcs segment can have three different states - defaults to 'clean'.
-  local current_state=""
-  typeset -AH vcs_states
+  typeset -gAH vcs_states
   vcs_states=(
     'clean'         'green'
     'modified'      'yellow'
@@ -890,7 +890,7 @@ prompt_vcs() {
     VCS_CHANGESET_PREFIX="$(print_icon 'VCS_COMMIT_ICON')%0.$POWERLEVEL9K_VCS_INTERNAL_HASH_LENGTH""i "
   fi
 
-  zstyle ':vcs_info:*' enable git hg
+  zstyle ':vcs_info:*' enable git hg svn
   zstyle ':vcs_info:*' check-for-changes true
 
   VCS_DEFAULT_FORMAT="$VCS_CHANGESET_PREFIX%b%c%u%m"
@@ -905,6 +905,8 @@ prompt_vcs() {
   zstyle ':vcs_info:git*+set-message:*' hooks $POWERLEVEL9K_VCS_GIT_HOOKS
   defined POWERLEVEL9K_VCS_HG_HOOKS || POWERLEVEL9K_VCS_HG_HOOKS=(vcs-detect-changes)
   zstyle ':vcs_info:hg*+set-message:*' hooks $POWERLEVEL9K_VCS_HG_HOOKS
+  defined POWERLEVEL9K_VCS_SVN_HOOKS || POWERLEVEL9K_VCS_SVN_HOOKS=(vcs-detect-changes svn-detect-changes)
+  zstyle ':vcs_info:svn*+set-message:*' hooks $POWERLEVEL9K_VCS_SVN_HOOKS
 
   # For Hg, only show the branch name
   zstyle ':vcs_info:hg*:*' branchformat "$(print_icon 'VCS_BRANCH_ICON')%b"
@@ -916,6 +918,12 @@ prompt_vcs() {
   if [[ "$POWERLEVEL9K_SHOW_CHANGESET" == true ]]; then
     zstyle ':vcs_info:*' get-revision true
   fi
+}
+
+prompt_vcs() {
+  VCS_WORKDIR_DIRTY=false
+  VCS_WORKDIR_HALF_DIRTY=false
+  current_state=""
 
   # Actually invoke vcs_info manually to gather all information.
   vcs_info
@@ -987,11 +995,8 @@ prompt_dir_permission() {
 ################################################################
 # Prompt processing and drawing
 ################################################################
-
 # Main prompt
 build_left_prompt() {
-  defined POWERLEVEL9K_LEFT_PROMPT_ELEMENTS || POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(context dir rbenv vcs)
-
   local index=1
   for element in "${POWERLEVEL9K_LEFT_PROMPT_ELEMENTS[@]}"; do
     # Remove joined information in direct calls
@@ -1013,8 +1018,6 @@ build_left_prompt() {
 
 # Right prompt
 build_right_prompt() {
-  defined POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS || POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status root_indicator background_jobs history time)
-
   local index=1
   for element in "${POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS[@]}"; do
     # Remove joined information in direct calls
@@ -1062,30 +1065,6 @@ $(print_icon 'MULTILINE_SECOND_PROMPT_PREFIX')"
   fi
 }
 
-function zle-line-init {
-  powerlevel9k_prepare_prompts
-  if (( ${+terminfo[smkx]} )); then
-    printf '%s' ${terminfo[smkx]}
-  fi
-  zle reset-prompt
-  zle -R
-}
-
-function zle-line-finish {
-  powerlevel9k_prepare_prompts
-  if (( ${+terminfo[rmkx]} )); then
-    printf '%s' ${terminfo[rmkx]}
-  fi
-  zle reset-prompt
-  zle -R
-}
-
-function zle-keymap-select {
-  powerlevel9k_prepare_prompts
-  zle reset-prompt
-  zle -R
-}
-
 powerlevel9k_init() {
   # Display a warning if the terminal does not support 256 colors
   local term_colors
@@ -1107,6 +1086,9 @@ powerlevel9k_init() {
       print -P "\t%F{red}WARNING!%f %F{blue}export LANG=\"en_US.UTF-8\"%f at the top of your \~\/.zshrc is sufficient."
   fi
 
+  defined POWERLEVEL9K_LEFT_PROMPT_ELEMENTS || POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(context dir rbenv vcs)
+  defined POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS || POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status root_indicator background_jobs history time)
+
   # Display a warning if deprecated segments are in use.
   typeset -AH deprecated_segments
   # old => new
@@ -1124,15 +1106,15 @@ powerlevel9k_init() {
   # initialize colors
   autoload -U colors && colors
 
+  if segment_in_use "vcs"; then
+    powerlevel9k_vcs_init
+  fi
+
   # initialize hooks
   autoload -Uz add-zsh-hook
 
   # prepare prompts
   add-zsh-hook precmd powerlevel9k_prepare_prompts
-
-  zle -N zle-line-init
-  zle -N zle-line-finish
-  zle -N zle-keymap-select
 }
 
 powerlevel9k_init "$@"
