@@ -1029,6 +1029,30 @@ $(print_icon 'MULTILINE_SECOND_PROMPT_PREFIX')"
   fi
 }
 
+function zle-line-init {
+  powerlevel9k_prepare_prompts
+  if (( ${+terminfo[smkx]} )); then
+    printf '%s' ${terminfo[smkx]}
+  fi
+  zle reset-prompt
+  zle -R
+}
+
+function zle-line-finish {
+  powerlevel9k_prepare_prompts
+  if (( ${+terminfo[rmkx]} )); then
+    printf '%s' ${terminfo[rmkx]}
+  fi
+  zle reset-prompt
+  zle -R
+}
+
+function zle-keymap-select {
+  powerlevel9k_prepare_prompts
+  zle reset-prompt
+  zle -R
+}
+
 powerlevel9k_init() {
   # Display a warning if the terminal does not support 256 colors
   local term_colors
@@ -1079,6 +1103,10 @@ powerlevel9k_init() {
 
   # prepare prompts
   add-zsh-hook precmd powerlevel9k_prepare_prompts
+
+  zle -N zle-line-init
+  zle -N zle-line-finish
+  zle -N zle-keymap-select
 }
 
 powerlevel9k_init "$@"
