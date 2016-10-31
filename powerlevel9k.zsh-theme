@@ -399,8 +399,8 @@ prompt_battery() {
     [[ -z $bat ]] && return
 
     [[ $(cat $bat/capacity) -gt 100 ]] && local bat_percent=100 || local bat_percent=$(cat $bat/capacity)
-    [[ $(cat $bat/status) =~ Charging ]] && local connected=true
-    [[ $(cat $bat/status) =~ Charging && $bat_percent =~ 100 ]] && current_state="charged"
+    [[ $(cat $bat/status) =~ Full || $(cat $bat/status) =~ Charging ]] && local connected=true
+    [[ $(cat $bat/status) =~ Full || $(cat $bat/status) =~ Charging && $bat_percent =~ 100 ]] && current_state="charged"
     [[ $(cat $bat/status) =~ Charging && $bat_percent -lt 100 ]] && current_state="charging"
     if [[ -z  $connected ]]; then
       [[ $bat_percent -lt $POWERLEVEL9K_BATTERY_LOW_THRESHOLD ]] && current_state="low" || current_state="disconnected"
@@ -414,6 +414,14 @@ prompt_battery() {
       fi
     fi
     [[ -n $tstring ]] && local remain=" ($tstring)"
+  fi
+
+  if [[ "$current_state" == "charged" ]]; then
+    # Default behavior: Show message always
+    set_default POWERLEVEL9K_BATTERY_SHOW_CHARGED true
+    if [[ "$POWERLEVEL9K_BATTERY_SHOW_CHARGED" == false ]]; then
+      return
+    fi
   fi
 
   local message
@@ -1091,4 +1099,3 @@ powerlevel9k_init() {
 }
 
 powerlevel9k_init "$@"
-
