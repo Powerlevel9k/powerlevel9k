@@ -163,7 +163,7 @@ case $POWERLEVEL9K_MODE in
       LOAD_ICON                      $'\uF080 '             # 
       SWAP_ICON                      $'\uF0E4'              # 
       RAM_ICON                       $'\uF0E4'              # 
-      SERVER_ICON                    $'\uF296'              # 
+      SERVER_ICON                    $'\uF473'              # 䏙
       VCS_UNTRACKED_ICON             $'\uF059'              # 
       VCS_UNSTAGED_ICON              $'\uF06A'              # 
       VCS_STAGED_ICON                $'\uF055'              # 
@@ -173,13 +173,13 @@ case $POWERLEVEL9K_MODE in
       VCS_TAG_ICON                   $'\uF217 '             # 
       VCS_BOOKMARK_ICON              $'\uF27B'              # 
       VCS_COMMIT_ICON                $'\uF221 '             # 
-      VCS_BRANCH_ICON                $'\uF126'              # 
+      VCS_BRANCH_ICON                $'\uF126 '              # 
       VCS_REMOTE_BRANCH_ICON         ' '$'\uF204 '          # 
       VCS_GIT_ICON                   $'\uF113 '             # 
       VCS_HG_ICON                    $'\uF0C3 '             # 
       VCS_SVN_ICON                   '(svn) '
-      RUST_ICON                      $'\uE6A8'              # 
-      PYTHON_ICON                    $'\UE73C'             # 
+      RUST_ICON                      $'\uE6A8 '              # 
+      PYTHON_ICON                    $'\UE73C '             # 
       )
   ;;
   *)
