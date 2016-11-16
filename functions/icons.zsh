@@ -140,7 +140,7 @@ case $POWERLEVEL9K_MODE in
       CARRIAGE_RETURN_ICON           $'\u21B5'              # ↵
       ROOT_ICON                      $'\uF201'              # 
       RUBY_ICON                      $'\uF219 '             # 
-      AWS_ICON                       $'\uF296'              # 
+      AWS_ICON                       $'\uE7AD'              # 䛏
       AWS_EB_ICON                    $'\U1F331 '            # 
       BACKGROUND_JOBS_ICON           $'\uF013 '             # 
       TEST_ICON                      $'\uF291'              # 
