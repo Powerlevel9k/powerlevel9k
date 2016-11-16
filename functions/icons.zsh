@@ -129,8 +129,8 @@ case $POWERLEVEL9K_MODE in
     )
   ;;
   'nerdfont-fontconfig')
-    # fontconfig with awesome-font required! See
-    # https://github.com/gabrielelana/awesome-terminal-fonts
+    # fontconfig with nerd-font required! See
+    # https://github.com/ryanoasis/nerd-fonts
     icons=(
       LEFT_SEGMENT_SEPARATOR         $'\uE0B0'              # 
       RIGHT_SEGMENT_SEPARATOR        $'\uE0B2'              # 
