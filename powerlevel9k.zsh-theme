@@ -16,6 +16,22 @@
 # theming with simple variables defined in your `~/.zshrc`.
 ################################################################
 
+
+# ASYNC plan
+# This is how it should work:
+#   1. The User opens a new Terminal window
+#   2. We spin off various async processes, one for each segment
+#   3. We put the generated data into separate files (a cache)
+#      in the /tmp directory.
+#   4. Every time a async process finishes, we trap it, and
+#      refresh the prompt by reading the information generated
+#      in the cache files.
+#   4a. For each prompt we generate the user specific overrides
+#       as well (maybe in the async process as well). At that
+#       point we already know in which state the segment is.
+#   4b. The refreshing of the prompt is done by glueing the
+#       Segments together.
+
 ## Turn on for Debugging
 #zstyle ':vcs_info:*+*:*' debug true
 #set -o xtrace
