@@ -34,6 +34,7 @@ case $POWERLEVEL9K_MODE in
       TEST_ICON                      $'\uE891'              # 
       TODO_ICON                      $'\u2611'              # ☑
       BATTERY_ICON                   $'\uE894'              # 
+      HDD_ICON                       $'\uD83D\uDDB4'        # 🖴
       OK_ICON                        $'\u2713'              # ✓
       FAIL_ICON                      $'\u2718'              # ✘
       SYMFONY_ICON                   'SF'
@@ -92,6 +93,7 @@ case $POWERLEVEL9K_MODE in
       TEST_ICON                      $'\uF291'              # 
       TODO_ICON                      $'\u2611'              # ☑
       BATTERY_ICON                   $'\U1F50B'             # 🔋
+      HDD_ICON                       $'\uF0A0 '             # 
       OK_ICON                        $'\uF00C '             # 
       FAIL_ICON                      $'\uF00D '             # 
       SYMFONY_ICON                   'SF'
