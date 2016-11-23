@@ -983,6 +983,110 @@ prompt_pyenv() {
   fi
 }
 
+# This function serializes a segment to disk under /tmp/p9k/
+# When done with writing to disk, the function sends a
+# signal to the parent process.
+#
+# Parameters:
+#   * $1 Name: string - Name of the segment
+#   * $2 State: string - The state the segment is in
+#   * $3 Alignment: string - left|right
+#   * $4 Index: integer
+#   * $5 Background: string - The default background color of the segment
+#   * $6 Foreground: string - The default foreground color of the segment
+#   * $7 Content: string - Content of the segment
+#   * $8 Visual identifier: string - Icon of the segment
+serialize_segment() {
+  local NAME=$1
+  local STATE=$2
+  local ALIGNMENT=$3
+  local INDEX=$4
+
+  # TODO: The information whether a segment should be
+  # joined or not, should be processed here.
+  # The problem is, that this information depends
+  # on the previous printed segment, which must not
+  # necessarily be the predecessor of the current one..
+#  JOINED=$5
+
+  # Overwrite given background-color by user defined variable for this segment.
+  local BACKGROUND_USER_VARIABLE="POWERLEVEL9K_${(U)NAME#prompt_}_BACKGROUND"
+  local BG_COLOR_MODIFIER="${(P)BACKGROUND_USER_VARIABLE}"
+  local BACKGROUND="${BG_COLOR_MODIFIER}"
+  [[ -z "${BACKGROUND}" ]] && BACKGROUND="${5}"
+
+  # Overwrite given foreground-color by user defined variable for this segment.
+  local FOREGROUND_USER_VARIABLE="POWERLEVEL9K_${(U)NAME#prompt_}_FOREGROUND"
+  local FG_COLOR_MODIFIER="${(P)FOREGROUND_USER_VARIABLE}"
+  local FOREGROUND="${FG_COLOR_MODIFIER}"
+  [[ -z "${FOREGROUND}" ]] && FOREGROUND="${6}"
+
+  local CONTENT=$7
+
+  local visual_identifier
+  if [[ -n $8 ]]; then
+    visual_identifier="$(print_icon $8)"
+    if [[ -n "$visual_identifier" ]]; then
+      # Allow users to overwrite the color for the visual identifier only.
+      local visual_identifier_color_variable="POWERLEVEL9K_${(U)1#prompt_}_VISUAL_IDENTIFIER_COLOR"
+      set_default "${visual_identifier_color_variable}" "${FOREGROUND}"
+      visual_identifier="%F{${(P)visual_identifier_color_variable}%}$visual_identifier%f"
+      # Add an whitespace if we print more than just the visual identifier
+      if [[ -n "$CONTENT" ]]; then
+        [[ "${ALIGNMENT}" == "left" ]] && visual_identifier="${visual_identifier} "
+        [[ "${ALIGNMENT}" == "right" ]] && visual_identifier=" ${visual_identifier}"
+      fi
+    fi
+  fi
+  local VISUAL_IDENTIFIER=${visual_identifier}
+
+  local FILE="${CACHE_DIR}/p9k_$$_${ALIGNMENT}_${(l:3::0:)INDEX}_${NAME}.sh"
+  typeset -p "NAME" > $FILE
+  typeset -p "STATE" >> $FILE
+  typeset -p "ALIGNMENT" >> $FILE
+  typeset -p "INDEX" >> $FILE
+#  typeset -p "JOINED" >> $FILE
+  typeset -p "BACKGROUND" >> $FILE
+  typeset -p "FOREGROUND" >> $FILE
+  typeset -p "CONTENT" >> $FILE
+  typeset -p "VISUAL_IDENTIFIER" >> $FILE
+
+  # send USR1 signal to parent process
+  kill -s USR1 $$
+}
+
+set_default CACHE_DIR /tmp/p9k
+p9k_build_prompt_from_cache() {
+  last_left_element_index=1 # Reset
+  local LAST_LEFT_BACKGROUND='NONE' # Reset
+  local LAST_RIGHT_BACKGROUND='NONE' # Reset
+  PROMPT='' # Reset
+  RPROMPT='' # Reset
+  # TODO: Optimize for speed!
+  #POWERLEVEL9K_VISITED_SEGMENTS=()
+  for i in $(ls -1 --color=never $CACHE_DIR/p9k_$$_*); do
+    source ${i}
+
+    local statefulName="${NAME}"
+    [[ -n "${STATE}" ]] && statefulName="${NAME}_${STATE}"
+
+    if [[ "${ALIGNMENT}" == "left" ]]; then
+      PROMPT+=$("${(L)ALIGNMENT}_prompt_segment" "${statefulName}" "${INDEX}" "${BACKGROUND}" "${FOREGROUND}" "${CONTENT}" "${VISUAL_IDENTIFIER}" "${LAST_LEFT_BACKGROUND}")
+      LAST_LEFT_BACKGROUND="${BACKGROUND}"
+    elif [[ "${ALIGNMENT}" == "right" ]]; then
+      RPROMPT+=$("${(L)ALIGNMENT}_prompt_segment" "${statefulName}" "${INDEX}" "${BACKGROUND}" "${FOREGROUND}" "${CONTENT}" "${VISUAL_IDENTIFIER}" "${LAST_RIGHT_BACKGROUND}")
+      LAST_RIGHT_BACKGROUND="${BACKGROUND}"
+    fi
+  done
+  PROMPT+="$(left_prompt_end ${LAST_LEFT_BACKGROUND})"
+  zle && zle reset-prompt
+}
+
+p9k_clear_cache() {
+  rm -f ${CACHE_DIR}/p9k_$$_* >/dev/null 2>&1
+}
+trap p9k_clear_cache EXIT
+
 ################################################################
 # Prompt processing and drawing
 ################################################################
@@ -996,15 +1100,16 @@ build_left_prompt() {
     # Check if it is a custom command, otherwise interpet it as
     # a prompt.
     if [[ $element[0,7] =~ "custom_" ]]; then
-      "prompt_custom" "left" "$index" $element[8,-1]
+      "prompt_custom" "left" "$index" $element[8,-1] &!
     else
-      "prompt_$element" "left" "$index"
+      # Could we display placeholders?
+      # -> At most it could be static ones, but
+      # e.g. states are the result of calculation..
+      "prompt_$element" "left" "$index" &!
     fi
 
     index=$((index + 1))
   done
-
-  left_prompt_end
 }
 
 # Right prompt
@@ -1017,17 +1122,38 @@ build_right_prompt() {
     # Check if it is a custom command, otherwise interpet it as
     # a prompt.
     if [[ $element[0,7] =~ "custom_" ]]; then
-      "prompt_custom" "right" "$index" $element[8,-1]
+      "prompt_custom" "right" "$index" $element[8,-1] &!
     else
-      "prompt_$element" "right" "$index"
+      "prompt_$element" "right" "$index" &!
     fi
 
     index=$((index + 1))
   done
 }
 
+TRAPUSR1() {
+  p9k_build_prompt_from_cache
+
+  zle && zle reset-prompt
+}
+
+ASYNC_PROC=0
 powerlevel9k_prepare_prompts() {
   RETVAL=$?
+
+  # Kill all spawns that are not the main process!
+  # This method gets called every time, because it
+  # is a precmd hook registered in powerlevel9k_init!
+  # The child processes must be killed, because they
+  # should only be triggered once to build their
+  # segment and nothing else.
+  if [[ "${ASYNC_PROC}" != 0 ]]; then
+    kill -s HUP ${ASYNC_PROC} >/dev/null 2>&1 || :
+  fi
+
+  # Ensure that every time the user wants a new prompt,
+  # he gets a new, fresh one.
+  p9k_clear_cache
 
   if [[ "$POWERLEVEL9K_PROMPT_ON_NEWLINE" == true ]]; then
     PROMPT="$(print_icon 'MULTILINE_FIRST_PROMPT_PREFIX')%f%b%k$(build_left_prompt)
@@ -1046,14 +1172,18 @@ $(print_icon 'MULTILINE_SECOND_PROMPT_PREFIX')"
       RPROMPT_SUFFIX=''
     fi
   else
-    PROMPT="%f%b%k$(build_left_prompt)"
+    #PROMPT="%f%b%k$(build_left_prompt)"
+    build_left_prompt
+    build_right_prompt
     RPROMPT_PREFIX=''
     RPROMPT_SUFFIX=''
   fi
 
-  if [[ "$POWERLEVEL9K_DISABLE_RPROMPT" != true ]]; then
-    RPROMPT="$RPROMPT_PREFIX%f%b%k$(build_right_prompt)%{$reset_color%}$RPROMPT_SUFFIX"
-  fi
+#  if [[ "$POWERLEVEL9K_DISABLE_RPROMPT" != true ]]; then
+#    RPROMPT="$RPROMPT_PREFIX%f%b%k$(build_right_prompt)%{$reset_color%}$RPROMPT_SUFFIX"
+#  fi
+
+  ASYNC_PROC=$!
 }
 
 powerlevel9k_init() {
@@ -1063,6 +1193,7 @@ powerlevel9k_init() {
   _POWERLEVEL9K_LEFT_SEGMENT_END_SEPARATOR="$(print_icon 'LEFT_SEGMENT_END_SEPARATOR')"
   _POWERLEVEL9K_RIGHT_SEGMENT_SEPARATOR="$(print_icon 'RIGHT_SEGMENT_SEPARATOR')"
   _POWERLEVEL9K_RIGHT_SUBSEGMENT_SEPARATOR="$(print_icon 'RIGHT_SUBSEGMENT_SEPARATOR')"
+
   # Display a warning if the terminal does not support 256 colors
   local term_colors
   term_colors=$(echotc Co)
