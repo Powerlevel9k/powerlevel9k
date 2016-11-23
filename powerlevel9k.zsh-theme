@@ -317,7 +317,9 @@ prompt_anaconda() {
     # config - can be overwritten in users' zshrc file.
     set_default POWERLEVEL9K_ANACONDA_LEFT_DELIMITER "("
     set_default POWERLEVEL9K_ANACONDA_RIGHT_DELIMITER ")"
-    "$1_prompt_segment" "$0" "$2" "$3" "$4" "$POWERLEVEL9K_ANACONDA_LEFT_DELIMITER$(basename $_path)$POWERLEVEL9K_ANACONDA_RIGHT_DELIMITER" 'PYTHON_ICON'
+
+    serialize_segment "$0" "" "$1" "$2" "$3" "$4" "${POWERLEVEL9K_ANACONDA_LEFT_DELIMITER}$(basename $_path)${POWERLEVEL9K_ANACONDA_RIGHT_DELIMITER}" "PYTHON_ICON"
+    #"$1_prompt_segment" "$0" "$2" "$3" "$4" "$POWERLEVEL9K_ANACONDA_LEFT_DELIMITER$(basename $_path)$POWERLEVEL9K_ANACONDA_RIGHT_DELIMITER" 'PYTHON_ICON'
   fi
 }
 
@@ -326,7 +328,8 @@ prompt_aws() {
   local aws_profile="$AWS_DEFAULT_PROFILE"
 
   if [[ -n "$aws_profile" ]]; then
-    "$1_prompt_segment" "$0" "$2" red white "$aws_profile" 'AWS_ICON'
+    serialize_segment "$0" "" "$1" "$2" "red" "white" "${aws_profile}" "AWS_ICON"
+    #"$1_prompt_segment" "$0" "$2" red white "$aws_profile" 'AWS_ICON'
   fi
 }
 
@@ -335,7 +338,8 @@ prompt_aws_eb_env() {
   local eb_env=$(grep environment .elasticbeanstalk/config.yml 2> /dev/null | awk '{print $2}')
 
   if [[ -n "$eb_env" ]]; then
-    "$1_prompt_segment" "$0" "$2" black green "$eb_env" 'AWS_EB_ICON'
+    serialize_segment "$0" "" "$1" "$2" "black" "green" "${eb_env}" "AWS_EB_ICON"
+    #"$1_prompt_segment" "$0" "$2" black green "$eb_env" 'AWS_EB_ICON'
   fi
 }
 
@@ -352,7 +356,8 @@ prompt_background_jobs() {
     if [[ "$POWERLEVEL9K_BACKGROUND_JOBS_VERBOSE" == "true" ]] && [[ "$background_jobs_number" -gt 1 ]]; then
       background_jobs_number_print="$background_jobs_number"
     fi
-    "$1_prompt_segment" "$0" "$2" "$DEFAULT_COLOR" "cyan" "$background_jobs_number_print" 'BACKGROUND_JOBS_ICON'
+    serialize_segment "$0" "" "$1" "$2" "${DEFAULT_COLOR}" "cyan" "${background_jobs_number_print}" "BACKGROUND_JOBS_ICON"
+    #"$1_prompt_segment" "$0" "$2" "$DEFAULT_COLOR" "cyan" "$background_jobs_number_print" 'BACKGROUND_JOBS_ICON'
   fi
 }
 
@@ -446,7 +451,8 @@ prompt_battery() {
 
   # Draw the prompt_segment
   if [[ -n $bat_percent ]]; then
-    "$1_prompt_segment" "${0}_${current_state}" "$2" "$DEFAULT_COLOR" "${battery_states[$current_state]}" "$message" 'BATTERY_ICON'
+    serialize_segment "$0" "${current_state}" "$1" "$2" "${DEFAULT_COLOR}" "${battery_states[$current_state]}" "${message}" "BATTERY_ICON"
+    #"$1_prompt_segment" "${0}_${current_state}" "$2" "$DEFAULT_COLOR" "${battery_states[$current_state]}" "$message" 'BATTERY_ICON'
   fi
 }
 
@@ -456,9 +462,11 @@ prompt_context() {
   if [[ "$USER" != "$DEFAULT_USER" || -n "$SSH_CLIENT" ]]; then
     if [[ $(print -P "%#") == '#' ]]; then
       # Shell runs as root
-      "$1_prompt_segment" "$0_ROOT" "$2" "$DEFAULT_COLOR" "yellow" "$USER@%m"
+      serialize_segment "$0" "ROOT" "$1" "$2" "${DEFAULT_COLOR}" "yellow" "${USER}@%m" ""
+      #"$1_prompt_segment" "$0_ROOT" "$2" "$DEFAULT_COLOR" "yellow" "$USER@%m"
     else
-      "$1_prompt_segment" "$0_DEFAULT" "$2" "$DEFAULT_COLOR" "011" "$USER@%m"
+      serialize_segment "$0" "DEFAULT" "$1" "$2" "${DEFAULT_COLOR}" "011" "${USER}@%m" ""
+      #"$1_prompt_segment" "$0_DEFAULT" "$2" "$DEFAULT_COLOR" "011" "$USER@%m"
     fi
   fi
 }
@@ -470,7 +478,8 @@ prompt_custom() {
   local segment_content="$(eval ${(P)command})"
 
   if [[ -n $segment_content ]]; then
-    "$1_prompt_segment" "${0}_${3:u}" "$2" $DEFAULT_COLOR_INVERTED $DEFAULT_COLOR "$segment_content"
+    serialize_segment "$0" "${3:u}" "$1" "$2" "${DEFAULT_COLOR_INVERTED}" "${DEFAULT_COLOR}" "${segment_content}" ""
+    #"$1_prompt_segment" "${0}_${3:u}" "$2" $DEFAULT_COLOR_INVERTED $DEFAULT_COLOR "$segment_content"
   fi
 }
 
@@ -520,16 +529,18 @@ prompt_dir() {
         current_path="%$((POWERLEVEL9K_SHORTEN_DIR_LENGTH+1))(c:$POWERLEVEL9K_SHORTEN_DELIMITER/:)%${POWERLEVEL9K_SHORTEN_DIR_LENGTH}c"
       ;;
     esac
-
   fi
 
   local current_icon=''
   if [[ $(print -P "%~") == '~' ]]; then
-    "$1_prompt_segment" "$0_HOME" "$2" "blue" "$DEFAULT_COLOR" "$current_path" 'HOME_ICON'
+    serialize_segment "$0" "HOME" "$1" "$2" "blue" "$DEFAULT_COLOR" "$current_path" 'HOME_ICON'
+    #"$1_prompt_segment" "$0_HOME" "$2" "blue" "$DEFAULT_COLOR" "$current_path" 'HOME_ICON'
   elif [[ $(print -P "%~") == '~'* ]]; then
-    "$1_prompt_segment" "$0_HOME_SUBFOLDER" "$2" "blue" "$DEFAULT_COLOR" "$current_path" 'HOME_SUB_ICON'
+    serialize_segment "$0" "HOME_SUBFOLDER" "$1" "$2" "blue" "$DEFAULT_COLOR" "$current_path" 'HOME_SUB_ICON'
+    #"$1_prompt_segment" "$0_HOME_SUBFOLDER" "$2" "blue" "$DEFAULT_COLOR" "$current_path" 'HOME_SUB_ICON'
   else
-    "$1_prompt_segment" "$0_DEFAULT" "$2" "blue" "$DEFAULT_COLOR" "$current_path" 'FOLDER_ICON'
+    serialize_segment "$0" "DEFAULT" "$1" "$2" "blue" "$DEFAULT_COLOR" "$current_path" 'FOLDER_ICON'
+    #"$1_prompt_segment" "$0_DEFAULT" "$2" "blue" "$DEFAULT_COLOR" "$current_path" 'FOLDER_ICON'
   fi
 }
 
@@ -538,7 +549,8 @@ prompt_docker_machine() {
   local docker_machine="$DOCKER_MACHINE_NAME"
 
   if [[ -n "$docker_machine" ]]; then
-    "$1_prompt_segment" "$0" "$2" "magenta" "$DEFAULT_COLOR" "$docker_machine" 'SERVER_ICON'
+    serialize_segment "$0" "" "$1" "$2" "magenta" "${DEFAULT_COLOR}" "${docker_machine}" "SERVER_ICON"
+    #"$1_prompt_segment" "$0" "$2" "magenta" "$DEFAULT_COLOR" "$docker_machine" 'SERVER_ICON'
   fi
 }
 
@@ -548,13 +560,15 @@ prompt_go_version() {
   go_version=$(go version 2>/dev/null | sed -E "s/.*(go[0-9.]*).*/\1/")
 
   if [[ -n "$go_version" ]]; then
-    "$1_prompt_segment" "$0" "$2" "green" "255" "$go_version"
+    serialize_segment "$0" "" "$1" "$2" "green" "255" "${go_version}" ""
+    #"$1_prompt_segment" "$0" "$2" "green" "255" "$go_version"
   fi
 }
 
 # Command number (in local history)
 prompt_history() {
-  "$1_prompt_segment" "$0" "$2" "244" "$DEFAULT_COLOR" '%h'
+  serialize_segment "$0" "" "$1" "$2" "244" "${DEFAULT_COLOR}" "%h" ""
+  #"$1_prompt_segment" "$0" "$2" "244" "$DEFAULT_COLOR" '%h'
 }
 
 prompt_icons_test() {
@@ -594,7 +608,8 @@ prompt_ip() {
     fi
   fi
 
-  "$1_prompt_segment" "$0" "$2" "cyan" "$DEFAULT_COLOR" "$ip" 'NETWORK_ICON'
+  serialize_segment "$0" "" "$1" "$2" "cyan" "${DEFAULT_COLOR}" "${ip}" "NETWORK_ICON"
+  #"$1_prompt_segment" "$0" "$2" "cyan" "$DEFAULT_COLOR" "$ip" 'NETWORK_ICON'
 }
 
 prompt_load() {
@@ -632,7 +647,8 @@ prompt_load() {
     current_state="normal"
   fi
 
-  "$1_prompt_segment" "${0}_${current_state}" "$2" "${load_states[$current_state]}" "$DEFAULT_COLOR" "$load_avg_1min" 'LOAD_ICON'
+  serialize_segment "$0" "${current_state}" "$1" "$2" "${load_states[$current_state]}" "${DEFAULT_COLOR}" "${load_avg_1min}" "LOAD_ICON"
+  #"$1_prompt_segment" "${0}_${current_state}" "$2" "${load_states[$current_state]}" "$DEFAULT_COLOR" "$load_avg_1min" 'LOAD_ICON'
 }
 
 # Node version
@@ -640,7 +656,8 @@ prompt_node_version() {
   local node_version=$(node -v 2>/dev/null)
   [[ -z "${node_version}" ]] && return
 
-  "$1_prompt_segment" "$0" "$2" "green" "white" "${node_version:1}" 'NODE_ICON'
+  serialize_segment "$0" "" "$1" "$2" "green" "white" "${node_version:1}" "NODE_ICON"
+  #"$1_prompt_segment" "$0" "$2" "green" "white" "${node_version:1}" 'NODE_ICON'
 }
 
 # Node version from NVM
@@ -652,7 +669,8 @@ prompt_nvm() {
   local nvm_default=$(cat $NVM_DIR/alias/default)
   [[ "$node_version" =~ "$nvm_default" ]] && return
 
-  $1_prompt_segment "$0" "$2" "green" "011" "${node_version:1}" 'NODE_ICON'
+  serialize_segment "$0" "" "$1" "$2" "green" "011" "${node_version:1}" "NODE_ICON"
+  #$1_prompt_segment "$0" "$2" "green" "011" "${node_version:1}" 'NODE_ICON'
 }
 
 # NodeEnv Prompt
@@ -660,13 +678,15 @@ prompt_nodeenv() {
   local nodeenv_path="$NODE_VIRTUAL_ENV"
   if [[ -n "$nodeenv_path" && "$NODE_VIRTUAL_ENV_DISABLE_PROMPT" != true ]]; then
     local info="$(node -v)[$(basename "$nodeenv_path")]"
-    "$1_prompt_segment" "$0" "$2" "black" "green" "$info" 'NODE_ICON'
+    serialize_segment "$0" "" "$1" "$2" "black" "green" "${info}" "NODE_ICON"
+    #"$1_prompt_segment" "$0" "$2" "black" "green" "$info" 'NODE_ICON'
   fi
 }
 
 # print a little OS icon
 prompt_os_icon() {
-  "$1_prompt_segment" "$0" "$2" "black" "255" "$OS_ICON"
+  serialize_segment "$0" "" "$1" "$2" "black" "255" "${OS_ICON}" ""
+  #"$1_prompt_segment" "$0" "$2" "black" "255" "$OS_ICON"
 }
 
 # print PHP version number
@@ -675,7 +695,8 @@ prompt_php_version() {
   php_version=$(php -v 2>&1 | grep -oe "^PHP\s*[0-9.]*")
 
   if [[ -n "$php_version" ]]; then
-    "$1_prompt_segment" "$0" "$2" "013" "255" "$php_version"
+    serialize_segment "$0" "" "$1" "$2" "013" "255" "${php_version}" ""
+    #"$1_prompt_segment" "$0" "$2" "013" "255" "$php_version"
   fi
 }
 
@@ -697,7 +718,8 @@ prompt_ram() {
     fi
   fi
 
-  "$1_prompt_segment" "$0" "$2" "yellow" "$DEFAULT_COLOR" "$(printSizeHumanReadable "$ramfree" $base)" 'RAM_ICON'
+  serialize_segment "$0" "" "$1" "$2" "yellow" "$DEFAULT_COLOR" "$(printSizeHumanReadable "$ramfree" $base)" "RAM_ICON"
+  #"$1_prompt_segment" "$0" "$2" "yellow" "$DEFAULT_COLOR" "$(printSizeHumanReadable "$ramfree" $base)" 'RAM_ICON'
 }
 
 # rbenv information
@@ -711,7 +733,8 @@ prompt_rbenv() {
       return
     fi
 
-    "$1_prompt_segment" "$0" "$2" "red" "$DEFAULT_COLOR" "$rbenv_version_name" 'RUBY_ICON'
+    serialize_segment "$0" "" "$1" "$2" "red" "$DEFAULT_COLOR" "${rbenv_version_name}" "RUBY_ICON"
+    #"$1_prompt_segment" "$0" "$2" "red" "$DEFAULT_COLOR" "$rbenv_version_name" 'RUBY_ICON'
   fi
 }
 
@@ -722,14 +745,16 @@ prompt_chruby() {
   chrb_env="$(chruby 2> /dev/null | grep \* | tr -d '* ')"
   # Don't show anything if the chruby did not change the default ruby
   if [[ "${chrb_env:-system}" != "system" ]]; then
-    "$1_prompt_segment" "$0" "$2" "red" "$DEFAULT_COLOR" "${chrb_env}" 'RUBY_ICON'
+    serialize_segment "$0" "" "$1" "$2" "red" "$DEFAULT_COLOR" "${chrb_env}" "RUBY_ICON"
+    #"$1_prompt_segment" "$0" "$2" "red" "$DEFAULT_COLOR" "${chrb_env}" 'RUBY_ICON'
   fi
 }
 
 # Print an icon if user is root.
 prompt_root_indicator() {
   if [[ "$UID" -eq 0 ]]; then
-    "$1_prompt_segment" "$0" "$2" "$DEFAULT_COLOR" "yellow" "" 'ROOT_ICON'
+    serialize_segment "$0" "" "$1" "$2" "$DEFAULT_COLOR" "yellow" "" "ROOT_ICON"
+    #"$1_prompt_segment" "$0" "$2" "$DEFAULT_COLOR" "yellow" "" 'ROOT_ICON'
   fi
 }
 
@@ -739,7 +764,8 @@ prompt_rust_version() {
   rust_version=$(rustc --version 2>&1 | grep -oe "^rustc\s*[^ ]*" | grep -o '[0-9.a-z\\\-]*$')
 
   if [[ -n "$rust_version" ]]; then
-    "$1_prompt_segment" "$0" "$2" "208" "$DEFAULT_COLOR" "Rust $rust_version" 'RUST_ICON'
+    serialize_segment "$0" "" "$1" "$2" "208" "$DEFAULT_COLOR" "Rust ${rust_version}" "RUST_ICON"
+    #"$1_prompt_segment" "$0" "$2" "208" "$DEFAULT_COLOR" "Rust $rust_version" 'RUST_ICON'
   fi
 }
 # RSpec test ratio
@@ -761,7 +787,8 @@ prompt_rvm() {
   local version=$(echo $MY_RUBY_HOME | awk -F'-' '{print $2}')
 
   if [[ -n "$version$gemset" ]]; then
-    "$1_prompt_segment" "$0" "$2" "240" "$DEFAULT_COLOR" "$version$gemset" 'RUBY_ICON'
+    serialize_segment "$0" "" "$1" "$2" "240" "$DEFAULT_COLOR" "${version}${gemset}" "RUBY_ICON"
+    #"$1_prompt_segment" "$0" "$2" "240" "$DEFAULT_COLOR" "$version$gemset" 'RUBY_ICON'
   fi
 }
 
@@ -771,12 +798,15 @@ set_default POWERLEVEL9K_STATUS_OK_IN_NON_VERBOSE false
 prompt_status() {
   if [[ "$RETVAL" -ne 0 ]]; then
     if [[ "$POWERLEVEL9K_STATUS_VERBOSE" == true ]]; then
-      "$1_prompt_segment" "$0_ERROR" "$2" "red" "226" "$RETVAL" 'CARRIAGE_RETURN_ICON'
+      serialize_segment "$0" "ERROR" "$1" "$2" "red" "226" "$RETVAL" "CARRIAGE_RETURN_ICON"
+      #"$1_prompt_segment" "$0_ERROR" "$2" "red" "226" "$RETVAL" 'CARRIAGE_RETURN_ICON'
     else
-      "$1_prompt_segment" "$0_ERROR" "$2" "$DEFAULT_COLOR" "red" "" 'FAIL_ICON'
+      serialize_segment "$0" "ERROR" "$1" "$2" "$DEFAULT_COLOR" "red" "" "FAIL_ICON"
+      #"$1_prompt_segment" "$0_ERROR" "$2" "$DEFAULT_COLOR" "red" "" 'FAIL_ICON'
     fi
   elif [[ "$POWERLEVEL9K_STATUS_VERBOSE" == true || "$POWERLEVEL9K_STATUS_OK_IN_NON_VERBOSE" == true ]]; then
-    "$1_prompt_segment" "$0_OK" "$2" "$DEFAULT_COLOR" "046" "" 'OK_ICON'
+    serialize_segment "$0" "OK" "$1" "$2" "$DEFAULT_COLOR" "046" "" "OK_ICON"
+    #"$1_prompt_segment" "$0_OK" "$2" "$DEFAULT_COLOR" "046" "" 'OK_ICON'
   fi
 }
 
@@ -801,7 +831,8 @@ prompt_swap() {
     base='K'
   fi
 
-  "$1_prompt_segment" "$0" "$2" "yellow" "$DEFAULT_COLOR" "$(printSizeHumanReadable "$swap_used" $base)" 'SWAP_ICON'
+  serialize_segment "$0" "" "$1" "$2" "yellow" "$DEFAULT_COLOR" "$(printSizeHumanReadable "$swap_used" $base)" "SWAP_ICON"
+  #"$1_prompt_segment" "$0" "$2" "yellow" "$DEFAULT_COLOR" "$(printSizeHumanReadable "$swap_used" $base)" 'SWAP_ICON'
 }
 
 # Symfony2-PHPUnit test ratio
@@ -820,7 +851,8 @@ prompt_symfony2_version() {
   if [[ -f app/bootstrap.php.cache ]]; then
     local symfony2_version
     symfony2_version=$(grep " VERSION " app/bootstrap.php.cache | sed -e 's/[^.0-9]*//g')
-    "$1_prompt_segment" "$0" "$2" "240" "$DEFAULT_COLOR" "$symfony2_version" 'SYMFONY_ICON'
+    serialize_segment "$0" "" "$1" "$2" "240" "$DEFAULT_COLOR" "$symfony2_version" "SYMFONY_ICON"
+    #"$1_prompt_segment" "$0" "$2" "240" "$DEFAULT_COLOR" "$symfony2_version" 'SYMFONY_ICON'
   fi
 }
 
@@ -846,7 +878,8 @@ prompt_time() {
     time_format="$POWERLEVEL9K_TIME_FORMAT"
   fi
 
-  "$1_prompt_segment" "$0" "$2" "$DEFAULT_COLOR_INVERTED" "$DEFAULT_COLOR" "$time_format"
+  serialize_segment "$0" "" "$1" "$2" "$DEFAULT_COLOR_INVERTED" "$DEFAULT_COLOR" "$time_format" ""
+  #"$1_prompt_segment" "$0" "$2" "$DEFAULT_COLOR_INVERTED" "$DEFAULT_COLOR" "$time_format"
 }
 
 # todo.sh: shows the number of tasks in your todo.sh file
@@ -854,7 +887,8 @@ prompt_todo() {
   if $(hash todo.sh 2>&-); then
     count=$(todo.sh ls | egrep "TODO: [0-9]+ of ([0-9]+) tasks shown" | awk '{ print $4 }')
     if [[ "$count" = <-> ]]; then
-      "$1_prompt_segment" "$0" "$2" "244" "$DEFAULT_COLOR" "$count" 'TODO_ICON'
+      serialize_segment "$0" "" "$1" "$2" "244" "$DEFAULT_COLOR" "$count" "TODO_ICON"
+      #"$1_prompt_segment" "$0" "$2" "244" "$DEFAULT_COLOR" "$count" 'TODO_ICON'
     fi
   fi
 }
@@ -919,6 +953,8 @@ powerlevel9k_vcs_init() {
 }
 
 prompt_vcs() {
+  powerlevel9k_vcs_init
+
   VCS_WORKDIR_DIRTY=false
   VCS_WORKDIR_HALF_DIRTY=false
   current_state=""
@@ -939,7 +975,8 @@ prompt_vcs() {
         current_state='clean'
       fi
     fi
-    "$1_prompt_segment" "${0}_${(U)current_state}" "$2" "${vcs_states[$current_state]}" "$DEFAULT_COLOR" "$vcs_prompt" "$vcs_visual_identifier"
+    serialize_segment "$0" "$current_state" "$1" "$2" "${vcs_states[$current_state]}" "$DEFAULT_COLOR" "$vcs_prompt" "$vcs_visual_identifier"
+    #"$1_prompt_segment" "${0}_${(U)current_state}" "$2" "${vcs_states[$current_state]}" "$DEFAULT_COLOR" "$vcs_prompt" "$vcs_visual_identifier"
   fi
 }
 
@@ -949,10 +986,12 @@ set_default POWERLEVEL9K_VI_COMMAND_MODE_STRING "NORMAL"
 prompt_vi_mode() {
   case ${KEYMAP} in
     main|viins)
-      "$1_prompt_segment" "$0_INSERT" "$2" "$DEFAULT_COLOR" "blue" "$POWERLEVEL9K_VI_INSERT_MODE_STRING"
+      serialize_segment "$0" "INSERT" "$1" "$2" "$DEFAULT_COLOR" "blue" "$POWERLEVEL9K_VI_INSERT_MODE_STRING" ''
+      #"$1_prompt_segment" "$0_INSERT" "$2" "$DEFAULT_COLOR" "blue" "$POWERLEVEL9K_VI_INSERT_MODE_STRING"
     ;;
     vicmd)
-      "$1_prompt_segment" "$0_NORMAL" "$2" "$DEFAULT_COLOR" "default" "$POWERLEVEL9K_VI_COMMAND_MODE_STRING"
+      serialize_segment "$0" "NORMAL" "$1" "$2" "$DEFAULT_COLOR" "default" "$POWERLEVEL9K_VI_COMMAND_MODE_STRING" ''
+      #"$1_prompt_segment" "$0_NORMAL" "$2" "$DEFAULT_COLOR" "default" "$POWERLEVEL9K_VI_COMMAND_MODE_STRING"
     ;;
   esac
 }
@@ -963,7 +1002,8 @@ prompt_vi_mode() {
 prompt_virtualenv() {
   local virtualenv_path="$VIRTUAL_ENV"
   if [[ -n "$virtualenv_path" && "$VIRTUAL_ENV_DISABLE_PROMPT" != true ]]; then
-    "$1_prompt_segment" "$0" "$2" "blue" "$DEFAULT_COLOR" "$(basename "$virtualenv_path")" 'PYTHON_ICON'
+    serialize_segment "$0" "" "$1" "$2" "blue" "$DEFAULT_COLOR" "$(basename "$virtualenv_path")" "PYTHON_ICON"
+    #"$1_prompt_segment" "$0" "$2" "blue" "$DEFAULT_COLOR" "$(basename "$virtualenv_path")" 'PYTHON_ICON'
   fi
 }
 
@@ -979,7 +1019,8 @@ prompt_pyenv() {
   # Using shell expansion/substitution may hamper future maintainability
   #local pyenv_version="$(pyenv version 2>/dev/null | head -n1 | cut -d' ' -f1)"
   if [[ -n "$pyenv_version" && "$pyenv_version" != "system" ]]; then
-    "$1_prompt_segment" "$0" "$2" "blue" "$DEFAULT_COLOR" "$pyenv_version" 'PYTHON_ICON'
+    serialize_segment "$0" "" "$1" "$2" "blue" "$DEFAULT_COLOR" "$pyenv_version" "PYTHON_ICON"
+    #"$1_prompt_segment" "$0" "$2" "blue" "$DEFAULT_COLOR" "$pyenv_version" 'PYTHON_ICON'
   fi
 }
 
@@ -1233,10 +1274,6 @@ powerlevel9k_init() {
 
   # initialize colors
   autoload -U colors && colors
-
-  if segment_in_use "vcs"; then
-    powerlevel9k_vcs_init
-  fi
 
   # initialize hooks
   autoload -Uz add-zsh-hook
