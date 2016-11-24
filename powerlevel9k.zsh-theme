@@ -890,14 +890,24 @@ prompt_vcs() {
 set_default POWERLEVEL9K_VI_INSERT_MODE_STRING "INSERT"
 set_default POWERLEVEL9K_VI_COMMAND_MODE_STRING "NORMAL"
 prompt_vi_mode() {
+  local vi_mode
+  local current_state
+  typeset -gAH vi_states
+  vi_states=(
+    'NORMAL'      "${DEFAULT_COLOR_INVERTED}"
+    'INSERT'      'blue'
+  )
   case ${KEYMAP} in
     main|viins)
-      serialize_segment "$0" "INSERT" "$1" "$2" "$DEFAULT_COLOR" "blue" "$POWERLEVEL9K_VI_INSERT_MODE_STRING" ''
+      current_state="INSERT"
+      vi_mode="${POWERLEVEL9K_VI_INSERT_MODE_STRING}"
     ;;
     vicmd)
-      serialize_segment "$0" "NORMAL" "$1" "$2" "$DEFAULT_COLOR" "default" "$POWERLEVEL9K_VI_COMMAND_MODE_STRING" ''
+      current_state="NORMAL"
+      vi_mode="${POWERLEVEL9K_VI_COMMAND_MODE_STRING}"
     ;;
   esac
+  serialize_segment "${0}" "${current_state}" "${1}" "${2}" "${DEFAULT_COLOR}" "${vi_states[$current_state]}" "${vi_mode}" ''
 }
 
 # Virtualenv: current working virtualenv
