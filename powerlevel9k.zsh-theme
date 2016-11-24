@@ -152,7 +152,7 @@ left_prompt_segment() {
   #segmentShouldBeJoined $current_index $last_left_element_index "$POWERLEVEL9K_LEFT_PROMPT_ELEMENTS" && joined=true || joined=false
   joined=false
 
-  local CURRENT_BG="${7}"
+  local BACKGROUND_OF_LAST_SEGMENT="${7}"
 
   # Overwrite given background-color by user defined variable for this segment.
 #  local BACKGROUND_USER_VARIABLE=POWERLEVEL9K_${(U)1#prompt_}_BACKGROUND
@@ -168,13 +168,13 @@ left_prompt_segment() {
   [[ -n "$3" ]] && bg="%K{$3}" || bg="%k"
   [[ -n "$4" ]] && fg="%F{$4}" || fg="%f"
 
-  if [[ "${CURRENT_BG}" != 'NONE' ]] && ! isSameColor "${3}" "${CURRENT_BG}"; then
-    echo -n "${bg}%F{$CURRENT_BG}"
+  if [[ "${BACKGROUND_OF_LAST_SEGMENT}" != 'NONE' ]] && ! isSameColor "${3}" "${BACKGROUND_OF_LAST_SEGMENT}"; then
+    echo -n "${bg}%F{$BACKGROUND_OF_LAST_SEGMENT}"
     if [[ $joined == false ]]; then
       # Middle segment
       echo -n "${_POWERLEVEL9K_LEFT_SEGMENT_SEPARATOR}${POWERLEVEL9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS}"
     fi
-  elif isSameColor "${CURRENT_BG}" "${3}"; then
+  elif isSameColor "${BACKGROUND_OF_LAST_SEGMENT}" "${3}"; then
     # Middle segment with same color as previous segment
     # We take the current foreground color as color for our
     # subsegment (or the default color). This should have
@@ -209,16 +209,16 @@ left_prompt_segment() {
   [[ -n "${5}" ]] && echo -n "${fg}${5}"
   echo -n "${POWERLEVEL9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS}"
 
-  CURRENT_BG="${3}"
+  BACKGROUND_OF_LAST_SEGMENT="${3}"
   last_left_element_index="${current_index}"
 }
 
 # End the left prompt, closes the final segment.
 #   * $1: Last segments background color
 left_prompt_end() {
-  local CURRENT_BG="${1}"
-  if [[ -n "${CURRENT_BG}" ]]; then
-    echo -n "%k%F{$CURRENT_BG}${_POWERLEVEL9K_LEFT_SEGMENT_SEPARATOR}"
+  local BACKGROUND_OF_LAST_SEGMENT="${1}"
+  if [[ -n "${BACKGROUND_OF_LAST_SEGMENT}" ]]; then
+    echo -n "%k%F{$BACKGROUND_OF_LAST_SEGMENT}${_POWERLEVEL9K_LEFT_SEGMENT_SEPARATOR}"
   else
     echo -n "%k"
   fi
