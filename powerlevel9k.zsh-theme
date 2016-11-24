@@ -1040,6 +1040,11 @@ prompt_pyenv() {
   fi
 }
 
+
+################################################################
+# Caching functions
+################################################################
+
 # This function serializes a segment to disk under /tmp/p9k/
 # When done with writing to disk, the function sends a
 # signal to the parent process.
@@ -1138,10 +1143,13 @@ p9k_build_prompt_from_cache() {
   PROMPT+="$(left_prompt_end ${LAST_LEFT_BACKGROUND})"
   zle && zle reset-prompt
 }
+# Register trap on USR1 (Rebuild prompt)
+trap p9k_build_prompt_from_cache USR1
 
 p9k_clear_cache() {
   rm -f ${CACHE_DIR}/p9k_$$_* >/dev/null 2>&1
 }
+# Register trap on EXIT (cleanup)
 trap p9k_clear_cache EXIT
 
 ################################################################
@@ -1186,12 +1194,6 @@ build_right_prompt() {
 
     index=$((index + 1))
   done
-}
-
-TRAPUSR1() {
-  p9k_build_prompt_from_cache
-
-  zle && zle reset-prompt
 }
 
 ASYNC_PROC=0
