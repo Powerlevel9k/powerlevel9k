@@ -857,6 +857,13 @@ prompt_symfony2_version() {
 }
 
 # Show a ratio of tests vs code
+#   * $1 Alignment: string - left|right
+#   * $2 Name: string - Name of the segment
+#   * $3 Index: integer
+#   * $4 Amount of code: integer
+#   * $5 Amount of tests: integer
+#   * $6 Content: string - Content of the segment
+#   * $7 Visual identifier: string - Icon of the segment
 build_test_stats() {
   local code_amount="$4"
   local tests_amount="$5"+0.00001
@@ -866,9 +873,18 @@ build_test_stats() {
   typeset -F 2 ratio
   local ratio=$(( (tests_amount/code_amount) * 100 ))
 
-  (( ratio >= 75 )) && "$1_prompt_segment" "${2}_GOOD" "$3" "cyan" "$DEFAULT_COLOR" "$headline: $ratio%%" "$6"
-  (( ratio >= 50 && ratio < 75 )) && "$1_prompt_segment" "$2_AVG" "$3" "yellow" "$DEFAULT_COLOR" "$headline: $ratio%%" "$6"
-  (( ratio < 50 )) && "$1_prompt_segment" "$2_BAD" "$3" "red" "$DEFAULT_COLOR" "$headline: $ratio%%" "$6"
+  local current_state="unknown"
+  typeset -AH test_states
+  test_states=(
+    'GOOD'          'cyan'
+    'AVG'           'yellow'
+    'BAD'           'red'
+  )
+  (( ratio >= 75 )) && current_state="GOOD"
+  (( ratio >= 50 && ratio < 75 )) && current_state="AVG"
+  (( ratio < 50 )) && current_state="BAD"
+
+  serialize_segment "${2}" "$current_state" "${1}" "${3}" "${test_states[$current_state]}" "${DEFAULT_COLOR}" "$headline: $ratio%%" "${7}"
 }
 
 # System time
