@@ -1019,8 +1019,8 @@ serialize_segment() {
   typeset -p "CONTENT" >> $FILE
   typeset -p "VISUAL_IDENTIFIER" >> $FILE
 
-  # send USR1 signal to parent process
-  kill -s USR1 $$
+  # send WINCH signal to parent process
+  kill -s WINCH $$
 }
 
 set_default CACHE_DIR /tmp/p9k
@@ -1049,8 +1049,8 @@ p9k_build_prompt_from_cache() {
   PROMPT+="$(left_prompt_end ${LAST_LEFT_BACKGROUND})"
   zle && zle reset-prompt
 }
-# Register trap on USR1 (Rebuild prompt)
-trap p9k_build_prompt_from_cache USR1
+# Register trap on WINCH (Rebuild prompt)
+trap p9k_build_prompt_from_cache WINCH
 
 p9k_clear_cache() {
   rm -f ${CACHE_DIR}/p9k_$$_* >/dev/null 2>&1
