@@ -1151,6 +1151,30 @@ $(print_icon 'MULTILINE_SECOND_PROMPT_PREFIX')"
   ASYNC_PROC=$!
 }
 
+function zle-line-init {
+  powerlevel9k_prepare_prompts
+  if (( ${+terminfo[smkx]} )); then
+    printf '%s' ${terminfo[smkx]}
+  fi
+  zle reset-prompt
+  zle -R
+}
+
+function zle-line-finish {
+  powerlevel9k_prepare_prompts
+  if (( ${+terminfo[rmkx]} )); then
+    printf '%s' ${terminfo[rmkx]}
+  fi
+  zle reset-prompt
+  zle -R
+}
+
+function zle-keymap-select {
+  powerlevel9k_prepare_prompts
+  zle reset-prompt
+  zle -R
+}
+
 powerlevel9k_init() {
   # Precompile the Segment Separators here!
   _POWERLEVEL9K_LEFT_SEGMENT_SEPARATOR="$(print_icon 'LEFT_SEGMENT_SEPARATOR')"
@@ -1204,6 +1228,10 @@ powerlevel9k_init() {
 
   # prepare prompts
   add-zsh-hook precmd powerlevel9k_prepare_prompts
+
+  zle -N zle-line-init
+  zle -N zle-line-finish
+  zle -N zle-keymap-select
 }
 
 powerlevel9k_init "$@"
