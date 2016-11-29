@@ -136,6 +136,29 @@ segment_in_use() {
     fi
 }
 
+# Search for a segment in a list of segments.
+# Ignores the "_joined" suffix of segments.
+#   * $1: The segment to be searched for
+#   * $2: The array of segments to be searched in
+get_indices_of_segment() {
+  local segment="${1}"
+  local -a list
+  # Explicitly split the elements by whitespace.
+  list=(${=2})
+
+  local indices=()
+  for ((i=1;$#list[i];i++)); do
+    # Segments could be joined, but that is not an issue here.
+    # So we strip the "_joined" indicator away.
+    local currentSegment="${list[i]%_joined}"
+    if [[ "${currentSegment}" == "${segment}" ]]; then
+      indices+=("${i}")
+    fi
+  done
+
+  echo "${indices[@]}"
+}
+
 # Print a deprecation warning if an old segment is in use.
 # Takes the name of an associative array that contains the
 # deprecated segments as keys, the values contain the new
