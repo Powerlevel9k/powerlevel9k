@@ -887,8 +887,8 @@ prompt_vcs() {
 }
 
 # Vi Mode: show editing mode (NORMAL|INSERT)
-set_default POWERLEVEL9K_VI_INSERT_MODE_STRING "INSERT"
-set_default POWERLEVEL9K_VI_COMMAND_MODE_STRING "NORMAL"
+set_default "POWERLEVEL9K_VI_INSERT_MODE_STRING" "INSERT"
+set_default "POWERLEVEL9K_VI_COMMAND_MODE_STRING" "NORMAL"
 prompt_vi_mode() {
   local vi_mode
   local current_state
@@ -897,7 +897,7 @@ prompt_vi_mode() {
     'NORMAL'      "${DEFAULT_COLOR_INVERTED}"
     'INSERT'      'blue'
   )
-  case ${KEYMAP} in
+  case "${KEYMAP}" in
     main|viins)
       current_state="INSERT"
       vi_mode="${POWERLEVEL9K_VI_INSERT_MODE_STRING}"
@@ -1151,28 +1151,28 @@ $(print_icon 'MULTILINE_SECOND_PROMPT_PREFIX')"
   ASYNC_PROC=$!
 }
 
-function zle-line-init {
-  powerlevel9k_prepare_prompts
+function rebuild_vi_mode {
   if (( ${+terminfo[smkx]} )); then
     printf '%s' ${terminfo[smkx]}
   fi
-  zle reset-prompt
-  zle -R
+  for index in $(get_indices_of_segment "vi_mode" "${POWERLEVEL9K_LEFT_PROMPT_ELEMENTS}"); do
+     prompt_vi_mode "left" "${index}" "${1}" &!
+  done
+  for index in $(get_indices_of_segment "vi_mode" "${POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS}"); do
+     prompt_vi_mode "right" "${index}" "${1}" &!
+  done
+}
+
+function zle-line-init {
+  rebuild_vi_mode "${KEYMAP}"
 }
 
 function zle-line-finish {
-  powerlevel9k_prepare_prompts
-  if (( ${+terminfo[rmkx]} )); then
-    printf '%s' ${terminfo[rmkx]}
-  fi
-  zle reset-prompt
-  zle -R
+  rebuild_vi_mode "${KEYMAP}"
 }
 
 function zle-keymap-select {
-  powerlevel9k_prepare_prompts
-  zle reset-prompt
-  zle -R
+  rebuild_vi_mode "${KEYMAP}"
 }
 
 powerlevel9k_init() {
