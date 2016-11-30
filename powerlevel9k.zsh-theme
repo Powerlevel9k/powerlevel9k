@@ -1032,7 +1032,7 @@ p9k_build_prompt_from_cache() {
   RPROMPT='' # Reset
   # TODO: Optimize for speed!
   #POWERLEVEL9K_VISITED_SEGMENTS=()
-  for i in $(ls -1 --color=never $CACHE_DIR/p9k_$$_*); do
+  for i in $(ls -1 $CACHE_DIR/p9k_$$_*); do
     source ${i}
 
     local statefulName="${NAME}"
