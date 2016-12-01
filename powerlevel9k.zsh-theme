@@ -116,7 +116,7 @@ fi
 set_default last_left_element_index 1
 set_default POWERLEVEL9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS " "
 left_prompt_segment() {
-  local current_index=$2
+  local current_index="${2}"
   # Check if the segment should be joined with the previous one
   local joined
   # TODO: Joined!
@@ -126,12 +126,12 @@ left_prompt_segment() {
   local BACKGROUND_OF_LAST_SEGMENT="${7}"
 
   local bg fg
-  [[ -n "$3" ]] && bg="%K{$3}" || bg="%k"
-  [[ -n "$4" ]] && fg="%F{$4}" || fg="%f"
+  [[ -n "${3}" ]] && bg="%K{$3}" || bg="%k"
+  [[ -n "${4}" ]] && fg="%F{$4}" || fg="%f"
 
   if [[ "${BACKGROUND_OF_LAST_SEGMENT}" != 'NONE' ]] && ! isSameColor "${3}" "${BACKGROUND_OF_LAST_SEGMENT}"; then
     echo -n "${bg}%F{$BACKGROUND_OF_LAST_SEGMENT}"
-    if [[ $joined == false ]]; then
+    if [[ ${joined} == false ]]; then
       # Middle segment
       echo -n "${_POWERLEVEL9K_LEFT_SEGMENT_SEPARATOR}${POWERLEVEL9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS}"
     fi
@@ -143,7 +143,7 @@ left_prompt_segment() {
     local complement
     [[ -n "${4}" ]] && complement="${4}" || complement="${DEFAULT_COLOR}"
     echo -n "${bg}%F{$complement}"
-    if [[ $joined == false ]]; then
+    if [[ ${joined} == false ]]; then
       echo -n "${_POWERLEVEL9K_LEFT_SUBSEGMENT_SEPARATOR}${POWERLEVEL9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS}"
     fi
   else
@@ -193,7 +193,7 @@ right_prompt_segment() {
   # Check if the segment should be joined with the previous one
   local joined
   # TODO!
-  #segmentShouldBeJoined $current_index $last_right_element_index "$POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS" && joined=true || joined=false
+  #segmentShouldBeJoined "${current_index}" "${last_right_element_index}" "$POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS" && joined=true || joined=false
   joined=false
 
   local bg fg
@@ -201,8 +201,8 @@ right_prompt_segment() {
   [[ -n "${4}" ]] && fg="%F{$4}" || fg="%f"
 
   # If CURRENT_RIGHT_BG is "NONE", we are the first right segment.
-  if [[ $joined == false ]] || [[ "$CURRENT_RIGHT_BG" == "NONE" ]]; then
-    if isSameColor "$CURRENT_RIGHT_BG" "$3"; then
+  if [[ ${joined} == false ]] || [[ "${CURRENT_RIGHT_BG}" == "NONE" ]]; then
+    if isSameColor "${CURRENT_RIGHT_BG}" "${3}"; then
       # Middle segment with same color as previous segment
       # We take the current foreground color as color for our
       # subsegment (or the default color). This should have
@@ -218,15 +218,15 @@ right_prompt_segment() {
   echo -n "${bg}${fg}"
 
   # Print whitespace only if segment is not joined or first right segment
-  [[ $joined == false ]] || [[ "$CURRENT_RIGHT_BG" == "NONE" ]] && echo -n "${POWERLEVEL9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS}"
+  [[ ${joined} == false ]] || [[ "${CURRENT_RIGHT_BG}" == "NONE" ]] && echo -n "${POWERLEVEL9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS}"
 
   # Print segment content if there is any
-  [[ -n "$5" ]] && echo -n "${5}"
+  [[ -n "${5}" ]] && echo -n "${5}"
   # Print the visual identifier
   echo -n "${6}${POWERLEVEL9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS}%f"
 
-  CURRENT_RIGHT_BG=$3
-  last_right_element_index=$current_index
+  CURRENT_RIGHT_BG="${3}"
+  last_right_element_index="${current_index}"
 }
 
 ################################################################
@@ -955,10 +955,10 @@ prompt_pyenv() {
 #   * $7 Content: string - Content of the segment
 #   * $8 Visual identifier: string - Icon of the segment
 serialize_segment() {
-  local NAME=$1
-  local STATE=$2
-  local ALIGNMENT=$3
-  local INDEX=$4
+  local NAME="${1}"
+  local STATE="${2}"
+  local ALIGNMENT="${3}"
+  local INDEX="${4}"
 
   # TODO: The information whether a segment should be
   # joined or not, should be processed here.
@@ -989,24 +989,23 @@ serialize_segment() {
   local FOREGROUND="${FG_COLOR_MODIFIER}"
   [[ -z "${FOREGROUND}" ]] && FOREGROUND="${6}"
 
-  local CONTENT=$7
+  local CONTENT="${7}"
 
-  local visual_identifier
-  if [[ -n $8 ]]; then
-    visual_identifier="$(print_icon $8)"
-    if [[ -n "$visual_identifier" ]]; then
+  local VISUAL_IDENTIFIER
+  if [[ -n "${8}" ]]; then
+    VISUAL_IDENTIFIER="$(print_icon ${8})"
+    if [[ -n "${VISUAL_IDENTIFIER}" ]]; then
       # Allow users to overwrite the color for the visual identifier only.
       local visual_identifier_color_variable="POWERLEVEL9K_${(U)1#prompt_}_VISUAL_IDENTIFIER_COLOR"
       set_default "${visual_identifier_color_variable}" "${FOREGROUND}"
-      visual_identifier="%F{${(P)visual_identifier_color_variable}%}$visual_identifier%f"
+      visual_identifier="%F{${(P)visual_identifier_color_variable}%}${VISUAL_IDENTIFIER}%f"
       # Add an whitespace if we print more than just the visual identifier
-      if [[ -n "$CONTENT" ]]; then
-        [[ "${ALIGNMENT}" == "left" ]] && visual_identifier="${visual_identifier} "
-        [[ "${ALIGNMENT}" == "right" ]] && visual_identifier=" ${visual_identifier}"
+      if [[ -n "${CONTENT}" ]]; then
+        [[ "${ALIGNMENT}" == "left" ]] && VISUAL_IDENTIFIER="${VISUAL_IDENTIFIER} "
+        [[ "${ALIGNMENT}" == "right" ]] && VISUAL_IDENTIFIER=" ${VISUAL_IDENTIFIER}"
       fi
     fi
   fi
-  local VISUAL_IDENTIFIER=${visual_identifier}
 
   local FILE="${CACHE_DIR}/p9k_$$_${ALIGNMENT}_${(l:3::0:)INDEX}_${NAME}.sh"
   typeset -p "NAME" > $FILE
@@ -1039,7 +1038,7 @@ p9k_build_prompt_from_cache() {
   # TODO: Optimize for speed!
   #POWERLEVEL9K_VISITED_SEGMENTS=()
   for i in $(ls -1 $CACHE_DIR/p9k_$$_*); do
-    source ${i}
+    source "${i}"
 
     local statefulName="${NAME}"
     [[ -n "${STATE}" ]] && statefulName="${NAME}_${STATE}"
