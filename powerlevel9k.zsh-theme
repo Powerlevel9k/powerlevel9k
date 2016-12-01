@@ -1023,6 +1023,12 @@ serialize_segment() {
   kill -s WINCH $$
 }
 
+# Rebuild prompt from cache every time
+# a child process terminates (= sends
+# SIGWINCH). We read in the segments
+# variables, use that information to
+# glue the segments back togeher and
+# finally reset the prompt.
 set_default CACHE_DIR /tmp/p9k
 p9k_build_prompt_from_cache() {
   last_left_element_index=1 # Reset
