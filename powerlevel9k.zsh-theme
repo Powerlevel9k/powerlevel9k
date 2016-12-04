@@ -1008,6 +1008,7 @@ serialize_segment() {
   fi
 
   local FILE="${CACHE_DIR}/p9k_$$_${ALIGNMENT}_${(l:3::0:)INDEX}_${NAME}.sh"
+  rm -f $FILE #Remove the previous file prior, due to weird > handling on OS X
   typeset -p "NAME" > $FILE
   typeset -p "STATE" >> $FILE
   typeset -p "ALIGNMENT" >> $FILE
