@@ -981,14 +981,12 @@ serialize_segment() {
   [[ -n "${STATE}" ]] && STATEFUL_NAME="${STATEFUL_NAME}_${(U)STATE}"
   # Overwrite given background-color by user defined variable for this segment.
   local BACKGROUND_USER_VARIABLE="POWERLEVEL9K_${STATEFUL_NAME}_BACKGROUND"
-  local BG_COLOR_MODIFIER="${(P)BACKGROUND_USER_VARIABLE}"
-  local BACKGROUND="${BG_COLOR_MODIFIER}"
+  local BACKGROUND="${(P)BACKGROUND_USER_VARIABLE}"
   [[ -z "${BACKGROUND}" ]] && BACKGROUND="${5}"
 
   # Overwrite given foreground-color by user defined variable for this segment.
   local FOREGROUND_USER_VARIABLE="POWERLEVEL9K_${STATEFUL_NAME}_FOREGROUND"
-  local FG_COLOR_MODIFIER="${(P)FOREGROUND_USER_VARIABLE}"
-  local FOREGROUND="${FG_COLOR_MODIFIER}"
+  local FOREGROUND="${(P)FOREGROUND_USER_VARIABLE}"
   [[ -z "${FOREGROUND}" ]] && FOREGROUND="${6}"
 
   local CONTENT="${7}"
