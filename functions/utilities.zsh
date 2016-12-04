@@ -177,51 +177,30 @@ print_deprecation_warning() {
 
 # A helper function to determine if a segment should be
 # joined or promoted to a full one.
-# Takes three arguments:
-#   * $1: The array index of the current segment
-#   * $2: The array index of the last printed segment
-#   * $3: The array of segments of the left or right prompt
+# Takes two arguments:
+#   * $1: The alignment of the current segment
+#   * $2: The array index of the current segment
 function segmentShouldBeJoined() {
-  local current_index=$1
-  local last_segment_index=$2
-  # Explicitly split the elements by whitespace.
-  local -a elements
-  elements=(${=3})
+  local currentAlignment="${1}"
+  [[ "${2}" == "1" ]] && 2="2" # Stupid approach to avoid index to become 0
+  local currentIndex="${2}"
+  local lastIndex=$(( currentIndex - 1 ))
 
-  local current_segment=${elements[$current_index]}
-  local joined=false
-  if [[ ${current_segment[-7,-1]} == '_joined' ]]; then
-    joined=true
-    # promote segment to a full one, if the predecessing full segment
-    # was conditional. So this can only be the case for segments that
-    # are not our direct predecessor.
-    if (( $(($current_index - $last_segment_index)) > 1)); then
-      # Now we have to examine every previous segment, until we reach
-      # the last printed one (found by its index). This is relevant if
-      # all previous segments are joined. Then we want to join our
-      # segment as well.
-      local examined_index=$((current_index - 1))
-      while (( $examined_index > $last_segment_index )); do
-        local previous_segment=${elements[$examined_index]}
-        # If one of the examined segments is not joined, then we know
-        # that the current segment should not be joined, as the target
-        # segment is the wrong one.
-        if [[ ${previous_segment[-7,-1]} != '_joined' ]]; then
-          joined=false
-          break
-        fi
-        examined_index=$((examined_index - 1))
-      done
-    fi
-  fi
-
-  # Return 1 means error; return 0 means no error. So we have
-  # to invert $joined
-  if [[ "$joined" == "true" ]]; then
+  # TODO: Do this in p9k_build_prompt_from_cache to avoid double-sourcing!
+  source "${CACHE_DIR}/p9k_$$_${currentAlignment}_${(l:3::0:)lastIndex}_*" 2> /dev/null
+  # Case 1: Previous segment is also a joined one, but has no content. In this
+  # case we promote the current segment to a full one.
+  if [[ "${JOINED}" == "true" ]] && [[ -z "${CONTENT}" ]]; then
     return 0
-  else
-    return 1
   fi
+  source "${CACHE_DIR}/p9k_$$_${currentAlignment}_${(l:3::0:)currentIndex}_*" 2> /dev/null
+  # Case 2: Current segment wants to be joined.
+  if [[ "${JOINED}" == "true" ]]; then
+    return 0
+  fi
+
+  # Default: Segment should NOT be joined.
+  return 1
 }
 
 # Given a directory path, truncate it according to the settings for

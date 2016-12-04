@@ -117,11 +117,10 @@ set_default last_left_element_index 1
 set_default POWERLEVEL9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS " "
 left_prompt_segment() {
   local current_index="${2}"
+
   # Check if the segment should be joined with the previous one
   local joined
-  # TODO: Joined!
-  #segmentShouldBeJoined $current_index $last_left_element_index "$POWERLEVEL9K_LEFT_PROMPT_ELEMENTS" && joined=true || joined=false
-  joined=false
+  segmentShouldBeJoined "left" "${current_index}" && joined=true || joined=false
 
   local BACKGROUND_OF_LAST_SEGMENT="${7}"
 
@@ -192,9 +191,7 @@ right_prompt_segment() {
 
   # Check if the segment should be joined with the previous one
   local joined
-  # TODO!
-  #segmentShouldBeJoined "${current_index}" "${last_right_element_index}" "$POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS" && joined=true || joined=false
-  joined=false
+  segmentShouldBeJoined "right" "${current_index}" && joined=true || joined=false
 
   local bg fg
   [[ -n "${3}" ]] && bg="%K{$3}" || bg="%k"
@@ -243,7 +240,7 @@ prompt_anaconda() {
     set_default POWERLEVEL9K_ANACONDA_LEFT_DELIMITER "("
     set_default POWERLEVEL9K_ANACONDA_RIGHT_DELIMITER ")"
 
-    serialize_segment "$0" "" "$1" "$2" "006" "white" "${POWERLEVEL9K_ANACONDA_LEFT_DELIMITER}$(basename $_path)${POWERLEVEL9K_ANACONDA_RIGHT_DELIMITER}" "PYTHON_ICON"
+    serialize_segment "$0" "" "$1" "$2" "${3}" "006" "white" "${POWERLEVEL9K_ANACONDA_LEFT_DELIMITER}$(basename $_path)${POWERLEVEL9K_ANACONDA_RIGHT_DELIMITER}" "PYTHON_ICON"
   fi
 }
 
@@ -251,18 +248,14 @@ prompt_anaconda() {
 prompt_aws() {
   local aws_profile="$AWS_DEFAULT_PROFILE"
 
-  if [[ -n "$aws_profile" ]]; then
-    serialize_segment "$0" "" "$1" "$2" "red" "white" "${aws_profile}" "AWS_ICON"
-  fi
+  serialize_segment "$0" "" "$1" "$2" "${3}" "red" "white" "${aws_profile}" "AWS_ICON"
 }
 
 # Current Elastic Beanstalk environment
 prompt_aws_eb_env() {
   local eb_env=$(grep environment .elasticbeanstalk/config.yml 2> /dev/null | awk '{print $2}')
 
-  if [[ -n "$eb_env" ]]; then
-    serialize_segment "$0" "" "$1" "$2" "black" "green" "${eb_env}" "AWS_EB_ICON"
-  fi
+  serialize_segment "$0" "" "$1" "$2" "${3}" "black" "green" "${eb_env}" "AWS_EB_ICON"
 }
 
 # Segment to indicate background jobs with an icon.
@@ -278,7 +271,7 @@ prompt_background_jobs() {
     if [[ "$POWERLEVEL9K_BACKGROUND_JOBS_VERBOSE" == "true" ]] && [[ "$background_jobs_number" -gt 1 ]]; then
       background_jobs_number_print="$background_jobs_number"
     fi
-    serialize_segment "$0" "" "$1" "$2" "${DEFAULT_COLOR}" "cyan" "${background_jobs_number_print}" "BACKGROUND_JOBS_ICON"
+    serialize_segment "$0" "" "$1" "$2" "${3}" "${DEFAULT_COLOR}" "cyan" "${background_jobs_number_print}" "BACKGROUND_JOBS_ICON"
   fi
 }
 
@@ -371,33 +364,42 @@ prompt_battery() {
   fi
 
   # Draw the prompt_segment
-  if [[ -n $bat_percent ]]; then
-    serialize_segment "$0" "${current_state}" "$1" "$2" "${DEFAULT_COLOR}" "${battery_states[$current_state]}" "${message}" "BATTERY_ICON"
-  fi
+  serialize_segment "$0" "${current_state}" "$1" "$2" "${3}" "${DEFAULT_COLOR}" "${battery_states[$current_state]}" "${message}" "BATTERY_ICON"
 }
 
 # Context: user@hostname (who am I and where am I)
 # Note that if $DEFAULT_USER is not set, this prompt segment will always print
 prompt_context() {
+  local content
+  local current_state="DEFAULT"
+  typeset -AH context_states
+  context_states=(
+    'DEFAULT'      '011'
+    'ROOT'         'yellow'
+  )
   if [[ "$USER" != "$DEFAULT_USER" || -n "$SSH_CLIENT" ]]; then
+    content="${USER}@%m"
     if [[ $(print -P "%#") == '#' ]]; then
       # Shell runs as root
-      serialize_segment "$0" "ROOT" "$1" "$2" "${DEFAULT_COLOR}" "yellow" "${USER}@%m" ""
-    else
-      serialize_segment "$0" "DEFAULT" "$1" "$2" "${DEFAULT_COLOR}" "011" "${USER}@%m" ""
+      state="ROOT"
     fi
   fi
+  serialize_segment "$0" "${state}" "$1" "$2" "${3}" "${DEFAULT_COLOR}" "${context_states[$current_state]}" "${content}" ""
 }
 
 # The 'custom` prompt provides a way for users to invoke commands and display
 # the output in a segment.
+# arguments
+#   * $1: Alignment
+#   * $2: index
+#   * $3: name
+#   * $4: joined
 prompt_custom() {
-  local command=POWERLEVEL9K_CUSTOM_$3:u
+  local segment_name="${3:u}"
+  local command="POWERLEVEL9K_CUSTOM_${segment_name}"
   local segment_content="$(eval ${(P)command})"
 
-  if [[ -n $segment_content ]]; then
-    serialize_segment "$0" "${3:u}" "$1" "$2" "${DEFAULT_COLOR_INVERTED}" "${DEFAULT_COLOR}" "${segment_content}" ""
-  fi
+  serialize_segment "$0" "${segment_name}" "$1" "$2" "${4}" "${DEFAULT_COLOR_INVERTED}" "${DEFAULT_COLOR}" "${segment_content}" ""
 }
 
 # Dir: current working directory
@@ -450,11 +452,11 @@ prompt_dir() {
 
   local current_icon=''
   if [[ $(print -P "%~") == '~' ]]; then
-    serialize_segment "$0" "HOME" "$1" "$2" "blue" "$DEFAULT_COLOR" "$current_path" 'HOME_ICON'
+    serialize_segment "$0" "HOME" "$1" "$2" "${3}" "blue" "$DEFAULT_COLOR" "$current_path" 'HOME_ICON'
   elif [[ $(print -P "%~") == '~'* ]]; then
-    serialize_segment "$0" "HOME_SUBFOLDER" "$1" "$2" "blue" "$DEFAULT_COLOR" "$current_path" 'HOME_SUB_ICON'
+    serialize_segment "$0" "HOME_SUBFOLDER" "$1" "$2" "${3}" "blue" "$DEFAULT_COLOR" "$current_path" 'HOME_SUB_ICON'
   else
-    serialize_segment "$0" "DEFAULT" "$1" "$2" "blue" "$DEFAULT_COLOR" "$current_path" 'FOLDER_ICON'
+    serialize_segment "$0" "DEFAULT" "$1" "$2" "${3}" "blue" "$DEFAULT_COLOR" "$current_path" 'FOLDER_ICON'
   fi
 }
 
@@ -462,9 +464,7 @@ prompt_dir() {
 prompt_docker_machine() {
   local docker_machine="$DOCKER_MACHINE_NAME"
 
-  if [[ -n "$docker_machine" ]]; then
-    serialize_segment "$0" "" "$1" "$2" "magenta" "${DEFAULT_COLOR}" "${docker_machine}" "SERVER_ICON"
-  fi
+  serialize_segment "$0" "" "$1" "$2" "${3}" "magenta" "${DEFAULT_COLOR}" "${docker_machine}" "SERVER_ICON"
 }
 
 # GO prompt
@@ -472,14 +472,12 @@ prompt_go_version() {
   local go_version
   go_version=$(go version 2>/dev/null | sed -E "s/.*(go[0-9.]*).*/\1/")
 
-  if [[ -n "$go_version" ]]; then
-    serialize_segment "$0" "" "$1" "$2" "green" "255" "${go_version}" ""
-  fi
+  serialize_segment "$0" "" "$1" "$2" "${3}" "green" "255" "${go_version}" ""
 }
 
 # Command number (in local history)
 prompt_history() {
-  serialize_segment "$0" "" "$1" "$2" "244" "${DEFAULT_COLOR}" "%h" ""
+  serialize_segment "$0" "" "$1" "$2" "${3}" "244" "${DEFAULT_COLOR}" "%h" ""
 }
 
 prompt_icons_test() {
@@ -488,6 +486,7 @@ prompt_icons_test() {
     # the next color has enough contrast to read.
     local random_color=$((RANDOM % 8))
     local next_color=$((random_color+1))
+    # TODO: How will that work async?
     "$1_prompt_segment" "$0" "$2" "$random_color" "$next_color" "$key" "$key"
   done
 }
@@ -519,7 +518,7 @@ prompt_ip() {
     fi
   fi
 
-  serialize_segment "$0" "" "$1" "$2" "cyan" "${DEFAULT_COLOR}" "${ip}" "NETWORK_ICON"
+  serialize_segment "$0" "" "$1" "$2" "${3}" "cyan" "${DEFAULT_COLOR}" "${ip}" "NETWORK_ICON"
 }
 
 prompt_load() {
@@ -557,15 +556,14 @@ prompt_load() {
     current_state="normal"
   fi
 
-  serialize_segment "$0" "${current_state}" "$1" "$2" "${load_states[$current_state]}" "${DEFAULT_COLOR}" "${load_avg_1min}" "LOAD_ICON"
+  serialize_segment "$0" "${current_state}" "$1" "$2" "${3}" "${load_states[$current_state]}" "${DEFAULT_COLOR}" "${load_avg_1min}" "LOAD_ICON"
 }
 
 # Node version
 prompt_node_version() {
   local node_version=$(node -v 2>/dev/null)
-  [[ -z "${node_version}" ]] && return
 
-  serialize_segment "$0" "" "$1" "$2" "green" "white" "${node_version:1}" "NODE_ICON"
+  serialize_segment "$0" "" "$1" "$2" "${3}" "green" "white" "${node_version:1}" "NODE_ICON"
 }
 
 # Node version from NVM
@@ -573,25 +571,26 @@ prompt_node_version() {
 prompt_nvm() {
   [[ ! $(type nvm) =~ 'nvm is a shell function'* ]] && return
   local node_version=$(nvm current)
-  [[ -z "${node_version}" ]] || [[ ${node_version} = "none" ]] && return
+  [[ -z "${node_version}" ]] || [[ "${node_version}" = "none" ]] && return
   local nvm_default=$(cat $NVM_DIR/alias/default)
   [[ "$node_version" =~ "$nvm_default" ]] && return
 
-  serialize_segment "$0" "" "$1" "$2" "green" "011" "${node_version:1}" "NODE_ICON"
+  serialize_segment "$0" "" "$1" "$2" "${3}" "green" "011" "${node_version:1}" "NODE_ICON"
 }
 
 # NodeEnv Prompt
 prompt_nodeenv() {
   local nodeenv_path="$NODE_VIRTUAL_ENV"
+  local info
   if [[ -n "$nodeenv_path" && "$NODE_VIRTUAL_ENV_DISABLE_PROMPT" != true ]]; then
-    local info="$(node -v)[$(basename "$nodeenv_path")]"
-    serialize_segment "$0" "" "$1" "$2" "black" "green" "${info}" "NODE_ICON"
+    info="$(node -v)[$(basename "$nodeenv_path")]"
   fi
+  serialize_segment "$0" "" "$1" "$2" "${3}" "black" "green" "${info}" "NODE_ICON"
 }
 
 # print a little OS icon
 prompt_os_icon() {
-  serialize_segment "$0" "" "$1" "$2" "black" "255" "${OS_ICON}" ""
+  serialize_segment "$0" "" "$1" "$2" "${3}" "black" "255" "${OS_ICON}" ""
 }
 
 # print PHP version number
@@ -599,9 +598,7 @@ prompt_php_version() {
   local php_version
   php_version=$(php -v 2>&1 | grep -oe "^PHP\s*[0-9.]*")
 
-  if [[ -n "$php_version" ]]; then
-    serialize_segment "$0" "" "$1" "$2" "013" "255" "${php_version}" ""
-  fi
+  serialize_segment "$0" "" "$1" "$2" "${3}" "013" "255" "${php_version}" ""
 }
 
 # Show free RAM and used Swap
@@ -622,7 +619,7 @@ prompt_ram() {
     fi
   fi
 
-  serialize_segment "$0" "" "$1" "$2" "yellow" "$DEFAULT_COLOR" "$(printSizeHumanReadable "$ramfree" $base)" "RAM_ICON"
+  serialize_segment "$0" "" "$1" "$2" "${3}" "yellow" "$DEFAULT_COLOR" "$(printSizeHumanReadable "$ramfree" $base)" "RAM_ICON"
 }
 
 # rbenv information
@@ -636,7 +633,7 @@ prompt_rbenv() {
       return
     fi
 
-    serialize_segment "$0" "" "$1" "$2" "red" "$DEFAULT_COLOR" "${rbenv_version_name}" "RUBY_ICON"
+    serialize_segment "$0" "" "$1" "$2" "${3}" "red" "$DEFAULT_COLOR" "${rbenv_version_name}" "RUBY_ICON"
   fi
 }
 
@@ -644,17 +641,20 @@ prompt_rbenv() {
 # see https://github.com/postmodern/chruby/issues/245 for chruby_auto issue with ZSH
 prompt_chruby() {
   local chruby_env
-  chrb_env="$(chruby 2> /dev/null | grep \* | tr -d '* ')"
+  chruby_env="$(chruby 2> /dev/null | grep \* | tr -d '* ')"
   # Don't show anything if the chruby did not change the default ruby
-  if [[ "${chrb_env:-system}" != "system" ]]; then
-    serialize_segment "$0" "" "$1" "$2" "red" "$DEFAULT_COLOR" "${chrb_env}" "RUBY_ICON"
+  if [[ "${chruby_env:-system}" == "system" ]]; then
+    chruby_env=""
   fi
+  serialize_segment "$0" "" "$1" "$2" "${3}" "red" "$DEFAULT_COLOR" "${chruby_env}" "RUBY_ICON"
 }
 
 # Print an icon if user is root.
 prompt_root_indicator() {
+  # TODO: Here only the visual identifier is printed! This means, the segment
+  # has no content and won't get printed anyway! FIXME!
   if [[ "$UID" -eq 0 ]]; then
-    serialize_segment "$0" "" "$1" "$2" "$DEFAULT_COLOR" "yellow" "" "ROOT_ICON"
+    serialize_segment "$0" "" "$1" "$2" "${3}" "$DEFAULT_COLOR" "yellow" "" "ROOT_ICON"
   fi
 }
 
@@ -663,9 +663,7 @@ prompt_rust_version() {
   local rust_version
   rust_version=$(rustc --version 2>&1 | grep -oe "^rustc\s*[^ ]*" | grep -o '[0-9.a-z\\\-]*$')
 
-  if [[ -n "$rust_version" ]]; then
-    serialize_segment "$0" "" "$1" "$2" "208" "$DEFAULT_COLOR" "Rust ${rust_version}" "RUST_ICON"
-  fi
+  serialize_segment "$0" "" "$1" "$2" "${3}" "208" "$DEFAULT_COLOR" "Rust ${rust_version}" "RUST_ICON"
 }
 # RSpec test ratio
 prompt_rspec_stats() {
@@ -685,23 +683,22 @@ prompt_rvm() {
 
   local version=$(echo $MY_RUBY_HOME | awk -F'-' '{print $2}')
 
-  if [[ -n "$version$gemset" ]]; then
-    serialize_segment "$0" "" "$1" "$2" "240" "$DEFAULT_COLOR" "${version}${gemset}" "RUBY_ICON"
-  fi
+  serialize_segment "$0" "" "$1" "$2" "${3}" "240" "$DEFAULT_COLOR" "${version}${gemset}" "RUBY_ICON"
 }
 
 # Status: return code if verbose, otherwise just an icon if an error occurred
 set_default POWERLEVEL9K_STATUS_VERBOSE true
 set_default POWERLEVEL9K_STATUS_OK_IN_NON_VERBOSE false
 prompt_status() {
+  # TODO: Segment states? In some cases the segment has no content!
   if [[ "$RETVAL" -ne 0 ]]; then
-    if [[ "$POWERLEVEL9K_STATUS_VERBOSE" == true ]]; then
-      serialize_segment "$0" "ERROR" "$1" "$2" "red" "226" "$RETVAL" "CARRIAGE_RETURN_ICON"
+    if [[ "$POWERLEVEL9K_STATUS_VERBOSE" == "true" ]]; then
+      serialize_segment "$0" "ERROR" "$1" "$2" "${3}" "red" "226" "$RETVAL" "CARRIAGE_RETURN_ICON"
     else
-      serialize_segment "$0" "ERROR" "$1" "$2" "$DEFAULT_COLOR" "red" "" "FAIL_ICON"
+      serialize_segment "$0" "ERROR" "$1" "$2" "${3}" "$DEFAULT_COLOR" "red" "" "FAIL_ICON"
     fi
-  elif [[ "$POWERLEVEL9K_STATUS_VERBOSE" == true || "$POWERLEVEL9K_STATUS_OK_IN_NON_VERBOSE" == true ]]; then
-    serialize_segment "$0" "OK" "$1" "$2" "$DEFAULT_COLOR" "046" "" "OK_ICON"
+  elif [[ "$POWERLEVEL9K_STATUS_VERBOSE" == "true" || "$POWERLEVEL9K_STATUS_OK_IN_NON_VERBOSE" == "true" ]]; then
+    serialize_segment "$0" "OK" "$1" "$2" "${3}" "$DEFAULT_COLOR" "046" "" "OK_ICON"
   fi
 }
 
@@ -726,7 +723,7 @@ prompt_swap() {
     base='K'
   fi
 
-  serialize_segment "$0" "" "$1" "$2" "yellow" "$DEFAULT_COLOR" "$(printSizeHumanReadable "$swap_used" $base)" "SWAP_ICON"
+  serialize_segment "$0" "" "$1" "$2" "${3}" "yellow" "$DEFAULT_COLOR" "$(printSizeHumanReadable "$swap_used" $base)" "SWAP_ICON"
 }
 
 # Symfony2-PHPUnit test ratio
@@ -736,31 +733,33 @@ prompt_symfony2_tests() {
     code_amount=$(ls -1 src/**/*.php | grep -vc Tests)
     tests_amount=$(ls -1 src/**/*.php | grep -c Tests)
 
-    build_test_stats "$1" "$0" "$2" "$code_amount" "$tests_amount" "SF2" 'TEST_ICON'
+    build_test_stats "$1" "$0" "$2" "${3}" "$code_amount" "$tests_amount" "SF2" 'TEST_ICON'
   fi
 }
 
 # Symfony2-Version
 prompt_symfony2_version() {
+  local symfony2_version
   if [[ -f app/bootstrap.php.cache ]]; then
-    local symfony2_version
     symfony2_version=$(grep " VERSION " app/bootstrap.php.cache | sed -e 's/[^.0-9]*//g')
-    serialize_segment "$0" "" "$1" "$2" "240" "$DEFAULT_COLOR" "$symfony2_version" "SYMFONY_ICON"
   fi
+  serialize_segment "$0" "" "$1" "$2" "${3}" "240" "$DEFAULT_COLOR" "${symfony2_version}" "SYMFONY_ICON"
 }
 
 # Show a ratio of tests vs code
 #   * $1 Alignment: string - left|right
 #   * $2 Name: string - Name of the segment
 #   * $3 Index: integer
-#   * $4 Amount of code: integer
-#   * $5 Amount of tests: integer
-#   * $6 Content: string - Content of the segment
-#   * $7 Visual identifier: string - Icon of the segment
+#   * $4 Joined: bool
+#   * $5 Amount of code: integer
+#   * $6 Amount of tests: integer
+#   * $7 Content: string - Content of the segment
+#   * $8 Visual identifier: string - Icon of the segment
 build_test_stats() {
-  local code_amount="$4"
-  local tests_amount="$5"+0.00001
-  local headline="$6"
+  local joined="${4}"
+  local code_amount="${5}"
+  local tests_amount="${6}"+0.00001
+  local headline="${7}"
 
   # Set float precision to 2 digits:
   typeset -F 2 ratio
@@ -777,7 +776,7 @@ build_test_stats() {
   (( ratio >= 50 && ratio < 75 )) && current_state="AVG"
   (( ratio < 50 )) && current_state="BAD"
 
-  serialize_segment "${2}" "$current_state" "${1}" "${3}" "${test_states[$current_state]}" "${DEFAULT_COLOR}" "$headline: $ratio%%" "${7}"
+  serialize_segment "${2}" "$current_state" "${1}" "${3}" "${joined}" "${test_states[$current_state]}" "${DEFAULT_COLOR}" "$headline: $ratio%%" "${8}"
 }
 
 # System time
@@ -787,7 +786,7 @@ prompt_time() {
     time_format="$POWERLEVEL9K_TIME_FORMAT"
   fi
 
-  serialize_segment "$0" "" "$1" "$2" "$DEFAULT_COLOR_INVERTED" "$DEFAULT_COLOR" "$time_format" ""
+  serialize_segment "$0" "" "$1" "$2" "${3}" "$DEFAULT_COLOR_INVERTED" "$DEFAULT_COLOR" "$time_format" ""
 }
 
 # todo.sh: shows the number of tasks in your todo.sh file
@@ -795,7 +794,7 @@ prompt_todo() {
   if $(hash todo.sh 2>&-); then
     count=$(todo.sh ls | egrep "TODO: [0-9]+ of ([0-9]+) tasks shown" | awk '{ print $4 }')
     if [[ "$count" = <-> ]]; then
-      serialize_segment "$0" "" "$1" "$2" "244" "$DEFAULT_COLOR" "$count" "TODO_ICON"
+      serialize_segment "$0" "" "$1" "$2" "${3}" "244" "$DEFAULT_COLOR" "$count" "TODO_ICON"
     fi
   fi
 }
@@ -864,7 +863,7 @@ prompt_vcs() {
 
   VCS_WORKDIR_DIRTY=false
   VCS_WORKDIR_HALF_DIRTY=false
-  current_state=""
+  local current_state=""
 
   # Actually invoke vcs_info manually to gather all information.
   vcs_info
@@ -882,7 +881,7 @@ prompt_vcs() {
         current_state='clean'
       fi
     fi
-    serialize_segment "$0" "$current_state" "$1" "$2" "${vcs_states[$current_state]}" "$DEFAULT_COLOR" "$vcs_prompt" "$vcs_visual_identifier"
+    serialize_segment "$0" "$current_state" "$1" "$2" "${3}" "${vcs_states[$current_state]}" "$DEFAULT_COLOR" "$vcs_prompt" "$vcs_visual_identifier"
   fi
 }
 
@@ -907,17 +906,19 @@ prompt_vi_mode() {
       vi_mode="${POWERLEVEL9K_VI_COMMAND_MODE_STRING}"
     ;;
   esac
-  serialize_segment "${0}" "${current_state}" "${1}" "${2}" "${DEFAULT_COLOR}" "${vi_states[$current_state]}" "${vi_mode}" ''
+  serialize_segment "${0}" "${current_state}" "${1}" "${2}" "${3}" "${DEFAULT_COLOR}" "${vi_states[$current_state]}" "${vi_mode}" ''
 }
 
 # Virtualenv: current working virtualenv
 # More information on virtualenv (Python):
 # https://virtualenv.pypa.io/en/latest/
 prompt_virtualenv() {
-  local virtualenv_path="$VIRTUAL_ENV"
-  if [[ -n "$virtualenv_path" && "$VIRTUAL_ENV_DISABLE_PROMPT" != true ]]; then
-    serialize_segment "$0" "" "$1" "$2" "blue" "$DEFAULT_COLOR" "$(basename "$virtualenv_path")" "PYTHON_ICON"
+  # TODO: Why would one disable the prompt with that variable?!?
+  local virtualenv_path=$(basename "${VIRTUAL_ENV}")
+  if [[ "${VIRTUAL_ENV_DISABLE_PROMPT}" == "true" ]]; then
+    virtualenv_path=""
   fi
+  serialize_segment "$0" "" "$1" "$2" "${3}" "blue" "$DEFAULT_COLOR" "${virtualenv_path}" "PYTHON_ICON"
 }
 
 # pyenv: current active python version (with restrictions)
@@ -931,9 +932,10 @@ prompt_pyenv() {
   # This reads better for devs familiar with sed/awk/grep/cut utilities
   # Using shell expansion/substitution may hamper future maintainability
   #local pyenv_version="$(pyenv version 2>/dev/null | head -n1 | cut -d' ' -f1)"
-  if [[ -n "$pyenv_version" && "$pyenv_version" != "system" ]]; then
-    serialize_segment "$0" "" "$1" "$2" "blue" "$DEFAULT_COLOR" "$pyenv_version" "PYTHON_ICON"
+  if [[ "${pyenv_version}" != "system" ]]; then
+    pyenv_version=""
   fi
+  serialize_segment "$0" "" "$1" "$2" "${3}" "blue" "$DEFAULT_COLOR" "$pyenv_version" "PYTHON_ICON"
 }
 
 
@@ -959,13 +961,7 @@ serialize_segment() {
   local STATE="${2}"
   local ALIGNMENT="${3}"
   local INDEX="${4}"
-
-  # TODO: The information whether a segment should be
-  # joined or not, should be processed here.
-  # The problem is, that this information depends
-  # on the previous printed segment, which must not
-  # necessarily be the predecessor of the current one..
-#  JOINED=$5
+  local JOINED="${5}"
 
   ################################################################
   # Methodology behind user-defined variables overwriting colors:
@@ -982,18 +978,18 @@ serialize_segment() {
   # Overwrite given background-color by user defined variable for this segment.
   local BACKGROUND_USER_VARIABLE="POWERLEVEL9K_${STATEFUL_NAME}_BACKGROUND"
   local BACKGROUND="${(P)BACKGROUND_USER_VARIABLE}"
-  [[ -z "${BACKGROUND}" ]] && BACKGROUND="${5}"
+  [[ -z "${BACKGROUND}" ]] && BACKGROUND="${6}"
 
   # Overwrite given foreground-color by user defined variable for this segment.
   local FOREGROUND_USER_VARIABLE="POWERLEVEL9K_${STATEFUL_NAME}_FOREGROUND"
   local FOREGROUND="${(P)FOREGROUND_USER_VARIABLE}"
-  [[ -z "${FOREGROUND}" ]] && FOREGROUND="${6}"
+  [[ -z "${FOREGROUND}" ]] && FOREGROUND="${7}"
 
-  local CONTENT="${7}"
+  local CONTENT="${8}"
 
   local VISUAL_IDENTIFIER
-  if [[ -n "${8}" ]]; then
-    VISUAL_IDENTIFIER="$(print_icon ${8})"
+  if [[ -n "${9}" ]]; then
+    VISUAL_IDENTIFIER="$(print_icon ${9})"
     if [[ -n "${VISUAL_IDENTIFIER}" ]]; then
       # Allow users to overwrite the color for the visual identifier only.
       local visual_identifier_color_variable="POWERLEVEL9K_${STATEFUL_NAME}_VISUAL_IDENTIFIER_COLOR"
@@ -1013,7 +1009,7 @@ serialize_segment() {
   typeset -p "STATE" >> $FILE
   typeset -p "ALIGNMENT" >> $FILE
   typeset -p "INDEX" >> $FILE
-#  typeset -p "JOINED" >> $FILE
+  typeset -p "JOINED" >> $FILE
   typeset -p "BACKGROUND" >> $FILE
   typeset -p "FOREGROUND" >> $FILE
   typeset -p "CONTENT" >> $FILE
@@ -1040,6 +1036,11 @@ p9k_build_prompt_from_cache() {
   #POWERLEVEL9K_VISITED_SEGMENTS=()
   for i in $(ls -1 $CACHE_DIR/p9k_$$_*); do
     source "${i}"
+
+    # If segment has no content, skip it!
+    if [[ -z "${CONTENT}" ]]; then
+      continue
+    fi
 
     local statefulName="${NAME}"
     [[ -n "${STATE}" ]] && statefulName="${NAME}_${STATE}"
@@ -1071,18 +1072,20 @@ trap p9k_clear_cache EXIT
 build_left_prompt() {
   local index=1
   for element in "${POWERLEVEL9K_LEFT_PROMPT_ELEMENTS[@]}"; do
+    local joined=false
+    [[ "${element[-7,-1]}" == '_joined' ]] && joined=true
     # Remove joined information in direct calls
-    element=${element%_joined}
+    element="${element%_joined}"
 
     # Check if it is a custom command, otherwise interpet it as
     # a prompt.
     if [[ $element[0,7] =~ "custom_" ]]; then
-      "prompt_custom" "left" "$index" $element[8,-1] &!
+      "prompt_custom" "left" "${index}" "${element[8,-1]}" "${joined}" &!
     else
       # Could we display placeholders?
       # -> At most it could be static ones, but
       # e.g. states are the result of calculation..
-      "prompt_$element" "left" "$index" &!
+      "prompt_$element" "left" "${index}" "${joined}" &!
     fi
 
     index=$((index + 1))
@@ -1093,15 +1096,17 @@ build_left_prompt() {
 build_right_prompt() {
   local index=1
   for element in "${POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS[@]}"; do
+    local joined=false
+    [[ "${element[-7,-1]}" == '_joined' ]] && joined=true
     # Remove joined information in direct calls
-    element=${element%_joined}
+    element="${element%_joined}"
 
     # Check if it is a custom command, otherwise interpet it as
     # a prompt.
     if [[ $element[0,7] =~ "custom_" ]]; then
-      "prompt_custom" "right" "$index" $element[8,-1] &!
+      "prompt_custom" "right" "$index" "${element[8,-1]}" "${joined}" &!
     else
-      "prompt_$element" "right" "$index" &!
+      "prompt_$element" "right" "$index" "${joined}" &!
     fi
 
     index=$((index + 1))
