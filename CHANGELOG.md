@@ -1,3 +1,10 @@
+## next
+
+### All segments are now async
+
+All segments are now generated asynchronously which brings a huge
+performance benefit.
+
 ## v0.4.0
 
 ### Development changes
