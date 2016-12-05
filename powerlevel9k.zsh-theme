@@ -569,11 +569,10 @@ prompt_node_version() {
 # Node version from NVM
 # Only prints the segment if different than the default value
 prompt_nvm() {
-  [[ ! $(type nvm) =~ 'nvm is a shell function'* ]] && return
-  local node_version=$(nvm current)
-  [[ -z "${node_version}" ]] || [[ "${node_version}" = "none" ]] && return
-  local nvm_default=$(cat $NVM_DIR/alias/default)
-  [[ "$node_version" =~ "$nvm_default" ]] && return
+  local node_version=$(nvm current 2> /dev/null)
+  [[ "${node_version}" == "none" ]] && node_version=""
+  local nvm_default=$(cat $NVM_DIR/alias/default 2> /dev/null)
+  [[ "${node_version}" =~ "${nvm_default}" ]] && node_version=""
 
   serialize_segment "$0" "" "$1" "$2" "${3}" "green" "011" "${node_version:1}" "NODE_ICON"
 }
