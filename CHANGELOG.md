@@ -11,7 +11,7 @@ The segment now works again.
 
 ### `virtualenv` changes
 
-Removed `VIRTUAL_ENV_DISABLE_PROMPT` variable. If you want to disable the segment, just remove it from your configuration.
+Dropped support for `VIRTUAL_ENV_DISABLE_PROMPT`. If you want to disable the segment, just remove it from your configuration.
 
 ## v0.4.0
 
