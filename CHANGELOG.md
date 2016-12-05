@@ -5,6 +5,10 @@
 All segments are now generated asynchronously which brings a huge
 performance benefit.
 
+### `vi_mode` works again
+
+The segment now works again.
+
 ## v0.4.0
 
 ### Development changes
