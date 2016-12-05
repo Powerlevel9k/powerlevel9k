@@ -913,12 +913,7 @@ prompt_vi_mode() {
 # More information on virtualenv (Python):
 # https://virtualenv.pypa.io/en/latest/
 prompt_virtualenv() {
-  # TODO: Why would one disable the prompt with that variable?!?
-  local virtualenv_path=$(basename "${VIRTUAL_ENV}")
-  if [[ "${VIRTUAL_ENV_DISABLE_PROMPT}" == "true" ]]; then
-    virtualenv_path=""
-  fi
-  serialize_segment "$0" "" "$1" "$2" "${3}" "blue" "$DEFAULT_COLOR" "${virtualenv_path}" "PYTHON_ICON"
+  serialize_segment "$0" "" "$1" "$2" "${3}" "blue" "$DEFAULT_COLOR" "$(basename "${VIRTUAL_ENV}")" "PYTHON_ICON"
 }
 
 # pyenv: current active python version (with restrictions)
