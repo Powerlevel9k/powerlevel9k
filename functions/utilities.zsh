@@ -177,6 +177,10 @@ print_deprecation_warning() {
 
 # A helper function to determine if a segment should be
 # joined or promoted to a full one.
+# Because we assume that this function gets called in a
+# loop, we just look at the segments predecessors cache
+# file. This is the reason why all segments must write a
+# cache file regardless whether they have content or not.
 # Takes two arguments:
 #   * $1: The alignment of the current segment
 #   * $2: The array index of the current segment
