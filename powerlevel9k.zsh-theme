@@ -628,8 +628,8 @@ prompt_rbenv() {
     local rbenv_global="$(rbenv global)"
 
     # Don't show anything if the current Ruby is the same as the global Ruby.
-    if [[ $rbenv_version_name == $rbenv_global ]]; then
-      return
+    if [[ "${rbenv_version_name}" == "${rbenv_global}" ]]; then
+      rbenv_version_name=""
     fi
 
     serialize_segment "$0" "" "$1" "$2" "${3}" "red" "$DEFAULT_COLOR" "${rbenv_version_name}" "RUBY_ICON"
