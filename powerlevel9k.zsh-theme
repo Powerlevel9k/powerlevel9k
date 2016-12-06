@@ -41,7 +41,7 @@ else
   POWERLEVEL9K_INSTALLATION_PATH="$0"
 fi
 
-# Resolve the instllation path
+# Resolve the installation path
 if [[ -L "$POWERLEVEL9K_INSTALLATION_PATH" ]]; then
   # If this theme is sourced as a symlink, we need to locate the real URL
   filename="$(realpath -P $POWERLEVEL9K_INSTALLATION_PATH 2>/dev/null || readlink -f $POWERLEVEL9K_INSTALLATION_PATH 2>/dev/null || perl -MCwd=abs_path -le 'print abs_path readlink(shift);' $POWERLEVEL9K_INSTALLATION_PATH 2>/dev/null)"
@@ -104,7 +104,7 @@ fi
 
 # Begin a left prompt segment
 # Takes four arguments:
-#   * $1: Name of the function that was orginally invoked (mandatory).
+#   * $1: Name of the function that was originally invoked (mandatory).
 #         Necessary, to make the dynamic color-overwrite mechanism work.
 #   * $2: The array index of the current segment
 #   * $3: Background color
@@ -174,7 +174,7 @@ left_prompt_end() {
 
 # Begin a right prompt segment
 # Takes four arguments:
-#   * $1: Name of the function that was orginally invoked (mandatory).
+#   * $1: Name of the function that was originally invoked (mandatory).
 #         Necessary, to make the dynamic color-overwrite mechanism work.
 #   * $2: The array index of the current segment
 #   * $3: Background color
@@ -347,7 +347,7 @@ prompt_battery() {
       local time_remaining=$(acpi | awk '{ print $5 }')
       if [[ $time_remaining =~ rate ]]; then
         local tstring="..."
-      elif [[ $time_remaining =~ "[:digit:]+" ]]; then
+      elif [[ $time_remaining =~ "[[:digit:]]+" ]]; then
         local tstring=${(f)$(date -u -d "$(echo $time_remaining)" +%k:%M)}
       fi
     fi
@@ -403,6 +403,7 @@ prompt_custom() {
 }
 
 # Dir: current working directory
+set_default POWERLEVEL9K_DIR_PATH_SEPARATOR "/"
 prompt_dir() {
   local current_path='%~'
   if [[ -n "$POWERLEVEL9K_SHORTEN_DIR_LENGTH" ]]; then
@@ -450,14 +451,23 @@ prompt_dir() {
     esac
   fi
 
-  local current_icon=''
-  if [[ $(print -P "%~") == '~' ]]; then
-    serialize_segment "$0" "HOME" "$1" "$2" "${3}" "blue" "$DEFAULT_COLOR" "$current_path" 'HOME_ICON'
-  elif [[ $(print -P "%~") == '~'* ]]; then
-    serialize_segment "$0" "HOME_SUBFOLDER" "$1" "$2" "${3}" "blue" "$DEFAULT_COLOR" "$current_path" 'HOME_SUB_ICON'
-  else
-    serialize_segment "$0" "DEFAULT" "$1" "$2" "${3}" "blue" "$DEFAULT_COLOR" "$current_path" 'FOLDER_ICON'
+  if [[ "${POWERLEVEL9K_DIR_PATH_SEPARATOR}" != "/" ]]; then
+    current_path=$(print -P "${current_path}" | sed "s/\//${POWERLEVEL9K_DIR_PATH_SEPARATOR}/g")
   fi
+
+  typeset -AH dir_states
+  dir_states=(
+    "DEFAULT"         "FOLDER_ICON"
+    "HOME"            "HOME_ICON"
+    "HOME_SUBFOLDER"  "HOME_SUB_ICON"
+  )
+  local current_state="DEFAULT"
+  if [[ $(print -P "%~") == '~' ]]; then
+    current_state="HOME"
+  elif [[ $(print -P "%~") == '~'* ]]; then
+    current_state="HOME_SUBFOLDER"
+  fi
+  serialize_segment "$0" "${current_state}" "$1" "$2" "${3}" "blue" "${DEFAULT_COLOR}" "${current_path}" "${dir_states[$current_state]}"
 }
 
 # Docker machine
@@ -725,6 +735,17 @@ prompt_swap() {
   serialize_segment "$0" "" "$1" "$2" "${3}" "yellow" "$DEFAULT_COLOR" "$(printSizeHumanReadable "$swap_used" $base)" "SWAP_ICON"
 }
 
+# Swift version
+prompt_swift_version() {
+  local swift_version=($(swift --version 2>/dev/null))
+  [[ -z "${swift_version}" ]] && return
+
+  # Extract semantic version
+  swift_version=$(echo ${swift_version} | sed -e 's/[^0-9.]*\([0-9.]*\).*/\1/')
+
+  serialize_segment "$0" "" "$1" "$2" "${3}" "magenta" "white" "${swift_version}" "SWIFT_ICON"
+}
+
 # Symfony2-PHPUnit test ratio
 prompt_symfony2_tests() {
   if [[ (-d src && -d app && -f app/AppKernel.php) ]]; then
@@ -932,7 +953,6 @@ prompt_pyenv() {
   serialize_segment "$0" "" "$1" "$2" "${3}" "blue" "$DEFAULT_COLOR" "$pyenv_version" "PYTHON_ICON"
 }
 
-
 ################################################################
 # Caching functions
 ################################################################
@@ -960,10 +980,10 @@ serialize_segment() {
   ################################################################
   # Methodology behind user-defined variables overwriting colors:
   #     The first parameter to the segment constructors is the calling function's
-  #     name.  From this function name, we strip the "prompt_"-prefix and
-  #     uppercase it.  This is then prefixed with "POWERLEVEL9K_" and suffixed
+  #     name. From this function name, we strip the "prompt_"-prefix and
+  #     uppercase it. This is then prefixed with "POWERLEVEL9K_" and suffixed
   #     with either "_BACKGROUND" or "_FOREGROUND", thus giving us the variable
-  #     name. So each new segment is user-overwritable by a variable following
+  #     name. So each new segment is user-overwritten by a variable following
   #     this naming convention.
   ################################################################
 
@@ -1130,7 +1150,7 @@ powerlevel9k_prepare_prompts() {
 $(print_icon 'MULTILINE_SECOND_PROMPT_PREFIX')"
     if [[ "$POWERLEVEL9K_RPROMPT_ON_NEWLINE" != true ]]; then
       # The right prompt should be on the same line as the first line of the left
-      # prompt.  To do so, there is just a quite ugly workaround: Before zsh draws
+      # prompt. To do so, there is just a quite ugly workaround: Before zsh draws
       # the RPROMPT, we advise it, to go one line up. At the end of RPROMPT, we
       # advise it to go one line down. See:
       # http://superuser.com/questions/357107/zsh-right-justify-in-ps1
