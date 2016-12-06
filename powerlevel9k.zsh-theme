@@ -737,8 +737,7 @@ prompt_swap() {
 
 # Swift version
 prompt_swift_version() {
-  local swift_version=($(swift --version 2>/dev/null))
-  [[ -z "${swift_version}" ]] && return
+  local swift_version=$(swift --version 2>/dev/null)
 
   # Extract semantic version
   swift_version=$(echo ${swift_version} | sed -e 's/[^0-9.]*\([0-9.]*\).*/\1/')
