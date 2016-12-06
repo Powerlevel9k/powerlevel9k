@@ -152,8 +152,8 @@ left_prompt_segment() {
 
   # Print the visual identifier
   echo -n "${6}"
-  # Print the content of the segment, if there is any
-  [[ -n "${5}" ]] && echo -n "${fg}${5}"
+  # Print the content of the segment
+  echo -n "${fg}${5}"
   echo -n "${POWERLEVEL9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS}"
 
   BACKGROUND_OF_LAST_SEGMENT="${3}"
@@ -217,8 +217,8 @@ right_prompt_segment() {
   # Print whitespace only if segment is not joined or first right segment
   [[ ${joined} == false ]] || [[ "${CURRENT_RIGHT_BG}" == "NONE" ]] && echo -n "${POWERLEVEL9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS}"
 
-  # Print segment content if there is any
-  [[ -n "${5}" ]] && echo -n "${5}"
+  # Print segment content
+  echo -n "${5}"
   # Print the visual identifier
   echo -n "${6}${POWERLEVEL9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS}%f"
 
@@ -988,6 +988,7 @@ serialize_segment() {
 
   local STATEFUL_NAME="${(U)NAME#prompt_}"
   [[ -n "${STATE}" ]] && STATEFUL_NAME="${STATEFUL_NAME}_${(U)STATE}"
+
   # Overwrite given background-color by user defined variable for this segment.
   local BACKGROUND_USER_VARIABLE="POWERLEVEL9K_${STATEFUL_NAME}_BACKGROUND"
   local BACKGROUND="${(P)BACKGROUND_USER_VARIABLE}"
@@ -1016,6 +1017,30 @@ serialize_segment() {
     fi
   fi
 
+  # Conditions have three layers:
+  # 1. All segments should not print
+  #    a segemnt, if they provide no
+  #    content (default condition).
+  # 2. All segments could define a
+  #    default condition on their
+  #    own, overriding the previous
+  #    one.
+  # 3. Users could set a condition
+  #    for each segment. This is
+  #    the trump card, and has
+  #    highest precedence.
+  local CONDITION
+  local SEGMENT_CONDITION="POWERLEVEL9K_${STATEFUL_NAME}_CONDITION"
+  if defined "${SEGMENT_CONDITION}"; then
+    CONDITION="${(P)SEGMENT_CONDITION}"
+  elif [[ -n "${10}" ]]; then
+    CONDITION="${10}"
+  else
+    CONDITION='[[ -n "${CONTENT}" ]]'
+  fi
+  # Precompile condition, as we are here in the async child process.
+  if eval "${CONDITION}"; then CONDITION=true; else CONDITION=false; fi
+
   local FILE="${CACHE_DIR}/p9k_$$_${ALIGNMENT}_${(l:3::0:)INDEX}_${NAME}.sh"
   rm -f $FILE #Remove the previous file prior, due to weird > handling on OS X
   typeset -p "NAME" > $FILE
@@ -1027,6 +1052,7 @@ serialize_segment() {
   typeset -p "FOREGROUND" >> $FILE
   typeset -p "CONTENT" >> $FILE
   typeset -p "VISUAL_IDENTIFIER" >> $FILE
+  typeset -p "CONDITION" >> $FILE
 
   # send WINCH signal to parent process
   kill -s WINCH $$
@@ -1050,8 +1076,8 @@ p9k_build_prompt_from_cache() {
   for i in $(ls -1 $CACHE_DIR/p9k_$$_* 2> /dev/null); do
     source "${i}"
 
-    # If segment has no content, skip it!
-    if [[ -z "${CONTENT}" ]]; then
+    # If the segments condition to print was not met, skip it!
+    if ! ${CONDITION}; then
       continue
     fi
 
