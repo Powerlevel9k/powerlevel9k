@@ -662,9 +662,7 @@ prompt_chruby() {
 prompt_root_indicator() {
   # TODO: Here only the visual identifier is printed! This means, the segment
   # has no content and won't get printed anyway! FIXME!
-  if [[ "$UID" -eq 0 ]]; then
-    serialize_segment "$0" "" "$1" "$2" "${3}" "$DEFAULT_COLOR" "yellow" "" "ROOT_ICON"
-  fi
+  serialize_segment "$0" "" "$1" "$2" "${3}" "$DEFAULT_COLOR" "yellow" "" "ROOT_ICON" '[[ "${UID}" -eq 0 ]]'
 }
 
 # Print Rust version number
