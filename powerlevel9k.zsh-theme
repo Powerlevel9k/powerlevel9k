@@ -697,16 +697,39 @@ prompt_rvm() {
 set_default POWERLEVEL9K_STATUS_VERBOSE true
 set_default POWERLEVEL9K_STATUS_OK_IN_NON_VERBOSE false
 prompt_status() {
-  # TODO: Segment states? In some cases the segment has no content!
-  if [[ "$RETVAL" -ne 0 ]]; then
+  typeset -Ah current_state
+  if [[ "${RETVAL}" -ne 0 ]]; then
     if [[ "$POWERLEVEL9K_STATUS_VERBOSE" == "true" ]]; then
-      serialize_segment "$0" "ERROR" "$1" "$2" "${3}" "red" "226" "$RETVAL" "CARRIAGE_RETURN_ICON"
+      # This is a variant of the error state,
+      # that just has different colors and a
+      # different visual identifier.. sigh.
+      current_state=(
+        "STATE"               "ERROR"
+        "CONTENT"             "${RETVAL}"
+        "BACKGROUND_COLOR"    "red"
+        "FOREGROUND_COLOR"    "226"
+        "VISUAL_IDENTIFIER"   "CARRIAGE_RETURN_ICON"
+      )
     else
-      serialize_segment "$0" "ERROR" "$1" "$2" "${3}" "$DEFAULT_COLOR" "red" "" "FAIL_ICON"
+      current_state=(
+        "STATE"               "ERROR"
+        "CONTENT"             "${RETVAL}"
+        "BACKGROUND_COLOR"    "${DEFAULT_COLOR}"
+        "FOREGROUND_COLOR"    "red"
+        "VISUAL_IDENTIFIER"   "FAIL_ICON"
+      )
     fi
   elif [[ "$POWERLEVEL9K_STATUS_VERBOSE" == "true" || "$POWERLEVEL9K_STATUS_OK_IN_NON_VERBOSE" == "true" ]]; then
-    serialize_segment "$0" "OK" "$1" "$2" "${3}" "$DEFAULT_COLOR" "046" "" "OK_ICON"
+    current_state=(
+      "STATE"               "OK"
+      "CONTENT"             "${RETVAL}"
+      "BACKGROUND_COLOR"    "${DEFAULT_COLOR}"
+      "FOREGROUND_COLOR"    "046"
+      "VISUAL_IDENTIFIER"   "OK_ICON"
+    )
   fi
+
+  serialize_segment "$0" "${current_state[STATE]}" "$1" "$2" "${3}" "${current_state[BACKGROUND_COLOR]}" "${current_state[FOREGROUND_COLOR]}" "${current_state[CONTENT]}" "${current_state[VISUAL_IDENTIFIER]}"
 }
 
 prompt_swap() {
