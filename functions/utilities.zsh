@@ -175,38 +175,6 @@ print_deprecation_warning() {
   done
 }
 
-# A helper function to determine if a segment should be
-# joined or promoted to a full one.
-# Because we assume that this function gets called in a
-# loop, we just look at the segments predecessors cache
-# file. This is the reason why all segments must write a
-# cache file regardless whether they have content or not.
-# Takes two arguments:
-#   * $1: The alignment of the current segment
-#   * $2: The array index of the current segment
-function segmentShouldBeJoined() {
-  local currentAlignment="${1}"
-  [[ "${2}" == "1" ]] && 2="2" # Stupid approach to avoid index to become 0
-  local currentIndex="${2}"
-  local lastIndex=$(( currentIndex - 1 ))
-
-  # TODO: Do this in p9k_build_prompt_from_cache to avoid double-sourcing!
-  source "${CACHE_DIR}/p9k_$$_${currentAlignment}_${(l:3::0:)lastIndex}_*" 2> /dev/null
-  # Case 1: Previous segment is also a joined one, but has no content. In this
-  # case we promote the current segment to a full one.
-  if [[ "${JOINED}" == "true" ]] && [[ -z "${CONTENT}" ]]; then
-    return 0
-  fi
-  source "${CACHE_DIR}/p9k_$$_${currentAlignment}_${(l:3::0:)currentIndex}_*" 2> /dev/null
-  # Case 2: Current segment wants to be joined.
-  if [[ "${JOINED}" == "true" ]]; then
-    return 0
-  fi
-
-  # Default: Segment should NOT be joined.
-  return 1
-}
-
 # Given a directory path, truncate it according to the settings for
 # `truncate_from_right`
 function truncatePathFromRight() {

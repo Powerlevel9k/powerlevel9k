@@ -112,15 +112,13 @@ fi
 #   * $5: The segment content
 #   * $6: An identifying icon (must be a key of the icons array)
 #   * $7: Last segments background color
+#   * $8: Boolean - If the segment should be joined or not
 # The latter three can be omitted,
 set_default last_left_element_index 1
 set_default POWERLEVEL9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS " "
 left_prompt_segment() {
   local current_index="${2}"
-
-  # Check if the segment should be joined with the previous one
-  local joined
-  segmentShouldBeJoined "left" "${current_index}" && joined=true || joined=false
+  local joined="${8}"
 
   local BACKGROUND_OF_LAST_SEGMENT="${7}"
 
@@ -130,7 +128,7 @@ left_prompt_segment() {
 
   if [[ "${BACKGROUND_OF_LAST_SEGMENT}" != 'NONE' ]] && ! isSameColor "${3}" "${BACKGROUND_OF_LAST_SEGMENT}"; then
     echo -n "${bg}%F{$BACKGROUND_OF_LAST_SEGMENT}"
-    if [[ ${joined} == false ]]; then
+    if [[ "${joined}" == "false" ]]; then
       # Middle segment
       echo -n "${_POWERLEVEL9K_LEFT_SEGMENT_SEPARATOR}${POWERLEVEL9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS}"
     fi
@@ -182,23 +180,21 @@ left_prompt_end() {
 #   * $5: The segment content
 #   * $6: An identifying icon (must be a key of the icons array)
 #   * $7: Last segments background color
+#   * $8: Boolean - If the segment should be joined or not
 # No ending for the right prompt segment is needed (unlike the left prompt, above).
 set_default last_right_element_index 1
 set_default POWERLEVEL9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS " "
 right_prompt_segment() {
   local current_index="${2}"
   local CURRENT_RIGHT_BG="${7}"
-
-  # Check if the segment should be joined with the previous one
-  local joined
-  segmentShouldBeJoined "right" "${current_index}" && joined=true || joined=false
+  local joined="${8}"
 
   local bg fg
   [[ -n "${3}" ]] && bg="%K{$3}" || bg="%k"
   [[ -n "${4}" ]] && fg="%F{$4}" || fg="%f"
 
   # If CURRENT_RIGHT_BG is "NONE", we are the first right segment.
-  if [[ ${joined} == false ]] || [[ "${CURRENT_RIGHT_BG}" == "NONE" ]]; then
+  if [[ "${joined}" == "false" ]] || [[ "${CURRENT_RIGHT_BG}" == "NONE" ]]; then
     if isSameColor "${CURRENT_RIGHT_BG}" "${3}"; then
       # Middle segment with same color as previous segment
       # We take the current foreground color as color for our
@@ -1091,10 +1087,27 @@ p9k_build_prompt_from_cache() {
   local LAST_RIGHT_BACKGROUND='NONE' # Reset
   PROMPT='' # Reset
   RPROMPT='' # Reset
+  local last_segment_join_state
+  local last_segment_content
   # TODO: Optimize for speed!
   #POWERLEVEL9K_VISITED_SEGMENTS=()
   for i in $(ls -1 $CACHE_DIR/p9k_$$_* 2> /dev/null); do
     source "${i}"
+
+    # Default: Segment should NOT be joined.
+    local should_join_segment=false
+    # Case 1: Previous segment is also a joined one, but has no content. In this
+    # case we promote the current segment to a full one.
+    if [[ "${last_segment_join_state}" == "true" ]] && [[ -z "${last_segment_content}" ]]; then
+      # TODO: What if there are more joined segments in a row, but just our predecessor has no content?
+      should_join_segment=false
+    fi
+    # Case 2: Current segment wants to be joined.
+    if [[ "${JOINED}" == "true" ]]; then
+      should_join_segment=true
+    fi
+    last_segment_join_state="${JOINED}"
+    last_segment_content="${CONTENT}"
 
     # If the segments condition to print was not met, skip it!
     if ! ${CONDITION}; then
@@ -1105,10 +1118,10 @@ p9k_build_prompt_from_cache() {
     [[ -n "${STATE}" ]] && statefulName="${NAME}_${STATE}"
 
     if [[ "${ALIGNMENT}" == "left" ]]; then
-      PROMPT+=$("${(L)ALIGNMENT}_prompt_segment" "${statefulName}" "${INDEX}" "${BACKGROUND}" "${FOREGROUND}" "${CONTENT}" "${VISUAL_IDENTIFIER}" "${LAST_LEFT_BACKGROUND}")
+      PROMPT+=$("${(L)ALIGNMENT}_prompt_segment" "${statefulName}" "${INDEX}" "${BACKGROUND}" "${FOREGROUND}" "${CONTENT}" "${VISUAL_IDENTIFIER}" "${LAST_LEFT_BACKGROUND}" "${should_join_segment}")
       LAST_LEFT_BACKGROUND="${BACKGROUND}"
     elif [[ "${ALIGNMENT}" == "right" ]]; then
-      RPROMPT+=$("${(L)ALIGNMENT}_prompt_segment" "${statefulName}" "${INDEX}" "${BACKGROUND}" "${FOREGROUND}" "${CONTENT}" "${VISUAL_IDENTIFIER}" "${LAST_RIGHT_BACKGROUND}")
+      RPROMPT+=$("${(L)ALIGNMENT}_prompt_segment" "${statefulName}" "${INDEX}" "${BACKGROUND}" "${FOREGROUND}" "${CONTENT}" "${VISUAL_IDENTIFIER}" "${LAST_RIGHT_BACKGROUND}" "${should_join_segment}")
       LAST_RIGHT_BACKGROUND="${BACKGROUND}"
     fi
   done
