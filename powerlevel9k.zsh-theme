@@ -1055,7 +1055,7 @@ serialize_segment() {
     CONDITION='[[ -n "${CONTENT}" ]]'
   fi
   # Precompile condition, as we are here in the async child process.
-  if eval "${CONDITION}"; then CONDITION=true; else CONDITION=false; fi
+  eval "${CONDITION}" && CONDITION=true || CONDITION=false
 
   local FILE="${CACHE_DIR}/p9k_$$_${ALIGNMENT}_${(l:3::0:)INDEX}_${NAME}.sh"
   rm -f $FILE #Remove the previous file prior, due to weird > handling on OS X
