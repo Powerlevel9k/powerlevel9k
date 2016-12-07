@@ -292,38 +292,38 @@ prompt_battery() {
     # Pre-Grep as much information as possible to save some memory and
     # avoid pollution of the xtrace output.
     local raw_data="$(ioreg -n AppleSmartBattery | grep -E "MaxCapacity|TimeRemaining|CurrentCapacity|ExternalConnected|IsCharging")"
-    # return if there is no battery on system
-    [[ -z $(echo $raw_data | grep MaxCapacity) ]] && return
 
-    # Convert time remaining from minutes to hours:minutes date string
-    local time_remaining=$(echo $raw_data | grep TimeRemaining | awk '{ print $5 }')
-    if [[ -n $time_remaining ]]; then
-      # this value is set to a very high number when the system is calculating
-      [[ $time_remaining -gt 10000 ]] && local tstring="..." || local tstring=${(f)$(/bin/date -u -r $(($time_remaining * 60)) +%k:%M)}
-    fi
-
-    # Get charge values
-    local max_capacity=$(echo $raw_data | grep MaxCapacity | awk '{ print $5 }')
-    local current_capacity=$(echo $raw_data | grep CurrentCapacity | awk '{ print $5 }')
-
-    if [[ -n "$max_capacity" && -n "$current_capacity" ]]; then
-      typeset -i 10 bat_percent
-      bat_percent=$(( (current_capacity * 100) / max_capacity ))
-    fi
-
-    local remain=""
-    # Logic for string output
-    if [[ $(echo $raw_data | grep ExternalConnected | awk '{ print $5 }') =~ "Yes" ]]; then
-      # Battery is charging
-      if [[ $(echo $raw_data | grep IsCharging | awk '{ print $5 }') =~ "Yes" ]]; then
-        current_state="charging"
-        remain=" ($tstring)"
-      else
-        current_state="charged"
+    if [[ -n $(echo $raw_data | grep MaxCapacity) ]]; then
+      # Convert time remaining from minutes to hours:minutes date string
+      local time_remaining=$(echo $raw_data | grep TimeRemaining | awk '{ print $5 }')
+      if [[ -n $time_remaining ]]; then
+        # this value is set to a very high number when the system is calculating
+        [[ $time_remaining -gt 10000 ]] && local tstring="..." || local tstring=${(f)$(/bin/date -u -r $(($time_remaining * 60)) +%k:%M)}
       fi
-    else
-      [[ $bat_percent -lt $POWERLEVEL9K_BATTERY_LOW_THRESHOLD ]] && current_state="low" || current_state="disconnected"
-      remain=" ($tstring)"
+
+      # Get charge values
+      local max_capacity=$(echo $raw_data | grep MaxCapacity | awk '{ print $5 }')
+      local current_capacity=$(echo $raw_data | grep CurrentCapacity | awk '{ print $5 }')
+
+      if [[ -n "$max_capacity" && -n "$current_capacity" ]]; then
+        typeset -i 10 bat_percent
+        bat_percent=$(( (current_capacity * 100) / max_capacity ))
+      fi
+
+      local remain=""
+      # Logic for string output
+      if [[ $(echo $raw_data | grep ExternalConnected | awk '{ print $5 }') =~ "Yes" ]]; then
+        # Battery is charging
+        if [[ $(echo $raw_data | grep IsCharging | awk '{ print $5 }') =~ "Yes" ]]; then
+          current_state="charging"
+          remain=" ($tstring)"
+        else
+          current_state="charged"
+        fi
+      else
+        [[ $bat_percent -lt $POWERLEVEL9K_BATTERY_LOW_THRESHOLD ]] && current_state="low" || current_state="disconnected"
+        remain=" ($tstring)"
+      fi
     fi
   fi
 
@@ -333,25 +333,24 @@ prompt_battery() {
     [[ -a $sysp/BAT0 ]] && local bat=$sysp/BAT0
     [[ -a $sysp/BAT1 ]] && local bat=$sysp/BAT1
 
-    # Return if no battery found
-    [[ -z $bat ]] && return
-
-    [[ $(cat $bat/capacity) -gt 100 ]] && local bat_percent=100 || local bat_percent=$(cat $bat/capacity)
-    [[ $(cat $bat/status) =~ Charging ]] && local connected=true
-    [[ $(cat $bat/status) =~ Charging && $bat_percent =~ 100 ]] && current_state="charged"
-    [[ $(cat $bat/status) =~ Charging && $bat_percent -lt 100 ]] && current_state="charging"
-    if [[ -z  $connected ]]; then
-      [[ $bat_percent -lt $POWERLEVEL9K_BATTERY_LOW_THRESHOLD ]] && current_state="low" || current_state="disconnected"
-    fi
-    if [[ -f /usr/bin/acpi ]]; then
-      local time_remaining=$(acpi | awk '{ print $5 }')
-      if [[ $time_remaining =~ rate ]]; then
-        local tstring="..."
-      elif [[ $time_remaining =~ "[[:digit:]]+" ]]; then
-        local tstring=${(f)$(date -u -d "$(echo $time_remaining)" +%k:%M)}
+    if [[ -n "${bat}" ]]; then
+      [[ $(cat $bat/capacity) -gt 100 ]] && local bat_percent=100 || local bat_percent=$(cat $bat/capacity)
+      [[ $(cat $bat/status) =~ Charging ]] && local connected=true
+      [[ $(cat $bat/status) =~ Charging && $bat_percent =~ 100 ]] && current_state="charged"
+      [[ $(cat $bat/status) =~ Charging && $bat_percent -lt 100 ]] && current_state="charging"
+      if [[ -z  $connected ]]; then
+        [[ $bat_percent -lt $POWERLEVEL9K_BATTERY_LOW_THRESHOLD ]] && current_state="low" || current_state="disconnected"
       fi
+      if [[ -f /usr/bin/acpi ]]; then
+        local time_remaining=$(acpi | awk '{ print $5 }')
+        if [[ $time_remaining =~ rate ]]; then
+          local tstring="..."
+        elif [[ $time_remaining =~ "[[:digit:]]+" ]]; then
+          local tstring=${(f)$(date -u -d "$(echo $time_remaining)" +%k:%M)}
+        fi
+      fi
+      [[ -n $tstring ]] && local remain=" ($tstring)"
     fi
-    [[ -n $tstring ]] && local remain=" ($tstring)"
   fi
 
   local message
