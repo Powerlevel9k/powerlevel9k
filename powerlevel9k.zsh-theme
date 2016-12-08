@@ -1088,7 +1088,7 @@ p9k_build_prompt_from_cache() {
   PROMPT='' # Reset
   RPROMPT='' # Reset
   local last_segment_join_state
-  local last_segment_content
+  local last_segment_was_printed
   # TODO: Optimize for speed!
   #POWERLEVEL9K_VISITED_SEGMENTS=()
   for i in $(ls -1 $CACHE_DIR/p9k_$$_* 2> /dev/null); do
@@ -1098,7 +1098,7 @@ p9k_build_prompt_from_cache() {
     local should_join_segment=false
     # Case 1: Previous segment is also a joined one, but has no content. In this
     # case we promote the current segment to a full one.
-    if [[ "${last_segment_join_state}" == "true" ]] && [[ -z "${last_segment_content}" ]]; then
+    if [[ "${last_segment_join_state}" == "true" ]] && [[ "${last_segment_was_printed}" == "false" ]]; then
       # TODO: What if there are more joined segments in a row, but just our predecessor has no content?
       should_join_segment=false
     fi
@@ -1107,7 +1107,7 @@ p9k_build_prompt_from_cache() {
       should_join_segment=true
     fi
     last_segment_join_state="${JOINED}"
-    last_segment_content="${CONTENT}"
+    last_segment_was_printed="${CONDITION}"
 
     # If the segments condition to print was not met, skip it!
     if ! ${CONDITION}; then
