@@ -337,6 +337,55 @@ prompt_background_jobs() {
   fi
 }
 
+# Segment to indicate hdd available level.
+set_default POWERLEVEL9K_HDD_USAGE_ONLY_WARNING false
+set_default POWERLEVEL9K_HDD_USAGE_WARNING_LEVEL 10
+set_default POWERLEVEL9K_HDD_USAGE_CRITICAL_LEVEL 5
+prompt_hdd_usage() {
+  local current_state="unknown"
+  typeset -AH hdd_usage_forecolors
+  hdd_usage_forecolors=(
+    'normal'        'yellow'
+    'warning'       "$DEFAULT_COLOR"
+    'critical'      'white'
+  )
+  typeset -AH hdd_usage_backcolors
+  hdd_usage_backcolors=(
+    'normal'        $DEFAULT_COLOR
+    'warning'       'yellow'
+    'critical'      'red'
+  )
+
+  # local df="$(df -k . | sed -n '2p')"
+  # local size="$(echo $df | awk '{ print $2 }')"
+  # local avail="$(echo $df | awk '{ print $4 }')"
+  # local level="$(printf %.0f $(( avail * 100.0 / size )))"
+
+  local level="${$(df -k . | sed -n '2p' | awk '{ print $5 }')%%\%}"
+  level="$(( 100 - level ))"
+
+  if [ "$level" -gt "$POWERLEVEL9K_HDD_USAGE_WARNING_LEVEL" ]; then
+    # Default behavior: Show message always
+    if [[ "$POWERLEVEL9K_HDD_USAGE_ONLY_WARNING" != false ]]; then
+      return
+    fi
+  fi
+
+  if [ "$level" -le "$POWERLEVEL9K_HDD_USAGE_CRITICAL_LEVEL" ]; then
+    current_state='critical'
+  elif [ "$level" -le "$POWERLEVEL9K_HDD_USAGE_WARNING_LEVEL" ]; then
+    current_state='warning'
+  else
+    current_state='normal'
+  fi
+  local message="${level}%%"
+
+  # Draw the prompt_segment
+  if [[ -n $level ]]; then
+    "$1_prompt_segment" "${0}_${current_state}" "$2" "${hdd_usage_backcolors[$current_state]}" "${hdd_usage_forecolors[$current_state]}" "$message" 'HDD_ICON'
+  fi
+}
+
 prompt_battery() {
   # The battery can have four different states - default to 'unknown'.
   local current_state="unknown"
@@ -399,8 +448,8 @@ prompt_battery() {
     [[ -z $bat ]] && return
 
     [[ $(cat $bat/capacity) -gt 100 ]] && local bat_percent=100 || local bat_percent=$(cat $bat/capacity)
-    [[ $(cat $bat/status) =~ Charging ]] && local connected=true
-    [[ $(cat $bat/status) =~ Charging && $bat_percent =~ 100 ]] && current_state="charged"
+    [[ $(cat $bat/status) =~ Full || $(cat $bat/status) =~ Charging ]] && local connected=true
+    [[ $(cat $bat/status) =~ Full || $(cat $bat/status) =~ Charging && $bat_percent =~ 100 ]] && current_state="charged"
     [[ $(cat $bat/status) =~ Charging && $bat_percent -lt 100 ]] && current_state="charging"
     if [[ -z  $connected ]]; then
       [[ $bat_percent -lt $POWERLEVEL9K_BATTERY_LOW_THRESHOLD ]] && current_state="low" || current_state="disconnected"
@@ -414,6 +463,14 @@ prompt_battery() {
       fi
     fi
     [[ -n $tstring ]] && local remain=" ($tstring)"
+  fi
+
+  if [[ "$current_state" == "charged" ]]; then
+    # Default behavior: Show message always
+    set_default POWERLEVEL9K_BATTERY_SHOW_CHARGED true
+    if [[ "$POWERLEVEL9K_BATTERY_SHOW_CHARGED" == false ]]; then
+      return
+    fi
   fi
 
   local message
@@ -1091,4 +1148,3 @@ powerlevel9k_init() {
 }
 
 powerlevel9k_init "$@"
-

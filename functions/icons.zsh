@@ -34,6 +34,7 @@ case $POWERLEVEL9K_MODE in
       TEST_ICON                      $'\uE891'              # 
       TODO_ICON                      $'\u2611'              # ☑
       BATTERY_ICON                   $'\uE894'              # 
+      HDD_ICON                       $'\uD83D\uDDB4'        # 🖴
       OK_ICON                        $'\u2713'              # ✓
       FAIL_ICON                      $'\u2718'              # ✘
       SYMFONY_ICON                   'SF'
@@ -92,8 +93,9 @@ case $POWERLEVEL9K_MODE in
       TEST_ICON                      $'\uF291'              # 
       TODO_ICON                      $'\u2611'              # ☑
       BATTERY_ICON                   $'\U1F50B'             # 🔋
-      OK_ICON                        $'\uF23A'              # 
-      FAIL_ICON                      $'\uF281'              # 
+      HDD_ICON                       $'\uF0A0 '             # 
+      OK_ICON                        $'\uF00C '             # 
+      FAIL_ICON                      $'\uF00D '             # 
       SYMFONY_ICON                   'SF'
       NODE_ICON                      $'\u2B22'              # ⬢
       MULTILINE_FIRST_PROMPT_PREFIX  $'\u256D'$'\U2500'     # ╭─
@@ -102,13 +104,13 @@ case $POWERLEVEL9K_MODE in
       FREEBSD_ICON                   $'\U1F608 '            # 😈
       LINUX_ICON                     $'\uF17C'              # 
       SUNOS_ICON                     $'\uF185 '             # 
-      HOME_ICON                      $'\uF015'              # 
-      HOME_SUB_ICON                  $'\uF07C'              # 
-      FOLDER_ICON                    $'\uF115'              # 
+      HOME_ICON                      $'\uF015 '             # 
+      HOME_SUB_ICON                  $'\uF07C '             # 
+      FOLDER_ICON                    $'\uF115 '             # 
       NETWORK_ICON                   $'\uF09E'              # 
       LOAD_ICON                      $'\uF080 '             # 
-      SWAP_ICON                      $'\uF0E4'              # 
-      RAM_ICON                       $'\uF0E4'              # 
+      SWAP_ICON                      $'\uF0E4 '             # 
+      RAM_ICON                       $'\uF0E4 '             # 
       SERVER_ICON                    $'\uF296'              # 
       VCS_UNTRACKED_ICON             $'\uF059'              # 
       VCS_UNSTAGED_ICON              $'\uF06A'              # 
@@ -124,7 +126,7 @@ case $POWERLEVEL9K_MODE in
       VCS_GIT_ICON                   $'\uF113 '             # 
       VCS_HG_ICON                    $'\uF0C3 '             # 
       VCS_SVN_ICON                   '(svn) '
-      RUST_ICON                      $'\uE6A8'              #  
+      RUST_ICON                      $'\uE6A8'              # 
       PYTHON_ICON                    $'\U1F40D'             # 🐍
     )
   ;;
