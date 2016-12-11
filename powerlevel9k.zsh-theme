@@ -434,12 +434,28 @@ prompt_battery() {
 # Context: user@hostname (who am I and where am I)
 # Note that if $DEFAULT_USER is not set, this prompt segment will always print
 prompt_context() {
-  if [[ "$USER" != "$DEFAULT_USER" || -n "$SSH_CLIENT" ]]; then
+  if [[ "$USER" != "$DEFAULT_USER" ]]; then
     if [[ $(print -P "%#") == '#' ]]; then
       # Shell runs as root
-      "$1_prompt_segment" "$0_ROOT" "$2" "$DEFAULT_COLOR" "yellow" "$USER@%m"
+      if [[ -z "$POWERLEVEL9K_HIDE_HOST" ]]; then
+        "$1_prompt_segment" "$0_ROOT" "$2" "$DEFAULT_COLOR" "yellow" "$USER@%m"
+      else
+        if [[ -z "$SSH_CLIENT" && -z "$SSH_TTY" ]]; then
+          "$1_prompt_segment" "$0_ROOT" "$2" "$DEFAULT_COLOR" "yellow" "$USER"
+        else
+          "$1_prompt_segment" "$0_ROOT" "$2" "$DEFAULT_COLOR" "yellow" "$USER@%m"
+        fi
+      fi
     else
-      "$1_prompt_segment" "$0_DEFAULT" "$2" "$DEFAULT_COLOR" "011" "$USER@%m"
+      if [[ -z "$POWERLEVEL9K_HIDE_HOST" ]]; then
+        "$1_prompt_segment" "$0_DEFAULT" "$2" "$DEFAULT_COLOR" "011" "$USER@%m"
+      else
+        if [[ -z "$SSH_CLIENT" && -z "$SSH_TTY" ]]; then
+          "$1_prompt_segment" "$0_DEFAULT" "$2" "$DEFAULT_COLOR" "011" "$USER"
+        else
+          "$1_prompt_segment" "$0_DEFAULT" "$2" "$DEFAULT_COLOR" "011" "$USER@%m"
+        fi
+      fi
     fi
   fi
 }
