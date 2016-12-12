@@ -83,27 +83,21 @@ function getRelevantItem() {
 case $(uname) in
     Darwin)
       OS='OSX'
-      OS_ICON=$(print_icon 'APPLE_ICON')
       ;;
     FreeBSD)
       OS='BSD'
-      OS_ICON=$(print_icon 'FREEBSD_ICON')
       ;;
     OpenBSD)
       OS='BSD'
-      OS_ICON=$(print_icon 'FREEBSD_ICON')
       ;;
     DragonFly)
       OS='BSD'
-      OS_ICON=$(print_icon 'FREEBSD_ICON')
       ;;
     Linux)
       OS='Linux'
-      OS_ICON=$(print_icon 'LINUX_ICON')
       ;;
     SunOS)
       OS='Solaris'
-      OS_ICON=$(print_icon 'SUNOS_ICON')
       ;;
     *)
       OS=''

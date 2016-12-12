@@ -594,6 +594,22 @@ prompt_nodeenv() {
 
 # print a little OS icon
 prompt_os_icon() {
+  local OS_ICON
+  case "${OS}" in
+    OSX)
+      OS_ICON=$(print_icon 'APPLE_ICON')
+      ;;
+    BSD)
+      OS_ICON=$(print_icon 'FREEBSD_ICON')
+      ;;
+    Linux)
+      OS_ICON=$(print_icon 'LINUX_ICON')
+      ;;
+    Solaris)
+      OS_ICON=$(print_icon 'SUNOS_ICON')
+      ;;
+esac
+
   serialize_segment "$0" "" "$1" "$2" "${3}" "black" "255" "${OS_ICON}" ""
 }
 
