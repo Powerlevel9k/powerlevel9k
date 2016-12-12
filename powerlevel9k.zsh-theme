@@ -1219,6 +1219,16 @@ powerlevel9k_prepare_prompts() {
   # he gets a new, fresh one.
   p9k_clear_cache
 
+  # Initialize icon overrides
+  _powerlevel9kInitializeIconOverrides
+
+  # Precompile the Segment Separators here!
+  _POWERLEVEL9K_LEFT_SEGMENT_SEPARATOR="$(print_icon 'LEFT_SEGMENT_SEPARATOR')"
+  _POWERLEVEL9K_LEFT_SUBSEGMENT_SEPARATOR="$(print_icon 'LEFT_SUBSEGMENT_SEPARATOR')"
+  _POWERLEVEL9K_LEFT_SEGMENT_END_SEPARATOR="$(print_icon 'LEFT_SEGMENT_END_SEPARATOR')"
+  _POWERLEVEL9K_RIGHT_SEGMENT_SEPARATOR="$(print_icon 'RIGHT_SEGMENT_SEPARATOR')"
+  _POWERLEVEL9K_RIGHT_SUBSEGMENT_SEPARATOR="$(print_icon 'RIGHT_SUBSEGMENT_SEPARATOR')"
+
   if [[ "$POWERLEVEL9K_PROMPT_ON_NEWLINE" == true ]]; then
     PROMPT="$(print_icon 'MULTILINE_FIRST_PROMPT_PREFIX')%f%b%k$(build_left_prompt)
 $(print_icon 'MULTILINE_SECOND_PROMPT_PREFIX')"
@@ -1275,13 +1285,6 @@ function zle-keymap-select {
 }
 
 powerlevel9k_init() {
-  # Precompile the Segment Separators here!
-  _POWERLEVEL9K_LEFT_SEGMENT_SEPARATOR="$(print_icon 'LEFT_SEGMENT_SEPARATOR')"
-  _POWERLEVEL9K_LEFT_SUBSEGMENT_SEPARATOR="$(print_icon 'LEFT_SUBSEGMENT_SEPARATOR')"
-  _POWERLEVEL9K_LEFT_SEGMENT_END_SEPARATOR="$(print_icon 'LEFT_SEGMENT_END_SEPARATOR')"
-  _POWERLEVEL9K_RIGHT_SEGMENT_SEPARATOR="$(print_icon 'RIGHT_SEGMENT_SEPARATOR')"
-  _POWERLEVEL9K_RIGHT_SUBSEGMENT_SEPARATOR="$(print_icon 'RIGHT_SUBSEGMENT_SEPARATOR')"
-
   # Display a warning if the terminal does not support 256 colors
   local term_colors
   term_colors=$(echotc Co)
