@@ -997,10 +997,12 @@ prompt_pyenv() {
 #   * $2 State: string - The state the segment is in
 #   * $3 Alignment: string - left|right
 #   * $4 Index: integer
-#   * $5 Background: string - The default background color of the segment
-#   * $6 Foreground: string - The default foreground color of the segment
-#   * $7 Content: string - Content of the segment
-#   * $8 Visual identifier: string - Icon of the segment
+#   * $5 Joined: bool - If the segment should be joined
+#   * $6 Background: string - The default background color of the segment
+#   * $7 Foreground: string - The default foreground color of the segment
+#   * $8 Content: string - Content of the segment
+#   * $9 Visual identifier: string - Icon of the segment
+#   * $10 Condition - The condition, if the segment should be printed
 serialize_segment() {
   local NAME="${1}"
   local STATE="${2}"
