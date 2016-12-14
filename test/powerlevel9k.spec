@@ -12,30 +12,6 @@ function setUp() {
   source functions/*
 }
 
-function testJoinedSegments() {
-  POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(dir dir_joined)
-
-  assertEquals "%K{blue} %F{black}%~ %K{blue}%F{black}%F{black}%~ %k%F{blue}%f " "$(build_left_prompt)"
-
-  unset POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
-}
-
-function testTransitiveJoinedSegments() {
-  POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(dir root_indicator_joined dir_joined)
-
-  assertEquals "%K{blue} %F{black}%~ %K{blue}%F{black}%F{black}%~ %k%F{blue}%f " "$(build_left_prompt)"
-
-  unset POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
-}
-
-function testJoiningWithConditionalSegment() {
-  POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(dir background_jobs dir_joined)
-
-  assertEquals "%K{blue} %F{black}%~ %K{blue}%F{black} %F{black}%~ %k%F{blue}%f " "$(build_left_prompt)"
-
-  unset POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
-}
-
 function testDynamicColoringOfSegmentsWork() {
   POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(dir)
   POWERLEVEL9K_DIR_HOME_SUBFOLDER_BACKGROUND='red'
