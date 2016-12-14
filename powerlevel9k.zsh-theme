@@ -1003,6 +1003,8 @@ prompt_pyenv() {
 #   * $8 Content: string - Content of the segment
 #   * $9 Visual identifier: string - Icon of the segment
 #   * $10 Condition - The condition, if the segment should be printed
+#   * $11 signalParent: bool - Defaults to true. Set to false, if you do
+#                              not want the parent process to send SIGWINCH
 serialize_segment() {
   local NAME="${1}"
   local STATE="${2}"
@@ -1088,8 +1090,10 @@ serialize_segment() {
   typeset -p "VISUAL_IDENTIFIER" >> $FILE
   typeset -p "CONDITION" >> $FILE
 
-  # send WINCH signal to parent process
-  kill -s WINCH $$
+  if [[ "${11}" != false ]]; then
+    # send WINCH signal to parent process
+    kill -s WINCH $$
+  fi
 }
 
 # Rebuild prompt from cache every time
