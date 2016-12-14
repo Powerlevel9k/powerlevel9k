@@ -1154,7 +1154,7 @@ p9k_build_prompt_from_cache() {
 trap p9k_build_prompt_from_cache WINCH
 
 p9k_clear_cache() {
-  rm -f "${CACHE_DIR}/p9k_$$_*" 2> /dev/null
+  rm -f ${CACHE_DIR}/p9k_$$_\* 2> /dev/null
 }
 # Register trap on EXIT (cleanup)
 trap p9k_clear_cache EXIT
