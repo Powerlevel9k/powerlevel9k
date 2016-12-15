@@ -1109,27 +1109,56 @@ p9k_build_prompt_from_cache() {
   local LAST_RIGHT_BACKGROUND='NONE' # Reset
   PROMPT='' # Reset
   RPROMPT='' # Reset
-  local last_segment_join_state
-  local last_segment_was_printed
-  # TODO: Optimize for speed!
-  #POWERLEVEL9K_VISITED_SEGMENTS=()
+  typeset -Ah last_segments_print_states
+  last_segments_print_states=()
+  typeset -Ah last_segments_join_states
+  last_segments_join_states=()
   for i in $(ls -1 $CACHE_DIR/p9k_$$_* 2> /dev/null); do
     source "${i}"
 
+    local paddedIndex="${(l:3::0:)INDEX}"
+
     # Default: Segment should NOT be joined.
     local should_join_segment=false
-    # Case 1: Previous segment is also a joined one, but has no content. In this
-    # case we promote the current segment to a full one.
-    if [[ "${last_segment_join_state}" == "true" ]] && [[ "${last_segment_was_printed}" == "false" ]]; then
-      # TODO: What if there are more joined segments in a row, but just our predecessor has no content?
-      should_join_segment=false
-    fi
-    # Case 2: Current segment wants to be joined.
+
+    # If the current segment wants to be joined, we need
+    # to have a close look at our predecessors.
     if [[ "${JOINED}" == "true" ]]; then
+      # If we want to know if the current segment should be joined or
+      # not, we need to consider the previous segments join state and
+      # whether they were printed or not.
+      # Beginning from our current position and moving to the left (as
+      # this is the joining direction; segments can always be joined
+      # with their predecessor, a.k.a. previous left segment). As soon
+      # as we find a segment that was not joined and not printed, we
+      # promote the segment to a full one.
       should_join_segment=true
+      for ((n=${INDEX}; n > 0; n=${n}-1)); do
+        # Little magic trick: We start from current index, although we
+        # just want to examine our ancestors because the current
+        # segment is not yet in the array. So we just skip one step
+        # implicitly.
+        local currentPaddedIndex="${(l:3::0:)n}"
+        local print_state=$last_segments_print_states["${ALIGNMENT}_${currentPaddedIndex}"]
+        local join_state=$last_segments_join_states["${ALIGNMENT}_${currentPaddedIndex}"]
+
+        if [[ "${join_state}" == "false" && "${print_state}" == "false" ]]; then
+          should_join_segment=false
+          # Break the loop as early as possible. If we know that our segment should
+          # be promoted, we got the relevant information we wanted.
+          break
+        elif [[ "${join_state}" == "true" && "${print_state}" == "true" ]]; then
+          # If previous segment was joined and printed, we can break here
+          # because this previous segment should handle its join state.
+          break
+        elif [[ "${join_state}" == "false" ]]; then
+          break
+        fi
+      done
     fi
-    last_segment_join_state="${JOINED}"
-    last_segment_was_printed="${CONDITION}"
+
+    last_segments_join_states["${ALIGNMENT}_${paddedIndex}"]="${JOINED}"
+    last_segments_print_states["${ALIGNMENT}_${paddedIndex}"]="${CONDITION}"
 
     # If the segments condition to print was not met, skip it!
     if ! ${CONDITION}; then
