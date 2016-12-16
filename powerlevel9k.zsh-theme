@@ -1103,6 +1103,8 @@ serialize_segment() {
 # glue the segments back togeher and
 # finally reset the prompt.
 set_default CACHE_DIR /tmp/p9k
+# Create cache dir
+mkdir -p "${CACHE_DIR}" 2> /dev/null
 p9k_build_prompt_from_cache() {
   last_left_element_index=1 # Reset
   local LAST_LEFT_BACKGROUND='NONE' # Reset
