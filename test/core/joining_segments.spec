@@ -23,9 +23,7 @@ function setUp() {
 }
 
 function tearDown() {
-  # TODO: Why can't we just use `p9k_clear_cache`?!?
-  #p9k_clear_cache
-  rm -f ${CACHE_DIR}/p9k_$$_*
+  p9k_clear_cache
 }
 
 #   * $1: Index
