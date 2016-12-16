@@ -1185,7 +1185,10 @@ p9k_build_prompt_from_cache() {
 trap p9k_build_prompt_from_cache WINCH
 
 p9k_clear_cache() {
-  rm -f ${CACHE_DIR}/p9k_$$_\* 2> /dev/null
+  # Stupid way to avoid "no matches found" globbing error on
+  # deleting cache files.
+  touch ${CACHE_DIR}/p9k_$$_dummy
+  rm -f ${CACHE_DIR}/p9k_$$_* 2> /dev/null
 }
 # Register trap on EXIT (cleanup)
 trap p9k_clear_cache EXIT
