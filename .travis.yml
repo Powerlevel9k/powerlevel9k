@@ -18,8 +18,9 @@ install:
   - "sudo chsh -s $(which zsh)"
 
 script:
-  - test/powerlevel9k.spec
   - test/core/joining_segments.spec
+  - test/core/color_overriding.spec
+  - test/core/visual_identifier.spec
   - test/functions/utilities.spec
   - test/functions/colors.spec
   - test/segments/dir.spec

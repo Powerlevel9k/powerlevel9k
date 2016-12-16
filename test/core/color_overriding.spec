@@ -80,17 +80,4 @@ function testColoringOfVisualIdentifiersDoesNotOverwriteColoringOfSegment() {
   unset POWERLEVEL9K_SEGMENT_1_BACKGROUND
 }
 
-function testOverwritingIconsWork() {
-  # Load icon, because we just can select one of the existing icons as
-  # visual identifier. In writeCacheFile we set the visual identifier
-  # to the LOAD_ICON.
-  POWERLEVEL9K_LOAD_ICON='icon-here'
-  writeCacheFile "1"
-  p9k_build_prompt_from_cache
-
-  assertEquals "%K{blue} %F{black%}icon-here%f %F{black}segment_1_content %k%F{blue}%f " "${PROMPT}"
-
-  unset POWERLEVEL9K_LOAD_ICON
-}
-
 source shunit2/source/2.1/src/shunit2
