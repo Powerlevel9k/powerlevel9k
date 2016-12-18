@@ -1190,8 +1190,6 @@ p9k_clear_cache() {
 trap p9k_clear_cache EXIT
 # Register trap on TERM (cleanup)
 trap p9k_clear_cache TERM
-# Register trap on INT (cleanup)
-trap p9k_clear_cache INT
 
 ################################################################
 # Prompt processing and drawing
