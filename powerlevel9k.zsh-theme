@@ -1286,14 +1286,14 @@ $(print_icon 'MULTILINE_SECOND_PROMPT_PREFIX')"
   else
     #PROMPT="%f%b%k$(build_left_prompt)"
     build_left_prompt
-    build_right_prompt
+
+    if [[ "${POWERLEVEL9K_DISABLE_RPROMPT}" != "true" ]]; then
+      #    RPROMPT="$RPROMPT_PREFIX%f%b%k$(build_right_prompt)%{$reset_color%}$RPROMPT_SUFFIX"
+      build_right_prompt
+    fi
     RPROMPT_PREFIX=''
     RPROMPT_SUFFIX=''
   fi
-
-#  if [[ "$POWERLEVEL9K_DISABLE_RPROMPT" != true ]]; then
-#    RPROMPT="$RPROMPT_PREFIX%f%b%k$(build_right_prompt)%{$reset_color%}$RPROMPT_SUFFIX"
-#  fi
 
   ASYNC_PROC=$!
 }

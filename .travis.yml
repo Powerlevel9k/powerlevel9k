@@ -18,6 +18,7 @@ install:
   - "sudo chsh -s $(which zsh)"
 
 script:
+  - test/core/prompt.spec
   - test/core/joining_segments.spec
   - test/core/color_overriding.spec
   - test/core/visual_identifier.spec
