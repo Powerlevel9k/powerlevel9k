@@ -20,6 +20,10 @@ function setUp() {
   _POWERLEVEL9K_LEFT_SEGMENT_END_SEPARATOR="$(print_icon 'LEFT_SEGMENT_END_SEPARATOR')"
   _POWERLEVEL9K_RIGHT_SEGMENT_SEPARATOR="$(print_icon 'RIGHT_SEGMENT_SEPARATOR')"
   _POWERLEVEL9K_RIGHT_SUBSEGMENT_SEPARATOR="$(print_icon 'RIGHT_SUBSEGMENT_SEPARATOR')"
+
+  # Disable TRAP, so that we have more control how the segment is build,
+  # as shUnit does not work with async commands.
+  trap WINCH
 }
 
 function tearDown() {
@@ -41,9 +45,7 @@ function writeCacheFile() {
   #   * $8 Content: string - Content of the segment
   #   * $9 Visual identifier: string - Icon of the segment
   #   * $10 Condition - The condition, if the segment should be printed
-  #   * $11 signalParent: bool - Defaults to true. Set to false, if you do
-  #                              not want the parent process to send SIGWINCH
-  serialize_segment "segment_${1}" "" "left" "${1}" "${2}" "blue" "black" "segment_${1}_content" "visual_identifier" "${3}" "false"
+  serialize_segment "segment_${1}" "" "left" "${1}" "${2}" "blue" "black" "segment_${1}_content" "visual_identifier" "${3}"
 }
 
 function testNormalSegmentsShouldNotBeJoined() {
