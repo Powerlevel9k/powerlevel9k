@@ -95,4 +95,19 @@ function testColorOverridingOfStatefulSegment() {
   unset POWERLEVEL9K_SEGMENT_1_FOREGROUND
 }
 
+function testColorOverridingOfCustomSegment() {
+  POWERLEVEL9K_CUSTOM_WORLD='echo world'
+  POWERLEVEL9K_CUSTOM_WORLD_BACKGROUND='red'
+  POWERLEVEL9K_CUSTOM_WORLD_FOREGROUND='green'
+
+  prompt_custom "left" "1" "world" "false"
+  p9k_build_prompt_from_cache
+
+  assertEquals "%K{red} %F{green}world %k%F{red}%f " "${PROMPT}"
+
+  unset POWERLEVEL9K_CUSTOM_WORLD
+  unset POWERLEVEL9K_CUSTOM_WORLD_BACKGROUND
+  unset POWERLEVEL9K_CUSTOM_WORLD_FOREGROUND
+}
+
 source shunit2/source/2.1/src/shunit2
