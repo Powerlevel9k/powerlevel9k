@@ -82,4 +82,17 @@ function testColoringOfVisualIdentifiersDoesNotOverwriteColoringOfSegment() {
   unset POWERLEVEL9K_SEGMENT_1_BACKGROUND
 }
 
+function testColorOverridingOfStatefulSegment() {
+  POWERLEVEL9K_SEGMENT_1_STATE_BACKGROUND='red'
+  POWERLEVEL9K_SEGMENT_1_STATE_FOREGROUND='green'
+
+  writeCacheFile "1" "state"
+  p9k_build_prompt_from_cache
+
+  assertEquals "%K{red} %F{green%}L%f %F{green}segment_1_content %k%F{red}%f " "${PROMPT}"
+
+  unset POWERLEVEL9K_SEGMENT_1_BACKGROUND
+  unset POWERLEVEL9K_SEGMENT_1_FOREGROUND
+}
+
 source shunit2/source/2.1/src/shunit2
