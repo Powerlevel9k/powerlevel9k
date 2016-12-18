@@ -9,10 +9,23 @@ function setUp() {
   export TERM="xterm-256color"
   # Load Powerlevel9k
   source powerlevel9k.zsh-theme
+
+  # Initialize icon overrides
+  _powerlevel9kInitializeIconOverrides
+
+  # Precompile the Segment Separators here!
+  _POWERLEVEL9K_LEFT_SEGMENT_SEPARATOR="$(print_icon 'LEFT_SEGMENT_SEPARATOR')"
+  _POWERLEVEL9K_LEFT_SUBSEGMENT_SEPARATOR="$(print_icon 'LEFT_SUBSEGMENT_SEPARATOR')"
+  _POWERLEVEL9K_LEFT_SEGMENT_END_SEPARATOR="$(print_icon 'LEFT_SEGMENT_END_SEPARATOR')"
+  _POWERLEVEL9K_RIGHT_SEGMENT_SEPARATOR="$(print_icon 'RIGHT_SEGMENT_SEPARATOR')"
+  _POWERLEVEL9K_RIGHT_SUBSEGMENT_SEPARATOR="$(print_icon 'RIGHT_SUBSEGMENT_SEPARATOR')"
+
+  # Disable TRAP, so that we have more control how the segment is build,
+  # as shUnit does not work with async commands.
+  trap WINCH
 }
 
 function testColorOverridingForCleanStateWorks() {
-  POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(vcs)
   POWERLEVEL9K_VCS_CLEAN_FOREGROUND='cyan'
   POWERLEVEL9K_VCS_CLEAN_BACKGROUND='white'
 
@@ -21,18 +34,18 @@ function testColorOverridingForCleanStateWorks() {
   cd $FOLDER
   git init 1>/dev/null
 
-  assertEquals "%K{white} %F{cyan} master %k%F{white}%f " "$(build_left_prompt)"
+  prompt_vcs "left" "1" "false"
+  p9k_build_prompt_from_cache
+
+  assertEquals "%K{white} %F{cyan} master %k%F{white}%f " "${PROMPT}"
 
   cd -
   rm -fr /tmp/powerlevel9k-test
-
-  unset POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
   unset POWERLEVEL9K_VCS_CLEAN_FOREGROUND
   unset POWERLEVEL9K_VCS_CLEAN_BACKGROUND
 }
 
 function testColorOverridingForModifiedStateWorks() {
-  POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(vcs)
   POWERLEVEL9K_VCS_MODIFIED_FOREGROUND='red'
   POWERLEVEL9K_VCS_MODIFIED_BACKGROUND='yellow'
 
@@ -47,18 +60,19 @@ function testColorOverridingForModifiedStateWorks() {
   git commit -m "test" 1>/dev/null
   echo "test" > testfile
 
-  assertEquals "%K{yellow} %F{red} master ● %k%F{yellow}%f " "$(build_left_prompt)"
+  prompt_vcs "left" "1" "false"
+  p9k_build_prompt_from_cache
+
+  assertEquals "%K{yellow} %F{red} master ● %k%F{yellow}%f " "${PROMPT}"
 
   cd -
   rm -fr /tmp/powerlevel9k-test
 
-  unset POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
   unset POWERLEVEL9K_VCS_MODIFIED_FOREGROUND
   unset POWERLEVEL9K_VCS_MODIFIED_BACKGROUND
 }
 
 function testColorOverridingForUntrackedStateWorks() {
-  POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(vcs)
   POWERLEVEL9K_VCS_UNTRACKED_FOREGROUND='cyan'
   POWERLEVEL9K_VCS_UNTRACKED_BACKGROUND='yellow'
 
@@ -68,12 +82,14 @@ function testColorOverridingForUntrackedStateWorks() {
   git init 1>/dev/null
   touch testfile
 
-  assertEquals "%K{yellow} %F{cyan} master ? %k%F{yellow}%f " "$(build_left_prompt)"
+  prompt_vcs "left" "1" "false"
+  p9k_build_prompt_from_cache
+
+  assertEquals "%K{yellow} %F{cyan} master ? %k%F{yellow}%f " "${PROMPT}"
 
   cd -
   rm -fr /tmp/powerlevel9k-test
 
-  unset POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
   unset POWERLEVEL9K_VCS_UNTRACKED_FOREGROUND
   unset POWERLEVEL9K_VCS_UNTRACKED_BACKGROUND
 }
