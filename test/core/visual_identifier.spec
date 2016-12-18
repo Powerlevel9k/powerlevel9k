@@ -20,6 +20,10 @@ function setUp() {
   _POWERLEVEL9K_LEFT_SEGMENT_END_SEPARATOR="$(print_icon 'LEFT_SEGMENT_END_SEPARATOR')"
   _POWERLEVEL9K_RIGHT_SEGMENT_SEPARATOR="$(print_icon 'RIGHT_SEGMENT_SEPARATOR')"
   _POWERLEVEL9K_RIGHT_SUBSEGMENT_SEPARATOR="$(print_icon 'RIGHT_SUBSEGMENT_SEPARATOR')"
+
+  # Disable TRAP, so that we have more control how the segment is build,
+  # as shUnit does not work with async commands.
+  trap WINCH
 }
 
 function tearDown() {
@@ -50,6 +54,7 @@ function testOverwritingIconsWork() {
   # visual identifier. In writeCacheFile we set the visual identifier
   # to the LOAD_ICON.
   POWERLEVEL9K_LOAD_ICON='icon-here'
+
   writeCacheFile "1"
   p9k_build_prompt_from_cache
 
