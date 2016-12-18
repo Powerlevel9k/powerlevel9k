@@ -9,6 +9,20 @@ function setUp() {
   export TERM="xterm-256color"
   # Load Powerlevel9k
   source powerlevel9k.zsh-theme
+
+  # Initialize icon overrides
+  _powerlevel9kInitializeIconOverrides
+
+  # Precompile the Segment Separators here!
+  _POWERLEVEL9K_LEFT_SEGMENT_SEPARATOR="$(print_icon 'LEFT_SEGMENT_SEPARATOR')"
+  _POWERLEVEL9K_LEFT_SUBSEGMENT_SEPARATOR="$(print_icon 'LEFT_SUBSEGMENT_SEPARATOR')"
+  _POWERLEVEL9K_LEFT_SEGMENT_END_SEPARATOR="$(print_icon 'LEFT_SEGMENT_END_SEPARATOR')"
+  _POWERLEVEL9K_RIGHT_SEGMENT_SEPARATOR="$(print_icon 'RIGHT_SEGMENT_SEPARATOR')"
+  _POWERLEVEL9K_RIGHT_SUBSEGMENT_SEPARATOR="$(print_icon 'RIGHT_SUBSEGMENT_SEPARATOR')"
+
+  # Disable TRAP, so that we have more control how the segment is build,
+  # as shUnit does not work with async commands.
+  trap WINCH
 }
 
 function mockRust() {
@@ -17,22 +31,25 @@ function mockRust() {
 
 function testRust() {
   alias rustc=mockRust
-  POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(rust_version)
 
-  assertEquals "%K{208} %F{black}Rust 0.4.1a-alpha %k%F{208}%f " "$(build_left_prompt)"
+  prompt_rust_version "left" "1" "false"
+  p9k_build_prompt_from_cache
 
-  unset POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
+  assertEquals "%K{208} %F{black}0.4.1a-alpha %k%F{208}%f " "${PROMPT}"
+
   unalias rustc
 }
 
 function testRustPrintsNothingIfRustIsNotAvailable() {
   alias rustc=noRust
   POWERLEVEL9K_CUSTOM_WORLD='echo world'
-  POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(custom_world rust_version)
 
-  assertEquals "%K{white} %F{black}world %k%F{white}%f " "$(build_left_prompt)"
+  prompt_custom "left" "2" "world" "false"
+  prompt_rust_version "left" "1" "false"
+  p9k_build_prompt_from_cache
 
-  unset POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
+  assertEquals "%K{white} %F{black}world %k%F{white}%f " "${PROMPT}"
+
   unset POWERLEVEL9K_CUSTOM_WORLD
   unalias rustc
 }

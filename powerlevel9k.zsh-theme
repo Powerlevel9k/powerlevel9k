@@ -681,7 +681,7 @@ prompt_rust_version() {
   local rust_version
   rust_version=$(rustc --version 2>&1 | grep -oe "^rustc\s*[^ ]*" | grep -o '[0-9.a-z\\\-]*$')
 
-  serialize_segment "$0" "" "$1" "$2" "${3}" "208" "$DEFAULT_COLOR" "Rust ${rust_version}" "RUST_ICON"
+  serialize_segment "$0" "" "$1" "$2" "${3}" "208" "$DEFAULT_COLOR" "${rust_version}" "RUST_ICON"
 }
 # RSpec test ratio
 prompt_rspec_stats() {
