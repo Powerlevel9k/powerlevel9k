@@ -31,8 +31,9 @@ function tearDown() {
 }
 
 #   * $1: Index
-#   * $2: Joined
-#   * $3: Condition - If the segment should be printed
+#   * $2: Alignment
+#   * $3: Joined
+#   * $4: Condition - If the segment should be printed
 function writeCacheFile() {
   # Options from serialize_segment
   #   * $1 Name: string - Name of the segment
@@ -45,85 +46,85 @@ function writeCacheFile() {
   #   * $8 Content: string - Content of the segment
   #   * $9 Visual identifier: string - Icon of the segment
   #   * $10 Condition - The condition, if the segment should be printed
-  serialize_segment "segment_${1}" "" "left" "${1}" "${2}" "blue" "black" "segment_${1}_content" "visual_identifier" "${3}"
+  serialize_segment "segment_${1}" "" "${2}" "${1}" "${3}" "blue" "black" "segment_${1}_content" "visual_identifier" "${4}"
 }
 
-function testNormalSegmentsShouldNotBeJoined() {
-  writeCacheFile "1" "false" "true"
-  writeCacheFile "2" "false" "true"
-  writeCacheFile "3" "false" "false"
-  writeCacheFile "4" "false" "true"
-  writeCacheFile "5" "true" "false"
-  writeCacheFile "6" "false" "true"
+function testLeftNormalSegmentsShouldNotBeJoined() {
+  writeCacheFile "1" "left" "false" "true"
+  writeCacheFile "2" "left" "false" "true"
+  writeCacheFile "3" "left" "false" "false"
+  writeCacheFile "4" "left" "false" "true"
+  writeCacheFile "5" "left" "true" "false"
+  writeCacheFile "6" "left" "false" "true"
   p9k_build_prompt_from_cache
 
   assertEquals "%K{blue} %F{black}segment_1_content %K{blue}%F{black} %F{black}segment_2_content %K{blue}%F{black} %F{black}segment_4_content %K{blue}%F{black} %F{black}segment_6_content %k%F{blue}%f " "${PROMPT}"
 }
 
-function testJoinedSegments() {
-  writeCacheFile "1" "false" "true"
-  writeCacheFile "2" "true" "true"
+function testLeftJoinedSegments() {
+  writeCacheFile "1" "left" "false" "true"
+  writeCacheFile "2" "left" "true" "true"
   p9k_build_prompt_from_cache
 
   assertEquals "%K{blue} %F{black}segment_1_content %K{blue}%F{black}%F{black}segment_2_content %k%F{blue}%f " "${PROMPT}"
 }
 
-function testTransitiveJoinedSegments() {
-  writeCacheFile "1" "false" "true"
-  writeCacheFile "2" "true" "true"
-  writeCacheFile "3" "true" "true"
+function testLeftTransitiveJoinedSegments() {
+  writeCacheFile "1" "left" "false" "true"
+  writeCacheFile "2" "left" "true" "true"
+  writeCacheFile "3" "left" "true" "true"
   p9k_build_prompt_from_cache
 
   assertEquals "%K{blue} %F{black}segment_1_content %K{blue}%F{black}%F{black}segment_2_content %K{blue}%F{black}%F{black}segment_3_content %k%F{blue}%f " "${PROMPT}"
 }
 
-function testTransitiveJoiningWithConditionalJoinedSegment() {
-  writeCacheFile "1" "false" "true"
-  writeCacheFile "2" "true" "true"
-  writeCacheFile "3" "true" "false"
-  writeCacheFile "4" "true" "true"
+function testLeftTransitiveJoiningWithConditionalJoinedSegment() {
+  writeCacheFile "1" "left" "false" "true"
+  writeCacheFile "2" "left" "true" "true"
+  writeCacheFile "3" "left" "true" "false"
+  writeCacheFile "4" "left" "true" "true"
   p9k_build_prompt_from_cache
 
   assertEquals "%K{blue} %F{black}segment_1_content %K{blue}%F{black}%F{black}segment_2_content %K{blue}%F{black}%F{black}segment_4_content %k%F{blue}%f " "${PROMPT}"
 }
 
-function testPromotingSegmentWithConditionalPredecessor() {
-  writeCacheFile "1" "false" "true"
-  writeCacheFile "2" "false" "false"
-  writeCacheFile "3" "true" "true"
+function testLeftPromotingSegmentWithConditionalPredecessor() {
+  writeCacheFile "1" "left" "false" "true"
+  writeCacheFile "2" "left" "false" "false"
+  writeCacheFile "3" "left" "true" "true"
   p9k_build_prompt_from_cache
 
   assertEquals "%K{blue} %F{black}segment_1_content %K{blue}%F{black} %F{black}segment_3_content %k%F{blue}%f " "${PROMPT}"
 }
 
-function testPromotingSegmentWithJoinedConditionalPredecessor() {
-  writeCacheFile "1" "false" "true"
-  writeCacheFile "2" "false" "false"
-  writeCacheFile "3" "true" "false"
-  writeCacheFile "4" "true" "true"
+function testLeftPromotingSegmentWithJoinedConditionalPredecessor() {
+  writeCacheFile "1" "left" "false" "true"
+  writeCacheFile "2" "left" "false" "false"
+  writeCacheFile "3" "left" "true" "false"
+  writeCacheFile "4" "left" "true" "true"
   p9k_build_prompt_from_cache
 
   assertEquals "%K{blue} %F{black}segment_1_content %K{blue}%F{black} %F{black}segment_4_content %k%F{blue}%f " "${PROMPT}"
 }
 
-function testPromotingSegmentWithDeepJoinedConditionalPredecessor() {
-  writeCacheFile "1" "false" "true"
-  writeCacheFile "2" "false" "false"
-  writeCacheFile "3" "true" "false"
-  writeCacheFile "4" "true" "true"
-  writeCacheFile "5" "true" "false"
-  writeCacheFile "6" "true" "true"
+function testLeftPromotingSegmentWithDeepJoinedConditionalPredecessor() {
+  writeCacheFile "1" "left" "false" "true"
+  writeCacheFile "2" "left" "false" "false"
+  writeCacheFile "3" "left" "true" "false"
+  writeCacheFile "4" "left" "true" "true"
+  writeCacheFile "5" "left" "true" "false"
+  writeCacheFile "6" "left" "true" "true"
   p9k_build_prompt_from_cache
 
   assertEquals "%K{blue} %F{black}segment_1_content %K{blue}%F{black} %F{black}segment_4_content %K{blue}%F{black}%F{black}segment_6_content %k%F{blue}%f " "${PROMPT}"
 }
 
-function testJoiningCustomSegmentWorks() {
+function testLeftJoiningCustomSegmentWorks() {
   POWERLEVEL9K_CUSTOM_WORLD='echo world'
 
-  writeCacheFile "1" "false" "true"
-  writeCacheFile "2" "true" "false"
-  writeCacheFile "3" "true" "false"
+  writeCacheFile "1" "left" "false" "true"
+  writeCacheFile "2" "left" "true" "false"
+  writeCacheFile "3" "left" "true" "false"
   prompt_custom "left" "4" "world" "true"
   p9k_build_prompt_from_cache
 
@@ -132,4 +133,87 @@ function testJoiningCustomSegmentWorks() {
   unset POWERLEVEL9K_CUSTOM_WORLD
 }
 
+function testRightNormalSegmentsShouldNotBeJoined() {
+  writeCacheFile "1" "right" "false" "true"
+  writeCacheFile "2" "right" "false" "true"
+  writeCacheFile "3" "right" "false" "false"
+  writeCacheFile "4" "right" "false" "true"
+  writeCacheFile "5" "right" "true" "false"
+  writeCacheFile "6" "right" "false" "true"
+  p9k_build_prompt_from_cache
+
+  assertEquals "%F{blue}%f%K{blue}%F{black} segment_1_content %f%F{black}%f%K{blue}%F{black} segment_2_content %f%F{black}%f%K{blue}%F{black} segment_4_content %f%F{black}%f%K{blue}%F{black} segment_6_content %f" "${RPROMPT}"
+}
+
+function testRightJoinedSegments() {
+  writeCacheFile "1" "right" "false" "true"
+  writeCacheFile "2" "right" "true" "true"
+  p9k_build_prompt_from_cache
+
+  assertEquals "%F{blue}%f%K{blue}%F{black} segment_1_content %f%K{blue}%F{black}segment_2_content %f" "${RPROMPT}"
+}
+
+function testRightTransitiveJoinedSegments() {
+  writeCacheFile "1" "right" "false" "true"
+  writeCacheFile "2" "right" "true" "true"
+  writeCacheFile "3" "right" "true" "true"
+  p9k_build_prompt_from_cache
+
+  assertEquals "%F{blue}%f%K{blue}%F{black} segment_1_content %f%K{blue}%F{black}segment_2_content %f%K{blue}%F{black}segment_3_content %f" "${RPROMPT}"
+}
+
+function testRightTransitiveJoiningWithConditionalJoinedSegment() {
+  writeCacheFile "1" "right" "false" "true"
+  writeCacheFile "2" "right" "true" "true"
+  writeCacheFile "3" "right" "true" "false"
+  writeCacheFile "4" "right" "true" "true"
+  p9k_build_prompt_from_cache
+
+  assertEquals "%F{blue}%f%K{blue}%F{black} segment_1_content %f%K{blue}%F{black}segment_2_content %f%K{blue}%F{black}segment_4_content %f" "${RPROMPT}"
+}
+
+function testRightPromotingSegmentWithConditionalPredecessor() {
+  writeCacheFile "1" "right" "false" "true"
+  writeCacheFile "2" "right" "false" "false"
+  writeCacheFile "3" "right" "true" "true"
+  p9k_build_prompt_from_cache
+
+  assertEquals "%F{blue}%f%K{blue}%F{black} segment_1_content %f%F{black}%f%K{blue}%F{black} segment_3_content %f" "${RPROMPT}"
+}
+
+function testRightPromotingSegmentWithJoinedConditionalPredecessor() {
+  writeCacheFile "1" "right" "false" "true"
+  writeCacheFile "2" "right" "false" "false"
+  writeCacheFile "3" "right" "true" "false"
+  writeCacheFile "4" "right" "true" "true"
+  p9k_build_prompt_from_cache
+
+  assertEquals "%F{blue}%f%K{blue}%F{black} segment_1_content %f%F{black}%f%K{blue}%F{black} segment_4_content %f" "${RPROMPT}"
+}
+
+function testRightPromotingSegmentWithDeepJoinedConditionalPredecessor() {
+  writeCacheFile "1" "right" "false" "true"
+  writeCacheFile "2" "right" "false" "false"
+  writeCacheFile "3" "right" "true" "false"
+  writeCacheFile "4" "right" "true" "true"
+  writeCacheFile "5" "right" "true" "false"
+  writeCacheFile "6" "right" "true" "true"
+  p9k_build_prompt_from_cache
+
+  assertEquals "%F{blue}%f%K{blue}%F{black} segment_1_content %f%F{black}%f%K{blue}%F{black} segment_4_content %f%K{blue}%F{black}segment_6_content %f" "${RPROMPT}"
+}
+
+function testRightJoiningCustomSegmentWorks() {
+  POWERLEVEL9K_CUSTOM_WORLD='echo world'
+
+  writeCacheFile "1" "right" "false" "true"
+  writeCacheFile "2" "right" "true" "false"
+  writeCacheFile "3" "right" "true" "false"
+  prompt_custom "right" "4" "world" "true"
+  p9k_build_prompt_from_cache
+
+  assertEquals "%F{blue}%f%K{blue}%F{black} segment_1_content %f%K{white}%F{black}world %f" "${RPROMPT}"
+
+  unset POWERLEVEL9K_CUSTOM_WORLD
+}
 source shunit2/source/2.1/src/shunit2
