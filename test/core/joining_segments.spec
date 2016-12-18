@@ -118,4 +118,18 @@ function testPromotingSegmentWithDeepJoinedConditionalPredecessor() {
   assertEquals "%K{blue} %F{black}segment_1_content %K{blue}%F{black} %F{black}segment_4_content %K{blue}%F{black}%F{black}segment_6_content %k%F{blue}%f " "${PROMPT}"
 }
 
+function testJoiningCustomSegmentWorks() {
+  POWERLEVEL9K_CUSTOM_WORLD='echo world'
+
+  writeCacheFile "1" "false" "true"
+  writeCacheFile "2" "true" "false"
+  writeCacheFile "3" "true" "false"
+  prompt_custom "left" "4" "world" "true"
+  p9k_build_prompt_from_cache
+
+  assertEquals "%K{blue} %F{black}segment_1_content %K{white}%F{blue}%F{black}world %k%F{white}%f " "${PROMPT}"
+
+  unset POWERLEVEL9K_CUSTOM_WORLD
+}
+
 source shunit2/source/2.1/src/shunit2
