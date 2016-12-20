@@ -1107,6 +1107,24 @@ p9k_build_prompt_from_cache() {
   local LAST_RIGHT_BACKGROUND='NONE' # Reset
   PROMPT='' # Reset
   RPROMPT='' # Reset
+  if [[ "$POWERLEVEL9K_PROMPT_ON_NEWLINE" == true ]]; then
+    PROMPT="$(print_icon 'MULTILINE_FIRST_PROMPT_PREFIX')%f%b%k${PROMPT}
+$(print_icon 'MULTILINE_SECOND_PROMPT_PREFIX')"
+    if [[ "$POWERLEVEL9K_RPROMPT_ON_NEWLINE" != true ]]; then
+      # The right prompt should be on the same line as the first line of the left
+      # prompt. To do so, there is just a quite ugly workaround: Before zsh draws
+      # the RPROMPT, we advise it, to go one line up. At the end of RPROMPT, we
+      # advise it to go one line down. See:
+      # http://superuser.com/questions/357107/zsh-right-justify-in-ps1
+      local LC_ALL="" LC_CTYPE="en_US.UTF-8" # Set the right locale to protect special characters
+      RPROMPT_PREFIX='%{'$'\e[1A''%}' # one line up
+      RPROMPT_SUFFIX='%{'$'\e[1B''%}' # one line down
+    else
+      RPROMPT_PREFIX=''
+      RPROMPT_SUFFIX=''
+    fi
+  fi
+
   typeset -Ah last_segments_print_states
   last_segments_print_states=()
   typeset -Ah last_segments_join_states
@@ -1267,33 +1285,14 @@ powerlevel9k_prepare_prompts() {
   _POWERLEVEL9K_RIGHT_SEGMENT_SEPARATOR="$(print_icon 'RIGHT_SEGMENT_SEPARATOR')"
   _POWERLEVEL9K_RIGHT_SUBSEGMENT_SEPARATOR="$(print_icon 'RIGHT_SUBSEGMENT_SEPARATOR')"
 
-  if [[ "$POWERLEVEL9K_PROMPT_ON_NEWLINE" == true ]]; then
-    PROMPT="$(print_icon 'MULTILINE_FIRST_PROMPT_PREFIX')%f%b%k$(build_left_prompt)
-$(print_icon 'MULTILINE_SECOND_PROMPT_PREFIX')"
-    if [[ "$POWERLEVEL9K_RPROMPT_ON_NEWLINE" != true ]]; then
-      # The right prompt should be on the same line as the first line of the left
-      # prompt. To do so, there is just a quite ugly workaround: Before zsh draws
-      # the RPROMPT, we advise it, to go one line up. At the end of RPROMPT, we
-      # advise it to go one line down. See:
-      # http://superuser.com/questions/357107/zsh-right-justify-in-ps1
-      local LC_ALL="" LC_CTYPE="en_US.UTF-8" # Set the right locale to protect special characters
-      RPROMPT_PREFIX='%{'$'\e[1A''%}' # one line up
-      RPROMPT_SUFFIX='%{'$'\e[1B''%}' # one line down
-    else
-      RPROMPT_PREFIX=''
-      RPROMPT_SUFFIX=''
-    fi
-  else
-    #PROMPT="%f%b%k$(build_left_prompt)"
-    build_left_prompt
+  build_left_prompt
 
-    if [[ "${POWERLEVEL9K_DISABLE_RPROMPT}" != "true" ]]; then
-      #    RPROMPT="$RPROMPT_PREFIX%f%b%k$(build_right_prompt)%{$reset_color%}$RPROMPT_SUFFIX"
-      build_right_prompt
-    fi
-    RPROMPT_PREFIX=''
-    RPROMPT_SUFFIX=''
+  if [[ "${POWERLEVEL9K_DISABLE_RPROMPT}" != "true" ]]; then
+    #    RPROMPT="$RPROMPT_PREFIX%f%b%k$(build_right_prompt)%{$reset_color%}$RPROMPT_SUFFIX"
+    build_right_prompt
   fi
+  RPROMPT_PREFIX=''
+  RPROMPT_SUFFIX=''
 
   ASYNC_PROC=$!
 }

@@ -25,6 +25,29 @@ function setUp() {
   trap WINCH
 }
 
+function tearDown() {
+  p9k_clear_cache
+}
+
+#   * $1: Index
+#   * $2: Alignment
+#   * $3: Joined
+#   * $4: Condition - If the segment should be printed
+function writeCacheFile() {
+  # Options from serialize_segment
+  #   * $1 Name: string - Name of the segment
+  #   * $2 State: string - The state the segment is in
+  #   * $3 Alignment: string - left|right
+  #   * $4 Index: integer
+  #   * $5 Joined: bool - If the segment should be joined
+  #   * $6 Background: string - The default background color of the segment
+  #   * $7 Foreground: string - The default foreground color of the segment
+  #   * $8 Content: string - Content of the segment
+  #   * $9 Visual identifier: string - Icon of the segment
+  #   * $10 Condition - The condition, if the segment should be printed
+  serialize_segment "segment_${1}" "" "${2}" "${1}" "${3}" "blue" "black" "segment_${1}_content" "visual_identifier" "${4}"
+}
+
 function testSegmentOnRightSide() {
     POWERLEVEL9K_CUSTOM_WORLD1='echo world1'
     POWERLEVEL9K_CUSTOM_WORLD2='echo world2'
@@ -63,6 +86,19 @@ function testDisablingRightPrompt() {
     unset POWERLEVEL9K_CUSTOM_WORLD1
     unset POWERLEVEL9K_CUSTOM_WORLD2
     unset POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS
+}
+
+function testLeftMultilinePrompt() {
+    POWERLEVEL9K_PROMPT_ON_NEWLINE=true
+
+    writeCacheFile "1" "left" "false" "true"
+    p9k_build_prompt_from_cache
+
+    assertEquals "╭─%f%b%k
+╰─ %K{blue} %F{black}segment_1_content %k%F{blue}%f " "${PROMPT}"
+
+    unset POWERLEVEL9K_PROMPT_ON_NEWLINE
+    unset POWERLEVEL9K_MULTILINE_FIRST_PROMPT_PREFIX
 }
 
 source shunit2/source/2.1/src/shunit2
