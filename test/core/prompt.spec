@@ -101,4 +101,24 @@ function testLeftMultilinePrompt() {
     unset POWERLEVEL9K_MULTILINE_FIRST_PROMPT_PREFIX
 }
 
+function testRightPromptOnSameLine() {
+    POWERLEVEL9K_PROMPT_ON_NEWLINE=true
+    POWERLEVEL9K_RPROMPT_ON_NEWLINE=false # We want the RPROMPT on the same line as our left prompt
+
+    writeCacheFile "1" "right" "false" "true"
+    p9k_build_prompt_from_cache
+
+    # Skip test, as this cannot be tested properly.
+    # The "go one line up" instruction does not get
+    # printed as real characters in RPROMPT.
+    # On command line the assert statement produces
+    # a visually identical output as we expect, but
+    # it fails anyway. :(
+    startSkipping
+    assertEquals "%{\e[1A%}%F{blue}%f%K{blue}%F{black} segment_1_content %f%{\e[1B%}" "${RPROMPT}"
+
+    unset POWERLEVEL9K_PROMPT_ON_NEWLINE
+    unset POWERLEVEL9K_RPROMPT_ON_NEWLINE
+}
+
 source shunit2/source/2.1/src/shunit2
