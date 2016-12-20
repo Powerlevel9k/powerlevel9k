@@ -121,4 +121,33 @@ function testRightPromptOnSameLine() {
     unset POWERLEVEL9K_RPROMPT_ON_NEWLINE
 }
 
+function testPrefixingFirstLineOnLeftPrompt() {
+    POWERLEVEL9K_PROMPT_ON_NEWLINE=true
+    POWERLEVEL9K_MULTILINE_FIRST_PROMPT_PREFIX='XXX'
+
+    writeCacheFile "1" "left" "false" "true"
+    p9k_build_prompt_from_cache
+
+    assertEquals "XXX%f%b%k
+╰─ %K{blue} %F{black}segment_1_content %k%F{blue}%f " "${PROMPT}"
+
+
+    unset POWERLEVEL9K_PROMPT_ON_NEWLINE
+    unset POWERLEVEL9K_MULTILINE_FIRST_PROMPT_PREFIX
+}
+
+function testPrefixingSecondLineOnLeftPrompt() {
+    POWERLEVEL9K_PROMPT_ON_NEWLINE=true
+    POWERLEVEL9K_MULTILINE_SECOND_PROMPT_PREFIX='XXX'
+
+    writeCacheFile "1" "left" "false" "true"
+    p9k_build_prompt_from_cache
+
+    assertEquals "╭─%f%b%k
+XXX%K{blue} %F{black}segment_1_content %k%F{blue}%f " "${PROMPT}"
+
+    unset POWERLEVEL9K_PROMPT_ON_NEWLINE
+    unset POWERLEVEL9K_MULTILINE_SECOND_PROMPT_PREFIX
+}
+
 source shunit2/source/2.1/src/shunit2
