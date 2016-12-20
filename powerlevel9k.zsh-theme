@@ -330,19 +330,22 @@ prompt_battery() {
     [[ -a $sysp/BAT1 ]] && local bat=$sysp/BAT1
 
     if [[ -n "${bat}" ]]; then
-      [[ $(cat $bat/capacity) -gt 100 ]] && local bat_percent=100 || local bat_percent=$(cat $bat/capacity)
-      [[ $(cat $bat/status) =~ Charging ]] && local connected=true
-      [[ $(cat $bat/status) =~ Charging && $bat_percent =~ 100 ]] && current_state="charged"
-      [[ $(cat $bat/status) =~ Charging && $bat_percent -lt 100 ]] && current_state="charging"
+      local capacity=$(cat $bat/capacity)
+      local battery_status=$(cat $bat/status)
+      [[ $capacity -gt 100 ]] && local bat_percent=100 || local bat_percent=$capacity
+      [[ $battery_status =~ Charging || $battery_status =~ Full ]] && local connected=true
       if [[ -z  $connected ]]; then
         [[ $bat_percent -lt $POWERLEVEL9K_BATTERY_LOW_THRESHOLD ]] && current_state="low" || current_state="disconnected"
+      else
+        [[ $bat_percent =~ 100 ]] && current_state="charged"
+        [[ $bat_percent -lt 100 ]] && current_state="charging"
       fi
       if [[ -f /usr/bin/acpi ]]; then
         local time_remaining=$(acpi | awk '{ print $5 }')
         if [[ $time_remaining =~ rate ]]; then
           local tstring="..."
         elif [[ $time_remaining =~ "[[:digit:]]+" ]]; then
-          local tstring=${(f)$(date -u -d "$(echo $time_remaining)" +%k:%M)}
+          local tstring=${(f)$(date -u -d "$(echo $time_remaining)" +%k:%M 2> /dev/null)}
         fi
       fi
       [[ -n $tstring ]] && local remain=" ($tstring)"
@@ -483,6 +486,18 @@ prompt_go_version() {
 # Command number (in local history)
 prompt_history() {
   serialize_segment "$0" "" "$1" "$2" "${3}" "244" "${DEFAULT_COLOR}" "%h" ""
+}
+
+# Detection for virtualization (systemd based systems only)
+prompt_detect_virt() {
+  local virt=$(systemd-detect-virt 2> /dev/null)
+  if [[ "$virt" == "none" ]]; then
+    if [[ "$(ls -di / | grep -o 2)" != "2" ]]; then
+      virt="chroot"
+    fi
+  fi
+
+  serialize_segment "$0" "" "$1" "$2" "${3}" "yellow" "${DEFAULT_COLOR}" "${virt}"
 }
 
 prompt_icons_test() {
