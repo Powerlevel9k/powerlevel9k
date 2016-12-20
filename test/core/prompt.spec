@@ -94,8 +94,9 @@ function testLeftMultilinePrompt() {
     writeCacheFile "1" "left" "false" "true"
     p9k_build_prompt_from_cache
 
-    assertEquals "╭─%f%b%k
-╰─ %K{blue} %F{black}segment_1_content %k%F{blue}%f " "${PROMPT}"
+    # Caution! Trailing whitespace is important here!
+    assertEquals "╭─%f%b%k%K{blue} %F{black}segment_1_content %k%F{blue}%f 
+╰─ " "${PROMPT}"
 
     unset POWERLEVEL9K_PROMPT_ON_NEWLINE
     unset POWERLEVEL9K_MULTILINE_FIRST_PROMPT_PREFIX
@@ -128,8 +129,9 @@ function testPrefixingFirstLineOnLeftPrompt() {
     writeCacheFile "1" "left" "false" "true"
     p9k_build_prompt_from_cache
 
-    assertEquals "XXX%f%b%k
-╰─ %K{blue} %F{black}segment_1_content %k%F{blue}%f " "${PROMPT}"
+    # Caution! Trailing whitespace is important here!
+    assertEquals "XXX%f%b%k%K{blue} %F{black}segment_1_content %k%F{blue}%f 
+╰─ " "${PROMPT}"
 
 
     unset POWERLEVEL9K_PROMPT_ON_NEWLINE
@@ -143,8 +145,9 @@ function testPrefixingSecondLineOnLeftPrompt() {
     writeCacheFile "1" "left" "false" "true"
     p9k_build_prompt_from_cache
 
-    assertEquals "╭─%f%b%k
-XXX%K{blue} %F{black}segment_1_content %k%F{blue}%f " "${PROMPT}"
+    # Caution! Trailing whitespace is important here!
+    assertEquals "╭─%f%b%k%K{blue} %F{black}segment_1_content %k%F{blue}%f 
+XXX" "${PROMPT}"
 
     unset POWERLEVEL9K_PROMPT_ON_NEWLINE
     unset POWERLEVEL9K_MULTILINE_SECOND_PROMPT_PREFIX

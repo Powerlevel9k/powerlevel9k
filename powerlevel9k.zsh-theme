@@ -1108,8 +1108,10 @@ p9k_build_prompt_from_cache() {
   PROMPT='' # Reset
   RPROMPT='' # Reset
   local RPROMPT_SUFFIX=''
+  local PROMPT_SUFFIX=''
   if [[ "${POWERLEVEL9K_PROMPT_ON_NEWLINE}" == true ]]; then
-    PROMPT="$(print_icon 'MULTILINE_FIRST_PROMPT_PREFIX')%f%b%k${PROMPT}
+    PROMPT="$(print_icon 'MULTILINE_FIRST_PROMPT_PREFIX')%f%b%k${PROMPT}"
+    PROMPT_SUFFIX="
 $(print_icon 'MULTILINE_SECOND_PROMPT_PREFIX')"
     if [[ "${POWERLEVEL9K_RPROMPT_ON_NEWLINE}" != true ]]; then
       # The right prompt should be on the same line as the first line of the left
@@ -1191,6 +1193,7 @@ $(print_icon 'MULTILINE_SECOND_PROMPT_PREFIX')"
     fi
   done
   PROMPT+="$(left_prompt_end ${LAST_LEFT_BACKGROUND})"
+  PROMPT+="${PROMPT_SUFFIX}"
   RPROMPT+="${RPROMPT_SUFFIX}"
   zle && zle reset-prompt
 }
