@@ -858,10 +858,9 @@ prompt_time() {
 prompt_todo() {
   if $(hash todo.sh 2>&-); then
     count=$(todo.sh ls | egrep "TODO: [0-9]+ of ([0-9]+) tasks shown" | awk '{ print $4 }')
-    if [[ "$count" = <-> ]]; then
-      serialize_segment "$0" "" "$1" "$2" "${3}" "244" "$DEFAULT_COLOR" "$count" "TODO_ICON"
-    fi
   fi
+
+  serialize_segment "$0" "" "$1" "$2" "${3}" "244" "$DEFAULT_COLOR" "${count}" "TODO_ICON"
 }
 
 # VCS segment: shows the state of your repository, if you are in a folder under
