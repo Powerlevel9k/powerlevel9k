@@ -687,8 +687,6 @@ prompt_chruby() {
 
 # Print an icon if user is root.
 prompt_root_indicator() {
-  # TODO: Here only the visual identifier is printed! This means, the segment
-  # has no content and won't get printed anyway! FIXME!
   serialize_segment "$0" "" "$1" "$2" "${3}" "$DEFAULT_COLOR" "yellow" "" "ROOT_ICON" '[[ "${UID}" -eq 0 ]]'
 }
 
