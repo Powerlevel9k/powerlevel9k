@@ -258,17 +258,18 @@ prompt_aws_eb_env() {
 set_default POWERLEVEL9K_BACKGROUND_JOBS_VERBOSE true
 prompt_background_jobs() {
   local background_jobs_number=${$(jobs -l | wc -l)// /}
-  local wrong_lines=`jobs -l | awk '/pwd now/{ count++ } END {print count}'`
+  local wrong_lines=$(jobs -l | awk '/pwd now/{ count++ } END {print count}')
   if [[ wrong_lines -gt 0 ]]; then
      background_jobs_number=$(( $background_jobs_number - $wrong_lines ))
   fi
   if [[ background_jobs_number -gt 0 ]]; then
-    local background_jobs_number_print=""
-    if [[ "$POWERLEVEL9K_BACKGROUND_JOBS_VERBOSE" == "true" ]] && [[ "$background_jobs_number" -gt 1 ]]; then
-      background_jobs_number_print="$background_jobs_number"
+    local content=""
+    if [[ "${POWERLEVEL9K_BACKGROUND_JOBS_VERBOSE}" == "true" ]] && [[ "${background_jobs_number}" -gt 1 ]]; then
+      content="$background_jobs_number"
     fi
-    serialize_segment "$0" "" "$1" "$2" "${3}" "${DEFAULT_COLOR}" "cyan" "${background_jobs_number_print}" "BACKGROUND_JOBS_ICON"
   fi
+
+  serialize_segment "$0" "" "$1" "$2" "${3}" "${DEFAULT_COLOR}" "cyan" "${content}" "BACKGROUND_JOBS_ICON" "[[ ${background_jobs_number} -gt 0 ]]"
 }
 
 prompt_battery() {
