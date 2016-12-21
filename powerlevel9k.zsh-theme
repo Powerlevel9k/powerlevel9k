@@ -881,14 +881,6 @@ powerlevel9k_vcs_init() {
   VCS_WORKDIR_DIRTY=false
   VCS_WORKDIR_HALF_DIRTY=false
 
-  # The vcs segment can have three different states - defaults to 'clean'.
-  typeset -gAH vcs_states
-  vcs_states=(
-    'clean'         'green'
-    'modified'      'yellow'
-    'untracked'     'green'
-  )
-
   VCS_CHANGESET_PREFIX=''
   if [[ "$POWERLEVEL9K_SHOW_CHANGESET" == true ]]; then
     VCS_CHANGESET_PREFIX="$(print_icon 'VCS_COMMIT_ICON')%0.$POWERLEVEL9K_VCS_INTERNAL_HASH_LENGTH""i "
@@ -929,13 +921,20 @@ prompt_vcs() {
 
   VCS_WORKDIR_DIRTY=false
   VCS_WORKDIR_HALF_DIRTY=false
-  local current_state=""
+  local current_state="unknown"
+  # The vcs segment can have three different states - defaults to 'clean'.
+  typeset -gAH vcs_states
+  vcs_states=(
+    'clean'         'green'
+    'modified'      'yellow'
+    'untracked'     'green'
+  )
 
   # Actually invoke vcs_info manually to gather all information.
   vcs_info
   local vcs_prompt="${vcs_info_msg_0_}"
 
-  if [[ -n "$vcs_prompt" ]]; then
+  if [[ -n "${vcs_prompt}" ]]; then
     if [[ "$VCS_WORKDIR_DIRTY" == true ]]; then
       # $vcs_visual_identifier gets set in +vi-vcs-detect-changes in functions/vcs.zsh,
       # as we have there access to vcs_info internal hooks.
@@ -947,8 +946,8 @@ prompt_vcs() {
         current_state='clean'
       fi
     fi
-    serialize_segment "$0" "$current_state" "$1" "$2" "${3}" "${vcs_states[$current_state]}" "$DEFAULT_COLOR" "$vcs_prompt" "$vcs_visual_identifier"
   fi
+  serialize_segment "$0" "$current_state" "$1" "$2" "${3}" "${vcs_states[$current_state]}" "$DEFAULT_COLOR" "${vcs_prompt}" "$vcs_visual_identifier"
 }
 
 # Vi Mode: show editing mode (NORMAL|INSERT)
