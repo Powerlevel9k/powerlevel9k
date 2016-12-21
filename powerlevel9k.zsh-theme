@@ -624,7 +624,7 @@ prompt_os_icon() {
     Solaris)
       OS_ICON=$(print_icon 'SUNOS_ICON')
       ;;
-esac
+  esac
 
   serialize_segment "$0" "" "$1" "$2" "${3}" "black" "255" "${OS_ICON}" ""
 }
