@@ -69,7 +69,7 @@ function _powerlevel9k_setup_awesome_patched_icons() {
     VCS_GIT_ICON                   $'\uE20E '             # 
     VCS_GIT_GITHUB_ICON            $'\uE20E '             #
     VCS_GIT_BITBUCKET_ICON         $'\uE20E '             #
-    VCS_GIT_GITLAB_ICON            $'\uE20E '             #
+    VCS_GIT_GITLAB_ICON            'GL '$'\uE20E '             #
     VCS_HG_ICON                    $'\uE1C3 '             # 
     VCS_SVN_ICON                   '(svn) '
     RUST_ICON                      ''

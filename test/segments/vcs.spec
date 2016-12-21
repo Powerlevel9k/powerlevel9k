@@ -94,4 +94,26 @@ function testColorOverridingForUntrackedStateWorks() {
   unset POWERLEVEL9K_VCS_UNTRACKED_BACKGROUND
 }
 
+function testGitlabIconWorks() {
+  POWERLEVEL9K_VCS_GIT_GITLAB_ICON='GL-Icon'
+
+  FOLDER=/tmp/powerlevel9k-test/vcs-test
+  mkdir -p $FOLDER
+  cd $FOLDER
+  # Initialize an empty git repository and add a GitLab project as
+  # remote origin. This is sufficient to show the GitLab-specific icon.
+  git init
+  git remote add origin https://gitlab.com/dritter/gitlab-test-project.git
+
+  prompt_vcs "left" "1" "false"
+  p9k_build_prompt_from_cache
+
+  assertEquals "%K{green} %F{black%}GL-Icon%f %F{black} master %k%F{green}%f " "${PROMPT}"
+
+  cd -
+  rm -fr /tmp/powerlevel9k-test
+
+  unset POWERLEVEL9K_VCS_GIT_GITLAB_ICON
+}
+
 source shunit2/source/2.1/src/shunit2
