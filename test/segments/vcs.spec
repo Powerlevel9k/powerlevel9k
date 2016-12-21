@@ -138,4 +138,26 @@ function testBitbucketIconWorks() {
   unset POWERLEVEL9K_VCS_GIT_BITBUCKET_ICON
 }
 
+function testGitHubIconWorks() {
+  POWERLEVEL9K_VCS_GIT_GITHUB_ICON='GH-Icon'
+
+  FOLDER=/tmp/powerlevel9k-test/vcs-test
+  mkdir -p $FOLDER
+  cd $FOLDER
+  # Initialize an empty git repository and add a GitHub project as
+  # remote origin. This is sufficient to show the GitHub-specific icon.
+  git init
+  git remote add origin https://github.com/dritter/test.git
+
+  prompt_vcs "left" "1" "false"
+  p9k_build_prompt_from_cache
+
+  assertEquals "%K{green} %F{black%}GH-Icon%f %F{black} master %k%F{green}%f " "${PROMPT}"
+
+  cd -
+  rm -fr /tmp/powerlevel9k-test
+
+  unset POWERLEVEL9K_VCS_GIT_GITHUB_ICON
+}
+
 source shunit2/source/2.1/src/shunit2
