@@ -668,9 +668,9 @@ prompt_rbenv() {
     if [[ "${rbenv_version_name}" == "${rbenv_global}" ]]; then
       rbenv_version_name=""
     fi
-
-    serialize_segment "$0" "" "$1" "$2" "${3}" "red" "$DEFAULT_COLOR" "${rbenv_version_name}" "RUBY_ICON"
   fi
+
+  serialize_segment "$0" "" "$1" "$2" "${3}" "red" "$DEFAULT_COLOR" "${rbenv_version_name}" "RUBY_ICON"
 }
 
 # chruby information
