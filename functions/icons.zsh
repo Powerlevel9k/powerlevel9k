@@ -67,6 +67,9 @@ function _powerlevel9k_setup_awesome_patched_icons() {
     VCS_BRANCH_ICON                $'\uE220'              # 
     VCS_REMOTE_BRANCH_ICON         ' '$'\uE804 '          # 
     VCS_GIT_ICON                   $'\uE20E '             # 
+    VCS_GIT_GITHUB_ICON            $'\uE20E '             #
+    VCS_GIT_BITBUCKET_ICON         $'\uE20E '             #
+    VCS_GIT_GITLAB_ICON            $'\uE20E '             #
     VCS_HG_ICON                    $'\uE1C3 '             # 
     VCS_SVN_ICON                   '(svn) '
     RUST_ICON                      ''
@@ -127,7 +130,10 @@ function _powerlevel9k_setup_awesome_fontconfig_icons() {
     VCS_COMMIT_ICON                $'\uF221 '             # 
     VCS_BRANCH_ICON                $'\uF126'              # 
     VCS_REMOTE_BRANCH_ICON         ' '$'\uF204 '          # 
-    VCS_GIT_ICON                   $'\uF113 '             # 
+    VCS_GIT_ICON                   $'\uF1D3 '             # 
+    VCS_GIT_GITHUB_ICON            $'\uF113 '             # 
+    VCS_GIT_BITBUCKET_ICON         $'\uF171 '             # 
+    VCS_GIT_GITLAB_ICON            $'\uF296 '             # 
     VCS_HG_ICON                    $'\uF0C3 '             # 
     VCS_SVN_ICON                   '(svn) '
     RUST_ICON                      $'\uE6A8'              #  
@@ -202,6 +208,9 @@ function _powerlevel9k_setup_default_icons() {
     VCS_BRANCH_ICON                $'\uE0A0 '             # 
     VCS_REMOTE_BRANCH_ICON         $'\u2192'              # →
     VCS_GIT_ICON                   ''
+    VCS_GIT_GITHUB_ICON            ''
+    VCS_GIT_BITBUCKET_ICON         ''
+    VCS_GIT_GITLAB_ICON            ''
     VCS_HG_ICON                    ''
     VCS_SVN_ICON                   ''
     RUST_ICON                      ''
