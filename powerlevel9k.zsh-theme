@@ -699,13 +699,12 @@ prompt_rust_version() {
 }
 # RSpec test ratio
 prompt_rspec_stats() {
-  if [[ (-d app && -d spec) ]]; then
-    local code_amount tests_amount
-    code_amount=$(ls -1 app/**/*.rb | wc -l)
-    tests_amount=$(ls -1 spec/**/*.rb | wc -l)
+  local code_amount tests_amount
+  # Silence globbing {@see https://www.zsh.org/mla/users/2008/msg01144.html}
+  code_amount=$({ls -1 app/**/*.rb} 2> /dev/null | wc -l)
+  tests_amount=$({ls -1 spec/**/*.rb} 2> /dev/null | wc -l)
 
-    build_test_stats "$1" "$0" "$2" "$code_amount" "$tests_amount" "RSpec" 'TEST_ICON'
-  fi
+  build_test_stats "$1" "$0" "$2" "$code_amount" "$tests_amount" "RSpec" 'TEST_ICON' '[[ (-d app && -d spec && -n ${CONTENT}) ]]'
 }
 
 # Ruby Version Manager information
@@ -793,13 +792,12 @@ prompt_swift_version() {
 
 # Symfony2-PHPUnit test ratio
 prompt_symfony2_tests() {
-  if [[ (-d src && -d app && -f app/AppKernel.php) ]]; then
-    local code_amount tests_amount
-    code_amount=$(ls -1 src/**/*.php | grep -vc Tests)
-    tests_amount=$(ls -1 src/**/*.php | grep -c Tests)
+  local code_amount tests_amount
+  # Silence globbing {@see https://www.zsh.org/mla/users/2008/msg01144.html}
+  code_amount=$({ls -1 src/**/*.php} 2> /dev/null | grep -vc Tests)
+  tests_amount=$({ls -1 src/**/*.php} 2> /dev/null | grep -c Tests)
 
-    build_test_stats "$1" "$0" "$2" "${3}" "$code_amount" "$tests_amount" "SF2" 'TEST_ICON'
-  fi
+  build_test_stats "$1" "$0" "$2" "${3}" "$code_amount" "$tests_amount" "SF2" 'TEST_ICON' '[[ (-d src && -d app && -f app/AppKernel.php && -n "${CONTENT}") ]]'
 }
 
 # Symfony2-Version
@@ -820,15 +818,12 @@ prompt_symfony2_version() {
 #   * $6 Amount of tests: integer
 #   * $7 Content: string - Content of the segment
 #   * $8 Visual identifier: string - Icon of the segment
+#   * $9 Condition
 build_test_stats() {
   local joined="${4}"
   local code_amount="${5}"
   local tests_amount="${6}"+0.00001
   local headline="${7}"
-
-  # Set float precision to 2 digits:
-  typeset -F 2 ratio
-  local ratio=$(( (tests_amount/code_amount) * 100 ))
 
   local current_state="unknown"
   typeset -AH test_states
@@ -837,11 +832,22 @@ build_test_stats() {
     'AVG'           'yellow'
     'BAD'           'red'
   )
-  (( ratio >= 75 )) && current_state="GOOD"
-  (( ratio >= 50 && ratio < 75 )) && current_state="AVG"
-  (( ratio < 50 )) && current_state="BAD"
 
-  serialize_segment "${2}" "$current_state" "${1}" "${3}" "${joined}" "${test_states[$current_state]}" "${DEFAULT_COLOR}" "$headline: $ratio%%" "${8}"
+  # Set float precision to 2 digits:
+  typeset -F 2 ratio
+  local ratio=0
+  local content=''
+  if (( code_amount > 0 )); then
+    ratio=$(( (tests_amount/code_amount) * 100 ))
+
+    (( ratio >= 75 )) && current_state="GOOD"
+    (( ratio >= 50 && ratio < 75 )) && current_state="AVG"
+    (( ratio < 50 )) && current_state="BAD"
+
+    content="$headline: $ratio%%"
+  fi
+
+  serialize_segment "${2}" "$current_state" "${1}" "${3}" "${joined}" "${test_states[$current_state]}" "${DEFAULT_COLOR}" "${content}" "${8}" "${9}"
 }
 
 # System time
