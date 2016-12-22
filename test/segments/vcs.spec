@@ -179,4 +179,24 @@ function testGitHubIconWorks() {
   unset POWERLEVEL9K_VCS_GIT_GITHUB_ICON
 }
 
+
+function testMercurialIconWorks() {
+  POWERLEVEL9K_VCS_HG_ICON='HG-Icon'
+
+  FOLDER=/tmp/powerlevel9k-test/vcs-test
+  mkdir -p $FOLDER
+  cd $FOLDER
+  hg init
+
+  prompt_vcs "left" "1" "false"
+  p9k_build_prompt_from_cache
+
+  assertEquals "%K{green} %F{black%}HG-Icon%f %F{black} default %k%F{green}%f " "${PROMPT}"
+
+  cd -
+  rm -fr /tmp/powerlevel9k-test
+
+  unset POWERLEVEL9K_VCS_HG_ICON
+}
+
 source shunit2/source/2.1/src/shunit2
