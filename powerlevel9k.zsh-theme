@@ -1095,6 +1095,12 @@ serialize_segment() {
 
   local FILE="${CACHE_DIR}/p9k_$$_${ALIGNMENT}_${(l:3::0:)INDEX}_${NAME}.sh"
   rm -f $FILE #Remove the previous file prior, due to weird > handling on OS X
+
+  # From the manpage of typeset:
+  #   If the -p option is given, parameters and values are printed in the form
+  #   of a typeset command with an assignment, regardless of other flags and
+  #   options.  Note that the -H flag on parameters is respected; no value
+  #   will  be  shown  for  these parameters.
   typeset -p "NAME" > $FILE
   typeset -p "STATE" >> $FILE
   typeset -p "ALIGNMENT" >> $FILE
