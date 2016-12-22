@@ -94,6 +94,25 @@ function testColorOverridingForUntrackedStateWorks() {
   unset POWERLEVEL9K_VCS_UNTRACKED_BACKGROUND
 }
 
+function testGitIconWorks() {
+  POWERLEVEL9K_VCS_GIT_ICON='Git-Icon'
+
+  FOLDER=/tmp/powerlevel9k-test/vcs-test
+  mkdir -p $FOLDER
+  cd $FOLDER
+  git init
+
+  prompt_vcs "left" "1" "false"
+  p9k_build_prompt_from_cache
+
+  assertEquals "%K{green} %F{black%}Git-Icon%f %F{black} master %k%F{green}%f " "${PROMPT}"
+
+  cd -
+  rm -fr /tmp/powerlevel9k-test
+
+  unset POWERLEVEL9K_VCS_GIT_ICON
+}
+
 function testGitlabIconWorks() {
   POWERLEVEL9K_VCS_GIT_GITLAB_ICON='GL-Icon'
 
