@@ -22,6 +22,6 @@ antigen apply
 
         # install antigen
         mkdir ~/antigen
-        curl -qL https://raw.githubusercontent.com/zsh-users/antigen/master/antigen.zsh > ~/antigen/antigen.zsh
+        curl -qL https://raw.githubusercontent.com/zsh-users/antigen/master/bin/antigen.zsh > ~/antigen/antigen.zsh
         source ~/antigen/antigen.zsh
 )
