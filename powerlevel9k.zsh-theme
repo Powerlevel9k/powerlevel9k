@@ -1153,8 +1153,11 @@ $(print_icon 'MULTILINE_SECOND_PROMPT_PREFIX')"
   last_segments_print_states=()
   typeset -Ah last_segments_join_states
   last_segments_join_states=()
-  for i in $(ls -1 $CACHE_DIR/p9k_$$_* 2> /dev/null); do
-    source "${i}"
+
+  # (N) sets the NULL_GLOB option, so that if the glob does
+  # not return files, an error message is suppressed.
+  for idx in ${CACHE_DIR}/p9k_$$_*(N); do
+    source "${idx}"
 
     local paddedIndex="${(l:3::0:)INDEX}"
 
