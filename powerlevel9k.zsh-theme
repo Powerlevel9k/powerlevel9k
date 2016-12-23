@@ -700,7 +700,9 @@ prompt_rust_version() {
 # RSpec test ratio
 prompt_rspec_stats() {
   local code_amount tests_amount
-  # Silence globbing {@see https://www.zsh.org/mla/users/2008/msg01144.html}
+  # Careful! `ls` seems to now work correctly with NULL_GLOB,
+  # as described here http://unix.stackexchange.com/a/26819
+  # This is the reason, why we do not use NULL_GLOB here.
   code_amount=$({ls -1 app/**/*.rb} 2> /dev/null | wc -l)
   tests_amount=$({ls -1 spec/**/*.rb} 2> /dev/null | wc -l)
 
@@ -793,7 +795,9 @@ prompt_swift_version() {
 # Symfony2-PHPUnit test ratio
 prompt_symfony2_tests() {
   local code_amount tests_amount
-  # Silence globbing {@see https://www.zsh.org/mla/users/2008/msg01144.html}
+  # Careful! `ls` seems to now work correctly with NULL_GLOB,
+  # as described here http://unix.stackexchange.com/a/26819
+  # This is the reason, why we do not use NULL_GLOB here.
   code_amount=$({ls -1 src/**/*.php} 2> /dev/null | grep -vc Tests)
   tests_amount=$({ls -1 src/**/*.php} 2> /dev/null | grep -c Tests)
 
@@ -1231,7 +1235,9 @@ p9k_clear_cache() {
   # Stupid way to avoid "no matches found" globbing error on
   # deleting cache files.
   touch ${CACHE_DIR}/p9k_$$_dummy
-  rm -f ${CACHE_DIR}/p9k_$$_* 2> /dev/null
+  # (N) sets the NULL_GLOB option, so that if the glob does
+  # not return files, an error message is suppressed.
+  rm -f ${CACHE_DIR}/p9k_$$_*(N)
 }
 # Register trap on EXIT (cleanup)
 trap p9k_clear_cache EXIT
