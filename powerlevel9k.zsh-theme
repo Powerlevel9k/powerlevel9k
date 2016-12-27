@@ -1133,6 +1133,7 @@ serialize_segment() {
 set_default CACHE_DIR /tmp/p9k
 # Create cache dir
 mkdir -p "${CACHE_DIR}" 2> /dev/null
+#   $1 - Signal that should be propagated
 p9k_build_prompt_from_cache() {
   last_left_element_index=1 # Reset
   local LAST_LEFT_BACKGROUND='NONE' # Reset
@@ -1231,10 +1232,13 @@ $(print_icon 'MULTILINE_SECOND_PROMPT_PREFIX')"
   PROMPT+="${PROMPT_SUFFIX}"
   RPROMPT+="${RPROMPT_SUFFIX}"
   zle && zle reset-prompt
+
+  return $(( 128 + $1 ))
 }
 # Register trap on WINCH (Rebuild prompt)
-trap p9k_build_prompt_from_cache WINCH
+trap "p9k_build_prompt_from_cache WINCH" WINCH
 
+#   $1 - Signal that should be propagated
 p9k_clear_cache() {
   # Stupid way to avoid "no matches found" globbing error on
   # deleting cache files.
@@ -1242,11 +1246,18 @@ p9k_clear_cache() {
   # (N) sets the NULL_GLOB option, so that if the glob does
   # not return files, an error message is suppressed.
   rm -f ${CACHE_DIR}/p9k_$$_*(N)
+
+  # We also call this function from `powerlevel9k_prepare_prompt`
+  # There we just want to clean the cache without having signal
+  # to propagate. This is the reason, why we need the condition.
+  if [[ -n "${1}" ]]; then
+    return $(( 128 + $1 ))
+  fi
 }
 # Register trap on EXIT (cleanup)
-trap p9k_clear_cache EXIT
+trap "p9k_clear_cache EXIT" EXIT
 # Register trap on TERM (cleanup)
-trap p9k_clear_cache TERM
+trap "p9k_clear_cache TERM" TERM
 
 ################################################################
 # Prompt processing and drawing
