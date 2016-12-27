@@ -228,7 +228,7 @@ function prepareCompatibleIcons() {
   icons_compatible=("${(kv)icons_default[@]}")
   icons_compatible[LEFT_SEGMENT_SEPARATOR]=$'\u2B80'                 # ⮀
   icons_compatible[RIGHT_SEGMENT_SEPARATOR]=$'\u2B82'                # ⮂
-  icons_compatible[VCS_BRANCH_ICON]='@'
+  icons_compatible[VCS_BRANCH_ICON]=$'\U2387'                        # ⎇
 }
 prepareCompatibleIcons
 
