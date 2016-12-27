@@ -1105,7 +1105,11 @@ serialize_segment() {
   #   of a typeset command with an assignment, regardless of other flags and
   #   options.  Note that the -H flag on parameters is respected; no value
   #   will  be  shown  for  these parameters.
-  typeset -p "NAME" > $FILE
+  # Redirection with `>!`. From the manpage: Same as >, except that the file
+  #   is truncated to zero length if it exists, even if CLOBBER is unset.
+  # If the file already exists, and a simple `>` redirection and CLOBBER
+  # unset, ZSH will produce an error.
+  typeset -p "NAME" >! $FILE
   typeset -p "STATE" >> $FILE
   typeset -p "ALIGNMENT" >> $FILE
   typeset -p "INDEX" >> $FILE
