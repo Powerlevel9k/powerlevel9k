@@ -697,6 +697,7 @@ prompt_rust_version() {
 
   serialize_segment "$0" "" "$1" "$2" "${3}" "208" "$DEFAULT_COLOR" "${rust_version}" "RUST_ICON"
 }
+
 # RSpec test ratio
 prompt_rspec_stats() {
   local code_amount tests_amount
@@ -706,7 +707,7 @@ prompt_rspec_stats() {
   code_amount=$({ls -1 app/**/*.rb} 2> /dev/null | wc -l)
   tests_amount=$({ls -1 spec/**/*.rb} 2> /dev/null | wc -l)
 
-  build_test_stats "$1" "$0" "$2" "$code_amount" "$tests_amount" "RSpec" 'TEST_ICON' '[[ (-d app && -d spec && -n ${CONTENT}) ]]'
+  build_test_stats "$1" "$0" "$2" "${3}" "$code_amount" "$tests_amount" "RSpec" 'TEST_ICON' '[[ (-d app && -d spec && -n ${CONTENT}) ]]'
 }
 
 # Ruby Version Manager information
