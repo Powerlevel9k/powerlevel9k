@@ -17,6 +17,7 @@ Once you have SSH'd into the machine, you'll see a plain ZSH. To test the other 
   * `vagrant-antigen`
   * `vagrant-prezto`
   * `vagrant-omz`
+  * `vagrant-zplug`
 
 To switch use `sudo -i -H -u <USERNAME>`. `-i` stands for "simulate initial login", `-H` sets the "$HOME" variable to the directory of the user , `-u` for the username. 
 
