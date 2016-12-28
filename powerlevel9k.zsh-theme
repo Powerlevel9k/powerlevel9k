@@ -1409,9 +1409,6 @@ powerlevel9k_init() {
   # initialize colors
   autoload -U colors && colors
 
-  # Initialize async functionality
-  autoload -Uz async && async
-
   # initialize hooks
   autoload -Uz add-zsh-hook
 
