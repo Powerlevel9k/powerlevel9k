@@ -1234,7 +1234,9 @@ $(print_icon 'MULTILINE_SECOND_PROMPT_PREFIX')"
   RPROMPT+="${RPROMPT_SUFFIX}"
   zle && zle reset-prompt
 
-  return $(( 128 + $1 ))
+  # Add zero to $1, so that we can call this function without parameters
+  # in tests..
+  return $(( 128 + ($1 + 0) ))
 }
 # Register trap on WINCH (Rebuild prompt)
 trap "p9k_build_prompt_from_cache WINCH" WINCH
