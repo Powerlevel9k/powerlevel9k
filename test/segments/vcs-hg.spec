@@ -1,4 +1,3 @@
-
 #!/usr/bin/env zsh
 #vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
 
@@ -50,3 +49,5 @@ function testMercurialIconWorks() {
 
   unset POWERLEVEL9K_VCS_HG_ICON
 }
+
+source shunit2/source/2.1/src/shunit2
