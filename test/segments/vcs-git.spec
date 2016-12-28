@@ -162,7 +162,10 @@ function testStagedFilesIconWorks() {
 
   # Create staged file
   touch "i-am-added.txt"
-  git add i-am-added.txt
+  git add i-am-added.txt &>/dev/null
+  git commit -m "initial commit" &>/dev/null
+  echo "xx" >> i-am-added.txt
+  git add i-am-added.txt &>/dev/null
 
   prompt_vcs "left" "1" "false"
   p9k_build_prompt_from_cache
@@ -189,7 +192,7 @@ function testUnstagedFilesIconWorks() {
   unset POWERLEVEL9K_VCS_UNSTAGED_ICON
 }
 
-function testStashIconsWorks() {
+function testStashIconWorks() {
   POWERLEVEL9K_VCS_STASH_ICON='S'
 
   # Create modified file
