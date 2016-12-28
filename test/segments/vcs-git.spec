@@ -223,6 +223,27 @@ function testTagIconWorks() {
   unset POWERLEVEL9K_VCS_TAG_ICON
 }
 
+function testTagIconInDetachedHeadState() {
+  POWERLEVEL9K_VCS_TAG_ICON='T'
+
+  touch "file.txt"
+  git add file.txt
+  git commit -m "Add File" &>/dev/null
+  git tag "v0.0.1"
+  touch "file2.txt"
+  git add file2.txt
+  git commit -m "Add File2" &>/dev/null
+  git checkout v0.0.1 &>/dev/null
+  local hash=$(git rev-list -n 1 --abbrev-commit --abbrev=8 HEAD)
+
+  prompt_vcs "left" "1" "false"
+  p9k_build_prompt_from_cache
+
+  assertEquals "%K{green} %F{black} ${hash} Tv0.0.1 %k%F{green}%f " "${PROMPT}"
+
+  unset POWERLEVEL9K_VCS_TAG_ICON
+}
+
 function testShorteningCommitHashWorks() {
   POWERLEVEL9K_SHOW_CHANGESET=true
   POWERLEVEL9K_CHANGESET_HASH_LENGTH='4'
