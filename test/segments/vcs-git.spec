@@ -143,4 +143,119 @@ function testGitHubIconWorks() {
   unset POWERLEVEL9K_VCS_GIT_GITHUB_ICON
 }
 
+function testUntrackedFilesIconWorks() {
+  POWERLEVEL9K_VCS_UNTRACKED_ICON='?'
+
+  # Create untracked file
+  touch "i-am-untracked.txt"
+
+  prompt_vcs "left" "1" "false"
+  p9k_build_prompt_from_cache
+
+  assertEquals "%K{green} %F{black} master ? %k%F{green}%f " "${PROMPT}"
+
+  unset POWERLEVEL9K_VCS_UNTRACKED_ICON
+}
+
+function testStagedFilesIconWorks() {
+  POWERLEVEL9K_VCS_STAGED_ICON='+'
+
+  # Create staged file
+  touch "i-am-added.txt"
+  git add i-am-added.txt
+
+  prompt_vcs "left" "1" "false"
+  p9k_build_prompt_from_cache
+
+  assertEquals "%K{yellow} %F{black} master + %k%F{yellow}%f " "${PROMPT}"
+
+  unset POWERLEVEL9K_VCS_STAGED_ICON
+}
+
+function testUnstagedFilesIconWorks() {
+  POWERLEVEL9K_VCS_UNSTAGED_ICON='M'
+
+  # Create unstaged (modified, but not added to index) file
+  touch "i-am-modified.txt"
+  git add i-am-modified.txt
+  git commit -m "Add File" 1>/dev/null
+  echo "xx" > i-am-modified.txt
+
+  prompt_vcs "left" "1" "false"
+  p9k_build_prompt_from_cache
+
+  assertEquals "%K{yellow} %F{black} master M %k%F{yellow}%f " "${PROMPT}"
+
+  unset POWERLEVEL9K_VCS_UNSTAGED_ICON
+}
+
+function testStashIconsWorks() {
+  POWERLEVEL9K_VCS_STASH_ICON='S'
+
+  # Create modified file
+  touch "i-am-modified.txt"
+  git add i-am-modified.txt
+  git commit -m "Add File" 1>/dev/null
+  echo "xx" > i-am-modified.txt
+  git stash 1>/dev/null
+
+  prompt_vcs "left" "1" "false"
+  p9k_build_prompt_from_cache
+
+  assertEquals "%K{green} %F{black} master S1 %k%F{green}%f " "${PROMPT}"
+
+  unset POWERLEVEL9K_VCS_STASH_ICON
+}
+
+function testTagIconWorks() {
+  POWERLEVEL9K_VCS_TAG_ICON='T'
+
+  touch "file.txt"
+  git add file.txt
+  git commit -m "Add File" 1>/dev/null
+  git tag "v0.0.1"
+
+  prompt_vcs "left" "1" "false"
+  p9k_build_prompt_from_cache
+
+  assertEquals "%K{green} %F{black} master Tv0.0.1 %k%F{green}%f " "${PROMPT}"
+
+  unset POWERLEVEL9K_VCS_TAG_ICON
+}
+
+function testShorteningCommitHashWorks() {
+  POWERLEVEL9K_SHOW_CHANGESET=true
+  POWERLEVEL9K_CHANGESET_HASH_LENGTH='4'
+
+  touch "file.txt"
+  git add file.txt
+  git commit -m "Add File" 1>/dev/null
+  local hash=$(git rev-list -n 1 --abbrev-commit --abbrev=3 HEAD)
+
+  prompt_vcs "left" "1" "false"
+  p9k_build_prompt_from_cache
+
+  assertEquals "%K{green} %F{black}${hash}  master %k%F{green}%f " "${PROMPT}"
+
+  unset POWERLEVEL9K_SHOW_CHANGESET
+  unset POWERLEVEL9K_CHANGESET_HASH_LENGTH
+}
+
+function testShorteningCommitHashIsNotShownIfShowChangesetIsFalse() {
+  POWERLEVEL9K_SHOW_CHANGESET=false
+  POWERLEVEL9K_CHANGESET_HASH_LENGTH='4'
+
+  touch "file.txt"
+  git add file.txt
+  git commit -m "Add File" 1>/dev/null
+
+  prompt_vcs "left" "1" "false"
+  p9k_build_prompt_from_cache
+
+  assertEquals "%K{green} %F{black} master %k%F{green}%f " "${PROMPT}"
+
+  unset POWERLEVEL9K_SHOW_CHANGESET
+  unset POWERLEVEL9K_CHANGESET_HASH_LENGTH
+}
+
 source shunit2/source/2.1/src/shunit2
