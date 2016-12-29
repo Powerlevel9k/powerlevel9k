@@ -25,6 +25,10 @@ function setUp() {
   trap WINCH
 }
 
+function tearDown() {
+  p9k_clear_cache
+}
+
 function mockGo() {
   echo 'go version go1.5.3 darwin/amd64'
 }

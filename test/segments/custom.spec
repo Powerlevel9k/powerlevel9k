@@ -25,6 +25,10 @@ function setUp() {
   trap WINCH
 }
 
+function tearDown() {
+    p9k_clear_cache
+}
+
 function testCustomDirectOutputSegment() {
     POWERLEVEL9K_CUSTOM_WORLD="echo world"
 

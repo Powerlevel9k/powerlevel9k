@@ -39,6 +39,7 @@ function tearDown() {
   cd -
   rm -fr /tmp/powerlevel9k-test
   unset FOLDER
+  p9k_clear_cache
 }
 
 function testColorOverridingForCleanStateWorks() {

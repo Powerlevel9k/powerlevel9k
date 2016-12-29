@@ -25,6 +25,10 @@ function setUp() {
   trap WINCH
 }
 
+function tearDown() {
+  p9k_clear_cache
+}
+
 function mockRust() {
   echo 'rustc  0.4.1a-alpha'
 }
