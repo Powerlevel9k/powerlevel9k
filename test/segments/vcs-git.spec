@@ -24,6 +24,7 @@ function setUp() {
   # as shUnit does not work with async commands.
   trap WINCH
 
+  P9K_HOME=$(pwd)
   ### Test specific
   # Create default folder and git init it.
   FOLDER=/tmp/powerlevel9k-test/vcs-test
@@ -36,7 +37,11 @@ function setUp() {
 }
 
 function tearDown() {
-  cd -
+  # Go back to powerlevel9k folder
+  cd "${P9K_HOME}"
+  # Remove eventually created test-specific folder
+  rm -fr "${FOLDER}"
+  # At least remove test folder completely
   rm -fr /tmp/powerlevel9k-test
   unset FOLDER
   p9k_clear_cache
@@ -246,6 +251,50 @@ function testTagIconInDetachedHeadState() {
   assertEquals "%K{green} %F{black} ${hash} Tv0.0.1 %k%F{green}%f " "${PROMPT}"
 
   unset POWERLEVEL9K_VCS_TAG_ICON
+}
+
+function testIncomingHintWorks() {
+  POWERLEVEL9K_VCS_INCOMING_CHANGES_ICON='I'
+
+  touch "i-am-modified.txt"
+  git add i-am-modified.txt
+  git commit -m "Add File" &>/dev/null
+
+  git clone . ../vcs-test2 &>/dev/null
+  echo "xx" >> i-am-modified.txt
+  git commit -a -m "Modified file" &>/dev/null
+
+  cd ../vcs-test2
+  git fetch &>/dev/null
+
+  prompt_vcs "left" "1" "false"
+  p9k_build_prompt_from_cache
+
+  assertEquals "%K{green} %F{black} master I1 %k%F{green}%f " "${PROMPT}"
+
+  unset POWERLEVEL9K_VCS_INCOMING_CHANGES_ICON
+}
+
+function testOutgoingHintWorks() {
+  POWERLEVEL9K_VCS_OUTGOING_CHANGES_ICON='o'
+
+  touch "i-am-modified.txt"
+  git add i-am-modified.txt
+  git commit -m "Add File" &>/dev/null
+
+  git clone . ../vcs-test2 &>/dev/null
+
+  cd ../vcs-test2
+
+  echo "xx" >> i-am-modified.txt
+  git commit -a -m "Modified file" &>/dev/null
+
+  prompt_vcs "left" "1" "false"
+  p9k_build_prompt_from_cache
+
+  assertEquals "%K{green} %F{black} master o1 %k%F{green}%f " "${PROMPT}"
+
+  unset POWERLEVEL9K_VCS_OUTGOING_CHANGES_ICON
 }
 
 function testShorteningCommitHashWorks() {
