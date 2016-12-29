@@ -51,4 +51,16 @@ function testMercurialIconWorks() {
   unset POWERLEVEL9K_VCS_HG_ICON
 }
 
+function testBookmarkIconWorks() {
+  POWERLEVEL9K_VCS_BOOKMARK_ICON='B'
+  hg bookmark "initial"
+
+  prompt_vcs "left" "1" "false"
+  p9k_build_prompt_from_cache
+
+  assertEquals "%K{green} %F{black} default Binitial %k%F{green}%f " "${PROMPT}"
+
+  unset POWERLEVEL9K_VCS_BOOKMARK_ICON
+}
+
 source shunit2/source/2.1/src/shunit2
