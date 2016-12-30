@@ -17,6 +17,8 @@ chmod 440 /etc/sudoers.d/$NEW_USER
         # Careful with other shell scripts lying around in your powerlevel9k-directory!
         # If these scripts fail, antibody won't load powerlevel9k.
         echo "
+source /vagrant_data/powerlevel9k.config &>/dev/null
+
 source <(antibody init)\n
 antibody bundle /vagrant_data/\n
 " > ~/.zshrc

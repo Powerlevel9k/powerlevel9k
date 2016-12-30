@@ -15,6 +15,8 @@ chmod 440 /etc/sudoers.d/$NEW_USER
         HOME=/home/$NEW_USER
 
         echo "
+source /vagrant_data/powerlevel9k.config &>/dev/null
+
 source ~/.zplug/init.zsh\n
 zplug \"/vagrant_data\", use:\"powerlevel9k.zsh-theme\", from:local, as:theme\n
 zplug load --verbose\n

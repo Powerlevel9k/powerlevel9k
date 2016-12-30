@@ -21,6 +21,8 @@ chmod 440 /etc/sudoers.d/$NEW_USER
         ln -s /vagrant_data ~/.oh-my-zsh/custom/themes/powerlevel9k
 
         echo '
+source /vagrant_data/powerlevel9k.config &>/dev/null
+
 export ZSH=$HOME/.oh-my-zsh
 ZSH_THEME="powerlevel9k/powerlevel9k"
 plugins=(git rake ruby)

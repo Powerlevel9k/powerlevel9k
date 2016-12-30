@@ -15,6 +15,8 @@ chmod 440 /etc/sudoers.d/$NEW_USER
         HOME=/home/$NEW_USER
 
         echo "
+source /vagrant_data/powerlevel9k.config &>/dev/null
+
 source ~/antigen/antigen.zsh\n
 antigen theme /vagrant_data powerlevel9k --no-local-clone\n
 antigen apply

@@ -14,14 +14,16 @@ In order to run this virtual machine, you need [vagrant](https://www.vagrantup.c
 
 Once you have SSH'd into the machine, you'll see a plain ZSH. To test the other frameworks, you just have to switch to one of the following users:
 
+  * `vagrant-antibody`
   * `vagrant-antigen`
   * `vagrant-prezto`
   * `vagrant-omz`
   * `vagrant-zplug`
   * `vagrant-zplugin`
 
-To switch use `sudo -i -H -u <USERNAME>`. `-i` stands for "simulate initial login", `-H` sets the "$HOME" variable to the directory of the user , `-u` for the username. 
-
+To switch use `sudo -i -H -u <USERNAME>`. `-i` stands for "simulate initial login", `-H` sets the "$HOME" variable to the directory of the user , `-u` for the username. Otherwise you could just use `su - <USERNAME>`.
 All users have `vagrant` as password and are in the /etc/sudoers.
 
 The regular `vagrant` user has a plain ZSH with the powerlevel9k theme.
+
+To easily test a configuration with every user/framework, you can create a `powerlevel9k.config` file with your powerlevel9k settings, which gets sourced in every `.zshrc`.

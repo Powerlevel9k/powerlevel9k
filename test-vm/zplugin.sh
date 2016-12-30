@@ -21,6 +21,8 @@ chmod 440 /etc/sudoers.d/$NEW_USER
         ln -s /vagrant_data ~/.zplugin/snippets/--SLASH--vagrant_data--SLASH--powerlevel9k--DOT--zsh-theme
 
         echo "
+source /vagrant_data/powerlevel9k.config &>/dev/null
+
 zplugin load psprint zsh-navigation-tools\n
 zplugin load psprint---zprompts\n
 zplugin snippet /vagrant_data/powerlevel9k.zsh-theme\n
