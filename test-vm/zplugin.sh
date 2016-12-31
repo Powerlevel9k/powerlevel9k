@@ -21,6 +21,7 @@ chmod 440 /etc/sudoers.d/$NEW_USER
         ln -s /vagrant_data ~/.zplugin/snippets/--SLASH--vagrant_data--SLASH--powerlevel9k--DOT--zsh-theme
 
         echo "
+print -P '%F{blue}INFO:%f Set your configuration in powerlevel9k.config in your powerlevel9k root folder for easier testing.'
 source /vagrant_data/powerlevel9k.config &>/dev/null
 
 zplugin load psprint zsh-navigation-tools\n

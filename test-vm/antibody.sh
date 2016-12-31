@@ -17,6 +17,7 @@ chmod 440 /etc/sudoers.d/$NEW_USER
         # Careful with other shell scripts lying around in your powerlevel9k-directory!
         # If these scripts fail, antibody won't load powerlevel9k.
         echo "
+print -P '%F{blue}INFO:%f Set your configuration in powerlevel9k.config in your powerlevel9k root folder for easier testing.'
 source /vagrant_data/powerlevel9k.config &>/dev/null
 
 source <(antibody init)\n

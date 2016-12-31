@@ -15,6 +15,7 @@ chmod 440 /etc/sudoers.d/$NEW_USER
         HOME=/home/$NEW_USER
 
         echo "
+print -P '%F{blue}INFO:%f Set your configuration in powerlevel9k.config in your powerlevel9k root folder for easier testing.'
 source /vagrant_data/powerlevel9k.config &>/dev/null
 
 source ~/antigen/antigen.zsh\n
