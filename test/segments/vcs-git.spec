@@ -253,6 +253,26 @@ function testTagIconInDetachedHeadState() {
   unset POWERLEVEL9K_VCS_TAG_ICON
 }
 
+function testActionHintWorks() {
+  touch "i-am-modified.txt"
+  git add i-am-modified.txt
+  git commit -m "Add File" &>/dev/null
+
+  git clone . ../vcs-test2 &>/dev/null
+  echo "xx" >> i-am-modified.txt
+  git commit -a -m "Modified file" &>/dev/null
+
+  cd ../vcs-test2
+  echo "yy" >> i-am-modified.txt
+  git commit -a -m "Provoke conflict" &>/dev/null
+  git pull &>/dev/null
+
+  prompt_vcs "left" "1" "false"
+  p9k_build_prompt_from_cache
+
+  assertEquals "%K{yellow} %F{black} master %F{red}| merge%f %k%F{yellow}%f " "${PROMPT}"
+}
+
 function testIncomingHintWorks() {
   POWERLEVEL9K_VCS_INCOMING_CHANGES_ICON='I'
 
