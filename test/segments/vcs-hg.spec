@@ -31,6 +31,8 @@ function setUp() {
   mkdir -p "${FOLDER}"
   cd $FOLDER
 
+  export HGUSER="Test bot <bot@example.com>"
+
   hg init 1>/dev/null
 }
 
@@ -42,6 +44,7 @@ function tearDown() {
   # At least remove test folder completely
   rm -fr /tmp/powerlevel9k-test &>/dev/null
   unset FOLDER
+  unset HGUSER
   p9k_clear_cache
 }
 
