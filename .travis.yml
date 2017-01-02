@@ -9,6 +9,8 @@ addons:
 before_script:
   # Show the git version being used to test.
   - "git --version"
+  # Show the mercurial version being used to test.
+  - "hg --version"
   # Show the zsh version being used to test.
   - "zsh --version"
 
