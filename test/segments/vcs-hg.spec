@@ -145,7 +145,7 @@ function testActionHintWorks() {
   echo "yy" >> i-am-modified.txt
   hg commit -m "Provoke conflict" &>/dev/null
   hg pull 1>/dev/null
-  hg merge 1>/dev/null
+  hg merge --tool internal:merge 1>/dev/null
 
   prompt_vcs "left" "1" "false"
   p9k_build_prompt_from_cache
