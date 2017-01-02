@@ -272,7 +272,14 @@ prompt_background_jobs() {
   serialize_segment "$0" "" "$1" "$2" "${3}" "${DEFAULT_COLOR}" "cyan" "${content}" "BACKGROUND_JOBS_ICON" "[[ ${background_jobs_number} -gt 0 ]]"
 }
 
+# Battery segment
+# Takes four arguments
+#   * $1: string - Alignment; either "left" or "right"
+#   * $2: int - Index
+#   * $3: Boolean - Joining state
+#   * $4: string - An optional root path (used for unit tests @see battery.spec)
 prompt_battery() {
+  local ROOT_PATH="${4}"
   # The battery can have four different states - default to 'unknown'.
   local current_state="unknown"
   typeset -AH battery_states
@@ -285,9 +292,10 @@ prompt_battery() {
   # Set default values if the user did not configure them
   set_default POWERLEVEL9K_BATTERY_LOW_THRESHOLD  10
 
-  if [[ $OS =~ OSX && -f /usr/bin/pmset && -x /usr/bin/pmset ]]; then
+  local pmsetExecutable="${ROOT_PATH}/usr/bin/pmset"
+  if [[ $OS =~ OSX && -f ${pmsetExecutable} && -x ${pmsetExecutable} ]]; then
     # obtain battery information from system
-    local raw_data="$(pmset -g batt)"
+    local raw_data=$(${pmsetExecutable} -g batt)
     # return if there is no battery on system
     if [[ -n $(echo $raw_data | grep "InternalBattery") ]]; then
       # Time remaining on battery operation (charging/discharging)
@@ -318,7 +326,7 @@ prompt_battery() {
   fi
 
   if [[ $OS =~ Linux ]]; then
-    local sysp="/sys/class/power_supply"
+    local sysp="${ROOT_PATH}/sys/class/power_supply"
     # Reported BAT0 or BAT1 depending on kernel version
     [[ -a $sysp/BAT0 ]] && local bat=$sysp/BAT0
     [[ -a $sysp/BAT1 ]] && local bat=$sysp/BAT1
@@ -334,7 +342,7 @@ prompt_battery() {
         [[ $bat_percent =~ 100 ]] && current_state="charged"
         [[ $bat_percent -lt 100 ]] && current_state="charging"
       fi
-      if [[ -f /usr/bin/acpi ]]; then
+      if [[ -f ${ROOT_PATH}/usr/bin/acpi ]]; then
         local time_remaining=$(acpi | awk '{ print $5 }')
         if [[ $time_remaining =~ rate ]]; then
           local tstring="..."
