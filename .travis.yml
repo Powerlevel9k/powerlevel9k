@@ -26,6 +26,7 @@ script:
   - test/core/visual_identifier.spec
   - test/functions/utilities.spec
   - test/functions/colors.spec
+  - test/segments/battery.spec
   - test/segments/dir.spec
   - test/segments/rust_version.spec
   - test/segments/go_version.spec
