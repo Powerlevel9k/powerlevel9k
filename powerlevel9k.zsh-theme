@@ -103,7 +103,7 @@ fi
 ################################################################
 
 # Begin a left prompt segment
-# Takes four arguments:
+# Takes eight arguments:
 #   * $1: Name of the function that was originally invoked (mandatory).
 #         Necessary, to make the dynamic color-overwrite mechanism work.
 #   * $2: The array index of the current segment
@@ -171,7 +171,7 @@ left_prompt_end() {
 }
 
 # Begin a right prompt segment
-# Takes four arguments:
+# Takes eight arguments:
 #   * $1: Name of the function that was originally invoked (mandatory).
 #         Necessary, to make the dynamic color-overwrite mechanism work.
 #   * $2: The array index of the current segment
@@ -291,18 +291,18 @@ prompt_battery() {
     # return if there is no battery on system
     if [[ -n $(echo $raw_data | grep "InternalBattery") ]]; then
       # Time remaining on battery operation (charging/discharging)
-      local tstring=$(echo $raw_data | awk 'FNR==2{print $5}')
+      local tstring=$(echo "${raw_data}" | awk 'FNR==2{print $5}')
       # If time has not been calculated by system yet
       [[ $tstring =~ '\(no' ]] && tstring="..."
 
       # percent of battery charged
       typeset -i 10 bat_percent
-      bat_percent=$(echo $raw_data | grep -o '[0-9]*%' | sed 's/%//')
+      bat_percent=$(echo "${raw_data}" | grep -o '[0-9]*%' | sed 's/%//')
 
       local remain=""
       # Logic for string output
-      case $(echo $raw_data | awk 'FNR==2{print $4}') in
-        'charging;|finishing charge;')
+      case $(echo "${raw_data}" | awk 'FNR==2{print $4}') in
+        'charging;'|'finishing charge;')
           current_state="charging"
           remain=" ($tstring)"
           ;;
@@ -328,7 +328,7 @@ prompt_battery() {
       local battery_status=$(cat $bat/status)
       [[ $capacity -gt 100 ]] && local bat_percent=100 || local bat_percent=$capacity
       [[ $battery_status =~ Charging || $battery_status =~ Full ]] && local connected=true
-      if [[ -z  $connected ]]; then
+      if [[ -z $connected ]]; then
         [[ $bat_percent -lt $POWERLEVEL9K_BATTERY_LOW_THRESHOLD ]] && current_state="low" || current_state="disconnected"
       else
         [[ $bat_percent =~ 100 ]] && current_state="charged"

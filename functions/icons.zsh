@@ -136,7 +136,7 @@ function _powerlevel9k_setup_awesome_fontconfig_icons() {
     VCS_GIT_GITLAB_ICON            $'\uF296 '             # 
     VCS_HG_ICON                    $'\uF0C3 '             # 
     VCS_SVN_ICON                   '(svn) '
-    RUST_ICON                      $'\uE6A8'              #  
+    RUST_ICON                      $'\uE6A8'              # 
     PYTHON_ICON                    $'\U1F40D'             # 🐍
     SWIFT_ICON                     ''
   )

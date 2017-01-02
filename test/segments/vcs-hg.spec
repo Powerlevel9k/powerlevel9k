@@ -26,7 +26,7 @@ function setUp() {
 
   P9K_HOME=$(pwd)
   ### Test specific
-  # Create default folder and git init it.
+  # Create default folder and hg init it.
   FOLDER=/tmp/powerlevel9k-test/vcs-test
   mkdir -p "${FOLDER}"
   cd $FOLDER
