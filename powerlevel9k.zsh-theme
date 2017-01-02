@@ -1233,7 +1233,10 @@ $(print_icon 'MULTILINE_SECOND_PROMPT_PREFIX')"
   PROMPT+="$(left_prompt_end ${LAST_LEFT_BACKGROUND})"
   PROMPT+="${PROMPT_SUFFIX}"
   RPROMPT+="${RPROMPT_SUFFIX}"
-  zle && zle reset-prompt
+  # About .reset-promt see:
+  # https://github.com/sorin-ionescu/prezto/issues/1026
+  # https://github.com/zsh-users/zsh-autosuggestions/issues/107#issuecomment-183824034
+  zle && zle .reset-prompt
 
   # Add zero to $1, so that we can call this function without parameters
   # in tests..
