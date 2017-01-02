@@ -5,6 +5,14 @@
 All segments are now generated asynchronously which brings a huge
 performance benefit.
 
+### Easier manual testing
+
+There are plenty of ZSH frameworks / plugin managers out there. We included them in a virtual machine, so that you can easily test your configuration.
+
+### Improved stability
+
+We added a lot of unit tests to maintain stability.
+
 ### `vi_mode` works again
 
 The segment now works again.
