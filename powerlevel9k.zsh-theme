@@ -295,7 +295,7 @@ prompt_battery() {
   local pmsetExecutable="${ROOT_PATH}/usr/bin/pmset"
   if [[ $OS =~ OSX && -f ${pmsetExecutable} && -x ${pmsetExecutable} ]]; then
     # obtain battery information from system
-    local raw_data=$(${pmsetExecutable} -g batt)
+    local raw_data="$(${pmsetExecutable} -g batt)"
     # return if there is no battery on system
     if [[ -n $(echo $raw_data | grep "InternalBattery") ]]; then
       # Time remaining on battery operation (charging/discharging)
