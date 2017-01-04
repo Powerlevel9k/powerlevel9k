@@ -1409,7 +1409,7 @@ powerlevel9k_init() {
   setopt prompt_subst
 
   setopt LOCAL_OPTIONS
-  unsetopt XTRACE KSH_ARRAYS
+  unsetopt KSH_ARRAYS
   setopt PROMPT_CR PROMPT_PERCENT PROMPT_SUBST MULTIBYTE
 
   # initialize colors
