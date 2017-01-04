@@ -54,4 +54,30 @@ function testCustomClosureSegment() {
     unset POWERLEVEL9K_CUSTOM_WORLD
 }
 
+function testSettingBackgroundForCustomSegment() {
+    POWERLEVEL9K_CUSTOM_WORLD="echo world"
+    POWERLEVEL9K_CUSTOM_WORLD_BACKGROUND="yellow"
+
+    prompt_custom "left" "1" "world" "false"
+    p9k_build_prompt_from_cache
+
+    assertEquals "%K{yellow} %F{black}world %k%F{yellow}%f " "${PROMPT}"
+
+    unset POWERLEVEL9K_CUSTOM_WORLD
+    unset POWERLEVEL9K_CUSTOM_WORLD_BACKGROUND
+}
+
+function testSettingForegroundForCustomSegment() {
+    POWERLEVEL9K_CUSTOM_WORLD="echo world"
+    POWERLEVEL9K_CUSTOM_WORLD_FOREGROUND="red"
+
+    prompt_custom "left" "1" "world" "false"
+    p9k_build_prompt_from_cache
+
+    assertEquals "%K{white} %F{red}world %k%F{white}%f " "${PROMPT}"
+
+    unset POWERLEVEL9K_CUSTOM_WORLD
+    unset POWERLEVEL9K_CUSTOM_WORLD_FOREGROUND
+}
+
 source shunit2/source/2.1/src/shunit2
