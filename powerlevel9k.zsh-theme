@@ -502,17 +502,6 @@ prompt_detect_virt() {
   serialize_segment "$0" "" "$1" "$2" "${3}" "yellow" "${DEFAULT_COLOR}" "${virt}"
 }
 
-prompt_icons_test() {
-  for key in ${(@k)icons}; do
-    # The lower color spectrum in ZSH makes big steps. Choosing
-    # the next color has enough contrast to read.
-    local random_color=$((RANDOM % 8))
-    local next_color=$((random_color+1))
-    # TODO: How will that work async?
-    "$1_prompt_segment" "$0" "$2" "$random_color" "$next_color" "$key" "$key"
-  done
-}
-
 prompt_ip() {
   if [[ "$OS" == "OSX" ]]; then
     if defined POWERLEVEL9K_IP_INTERFACE; then
