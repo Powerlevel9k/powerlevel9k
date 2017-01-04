@@ -21,6 +21,7 @@ Vagrant.configure(2) do |config|
   config.vm.provision :shell, path: "antigen.sh"
   config.vm.provision :shell, path: "prezto.sh"
   config.vm.provision :shell, path: "omz.sh"
+  config.vm.provision :shell, path: "zim.sh"
   config.vm.provision :shell, path: "zplug.sh"
   config.vm.provision :shell, path: "zplugin.sh"
 

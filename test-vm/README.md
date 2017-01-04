@@ -18,6 +18,7 @@ Once you have SSH'd into the machine, you'll see a plain ZSH. To test the other 
   * `vagrant-antigen`
   * `vagrant-prezto`
   * `vagrant-omz`
+  * `vagrant-zim`
   * `vagrant-zplug`
   * `vagrant-zplugin`
 
