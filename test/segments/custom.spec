@@ -80,4 +80,32 @@ function testSettingForegroundForCustomSegment() {
     unset POWERLEVEL9K_CUSTOM_WORLD_FOREGROUND
 }
 
+function testSettingVisualIdentifierForCustomSegment() {
+    POWERLEVEL9K_CUSTOM_WORLD="echo world"
+    POWERLEVEL9K_CUSTOM_WORLD_ICON="hw"
+
+    prompt_custom "left" "1" "world" "false"
+    p9k_build_prompt_from_cache
+
+    assertEquals "%K{white} %F{black%}hw%f %F{black}world %k%F{white}%f " "${PROMPT}"
+
+    unset POWERLEVEL9K_CUSTOM_WORLD
+    unset POWERLEVEL9K_CUSTOM_WORLD_ICON
+}
+
+function testSettingVisualIdentifierForegroundColorForCustomSegment() {
+    POWERLEVEL9K_CUSTOM_WORLD="echo world"
+    POWERLEVEL9K_CUSTOM_WORLD_ICON="hw"
+    POWERLEVEL9K_CUSTOM_WORLD_VISUAL_IDENTIFIER_COLOR="red"
+
+    prompt_custom "left" "1" "world" "false"
+    p9k_build_prompt_from_cache
+
+    assertEquals "%K{white} %F{red%}hw%f %F{black}world %k%F{white}%f " "${PROMPT}"
+
+    unset POWERLEVEL9K_CUSTOM_WORLD
+    unset POWERLEVEL9K_CUSTOM_WORLD_ICON
+    unset POWERLEVEL9K_CUSTOM_WORLD_VISUAL_IDENTIFIER_COLOR
+}
+
 source shunit2/source/2.1/src/shunit2

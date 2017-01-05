@@ -396,10 +396,11 @@ prompt_context() {
 #   * $4: joined
 prompt_custom() {
   local segment_name="${3:u}"
+  # Get content of custom segment
   local command="POWERLEVEL9K_CUSTOM_${segment_name}"
   local segment_content="$(eval ${(P)command})"
 
-  serialize_segment "$0" "${segment_name}" "$1" "$2" "${4}" "${DEFAULT_COLOR_INVERTED}" "${DEFAULT_COLOR}" "${segment_content}" ""
+  serialize_segment "$0" "${segment_name}" "$1" "$2" "${4}" "${DEFAULT_COLOR_INVERTED}" "${DEFAULT_COLOR}" "${segment_content}" "CUSTOM_${segment_name}_ICON"
 }
 
 # Dir: current working directory

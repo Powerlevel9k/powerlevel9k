@@ -27,6 +27,10 @@ Added an option to configure the path separator. If you want something
 else than an ordinary slash, you could set
 `POWERLEVEL9K_DIR_PATH_SEPARATOR` to whatever you want.
 
+### `custom` changes
+
+Custom segments now can have a visual identifier. Just set `POWERLEVEL9K_CUSTOM_<SEGMENT_NAME>_ICON="myIcon"`. Also, you can override the color of the visual identifier by setting `POWERLEVEL9K_CUSTOM_<SEGMENT_NAME>_VISUAL_IDENTIFIER_COLOR="red"`.
+
 ## v0.4.0
 
 ### Development changes
