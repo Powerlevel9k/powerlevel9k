@@ -62,6 +62,10 @@ else
 fi
 script_location="$(dirname $filename)"
 
+# Fix for Prezto/ZIM. We need to make our traps global, so that
+# they are still active when Prezto/ZIM finally execute the theme.
+setopt nolocaltraps
+
 ################################################################
 # Source icon functions
 ################################################################
@@ -1418,3 +1422,6 @@ powerlevel9k_init() {
 }
 
 powerlevel9k_init "$@"
+
+# Show all active traps
+# trap --
