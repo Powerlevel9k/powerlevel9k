@@ -377,8 +377,9 @@ prompt_context() {
     'DEFAULT'      '011'
     'ROOT'         'yellow'
   )
+  set_default POWERLEVEL9K_CONTEXT_HOST_DEPTH "%m"
   if [[ "$USER" != "$DEFAULT_USER" || -n "$SSH_CLIENT" ]]; then
-    content="${USER}@%m"
+    content="${USER}@${POWERLEVEL9K_CONTEXT_HOST_DEPTH}"
     if [[ $(print -P "%#") == '#' ]]; then
       # Shell runs as root
       state="ROOT"
