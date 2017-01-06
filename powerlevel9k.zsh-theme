@@ -20,6 +20,24 @@
 #zstyle ':vcs_info:*+*:*' debug true
 #set -o xtrace
 
+################################################################
+# Set required ZSH options
+################################################################
+
+# Fix for Prezto/ZIM. We need to make our traps global, so that
+# they are still active when Prezto/ZIM finally execute the theme.
+setopt nolocaltraps
+
+setopt LOCAL_OPTIONS
+unsetopt KSH_ARRAYS
+setopt PROMPT_CR
+setopt PROMPT_PERCENT
+setopt MULTIBYTE
+
+################################################################
+# Load our functions
+################################################################
+
 # Try to set the installation path
 if [[ -n "$POWERLEVEL9K_INSTALLATION_PATH" ]]; then
   # If an installation path was set manually,
@@ -61,10 +79,6 @@ else
   return 1
 fi
 script_location="$(dirname $filename)"
-
-# Fix for Prezto/ZIM. We need to make our traps global, so that
-# they are still active when Prezto/ZIM finally execute the theme.
-setopt nolocaltraps
 
 ################################################################
 # Source icon functions
@@ -1132,6 +1146,9 @@ set_default CACHE_DIR /tmp/p9k
 mkdir -p "${CACHE_DIR}" 2> /dev/null
 #   $1 - Signal that should be propagated
 p9k_build_prompt_from_cache() {
+  # Set option so that prompt gets expanded
+  # See http://zsh.sourceforge.net/Doc/Release/Prompt-Expansion.html
+  setopt PROMPT_SUBST
   last_left_element_index=1 # Reset
   local LAST_LEFT_BACKGROUND='NONE' # Reset
   local LAST_RIGHT_BACKGROUND='NONE' # Reset
@@ -1400,12 +1417,6 @@ powerlevel9k_init() {
     'longstatus'      'status'
   )
   print_deprecation_warning deprecated_segments
-
-  setopt prompt_subst
-
-  setopt LOCAL_OPTIONS
-  unsetopt KSH_ARRAYS
-  setopt PROMPT_CR PROMPT_PERCENT PROMPT_SUBST MULTIBYTE
 
   # initialize colors
   autoload -U colors && colors
