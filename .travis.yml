@@ -4,7 +4,7 @@ addons:
     packages:
       - build-essential
       - git
-      - hg
+      - mercurial
 
 env:
   global:
