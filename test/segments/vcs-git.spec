@@ -31,9 +31,11 @@ function setUp() {
   mkdir -p "${FOLDER}"
   cd $FOLDER
 
+  # Set username and email
+  git config --global user.email "test@powerlevel9k.theme"
+  git config --global user.name  "Testing Tester"
+  # Initialize FOLDER as git repository
   git init 1>/dev/null
-  git config user.email "test@powerlevel9k.theme"
-  git config user.name  "Testing Tester"
 }
 
 function tearDown() {
