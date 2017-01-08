@@ -64,4 +64,5 @@ script:
   - test/segments/go_version.spec
   - test/segments/vcs-git.spec
   - test/segments/vcs-hg.spec
+  - test/segments/vi_mode.spec
 
