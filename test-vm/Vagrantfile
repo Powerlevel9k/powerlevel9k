@@ -26,6 +26,7 @@ Vagrant.configure(2) do |config|
   config.vm.provision :shell, path: "zim.sh"
   config.vm.provision :shell, path: "zplug.sh"
   config.vm.provision :shell, path: "zplugin.sh"
+  config.vm.provision :shell, path: "zpm.sh"
 
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
