@@ -121,4 +121,15 @@ function testOtherFolderDetectionWorks() {
   unset POWERLEVEL9K_FOLDER_ICON
 }
 
+function testPathSeparatorIsCustomizable() {
+  POWERLEVEL9K_DIR_PATH_SEPARATOR=' S '
+
+  prompt_dir "left" "1" "false"
+  p9k_build_prompt_from_cache
+
+  assertEquals "%K{blue} %F{black} S tmp S powerlevel9k-test S 1 S 12 S 123 S 1234 S 12345 S 123456 S 1234567 S 12345678 S 123456789 %k%F{blue}%f " "${PROMPT}"
+
+  unset POWERLEVEL9K_DIR_PATH_SEPARATOR
+}
+
 source shunit2/source/2.1/src/shunit2
