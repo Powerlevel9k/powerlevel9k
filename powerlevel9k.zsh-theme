@@ -396,14 +396,12 @@ prompt_context() {
     'ROOT'         'yellow'
   )
   set_default POWERLEVEL9K_CONTEXT_HOST_DEPTH "%m"
-  if [[ "$USER" != "$DEFAULT_USER" || -n "$SSH_CLIENT" ]]; then
-    content="${USER}@${POWERLEVEL9K_CONTEXT_HOST_DEPTH}"
-    if [[ $(print -P "%#") == '#' ]]; then
-      # Shell runs as root
-      state="ROOT"
-    fi
+  content="${USER}@${POWERLEVEL9K_CONTEXT_HOST_DEPTH}"
+  if [[ $(print -P "%#") == '#' ]]; then
+    # Shell runs as root
+    state="ROOT"
   fi
-  serialize_segment "$0" "${state}" "$1" "$2" "${3}" "${DEFAULT_COLOR}" "${context_states[$current_state]}" "${content}" ""
+  serialize_segment "$0" "${state}" "$1" "$2" "${3}" "${DEFAULT_COLOR}" "${context_states[$current_state]}" "${content}" "" '[[ "$USER" != "$DEFAULT_USER" || -n "$SSH_CLIENT" ]]'
 }
 
 # The 'custom` prompt provides a way for users to invoke commands and display
