@@ -96,6 +96,40 @@ function testTruncateWithPackageNameWorks() {
   unset POWERLEVEL9K_SHORTEN_DIR_LENGTH
 }
 
+# TODO: Unskip test
+function testTruncateWithPackageNameInComplexPackageJsonWorks() {
+  # Skip test, as at the moment, we do not parse the right name.
+  # This is a feature done in another pull request.
+  startSkipping # Skip test
+
+  cd /tmp/powerlevel9k-test
+  echo '
+{
+  "author": {
+    "name": "Cookiemonster"
+  },
+  "name": "My_Package"
+}
+' > package.json
+  # Unfortunately: The main folder must be a git repo..
+  git init &>/dev/null
+
+  # Go back to deeper folder
+  cd "${FOLDER}"
+
+  POWERLEVEL9K_SHORTEN_DIR_LENGTH=2
+  POWERLEVEL9K_SHORTEN_STRATEGY='truncate_with_package_name'
+
+  prompt_dir "left" "1" "false"
+  p9k_build_prompt_from_cache 0
+
+  # TODO: This does not seem right...
+  assertEquals "%K{blue} %F{black}My_Package3/12…/12…/12…/12…/12…/123456789 %k%F{blue}%f " "${PROMPT}"
+
+  unset POWERLEVEL9K_SHORTEN_STRATEGY
+  unset POWERLEVEL9K_SHORTEN_DIR_LENGTH
+}
+
 function testTruncationFromRightWorks() {
   POWERLEVEL9K_SHORTEN_DIR_LENGTH=2
   POWERLEVEL9K_SHORTEN_STRATEGY='truncate_from_right'
