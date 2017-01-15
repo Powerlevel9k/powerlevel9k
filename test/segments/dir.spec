@@ -89,8 +89,7 @@ function testTruncateWithPackageNameWorks() {
   prompt_dir "left" "1" "false"
   p9k_build_prompt_from_cache 0
 
-  # TODO: This does not seem right...
-  assertEquals "%K{blue} %F{black}My_Package3/12…/12…/12…/12…/12…/123456789 %k%F{blue}%f " "${PROMPT}"
+  assertEquals "%K{blue} %F{black}My_Package/1/12/123/12…/12…/12…/12…/12…/123456789 %k%F{blue}%f " "${PROMPT}"
 
   unset POWERLEVEL9K_SHORTEN_STRATEGY
   unset POWERLEVEL9K_SHORTEN_DIR_LENGTH
@@ -123,8 +122,7 @@ function testTruncateWithPackageNameInComplexPackageJsonWorks() {
   prompt_dir "left" "1" "false"
   p9k_build_prompt_from_cache 0
 
-  # TODO: This does not seem right...
-  assertEquals "%K{blue} %F{black}My_Package3/12…/12…/12…/12…/12…/123456789 %k%F{blue}%f " "${PROMPT}"
+  assertEquals "%K{blue} %F{black}My_Package/1/12/123/12…/12…/12…/12…/12…/123456789 %k%F{blue}%f " "${PROMPT}"
 
   unset POWERLEVEL9K_SHORTEN_STRATEGY
   unset POWERLEVEL9K_SHORTEN_DIR_LENGTH
