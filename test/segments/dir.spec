@@ -128,6 +128,42 @@ function testTruncateWithPackageNameInComplexPackageJsonWorks() {
   unset POWERLEVEL9K_SHORTEN_DIR_LENGTH
 }
 
+# TODO: Unskip test
+function testTruncateWithPackageNameIfRepoIsSymlinked() {
+  # Skip test, as at the moment, we do not parse the right name.
+  # This is a feature done in another pull request.
+  startSkipping # Skip test
+
+  # Unfortunately: The main folder must be a git repo..
+  git init &>/dev/null
+
+  echo '
+{
+  "name": "My_Package"
+}
+' > package.json
+
+  # Create a subdir inside the repo
+  mkdir -p asdfasdf/qwerqwer
+
+  cd /tmp/powerlevel9k-test
+  ln -s ${FOLDER} linked-repo
+
+  # Go to deep folder inside linked repo
+  cd linked-repo/asdfasdf/qwerqwer
+
+  POWERLEVEL9K_SHORTEN_DIR_LENGTH=2
+  POWERLEVEL9K_SHORTEN_STRATEGY='truncate_with_package_name'
+
+  prompt_dir "left" "1" "false"
+  p9k_build_prompt_from_cache 0
+
+  assertEquals "%K{blue} %F{black}My_Package/as…/qwerqwer %k%F{blue}%f " "${PROMPT}"
+
+  unset POWERLEVEL9K_SHORTEN_STRATEGY
+  unset POWERLEVEL9K_SHORTEN_DIR_LENGTH
+}
+
 function testTruncationFromRightWorks() {
   POWERLEVEL9K_SHORTEN_DIR_LENGTH=2
   POWERLEVEL9K_SHORTEN_STRATEGY='truncate_from_right'
