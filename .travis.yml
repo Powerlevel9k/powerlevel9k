@@ -60,6 +60,7 @@ script:
   - test/segments/battery.spec
   - test/segments/context.spec
   - test/segments/custom.spec
+  - test/segments/detect_virt.spec
   - test/segments/dir.spec
   - test/segments/rust_version.spec
   - test/segments/go_version.spec
