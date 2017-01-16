@@ -1,10 +1,18 @@
 language: sh
+
+os:
+  - linux
+  - osx
+
 addons:
   apt:
     packages:
       - build-essential
       - git
       - mercurial
+
+before_install:
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update            ; fi
 
 env:
   global:
@@ -28,7 +36,11 @@ before_script:
     setup_zsh() {
       dest="$ZSH_DIST/$1"
       if [[ ! -d $dest/bin ]]; then
-        tmp="$(mktemp --directory --tmpdir="${TMPDIR:/tmp}" zshbuild.XXXXXX)"
+        coreutils_mktemp="mktemp"
+        if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
+          coreutils_mktemp="gmktemp"
+        fi
+        tmp="$(${coreutils_mktemp} --directory --tmpdir="${TMPDIR:/tmp}" zshbuild.XXXXXX)"
         (
           cd "$tmp" &&
           curl -L http://downloads.sourceforge.net/zsh/zsh-${1}.tar.gz | tar zx &&
