@@ -63,6 +63,7 @@ script:
   - test/segments/dir.spec
   - test/segments/rust_version.spec
   - test/segments/go_version.spec
+  - test/segments/php_version.spec
   - test/segments/vcs-git.spec
   - test/segments/vcs-hg.spec
   - test/segments/vi_mode.spec
