@@ -536,17 +536,29 @@ prompt_ip() {
   else
     if defined POWERLEVEL9K_IP_INTERFACE; then
       # Get the IP address of the specified interface.
-      ip=$(ip -4 a show "$POWERLEVEL9K_IP_INTERFACE" | grep -o "inet\s*[0-9.]*" | grep -o "[0-9.]*")
+      # The whitespace at the beginning of `grep -o " [a-z0-9]*"` is important, so the tests
+      # run successfully on OSX. That sounds odd to test the linux part of this segment under
+      # OSX, but the tests should run on all systems.
+      ip=$(ip -4 a show "$POWERLEVEL9K_IP_INTERFACE" | grep -o "inet\s*[0-9.]*" | grep -o " [0-9.]*")
     else
       local interfaces callback
       # Get all network interface names that are up
-      interfaces=$(ip link ls up | grep -o -E ":\s+[a-z0-9]+:" | grep -v "lo" | grep -o "[a-z0-9]*")
-      callback='ip -4 a show $item | grep -o "inet\s*[0-9.]*" | grep -o "[0-9.]*"'
-
+      # The whitespace at the beginning of `grep -o " [a-z0-9]*"` is important, so the tests
+      # run successfully on OSX. That sounds odd to test the linux part of this segment under
+      # OSX, but the tests should run on all systems.
+      interfaces=$(ip link ls up | grep -o -E ":\s+[a-z0-9]+:" | grep -v "lo" | grep -o " [a-z0-9]*")
+      # Trim whitespaces
+      interfaces=${interfaces// /}
+      # The whitespace at the beginning of `grep -o " [a-z0-9]*"` is important, so the tests
+      # run successfully on OSX. That sounds odd to test the linux part of this segment under
+      # OSX, but the tests should run on all systems.
+      callback='ip -4 a show $item | grep -o "inet\s*[0-9.]*" | grep -o " [0-9.]*"'
       ip=$(getRelevantItem "$interfaces" "$callback")
     fi
   fi
 
+  # Trim whitespaces
+  ip=${ip// /}
   serialize_segment "$0" "" "$1" "$2" "${3}" "cyan" "${DEFAULT_COLOR}" "${ip}" "NETWORK_ICON"
 }
 
