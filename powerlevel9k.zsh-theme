@@ -245,6 +245,10 @@ right_prompt_segment() {
 ################################################################
 
 # Anaconda Environment
+# Parameters:
+#   * $1 Alignment: string - left|right
+#   * $2 Index: integer
+#   * $3 Joined: bool - If the segment should be joined
 prompt_anaconda() {
   # Depending on the conda version, either might be set. This
   # variant works even if both are set.
@@ -259,6 +263,10 @@ prompt_anaconda() {
 }
 
 # AWS Profile
+# Parameters:
+#   * $1 Alignment: string - left|right
+#   * $2 Index: integer
+#   * $3 Joined: bool - If the segment should be joined
 prompt_aws() {
   local aws_profile="$AWS_DEFAULT_PROFILE"
 
@@ -266,6 +274,10 @@ prompt_aws() {
 }
 
 # Current Elastic Beanstalk environment
+# Parameters:
+#   * $1 Alignment: string - left|right
+#   * $2 Index: integer
+#   * $3 Joined: bool - If the segment should be joined
 prompt_aws_eb_env() {
   local eb_env=$(grep environment .elasticbeanstalk/config.yml 2> /dev/null | awk '{print $2}')
 
@@ -274,6 +286,10 @@ prompt_aws_eb_env() {
 
 # Segment to indicate background jobs with an icon.
 set_default POWERLEVEL9K_BACKGROUND_JOBS_VERBOSE true
+# Parameters:
+#   * $1 Alignment: string - left|right
+#   * $2 Index: integer
+#   * $3 Joined: bool - If the segment should be joined
 prompt_background_jobs() {
   local background_jobs_number=${$(jobs -l | wc -l)// /}
   local wrong_lines=$(jobs -l | awk '/pwd now/{ count++ } END {print count}')
@@ -291,11 +307,11 @@ prompt_background_jobs() {
 }
 
 # Battery segment
-# Takes four arguments
-#   * $1: string - Alignment; either "left" or "right"
-#   * $2: int - Index
-#   * $3: Boolean - Joining state
-#   * $4: string - An optional root path (used for unit tests @see battery.spec)
+# Parameters:
+#   * $1 Alignment: string - left|right
+#   * $2 Index: integer
+#   * $3 Joined: bool - If the segment should be joined
+#   * $4 Root Path: string - An optional root path (used for unit tests @see battery.spec)
 prompt_battery() {
   local ROOT_PATH="${4}"
   # The battery can have four different states - default to 'unknown'.
@@ -387,6 +403,10 @@ prompt_battery() {
 
 # Context: user@hostname (who am I and where am I)
 # Note that if $DEFAULT_USER is not set, this prompt segment will always print
+# Parameters:
+#   * $1 Alignment: string - left|right
+#   * $2 Index: integer
+#   * $3 Joined: bool - If the segment should be joined
 prompt_context() {
   local content
   local current_state="DEFAULT"
@@ -406,11 +426,11 @@ prompt_context() {
 
 # The 'custom` prompt provides a way for users to invoke commands and display
 # the output in a segment.
-# arguments
-#   * $1: Alignment
-#   * $2: index
-#   * $3: name
-#   * $4: joined
+# Parameters:
+#   * $1 Alignment: string - left|right
+#   * $2 Index: integer
+#   * $3 Name: string
+#   * $4 Joined: bool - If the segment should be joined
 prompt_custom() {
   local segment_name="${3:u}"
   # Get content of custom segment
@@ -422,6 +442,10 @@ prompt_custom() {
 
 # Dir: current working directory
 set_default POWERLEVEL9K_DIR_PATH_SEPARATOR "/"
+# Parameters:
+#   * $1 Alignment: string - left|right
+#   * $2 Index: integer
+#   * $3 Joined: bool - If the segment should be joined
 prompt_dir() {
   local current_path='%~'
   if [[ -n "$POWERLEVEL9K_SHORTEN_DIR_LENGTH" ]]; then
@@ -489,6 +513,10 @@ prompt_dir() {
 }
 
 # Docker machine
+# Parameters:
+#   * $1 Alignment: string - left|right
+#   * $2 Index: integer
+#   * $3 Joined: bool - If the segment should be joined
 prompt_docker_machine() {
   local docker_machine="$DOCKER_MACHINE_NAME"
 
@@ -496,6 +524,10 @@ prompt_docker_machine() {
 }
 
 # GO prompt
+# Parameters:
+#   * $1 Alignment: string - left|right
+#   * $2 Index: integer
+#   * $3 Joined: bool - If the segment should be joined
 prompt_go_version() {
   local go_version
   go_version=$(go version 2>/dev/null | sed -E "s/.*(go[0-9.]*).*/\1/")
@@ -504,11 +536,19 @@ prompt_go_version() {
 }
 
 # Command number (in local history)
+# Parameters:
+#   * $1 Alignment: string - left|right
+#   * $2 Index: integer
+#   * $3 Joined: bool - If the segment should be joined
 prompt_history() {
   serialize_segment "$0" "" "$1" "$2" "${3}" "244" "${DEFAULT_COLOR}" "%h" ""
 }
 
 # Detection for virtualization (systemd based systems only)
+# Parameters:
+#   * $1 Alignment: string - left|right
+#   * $2 Index: integer
+#   * $3 Joined: bool - If the segment should be joined
 prompt_detect_virt() {
   local virt=$(systemd-detect-virt 2> /dev/null)
   if [[ "$virt" == "none" ]]; then
@@ -520,6 +560,10 @@ prompt_detect_virt() {
   serialize_segment "$0" "" "$1" "$2" "${3}" "yellow" "${DEFAULT_COLOR}" "${virt}"
 }
 
+# Parameters:
+#   * $1 Alignment: string - left|right
+#   * $2 Index: integer
+#   * $3 Joined: bool - If the segment should be joined
 prompt_ip() {
   if [[ "$OS" == "OSX" ]]; then
     if defined POWERLEVEL9K_IP_INTERFACE; then
@@ -562,6 +606,10 @@ prompt_ip() {
   serialize_segment "$0" "" "$1" "$2" "${3}" "cyan" "${DEFAULT_COLOR}" "${ip}" "NETWORK_ICON"
 }
 
+# Parameters:
+#   * $1 Alignment: string - left|right
+#   * $2 Index: integer
+#   * $3 Joined: bool - If the segment should be joined
 prompt_load() {
   # The load segment can have three different states
   local current_state="unknown"
@@ -601,6 +649,10 @@ prompt_load() {
 }
 
 # Node version
+# Parameters:
+#   * $1 Alignment: string - left|right
+#   * $2 Index: integer
+#   * $3 Joined: bool - If the segment should be joined
 prompt_node_version() {
   local node_version=$(node -v 2>/dev/null)
 
@@ -609,6 +661,10 @@ prompt_node_version() {
 
 # Node version from NVM
 # Only prints the segment if different than the default value
+# Parameters:
+#   * $1 Alignment: string - left|right
+#   * $2 Index: integer
+#   * $3 Joined: bool - If the segment should be joined
 prompt_nvm() {
   local node_version=$(nvm current 2> /dev/null)
   [[ "${node_version}" == "none" ]] && node_version=""
@@ -619,6 +675,10 @@ prompt_nvm() {
 }
 
 # NodeEnv Prompt
+# Parameters:
+#   * $1 Alignment: string - left|right
+#   * $2 Index: integer
+#   * $3 Joined: bool - If the segment should be joined
 prompt_nodeenv() {
   local nodeenv_path="$NODE_VIRTUAL_ENV"
   local info
@@ -629,6 +689,10 @@ prompt_nodeenv() {
 }
 
 # print a little OS icon
+# Parameters:
+#   * $1 Alignment: string - left|right
+#   * $2 Index: integer
+#   * $3 Joined: bool - If the segment should be joined
 prompt_os_icon() {
   local OS_ICON
   case "${OS}" in
@@ -650,6 +714,10 @@ prompt_os_icon() {
 }
 
 # print PHP version number
+# Parameters:
+#   * $1 Alignment: string - left|right
+#   * $2 Index: integer
+#   * $3 Joined: bool - If the segment should be joined
 prompt_php_version() {
   local php_version
   php_version=$(php -v 2>&1 | grep -oe "^PHP\s*[0-9.]*")
@@ -658,6 +726,10 @@ prompt_php_version() {
 }
 
 # Show free RAM and used Swap
+# Parameters:
+#   * $1 Alignment: string - left|right
+#   * $2 Index: integer
+#   * $3 Joined: bool - If the segment should be joined
 prompt_ram() {
   local base=''
   local ramfree=0
@@ -679,6 +751,10 @@ prompt_ram() {
 }
 
 # rbenv information
+# Parameters:
+#   * $1 Alignment: string - left|right
+#   * $2 Index: integer
+#   * $3 Joined: bool - If the segment should be joined
 prompt_rbenv() {
   if which rbenv 2>/dev/null >&2; then
     local rbenv_version_name="$(rbenv version-name)"
@@ -695,6 +771,10 @@ prompt_rbenv() {
 
 # chruby information
 # see https://github.com/postmodern/chruby/issues/245 for chruby_auto issue with ZSH
+# Parameters:
+#   * $1 Alignment: string - left|right
+#   * $2 Index: integer
+#   * $3 Joined: bool - If the segment should be joined
 prompt_chruby() {
   local chruby_env
   chruby_env="$(chruby 2> /dev/null | grep \* | tr -d '* ')"
@@ -706,11 +786,19 @@ prompt_chruby() {
 }
 
 # Print an icon if user is root.
+# Parameters:
+#   * $1 Alignment: string - left|right
+#   * $2 Index: integer
+#   * $3 Joined: bool - If the segment should be joined
 prompt_root_indicator() {
   serialize_segment "$0" "" "$1" "$2" "${3}" "$DEFAULT_COLOR" "yellow" "" "ROOT_ICON" '[[ "${UID}" -eq 0 ]]'
 }
 
 # Print Rust version number
+# Parameters:
+#   * $1 Alignment: string - left|right
+#   * $2 Index: integer
+#   * $3 Joined: bool - If the segment should be joined
 prompt_rust_version() {
   local rust_version
   rust_version=$(rustc --version 2>&1 | grep -oe "^rustc\s*[^ ]*" | grep -o '[0-9.a-z\\\-]*$')
@@ -719,6 +807,10 @@ prompt_rust_version() {
 }
 
 # RSpec test ratio
+# Parameters:
+#   * $1 Alignment: string - left|right
+#   * $2 Index: integer
+#   * $3 Joined: bool - If the segment should be joined
 prompt_rspec_stats() {
   local code_amount tests_amount
   # Careful! `ls` seems to now work correctly with NULL_GLOB,
@@ -731,6 +823,10 @@ prompt_rspec_stats() {
 }
 
 # Ruby Version Manager information
+# Parameters:
+#   * $1 Alignment: string - left|right
+#   * $2 Index: integer
+#   * $3 Joined: bool - If the segment should be joined
 prompt_rvm() {
   local gemset=$(echo $GEM_HOME | awk -F'@' '{print $2}')
   [ "$gemset" != "" ] && gemset="@$gemset"
@@ -743,6 +839,10 @@ prompt_rvm() {
 # Status: return code if verbose, otherwise just an icon if an error occurred
 set_default POWERLEVEL9K_STATUS_VERBOSE true
 set_default POWERLEVEL9K_STATUS_OK_IN_NON_VERBOSE false
+# Parameters:
+#   * $1 Alignment: string - left|right
+#   * $2 Index: integer
+#   * $3 Joined: bool - If the segment should be joined
 prompt_status() {
   typeset -Ah current_state
   if [[ "${RETVAL}" -ne 0 ]]; then
@@ -779,6 +879,10 @@ prompt_status() {
   serialize_segment "$0" "${current_state[STATE]}" "$1" "$2" "${3}" "${current_state[BACKGROUND_COLOR]}" "${current_state[FOREGROUND_COLOR]}" "${current_state[CONTENT]}" "${current_state[VISUAL_IDENTIFIER]}"
 }
 
+# Parameters:
+#   * $1 Alignment: string - left|right
+#   * $2 Index: integer
+#   * $3 Joined: bool - If the segment should be joined
 prompt_swap() {
   local swap_used=0
   local base=''
@@ -804,6 +908,10 @@ prompt_swap() {
 }
 
 # Swift version
+# Parameters:
+#   * $1 Alignment: string - left|right
+#   * $2 Index: integer
+#   * $3 Joined: bool - If the segment should be joined
 prompt_swift_version() {
   local swift_version=$(swift --version 2>/dev/null)
 
@@ -814,6 +922,10 @@ prompt_swift_version() {
 }
 
 # Symfony2-PHPUnit test ratio
+# Parameters:
+#   * $1 Alignment: string - left|right
+#   * $2 Index: integer
+#   * $3 Joined: bool - If the segment should be joined
 prompt_symfony2_tests() {
   local code_amount tests_amount
   # Careful! `ls` seems to now work correctly with NULL_GLOB,
@@ -826,6 +938,10 @@ prompt_symfony2_tests() {
 }
 
 # Symfony2-Version
+# Parameters:
+#   * $1 Alignment: string - left|right
+#   * $2 Index: integer
+#   * $3 Joined: bool - If the segment should be joined
 prompt_symfony2_version() {
   local symfony2_version
   if [[ -f app/bootstrap.php.cache ]]; then
@@ -876,6 +992,10 @@ build_test_stats() {
 }
 
 # System time
+# Parameters:
+#   * $1 Alignment: string - left|right
+#   * $2 Index: integer
+#   * $3 Joined: bool - If the segment should be joined
 prompt_time() {
   local time_format="%D{%H:%M:%S}"
   if [[ -n "$POWERLEVEL9K_TIME_FORMAT" ]]; then
@@ -886,6 +1006,10 @@ prompt_time() {
 }
 
 # todo.sh: shows the number of tasks in your todo.sh file
+# Parameters:
+#   * $1 Alignment: string - left|right
+#   * $2 Index: integer
+#   * $3 Joined: bool - If the segment should be joined
 prompt_todo() {
   if $(hash todo.sh 2>&-); then
     count=$(todo.sh ls | egrep "TODO: [0-9]+ of ([0-9]+) tasks shown" | awk '{ print $4 }')
@@ -945,6 +1069,10 @@ powerlevel9k_vcs_init() {
   fi
 }
 
+# Parameters:
+#   * $1 Alignment: string - left|right
+#   * $2 Index: integer
+#   * $3 Joined: bool - If the segment should be joined
 prompt_vcs() {
   powerlevel9k_vcs_init
 
@@ -982,6 +1110,10 @@ prompt_vcs() {
 # Vi Mode: show editing mode (NORMAL|INSERT)
 set_default "POWERLEVEL9K_VI_INSERT_MODE_STRING" "INSERT"
 set_default "POWERLEVEL9K_VI_COMMAND_MODE_STRING" "NORMAL"
+# Parameters:
+#   * $1 Alignment: string - left|right
+#   * $2 Index: integer
+#   * $3 Joined: bool - If the segment should be joined
 prompt_vi_mode() {
   local vi_mode
   local current_state
@@ -1006,6 +1138,10 @@ prompt_vi_mode() {
 # Virtualenv: current working virtualenv
 # More information on virtualenv (Python):
 # https://virtualenv.pypa.io/en/latest/
+# Parameters:
+#   * $1 Alignment: string - left|right
+#   * $2 Index: integer
+#   * $3 Joined: bool - If the segment should be joined
 prompt_virtualenv() {
   serialize_segment "$0" "" "$1" "$2" "${3}" "blue" "$DEFAULT_COLOR" "$(basename "${VIRTUAL_ENV}")" "PYTHON_ICON"
 }
@@ -1014,6 +1150,10 @@ prompt_virtualenv() {
 # More information on pyenv (Python version manager like rbenv and rvm):
 # https://github.com/yyuu/pyenv
 # the prompt parses output of pyenv version and only displays the first word
+# Parameters:
+#   * $1 Alignment: string - left|right
+#   * $2 Index: integer
+#   * $3 Joined: bool - If the segment should be joined
 prompt_pyenv() {
   local pyenv_version="$(pyenv version 2>/dev/null)"
   pyenv_version="${pyenv_version%% *}"
