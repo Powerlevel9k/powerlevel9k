@@ -610,7 +610,9 @@ prompt_ip() {
 #   * $1 Alignment: string - left|right
 #   * $2 Index: integer
 #   * $3 Joined: bool - If the segment should be joined
+#   * $4 Root Path: string - An optional root path (used for unit tests @see load.spec)
 prompt_load() {
+  local ROOT_PATH="${4}"
   # The load segment can have three different states
   local current_state="unknown"
   local cores
@@ -630,16 +632,16 @@ prompt_load() {
       cores=$(sysctl -n hw.ncpu)
     fi
   else
-    load_avg_1min=$(grep -o "[0-9.]*" /proc/loadavg | head -n 1)
+    load_avg_1min=$(grep -o "[0-9.]*" $ROOT_PATH/proc/loadavg | head -n 1)
     cores=$(nproc)
   fi
 
   # Replace comma
   load_avg_1min=${load_avg_1min//,/.}
 
-  if [[ "$load_avg_1min" -gt $(bc -l <<< "${cores} * 0.7") ]]; then
+  if (( $load_avg_1min > (${cores} * 0.7) )); then
     current_state="critical"
-  elif [[ "$load_avg_1min" -gt $(bc -l <<< "${cores} * 0.5") ]]; then
+  elif (( $load_avg_1min > (${cores} * 0.5) )); then
     current_state="warning"
   else
     current_state="normal"
