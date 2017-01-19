@@ -669,7 +669,7 @@ prompt_nvm() {
   local node_version=$(nvm current 2> /dev/null)
   [[ "${node_version}" == "none" ]] && node_version=""
   local nvm_default=$(cat $NVM_DIR/alias/default 2> /dev/null)
-  [[ "${node_version}" =~ "${nvm_default}" ]] && node_version=""
+  [[ -n "${nvm_default}" && "${node_version}" =~ "${nvm_default}" ]] && node_version=""
 
   serialize_segment "$0" "" "$1" "$2" "${3}" "green" "011" "${node_version:1}" "NODE_ICON"
 }
