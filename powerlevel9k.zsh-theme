@@ -580,23 +580,12 @@ prompt_ip() {
   else
     if defined POWERLEVEL9K_IP_INTERFACE; then
       # Get the IP address of the specified interface.
-      # The whitespace at the beginning of `grep -o " [a-z0-9]*"` is important, so the tests
-      # run successfully on OSX. That sounds odd to test the linux part of this segment under
-      # OSX, but the tests should run on all systems.
-      ip=$(ip -4 a show "$POWERLEVEL9K_IP_INTERFACE" | grep -o "inet\s*[0-9.]*" | grep -o " [0-9.]*")
+      ip=$(ip -4 a show "$POWERLEVEL9K_IP_INTERFACE" | grep -o "inet\s*[0-9.]*" | grep -o -E "[0-9.]+")
     else
       local interfaces callback
       # Get all network interface names that are up
-      # The whitespace at the beginning of `grep -o " [a-z0-9]*"` is important, so the tests
-      # run successfully on OSX. That sounds odd to test the linux part of this segment under
-      # OSX, but the tests should run on all systems.
-      interfaces=$(ip link ls up | grep -o -E ":\s+[a-z0-9]+:" | grep -v "lo" | grep -o " [a-z0-9]*")
-      # Trim whitespaces
-      interfaces=${interfaces// /}
-      # The whitespace at the beginning of `grep -o " [a-z0-9]*"` is important, so the tests
-      # run successfully on OSX. That sounds odd to test the linux part of this segment under
-      # OSX, but the tests should run on all systems.
-      callback='ip -4 a show $item | grep -o "inet\s*[0-9.]*" | grep -o " [0-9.]*"'
+      interfaces=$(ip link ls up | grep -o -E ":\s+[a-z0-9]+:" | grep -v "lo" | grep -o -E "[a-z0-9]+")
+      callback='ip -4 a show $item | grep -o "inet\s*[0-9.]*" | grep -o -E "[0-9.]+"'
       ip=$(getRelevantItem "$interfaces" "$callback")
     fi
   fi
@@ -632,7 +621,7 @@ prompt_load() {
       cores=$(sysctl -n hw.ncpu)
     fi
   else
-    load_avg_1min=$(grep -o "[0-9.]*" $ROOT_PATH/proc/loadavg | head -n 1)
+    load_avg_1min=$(grep -o -E "[0-9.]+" $ROOT_PATH/proc/loadavg | head -n 1)
     cores=$(nproc)
   fi
 
@@ -745,10 +734,7 @@ prompt_ram() {
     ramfree=$(vmstat | grep -E '([0-9]+\w+)+' | awk '{print $5}')
     base='M'
   else
-    # The whitespace at the beginning of `grep -o " [0-9]*"` is important, so the tests
-    # run successfully on OSX. That sounds odd to test the linux part of this segment under
-    # OSX, but the tests should run on all systems.
-    ramfree=$(grep -o -E "MemFree:\s+[0-9]+" $ROOT_PATH/proc/meminfo | grep -o " [0-9]*")
+    ramfree=$(grep -o -E "MemFree:\s+[0-9]+" $ROOT_PATH/proc/meminfo | grep -o -E "[0-9]+")
     base='K'
   fi
 
@@ -894,17 +880,17 @@ prompt_swap() {
 
   if [[ "$OS" == "OSX" ]]; then
     local raw_swap_used
-    raw_swap_used=$(sysctl vm.swapusage | grep -o "used\s*=\s*[0-9,.A-Z]*" | grep -o "[0-9,.A-Z]*$")
+    raw_swap_used=$(sysctl vm.swapusage | grep -o "used\s*=\s*[0-9,.A-Z]*" | grep -o -E "[0-9,.A-Z]+")
 
     typeset -F 2 swap_used
-    swap_used=${$(echo $raw_swap_used | grep -o "[0-9,.]*")//,/.}
+    swap_used=${$(echo $raw_swap_used | grep -o -E "[0-9,.]+")//,/.}
     # Replace comma
     swap_used=${swap_used//,/.}
 
-    base=$(echo "$raw_swap_used" | grep -o "[A-Z]*$")
+    base=$(echo "$raw_swap_used" | grep -o -E "[A-Z]+")
   else
-    swap_total=$(grep -o -E "SwapTotal:\s+[0-9]+" /proc/meminfo | grep -o "[0-9]*")
-    swap_free=$(grep -o -E "SwapFree:\s+[0-9]+" /proc/meminfo | grep -o "[0-9]*")
+    swap_total=$(grep -o -E "SwapTotal:\s+[0-9]+" /proc/meminfo | grep -o -E "[0-9]+")
+    swap_free=$(grep -o -E "SwapFree:\s+[0-9]+" /proc/meminfo | grep -o -E "[0-9]+")
     swap_used=$(( swap_total - swap_free ))
     base='K'
   fi
