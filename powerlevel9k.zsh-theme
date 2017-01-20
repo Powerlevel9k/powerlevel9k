@@ -874,7 +874,9 @@ prompt_status() {
 #   * $1 Alignment: string - left|right
 #   * $2 Index: integer
 #   * $3 Joined: bool - If the segment should be joined
+#   * $4 Root Path: string - An optional root path (used for unit tests @see swap.spec)
 prompt_swap() {
+  local ROOT_PATH="${4}"
   local swap_used=0
   local base=''
 
@@ -889,8 +891,8 @@ prompt_swap() {
 
     base=$(echo "$raw_swap_used" | grep -o -E "[A-Z]+")
   else
-    swap_total=$(grep -o -E "SwapTotal:\s+[0-9]+" /proc/meminfo | grep -o -E "[0-9]+")
-    swap_free=$(grep -o -E "SwapFree:\s+[0-9]+" /proc/meminfo | grep -o -E "[0-9]+")
+    swap_total=$(grep -o -E "SwapTotal:\s+[0-9]+" $ROOT_PATH/proc/meminfo | grep -o -E "[0-9]+")
+    swap_free=$(grep -o -E "SwapFree:\s+[0-9]+" $ROOT_PATH/proc/meminfo | grep -o -E "[0-9]+")
     swap_used=$(( swap_total - swap_free ))
     base='K'
   fi

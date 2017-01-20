@@ -81,6 +81,7 @@ script:
   - test/segments/php_version.spec
   - test/segments/ram.spec
   - test/segments/rust_version.spec
+  - test/segments/swap.spec
   - test/segments/vcs-git.spec
   - test/segments/vcs-hg.spec
   - test/segments/vi_mode.spec
