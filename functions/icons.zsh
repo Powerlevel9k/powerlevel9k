@@ -64,8 +64,8 @@ function _powerlevel9k_setup_awesome_patched_icons() {
     VCS_TAG_ICON                   $'\uE817 '             # 
     VCS_BOOKMARK_ICON              $'\uE87B'              # 
     VCS_COMMIT_ICON                $'\uE821 '             # 
-    VCS_BRANCH_ICON                $'\uE220'              # 
-    VCS_REMOTE_BRANCH_ICON         ' '$'\uE804 '          # 
+    VCS_BRANCH_ICON                $'\uE220 '             # 
+    VCS_REMOTE_BRANCH_ICON         $'\u2192'              # →
     VCS_GIT_ICON                   $'\uE20E '             # 
     VCS_GIT_GITHUB_ICON            $'\uE20E '             #
     VCS_GIT_BITBUCKET_ICON         $'\uE20E '             #
@@ -102,8 +102,8 @@ function _powerlevel9k_setup_awesome_fontconfig_icons() {
     TEST_ICON                      $'\uF291'              # 
     TODO_ICON                      $'\u2611'              # ☑
     BATTERY_ICON                   $'\U1F50B'             # 🔋
-    OK_ICON                        $'\uF23A'              # 
-    FAIL_ICON                      $'\uF281'              # 
+    OK_ICON                        $'\u2713'              # ✓
+    FAIL_ICON                      $'\u2718'              # ✘
     SYMFONY_ICON                   'SF'
     NODE_ICON                      $'\u2B22'              # ⬢
     MULTILINE_FIRST_PROMPT_PREFIX  $'\u256D'$'\U2500'     # ╭─
@@ -129,8 +129,8 @@ function _powerlevel9k_setup_awesome_fontconfig_icons() {
     VCS_TAG_ICON                   $'\uF217 '             # 
     VCS_BOOKMARK_ICON              $'\uF27B'              # 
     VCS_COMMIT_ICON                $'\uF221 '             # 
-    VCS_BRANCH_ICON                $'\uF126'              # 
-    VCS_REMOTE_BRANCH_ICON         ' '$'\uF204 '          # 
+    VCS_BRANCH_ICON                $'\uF126 '             # 
+    VCS_REMOTE_BRANCH_ICON         $'\u2192'              # →
     VCS_GIT_ICON                   $'\uF1D3 '             # 
     VCS_GIT_GITHUB_ICON            $'\uF113 '             # 
     VCS_GIT_BITBUCKET_ICON         $'\uF171 '             # 
