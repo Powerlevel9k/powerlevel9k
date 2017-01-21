@@ -315,7 +315,7 @@ prompt_background_jobs() {
 prompt_battery() {
   local ROOT_PATH="${4}"
   # The battery can have four different states - default to 'unknown'.
-  local current_state="unknown"
+  local current_state='unknown'
   typeset -AH battery_states
   battery_states=(
     'low'           'red'
@@ -329,13 +329,13 @@ prompt_battery() {
   local pmsetExecutable="${ROOT_PATH}/usr/bin/pmset"
   if [[ $OS =~ OSX && -f ${pmsetExecutable} && -x ${pmsetExecutable} ]]; then
     # obtain battery information from system
-    local raw_data="$(${pmsetExecutable} -g batt)"
+    local raw_data="$(${pmsetExecutable} -g batt | awk 'FNR==2{print}')"
     # return if there is no battery on system
     if [[ -n $(echo $raw_data | grep "InternalBattery") ]]; then
       # Time remaining on battery operation (charging/discharging)
-      local tstring=$(echo "${raw_data}" | awk 'FNR==2{print $5}')
+      local tstring=$(echo "${raw_data}" | awk -F ';' '{print $3}' | awk '{print $1}')
       # If time has not been calculated by system yet
-      [[ $tstring =~ '\(no' ]] && tstring="..."
+      [[ $tstring =~ '(\(no|not)' ]] && tstring="..."
 
       # percent of battery charged
       typeset -i 10 bat_percent
@@ -343,12 +343,13 @@ prompt_battery() {
 
       local remain=""
       # Logic for string output
-      case $(echo "${raw_data}" | awk 'FNR==2{print $4}') in
-        'charging;'|'finishing charge;')
+      case $(echo $raw_data | awk -F ';' '{print $2}' | awk '{$1=$1};1') in
+        # for a short time after attaching power, status will be 'AC attached;'
+        'charging'|'finishing charge'|'AC attached')
           current_state="charging"
           remain=" ($tstring)"
           ;;
-        'discharging;')
+        'discharging')
           [[ $bat_percent -lt $POWERLEVEL9K_BATTERY_LOW_THRESHOLD ]] && current_state="low" || current_state="disconnected"
           remain=" ($tstring)"
           ;;
@@ -399,6 +400,79 @@ prompt_battery() {
 
   # Draw the prompt_segment
   serialize_segment "$0" "${current_state}" "$1" "$2" "${3}" "${DEFAULT_COLOR}" "${battery_states[$current_state]}" "${message}" "BATTERY_ICON"
+}
+
+prompt_public_ip() {
+  # set default values for segment
+  set_default POWERLEVEL9K_PUBLIC_IP_TIMEOUT "300"
+  set_default POWERLEVEL9K_PUBLIC_IP_NONE ""
+  set_default POWERLEVEL9K_PUBLIC_IP_FILE "/tmp/p9k_public_ip"
+  set_default POWERLEVEL9K_PUBLIC_IP_HOST "http://ident.me"
+
+  # Do we need a fresh IP?
+  local refresh_ip=false
+  if [[ -f $POWERLEVEL9K_PUBLIC_IP_FILE ]]; then
+    typeset -i timediff
+    # if saved IP is more than
+    timediff=$(($(date +%s) - $(date -r $POWERLEVEL9K_PUBLIC_IP_FILE +%s)))
+    [[ $timediff -gt $POWERLEVEL9K_PUBLIC_IP_TIMEOUT ]] && refresh_ip=true
+    # If tmp file is empty get a fresh IP
+    [[ -z $(cat $POWERLEVEL9K_PUBLIC_IP_FILE) ]] && refresh_ip=true
+    [[ -n $POWERLEVEL9K_PUBLIC_IP_NONE ]] && [[ $(cat $POWERLEVEL9K_PUBLIC_IP_FILE) =~ "$POWERLEVEL9K_PUBLIC_IP_NONE" ]] && refresh_ip=true
+  else
+    touch $POWERLEVEL9K_PUBLIC_IP_FILE && refresh_ip=true
+  fi
+
+  # grab a fresh IP if needed
+  if [[ $refresh_ip =~ true && -w $POWERLEVEL9K_PUBLIC_IP_FILE ]]; then
+    # if method specified, don't use fallback methods
+    if [[ -n $POWERLEVEL9K_PUBLIC_IP_METHOD ]] && [[ $POWERLEVEL9K_PUBLIC_IP_METHOD =~ 'wget|curl|dig' ]]; then
+      local method=$POWERLEVEL9K_PUBLIC_IP_METHOD
+    fi
+    if [[ -n $method ]]; then
+      case $method in
+        'dig')
+          if type -p dig >/dev/null; then
+              fresh_ip="$(dig +time=1 +tries=1 +short myip.opendns.com @resolver1.opendns.com 2> /dev/null)"
+              [[ "$fresh_ip" =~ ^\; ]] && unset fresh_ip
+          fi
+          ;;
+        'curl')
+          if [[ -z "$fresh_ip" ]] && type -p curl >/dev/null; then
+              fresh_ip="$(curl --max-time 10 -w '\n' "$POWERLEVEL9K_PUBLIC_IP_HOST" 2> /dev/null)"
+          fi
+          ;;
+        'wget')
+          if [[ -z "$fresh_ip" ]] && type -p wget >/dev/null; then
+              fresh_ip="$(wget -T 10 -qO- "$POWERLEVEL9K_PUBLIC_IP_HOST" 2> /dev/null)"
+          fi
+          ;;
+      esac
+    else
+      if type -p dig >/dev/null; then
+          fresh_ip="$(dig +time=1 +tries=1 +short myip.opendns.com @resolver1.opendns.com 2> /dev/null)"
+          [[ "$fresh_ip" =~ ^\; ]] && unset fresh_ip
+      fi
+
+      if [[ -z "$fresh_ip" ]] && type -p curl >/dev/null; then
+          fresh_ip="$(curl --max-time 10 -w '\n' "$POWERLEVEL9K_PUBLIC_IP_HOST" 2> /dev/null)"
+      fi
+
+      if [[ -z "$fresh_ip" ]] && type -p wget >/dev/null; then
+          fresh_ip="$(wget -T 10 -qO- "$POWERLEVEL9K_PUBLIC_IP_HOST" 2> /dev/null)"
+      fi
+    fi
+
+    # write IP to tmp file or clear tmp file if an IP was not retrieved
+    [[ -n $fresh_ip ]] && echo $fresh_ip > $POWERLEVEL9K_PUBLIC_IP_FILE || echo $POWERLEVEL9K_PUBLIC_IP_NONE > $POWERLEVEL9K_PUBLIC_IP_FILE
+  fi
+
+  # read public IP saved to tmp file
+  local public_ip=$(cat $POWERLEVEL9K_PUBLIC_IP_FILE)
+
+  if [[ -n $public_ip ]]; then
+    $1_prompt_segment "$0" "$2" "$DEFAULT_COLOR" "$DEFAULT_COLOR_INVERTED" "${public_ip}" 'PUBLIC_IP_ICON'
+  fi
 }
 
 # Context: user@hostname (who am I and where am I)
@@ -1529,7 +1603,7 @@ function zle-keymap-select {
   rebuild_vi_mode "${KEYMAP}"
 }
 
-powerlevel9k_init() {
+prompt_powerlevel9k_setup() {
   # Display a warning if the terminal does not support 256 colors
   local term_colors
   term_colors=$(echotc Co)
@@ -1575,7 +1649,7 @@ powerlevel9k_init() {
   zle -N zle-keymap-select
 }
 
-powerlevel9k_init "$@"
+prompt_powerlevel9k_setup "$@"
 
 # Show all active traps
 # trap --

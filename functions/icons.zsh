@@ -75,6 +75,7 @@ function _powerlevel9k_setup_awesome_patched_icons() {
     RUST_ICON                      ''
     PYTHON_ICON                    $'\U1F40D'             # 🐍
     SWIFT_ICON                     ''
+    PUBLIC_IP_ICON                 ''
   )
 }
 _powerlevel9k_setup_awesome_patched_icons
@@ -139,6 +140,7 @@ function _powerlevel9k_setup_awesome_fontconfig_icons() {
     RUST_ICON                      $'\uE6A8'              # 
     PYTHON_ICON                    $'\U1F40D'             # 🐍
     SWIFT_ICON                     ''
+    PUBLIC_IP_ICON                 ''
   )
 }
 _powerlevel9k_setup_awesome_fontconfig_icons
@@ -216,6 +218,7 @@ function _powerlevel9k_setup_default_icons() {
     RUST_ICON                      ''
     PYTHON_ICON                    ''
     SWIFT_ICON                     'Swift'
+    PUBLIC_IP_ICON                 ''
   )
 }
 _powerlevel9k_setup_default_icons

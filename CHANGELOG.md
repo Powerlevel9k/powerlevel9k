@@ -7,7 +7,9 @@ performance benefit.
 
 ### Easier manual testing
 
-There are plenty of ZSH frameworks / plugin managers out there. We included them in a virtual machine, so that you can easily test your configuration.
+There are plenty of ZSH frameworks / plugin managers out there.
+We included them in a virtual machine, so that you can easily
+test your configuration.
 
 ### Improved stability
 
@@ -19,17 +21,37 @@ The segment now works again.
 
 ### `virtualenv` changes
 
-Dropped support for `VIRTUAL_ENV_DISABLE_PROMPT`. If you want to disable the segment, just remove it from your configuration.
+Dropped support for `VIRTUAL_ENV_DISABLE_PROMPT`. If you want
+to disable the segment, just remove it from your configuration.
 
 ### `dir` changes
 
-Added an option to configure the path separator. If you want something
-else than an ordinary slash, you could set
+Added an option to configure the path separator. If you want
+something else than an ordinary slash, you could set
 `POWERLEVEL9K_DIR_PATH_SEPARATOR` to whatever you want.
 
 ### `custom` changes
 
-Custom segments now can have a visual identifier. Just set `POWERLEVEL9K_CUSTOM_<SEGMENT_NAME>_ICON="myIcon"`. Also, you can override the color of the visual identifier by setting `POWERLEVEL9K_CUSTOM_<SEGMENT_NAME>_VISUAL_IDENTIFIER_COLOR="red"`.
+Custom segments now can have a visual identifier. Just set 
+`POWERLEVEL9K_CUSTOM_<SEGMENT_NAME>_ICON="myIcon"`. Also, 
+you can override the color of the visual identifier by 
+setting `POWERLEVEL9K_CUSTOM_<SEGMENT_NAME>_VISUAL_IDENTIFIER_COLOR="red"`.
+
+## v0.5.0
+
+### `load` and `ram` changes
+
+These two segments now support BSD.
+
+### `vcs` changes
+
+- We implemented a huge speed improvement for this segment.
+- Now this segment supports Subversion repositories.
+- Add ability to hide tags by setting `POWERLEVEL9K_VCS_HIDE_TAGS` to true.
+
+## `anaconda` changes
+
+Speed improvements for `anaconda` segment.
 
 ## v0.4.0
 
@@ -109,6 +131,10 @@ Added new `docker_machine` segment that will show your Docker machine.
 
 A new segment `anaconda` was added that shows the current used
 anaconda environment.
+
+## New segment `pyenv` added
+
+This segment shows your active python version as reported by `pyenv`.
 
 ## v0.3.2
 
