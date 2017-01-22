@@ -1334,7 +1334,6 @@ serialize_segment() {
   eval "${CONDITION}" && CONDITION=true || CONDITION=false
 
   local FILE="${CACHE_DIR}/p9k_$$_${ALIGNMENT}_${(l:3::0:)INDEX}_${NAME}.sh"
-  rm -f $FILE #Remove the previous file prior, due to weird > handling on OS X
 
   # From the manpage of typeset:
   #   If the -p option is given, parameters and values are printed in the form
