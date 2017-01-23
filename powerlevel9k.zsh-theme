@@ -1086,11 +1086,9 @@ prompt_time() {
 #   * $2 Index: integer
 #   * $3 Joined: bool - If the segment should be joined
 prompt_todo() {
-  if $(hash todo.sh 2>&-); then
-    count=$(todo.sh ls | egrep "TODO: [0-9]+ of ([0-9]+) tasks shown" | awk '{ print $4 }')
-  fi
+  local todos=$(todo.sh ls 2>/dev/null | egrep "TODO: [0-9]+ of ([0-9]+) tasks shown" | awk '{ print $4 }')
 
-  serialize_segment "$0" "" "$1" "$2" "${3}" "244" "$DEFAULT_COLOR" "${count}" "TODO_ICON"
+  serialize_segment "$0" "" "$1" "$2" "${3}" "244" "$DEFAULT_COLOR" "${todos}" "TODO_ICON"
 }
 
 # VCS segment: shows the state of your repository, if you are in a folder under
