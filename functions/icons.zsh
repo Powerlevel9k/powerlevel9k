@@ -116,7 +116,7 @@ case $POWERLEVEL9K_MODE in
       HOME_ICON                      '\u'$CODEPOINT_OF_AWESOME_HOME                 # 
       HOME_SUB_ICON                  '\u'$CODEPOINT_OF_AWESOME_FOLDER_OPEN          # 
       FOLDER_ICON                    '\u'$CODEPOINT_OF_AWESOME_FOLDER_O             # 
-      NETWORK_ICON                   '\u'$CODEPOINT_OF_OCTICONS_RSS                 # 
+      NETWORK_ICON                   '\u'$CODEPOINT_OF_AWESOME_RSS                  # 
       LOAD_ICON                      '\u'$CODEPOINT_OF_AWESOME_BAR_CHART' '         # 
       SWAP_ICON                      '\u'$CODEPOINT_OF_AWESOME_DASHBOARD            # 
       RAM_ICON                       '\u'$CODEPOINT_OF_AWESOME_DASHBOARD            # 
