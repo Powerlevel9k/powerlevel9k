@@ -71,11 +71,6 @@ function testTruncateMiddleWorks() {
 }
 
 function testTruncateWithPackageNameWorks() {
-  # Skip test, as at the moment, because on OSX /tmp is a
-  # symlink to /private/tmp and there is a problem with
-  # truncate_with_package_name strategy and symlinks.
-  startSkipping # Skip test
-
   cd /tmp/powerlevel9k-test
   echo '
 {
@@ -133,12 +128,7 @@ function testTruncateWithPackageNameInComplexPackageJsonWorks() {
   unset POWERLEVEL9K_SHORTEN_DIR_LENGTH
 }
 
-# TODO: Unskip test
-function testTruncateWithPackageNameIfRepoIsSymlinked() {
-  # Skip test, as at the moment, we do not parse the right name.
-  # This is a feature done in another pull request.
-  startSkipping # Skip test
-
+function testTruncateWithPackageNameIfRepoIsSymlinkedInsideDeepFolder() {
   # Unfortunately: The main folder must be a git repo..
   git init &>/dev/null
 
@@ -164,6 +154,33 @@ function testTruncateWithPackageNameIfRepoIsSymlinked() {
   p9k_build_prompt_from_cache 0
 
   assertEquals "%K{blue} %F{black}My_Package/as…/qwerqwer %k%F{blue}%f " "${PROMPT}"
+
+  unset POWERLEVEL9K_SHORTEN_STRATEGY
+  unset POWERLEVEL9K_SHORTEN_DIR_LENGTH
+}
+
+function testTruncateWithPackageNameIfRepoIsSymlinkedInsideGitDir() {
+  # Unfortunately: The main folder must be a git repo..
+  git init &>/dev/null
+
+  echo '
+{
+  "name": "My_Package"
+}
+' > package.json
+
+  cd /tmp/powerlevel9k-test
+  ln -s ${FOLDER} linked-repo
+
+  cd linked-repo/.git/refs/heads
+
+  POWERLEVEL9K_SHORTEN_DIR_LENGTH=2
+  POWERLEVEL9K_SHORTEN_STRATEGY='truncate_with_package_name'
+
+  prompt_dir "left" "1" "false"
+  p9k_build_prompt_from_cache 0
+
+  assertEquals "%K{blue} %F{black}My_Package/.g…/re…/heads %k%F{blue}%f " "${PROMPT}"
 
   unset POWERLEVEL9K_SHORTEN_STRATEGY
   unset POWERLEVEL9K_SHORTEN_DIR_LENGTH
