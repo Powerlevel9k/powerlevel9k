@@ -235,11 +235,19 @@ it, but only display it if you are not your normal user or on a remote host
 (basically, only print it when it's likely you need it).
 
 To use this feature, make sure the `context` segment is enabled in your prompt
-elements (it is by default), and define a `DEFAULT_USER` in your `~/.zshrc`:
+elements (it is by default), and define a `DEFAULT_USER` in your `~/.zshrc`.
+
+You can customize the `context` segment. For example, you can make it to print the
+full hostname by setting
+```
+POWERLEVEL9K_CONTEXT_TEMPLATE="%n@`hostname -f`"
+```
+
 
 | Variable | Default Value | Description |
 |----------|---------------|-------------|
 |`DEFAULT_USER`|None|Username to consider a "default context" (you can also use `$USER`)|
+|`POWERLEVEL9K_CONTEXT_TEMPLATE`|%n@%m|Default context prompt (username@machine). Refer to the [ZSH Documentation](http://zsh.sourceforge.net/Doc/Release/Prompt-Expansion.html) for all possible expansions|
 
 ##### dir
 
