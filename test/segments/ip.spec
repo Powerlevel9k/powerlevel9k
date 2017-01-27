@@ -29,6 +29,38 @@ function tearDown() {
   p9k_clear_cache
 }
 
+function testIpSegmentPrintsNothingOnOsxIfNotConnected() {
+  alias networksetup='echo "not connected"'
+  OS="OSX"
+  POWERLEVEL9K_CUSTOM_WORLD='echo world'
+
+  prompt_custom "left" "2" "world" "false"
+  prompt_ip "left" "1" "false"
+  p9k_build_prompt_from_cache
+
+  assertEquals "%K{white} %F{black}world %k%F{white}%f " "${PROMPT}"
+
+  unset POWERLEVEL9K_CUSTOM_WORLD
+  unset OS
+  unalias networksetup
+}
+
+function testIpSegmentPrintsNothingOnLinuxIfNotConnected() {
+  alias ip='echo "not connected"'
+  OS="Linux"
+  POWERLEVEL9K_CUSTOM_WORLD='echo world'
+
+  prompt_custom "left" "2" "world" "false"
+  prompt_ip "left" "1" "false"
+  p9k_build_prompt_from_cache
+
+  assertEquals "%K{white} %F{black}world %k%F{white}%f " "${PROMPT}"
+
+  unset POWERLEVEL9K_CUSTOM_WORLD
+  unset OS
+  unalias ip
+}
+
 function testIpSegmentWorksOnOsxWithNoInterfaceSpecified() {
   export OS='OSX'
   alias networksetup="echo 'An asterisk (*) denotes that a network service is disabled.
