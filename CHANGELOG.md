@@ -1,4 +1,4 @@
-## next
+## async-next
 
 ### All segments are now async
 
@@ -36,6 +36,38 @@ Custom segments now can have a visual identifier. Just set
 `POWERLEVEL9K_CUSTOM_<SEGMENT_NAME>_ICON="myIcon"`. Also, 
 you can override the color of the visual identifier by 
 setting `POWERLEVEL9K_CUSTOM_<SEGMENT_NAME>_VISUAL_IDENTIFIER_COLOR="red"`.
+
+## next
+
+- Fixed a bug where the tag display was broken on detached HEADs.
+- Fixed a bug where SVN detection sometimes failed.
+- Fixed the `load` and `ram` segments for BSD.
+- Fixed code-points that changed in Awesome fonts.
+- Fixed display of "OK_ICON" in `status` segment in non-verbose mode.
+- Fixed an issue where dir name truncation that was very short sometimes failed.
+- Speed & accuracy improvements to the battery segment.
+- Added Github syntax highlighting to README.
+- Various documentation cleanup.
+
+### `vcs` changes
+
+The VCS segment can now display icons for remote repo hosting services, including Github, Gitlab, and 'other'.
+
+### New segment 'disk_usage' added
+
+This segment will show the usage level of your current partition.
+
+### New segment 'public_ip' added
+
+Fetches your Public IP (using ident.me) and displays it in your prompt.
+
+### New segment 'swift_version' added
+
+This segment displays the version of Swift that is installed / in your path.
+
+### New segment 'detect_virt' added
+
+Detects and reports if you are in a virtualized session using `systemd`.
 
 ## v0.5.0
 

@@ -33,6 +33,7 @@ function _powerlevel9k_setup_awesome_patched_icons() {
     TEST_ICON                      $'\uE891'              # 
     TODO_ICON                      $'\u2611'              # ☑
     BATTERY_ICON                   $'\uE894'              # 
+    DISK_ICON                      $'\uE1AE '             # 
     OK_ICON                        $'\u2713'              # ✓
     FAIL_ICON                      $'\u2718'              # ✘
     SYMFONY_ICON                   'SF'
@@ -102,6 +103,7 @@ function _powerlevel9k_setup_awesome_fontconfig_icons() {
     TEST_ICON                      $'\uF291'              # 
     TODO_ICON                      $'\u2611'              # ☑
     BATTERY_ICON                   $'\U1F50B'             # 🔋
+    DISK_ICON                      $'\uF0A0 '             # 
     OK_ICON                        $'\u2713'              # ✓
     FAIL_ICON                      $'\u2718'              # ✘
     SYMFONY_ICON                   'SF'
@@ -180,6 +182,7 @@ function _powerlevel9k_setup_default_icons() {
     TEST_ICON                      ''
     TODO_ICON                      $'\u2611'              # ☑
     BATTERY_ICON                   $'\U1F50B'             # 🔋
+    DISK_ICON                      $'hdd '
     OK_ICON                        $'\u2713'              # ✓
     FAIL_ICON                      $'\u2718'              # ✘
     SYMFONY_ICON                   'SF'
