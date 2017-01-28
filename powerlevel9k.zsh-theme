@@ -310,6 +310,10 @@ prompt_background_jobs() {
 set_default POWERLEVEL9K_DISK_USAGE_ONLY_WARNING false
 set_default POWERLEVEL9K_DISK_USAGE_WARNING_LEVEL 90
 set_default POWERLEVEL9K_DISK_USAGE_CRITICAL_LEVEL 95
+# Parameters:
+#   * $1 Alignment: string - left|right
+#   * $2 Index: integer
+#   * $3 Joined: bool - If the segment should be joined
 prompt_disk_usage() {
   local current_state="unknown"
   typeset -AH hdd_usage_forecolors
@@ -340,12 +344,8 @@ prompt_disk_usage() {
     current_state='normal'
   fi
 
-  local message="${disk_usage}%%"
-
   # Draw the prompt_segment
-  if [[ -n $disk_usage ]]; then
-    "$1_prompt_segment" "${0}_${current_state}" "$2" "${hdd_usage_backcolors[$current_state]}" "${hdd_usage_forecolors[$current_state]}" "$message" 'DISK_ICON'
-  fi
+  serialize_segment "${0}" "${current_state}" "$1" "$2" "${3}" "${hdd_usage_backcolors[$current_state]}" "${hdd_usage_forecolors[$current_state]}" "${disk_usage}%%" "DISK_ICON"
 }
 
 # Battery segment
