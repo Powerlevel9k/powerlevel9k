@@ -32,6 +32,7 @@ function tearDown() {
 
 #   * $1: Index
 #   * $2: Alignment
+#   * $3: Icon - Optional, defaults to LOAD_ICON
 function writeCacheFile() {
   # Options from serialize_segment
   #   * $1 Name: string - Name of the segment
@@ -46,7 +47,9 @@ function writeCacheFile() {
   #   * $10 Condition - The condition, if the segment should be printed
   #   * $11 signalParent: bool - Defaults to true. Set to false, if you do
   #                              not want the parent process to send SIGWINCH
-  serialize_segment "segment_${1}" "" "${2}" "${1}" "false" "blue" "black" "segment_${1}_content" "LOAD_ICON" "true" "false"
+  local icon='LOAD_ICON'
+  [[ -n $3 ]] && icon="$3"
+  serialize_segment "segment_${1}" "" "${2}" "${1}" "false" "blue" "black" "segment_${1}_content" "${icon}" "true" "false"
 }
 
 function testOverwritingIconsWork() {
@@ -75,6 +78,13 @@ function testVisualIdentifierAppearsAfterSegmentContentOnRightSegments() {
   p9k_build_prompt_from_cache
 
   assertEquals "%F{blue}%f%K{blue}%F{black} segment_1_content %F{black%}L%f %f" "${RPROMPT}"
+}
+
+function testVisualIdentifierPrintsNothingIfNotAvailable() {
+  writeCacheFile "1" "left" "XXX"
+  p9k_build_prompt_from_cache
+
+  assertEquals "%K{blue} %F{black}segment_1_content %k%F{blue}%f " "${PROMPT}"
 }
 
 source shunit2/source/2.1/src/shunit2
