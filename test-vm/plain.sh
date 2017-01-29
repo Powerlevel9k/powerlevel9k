@@ -11,8 +11,10 @@ print -P "su - vagrant-omz"
 print -P "su - vagrant-prezto"
 print -P "su - vagrant-prezto-community"
 print -P "su - vagrant-zgen"
+print -P "su - vagrant-zim"
 print -P "su - vagrant-zplug"
 print -P "su - vagrant-zplugin"
 print -P "su - vagrant-zpm"
+print -P "su - vagrant-zulu"
 
 source /vagrant_data/powerlevel9k.zsh-theme' > ~/.zshrc
