@@ -141,7 +141,8 @@ case $POWERLEVEL9K_MODE in
       RUST_ICON                      $'\uE6A8'                                      #  
       PYTHON_ICON                    $'\U1F40D'                                     # 🐍
       SWIFT_ICON                     $'\uE655'                                      # 
-      PUBLIC_IP_ICON                 '\u'$CODEPOINT_OF_AWESOME_GLOBE                # 
+      PUBLIC_IP_ICON                 '\u'$CODEPOINT_OF_AWESOME_GLOBE                # 	  
+      LOCK_ICON                      '\u'$CODEPOINT_OF_AWESOME_LOCK                 # 
     )
   ;;
   *)
