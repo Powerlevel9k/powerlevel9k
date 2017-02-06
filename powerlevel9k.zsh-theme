@@ -252,14 +252,17 @@ right_prompt_segment() {
 prompt_anaconda() {
   # Depending on the conda version, either might be set. This
   # variant works even if both are set.
+  local result
   local _path="${CONDA_ENV_PATH}${CONDA_PREFIX}"
-  if ! [ -z "$_path" ]; then
+  if [ ! -z "$_path" ]; then
     # config - can be overwritten in users' zshrc file.
     set_default POWERLEVEL9K_ANACONDA_LEFT_DELIMITER "("
     set_default POWERLEVEL9K_ANACONDA_RIGHT_DELIMITER ")"
 
-    serialize_segment "$0" "" "$1" "$2" "${3}" "006" "white" "${POWERLEVEL9K_ANACONDA_LEFT_DELIMITER}$(basename $_path)${POWERLEVEL9K_ANACONDA_RIGHT_DELIMITER}" "PYTHON_ICON"
+    result="${POWERLEVEL9K_ANACONDA_LEFT_DELIMITER}$(basename $_path)${POWERLEVEL9K_ANACONDA_RIGHT_DELIMITER}"
   fi
+
+  serialize_segment "$0" "" "$1" "$2" "${3}" "006" "white" "${result}" "PYTHON_ICON"
 }
 
 # AWS Profile
