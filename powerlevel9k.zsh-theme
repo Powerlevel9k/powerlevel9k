@@ -650,9 +650,7 @@ prompt_dir() {
 #   * $2 Index: integer
 #   * $3 Joined: bool - If the segment should be joined
 prompt_docker_machine() {
-  local docker_machine="$DOCKER_MACHINE_NAME"
-
-  serialize_segment "$0" "" "$1" "$2" "${3}" "magenta" "${DEFAULT_COLOR}" "${docker_machine}" "SERVER_ICON"
+  serialize_segment "$0" "" "$1" "$2" "${3}" "magenta" "${DEFAULT_COLOR}" "${DOCKER_MACHINE_NAME}" "SERVER_ICON"
 }
 
 # GO prompt
