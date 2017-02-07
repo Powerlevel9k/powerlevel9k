@@ -271,9 +271,7 @@ prompt_anaconda() {
 #   * $2 Index: integer
 #   * $3 Joined: bool - If the segment should be joined
 prompt_aws() {
-  local aws_profile="$AWS_DEFAULT_PROFILE"
-
-  serialize_segment "$0" "" "$1" "$2" "${3}" "red" "white" "${aws_profile}" "AWS_ICON"
+  serialize_segment "$0" "" "$1" "$2" "${3}" "red" "white" "${AWS_DEFAULT_PROFILE}" "AWS_ICON"
 }
 
 # Current Elastic Beanstalk environment
