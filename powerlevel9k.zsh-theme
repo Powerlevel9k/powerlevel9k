@@ -695,6 +695,7 @@ prompt_detect_virt() {
 #   * $2 Index: integer
 #   * $3 Joined: bool - If the segment should be joined
 prompt_ip() {
+  local ip
   if [[ "$OS" == "OSX" ]]; then
     if defined POWERLEVEL9K_IP_INTERFACE; then
       # Get the IP address of the specified interface.
