@@ -1118,12 +1118,9 @@ build_test_stats() {
 #   * $2 Index: integer
 #   * $3 Joined: bool - If the segment should be joined
 prompt_time() {
-  local time_format="%D{%H:%M:%S}"
-  if [[ -n "$POWERLEVEL9K_TIME_FORMAT" ]]; then
-    time_format="$POWERLEVEL9K_TIME_FORMAT"
-  fi
+  set_default POWERLEVEL9K_TIME_FORMAT "%D{%H:%M:%S}"
 
-  serialize_segment "$0" "" "$1" "$2" "${3}" "$DEFAULT_COLOR_INVERTED" "$DEFAULT_COLOR" "$time_format" ""
+  serialize_segment "$0" "" "$1" "$2" "${3}" "$DEFAULT_COLOR_INVERTED" "$DEFAULT_COLOR" "${POWERLEVEL9K_TIME_FORMAT}" ""
 }
 
 # todo.sh: shows the number of tasks in your todo.sh file
