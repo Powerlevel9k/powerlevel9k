@@ -280,6 +280,7 @@ prompt_aws() {
 #   * $2 Index: integer
 #   * $3 Joined: bool - If the segment should be joined
 prompt_aws_eb_env() {
+  # TODO: Upsearch!
   local eb_env=$(grep environment .elasticbeanstalk/config.yml 2> /dev/null | awk '{print $2}')
 
   serialize_segment "$0" "" "$1" "$2" "${3}" "black" "green" "${eb_env}" "AWS_EB_ICON"
@@ -1064,6 +1065,7 @@ prompt_symfony2_tests() {
 #   * $2 Index: integer
 #   * $3 Joined: bool - If the segment should be joined
 prompt_symfony2_version() {
+  # TODO: Upsearch!
   local symfony2_version
   if [[ -f app/bootstrap.php.cache ]]; then
     symfony2_version=$(grep " VERSION " app/bootstrap.php.cache | sed -e 's/[^.0-9]*//g')
