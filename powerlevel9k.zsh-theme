@@ -660,8 +660,7 @@ prompt_docker_machine() {
 #   * $2 Index: integer
 #   * $3 Joined: bool - If the segment should be joined
 prompt_go_version() {
-  local go_version
-  go_version=$(go version 2>/dev/null | sed -E "s/.*(go[0-9.]*).*/\1/")
+  local go_version=$(go version 2>/dev/null | sed -E "s/.*(go[0-9.]*).*/\1/")
 
   serialize_segment "$0" "" "$1" "$2" "${3}" "green" "255" "${go_version}" ""
 }
@@ -841,8 +840,7 @@ prompt_os_icon() {
 #   * $2 Index: integer
 #   * $3 Joined: bool - If the segment should be joined
 prompt_php_version() {
-  local php_version
-  php_version=$(php -v 2>&1 | grep -oe "^PHP\s*[0-9.]*")
+  local php_version=$(php -v 2>&1 | grep -oe "^PHP\s*[0-9.]*")
 
   serialize_segment "$0" "" "$1" "$2" "${3}" "013" "255" "${php_version}" ""
 }
