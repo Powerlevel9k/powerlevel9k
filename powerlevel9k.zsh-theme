@@ -802,10 +802,9 @@ prompt_nvm() {
 #   * $2 Index: integer
 #   * $3 Joined: bool - If the segment should be joined
 prompt_nodeenv() {
-  local nodeenv_path="$NODE_VIRTUAL_ENV"
   local info
-  if [[ -n "$nodeenv_path" && "$NODE_VIRTUAL_ENV_DISABLE_PROMPT" != true ]]; then
-    info="$(node -v)[$(basename "$nodeenv_path")]"
+  if [[ -n "$NODE_VIRTUAL_ENV" && "$NODE_VIRTUAL_ENV_DISABLE_PROMPT" != true ]]; then
+    info="$(node -v)[$(basename "$NODE_VIRTUAL_ENV")]"
   fi
   serialize_segment "$0" "" "$1" "$2" "${3}" "black" "green" "${info}" "NODE_ICON"
 }
