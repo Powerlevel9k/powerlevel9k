@@ -75,6 +75,7 @@ script:
   - test/segments/custom.spec
   - test/segments/detect_virt.spec
   - test/segments/dir.spec
+  - test/segments/disk_usage.spec
   - test/segments/go_version.spec
   - test/segments/ip.spec
   - test/segments/load.spec
