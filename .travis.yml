@@ -70,6 +70,7 @@ script:
   - test/functions/utilities.spec
   - test/functions/colors.spec
   - test/segments/anaconda.spec
+  - test/segments/background_jobs.spec
   - test/segments/battery.spec
   - test/segments/context.spec
   - test/segments/custom.spec
