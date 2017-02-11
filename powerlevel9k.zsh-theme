@@ -262,7 +262,7 @@ prompt_anaconda() {
     result="${POWERLEVEL9K_ANACONDA_LEFT_DELIMITER}$(basename $_path)${POWERLEVEL9K_ANACONDA_RIGHT_DELIMITER}"
   fi
 
-  serialize_segment "$0" "" "$1" "$2" "${3}" "006" "white" "${result}" "PYTHON_ICON"
+  serialize_segment "$0" "" "$1" "$2" "${3}" "006" "${DEFAULT_COLOR_INVERTED}" "${result}" "PYTHON_ICON"
 }
 
 # AWS Profile
@@ -271,7 +271,7 @@ prompt_anaconda() {
 #   * $2 Index: integer
 #   * $3 Joined: bool - If the segment should be joined
 prompt_aws() {
-  serialize_segment "$0" "" "$1" "$2" "${3}" "red" "white" "${AWS_DEFAULT_PROFILE}" "AWS_ICON"
+  serialize_segment "$0" "" "$1" "$2" "${3}" "red" "${DEFAULT_COLOR_INVERTED}" "${AWS_DEFAULT_PROFILE}" "AWS_ICON"
 }
 
 # Current Elastic Beanstalk environment
@@ -283,7 +283,7 @@ prompt_aws_eb_env() {
   # TODO: Upsearch!
   local eb_env=$(grep environment .elasticbeanstalk/config.yml 2> /dev/null | awk '{print $2}')
 
-  serialize_segment "$0" "" "$1" "$2" "${3}" "black" "green" "${eb_env}" "AWS_EB_ICON"
+  serialize_segment "$0" "" "$1" "$2" "${3}" "${DEFAULT_COLOR}" "green" "${eb_env}" "AWS_EB_ICON"
 }
 
 # Segment to indicate background jobs with an icon.
@@ -321,8 +321,8 @@ prompt_disk_usage() {
   typeset -AH hdd_usage_forecolors
   hdd_usage_forecolors=(
     'normal'        'yellow'
-    'warning'       "$DEFAULT_COLOR"
-    'critical'      'white'
+    'warning'       "${DEFAULT_COLOR}"
+    'critical'      "${DEFAULT_COLOR_INVERTED}"
   )
   typeset -AH hdd_usage_backcolors
   hdd_usage_backcolors=(
@@ -662,7 +662,7 @@ prompt_docker_machine() {
 prompt_go_version() {
   local go_version=$(go version 2>/dev/null | sed -E "s/.*(go[0-9.]*).*/\1/")
 
-  serialize_segment "$0" "" "$1" "$2" "${3}" "green" "255" "${go_version}" ""
+  serialize_segment "$0" "" "$1" "$2" "${3}" "green" "${DEFAULT_COLOR_INVERTED}" "${go_version}" ""
 }
 
 # Command number (in local history)
@@ -778,7 +778,7 @@ prompt_load() {
 prompt_node_version() {
   local node_version=$(node -v 2>/dev/null)
 
-  serialize_segment "$0" "" "$1" "$2" "${3}" "green" "white" "${node_version:1}" "NODE_ICON"
+  serialize_segment "$0" "" "$1" "$2" "${3}" "green" "${DEFAULT_COLOR_INVERTED}" "${node_version:1}" "NODE_ICON"
 }
 
 # Node version from NVM
@@ -806,7 +806,7 @@ prompt_nodeenv() {
   if [[ -n "$NODE_VIRTUAL_ENV" && "$NODE_VIRTUAL_ENV_DISABLE_PROMPT" != true ]]; then
     info="$(node -v)[$(basename "$NODE_VIRTUAL_ENV")]"
   fi
-  serialize_segment "$0" "" "$1" "$2" "${3}" "black" "green" "${info}" "NODE_ICON"
+  serialize_segment "$0" "" "$1" "$2" "${3}" "${DEFAULT_COLOR}" "green" "${info}" "NODE_ICON"
 }
 
 # print a little OS icon
@@ -831,7 +831,7 @@ prompt_os_icon() {
       ;;
   esac
 
-  serialize_segment "$0" "" "$1" "$2" "${3}" "black" "255" "${OS_ICON}" ""
+  serialize_segment "$0" "" "$1" "$2" "${3}" "${DEFAULT_COLOR}" "${DEFAULT_COLOR_INVERTED}" "${OS_ICON}" ""
 }
 
 # print PHP version number
@@ -842,7 +842,7 @@ prompt_os_icon() {
 prompt_php_version() {
   local php_version=$(php -v 2>&1 | grep -oe "^PHP\s*[0-9.]*")
 
-  serialize_segment "$0" "" "$1" "$2" "${3}" "013" "255" "${php_version}" ""
+  serialize_segment "$0" "" "$1" "$2" "${3}" "013" "${DEFAULT_COLOR_INVERTED}" "${php_version}" ""
 }
 
 # Show free RAM and used Swap
@@ -1038,7 +1038,7 @@ prompt_swift_version() {
   # Get the first number as this is probably the "main" version number..
   local swift_version=$(swift --version 2>/dev/null | grep -o -E "[0-9.]+" | head -n 1)
 
-  serialize_segment "$0" "" "$1" "$2" "${3}" "magenta" "white" "${swift_version}" "SWIFT_ICON"
+  serialize_segment "$0" "" "$1" "$2" "${3}" "magenta" "${DEFAULT_COLOR_INVERTED}" "${swift_version}" "SWIFT_ICON"
 }
 
 # Symfony2-PHPUnit test ratio
