@@ -457,6 +457,7 @@ prompt_public_ip() {
   set_default POWERLEVEL9K_PUBLIC_IP_NONE ""
   set_default POWERLEVEL9K_PUBLIC_IP_FILE "/tmp/p9k_public_ip"
   set_default POWERLEVEL9K_PUBLIC_IP_HOST "http://ident.me"
+  defined POWERLEVEL9K_PUBLIC_IP_METHODS || POWERLEVEL9K_PUBLIC_IP_METHODS=(dig curl wget)
 
   # Do we need a fresh IP?
   local refresh_ip=false
@@ -473,44 +474,26 @@ prompt_public_ip() {
   fi
 
   # grab a fresh IP if needed
+  local fresh_ip
   if [[ $refresh_ip =~ true && -w $POWERLEVEL9K_PUBLIC_IP_FILE ]]; then
-    # if method specified, don't use fallback methods
-    if [[ -n $POWERLEVEL9K_PUBLIC_IP_METHOD ]] && [[ $POWERLEVEL9K_PUBLIC_IP_METHOD =~ 'wget|curl|dig' ]]; then
-      local method=$POWERLEVEL9K_PUBLIC_IP_METHOD
-    fi
-    if [[ -n $method ]]; then
+    for method in "${POWERLEVEL9K_PUBLIC_IP_METHODS[@]}"; do
       case $method in
         'dig')
-          if type -p dig >/dev/null; then
-              fresh_ip="$(dig +time=1 +tries=1 +short myip.opendns.com @resolver1.opendns.com 2> /dev/null)"
-              [[ "$fresh_ip" =~ ^\; ]] && unset fresh_ip
-          fi
+            fresh_ip="$(dig +time=1 +tries=1 +short myip.opendns.com @resolver1.opendns.com 2> /dev/null)"
+            [[ "$fresh_ip" =~ ^\; ]] && unset fresh_ip
           ;;
         'curl')
-          if [[ -z "$fresh_ip" ]] && type -p curl >/dev/null; then
-              fresh_ip="$(curl --max-time 10 -w '\n' "$POWERLEVEL9K_PUBLIC_IP_HOST" 2> /dev/null)"
-          fi
+            fresh_ip="$(curl --max-time 10 -w '\n' "$POWERLEVEL9K_PUBLIC_IP_HOST" 2> /dev/null)"
           ;;
         'wget')
-          if [[ -z "$fresh_ip" ]] && type -p wget >/dev/null; then
-              fresh_ip="$(wget -T 10 -qO- "$POWERLEVEL9K_PUBLIC_IP_HOST" 2> /dev/null)"
-          fi
+            fresh_ip="$(wget -T 10 -qO- "$POWERLEVEL9K_PUBLIC_IP_HOST" 2> /dev/null)"
           ;;
       esac
-    else
-      if type -p dig >/dev/null; then
-          fresh_ip="$(dig +time=1 +tries=1 +short myip.opendns.com @resolver1.opendns.com 2> /dev/null)"
-          [[ "$fresh_ip" =~ ^\; ]] && unset fresh_ip
+      # If we found a fresh IP, break loop.
+      if [[ -n "${fresh_ip}" ]]; then
+        break;
       fi
-
-      if [[ -z "$fresh_ip" ]] && type -p curl >/dev/null; then
-          fresh_ip="$(curl --max-time 10 -w '\n' "$POWERLEVEL9K_PUBLIC_IP_HOST" 2> /dev/null)"
-      fi
-
-      if [[ -z "$fresh_ip" ]] && type -p wget >/dev/null; then
-          fresh_ip="$(wget -T 10 -qO- "$POWERLEVEL9K_PUBLIC_IP_HOST" 2> /dev/null)"
-      fi
-    fi
+    done
 
     # write IP to tmp file or clear tmp file if an IP was not retrieved
     # Redirection with `>!`. From the manpage: Same as >, except that the file
@@ -521,7 +504,7 @@ prompt_public_ip() {
   fi
 
   # read public IP saved to tmp file
-  local public_ip=$(cat $POWERLEVEL9K_PUBLIC_IP_FILE)
+  local public_ip="$(cat $POWERLEVEL9K_PUBLIC_IP_FILE)"
 
   # Draw the prompt segment
   serialize_segment "$0" "" "$1" "$2" "${3}" "${DEFAULT_COLOR}" "${DEFAULT_COLOR_INVERTED}" "${public_ip}" "PUBLIC_IP_ICON"
@@ -643,6 +626,11 @@ prompt_dir() {
     current_state="HOME_SUBFOLDER"
   fi
   serialize_segment "$0" "${current_state}" "$1" "$2" "${3}" "blue" "${DEFAULT_COLOR}" "${current_path}" "${dir_states[$current_state]}"
+}
+
+# dir_writable: Display information about the user's permission to write in the current directory
+prompt_dir_writable() {
+  serialize_segment "$0" "FORBIDDEN" "$1" "$2" "${3}" "red" "226" "" 'LOCK_ICON' '[[ ! -w "$PWD" ]]'
 }
 
 # Docker machine
