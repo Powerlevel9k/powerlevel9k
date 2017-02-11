@@ -54,7 +54,7 @@ Zend Engine v2.6.0, Copyright (c) 1998-2016 Zend Technologies
   prompt_php_version "left" "1" "false"
   p9k_build_prompt_from_cache
 
-  assertEquals "%K{013} %F{255}PHP 5.6.27 %K{white}%F{013} %F{black}world %k%F{white}%f " "${PROMPT}"
+  assertEquals "%K{013} %F{white}PHP 5.6.27 %K{white}%F{013} %F{black}world %k%F{white}%f " "${PROMPT}"
 
   unset POWERLEVEL9K_CUSTOM_WORLD
   unalias php
