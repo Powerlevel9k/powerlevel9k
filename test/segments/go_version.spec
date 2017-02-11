@@ -39,7 +39,7 @@ function testGo() {
   prompt_go_version "left" "1" "false"
   p9k_build_prompt_from_cache
 
-  assertEquals "%K{green} %F{255}go1.5.3 %k%F{green}%f " "${PROMPT}"
+  assertEquals "%K{green} %F{white}go1.5.3 %k%F{green}%f " "${PROMPT}"
 
   unalias go
 }
