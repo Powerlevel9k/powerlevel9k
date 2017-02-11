@@ -29,6 +29,10 @@ function setUp() {
   FOLDER=/tmp/powerlevel9k-test
   mkdir -p $FOLDER
   cd $FOLDER
+
+  # Change cache file, so that the users environment don't
+  # interfere with the tests.
+  POWERLEVEL9K_PUBLIC_IP_FILE=$FOLDER/public_ip_file
 }
 
 function tearDown() {
@@ -41,8 +45,8 @@ function tearDown() {
   unset FOLDER
   unset P9K_HOME
 
-  # Remove IP cache file
-  rm -f ${POWERLEVEL9K_PUBLIC_IP_FILE}
+  # Unset cache file
+  unset POWERLEVEL9K_PUBLIC_IP_FILE
 
   p9k_clear_cache
 }
@@ -194,7 +198,7 @@ function testPublicIpSegmentRefreshesCachesFileIfEmpty() {
   assertEquals "%K{black} %F{white}first %k%F{black}%f " "${PROMPT}"
 
   # Truncate cache file
-  echo "" >! /tmp/p9k_public_ip
+  echo "" >! $POWERLEVEL9K_PUBLIC_IP_FILE
 
   dig() {
       echo "second"
@@ -211,7 +215,7 @@ function testPublicIpSegmentRefreshesCachesFileIfEmpty() {
 
 function testPublicIpSegmentWhenGoingOnline() {
   alias dig="nodig"
-  POWERLEVEL9K_PUBLIC_IP_METHOD="dig"
+  POWERLEVEL9K_PUBLIC_IP_METHODS="dig"
   POWERLEVEL9K_PUBLIC_IP_NONE="disconnected"
 
   # First run, so that cache file exists
@@ -234,7 +238,7 @@ function testPublicIpSegmentWhenGoingOnline() {
 
   unfunction dig
   unset POWERLEVEL9K_PUBLIC_IP_NONE
-  unset POWERLEVEL9K_PUBLIC_IP_METHOD
+  unset POWERLEVEL9K_PUBLIC_IP_METHODS
 }
 
 source shunit2/source/2.1/src/shunit2
