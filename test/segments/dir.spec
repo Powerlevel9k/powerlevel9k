@@ -24,6 +24,9 @@ function setUp() {
   # as shUnit does not work with async commands.
   trap WINCH
 
+  # Every test should at least use the dir segment
+  POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(dir)
+
   # Test specific
   P9K_HOME=$(pwd)
   FOLDER=/tmp/powerlevel9k-test/1/12/123/1234/12345/123456/1234567/12345678/123456789
@@ -40,6 +43,7 @@ function tearDown() {
   rm -fr /tmp/powerlevel9k-test
   unset FOLDER
   unset P9K_HOME
+  unset POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
 
   p9k_clear_cache
 }
@@ -51,7 +55,7 @@ function testTruncateFoldersWorks() {
   prompt_dir "left" "1" "false"
   p9k_build_prompt_from_cache
 
-  assertEquals "%K{blue} %F{black}%3(c:…/:)%2c %k%F{blue}%f " "${PROMPT}"
+  assertEquals "%K{blue} %F{black}…/12345678/123456789 %k%F{blue}%f " "${PROMPT}"
 
   unset POWERLEVEL9K_SHORTEN_DIR_LENGTH
   unset POWERLEVEL9K_SHORTEN_STRATEGY
@@ -199,6 +203,55 @@ function testTruncationFromRightWorks() {
   unset POWERLEVEL9K_SHORTEN_STRATEGY
 }
 
+function testTruncateWithFolderMarkerWorks() {
+  POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(dir)
+  POWERLEVEL9K_SHORTEN_STRATEGY="truncate_with_folder_marker"
+
+  local BASEFOLDER=/tmp/powerlevel9k-test
+  local FOLDER=$BASEFOLDER/1/12/123/1234/12345/123456/1234567
+  mkdir -p $FOLDER
+  # Setup folder marker
+  touch $BASEFOLDER/1/12/.shorten_folder_marker
+  cd $FOLDER
+
+  prompt_dir "left" "1" "false"
+  p9k_build_prompt_from_cache
+  assertEquals "%K{blue} %F{black}/…/12/123/1234/12345/123456/1234567 %k%F{blue}%f " "${PROMPT}"
+
+  cd -
+  rm -fr $BASEFOLDER
+  unset BASEFOLDER
+  unset FOLDER
+  unset POWERLEVEL9K_SHORTEN_STRATEGY
+  unset POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
+}
+
+function testTruncateWithFolderMarkerWithChangedFolderMarker() {
+  POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(dir)
+  POWERLEVEL9K_SHORTEN_STRATEGY="truncate_with_folder_marker"
+  POWERLEVEL9K_SHORTEN_FOLDER_MARKER='.xxx'
+
+  local BASEFOLDER=/tmp/powerlevel9k-test
+  local FOLDER=$BASEFOLDER/1/12/123/1234/12345/123456/1234567
+  mkdir -p $FOLDER
+  # Setup folder marker
+  touch $BASEFOLDER/1/12/.xxx
+  cd $FOLDER
+
+  prompt_dir "left" "1" "false"
+  p9k_build_prompt_from_cache
+  assertEquals "%K{blue} %F{black}/…/12/123/1234/12345/123456/1234567 %k%F{blue}%f " "${PROMPT}"
+
+  cd -
+  rm -fr $BASEFOLDER
+  unset BASEFOLDER
+  unset FOLDER
+  unset POWERLEVEL9K_SHORTEN_FOLDER_MARKER
+  unset POWERLEVEL9K_SHORTEN_STRATEGY
+  unset POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
+}
+
+
 function testHomeFolderDetectionWorks() {
   POWERLEVEL9K_HOME_ICON='home-icon'
 
@@ -206,8 +259,9 @@ function testHomeFolderDetectionWorks() {
   prompt_dir "left" "1" "false"
   p9k_build_prompt_from_cache
 
-  assertEquals "%K{blue} %F{black%}home-icon%f %F{black}%~ %k%F{blue}%f " "${PROMPT}"
+  assertEquals "%K{blue} %F{black%}home-icon%f %F{black}~ %k%F{blue}%f " "${PROMPT}"
 
+  cd -
   unset POWERLEVEL9K_HOME_ICON
 }
 
@@ -221,19 +275,25 @@ function testHomeSubfolderDetectionWorks() {
   prompt_dir "left" "1" "false"
   p9k_build_prompt_from_cache
 
-  assertEquals "%K{blue} %F{black%}sub-icon%f %F{black}%~ %k%F{blue}%f " "${PROMPT}"
+  assertEquals "%K{blue} %F{black%}sub-icon%f %F{black}~/powerlevel9k-test %k%F{blue}%f " "${PROMPT}"
 
+  cd -
+  rm -fr $FOLDER
+  unset FOLDER
   unset POWERLEVEL9K_HOME_SUB_ICON
 }
 
 function testOtherFolderDetectionWorks() {
   POWERLEVEL9K_FOLDER_ICON='folder-icon'
 
+  cd /tmp
+
   prompt_dir "left" "1" "false"
   p9k_build_prompt_from_cache
 
-  assertEquals "%K{blue} %F{black%}folder-icon%f %F{black}%~ %k%F{blue}%f " "${PROMPT}"
+  assertEquals "%K{blue} %F{black%}folder-icon%f %F{black}/tmp %k%F{blue}%f " "${PROMPT}"
 
+  cd -
   unset POWERLEVEL9K_FOLDER_ICON
 }
 
@@ -246,6 +306,110 @@ function testPathSeparatorIsCustomizable() {
   assertEquals "%K{blue} %F{black} S tmp S powerlevel9k-test S 1 S 12 S 123 S 1234 S 12345 S 123456 S 1234567 S 12345678 S 123456789 %k%F{blue}%f " "${PROMPT}"
 
   unset POWERLEVEL9K_DIR_PATH_SEPARATOR
+}
+
+function testOmittingFirstCharacterWorks() {
+  POWERLEVEL9K_DIR_OMIT_FIRST_CHARACTER=true
+  POWERLEVEL9K_FOLDER_ICON='folder-icon'
+  cd /tmp
+
+  prompt_dir "left" "1" "false"
+  p9k_build_prompt_from_cache
+
+  assertEquals "%K{blue} %F{black%}folder-icon%f %F{black}tmp %k%F{blue}%f " "${PROMPT}"
+
+  cd -
+  unset POWERLEVEL9K_FOLDER_ICON
+  unset POWERLEVEL9K_DIR_OMIT_FIRST_CHARACTER
+}
+
+function testOmittingFirstCharacterWorksWithChangingPathSeparator() {
+  POWERLEVEL9K_DIR_OMIT_FIRST_CHARACTER=true
+  POWERLEVEL9K_DIR_PATH_SEPARATOR='xXx'
+  POWERLEVEL9K_FOLDER_ICON='folder-icon'
+  mkdir -p /tmp/powerlevel9k-test/1/2
+  cd /tmp/powerlevel9k-test/1/2
+
+  prompt_dir "left" "1" "false"
+  p9k_build_prompt_from_cache
+
+  assertEquals "%K{blue} %F{black%}folder-icon%f %F{black}tmpxXxpowerlevel9k-testxXx1xXx2 %k%F{blue}%f " "${PROMPT}"
+
+  cd -
+  rm -fr /tmp/powerlevel9k-test
+  unset POWERLEVEL9K_FOLDER_ICON
+  unset POWERLEVEL9K_DIR_PATH_SEPARATOR
+  unset POWERLEVEL9K_DIR_OMIT_FIRST_CHARACTER
+}
+
+# This test makes it obvious that combining a truncation strategy
+# that cuts off folders from the left and omitting the the first
+# character does not make much sense. The truncation strategy
+# comes first, prints an ellipsis and that gets then cut off by
+# POWERLEVEL9K_DIR_OMIT_FIRST_CHARACTER..
+# But it does more sense in combination with other truncation
+# strategies.
+function testOmittingFirstCharacterWorksWithChangingPathSeparatorAndDefaultTruncation() {
+  POWERLEVEL9K_DIR_OMIT_FIRST_CHARACTER=true
+  POWERLEVEL9K_DIR_PATH_SEPARATOR='xXx'
+  POWERLEVEL9K_SHORTEN_DIR_LENGTH=2
+  POWERLEVEL9K_SHORTEN_STRATEGY='truncate_folders'
+  mkdir -p /tmp/powerlevel9k-test/1/2
+  cd /tmp/powerlevel9k-test/1/2
+
+  prompt_dir "left" "1" "false"
+  p9k_build_prompt_from_cache
+
+  assertEquals "%K{blue} %F{black}xXx1xXx2 %k%F{blue}%f " "${PROMPT}"
+
+  cd -
+  rm -fr /tmp/powerlevel9k-test
+  unset POWERLEVEL9K_DIR_PATH_SEPARATOR
+  unset POWERLEVEL9K_DIR_OMIT_FIRST_CHARACTER
+  unset POWERLEVEL9K_SHORTEN_DIR_LENGTH
+  unset POWERLEVEL9K_SHORTEN_STRATEGY
+}
+
+function testOmittingFirstCharacterWorksWithChangingPathSeparatorAndMiddleTruncation() {
+  POWERLEVEL9K_DIR_OMIT_FIRST_CHARACTER=true
+  POWERLEVEL9K_DIR_PATH_SEPARATOR='xXx'
+  POWERLEVEL9K_SHORTEN_DIR_LENGTH=2
+  POWERLEVEL9K_SHORTEN_STRATEGY='truncate_middle'
+  mkdir -p /tmp/powerlevel9k-test/1/2
+  cd /tmp/powerlevel9k-test/1/2
+
+  prompt_dir "left" "1" "false"
+  p9k_build_prompt_from_cache
+
+  assertEquals "%K{blue} %F{black}tmpxXxpo…stxXx1xXx2 %k%F{blue}%f " "${PROMPT}"
+
+  cd -
+  rm -fr /tmp/powerlevel9k-test
+  unset POWERLEVEL9K_DIR_PATH_SEPARATOR
+  unset POWERLEVEL9K_DIR_OMIT_FIRST_CHARACTER
+  unset POWERLEVEL9K_SHORTEN_DIR_LENGTH
+  unset POWERLEVEL9K_SHORTEN_STRATEGY
+}
+
+function testOmittingFirstCharacterWorksWithChangingPathSeparatorAndRightTruncation() {
+  POWERLEVEL9K_DIR_OMIT_FIRST_CHARACTER=true
+  POWERLEVEL9K_DIR_PATH_SEPARATOR='xXx'
+  POWERLEVEL9K_SHORTEN_DIR_LENGTH=2
+  POWERLEVEL9K_SHORTEN_STRATEGY='truncate_from_right'
+  mkdir -p /tmp/powerlevel9k-test/1/2
+  cd /tmp/powerlevel9k-test/1/2
+
+  prompt_dir "left" "1" "false"
+  p9k_build_prompt_from_cache
+
+  assertEquals "%K{blue} %F{black}tmpxXxpo…xXx1xXx2 %k%F{blue}%f " "${PROMPT}"
+
+  cd -
+  rm -fr /tmp/powerlevel9k-test
+  unset POWERLEVEL9K_DIR_PATH_SEPARATOR
+  unset POWERLEVEL9K_DIR_OMIT_FIRST_CHARACTER
+  unset POWERLEVEL9K_SHORTEN_DIR_LENGTH
+  unset POWERLEVEL9K_SHORTEN_STRATEGY
 }
 
 source shunit2/source/2.1/src/shunit2

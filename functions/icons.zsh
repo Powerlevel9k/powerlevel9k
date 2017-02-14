@@ -19,7 +19,7 @@ function _powerlevel9k_setup_awesome_patched_icons() {
   local LC_ALL="" LC_CTYPE="en_US.UTF-8"
 
   icons_awesome_patched=(
-    LEFT_SEGMENT_SEPARATOR         $'\uE0B0'              # 
+      LEFT_SEGMENT_SEPARATOR         $'\uE0B0'              # 
       RIGHT_SEGMENT_SEPARATOR        $'\uE0B2'              # 
       LEFT_SEGMENT_END_SEPARATOR     ' '                    # Whitespace
       LEFT_SUBSEGMENT_SEPARATOR      $'\uE0B1'              # 
@@ -78,6 +78,7 @@ function _powerlevel9k_setup_awesome_patched_icons() {
       SWIFT_ICON                     ''
       PUBLIC_IP_ICON                 ''
       LOCK_ICON                      $'\UE138'              # 
+      SSH_ICON                       '(ssh)'
   )
 }
 _powerlevel9k_setup_awesome_patched_icons
@@ -90,7 +91,7 @@ function _powerlevel9k_setup_awesome_fontconfig_icons() {
   local LC_ALL="" LC_CTYPE="en_US.UTF-8"
 
   icons_awesome_fontconfig=(
-    LEFT_SEGMENT_SEPARATOR         $'\uE0B0'              # 
+      LEFT_SEGMENT_SEPARATOR         $'\uE0B0'              # 
       RIGHT_SEGMENT_SEPARATOR        $'\uE0B2'              # 
       LEFT_SEGMENT_END_SEPARATOR     ' '                    # Whitespace
       LEFT_SUBSEGMENT_SEPARATOR      $'\uE0B1'              # 
@@ -145,6 +146,7 @@ function _powerlevel9k_setup_awesome_fontconfig_icons() {
       SWIFT_ICON                     ''
       PUBLIC_IP_ICON                 ''
       LOCK_ICON                      $'\UE138'              # 
+      SSH_ICON                       '(ssh)'
   )
 }
 _powerlevel9k_setup_awesome_fontconfig_icons
@@ -170,7 +172,7 @@ function _powerlevel9k_setup_default_icons() {
   local LC_ALL="" LC_CTYPE="en_US.UTF-8"
 
   icons_default=(
-    LEFT_SEGMENT_SEPARATOR         $'\uE0B0'              # 
+      LEFT_SEGMENT_SEPARATOR         $'\uE0B0'              # 
       RIGHT_SEGMENT_SEPARATOR        $'\uE0B2'              # 
       LEFT_SEGMENT_END_SEPARATOR     ' '                    # Whitespace
       LEFT_SUBSEGMENT_SEPARATOR      $'\uE0B1'              # 
@@ -225,6 +227,7 @@ function _powerlevel9k_setup_default_icons() {
       SWIFT_ICON                     'Swift'
       PUBLIC_IP_ICON                 ''
       LOCK_ICON                      $'\UE0A2'
+      SSH_ICON                       '(ssh)'
   )
 }
 _powerlevel9k_setup_default_icons

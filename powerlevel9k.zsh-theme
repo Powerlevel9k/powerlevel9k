@@ -512,25 +512,36 @@ prompt_public_ip() {
 
 # Context: user@hostname (who am I and where am I)
 # Note that if $DEFAULT_USER is not set, this prompt segment will always print
+set_default POWERLEVEL9K_ALWAYS_SHOW_CONTEXT false
+set_default POWERLEVEL9K_ALWAYS_SHOW_USER false
+set_default POWERLEVEL9K_CONTEXT_HOST_DEPTH "%m"
 # Parameters:
 #   * $1 Alignment: string - left|right
 #   * $2 Index: integer
 #   * $3 Joined: bool - If the segment should be joined
 prompt_context() {
-  local content
   local current_state="DEFAULT"
   typeset -AH context_states
   context_states=(
-    'DEFAULT'      '011'
-    'ROOT'         'yellow'
+    "ROOT"      "yellow"
+    "DEFAULT"   "011"
   )
-  set_default POWERLEVEL9K_CONTEXT_HOST_DEPTH "%m"
-  content="${USER}@${POWERLEVEL9K_CONTEXT_HOST_DEPTH}"
-  if [[ $(print -P "%#") == '#' ]]; then
-    # Shell runs as root
-    state="ROOT"
+
+  local content=""
+
+  if [[ "$POWERLEVEL9K_ALWAYS_SHOW_CONTEXT" == true ]] || [[ "$USER" != "$DEFAULT_USER" ]] || [[ -n "$SSH_CLIENT" || -n "$SSH_TTY" ]]; then
+
+      if [[ $(print -P "%#") == '#' ]]; then
+        current_state="ROOT"
+      fi
+
+      content="$USER@${POWERLEVEL9K_CONTEXT_HOST_DEPTH}"
+
+  elif [[ "$POWERLEVEL9K_ALWAYS_SHOW_USER" == true ]]; then
+      content="$USER"
   fi
-  serialize_segment "$0" "${state}" "$1" "$2" "${3}" "${DEFAULT_COLOR}" "${context_states[$current_state]}" "${content}" "" '[[ "$USER" != "$DEFAULT_USER" || -n "$SSH_CLIENT" ]]'
+
+  serialize_segment "$0" "${state}" "$1" "$2" "${3}" "${DEFAULT_COLOR}" "${context_states[$current_state]}" "${content}" ""
 }
 
 # The 'custom` prompt provides a way for users to invoke commands and display
@@ -556,9 +567,8 @@ set_default POWERLEVEL9K_DIR_PATH_SEPARATOR "/"
 #   * $2 Index: integer
 #   * $3 Joined: bool - If the segment should be joined
 prompt_dir() {
-  local current_path='%~'
-  if [[ -n "$POWERLEVEL9K_SHORTEN_DIR_LENGTH" ]]; then
-
+  local current_path="$(print -P "%~")"
+  if [[ -n "$POWERLEVEL9K_SHORTEN_DIR_LENGTH" || "$POWERLEVEL9K_SHORTEN_STRATEGY" == "truncate_with_folder_marker" ]]; then
     set_default POWERLEVEL9K_SHORTEN_DELIMITER $'\U2026'
 
     case "$POWERLEVEL9K_SHORTEN_STRATEGY" in
@@ -585,7 +595,12 @@ prompt_dir() {
           package_path=${$(pwd)%%/.git*}
         fi
 
-        zero='%([BSUbfksu]|([FB]|){*})'
+        # Replace the shortest possible match of the marked folder from
+        # the current path. Remove the amount of characters up to the
+        # folder marker from the left. Count only the visible characters
+        # in the path (this is done by the "zero" pattern; see
+        # http://stackoverflow.com/a/40855342/5586433).
+        local zero='%([BSUbfksu]|([FB]|){*})'
         current_dir=$(pwd)
         # Then, find the length of the package_path string, and save the
         # subdirectory path as a substring of the current directory's path from 0
@@ -603,14 +618,44 @@ prompt_dir() {
           current_path=$(truncatePathFromRight "$(pwd | sed -e "s,^$HOME,~,")" )
         fi
       ;;
+      truncate_with_folder_marker)
+        local last_marked_folder marked_folder
+        set_default POWERLEVEL9K_SHORTEN_FOLDER_MARKER ".shorten_folder_marker"
+
+        # Search for the folder marker in the parent directories and
+        # buildup a pattern that is removed from the current path
+        # later on.
+        for marked_folder in $(upsearch $POWERLEVEL9K_SHORTEN_FOLDER_MARKER); do
+          if [[ "$marked_folder" == "/" ]]; then
+            # If we reached root folder, stop upsearch.
+            current_path="/"
+          elif [[ "$marked_folder" == "$HOME" ]]; then
+            # If we reached home folder, stop upsearch.
+            current_path="~"
+          elif [[ "${marked_folder%/*}" == $last_marked_folder ]]; then
+            current_path="${current_path%/}/${marked_folder##*/}"
+          else
+            current_path="${current_path%/}/$POWERLEVEL9K_SHORTEN_DELIMITER/${marked_folder##*/}"
+          fi
+          last_marked_folder=$marked_folder
+        done
+
+        # Replace the shortest possible match of the marked folder from
+        # the current path.
+        current_path=$current_path${PWD#${last_marked_folder}*}
+      ;;
       *)
-        current_path="%$((POWERLEVEL9K_SHORTEN_DIR_LENGTH+1))(c:$POWERLEVEL9K_SHORTEN_DELIMITER/:)%${POWERLEVEL9K_SHORTEN_DIR_LENGTH}c"
+        current_path="$(print -P "%$((POWERLEVEL9K_SHORTEN_DIR_LENGTH+1))(c:$POWERLEVEL9K_SHORTEN_DELIMITER/:)%${POWERLEVEL9K_SHORTEN_DIR_LENGTH}c")"
       ;;
     esac
   fi
 
+  if [[ "${POWERLEVEL9K_DIR_OMIT_FIRST_CHARACTER}" == "true" ]]; then
+    current_path="${current_path[2,-1]}"
+  fi
+
   if [[ "${POWERLEVEL9K_DIR_PATH_SEPARATOR}" != "/" ]]; then
-    current_path=$(print -P "${current_path}" | sed "s/\//${POWERLEVEL9K_DIR_PATH_SEPARATOR}/g")
+    current_path="$( echo "${current_path}" | sed "s/\//${POWERLEVEL9K_DIR_PATH_SEPARATOR}/g")"
   fi
 
   typeset -AH dir_states
@@ -942,6 +987,12 @@ prompt_rvm() {
   local version=$(echo $MY_RUBY_HOME | awk -F'-' '{print $2}')
 
   serialize_segment "$0" "" "$1" "$2" "${3}" "240" "$DEFAULT_COLOR" "${version}${gemset}" "RUBY_ICON"
+}
+
+prompt_ssh() {
+  if [[ -n "$SSH_CLIENT" ]] || [[ -n "$SSH_TTY" ]]; then
+    "$1_prompt_segment" "$0" "$2" "$DEFAULT_COLOR" "yellow" "" 'SSH_ICON'
+  fi
 }
 
 # Status: return code if verbose, otherwise just an icon if an error occurred
