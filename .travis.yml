@@ -86,6 +86,7 @@ script:
   - test/segments/public_ip.spec
   - test/segments/ram.spec
   - test/segments/rust_version.spec
+  - test/segments/ssh.spec
   - test/segments/status.spec
   - test/segments/swap.spec
   - test/segments/swift_version.spec
