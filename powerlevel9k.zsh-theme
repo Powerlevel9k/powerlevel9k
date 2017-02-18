@@ -1014,7 +1014,7 @@ powerlevel9k_prepare_prompts() {
   RETVAL=$?
 
   if [[ "$POWERLEVEL9K_PROMPT_ON_NEWLINE" == true ]]; then
-    PROMPT="\n$(print_icon 'MULTILINE_FIRST_PROMPT_PREFIX')%f%b%k$(build_left_prompt)
+    PROMPT="$(print_icon 'MULTILINE_FIRST_PROMPT_PREFIX')%f%b%k$(build_left_prompt)
 $(print_icon 'MULTILINE_SECOND_PROMPT_PREFIX')"
     if [[ "$POWERLEVEL9K_RPROMPT_ON_NEWLINE" != true ]]; then
       # The right prompt should be on the same line as the first line of the left
@@ -1038,6 +1038,9 @@ $(print_icon 'MULTILINE_SECOND_PROMPT_PREFIX')"
   if [[ "$POWERLEVEL9K_DISABLE_RPROMPT" != true ]]; then
     RPROMPT="$RPROMPT_PREFIX%f%b%k$(build_right_prompt)%{$reset_color%}$RPROMPT_SUFFIX"
   fi
+NEWLINE='
+'
+  [[ $POWERLEVEL9K_PROMPT_ADD_NEWLINE == true ]] && PROMPT="$NEWLINE$PROMPT"
 }
 
 powerlevel9k_init() {
