@@ -35,14 +35,16 @@ function tearDown() {
 
 function testContextSegmentDoesNotGetRenderedWithDefaultUser() {
     export DEFAULT_USER=$(whoami)
+    POWERLEVEL9K_CUSTOM_WORLD='echo world'
 
+    prompt_custom "left" "2" "world" "false"
     prompt_context "left" "1" "false"
-    source /tmp/p9k/p9k_$$_left_001_prompt_context.sh
+    p9k_build_prompt_from_cache
 
-    assertFalse "${CONDITION}"
-    assertEquals "$(whoami)@%m" "${CONTENT}"
+    assertEquals "%K{white} %F{black}world %k%F{white}%f " "${PROMPT}"
 
     unset DEFAULT_USER
+    unset POWERLEVEL9K_CUSTOM_WORLD
 }
 
 function testContextSegmentDoesGetRenderedWhenSshConnectionIsOpen() {
@@ -81,6 +83,19 @@ function testOverridingHostDepthInContextSegment() {
     assertEquals "%K{black} %F{011}$(whoami)@xx %k%F{black}%f " "${PROMPT}"
 
     unset POWERLEVEL9K_CONTEXT_HOST_DEPTH
+}
+
+function testContextSegmentIsShownIfDefaultUserIsSetWhenForced() {
+    POWERLEVEL9K_ALWAYS_SHOW_CONTEXT=true
+    export DEFAULT_USER=$(whoami)
+
+    prompt_context "left" "1" "false"
+    p9k_build_prompt_from_cache 0
+
+    assertEquals "%K{black} %F{011}$(whoami)@%m %k%F{black}%f " "${PROMPT}"
+
+    unset DEFAULT_USER
+    unset POWERLEVEL9K_ALWAYS_SHOW_CONTEXT
 }
 
 source shunit2/source/2.1/src/shunit2
