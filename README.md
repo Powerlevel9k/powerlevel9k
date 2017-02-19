@@ -140,6 +140,7 @@ The segments that are currently available are:
 **Other:**
 * [`custom_command`](#custom_command) - Create a custom segment to display the
   output of an arbitrary command.
+* [`command_execution_time`](#command_execution_time) - Display the time the current command took to execute.
 * [`todo`](http://todotxt.com/) - Shows the number of tasks in your todo.txt tasks file.
 * `detect_virt` - Virtualization detection with systemd
 
@@ -200,6 +201,19 @@ Note that you can [modify the `_FOREGROUND`
 color](https://github.com/bhilburn/powerlevel9k/wiki/Stylizing-Your-Prompt#segment-color-customization)
 without affecting the icon color.
 
+##### command_execution_time
+
+Display the time the previous command took to execute if the time is above
+`POWERLEVEL9K_COMMAND_EXECUTION_TIME_THRESHOLD`. The time is formatted to be
+"human readable", and so scales the units based on the length of execution time.
+If you want more precision, just set the
+`POWERLEVEL9K_COMMAND_EXECUTION_TIME_PRECISION` field.
+
+| Variable | Default Value | Description |
+|----------|---------------|-------------|
+|`POWERLEVEL9K_COMMAND_EXECUTION_TIME_THRESHOLD`|3|Threshold above which to print this segment. Can be set to `0` to always print.|
+|`POWERLEVEL9K_COMMAND_EXECUTION_TIME_PRECISION=2`|2|Number of digits to use in the fractional part of the time value.|
+
 ##### custom_command
 
 The `custom_...` segment allows you to turn the output of a custom command into
@@ -243,7 +257,14 @@ only print if you are not your 'normal' user (including if you are root), or if
 you are SSH'd to a remote host.
 
 To use this feature, make sure the `context` segment is enabled in your prompt
-elements (it is by default), and define a `DEFAULT_USER` in your `~/.zshrc`:
+elements (it is by default), and define a `DEFAULT_USER` in your `~/.zshrc`.
+
+You can customize the `context` segment. For example, you can make it to print the
+full hostname by setting
+```
+POWERLEVEL9K_CONTEXT_TEMPLATE="%n@`hostname -f`"
+```
+
 
 You can set the `POWERLEVEL9K_CONTEXT_HOST_DEPTH` variable to change how the
 hostname is displayed. See (ZSH Manual)[http://zsh.sourceforge.net/Doc/Release/Prompt-Expansion.html#Login-information]
@@ -255,9 +276,10 @@ end of the hostname.
 | Variable | Default Value | Description |
 |----------|---------------|-------------|
 |`DEFAULT_USER`|None|Username to consider a "default context".|
-|`POWERLEVEL9K_CONTEXT_HOST_DEPTH`|%m|Customizable host depth on prompt.|
 |`POWERLEVEL9K_ALWAYS_SHOW_CONTEXT`|false|Always show this segment, including $USER and hostname.|
 |`POWERLEVEL9K_ALWAYS_SHOW_USER`|false|Always show the username, but conditionalize the hostname.|
+|`DEFAULT_USER`|None|Username to consider a "default context" (you can also use `$USER`)|
+|`POWERLEVEL9K_CONTEXT_TEMPLATE`|%n@%m|Default context prompt (username@machine). Refer to the [ZSH Documentation](http://zsh.sourceforge.net/Doc/Release/Prompt-Expansion.html) for all possible expansions, including deeper host depths.|
 
 ##### dir
 

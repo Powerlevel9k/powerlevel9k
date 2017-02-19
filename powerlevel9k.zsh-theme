@@ -514,11 +514,11 @@ prompt_public_ip() {
 # Note that if $DEFAULT_USER is not set, this prompt segment will always print
 set_default POWERLEVEL9K_ALWAYS_SHOW_CONTEXT false
 set_default POWERLEVEL9K_ALWAYS_SHOW_USER false
-set_default POWERLEVEL9K_CONTEXT_HOST_DEPTH "%m"
 # Parameters:
 #   * $1 Alignment: string - left|right
 #   * $2 Index: integer
 #   * $3 Joined: bool - If the segment should be joined
+set_default POWERLEVEL9K_CONTEXT_TEMPLATE "%n@%m"
 prompt_context() {
   local current_state="DEFAULT"
   typeset -AH context_states
@@ -535,7 +535,7 @@ prompt_context() {
         current_state="ROOT"
       fi
 
-      content="$USER@${POWERLEVEL9K_CONTEXT_HOST_DEPTH}"
+      content="${POWERLEVEL9K_CONTEXT_TEMPLATE}"
 
   elif [[ "$POWERLEVEL9K_ALWAYS_SHOW_USER" == true ]]; then
       content="$USER"
@@ -558,6 +558,42 @@ prompt_custom() {
   local segment_content="$(eval ${(P)command})"
 
   serialize_segment "$0" "${segment_name}" "$1" "$2" "${4}" "${DEFAULT_COLOR_INVERTED}" "${DEFAULT_COLOR}" "${segment_content}" "CUSTOM_${segment_name}_ICON"
+}
+
+# Display the duration the command needed to run.
+prompt_command_execution_time() {
+  set_default POWERLEVEL9K_COMMAND_EXECUTION_TIME_THRESHOLD 3
+  set_default POWERLEVEL9K_COMMAND_EXECUTION_TIME_PRECISION 2
+
+  # Print time in human readable format
+  # For that use `strftime` and convert
+  # the duration (float) to an seconds
+  # (integer).
+  # See http://unix.stackexchange.com/a/89748
+  local humanReadableDuration
+  if (( _P9K_COMMAND_DURATION > 3600 )); then
+    humanReadableDuration=$(TZ=GMT; strftime '%H:%M:%S' $(( int(rint(_P9K_COMMAND_DURATION)) )))
+  elif (( _P9K_COMMAND_DURATION > 60 )); then
+    humanReadableDuration=$(TZ=GMT; strftime '%M:%S' $(( int(rint(_P9K_COMMAND_DURATION)) )))
+  else
+    # If the command executed in seconds, print as float.
+    # Convert to float
+    if [[ "${POWERLEVEL9K_COMMAND_EXECUTION_TIME_PRECISION}" == "0" ]]; then
+      # If user does not want microseconds, then we need to convert
+      # the duration to an integer.
+      typeset -i humanReadableDuration
+    else
+      typeset -F ${POWERLEVEL9K_COMMAND_EXECUTION_TIME_PRECISION} humanReadableDuration
+    fi
+    humanReadableDuration=$_P9K_COMMAND_DURATION
+  fi
+
+  if (( _P9K_COMMAND_DURATION <= POWERLEVEL9K_COMMAND_EXECUTION_TIME_THRESHOLD )); then
+    # humanReadableDuration=''
+    unset humanReadableDuration
+  fi
+
+  serialize_segment "$0" "" "$1" "$2" "${3}" "red" "226" "${humanReadableDuration}" "EXECUTION_TIME_ICON"
 }
 
 # Dir: current working directory
@@ -1547,6 +1583,11 @@ $(print_icon 'MULTILINE_SECOND_PROMPT_PREFIX')"
   PROMPT+="$(left_prompt_end ${LAST_LEFT_BACKGROUND})"
   PROMPT+="${PROMPT_SUFFIX}"
   RPROMPT+="${RPROMPT_SUFFIX}"
+
+  NEWLINE='
+'
+  [[ "${POWERLEVEL9K_PROMPT_ADD_NEWLINE}" == "true" ]] && PROMPT="${NEWLINE}${PROMPT}"
+
   # About .reset-promt see:
   # https://github.com/sorin-ionescu/prezto/issues/1026
   # https://github.com/zsh-users/zsh-autosuggestions/issues/107#issuecomment-183824034
@@ -1628,6 +1669,10 @@ build_right_prompt() {
   done
 }
 
+powerlevel9k_preexec() {
+  _P9K_TIMER_START=$EPOCHREALTIME
+}
+
 ASYNC_PROC=0
 powerlevel9k_prepare_prompts() {
   RETVAL=$?
@@ -1641,6 +1686,11 @@ powerlevel9k_prepare_prompts() {
   if [[ "${ASYNC_PROC}" != 0 ]]; then
     kill -s HUP ${ASYNC_PROC} >/dev/null 2>&1 || :
   fi
+
+  # Timing calculation
+  _P9K_COMMAND_DURATION=$((EPOCHREALTIME - _P9K_TIMER_START))
+  # Reset start time
+  _P9K_TIMER_START=99999999999
 
   # Ensure that every time the user wants a new prompt,
   # he gets a new, fresh one.
@@ -1689,6 +1739,9 @@ function zle-keymap-select {
 }
 
 prompt_powerlevel9k_setup() {
+  # Disable false display of command execution time
+  _P9K_TIMER_START=99999999999
+
   # Display a warning if the terminal does not support 256 colors
   local term_colors
   term_colors=$(echotc Co)
@@ -1716,18 +1769,26 @@ prompt_powerlevel9k_setup() {
   typeset -AH deprecated_segments
   # old => new
   deprecated_segments=(
-    'longstatus'      'status'
+    'longstatus'
+    'status'
   )
   print_deprecation_warning deprecated_segments
 
   # initialize colors
   autoload -U colors && colors
 
+  # initialize timing functions
+  zmodload zsh/datetime
+
+  # Initialize math functions
+  zmodload zsh/mathfunc
+
   # initialize hooks
   autoload -Uz add-zsh-hook
 
   # prepare prompts
   add-zsh-hook precmd powerlevel9k_prepare_prompts
+  add-zsh-hook preexec powerlevel9k_preexec
 
   zle -N zle-line-init
   zle -N zle-line-finish

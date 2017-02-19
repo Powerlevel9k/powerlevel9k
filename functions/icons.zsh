@@ -78,6 +78,7 @@ function _powerlevel9k_setup_awesome_patched_icons() {
       SWIFT_ICON                     ''
       PUBLIC_IP_ICON                 ''
       LOCK_ICON                      $'\UE138'              # 
+      EXECUTION_TIME_ICON            $'\UE89C'              # 
       SSH_ICON                       '(ssh)'
   )
 }
@@ -146,6 +147,7 @@ function _powerlevel9k_setup_awesome_fontconfig_icons() {
       SWIFT_ICON                     ''
       PUBLIC_IP_ICON                 ''
       LOCK_ICON                      $'\UE138'              # 
+      EXECUTION_TIME_ICON            $'\uF253'
       SSH_ICON                       '(ssh)'
   )
 }
@@ -227,6 +229,7 @@ function _powerlevel9k_setup_default_icons() {
       SWIFT_ICON                     'Swift'
       PUBLIC_IP_ICON                 ''
       LOCK_ICON                      $'\UE0A2'
+      EXECUTION_TIME_ICON            'Dur'
       SSH_ICON                       '(ssh)'
   )
 }
