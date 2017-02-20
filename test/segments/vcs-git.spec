@@ -32,13 +32,29 @@ function setUp() {
   cd $FOLDER
 
   # Set username and email
-  git config --global user.email "test@powerlevel9k.theme"
-  git config --global user.name  "Testing Tester"
+  OLD_GIT_AUTHOR_NAME=$GIT_AUTHOR_NAME
+  GIT_AUTHOR_NAME="Testing Tester"
+  OLD_GIT_AUTHOR_EMAIL=$GIT_AUTHOR_EMAIL
+  GIT_AUTHOR_EMAIL="test@powerlevel9k.theme"
   # Initialize FOLDER as git repository
   git init 1>/dev/null
 }
 
 function tearDown() {
+  if [[ -n "${OLD_GIT_AUTHOR_NAME}" ]]; then
+    GIT_AUTHOR_NAME=$OLD_GIT_AUTHOR
+    unset OLD_GIT_AUTHOR_NAME
+  else
+    unset GIT_AUTHOR_NAME
+  fi
+
+  if [[ -n "${OLD_GIT_AUTHOR_EMAIL}" ]]; then
+    GIT_AUTHOR_EMAIL=$OLD_GIT_AUTHOR_EMAIL
+    unset OLD_GIT_AUTHOR_EMAIL
+  else
+    unset GIT_AUTHOR_EMAIL
+  fi
+
   # Go back to powerlevel9k folder
   cd "${P9K_HOME}"
   # Remove eventually created test-specific folder
