@@ -36,6 +36,19 @@ function setUp() {
   GIT_AUTHOR_NAME="Testing Tester"
   OLD_GIT_AUTHOR_EMAIL=$GIT_AUTHOR_EMAIL
   GIT_AUTHOR_EMAIL="test@powerlevel9k.theme"
+
+
+  # Set default username if not already set!
+  if [[ -z $(git config user.name) ]]; then
+    GIT_AUTHOR_NAME_SET_BY_TEST=true
+    git config --global user.name "${GIT_AUTHOR_NAME}"
+  fi
+  # Set default email if not already set!
+  if [[ -z $(git config user.email) ]]; then
+    GIT_AUTHOR_EMAIL_SET_BY_TEST=true
+    git config --global user.email "${GIT_AUTHOR_EMAIL}"
+  fi
+
   # Initialize FOLDER as git repository
   git init 1>/dev/null
 }
@@ -53,6 +66,13 @@ function tearDown() {
     unset OLD_GIT_AUTHOR_EMAIL
   else
     unset GIT_AUTHOR_EMAIL
+  fi
+
+  if [[ "${GIT_AUTHOR_NAME_SET_BY_TEST}" == "true" ]]; then
+    git config --global --unset user.name
+  fi
+  if [[ "${GIT_AUTHOR_EMAIL_SET_BY_TEST}" == "true" ]]; then
+    git config --global --unset user.email
   fi
 
   # Go back to powerlevel9k folder
