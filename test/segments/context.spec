@@ -24,13 +24,16 @@ function setUp() {
   # as shUnit does not work with async commands.
   trap WINCH
 
-  P9K_HOME=$(pwd)
+  # Test specific settings
+  OLD_DEFAULT_USER=$DEFAULT_USER
+  unset DEFAULT_USER
 }
 
 function tearDown() {
-  # Go back to powerlevel9k folder
-  cd "${P9K_HOME}"
   p9k_clear_cache
+
+  # Restore old variables
+  [[ -n "$OLD_DEFAULT_USER" ]] && DEFAULT_USER=$OLD_DEFAULT_USER
 }
 
 function testContextSegmentDoesNotGetRenderedWithDefaultUser() {
@@ -53,7 +56,7 @@ function testContextSegmentDoesGetRenderedWhenSshConnectionIsOpen() {
     prompt_context "left" "1" "false"
     p9k_build_prompt_from_cache 0
 
-    assertEquals "%K{black} %F{011}$(whoami)@%m %k%F{black}%f " "${PROMPT}"
+    assertEquals "%K{black} %F{011}%n@%m %k%F{black}%f " "${PROMPT}"
 
     unset SSH_CLIENT
 }
@@ -62,7 +65,7 @@ function testContextSegmentWithForeignUser() {
     prompt_context "left" "1" "false"
     p9k_build_prompt_from_cache 0
 
-    assertEquals "%K{black} %F{011}$(whoami)@%m %k%F{black}%f " "${PROMPT}"
+    assertEquals "%K{black} %F{011}%n@%m %k%F{black}%f " "${PROMPT}"
 }
 
 # TODO: How to test root?
@@ -71,18 +74,18 @@ function testContextSegmentWithRootUser() {
     prompt_context "left" "1" "false"
     p9k_build_prompt_from_cache 0
 
-    assertEquals "%K{black} %F{011}$(whoami)@%m %k%F{black}%f " "${PROMPT}"
+    assertEquals "%K{black} %F{011}%n@%m %k%F{black}%f " "${PROMPT}"
 }
 
-function testOverridingHostDepthInContextSegment() {
-    POWERLEVEL9K_CONTEXT_HOST_DEPTH=xx
+function testOverridingContextTemplate() {
+    POWERLEVEL9K_CONTEXT_TEMPLATE=xx
 
     prompt_context "left" "1" "false"
     p9k_build_prompt_from_cache 0
 
-    assertEquals "%K{black} %F{011}$(whoami)@xx %k%F{black}%f " "${PROMPT}"
+    assertEquals "%K{black} %F{011}xx %k%F{black}%f " "${PROMPT}"
 
-    unset POWERLEVEL9K_CONTEXT_HOST_DEPTH
+    unset POWERLEVEL9K_CONTEXT_TEMPLATE
 }
 
 function testContextSegmentIsShownIfDefaultUserIsSetWhenForced() {
@@ -92,10 +95,23 @@ function testContextSegmentIsShownIfDefaultUserIsSetWhenForced() {
     prompt_context "left" "1" "false"
     p9k_build_prompt_from_cache 0
 
-    assertEquals "%K{black} %F{011}$(whoami)@%m %k%F{black}%f " "${PROMPT}"
+    assertEquals "%K{black} %F{011}%n@%m %k%F{black}%f " "${PROMPT}"
 
     unset DEFAULT_USER
     unset POWERLEVEL9K_ALWAYS_SHOW_CONTEXT
+}
+
+function testContextSegmentIsShownIfForced() {
+    POWERLEVEL9K_ALWAYS_SHOW_USER=true
+    DEFAULT_USER=$(whoami)
+
+    prompt_context "left" "1" "false"
+    p9k_build_prompt_from_cache 0
+
+    assertEquals "%K{black} %F{011}$(whoami) %k%F{black}%f " "${PROMPT}"
+
+    unset POWERLEVEL9K_ALWAYS_SHOW_USER
+    unset DEFAULT_USER
 }
 
 source shunit2/source/2.1/src/shunit2
