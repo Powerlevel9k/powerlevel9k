@@ -83,6 +83,7 @@ script:
   - test/segments/ip.spec
   - test/segments/load.spec
   - test/segments/node_version.spec
+  - test/segments/nodeenv.spec
   - test/segments/nvm.spec
   - test/segments/php_version.spec
   - test/segments/public_ip.spec
