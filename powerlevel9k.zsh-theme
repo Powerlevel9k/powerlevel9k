@@ -1135,7 +1135,7 @@ prompt_symfony2_tests() {
 #   * $1 Alignment: string - left|right
 #   * $2 Index: integer
 #   * $3 Joined: bool - If the segment should be joined
-prompt_symfony2_version() {
+prompt_symfony_version() {
   # TODO: Upsearch!
   local symfony2_version
   if [[ -f app/bootstrap.php.cache ]]; then
@@ -1769,8 +1769,8 @@ prompt_powerlevel9k_setup() {
   typeset -AH deprecated_segments
   # old => new
   deprecated_segments=(
-    'longstatus'
-    'status'
+    'longstatus'        'status'
+    'symfony2_version'  'symfony_version'
   )
   print_deprecation_warning deprecated_segments
 
