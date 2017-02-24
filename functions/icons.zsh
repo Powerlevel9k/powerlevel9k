@@ -124,7 +124,7 @@ function _powerlevel9k_setup_awesome_fontconfig_icons() {
       LOAD_ICON                      $'\uF080 '             # 
       SWAP_ICON                      $'\uF0E4'              # 
       RAM_ICON                       $'\uF0E4'              # 
-      SERVER_ICON                    $'\uF296'              # 
+      SERVER_ICON                    $'\uF233'              # 
       VCS_UNTRACKED_ICON             $'\uF059'              # 
       VCS_UNSTAGED_ICON              $'\uF06A'              # 
       VCS_STAGED_ICON                $'\uF055'              # 
@@ -152,6 +152,68 @@ function _powerlevel9k_setup_awesome_fontconfig_icons() {
   )
 }
 _powerlevel9k_setup_awesome_fontconfig_icons
+
+typeset -gAH icons_nerdfont_fontconfig
+function _powerlevel9k_setup_nerdfont_fontconfig_icons() {
+  # Set the right locale to protect special characters
+  local LC_ALL="" LC_CTYPE="en_US.UTF-8"
+
+  # nerd-font patched (complete) font required! See
+  # https://github.com/ryanoasis/nerd-fonts
+  icons_nerdfont_fontconfig=(
+    LEFT_SEGMENT_SEPARATOR         $'\uE0B0'              # 
+    RIGHT_SEGMENT_SEPARATOR        $'\uE0B2'              # 
+    LEFT_SEGMENT_END_SEPARATOR     ' '                    # Whitespace
+    LEFT_SUBSEGMENT_SEPARATOR      $'\uE0B1'              # 
+    RIGHT_SUBSEGMENT_SEPARATOR     $'\uE0B3'              # 
+    CARRIAGE_RETURN_ICON           $'\u21B5'              # ↵
+    ROOT_ICON                      $'\u26A1'              # ⚡
+    RUBY_ICON                      $'\uF219 '             # 
+    AWS_ICON                       $'\uE7AD'              # 
+    AWS_EB_ICON                    $'\U1F331 '            # 🌱
+    BACKGROUND_JOBS_ICON           $'\uF013 '             # 
+    TEST_ICON                      $'\uF188'              # 
+    TODO_ICON                      $'\u2611'              # ☑
+    BATTERY_ICON                   $'\uF241 '             # 
+    OK_ICON                        $'\u2713'              # ✓
+    FAIL_ICON                      $'\u2718'              # ✘
+    SYMFONY_ICON                   $'\uE757'              # 
+    NODE_ICON                      $'\u2B22'              # ⬢
+    MULTILINE_FIRST_PROMPT_PREFIX  $'\u256D'$'\U2500'     # ╭─
+    MULTILINE_SECOND_PROMPT_PREFIX $'\u2570'$'\U2500 '    # ╰─
+    APPLE_ICON                     $'\uF179'              # 
+    FREEBSD_ICON                   $'\U1F608 '            # 😈
+    LINUX_ICON                     $'\uF17C'              # 
+    SUNOS_ICON                     $'\uF185 '             # 
+    HOME_ICON                      $'\uF015'              # 
+    HOME_SUB_ICON                  $'\uF07C'              # 
+    FOLDER_ICON                    $'\uF115'              # 
+    NETWORK_ICON                   $'\uF1EB'              # 
+    LOAD_ICON                      $'\uF080 '             # 
+    SWAP_ICON                      $'\uF464'              # 
+    RAM_ICON                       $'\uF0E4'              # 
+    SERVER_ICON                    $'\uF0AE'              # 
+    VCS_UNTRACKED_ICON             $'\uF059'              # 
+    VCS_UNSTAGED_ICON              $'\uF06A'              # 
+    VCS_STAGED_ICON                $'\uF055'              # 
+    VCS_STASH_ICON                 $'\uF01C '             # 
+    VCS_INCOMING_CHANGES_ICON      $'\uF01A '             # 
+    VCS_OUTGOING_CHANGES_ICON      $'\uF01B '             # 
+    VCS_TAG_ICON                   $'\uF02B '             # 
+    VCS_BOOKMARK_ICON              $'\uF462'              # 
+    VCS_COMMIT_ICON                $'\uE729 '             # 
+    VCS_BRANCH_ICON                $'\uF126'              # 
+    VCS_REMOTE_BRANCH_ICON         $'\uE728 '             # 
+    VCS_GIT_ICON                   $'\uF113 '             # 
+    VCS_HG_ICON                    $'\uF0C3 '             # 
+    VCS_SVN_ICON                   '(svn) '
+    RUST_ICON                      $'\uE7A8'              # 
+    PYTHON_ICON                    $'\uE73C'              # 
+    SWIFT_ICON                     $'\uE755'              # 
+    PUBLIC_IP_ICON                 ''
+  )
+}
+_powerlevel9k_setup_nerdfont_fontconfig_icons
 
 typeset -gAH icons_flat
 function prepareFlatIcons() {
@@ -253,6 +315,7 @@ function _powerlevel9kInitializeIconOverrides() {
     icons_default[VCS_BRANCH_ICON]=''
     icons_awesome_fontconfig[VCS_BRANCH_ICON]=''
     icons_awesome_patched[VCS_BRANCH_ICON]=''
+    icons_nerdfont_fontconfig[VCS_BRANCH_ICON]=''
     icons_flat[VCS_BRANCH_ICON]=''
     icons_compatible[VCS_BRANCH_ICON]=''
   fi
