@@ -1119,7 +1119,7 @@ prompt_swift_version() {
 #   * $1 Alignment: string - left|right
 #   * $2 Index: integer
 #   * $3 Joined: bool - If the segment should be joined
-prompt_symfony2_tests() {
+prompt_symfony_tests() {
   local code_amount tests_amount
   # Careful! `ls` seems to now work correctly with NULL_GLOB,
   # as described here http://unix.stackexchange.com/a/26819
@@ -1771,6 +1771,7 @@ prompt_powerlevel9k_setup() {
   deprecated_segments=(
     'longstatus'        'status'
     'symfony2_version'  'symfony_version'
+    'symfony2_tests'    'symfony_tests'
   )
   print_deprecation_warning deprecated_segments
 
