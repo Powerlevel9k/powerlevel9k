@@ -1136,12 +1136,23 @@ prompt_symfony_tests() {
 #   * $2 Index: integer
 #   * $3 Joined: bool - If the segment should be joined
 prompt_symfony_version() {
-  # TODO: Upsearch!
-  local symfony2_version
-  if [[ -f app/bootstrap.php.cache ]]; then
-    symfony2_version=$(grep " VERSION " app/bootstrap.php.cache | sed -e 's/[^.0-9]*//g')
-  fi
-  serialize_segment "$0" "" "$1" "$2" "${3}" "240" "$DEFAULT_COLOR" "${symfony2_version}" "SYMFONY_ICON"
+  local version=""
+  # Search for app/AppKernel.php as this file is pretty unique to symfony.
+  for marked_folder in $(upsearch app/AppKernel.php); do
+    if [[ "$marked_folder" == "/" ]]; then
+      # If we reached root folder, stop upsearch.
+      version=""
+    elif [[ "$marked_folder" == "$HOME" ]]; then
+      # If we reached home folder, stop upsearch.
+      version=""
+    else
+      cd "$marked_folder" &>/dev/null
+      version=$(php bin/console --version --no-ansi 2>/dev/null | grep -o -E "[0-9.]+")
+      cd - &>/dev/null
+    fi
+  done
+
+  serialize_segment "$0" "" "$1" "$2" "${3}" "240" "$DEFAULT_COLOR" "${version}" "SYMFONY_ICON"
 }
 
 # Show a ratio of tests vs code
