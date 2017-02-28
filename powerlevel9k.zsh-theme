@@ -1482,6 +1482,8 @@ serialize_segment() {
 
   # send WINCH signal to parent process
   kill -s WINCH $$
+  # Block for long enough for the signal to come through
+  sleep 1
 }
 
 # Rebuild prompt from cache every time
