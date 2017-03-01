@@ -93,7 +93,7 @@ script:
   - test/segments/status.spec
   - test/segments/swap.spec
   - test/segments/swift_version.spec
+  - test/segments/symfony_version.spec
   - test/segments/vcs-git.spec
   - test/segments/vcs-hg.spec
   - test/segments/vi_mode.spec
-
