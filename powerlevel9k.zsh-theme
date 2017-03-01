@@ -1147,7 +1147,7 @@ prompt_symfony_version() {
       version=""
     else
       cd "$marked_folder" &>/dev/null
-      version=$(php bin/console --version --no-ansi 2>/dev/null | grep -o -E "[0-9.]+")
+      version=$(php bin/console --version --no-ansi 2>/dev/null | grep -E "Symfony version [0-9.]+" | grep -o -E "[0-9.]+")
       cd - &>/dev/null
     fi
   done
