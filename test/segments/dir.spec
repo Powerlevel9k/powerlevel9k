@@ -99,10 +99,14 @@ function testTruncateWithPackageNameWorks() {
   unset POWERLEVEL9K_SHORTEN_DIR_LENGTH
 }
 
-# TODO: Unskip test
 function testTruncateWithPackageNameInComplexPackageJsonWorks() {
   # Skip test, as at the moment, we do not parse the right name.
   # This is a feature done in another pull request.
+
+  # This test NEVER can do what we want it to, if neither `jq` nor
+  # `node` is installed (or mocked) beforehand. If it is mocked,
+  # the test gets pointless. I leave it here, until someone has a
+  # better idea.
   startSkipping # Skip test
 
   cd /tmp/powerlevel9k-test
