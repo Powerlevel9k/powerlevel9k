@@ -55,7 +55,7 @@ function testColorOverridingForCleanStateWorks() {
   prompt_vcs "left" "1" "false"
   p9k_build_prompt_from_cache 0
 
-  assertEquals "%K{white} %F{cyan} default %k%F{white}%f " "${PROMPT}"
+  assertEquals "%K{white} %F{cyan}default %k%F{white}%f " "${PROMPT}"
 
   unset POWERLEVEL9K_VCS_CLEAN_FOREGROUND
   unset POWERLEVEL9K_VCS_CLEAN_BACKGROUND
@@ -73,7 +73,7 @@ function testColorOverridingForModifiedStateWorks() {
   prompt_vcs "left" "1" "false"
   p9k_build_prompt_from_cache 0
 
-  assertEquals "%K{yellow} %F{red} default ● %k%F{yellow}%f " "${PROMPT}"
+  assertEquals "%K{yellow} %F{red}default ● %k%F{yellow}%f " "${PROMPT}"
 
   unset POWERLEVEL9K_VCS_MODIFIED_FOREGROUND
   unset POWERLEVEL9K_VCS_MODIFIED_BACKGROUND
@@ -91,7 +91,7 @@ function testAddedFilesIconWorks() {
   prompt_vcs "left" "1" "false"
   p9k_build_prompt_from_cache
 
-  assertEquals "%K{yellow} %F{black} default ● %k%F{yellow}%f " "${PROMPT}"
+  assertEquals "%K{yellow} %F{black}default ● %k%F{yellow}%f " "${PROMPT}"
 }
 
 # We don't support tagging in mercurial right now..
@@ -150,7 +150,7 @@ function testActionHintWorks() {
   prompt_vcs "left" "1" "false"
   p9k_build_prompt_from_cache
 
-  assertEquals "%K{yellow} %F{black} default %F{red}| merging%f %k%F{yellow}%f " "${PROMPT}"
+  assertEquals "%K{yellow} %F{black}default %F{red}| merging%f %k%F{yellow}%f " "${PROMPT}"
 }
 
 function testShorteningCommitHashWorks() {
@@ -165,7 +165,7 @@ function testShorteningCommitHashWorks() {
   prompt_vcs "left" "1" "false"
   p9k_build_prompt_from_cache
 
-  assertEquals "%K{green} %F{black}${hash}  default %k%F{green}%f " "${PROMPT}"
+  assertEquals "%K{green} %F{black}${hash} default %k%F{green}%f " "${PROMPT}"
 
   unset POWERLEVEL9K_SHOW_CHANGESET
   unset POWERLEVEL9K_CHANGESET_HASH_LENGTH
@@ -182,7 +182,7 @@ function testShorteningCommitHashIsNotShownIfShowChangesetIsFalse() {
   prompt_vcs "left" "1" "false"
   p9k_build_prompt_from_cache
 
-  assertEquals "%K{green} %F{black} default %k%F{green}%f " "${PROMPT}"
+  assertEquals "%K{green} %F{black}default %k%F{green}%f " "${PROMPT}"
 
   unset POWERLEVEL9K_SHOW_CHANGESET
   unset POWERLEVEL9K_CHANGESET_HASH_LENGTH
@@ -194,7 +194,7 @@ function testMercurialIconWorks() {
   prompt_vcs "left" "1" "false"
   p9k_build_prompt_from_cache
 
-  assertEquals "%K{green} %F{black%}HG-Icon%f %F{black} default %k%F{green}%f " "${PROMPT}"
+  assertEquals "%K{green} %F{black%}HG-Icon%f %F{black}default %k%F{green}%f " "${PROMPT}"
 
   unset POWERLEVEL9K_VCS_HG_ICON
 }
@@ -206,7 +206,7 @@ function testBookmarkIconWorks() {
   prompt_vcs "left" "1" "false"
   p9k_build_prompt_from_cache
 
-  assertEquals "%K{green} %F{black} default Binitial %k%F{green}%f " "${PROMPT}"
+  assertEquals "%K{green} %F{black}default Binitial %k%F{green}%f " "${PROMPT}"
 
   unset POWERLEVEL9K_VCS_BOOKMARK_ICON
 }

@@ -137,7 +137,7 @@ function testGitIconWorks() {
   prompt_vcs "left" "1" "false"
   p9k_build_prompt_from_cache 0
 
-  assertEquals "%K{green} %F{black%}Git-Icon%f %F{black} master %k%F{green}%f " "${PROMPT}"
+  assertEquals "%K{green} %F{black%}Git-Icon%f %F{black}master %k%F{green}%f " "${PROMPT}"
 
   unset POWERLEVEL9K_VCS_GIT_ICON
 }
@@ -152,7 +152,7 @@ function testGitlabIconWorks() {
   prompt_vcs "left" "1" "false"
   p9k_build_prompt_from_cache
 
-  assertEquals "%K{green} %F{black%}GL-Icon%f %F{black} master %k%F{green}%f " "${PROMPT}"
+  assertEquals "%K{green} %F{black%}GL-Icon%f %F{black}master %k%F{green}%f " "${PROMPT}"
 
   unset POWERLEVEL9K_VCS_GIT_GITLAB_ICON
 }
@@ -167,7 +167,7 @@ function testBitbucketIconWorks() {
   prompt_vcs "left" "1" "false"
   p9k_build_prompt_from_cache
 
-  assertEquals "%K{green} %F{black%}BB-Icon%f %F{black} master %k%F{green}%f " "${PROMPT}"
+  assertEquals "%K{green} %F{black%}BB-Icon%f %F{black}master %k%F{green}%f " "${PROMPT}"
 
   unset POWERLEVEL9K_VCS_GIT_BITBUCKET_ICON
 }
@@ -182,7 +182,7 @@ function testGitHubIconWorks() {
   prompt_vcs "left" "1" "false"
   p9k_build_prompt_from_cache
 
-  assertEquals "%K{green} %F{black%}GH-Icon%f %F{black} master %k%F{green}%f " "${PROMPT}"
+  assertEquals "%K{green} %F{black%}GH-Icon%f %F{black}master %k%F{green}%f " "${PROMPT}"
 
   unset POWERLEVEL9K_VCS_GIT_GITHUB_ICON
 }
@@ -196,7 +196,7 @@ function testUntrackedFilesIconWorks() {
   prompt_vcs "left" "1" "false"
   p9k_build_prompt_from_cache
 
-  assertEquals "%K{green} %F{black} master ? %k%F{green}%f " "${PROMPT}"
+  assertEquals "%K{green} %F{black}master ? %k%F{green}%f " "${PROMPT}"
 
   unset POWERLEVEL9K_VCS_UNTRACKED_ICON
 }
@@ -214,7 +214,7 @@ function testStagedFilesIconWorks() {
   prompt_vcs "left" "1" "false"
   p9k_build_prompt_from_cache
 
-  assertEquals "%K{yellow} %F{black} master + %k%F{yellow}%f " "${PROMPT}"
+  assertEquals "%K{yellow} %F{black}master + %k%F{yellow}%f " "${PROMPT}"
 
   unset POWERLEVEL9K_VCS_STAGED_ICON
 }
@@ -231,7 +231,7 @@ function testUnstagedFilesIconWorks() {
   prompt_vcs "left" "1" "false"
   p9k_build_prompt_from_cache
 
-  assertEquals "%K{yellow} %F{black} master M %k%F{yellow}%f " "${PROMPT}"
+  assertEquals "%K{yellow} %F{black}master M %k%F{yellow}%f " "${PROMPT}"
 
   unset POWERLEVEL9K_VCS_UNSTAGED_ICON
 }
@@ -249,7 +249,7 @@ function testStashIconWorks() {
   prompt_vcs "left" "1" "false"
   p9k_build_prompt_from_cache
 
-  assertEquals "%K{green} %F{black} master S1 %k%F{green}%f " "${PROMPT}"
+  assertEquals "%K{green} %F{black}master S1 %k%F{green}%f " "${PROMPT}"
 
   unset POWERLEVEL9K_VCS_STASH_ICON
 }
@@ -265,7 +265,7 @@ function testTagIconWorks() {
   prompt_vcs "left" "1" "false"
   p9k_build_prompt_from_cache
 
-  assertEquals "%K{green} %F{black} master Tv0.0.1 %k%F{green}%f " "${PROMPT}"
+  assertEquals "%K{green} %F{black}master Tv0.0.1 %k%F{green}%f " "${PROMPT}"
 
   unset POWERLEVEL9K_VCS_TAG_ICON
 }
@@ -286,7 +286,7 @@ function testTagIconInDetachedHeadState() {
   prompt_vcs "left" "1" "false"
   p9k_build_prompt_from_cache
 
-  assertEquals "%K{green} %F{black} ${hash} Tv0.0.1 %k%F{green}%f " "${PROMPT}"
+  assertEquals "%K{green} %F{black}${hash} Tv0.0.1 %k%F{green}%f " "${PROMPT}"
 
   unset POWERLEVEL9K_VCS_TAG_ICON
 }
@@ -308,7 +308,7 @@ function testActionHintWorks() {
   prompt_vcs "left" "1" "false"
   p9k_build_prompt_from_cache
 
-  assertEquals "%K{yellow} %F{black} master %F{red}| merge%f %k%F{yellow}%f " "${PROMPT}"
+  assertEquals "%K{yellow} %F{black}master %F{red}| merge%f %k%F{yellow}%f " "${PROMPT}"
 }
 
 function testIncomingHintWorks() {
@@ -328,7 +328,7 @@ function testIncomingHintWorks() {
   prompt_vcs "left" "1" "false"
   p9k_build_prompt_from_cache
 
-  assertEquals "%K{green} %F{black} master I1 %k%F{green}%f " "${PROMPT}"
+  assertEquals "%K{green} %F{black}master I1 %k%F{green}%f " "${PROMPT}"
 
   unset POWERLEVEL9K_VCS_INCOMING_CHANGES_ICON
 }
@@ -350,7 +350,7 @@ function testOutgoingHintWorks() {
   prompt_vcs "left" "1" "false"
   p9k_build_prompt_from_cache
 
-  assertEquals "%K{green} %F{black} master o1 %k%F{green}%f " "${PROMPT}"
+  assertEquals "%K{green} %F{black}master o1 %k%F{green}%f " "${PROMPT}"
 
   unset POWERLEVEL9K_VCS_OUTGOING_CHANGES_ICON
 }
@@ -367,7 +367,7 @@ function testShorteningCommitHashWorks() {
   prompt_vcs "left" "1" "false"
   p9k_build_prompt_from_cache
 
-  assertEquals "%K{green} %F{black}${hash}  master %k%F{green}%f " "${PROMPT}"
+  assertEquals "%K{green} %F{black}${hash} master %k%F{green}%f " "${PROMPT}"
 
   unset POWERLEVEL9K_SHOW_CHANGESET
   unset POWERLEVEL9K_CHANGESET_HASH_LENGTH
@@ -384,7 +384,7 @@ function testShorteningCommitHashIsNotShownIfShowChangesetIsFalse() {
   prompt_vcs "left" "1" "false"
   p9k_build_prompt_from_cache
 
-  assertEquals "%K{green} %F{black} master %k%F{green}%f " "${PROMPT}"
+  assertEquals "%K{green} %F{black}master %k%F{green}%f " "${PROMPT}"
 
   unset POWERLEVEL9K_SHOW_CHANGESET
   unset POWERLEVEL9K_CHANGESET_HASH_LENGTH
