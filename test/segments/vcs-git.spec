@@ -92,7 +92,7 @@ function testColorOverridingForCleanStateWorks() {
   prompt_vcs "left" "1" "false"
   p9k_build_prompt_from_cache 0
 
-  assertEquals "%K{white} %F{cyan} master %k%F{white}%f " "${PROMPT}"
+  assertEquals "%K{white} %F{cyan}master %k%F{white}%f " "${PROMPT}"
 
   unset POWERLEVEL9K_VCS_CLEAN_FOREGROUND
   unset POWERLEVEL9K_VCS_CLEAN_BACKGROUND
@@ -110,7 +110,7 @@ function testColorOverridingForModifiedStateWorks() {
   prompt_vcs "left" "1" "false"
   p9k_build_prompt_from_cache 0
 
-  assertEquals "%K{yellow} %F{red} master ● %k%F{yellow}%f " "${PROMPT}"
+  assertEquals "%K{yellow} %F{red}master ● %k%F{yellow}%f " "${PROMPT}"
 
   unset POWERLEVEL9K_VCS_MODIFIED_FOREGROUND
   unset POWERLEVEL9K_VCS_MODIFIED_BACKGROUND
@@ -125,7 +125,7 @@ function testColorOverridingForUntrackedStateWorks() {
   prompt_vcs "left" "1" "false"
   p9k_build_prompt_from_cache 0
 
-  assertEquals "%K{yellow} %F{cyan} master ? %k%F{yellow}%f " "${PROMPT}"
+  assertEquals "%K{yellow} %F{cyan}master ? %k%F{yellow}%f " "${PROMPT}"
 
   unset POWERLEVEL9K_VCS_UNTRACKED_FOREGROUND
   unset POWERLEVEL9K_VCS_UNTRACKED_BACKGROUND

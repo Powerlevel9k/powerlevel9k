@@ -31,7 +31,7 @@ Custom segments now can have a visual identifier. Just set
 you can override the color of the visual identifier by 
 setting `POWERLEVEL9K_CUSTOM_<SEGMENT_NAME>_VISUAL_IDENTIFIER_COLOR="red"`.
 
-## next
+## v0.6.0
 
 - Fixed a bug where the tag display was broken on detached HEADs.
 - Fixed a bug where SVN detection sometimes failed.
@@ -43,6 +43,10 @@ setting `POWERLEVEL9K_CUSTOM_<SEGMENT_NAME>_VISUAL_IDENTIFIER_COLOR="red"`.
 - Added Github syntax highlighting to README.
 - Various documentation cleanup.
 
+### New Font Option: nerd-fonts
+
+There is now an option to use [nerd-fonts](https://github.com/ryanoasis/nerd-fonts) with P9k. Simply configure the `nerdfont-fontconfig`, and you'll be set!
+
 ### `vcs` changes
 
 The VCS segment can now display icons for remote repo hosting services, including Github, Gitlab, and 'other'.
@@ -52,6 +56,11 @@ The VCS segment can now display icons for remote repo hosting services, includin
 Added an option to configure the path separator. If you want something
 else than an ordinary slash, you could set
 `POWERLEVEL9K_DIR_PATH_SEPARATOR` to whatever you want.
+
+#### `truncate_with_package_name` now searches for `composer.json` as well
+
+Now `composer.json` files are searched as well. By default `package.json` still takes
+precedence. If you want to change that, set `POWERLEVEL9K_DIR_PACKAGE_FILES=(composer.json package.json)`.
 
 ### New segment 'command_execution_time' added
 

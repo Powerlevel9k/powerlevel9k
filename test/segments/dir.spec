@@ -255,7 +255,6 @@ function testTruncateWithFolderMarkerWithChangedFolderMarker() {
   unset POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
 }
 
-
 function testHomeFolderDetectionWorks() {
   POWERLEVEL9K_HOME_ICON='home-icon'
 
