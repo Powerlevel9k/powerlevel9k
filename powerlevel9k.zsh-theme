@@ -337,9 +337,51 @@ prompt_background_jobs() {
   fi
 }
 
+# Segment that indicates usage level of current partition.
+set_default POWERLEVEL9K_DISK_USAGE_ONLY_WARNING false
+set_default POWERLEVEL9K_DISK_USAGE_WARNING_LEVEL 90
+set_default POWERLEVEL9K_DISK_USAGE_CRITICAL_LEVEL 95
+prompt_disk_usage() {
+  local current_state="unknown"
+  typeset -AH hdd_usage_forecolors
+  hdd_usage_forecolors=(
+    'normal'        'yellow'
+    'warning'       "$DEFAULT_COLOR"
+    'critical'      'white'
+  )
+  typeset -AH hdd_usage_backcolors
+  hdd_usage_backcolors=(
+    'normal'        $DEFAULT_COLOR
+    'warning'       'yellow'
+    'critical'      'red'
+  )
+
+  local disk_usage="${$(\df -P . | sed -n '2p' | awk '{ print $5 }')%%\%}"
+
+  if [ "$disk_usage" -ge "$POWERLEVEL9K_DISK_USAGE_WARNING_LEVEL" ]; then
+    current_state='warning'
+    if [ "$disk_usage" -ge "$POWERLEVEL9K_DISK_USAGE_CRITICAL_LEVEL" ]; then
+        current_state='critical'
+    fi
+  else
+    if [[ "$POWERLEVEL9K_DISK_USAGE_ONLY_WARNING" == true ]]; then
+        current_state=''
+        return
+    fi
+    current_state='normal'
+  fi
+
+  local message="${disk_usage}%%"
+
+  # Draw the prompt_segment
+  if [[ -n $disk_usage ]]; then
+    "$1_prompt_segment" "${0}_${current_state}" "$2" "${hdd_usage_backcolors[$current_state]}" "${hdd_usage_forecolors[$current_state]}" "$message" 'DISK_ICON'
+  fi
+}
+
 prompt_battery() {
   # The battery can have four different states - default to 'unknown'.
-  local current_state="unknown"
+  local current_state='unknown'
   typeset -AH battery_states
   battery_states=(
     'low'           'red'
@@ -350,43 +392,37 @@ prompt_battery() {
   # Set default values if the user did not configure them
   set_default POWERLEVEL9K_BATTERY_LOW_THRESHOLD  10
 
-  if [[ $OS =~ OSX && -f /usr/sbin/ioreg && -x /usr/sbin/ioreg ]]; then
-    # Pre-Grep as much information as possible to save some memory and
-    # avoid pollution of the xtrace output.
-    local raw_data="$(ioreg -n AppleSmartBattery | grep -E "MaxCapacity|TimeRemaining|CurrentCapacity|ExternalConnected|IsCharging")"
+  if [[ $OS =~ OSX && -f /usr/bin/pmset && -x /usr/bin/pmset ]]; then
+    # obtain battery information from system
+    local raw_data="$(pmset -g batt | awk 'FNR==2{print}')"
     # return if there is no battery on system
-    [[ -z $(echo $raw_data | grep MaxCapacity) ]] && return
+    [[ -z $(echo $raw_data | grep "InternalBattery") ]] && return
 
-    # Convert time remaining from minutes to hours:minutes date string
-    local time_remaining=$(echo $raw_data | grep TimeRemaining | awk '{ print $5 }')
-    if [[ -n $time_remaining ]]; then
-      # this value is set to a very high number when the system is calculating
-      [[ $time_remaining -gt 10000 ]] && local tstring="..." || local tstring=${(f)$(/bin/date -u -r $(($time_remaining * 60)) +%k:%M)}
-    fi
+    # Time remaining on battery operation (charging/discharging)
+    local tstring=$(echo $raw_data | awk -F ';' '{print $3}' | awk '{print $1}')
+    # If time has not been calculated by system yet
+    [[ $tstring =~ '(\(no|not)' ]] && tstring="..."
 
-    # Get charge values
-    local max_capacity=$(echo $raw_data | grep MaxCapacity | awk '{ print $5 }')
-    local current_capacity=$(echo $raw_data | grep CurrentCapacity | awk '{ print $5 }')
-
-    if [[ -n "$max_capacity" && -n "$current_capacity" ]]; then
-      typeset -i 10 bat_percent
-      bat_percent=$(( (current_capacity * 100) / max_capacity ))
-    fi
+    # percent of battery charged
+    typeset -i 10 bat_percent
+    bat_percent=$(echo $raw_data | grep -o '[0-9]*%' | sed 's/%//')
 
     local remain=""
     # Logic for string output
-    if [[ $(echo $raw_data | grep ExternalConnected | awk '{ print $5 }') =~ "Yes" ]]; then
-      # Battery is charging
-      if [[ $(echo $raw_data | grep IsCharging | awk '{ print $5 }') =~ "Yes" ]]; then
+    case $(echo $raw_data | awk -F ';' '{print $2}' | awk '{$1=$1};1') in
+      # for a short time after attaching power, status will be 'AC attached;'
+      'charging'|'finishing charge'|'AC attached')
         current_state="charging"
         remain=" ($tstring)"
-      else
+        ;;
+      'discharging')
+        [[ $bat_percent -lt $POWERLEVEL9K_BATTERY_LOW_THRESHOLD ]] && current_state="low" || current_state="disconnected"
+        remain=" ($tstring)"
+        ;;
+      *)
         current_state="charged"
-      fi
-    else
-      [[ $bat_percent -lt $POWERLEVEL9K_BATTERY_LOW_THRESHOLD ]] && current_state="low" || current_state="disconnected"
-      remain=" ($tstring)"
-    fi
+        ;;
+    esac
   fi
 
   if [[ $OS =~ Linux ]]; then
@@ -412,7 +448,7 @@ prompt_battery() {
       if [[ $time_remaining =~ rate ]]; then
         local tstring="..."
       elif [[ $time_remaining =~ "[[:digit:]]+" ]]; then
-        local tstring=${(f)$(date -u -d "$(echo $time_remaining)" +%k:%M)}
+        local tstring=${(f)$(date -u -d "$(echo $time_remaining)" +%k:%M 2> /dev/null)}
       fi
     fi
     [[ -n $tstring ]] && local remain=" ($tstring)"
@@ -433,17 +469,102 @@ prompt_battery() {
   fi
 }
 
+# Public IP segment
+# Parameters:
+#   * $1 Alignment: string - left|right
+#   * $2 Index: integer
+#   * $3 Joined: bool - If the segment should be joined
+prompt_public_ip() {
+  # set default values for segment
+  set_default POWERLEVEL9K_PUBLIC_IP_TIMEOUT "300"
+  set_default POWERLEVEL9K_PUBLIC_IP_NONE ""
+  set_default POWERLEVEL9K_PUBLIC_IP_FILE "/tmp/p9k_public_ip"
+  set_default POWERLEVEL9K_PUBLIC_IP_HOST "http://ident.me"
+  defined POWERLEVEL9K_PUBLIC_IP_METHODS || POWERLEVEL9K_PUBLIC_IP_METHODS=(dig curl wget)
+
+  # Do we need a fresh IP?
+  local refresh_ip=false
+  if [[ -f $POWERLEVEL9K_PUBLIC_IP_FILE ]]; then
+    typeset -i timediff
+    # if saved IP is more than
+    timediff=$(($(date +%s) - $(date -r $POWERLEVEL9K_PUBLIC_IP_FILE +%s)))
+    [[ $timediff -gt $POWERLEVEL9K_PUBLIC_IP_TIMEOUT ]] && refresh_ip=true
+    # If tmp file is empty get a fresh IP
+    [[ -z $(cat $POWERLEVEL9K_PUBLIC_IP_FILE) ]] && refresh_ip=true
+    [[ -n $POWERLEVEL9K_PUBLIC_IP_NONE ]] && [[ $(cat $POWERLEVEL9K_PUBLIC_IP_FILE) =~ "$POWERLEVEL9K_PUBLIC_IP_NONE" ]] && refresh_ip=true
+  else
+    touch $POWERLEVEL9K_PUBLIC_IP_FILE && refresh_ip=true
+  fi
+
+  # grab a fresh IP if needed
+  local fresh_ip
+  if [[ $refresh_ip =~ true && -w $POWERLEVEL9K_PUBLIC_IP_FILE ]]; then
+    for method in "${POWERLEVEL9K_PUBLIC_IP_METHODS[@]}"; do
+      case $method in
+        'dig')
+            fresh_ip="$(dig +time=1 +tries=1 +short myip.opendns.com @resolver1.opendns.com 2> /dev/null)"
+            [[ "$fresh_ip" =~ ^\; ]] && unset fresh_ip
+          ;;
+        'curl')
+            fresh_ip="$(curl --max-time 10 -w '\n' "$POWERLEVEL9K_PUBLIC_IP_HOST" 2> /dev/null)"
+          ;;
+        'wget')
+            fresh_ip="$(wget -T 10 -qO- "$POWERLEVEL9K_PUBLIC_IP_HOST" 2> /dev/null)"
+          ;;
+      esac
+      # If we found a fresh IP, break loop.
+      if [[ -n "${fresh_ip}" ]]; then
+        break;
+      fi
+    done
+
+    # write IP to tmp file or clear tmp file if an IP was not retrieved
+    # Redirection with `>!`. From the manpage: Same as >, except that the file
+    #   is truncated to zero length if it exists, even if CLOBBER is unset.
+    # If the file already exists, and a simple `>` redirection and CLOBBER
+    # unset, ZSH will produce an error.
+    [[ -n "${fresh_ip}" ]] && echo $fresh_ip >! $POWERLEVEL9K_PUBLIC_IP_FILE || echo $POWERLEVEL9K_PUBLIC_IP_NONE >! $POWERLEVEL9K_PUBLIC_IP_FILE
+  fi
+
+  # read public IP saved to tmp file
+  local public_ip="$(cat $POWERLEVEL9K_PUBLIC_IP_FILE)"
+
+  # Draw the prompt segment
+  if [[ -n $public_ip ]]; then
+    $1_prompt_segment "$0" "$2" "$DEFAULT_COLOR" "$DEFAULT_COLOR_INVERTED" "${public_ip}" 'PUBLIC_IP_ICON'
+  fi
+}
+
 # Context: user@hostname (who am I and where am I)
 # Note that if $DEFAULT_USER is not set, this prompt segment will always print
+set_default POWERLEVEL9K_ALWAYS_SHOW_CONTEXT false
+set_default POWERLEVEL9K_ALWAYS_SHOW_USER false
+set_default POWERLEVEL9K_CONTEXT_TEMPLATE "%n@%m"
 prompt_context() {
-  if [[ "$USER" != "$DEFAULT_USER" || -n "$SSH_CLIENT" ]]; then
-    if [[ $(print -P "%#") == '#' ]]; then
-      # Shell runs as root
-      "$1_prompt_segment" "$0_ROOT" "$2" "$DEFAULT_COLOR" "yellow" "$USER@%m"
-    else
-      "$1_prompt_segment" "$0_DEFAULT" "$2" "$DEFAULT_COLOR" "011" "$USER@%m"
-    fi
+  local current_state="DEFAULT"
+  typeset -AH context_states
+  context_states=(
+    "ROOT"      "yellow"
+    "DEFAULT"   "011"
+  )
+
+  local content=""
+
+  if [[ "$POWERLEVEL9K_ALWAYS_SHOW_CONTEXT" == true ]] || [[ "$USER" != "$DEFAULT_USER" ]] || [[ -n "$SSH_CLIENT" || -n "$SSH_TTY" ]]; then
+
+      if [[ $(print -P "%#") == '#' ]]; then
+        current_state="ROOT"
+      fi
+
+      content="${POWERLEVEL9K_CONTEXT_TEMPLATE}"
+
+  elif [[ "$POWERLEVEL9K_ALWAYS_SHOW_USER" == true ]]; then
+      content="$USER"
+  else
+      return
   fi
+
+  "$1_prompt_segment" "${0}_${current_state}" "$2" "$DEFAULT_COLOR" "${context_states[$current_state]}" "${content}"
 }
 
 # The 'custom` prompt provides a way for users to invoke commands and display
@@ -457,11 +578,44 @@ prompt_custom() {
   fi
 }
 
-# Dir: current working directory
-prompt_dir() {
-  local current_path='%~'
-  if [[ -n "$POWERLEVEL9K_SHORTEN_DIR_LENGTH" ]]; then
+# Display the duration the command needed to run.
+prompt_command_execution_time() {
+  set_default POWERLEVEL9K_COMMAND_EXECUTION_TIME_THRESHOLD 3
+  set_default POWERLEVEL9K_COMMAND_EXECUTION_TIME_PRECISION 2
 
+  # Print time in human readable format
+  # For that use `strftime` and convert
+  # the duration (float) to an seconds
+  # (integer).
+  # See http://unix.stackexchange.com/a/89748
+  local humanReadableDuration
+  if (( _P9K_COMMAND_DURATION > 3600 )); then
+    humanReadableDuration=$(TZ=GMT; strftime '%H:%M:%S' $(( int(rint(_P9K_COMMAND_DURATION)) )))
+  elif (( _P9K_COMMAND_DURATION > 60 )); then
+    humanReadableDuration=$(TZ=GMT; strftime '%M:%S' $(( int(rint(_P9K_COMMAND_DURATION)) )))
+  else
+    # If the command executed in seconds, print as float.
+    # Convert to float
+    if [[ "${POWERLEVEL9K_COMMAND_EXECUTION_TIME_PRECISION}" == "0" ]]; then
+      # If user does not want microseconds, then we need to convert
+      # the duration to an integer.
+      typeset -i humanReadableDuration
+    else
+      typeset -F ${POWERLEVEL9K_COMMAND_EXECUTION_TIME_PRECISION} humanReadableDuration
+    fi
+    humanReadableDuration=$_P9K_COMMAND_DURATION
+  fi
+
+  if (( _P9K_COMMAND_DURATION >= POWERLEVEL9K_COMMAND_EXECUTION_TIME_THRESHOLD )); then
+    "$1_prompt_segment" "$0" "$2" "red" "226" "${humanReadableDuration}" 'EXECUTION_TIME_ICON'
+  fi
+}
+
+# Dir: current working directory
+set_default POWERLEVEL9K_DIR_PATH_SEPARATOR "/"
+prompt_dir() {
+  local current_path="$(print -P "%~")"
+  if [[ -n "$POWERLEVEL9K_SHORTEN_DIR_LENGTH" || "$POWERLEVEL9K_SHORTEN_STRATEGY" == "truncate_with_folder_marker" ]]; then
     set_default POWERLEVEL9K_SHORTEN_DELIMITER $'\U2026'
 
     case "$POWERLEVEL9K_SHORTEN_STRATEGY" in
@@ -476,12 +630,24 @@ prompt_dir() {
 
         # Get the path of the Git repo, which should have the package.json file
         if [[ $(git rev-parse --is-inside-work-tree 2> /dev/null) == "true" ]]; then
-          package_path=$(git rev-parse --show-toplevel)
+          # Get path from the root of the git repository to the current dir
+          local gitPath=$(git rev-parse --show-prefix)
+          # Remove trailing slash from git path, so that we can
+          # remove that git path from the pwd.
+          gitPath=${gitPath%/}
+          package_path=${$(pwd)%%$gitPath}
+          # Remove trailing slash
+          package_path=${package_path%/}
         elif [[ $(git rev-parse --is-inside-git-dir 2> /dev/null) == "true" ]]; then
           package_path=${$(pwd)%%/.git*}
         fi
 
-        zero='%([BSUbfksu]|([FB]|){*})'
+        # Replace the shortest possible match of the marked folder from
+        # the current path. Remove the amount of characters up to the
+        # folder marker from the left. Count only the visible characters
+        # in the path (this is done by the "zero" pattern; see
+        # http://stackoverflow.com/a/40855342/5586433).
+        local zero='%([BSUbfksu]|([FB]|){*})'
         current_dir=$(pwd)
         # Then, find the length of the package_path string, and save the
         # subdirectory path as a substring of the current directory's path from 0
@@ -499,21 +665,59 @@ prompt_dir() {
           current_path=$(truncatePathFromRight "$(pwd | sed -e "s,^$HOME,~,")" )
         fi
       ;;
+      truncate_with_folder_marker)
+        local last_marked_folder marked_folder
+        set_default POWERLEVEL9K_SHORTEN_FOLDER_MARKER ".shorten_folder_marker"
+
+        # Search for the folder marker in the parent directories and
+        # buildup a pattern that is removed from the current path
+        # later on.
+        for marked_folder in $(upsearch $POWERLEVEL9K_SHORTEN_FOLDER_MARKER); do
+          if [[ "$marked_folder" == "/" ]]; then
+            # If we reached root folder, stop upsearch.
+            current_path="/"
+          elif [[ "$marked_folder" == "$HOME" ]]; then
+            # If we reached home folder, stop upsearch.
+            current_path="~"
+          elif [[ "${marked_folder%/*}" == $last_marked_folder ]]; then
+            current_path="${current_path%/}/${marked_folder##*/}"
+          else
+            current_path="${current_path%/}/$POWERLEVEL9K_SHORTEN_DELIMITER/${marked_folder##*/}"
+          fi
+          last_marked_folder=$marked_folder
+        done
+
+        # Replace the shortest possible match of the marked folder from
+        # the current path.
+        current_path=$current_path${PWD#${last_marked_folder}*}
+      ;;
       *)
-        current_path="%$((POWERLEVEL9K_SHORTEN_DIR_LENGTH+1))(c:$POWERLEVEL9K_SHORTEN_DELIMITER/:)%${POWERLEVEL9K_SHORTEN_DIR_LENGTH}c"
+        current_path="$(print -P "%$((POWERLEVEL9K_SHORTEN_DIR_LENGTH+1))(c:$POWERLEVEL9K_SHORTEN_DELIMITER/:)%${POWERLEVEL9K_SHORTEN_DIR_LENGTH}c")"
       ;;
     esac
-
   fi
 
-  local current_icon=''
+  if [[ "${POWERLEVEL9K_DIR_OMIT_FIRST_CHARACTER}" == "true" ]]; then
+    current_path="${current_path[2,-1]}"
+  fi
+
+  if [[ "${POWERLEVEL9K_DIR_PATH_SEPARATOR}" != "/" ]]; then
+    current_path="$( echo "${current_path}" | sed "s/\//${POWERLEVEL9K_DIR_PATH_SEPARATOR}/g")"
+  fi
+
+  typeset -AH dir_states
+  dir_states=(
+    "DEFAULT"         "FOLDER_ICON"
+    "HOME"            "HOME_ICON"
+    "HOME_SUBFOLDER"  "HOME_SUB_ICON"
+  )
+  local current_state="DEFAULT"
   if [[ $(print -P "%~") == '~' ]]; then
-    "$1_prompt_segment" "$0_HOME" "$2" "blue" "$DEFAULT_COLOR" "$current_path" 'HOME_ICON'
+    current_state="HOME"
   elif [[ $(print -P "%~") == '~'* ]]; then
-    "$1_prompt_segment" "$0_HOME_SUBFOLDER" "$2" "blue" "$DEFAULT_COLOR" "$current_path" 'HOME_SUB_ICON'
-  else
-    "$1_prompt_segment" "$0_DEFAULT" "$2" "blue" "$DEFAULT_COLOR" "$current_path" 'FOLDER_ICON'
+    current_state="HOME_SUBFOLDER"
   fi
+  "$1_prompt_segment" "$0_${current_state}" "$2" "blue" "$DEFAULT_COLOR" "${current_path}" "${dir_states[$current_state]}"
 }
 
 # Docker machine
@@ -539,6 +743,26 @@ prompt_go_version() {
 prompt_history() {
   "$1_prompt_segment" "$0" "$2" "244" "$DEFAULT_COLOR" '%h'
 }
+
+# Detection for virtualization (systemd based systems only)
+prompt_detect_virt() {
+  if ! command -v systemd-detect-virt;then
+    return
+  fi
+  local virt=$(systemd-detect-virt)
+  local color="yellow"
+  if [[ "$virt" == "none" ]]; then
+    if [[ "$(ls -di / | grep -o 2)" != "2" ]]; then
+      virt="chroot"
+      "$1_prompt_segment" "$0" "$2" "$color" "$DEFAULT_COLOR" "$virt"
+    else
+      ;
+    fi
+  else
+    "$1_prompt_segment" "$0" "$2" "$color" "$DEFAULT_COLOR" "$virt"
+  fi
+}
+
 
 prompt_icons_test() {
   for key in ${(@k)icons}; do
@@ -748,19 +972,24 @@ prompt_rvm() {
   fi
 }
 
+prompt_ssh() {
+  if [[ -n "$SSH_CLIENT" ]] || [[ -n "$SSH_TTY" ]]; then
+    "$1_prompt_segment" "$0" "$2" "$DEFAULT_COLOR" "yellow" "" 'SSH_ICON'
+  fi
+}
+
 # Status: return code if verbose, otherwise just an icon if an error occurred
 set_default POWERLEVEL9K_STATUS_VERBOSE true
+set_default POWERLEVEL9K_STATUS_OK_IN_NON_VERBOSE false
 prompt_status() {
-  if [[ "$POWERLEVEL9K_STATUS_VERBOSE" == true ]]; then
-    if [[ "$RETVAL" -ne 0 ]]; then
+  if [[ "$RETVAL" -ne 0 ]]; then
+    if [[ "$POWERLEVEL9K_STATUS_VERBOSE" == true ]]; then
       "$1_prompt_segment" "$0_ERROR" "$2" "red" "226" "$RETVAL" 'CARRIAGE_RETURN_ICON'
     else
-      "$1_prompt_segment" "$0_OK" "$2" "$DEFAULT_COLOR" "046" "" 'OK_ICON'
-    fi
-  else
-    if [[ "$RETVAL" -ne 0 ]]; then
       "$1_prompt_segment" "$0_ERROR" "$2" "$DEFAULT_COLOR" "red" "" 'FAIL_ICON'
     fi
+  elif [[ "$POWERLEVEL9K_STATUS_VERBOSE" == true || "$POWERLEVEL9K_STATUS_OK_IN_NON_VERBOSE" == true ]]; then
+    "$1_prompt_segment" "$0_OK" "$2" "$DEFAULT_COLOR" "046" "" 'OK_ICON'
   fi
 }
 
@@ -967,6 +1196,22 @@ prompt_pyenv() {
   fi
 }
 
+# Swift version
+prompt_swift_version() {
+  # Get the first number as this is probably the "main" version number..
+  local swift_version=$(swift --version 2>/dev/null | grep -o -E "[0-9.]+" | head -n 1)
+  [[ -z "${swift_version}" ]] && return
+
+  "$1_prompt_segment" "$0" "$2" "magenta" "white" "${swift_version}" 'SWIFT_ICON'
+}
+
+# dir_writable: Display information about the user's permission to write in the current directory
+prompt_dir_writable() {
+  if [[ ! -w "$PWD" ]]; then
+    "$1_prompt_segment" "$0_FORBIDDEN" "$2" "red" "226" "" 'LOCK_ICON'
+  fi
+}
+
 ################################################################
 # Prompt processing and drawing
 ################################################################
@@ -1010,8 +1255,17 @@ build_right_prompt() {
   done
 }
 
+powerlevel9k_preexec() {
+  _P9K_TIMER_START=$EPOCHREALTIME
+}
+
+set_default POWERLEVEL9K_PROMPT_ADD_NEWLINE false
 powerlevel9k_prepare_prompts() {
   RETVAL=$?
+
+  _P9K_COMMAND_DURATION=$((EPOCHREALTIME - _P9K_TIMER_START))
+  # Reset start time
+  _P9K_TIMER_START=99999999999
 
   if [[ "$POWERLEVEL9K_PROMPT_ON_NEWLINE" == true ]]; then
     PROMPT="$(print_icon 'MULTILINE_FIRST_PROMPT_PREFIX')%f%b%k$(build_left_prompt)
@@ -1038,9 +1292,15 @@ $(print_icon 'MULTILINE_SECOND_PROMPT_PREFIX')"
   if [[ "$POWERLEVEL9K_DISABLE_RPROMPT" != true ]]; then
     RPROMPT="$RPROMPT_PREFIX%f%b%k$(build_right_prompt)%{$reset_color%}$RPROMPT_SUFFIX"
   fi
+NEWLINE='
+'
+  [[ $POWERLEVEL9K_PROMPT_ADD_NEWLINE == true ]] && PROMPT="$NEWLINE$PROMPT"
 }
 
-powerlevel9k_init() {
+prompt_powerlevel9k_setup() {
+  # Disable false display of command execution time
+  _P9K_TIMER_START=99999999999
+
   # Display a warning if the terminal does not support 256 colors
   local term_colors
   term_colors=$(echotc Co)
@@ -1085,12 +1345,18 @@ powerlevel9k_init() {
     powerlevel9k_vcs_init
   fi
 
+  # initialize timing functions
+  zmodload zsh/datetime
+
+  # Initialize math functions
+  zmodload zsh/mathfunc
+
   # initialize hooks
   autoload -Uz add-zsh-hook
 
   # prepare prompts
   add-zsh-hook precmd powerlevel9k_prepare_prompts
+  add-zsh-hook preexec powerlevel9k_preexec
 }
 
-powerlevel9k_init "$@"
-
+prompt_powerlevel9k_setup "$@"

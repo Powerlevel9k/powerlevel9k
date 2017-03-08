@@ -46,8 +46,8 @@ Here is `powerlevel9k` in action, with [some simple settings](https://github.com
 Be sure to also [check out the Wiki](https://github.com/bhilburn/powerlevel9k/wiki)!
 
 ### Installation
-There are two installation steps to go from a lame terminal to a "Power Level
-9000" terminal. Once you are done, you can optionally customize your prompt.
+There are two installation steps to go from a vanilla terminal to a PL9k
+terminal. Once you are done, you can optionally customize your prompt.
 
 [Installation Instructions](https://github.com/bhilburn/powerlevel9k/wiki/Install-Instructions)
 
@@ -71,25 +71,29 @@ variables to your `~/.zshrc`.
 | Variable | Default Value | Description |
 |----------|---------------|-------------|
 |`POWERLEVEL9K_LEFT_PROMPT_ELEMENTS`|`(context dir rbenv vcs)`|Segment list for left prompt|
-|`POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS`|`(status history time)`|Segment list for right prompt|
+|`POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS`|`(status root_indicator background_jobs history time)`|Segment list for right prompt|
 
 
-So if you wanted to set these variables manually, you would put the following in
+The table above shows the default values, so if you wanted to set these
+variables manually, you would put the following in
 your `~/.zshrc`:
-
-    POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(context dir rbenv vcs)
-    POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status history time)
-
+```zsh
+POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(context dir rbenv vcs)
+POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status root_indicator background_jobs history time)
+```
 #### Available Prompt Segments
 The segments that are currently available are:
 
 **System Status Segments:**
 * [`background_jobs`](#background_jobs) - Indicator for background jobs.
 * [`battery`](#battery) - Current battery status.
-* [`context`](#context) - Your username and host.
+* [`context`](#context) - Your username and host, conditionalized based on $USER and SSH status.
 * [`dir`](#dir) - Your current working directory.
+* `dir_writable` - Displays a lock icon, if you do not have write permissions on the current folder.
+* [`disk_usage`](#disk_usage) - Disk usage of your current partition.
 * `history` - The command number for the current line.
 * [`ip`](#ip) - Shows the current IP address.
+* [`public_ip`](#public_ip) - Shows your public IP address.
 * `load` - Your machine's load averages.
 * `os_icon` - Display a nice little icon, depending on your operating system.
 * `ram` - Show free RAM.
@@ -98,6 +102,7 @@ The segments that are currently available are:
 * `swap` - Prints the current swap size.
 * [`time`](#time) - System time.
 * [`vi_mode`](#vi_mode)- Your prompt's Vi editing mode (NORMAL|INSERT).
+* `ssh` - Indicates whether or not you are in an SSH session.
 
 **Development Environment Segments:**
 * [`vcs`](#vcs) - Information about this `git` or `hg` repository (if you are in one).
@@ -123,6 +128,8 @@ The segments that are currently available are:
     * [`rspec_stats`](#rspec_stats) - Show a ratio of test classes vs code classes for RSpec.
 * **Rust Segments:**
     * `rust_version` - Display the current rust version and [logo](https://www.rust-lang.org/logos/rust-logo-blk.svg).
+* **Swift Segments:**
+    * `swift_version` - Show the version number of the installed Swift.
 
 **Cloud Segments:**
 * **AWS Segments:**
@@ -133,7 +140,9 @@ The segments that are currently available are:
 **Other:**
 * [`custom_command`](#custom_command) - Create a custom segment to display the
   output of an arbitrary command.
+* [`command_execution_time`](#command_execution_time) - Display the time the current command took to execute.
 * [`todo`](http://todotxt.com/) - Shows the number of tasks in your todo.txt tasks file.
+* `detect_virt` - Virtualization detection with systemd
 
 ---------------------------------------------------------------------------------
 
@@ -192,34 +201,47 @@ Note that you can [modify the `_FOREGROUND`
 color](https://github.com/bhilburn/powerlevel9k/wiki/Stylizing-Your-Prompt#segment-color-customization)
 without affecting the icon color.
 
+##### command_execution_time
+
+Display the time the previous command took to execute if the time is above
+`POWERLEVEL9K_COMMAND_EXECUTION_TIME_THRESHOLD`. The time is formatted to be
+"human readable", and so scales the units based on the length of execution time.
+If you want more precision, just set the
+`POWERLEVEL9K_COMMAND_EXECUTION_TIME_PRECISION` field.
+
+| Variable | Default Value | Description |
+|----------|---------------|-------------|
+|`POWERLEVEL9K_COMMAND_EXECUTION_TIME_THRESHOLD`|3|Threshold above which to print this segment. Can be set to `0` to always print.|
+|`POWERLEVEL9K_COMMAND_EXECUTION_TIME_PRECISION=2`|2|Number of digits to use in the fractional part of the time value.|
+
 ##### custom_command
 
 The `custom_...` segment allows you to turn the output of a custom command into
 a prompt segment. As an example, if you wanted to create a custom segment to
 display your WiFi signal strength, you might define a custom segment called
 `custom_wifi_signal` like this:
-
-    POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(context time battery dir vcs virtualenv custom_wifi_signal)
-    POWERLEVEL9K_CUSTOM_WIFI_SIGNAL="echo signal: \$(nmcli device wifi | grep yes | awk '{print \$8}')"
-    POWERLEVEL9K_CUSTOM_WIFI_SIGNAL_BACKGROUND="blue"
-    POWERLEVEL9K_CUSTOM_WIFI_SIGNAL_FOREGROUND="yellow"
-
+```zsh
+POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(context time battery dir vcs virtualenv custom_wifi_signal)
+POWERLEVEL9K_CUSTOM_WIFI_SIGNAL="echo signal: \$(nmcli device wifi | grep yes | awk '{print \$8}')"
+POWERLEVEL9K_CUSTOM_WIFI_SIGNAL_BACKGROUND="blue"
+POWERLEVEL9K_CUSTOM_WIFI_SIGNAL_FOREGROUND="yellow"
+```
 If you prefer, you can also define the function in your `.zshrc` rather than
 putting it in-line with the variable export, as shown above. Just don't forget
 to invoke your function from your segment! Example code that achieves the same
 result as the above:
+```zsh
+zsh_wifi_signal(){
+    local signal=$(nmcli device wifi | grep yes | awk '{print $8}')
+    local color='%F{yellow}'
+    [[ $signal -gt 75 ]] && color='%F{green}'
+    [[ $signal -lt 50 ]] && color='%F{red}'
+    echo -n "%{$color%}\uf230  $signal%{%f%}" # \uf230 is 
+}
 
-    zsh_wifi_signal(){
-            local signal=$(nmcli device wifi | grep yes | awk '{print $8}')
-            local color='%F{yellow}'
-            [[ $signal -gt 75 ]] && color='%F{green}'
-            [[ $signal -lt 50 ]] && color='%F{red}'
-            echo -n "%{$color%}\uf230  $signal%{%f%}" # \uf230 is 
-    }
-
-    POWERLEVEL9K_CUSTOM_WIFI_SIGNAL="zsh_wifi_signal"
-    POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(context time battery dir vcs virtualenv custom_wifi_signal)
-
+POWERLEVEL9K_CUSTOM_WIFI_SIGNAL="zsh_wifi_signal"
+POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(context time battery dir vcs virtualenv custom_wifi_signal)
+```
 The command, above, gives you the wireless signal segment shown below:
 
 ![signal](http://i.imgur.com/hviMATC.png)
@@ -230,16 +252,34 @@ main theme distribution so that everyone can use it!
 
 ##### context
 
-The `context` segment (user@host string) is conditional. This lets you enable
-it, but only display it if you are not your normal user or on a remote host
-(basically, only print it when it's likely you need it).
+The `context` segment (user@host string) is conditional. By default, it will
+only print if you are not your 'normal' user (including if you are root), or if
+you are SSH'd to a remote host.
 
 To use this feature, make sure the `context` segment is enabled in your prompt
-elements (it is by default), and define a `DEFAULT_USER` in your `~/.zshrc`:
+elements (it is by default), and define a `DEFAULT_USER` in your `~/.zshrc`.
+
+You can customize the `context` segment. For example, you can make it to print the
+full hostname by setting
+```
+POWERLEVEL9K_CONTEXT_TEMPLATE="%n@`hostname -f`"
+```
+
+
+You can set the `POWERLEVEL9K_CONTEXT_HOST_DEPTH` variable to change how the
+hostname is displayed. See (ZSH Manual)[http://zsh.sourceforge.net/Doc/Release/Prompt-Expansion.html#Login-information]
+for details. The default is set to %m which will show the hostname up to the first ‘.’
+You can set it to %{N}m where N is an integer to show that many segments of system
+hostname. Setting N to a negative integer will show that many segments from the
+end of the hostname.
 
 | Variable | Default Value | Description |
 |----------|---------------|-------------|
+|`DEFAULT_USER`|None|Username to consider a "default context".|
+|`POWERLEVEL9K_ALWAYS_SHOW_CONTEXT`|false|Always show this segment, including $USER and hostname.|
+|`POWERLEVEL9K_ALWAYS_SHOW_USER`|false|Always show the username, but conditionalize the hostname.|
 |`DEFAULT_USER`|None|Username to consider a "default context" (you can also use `$USER`)|
+|`POWERLEVEL9K_CONTEXT_TEMPLATE`|%n@%m|Default context prompt (username@machine). Refer to the [ZSH Documentation](http://zsh.sourceforge.net/Doc/Release/Prompt-Expansion.html) for all possible expansions, including deeper host depths.|
 
 ##### dir
 
@@ -253,27 +293,35 @@ Powerline" fonts, there are additional glyphs, as well:
 | None       | None      | ![](https://cloud.githubusercontent.com/assets/1544760/12183452/40f79286-b58f-11e5-9b8c-ed1343a07b08.png) | Outside of your home folder |
 
 To turn off these icons you could set these variables to an empty string.
-
-    POWERLEVEL9K_HOME_ICON=''
-    POWERLEVEL9K_HOME_SUB_ICON=''
-    POWERLEVEL9K_FOLDER_ICON=''
-
+```zsh
+POWERLEVEL9K_HOME_ICON=''
+POWERLEVEL9K_HOME_SUB_ICON=''
+POWERLEVEL9K_FOLDER_ICON=''
+```
 You can limit the output to a certain length by truncating long paths.
 Customizations available are:
 
 | Variable | Default Value | Description |
 |----------|---------------|-------------|
 |`POWERLEVEL9K_SHORTEN_DIR_LENGTH`|`2`|If your shorten strategy, below, is entire directories, this field determines how many directories to leave at the end. If your shorten strategy is by character count, this field determines how many characters to allow per directory string.|
-|`POWERLEVEL9K_SHORTEN_STRATEGY`|None|How the directory strings should be truncated. By default, it will truncate whole directories. Other options are `truncate_middle`, which leaves the start and end of the directory strings, and `truncate_from_right`, which cuts starting from the end of the string.  You can also use `truncate_with_package_name` to use the `package.json` `name` field to abbreviate the directory path.|
+|`POWERLEVEL9K_SHORTEN_STRATEGY`|None|How the directory strings should be truncated. See the table below for more informations.|
 |`POWERLEVEL9K_SHORTEN_DELIMITER`|`..`|Delimiter to use in truncated strings. This can be any string you choose, including an empty string if you wish to have no delimiter.|
+
+| Strategy Name | Description |
+|---------------|-------------|
+|Default|Truncate whole directories from left. How many is defined by `POWERLEVEL9K_SHORTEN_DIR_LENGTH`|
+|`truncate_middle`|Truncates the middle part of a folder. E.g. you are in a folder named "~/MySuperProjects/AwesomeFiles/BoringOffice", then it will truncated to "~/MyS..cts/Awe..les/BoringOffice", if `POWERLEVEL9K_SHORTEN_DIR_LENGTH=3` is also set (controls the amount of characters to be left).|
+|`truncate_from_right`|Just leaves the beginning of a folder name untouched. E.g. your folders will be truncated like so: "/ro../Pr../office". How many characters will be untouched is controlled by `POWERLEVEL9K_SHORTEN_DIR_LENGTH`.|
+|`truncate_with_package_name`|Use the `package.json` `name` field to abbreviate the directory path.|
+|`truncate_with_folder_marker`|Search for a file that is specified by `POWERLEVEL9K_SHORTEN_FOLDER_MARKER` and truncate everything before that (if found, otherwise stop on $HOME and ROOT).|
 
 For example, if you wanted the truncation behavior of the `fish` shell, which
 truncates `/usr/share/plasma` to `/u/s/plasma`, you would use the following:
-
-    POWERLEVEL9K_SHORTEN_DIR_LENGTH=1
-    POWERLEVEL9K_SHORTEN_DELIMITER=""
-    POWERLEVEL9K_SHORTEN_STRATEGY="truncate_from_right"
-
+```zsh
+POWERLEVEL9K_SHORTEN_DIR_LENGTH=1
+POWERLEVEL9K_SHORTEN_DELIMITER=""
+POWERLEVEL9K_SHORTEN_STRATEGY="truncate_from_right"
+```
 In each case you have to specify the length you want to shorten the directory
 to. So in some cases `POWERLEVEL9K_SHORTEN_DIR_LENGTH` means characters, in
 others whole directories.
@@ -288,6 +336,25 @@ The `truncate_with_package_name` strategy gives your directory path relative to 
 
 the path shown would be `my-cool-project`.  If you navigate to `$HOME/projects/my-project/src`, then the path shown would be `my-cool-project/src`.  Please note that this currently looks for `.git` directory to determine the root of the project.
 
+If you want to customize the directory separator, you could set:
+```zsh
+# Double quotes are important here!
+POWERLEVEL9K_DIR_PATH_SEPARATOR="%F{red} $(print_icon 'LEFT_SUBSEGMENT_SEPARATOR') %F{black}"
+```
+To omit the first character (usually a slash that gets replaced if you set `POWERLEVEL9K_DIR_PATH_SEPARATOR`),
+you could set `POWERLEVEL9K_DIR_OMIT_FIRST_CHARACTER=true`.
+
+
+##### disk_usage
+
+The `disk_usage` segment will show the usage level of the partition that your current working directory resides in. It can be configured with the following variables.
+
+| Variable | Default Value | Description |
+|----------|---------------|-------------|
+|POWERLEVEL9K_DISK_USAGE_ONLY_WARNING|false|Hide the segment except when usage levels have hit warning or critical levels.|
+|POWERLEVEL9K_DISK_USAGE_WARNING_LEVEL|90|The usage level that triggers a warning state.|
+|POWERLEVEL9K_DISK_USAGE_CRITICAL_LEVEL|95|The usage level that triggers a critical state.|
+
 ##### ip
 
 This segment tries to examine all currently used network interfaces and prints
@@ -297,6 +364,29 @@ specify the correct network interface by setting:
 | Variable | Default Value | Description |
 |----------|---------------|-------------|
 |`POWERLEVEL9K_IP_INTERFACE`|None|The NIC for which you wish to display the IP address. Example: `eth0`.|
+
+##### public_ip
+
+This segment will display your public IP address. There are several methods of obtaining this
+information and by default it will try all of them starting with the most efficient. You can
+also specify which method you would like it to use. The methods available are dig using opendns,
+curl, or wget. The host used for wget and curl is http://ident.me by default but can be set to
+another host if you prefer.
+
+The public_ip segment will attempt to update your public IP address every 5 minutes by default(also
+configurable by the user). If you lose connection your cached IP address will be displayed until
+your timeout expires at which point every time your prompt is generated a new attempt will be made.
+Until an IP is successfully pulled the value of $POWERLEVEL9K_PUBLIC_IP_NONE will be displayed for
+this segment. If this value is empty(the default)and $POWERLEVEL9K_PUBLIC_IP_FILE is empty the
+segment will not be displayed.
+
+| Variable | Default Value | Description |
+|----------|---------------|-------------|
+|`POWERLEVEL9K_PUBLIC_IP_FILE`|'/tmp/p8k_public_ip'|This is the file your public IP is cached in.|
+|`POWERLEVEL9K_PUBLIC_IP_HOST`|'http://ident.me'|This is the default host to get your public IP.|
+|`POWERLEVEL9K_PUBLIC_IP_TIMEOUT`|300|The amount of time in seconds between refreshing your cached IP.|
+|`POWERLEVEL9K_PUBLIC_IP_METHODS`|(dig curl wget)| These methods in that order are used to refresh your IP.|
+|`POWERLEVEL9K_PUBLIC_IP_NONE`|None|The string displayed when an IP was not obtained|
 
 ##### rbenv
 
@@ -317,7 +407,8 @@ This segment shows the return code of the last command.
 
 | Variable | Default Value | Description |
 |----------|---------------|-------------|
-|`POWERLEVEL9K_STATUS_VERBOSE`|`true`|Set to false if you wish to hide this segment when the last command completed successfully.|
+|`POWERLEVEL9K_STATUS_VERBOSE`|`true`|Set to false if you wish to not show the error code when the last command returned an error and optionally hide this segment when the last command completed successfully by setting `POWERLEVEL9K_STATUS_OK_IN_NON_VERBOSE` to false.|
+|`POWERLEVEL9K_STATUS_OK_IN_NON_VERBOSE`|`false`|Set to true if you wish to show this segment when the last command completed successfully in non-verbose mode.|
 
 ##### ram
 
@@ -336,16 +427,16 @@ See [Unit Test Ratios](#unit-test-ratios), below.
 |`POWERLEVEL9K_TIME_FORMAT`|`'H:M:S'`|ZSH time format to use in this segment.|
 
 As an example, if you wanted a reversed time format, you would use this:
-
-    # Reversed time format
-    POWERLEVEL9K_TIME_FORMAT='%D{%S:%M:%H}'
-
+```zsh
+# Reversed time format
+POWERLEVEL9K_TIME_FORMAT='%D{%S:%M:%H}'
+```
 If you are using an "Awesome Powerline Font", you can add a time symbol to this
 segment, as well:
-
-    # Output time, date, and a symbol from the "Awesome Powerline Font" set
-    POWERLEVEL9K_TIME_FORMAT="%D{%H:%M:%S \uE868  %d.%m.%y}"
-
+```zsh
+# Output time, date, and a symbol from the "Awesome Powerline Font" set
+POWERLEVEL9K_TIME_FORMAT="%D{%H:%M:%S \uE868  %d.%m.%y}"
+```
 ##### vcs
 
 By default, the `vcs` segment will provide quite a bit of information. Further

@@ -1,3 +1,54 @@
+## v0.6.0
+
+- Fixed a bug where the tag display was broken on detached HEADs.
+- Fixed a bug where SVN detection sometimes failed.
+- Fixed the `load` and `ram` segments for BSD.
+- Fixed code-points that changed in Awesome fonts.
+- Fixed display of "OK_ICON" in `status` segment in non-verbose mode.
+- Fixed an issue where dir name truncation that was very short sometimes failed.
+- Speed & accuracy improvements to the battery segment.
+- Added Github syntax highlighting to README.
+- Various documentation cleanup.
+
+### New Font Option: nerd-fonts
+
+There is now an option to use [nerd-fonts](https://github.com/ryanoasis/nerd-fonts) with P9k. Simply configure the `nerdfont-fontconfig`, and you'll be set!
+
+### `vcs` changes
+
+The VCS segment can now display icons for remote repo hosting services, including Github, Gitlab, and 'other'.
+
+### `dir` changes
+
+Added an option to configure the path separator. If you want something
+else than an ordinary slash, you could set
+`POWERLEVEL9K_DIR_PATH_SEPARATOR` to whatever you want.
+
+### New segment 'command_execution_time' added
+
+Shows the duration a command needed to run. By default only durations over 3 seconds
+are shown (can be adjusted by setting POWERLEVEL9K_COMMAND_EXECUTION_TIME_THRESHOLD).
+
+### New segment 'dir_writable' added
+
+This segment displays a lock icon if your user has no write permissions in the current folder.
+
+### New segment 'disk_usage' added
+
+This segment will show the usage level of your current partition.
+
+### New segment 'public_ip' added
+
+Fetches your Public IP (using ident.me) and displays it in your prompt.
+
+### New segment 'swift_version' added
+
+This segment displays the version of Swift that is installed / in your path.
+
+### New segment 'detect_virt' added
+
+Detects and reports if you are in a virtualized session using `systemd`.
+
 ## v0.5.0
 
 ### `load` and `ram` changes
