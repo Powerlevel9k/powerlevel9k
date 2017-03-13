@@ -1397,7 +1397,7 @@ prompt_pyenv() {
 #   * $7 Foreground: string - The default foreground color of the segment
 #   * $8 Content: string - Content of the segment
 #   * $9 Visual identifier: string - Icon of the segment
-#   * $10 Condition - The condition, if the segment should be printed
+#   * $10 Condition: string - The condition, if the segment should be printed (gets evaluated)
 serialize_segment() {
   local NAME="${1}"
   local STATE="${2}"
