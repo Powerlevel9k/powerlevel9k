@@ -1542,8 +1542,8 @@ $(print_icon 'MULTILINE_SECOND_PROMPT_PREFIX')"
 
   # (N) sets the NULL_GLOB option, so that if the glob does
   # not return files, an error message is suppressed.
-  for idx in ${CACHE_DIR}/p9k_$$_*(N); do
-    source "${idx}"
+  for cacheFile in ${CACHE_DIR}/p9k_$$_*(N); do
+    source "${cacheFile}"
 
     local paddedIndex="${(l:3::0:)INDEX}"
 
