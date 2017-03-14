@@ -1404,6 +1404,7 @@ serialize_segment() {
   local ALIGNMENT="${3}"
   local INDEX="${4}"
   local JOINED="${5}"
+  local DURATION=$((EPOCHREALTIME - ${_P9K_SEGMENT_TIMER_START}))
 
   ################################################################
   # Methodology behind user-defined variables overwriting colors:
@@ -1491,6 +1492,7 @@ serialize_segment() {
   typeset -p "CONTENT" >> $FILE
   typeset -p "VISUAL_IDENTIFIER" >> $FILE
   typeset -p "CONDITION" >> $FILE
+  typeset -p "DURATION" >> $FILE
 
   # send WINCH signal to parent process
   kill -s WINCH $$
@@ -1694,7 +1696,13 @@ build_right_prompt() {
   done
 }
 
+# This hook runs before the command runs.
 powerlevel9k_preexec() {
+  # The Timer is started here, but the end
+  # is taken in powerlevel_prepare_prompts,
+  # as this method is a precmd hook and runs
+  # right before the prompt gets rendered. So
+  # we can calculate the duration there.
   _P9K_TIMER_START=$EPOCHREALTIME
 }
 
@@ -1716,6 +1724,8 @@ powerlevel9k_prepare_prompts() {
   _P9K_COMMAND_DURATION=$((EPOCHREALTIME - _P9K_TIMER_START))
   # Reset start time
   _P9K_TIMER_START=99999999999
+  # Start segment timing
+  _P9K_SEGMENT_TIMER_START="${EPOCHREALTIME}"
 
   # Ensure that every time the user wants a new prompt,
   # he gets a new, fresh one.
