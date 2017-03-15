@@ -1406,7 +1406,7 @@ serialize_segment() {
   local ALIGNMENT="${3}"
   local INDEX="${4}"
   local JOINED="${5}"
-  local DURATION=$((EPOCHREALTIME - ${_P9K_SEGMENT_TIMER_START}))
+  local DURATION="$((EPOCHREALTIME - _P9K_SEGMENT_TIMER_START))"
 
   ################################################################
   # Methodology behind user-defined variables overwriting colors:
