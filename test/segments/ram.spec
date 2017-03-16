@@ -59,22 +59,22 @@ Pages active:                           1623792.'"
 }
 
 function testRamSegmentWorksOnBsd() {
-    alias vmstat="echo '1234M 5678B 91011T 4444G 299687'"
+    mkdir -p var/run
+    echo "avail memory 5678B 299687 4444G 299" > var/run/dmesg.boot
 
     export OS="BSD"
 
-    prompt_ram "left" "1" "false"
+    prompt_ram "left" "1" "false" "${FOLDER}"
     p9k_build_prompt_from_cache
 
-    assertEquals "%K{yellow} %F{black%}RAM%f %F{black}0.29T %k%F{yellow}%f " "${PROMPT}"
+    assertEquals "%K{yellow} %F{black%}RAM%f %F{black}0.29M %k%F{yellow}%f " "${PROMPT}"
 
     unset OS
-    unalias vmstat
 }
 
 function testRamSegmentWorksOnLinux() {
     mkdir proc
-    echo "MemFree: 299687" > proc/meminfo
+    echo "MemAvailable: 299687" > proc/meminfo
 
     export OS="Linux"
 

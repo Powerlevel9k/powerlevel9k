@@ -939,14 +939,15 @@ prompt_ram() {
   if [[ "$OS" == "OSX" ]]; then
     # Available = Free + Inactive
     # See https://support.apple.com/en-us/HT201538
-    ramfree=$(vm_stat | grep "Pages free" | grep -o -E '[0-9]+')
-    ramfree=$((ramfree + $(vm_stat | grep "Pages inactive" | grep -o -E '[0-9]+')))
+    local pagesFree=$(vm_stat | grep "Pages free" | grep -o -E '[0-9]+')
+    local pagesInactive=$(vm_stat | grep "Pages inactive" | grep -o -E '[0-9]+')
+    ramfree=$((pagesFree + pagesInactive))
     # Convert pages into Bytes
     ramfree=$(( ramfree * 4096 ))
   elif [[ "$OS" == "BSD" ]]; then
       ramfree=$(grep 'avail memory' $ROOT_PATH/var/run/dmesg.boot | awk '{print $4}')
   else
-    ramfree=$(grep -o -E "MemAvailable:\s+[0-9]+" $ROOT_PATH/proc/meminfo | grep -o "[0-9]*")
+    ramfree=$(grep -o -E "MemAvailable:\s+[0-9]+" $ROOT_PATH/proc/meminfo | grep -o -E "[0-9]+")
     base='K'
   fi
 
