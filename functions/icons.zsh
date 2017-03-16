@@ -129,7 +129,7 @@ case $POWERLEVEL9K_MODE in
     )
   ;;
   'nerdfont-fontconfig')
-    # fontconfig with nerd-font required! See
+    # nerd-font patched (complete) font required! See
     # https://github.com/ryanoasis/nerd-fonts
     icons=(
       LEFT_SEGMENT_SEPARATOR         $'\uE0B0'              # 
