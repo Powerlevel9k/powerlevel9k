@@ -86,9 +86,13 @@ case $POWERLEVEL9K_MODE in
   'awesome-fontconfig')
     # fontconfig with awesome-font required! See
     # https://github.com/gabrielelana/awesome-terminal-fonts
-    source ~/.fonts/fontawesome-regular.sh
-    # source ~/.fonts/devicons-regular.sh # no named codepoints
-    source ~/.fonts/octicons-regular.sh
+
+    # if not defined, set recommended linux path
+    typeset -p "POWERLEVEL9K_FONTAWESOME_PATH" > /dev/null 2>&1  || POWERLEVEL9K_FONTAWESOME_PATH=~/.fonts  
+
+    source "$POWERLEVEL9K_FONTAWESOME_PATH/fontawesome-regular.sh"
+    # source "$POWERLEVEL9K_FONTAWESOME_PATH/devicons-regular.sh" # no named codepoints
+    source "$POWERLEVEL9K_FONTAWESOME_PATH/octicons-regular.sh"
 
     icons=(
       LEFT_SEGMENT_SEPARATOR         $'\uE0B0'                                      #        
