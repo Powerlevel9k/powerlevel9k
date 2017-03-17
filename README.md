@@ -87,8 +87,9 @@ The segments that are currently available are:
 **System Status Segments:**
 * [`background_jobs`](#background_jobs) - Indicator for background jobs.
 * [`battery`](#battery) - Current battery status.
-* [`context`](#context) - Your username and host.
+* [`context`](#context) - Your username and host, conditionalized based on $USER and SSH status.
 * [`dir`](#dir) - Your current working directory.
+* `dir_writable` - Displays a lock icon, if you do not have write permissions on the current folder.
 * [`disk_usage`](#disk_usage) - Disk usage of your current partition.
 * `history` - The command number for the current line.
 * [`ip`](#ip) - Shows the current IP address.
@@ -101,6 +102,7 @@ The segments that are currently available are:
 * `swap` - Prints the current swap size.
 * [`time`](#time) - System time.
 * [`vi_mode`](#vi_mode)- Your prompt's Vi editing mode (NORMAL|INSERT).
+* `ssh` - Indicates whether or not you are in an SSH session.
 
 **Development Environment Segments:**
 * [`vcs`](#vcs) - Information about this `git` or `hg` repository (if you are in one).
@@ -138,6 +140,7 @@ The segments that are currently available are:
 **Other:**
 * [`custom_command`](#custom_command) - Create a custom segment to display the
   output of an arbitrary command.
+* [`command_execution_time`](#command_execution_time) - Display the time the current command took to execute.
 * [`todo`](http://todotxt.com/) - Shows the number of tasks in your todo.txt tasks file.
 * `detect_virt` - Virtualization detection with systemd
 
@@ -198,6 +201,19 @@ Note that you can [modify the `_FOREGROUND`
 color](https://github.com/bhilburn/powerlevel9k/wiki/Stylizing-Your-Prompt#segment-color-customization)
 without affecting the icon color.
 
+##### command_execution_time
+
+Display the time the previous command took to execute if the time is above
+`POWERLEVEL9K_COMMAND_EXECUTION_TIME_THRESHOLD`. The time is formatted to be
+"human readable", and so scales the units based on the length of execution time.
+If you want more precision, just set the
+`POWERLEVEL9K_COMMAND_EXECUTION_TIME_PRECISION` field.
+
+| Variable | Default Value | Description |
+|----------|---------------|-------------|
+|`POWERLEVEL9K_COMMAND_EXECUTION_TIME_THRESHOLD`|3|Threshold above which to print this segment. Can be set to `0` to always print.|
+|`POWERLEVEL9K_COMMAND_EXECUTION_TIME_PRECISION=2`|2|Number of digits to use in the fractional part of the time value.|
+
 ##### custom_command
 
 The `custom_...` segment allows you to turn the output of a custom command into
@@ -236,24 +252,34 @@ main theme distribution so that everyone can use it!
 
 ##### context
 
-The `context` segment (user@host string) is conditional. This lets you enable
-it, but only display it if you are not your normal user or on a remote host
-(basically, only print it when it's likely you need it).
+The `context` segment (user@host string) is conditional. By default, it will
+only print if you are not your 'normal' user (including if you are root), or if
+you are SSH'd to a remote host.
 
 To use this feature, make sure the `context` segment is enabled in your prompt
-elements (it is by default), and define a `DEFAULT_USER` in your `~/.zshrc`:
+elements (it is by default), and define a `DEFAULT_USER` in your `~/.zshrc`.
+
+You can customize the `context` segment. For example, you can make it to print the
+full hostname by setting
+```
+POWERLEVEL9K_CONTEXT_TEMPLATE="%n@`hostname -f`"
+```
+
 
 You can set the `POWERLEVEL9K_CONTEXT_HOST_DEPTH` variable to change how the
 hostname is displayed. See (ZSH Manual)[http://zsh.sourceforge.net/Doc/Release/Prompt-Expansion.html#Login-information]
-for details. Default is set to %m which will show the hostname up to the first ‘.’
+for details. The default is set to %m which will show the hostname up to the first ‘.’
 You can set it to %{N}m where N is an integer to show that many segments of system
 hostname. Setting N to a negative integer will show that many segments from the
 end of the hostname.
 
 | Variable | Default Value | Description |
 |----------|---------------|-------------|
+|`DEFAULT_USER`|None|Username to consider a "default context".|
+|`POWERLEVEL9K_ALWAYS_SHOW_CONTEXT`|false|Always show this segment, including $USER and hostname.|
+|`POWERLEVEL9K_ALWAYS_SHOW_USER`|false|Always show the username, but conditionalize the hostname.|
 |`DEFAULT_USER`|None|Username to consider a "default context" (you can also use `$USER`)|
-|`POWERLEVEL9K_CONTEXT_HOST_DEPTH`|%m|Customizable host depth on prompt|
+|`POWERLEVEL9K_CONTEXT_TEMPLATE`|%n@%m|Default context prompt (username@machine). Refer to the [ZSH Documentation](http://zsh.sourceforge.net/Doc/Release/Prompt-Expansion.html) for all possible expansions, including deeper host depths.|
 
 ##### dir
 
@@ -278,8 +304,16 @@ Customizations available are:
 | Variable | Default Value | Description |
 |----------|---------------|-------------|
 |`POWERLEVEL9K_SHORTEN_DIR_LENGTH`|`2`|If your shorten strategy, below, is entire directories, this field determines how many directories to leave at the end. If your shorten strategy is by character count, this field determines how many characters to allow per directory string.|
-|`POWERLEVEL9K_SHORTEN_STRATEGY`|None|How the directory strings should be truncated. By default, it will truncate whole directories. Other options are `truncate_middle`, which leaves the start and end of the directory strings, and `truncate_from_right`, which cuts starting from the end of the string.  You can also use `truncate_with_package_name` to use the `package.json` `name` field to abbreviate the directory path.|
+|`POWERLEVEL9K_SHORTEN_STRATEGY`|None|How the directory strings should be truncated. See the table below for more informations.|
 |`POWERLEVEL9K_SHORTEN_DELIMITER`|`..`|Delimiter to use in truncated strings. This can be any string you choose, including an empty string if you wish to have no delimiter.|
+
+| Strategy Name | Description |
+|---------------|-------------|
+|Default|Truncate whole directories from left. How many is defined by `POWERLEVEL9K_SHORTEN_DIR_LENGTH`|
+|`truncate_middle`|Truncates the middle part of a folder. E.g. you are in a folder named "~/MySuperProjects/AwesomeFiles/BoringOffice", then it will truncated to "~/MyS..cts/Awe..les/BoringOffice", if `POWERLEVEL9K_SHORTEN_DIR_LENGTH=3` is also set (controls the amount of characters to be left).|
+|`truncate_from_right`|Just leaves the beginning of a folder name untouched. E.g. your folders will be truncated like so: "/ro../Pr../office". How many characters will be untouched is controlled by `POWERLEVEL9K_SHORTEN_DIR_LENGTH`.|
+|`truncate_with_package_name`|Search for a `package.json` or `composer.json` and prints the `name` field to abbreviate the directory path. The precedence and/or files could be set by `POWERLEVEL9K_DIR_PACKAGE_FILES=(package.json composer.json)`. If you have [jq](https://stedolan.github.io/jq/) installed, it will dramatically improve the speed of this strategy.|
+|`truncate_with_folder_marker`|Search for a file that is specified by `POWERLEVEL9K_SHORTEN_FOLDER_MARKER` and truncate everything before that (if found, otherwise stop on $HOME and ROOT).|
 
 For example, if you wanted the truncation behavior of the `fish` shell, which
 truncates `/usr/share/plasma` to `/u/s/plasma`, you would use the following:
@@ -304,9 +338,12 @@ the path shown would be `my-cool-project`.  If you navigate to `$HOME/projects/m
 
 If you want to customize the directory separator, you could set:
 ```zsh
-# You'll need patched awesome-terminal fonts for that example
-POWERLEVEL9K_DIR_PATH_SEPARATOR="%f "$'\uE0B1'" %F"
+# Double quotes are important here!
+POWERLEVEL9K_DIR_PATH_SEPARATOR="%F{red} $(print_icon 'LEFT_SUBSEGMENT_SEPARATOR') %F{black}"
 ```
+To omit the first character (usually a slash that gets replaced if you set `POWERLEVEL9K_DIR_PATH_SEPARATOR`),
+you could set `POWERLEVEL9K_DIR_OMIT_FIRST_CHARACTER=true`.
+
 
 ##### disk_usage
 
@@ -348,7 +385,7 @@ segment will not be displayed.
 |`POWERLEVEL9K_PUBLIC_IP_FILE`|'/tmp/p8k_public_ip'|This is the file your public IP is cached in.|
 |`POWERLEVEL9K_PUBLIC_IP_HOST`|'http://ident.me'|This is the default host to get your public IP.|
 |`POWERLEVEL9K_PUBLIC_IP_TIMEOUT`|300|The amount of time in seconds between refreshing your cached IP.|
-|`POWERLEVEL9K_PUBLIC_IP_METHOD`|None|You can set this to any of 'dig', 'curl', or 'wget' to only use that method to refresh your IP.|
+|`POWERLEVEL9K_PUBLIC_IP_METHODS`|(dig curl wget)| These methods in that order are used to refresh your IP.|
 |`POWERLEVEL9K_PUBLIC_IP_NONE`|None|The string displayed when an IP was not obtained|
 
 ##### rbenv
