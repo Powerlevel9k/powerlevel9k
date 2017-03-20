@@ -185,6 +185,11 @@ case $POWERLEVEL9K_MODE in
       PYTHON_ICON                    $'\UE73C '             # 
       SWIFT_ICON                     $'\uE755'              # 
       PUBLIC_IP_ICON                 $'\UF0AC'              # 
+      LOCK_ICON                      $'\UF023'              #  
+      SSH_ICON                       $'\uF489'              #  
+      #SSH_ICON                       $'\uF43D'              #  
+      EXECUTION_TIME_ICON            $'\uF252'              #  
+      DISK_ICON                      $'\uF0A0'              #  
 
       )
   ;;
