@@ -19,4 +19,10 @@ print -P "su - vagrant-zplugin"
 print -P "su - vagrant-zpm"
 print -P "su - vagrant-zulu"
 
-source /vagrant_data/powerlevel9k.zsh-theme' > ~/.zshrc
+echo ""
+print -P "Have a look at the %F{blue}~/p9k%f folder for prepared test setups."
+
+source /vagrant_data/powerlevel9k.zsh-theme' >! ~/.zshrc
+
+# setup environment
+/vagrant_data/test-vm-providers/setup-environment.sh

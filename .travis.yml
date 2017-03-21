@@ -10,6 +10,13 @@ addons:
       - build-essential
       - git
       - mercurial
+      - subversion
+      - jq
+      - node
+      - golang
+      - ruby
+      - python
+      - python-virtualenv
 
 before_install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update            ; fi
@@ -69,6 +76,7 @@ script:
   - test/core/visual_identifier.spec
   - test/functions/utilities.spec
   - test/functions/colors.spec
+  - test/functions/icons.spec
   - test/segments/anaconda.spec
   - test/segments/aws_eb_env.spec
   - test/segments/background_jobs.spec

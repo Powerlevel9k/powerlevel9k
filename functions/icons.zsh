@@ -161,28 +161,29 @@ function _powerlevel9k_setup_nerdfont_fontconfig_icons() {
   # nerd-font patched (complete) font required! See
   # https://github.com/ryanoasis/nerd-fonts
   icons_nerdfont_fontconfig=(
-    LEFT_SEGMENT_SEPARATOR         $'\uE0B0'              # 
+      LEFT_SEGMENT_SEPARATOR         $'\uE0B0'              # 
       RIGHT_SEGMENT_SEPARATOR        $'\uE0B2'              # 
       LEFT_SEGMENT_END_SEPARATOR     ' '                    # Whitespace
       LEFT_SUBSEGMENT_SEPARATOR      $'\uE0B1'              # 
       RIGHT_SUBSEGMENT_SEPARATOR     $'\uE0B3'              # 
       CARRIAGE_RETURN_ICON           $'\u21B5'              # ↵
-      ROOT_ICON                      $'\u26A1'              # ⚡
+      ROOT_ICON                      $'\uE614 '             # 
       RUBY_ICON                      $'\uF219 '             # 
       AWS_ICON                       $'\uF270'              # 
-      AWS_EB_ICON                    $'\U1F331 '            # 🌱
+      AWS_EB_ICON                    $'\UF1BD  '            # 
       BACKGROUND_JOBS_ICON           $'\uF013 '             # 
       TEST_ICON                      $'\uF188'              # 
-      TODO_ICON                      $'\u2611'              # ☑
-      BATTERY_ICON                   $'\uF241 '             # 
-      OK_ICON                        $'\u2713'              # ✓
-      FAIL_ICON                      $'\u2718'              # ✘
+      TODO_ICON                      $'\uF133'              # 
+      BATTERY_ICON                   $'\UF240 '             # 
+      DISK_ICON                      $'\uF0A0'              #  
+      OK_ICON                        $'\uF00C'              # 
+      FAIL_ICON                      $'\uF00D'              # 
       SYMFONY_ICON                   $'\uE757'              # 
-      NODE_ICON                      $'\u2B22'              # ⬢
+      NODE_ICON                      $'\uE617 '             # 
       MULTILINE_FIRST_PROMPT_PREFIX  $'\u256D'$'\U2500'     # ╭─
       MULTILINE_SECOND_PROMPT_PREFIX $'\u2570'$'\U2500 '    # ╰─
       APPLE_ICON                     $'\uF179'              # 
-      FREEBSD_ICON                   $'\U1F608 '            # 😈
+      FREEBSD_ICON                   $'\UF30E '             # 
       LINUX_ICON                     $'\uF17C'              # 
       SUNOS_ICON                     $'\uF185 '             # 
       HOME_ICON                      $'\uF015'              # 
@@ -200,17 +201,23 @@ function _powerlevel9k_setup_nerdfont_fontconfig_icons() {
       VCS_INCOMING_CHANGES_ICON      $'\uF01A '             # 
       VCS_OUTGOING_CHANGES_ICON      $'\uF01B '             # 
       VCS_TAG_ICON                   $'\uF02B '             # 
-      VCS_BOOKMARK_ICON              $'\uF462'              # 
+      VCS_BOOKMARK_ICON              $'\uF461 '             # 
       VCS_COMMIT_ICON                $'\uE729 '             # 
-      VCS_BRANCH_ICON                $'\uF126'              # 
+      VCS_BRANCH_ICON                $'\uF126 '             # 
       VCS_REMOTE_BRANCH_ICON         $'\uE728 '             # 
       VCS_GIT_ICON                   $'\uF113 '             # 
+      VCS_GIT_GITHUB_ICON            $'\uE709 '             # 
+      VCS_GIT_BITBUCKET_ICON         $'\uE703 '             # 
+      VCS_GIT_GITLAB_ICON            $'\uF296 '             #  
       VCS_HG_ICON                    $'\uF0C3 '             # 
-      VCS_SVN_ICON                   '(svn) '
-      RUST_ICON                      $'\uE7A8'              # 
-      PYTHON_ICON                    $'\uE73C'              # 
+      VCS_SVN_ICON                   $'\uE72D '             # 
+      RUST_ICON                      $'\uE7A8 '             # 
+      PYTHON_ICON                    $'\UE73C '             # 
       SWIFT_ICON                     $'\uE755'              # 
-      PUBLIC_IP_ICON                 ''
+      PUBLIC_IP_ICON                 $'\UF0AC'              # 
+      LOCK_ICON                      $'\UF023'              #  
+      EXECUTION_TIME_ICON            $'\uF252'              #  
+      SSH_ICON                       $'\uF489'              #  
   )
 }
 _powerlevel9k_setup_nerdfont_fontconfig_icons
@@ -336,8 +343,26 @@ function print_icon() {
   fi
 }
 
+# Get a list of configured icons
+#   * $1 string - If "original", then the original icons are printed,
+#                 otherwise "print_icon" is used, which takes the users
+#                 overrides into account.
 get_icon_names() {
-  for key in ${(@k)icons_default}; do
-    echo "POWERLEVEL9K_$key: $(print_icon $key)"
+  defined POWERLEVEL9K_MODE || POWERLEVEL9K_MODE="default"
+  # Replace hyphens with underscores
+  local icon_array_name="icons_${POWERLEVEL9K_MODE:gs/-/_/}"
+  typeset -Ah icon_array
+  icon_array=${(@Pkv)icon_array_name}
+
+  # Iterate over a ordered list of keys of the icons array
+  for key in ${(@kon)icon_array}; do
+    echo -n "POWERLEVEL9K_$key: "
+    if [[ "${1}" == "original" ]]; then
+      # print the original icons as they are defined in the array above
+      echo "${icon_array[$key]}"
+    else
+      # print the icons as they are configured by the user
+      echo "$(print_icon "$key")"
+    fi
   done
 }

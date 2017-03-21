@@ -28,4 +28,7 @@ chmod 440 /etc/sudoers.d/$NEW_USER
 print -P '%F{blue}INFO:%f Set your configuration in powerlevel9k.config in your powerlevel9k root folder for easier testing.'
 source /vagrant_data/powerlevel9k.config &>/dev/null
 " >> ~/.zpreztorc
+
+        # setup environment
+        /vagrant_data/test-vm-providers/setup-environment.sh
 )
