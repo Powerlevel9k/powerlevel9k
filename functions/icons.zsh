@@ -328,6 +328,12 @@ function _powerlevel9kInitializeIconOverrides() {
   fi
 }
 
+function _p9k_get_current_icon_array_name() {
+  defined POWERLEVEL9K_MODE || POWERLEVEL9K_MODE="default"
+  # Replace hyphens with underscores
+  echo "icons_${POWERLEVEL9K_MODE:gs/-/_/}"
+}
+
 # Safety function for printing icons
 # Prints the named icon, or if that icon is undefined, the string name.
 function print_icon() {
@@ -336,9 +342,9 @@ function print_icon() {
   if defined "${ICON_USER_VARIABLE}"; then
     echo -n "${(P)ICON_USER_VARIABLE}"
   else
-    defined POWERLEVEL9K_MODE || POWERLEVEL9K_MODE="default"
+    local icon_array_name=$(_p9k_get_current_icon_array_name)
     # Replace hyphens with underscores
-    local icon_variable="icons_${POWERLEVEL9K_MODE:gs/-/_/}[$icon_name]"
+    local icon_variable="icon_array_name[$icon_name]"
     echo -n "${(@P)icon_variable}"
   fi
 }
@@ -348,9 +354,7 @@ function print_icon() {
 #                 otherwise "print_icon" is used, which takes the users
 #                 overrides into account.
 get_icon_names() {
-  defined POWERLEVEL9K_MODE || POWERLEVEL9K_MODE="default"
-  # Replace hyphens with underscores
-  local icon_array_name="icons_${POWERLEVEL9K_MODE:gs/-/_/}"
+  local icon_array_name=$(_p9k_get_current_icon_array_name)
   typeset -Ah icon_array
   icon_array=${(@Pkv)icon_array_name}
 
