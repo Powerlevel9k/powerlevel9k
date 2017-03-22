@@ -343,7 +343,7 @@ function print_icon() {
     echo -n "${(P)ICON_USER_VARIABLE}"
   else
     local icon_variable="$(_p9k_get_current_icon_array_name)[$icon_name]"
-    echo -n ${(P)icon_variable}
+    echo -n "${(P)icon_variable}"
   fi
 }
 
