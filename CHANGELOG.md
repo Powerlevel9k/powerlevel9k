@@ -1,3 +1,23 @@
+## v0.6.2
+
+- Fixed some issues with the new `nerdfont-fontconfig` option.
+- Fixed typo in README.
+- The `get_icon_names` function can now print sorted output, and show which
+  icons users have overridden.
+- Added a FreeBSD VM for testing.
+
+### Add debug script for iTerm2 issues
+
+A new script `debug/iterm.zsh` was added for easier spotting problems with your iTerm2 configuration.
+
+### Add debug script for font issues
+
+A new script `debug/font-issues.zsh` was added, so that problems with your font could be spotted easier.
+
+### `ram` changes
+
+The `ram` segment now shows the available ram instead of free.
+
 ## v0.6.0
 
 - Fixed a bug where the tag display was broken on detached HEADs.
