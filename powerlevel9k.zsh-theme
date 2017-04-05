@@ -469,9 +469,17 @@ prompt_battery() {
     [[ "${(t)POWERLEVEL9K_BATTERY_STAGES}" =~ "array" ]] && POWERLEVEL9K_BATTERY_ICON="$POWERLEVEL9K_BATTERY_STAGES[$offset]" || POWERLEVEL9K_BATTERY_ICON=${POWERLEVEL9K_BATTERY_STAGES:$offset:1}
   fi
 
+  if [[ "${(t)POWERLEVEL9K_BATTERY_LEVEL_BACKGROUND}" =~ "array" ]]; then
+    segment=$(( 100.0 / (${#POWERLEVEL9K_BATTERY_LEVEL_BACKGROUND} - 1 ) ))
+    offset=$(( ($bat_percent / $segment) + 1 ))
+    local bg_color="${POWERLEVEL9K_BATTERY_LEVEL_BACKGROUND[$offset]}"
+  else
+    local bg_color="$DEFAULT_COLOR"
+  fi
+
   # Draw the prompt_segment
   if [[ -n $bat_percent ]]; then
-    "$1_prompt_segment" "${0}_${current_state}" "$2" "$DEFAULT_COLOR" "${battery_states[$current_state]}" "$message" 'BATTERY_ICON'
+    "$1_prompt_segment" "${0}_${current_state}" "$2" "$bg_color" "${battery_states[$current_state]}" "$message" 'BATTERY_ICON'
   fi
 }
 
