@@ -75,8 +75,9 @@ CURRENT_BG='NONE'
 #   * $2: The array index of the current segment
 #   * $3: Background color
 #   * $4: Foreground color
-#   * $5: The segment content
-#   * $6: An identifying icon (must be a key of the icons array)
+#   * $5: Bold
+#   * $6: The segment content
+#   * $7: An identifying icon (must be a key of the icons array)
 # The latter three can be omitted,
 set_default last_left_element_index 1
 set_default POWERLEVEL9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS " "
@@ -96,9 +97,10 @@ left_prompt_segment() {
   local FG_COLOR_MODIFIER=${(P)FOREGROUND_USER_VARIABLE}
   [[ -n $FG_COLOR_MODIFIER ]] && 4="$FG_COLOR_MODIFIER"
 
-  local bg fg
+  local bg fg bd
   [[ -n "$3" ]] && bg="%K{$3}" || bg="%k"
   [[ -n "$4" ]] && fg="%F{$4}" || fg="%f"
+  [[ ${(L)5} == "true" ]] && bd="%B" || bd=""
 
   if [[ $CURRENT_BG != 'NONE' ]] && ! isSameColor "$3" "$CURRENT_BG"; then
     echo -n "$bg%F{$CURRENT_BG}"
@@ -122,23 +124,10 @@ left_prompt_segment() {
     echo -n "${bg}$POWERLEVEL9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS"
   fi
 
-  local visual_identifier
-  if [[ -n $6 ]]; then
-    visual_identifier="$(print_icon $6)"
-    if [[ -n "$visual_identifier" ]]; then
-      # Allow users to overwrite the color for the visual identifier only.
-      local visual_identifier_color_variable=POWERLEVEL9K_${(U)1#prompt_}_VISUAL_IDENTIFIER_COLOR
-      set_default $visual_identifier_color_variable $4
-      visual_identifier="%F{${(P)visual_identifier_color_variable}%}$visual_identifier%f"
-      # Add an whitespace if we print more than just the visual identifier
-      [[ -n "$5" ]] && visual_identifier="$visual_identifier "
-    fi
-  fi
-
   # Print the visual identifier
-  echo -n "${visual_identifier}"
+  echo -n "${7}"
   # Print the content of the segment, if there is any
-  [[ -n "$5" ]] && echo -n "${fg}${5}"
+  [[ -n "$6" ]] && echo -n "${fg}${bd}${6}%b${bg}${fg}"
   echo -n "${POWERLEVEL9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS}"
 
   CURRENT_BG=$3
@@ -167,8 +156,9 @@ CURRENT_RIGHT_BG='NONE'
 #   * $2: The array index of the current segment
 #   * $3: Background color
 #   * $4: Foreground color
-#   * $5: The segment content
-#   * $6: An identifying icon (must be a key of the icons array)
+#   * $5: Bold
+#   * $6: The segment content
+#   * $7: An identifying icon (must be a key of the icons array)
 # No ending for the right prompt segment is needed (unlike the left prompt, above).
 set_default last_right_element_index 1
 set_default POWERLEVEL9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS " "
@@ -189,9 +179,10 @@ right_prompt_segment() {
   local FG_COLOR_MODIFIER=${(P)FOREGROUND_USER_VARIABLE}
   [[ -n $FG_COLOR_MODIFIER ]] && 4="$FG_COLOR_MODIFIER"
 
-  local bg fg
+  local bg fg bd
   [[ -n "$3" ]] && bg="%K{$3}" || bg="%k"
   [[ -n "$4" ]] && fg="%F{$4}" || fg="%f"
+  [[ ${(L)5} == "true" ]] && bd="%B" || bd=""
 
   # If CURRENT_RIGHT_BG is "NONE", we are the first right segment.
   if [[ $joined == false ]] || [[ "$CURRENT_RIGHT_BG" == "NONE" ]]; then
@@ -208,28 +199,21 @@ right_prompt_segment() {
     fi
   fi
 
-  local visual_identifier
-  if [[ -n "$6" ]]; then
-    visual_identifier="$(print_icon $6)"
-    if [[ -n "$visual_identifier" ]]; then
-      # Allow users to overwrite the color for the visual identifier only.
-      local visual_identifier_color_variable=POWERLEVEL9K_${(U)1#prompt_}_VISUAL_IDENTIFIER_COLOR
-      set_default $visual_identifier_color_variable $4
-      visual_identifier="%F{${(P)visual_identifier_color_variable}%}$visual_identifier%f"
-      # Add an whitespace if we print more than just the visual identifier
-      [[ -n "$5" ]] && visual_identifier=" $visual_identifier"
-    fi
-  fi
-
   echo -n "${bg}${fg}"
 
-  # Print whitespace only if segment is not joined or first right segment
-  [[ $joined == false ]] || [[ "$CURRENT_RIGHT_BG" == "NONE" ]] && echo -n "${POWERLEVEL9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS}"
-
-  # Print segment content if there is any
-  [[ -n "$5" ]] && echo -n "${5}"
-  # Print the visual identifier
-  echo -n "${visual_identifier}${POWERLEVEL9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS}%f"
+  if [[ $POWERLEVEL9K_RPROMPT_ICON_LEFT ]]; then
+    # Print the visual identifier
+    echo -n "${7}${POWERLEVEL9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS}"
+    # Print segment content
+    echo -n "${bg}${fg}${bd}${6}%b${bg}${fg}${POWERLEVEL9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS}%f"
+  else
+    # Print whitespace only if segment is not joined or first right segment
+    [[ ${joined} == false ]] || [[ "${CURRENT_RIGHT_BG}" == "NONE" ]] && echo -n "${POWERLEVEL9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS}"
+    # Print segment content if there is any
+    [[ -n "$6" ]] && echo -n "${bd}${6}%n${bg}${fg}"
+    # Print the visual identifier
+    echo -n "${7}${POWERLEVEL9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS}%f"
+  fi
 
   CURRENT_RIGHT_BG=$3
   last_right_element_index=$current_index
@@ -346,10 +330,64 @@ NEWLINE='
 #   * $2: The array index of the current segment
 #   * $3: Background color
 #   * $4: Foreground color
-#   * $5: The segment content
-#   * $6: An identifying icon (must be a key of the icons array)
+#   * $5: Bold
+#   * $6: The segment content
+#   * $7: An identifying icon (must be a key of the icons array)
 # The latter three can be omitted,
 serialize_segment() {
+  local NAME="${1}"
+  local STATE="${2}"
+  local ALIGNMENT="${3}"
+  local INDEX="${4}"
+  local JOINED="${5}"
+
+  local STATEFUL_NAME="${(U)NAME#prompt_}"
+  [[ -n "${STATE}" ]] && STATEFUL_NAME="${STATEFUL_NAME}_${(U)STATE}"
+
+  # Overwrite given background-color by user defined variable for this segment.
+  local BACKGROUND_USER_VARIABLE="POWERLEVEL9K_${STATEFUL_NAME}_BACKGROUND"
+  local BACKGROUND="${(P)BACKGROUND_USER_VARIABLE}"
+  [[ -z "${BACKGROUND}" ]] && BACKGROUND="${6}"
+
+  # Overwrite given foreground-color by user defined variable for this segment.
+  local FOREGROUND_USER_VARIABLE="POWERLEVEL9K_${STATEFUL_NAME}_FOREGROUND"
+  local FOREGROUND="${(P)FOREGROUND_USER_VARIABLE}"
+  [[ -z "${FOREGROUND}" ]] && FOREGROUND="${7}"
+
+  # Overwrite given bold directive by user defined variable for this segment.
+  local BOLD_USER_VARIABLE="POWERLEVEL9K_${STATEFUL_NAME}_BOLD"
+  local BOLD="${(P)BOLD_USER_VARIABLE}"
+  [[ -z "${BOLD}" ]] && BOLD=false
+
+  local CONTENT="${8}"
+
+  local VISUAL_IDENTIFIER
+  if [[ -n "${9}" ]]; then
+    VISUAL_IDENTIFIER="$(print_icon ${9})"
+    if [[ -n "${VISUAL_IDENTIFIER}" ]]; then
+      # Allow users to overwrite the color for the visual identifier only.
+      local visual_identifier_color_variable="POWERLEVEL9K_${STATEFUL_NAME}_VISUAL_IDENTIFIER_COLOR"
+      set_default "${visual_identifier_color_variable}" "${FOREGROUND}"
+      VISUAL_IDENTIFIER="%F{${(P)visual_identifier_color_variable}%}${VISUAL_IDENTIFIER}%f"
+      # Add an whitespace if we print more than just the visual identifier
+      if [[ -n "${CONTENT}" ]]; then
+        [[ "${ALIGNMENT}" == "left" ]] && VISUAL_IDENTIFIER="${VISUAL_IDENTIFIER} "
+        [[ "${ALIGNMENT}" == "right" ]] && VISUAL_IDENTIFIER=" ${VISUAL_IDENTIFIER}"
+      fi
+    fi
+  fi
+  # Conditions have three layers:
+  # 1. All segments should not print
+  #    a segment, if they provide no
+  #    content (default condition).
+  # 2. All segments could define a
+  #    default condition on their
+  #    own, overriding the previous
+  #    one.
+  # 3. Users could set a condition
+  #    for each segment. This is
+  #    the trump card, and has
+  #    highest precedence.
   local CONDITION
   local SEGMENT_CONDITION="POWERLEVEL9K_${STATEFUL_NAME}_CONDITION"
   if defined "${SEGMENT_CONDITION}"; then
@@ -366,7 +404,7 @@ serialize_segment() {
     continue
   fi
 
-  [[ "$2" == "" ]] && "$3_prompt_segment" "${1}" "${4}" "${6}" "${7}" "${8}" "${9}" || "$3_prompt_segment" "${1}_${2}" "${4}" "${6}" "${7}" "${8}" "${9}"
+  "$3_prompt_segment" "${NAME}" "${NAME}" "${BACKGROUND}" "${FOREGROUND}" "${BOLD}" "${CONTENT}" "${VISUAL_IDENTIFIER}"
 }
 
 ###############################################################
