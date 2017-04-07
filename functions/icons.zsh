@@ -11,15 +11,14 @@
 # you do not want to install a special font, you can set `POWERLEVEL9K_MODE` to
 # `compatible`. This shows all icons in regular symbols.
 
-# Initialize the icon list according to the user's `POWERLEVEL9K_MODE`.
-typeset -gAH icons
-case $POWERLEVEL9K_MODE in
-  'flat'|'awesome-patched')
-    # Awesome-Patched Font required! See:
-    # https://github.com/gabrielelana/awesome-terminal-fonts/tree/patching-strategy/patched
-    # Set the right locale to protect special characters
-    local LC_ALL="" LC_CTYPE="en_US.UTF-8"
-    icons=(
+typeset -gAH icons_awesome_patched
+function _powerlevel9k_setup_awesome_patched_icons() {
+  # Awesome-Patched Font required! See:
+  # https://github.com/gabrielelana/awesome-terminal-fonts/tree/patching-strategy/patched
+  # Set the right locale to protect special characters
+  local LC_ALL="" LC_CTYPE="en_US.UTF-8"
+
+  icons_awesome_patched=(
       LEFT_SEGMENT_SEPARATOR         $'\uE0B0'              # 
       RIGHT_SEGMENT_SEPARATOR        $'\uE0B2'              # 
       LEFT_SEGMENT_END_SEPARATOR     ' '                    # Whitespace
@@ -81,14 +80,18 @@ case $POWERLEVEL9K_MODE in
       LOCK_ICON                      $'\UE138'              # 
       EXECUTION_TIME_ICON            $'\UE89C'              # 
       SSH_ICON                       '(ssh)'
-    )
-  ;;
-  'awesome-fontconfig')
-    # fontconfig with awesome-font required! See
-    # https://github.com/gabrielelana/awesome-terminal-fonts
-    # Set the right locale to protect special characters
-    local LC_ALL="" LC_CTYPE="en_US.UTF-8"
-    icons=(
+  )
+}
+_powerlevel9k_setup_awesome_patched_icons
+
+typeset -gAH icons_awesome_fontconfig
+function _powerlevel9k_setup_awesome_fontconfig_icons() {
+  # fontconfig with awesome-font required! See
+  # https://github.com/gabrielelana/awesome-terminal-fonts
+  # Set the right locale to protect special characters
+  local LC_ALL="" LC_CTYPE="en_US.UTF-8"
+
+  icons_awesome_fontconfig=(
       LEFT_SEGMENT_SEPARATOR         $'\uE0B0'              # 
       RIGHT_SEGMENT_SEPARATOR        $'\uE0B2'              # 
       LEFT_SEGMENT_END_SEPARATOR     ' '                    # Whitespace
@@ -146,14 +149,18 @@ case $POWERLEVEL9K_MODE in
       LOCK_ICON                      $'\UE138'              # 
       EXECUTION_TIME_ICON            $'\uF253'
       SSH_ICON                       '(ssh)'
-    )
-  ;;
-  'nerdfont-fontconfig')
-    # nerd-font patched (complete) font required! See
-    # https://github.com/ryanoasis/nerd-fonts
-    # Set the right locale to protect special characters
-    local LC_ALL="" LC_CTYPE="en_US.UTF-8"
-    icons=(
+  )
+}
+_powerlevel9k_setup_awesome_fontconfig_icons
+
+typeset -gAH icons_nerdfont_fontconfig
+function _powerlevel9k_setup_nerdfont_fontconfig_icons() {
+  # Set the right locale to protect special characters
+  local LC_ALL="" LC_CTYPE="en_US.UTF-8"
+
+  # nerd-font patched (complete) font required! See
+  # https://github.com/ryanoasis/nerd-fonts
+  icons_nerdfont_fontconfig=(
       LEFT_SEGMENT_SEPARATOR         $'\uE0B0'              # 
       RIGHT_SEGMENT_SEPARATOR        $'\uE0B2'              # 
       LEFT_SEGMENT_END_SEPARATOR     ' '                    # Whitespace
@@ -211,14 +218,31 @@ case $POWERLEVEL9K_MODE in
       LOCK_ICON                      $'\UF023'              #  
       EXECUTION_TIME_ICON            $'\uF252'              #  
       SSH_ICON                       $'\uF489'              #  
-    )
-  ;;
-  *)
-    # Powerline-Patched Font required!
-    # See https://github.com/Lokaltog/powerline-fonts
-    # Set the right locale to protect special characters
-    local LC_ALL="" LC_CTYPE="en_US.UTF-8"
-    icons=(
+  )
+}
+_powerlevel9k_setup_nerdfont_fontconfig_icons
+
+typeset -gAH icons_flat
+function prepareFlatIcons() {
+  # Set the right locale to protect special characters
+  local LC_ALL="" LC_CTYPE="en_US.UTF-8"
+
+  icons_flat=("${(kv)icons_awesome_patched[@]}")
+  icons_flat[LEFT_SEGMENT_SEPARATOR]=''
+  icons_flat[RIGHT_SEGMENT_SEPARATOR]=''
+  icons_flat[LEFT_SUBSEGMENT_SEPARATOR]='|'
+  icons_flat[RIGHT_SUBSEGMENT_SEPARATOR]='|'
+}
+prepareFlatIcons
+
+typeset -gAH icons_default
+function _powerlevel9k_setup_default_icons() {
+  # Powerline-Patched Font required!
+  # See https://github.com/Lokaltog/powerline-fonts
+  # Set the right locale to protect special characters
+  local LC_ALL="" LC_CTYPE="en_US.UTF-8"
+
+  icons_default=(
       LEFT_SEGMENT_SEPARATOR         $'\uE0B0'              # 
       RIGHT_SEGMENT_SEPARATOR        $'\uE0B2'              # 
       LEFT_SEGMENT_END_SEPARATOR     ' '                    # Whitespace
@@ -276,42 +300,50 @@ case $POWERLEVEL9K_MODE in
       LOCK_ICON                      $'\UE0A2'
       EXECUTION_TIME_ICON            'Dur'
       SSH_ICON                       '(ssh)'
-    )
-  ;;
-esac
+  )
+}
+_powerlevel9k_setup_default_icons
 
-# Override the above icon settings with any user-defined variables.
-case $POWERLEVEL9K_MODE in
-  'flat')
-    # Set the right locale to protect special characters
-    local LC_ALL="" LC_CTYPE="en_US.UTF-8"
-    icons[LEFT_SEGMENT_SEPARATOR]=''
-    icons[RIGHT_SEGMENT_SEPARATOR]=''
-    icons[LEFT_SUBSEGMENT_SEPARATOR]='|'
-    icons[RIGHT_SUBSEGMENT_SEPARATOR]='|'
-  ;;
-  'compatible')
-    # Set the right locale to protect special characters
-    local LC_ALL="" LC_CTYPE="en_US.UTF-8"
-    icons[LEFT_SEGMENT_SEPARATOR]=$'\u2B80'                 # ⮀
-    icons[RIGHT_SEGMENT_SEPARATOR]=$'\u2B82'                # ⮂
-    icons[VCS_BRANCH_ICON]='@'
-  ;;
-esac
+typeset -gAH icons_compatible
+function prepareCompatibleIcons() {
+  # Set the right locale to protect special characters
+  local LC_ALL="" LC_CTYPE="en_US.UTF-8"
 
-if [[ "$POWERLEVEL9K_HIDE_BRANCH_ICON" == true ]]; then
-    icons[VCS_BRANCH_ICON]=''
-fi
+  icons_compatible=("${(kv)icons_default[@]}")
+  icons_compatible[LEFT_SEGMENT_SEPARATOR]=$'\u2B80'                 # ⮀
+  icons_compatible[RIGHT_SEGMENT_SEPARATOR]=$'\u2B82'                # ⮂
+  icons_compatible[VCS_BRANCH_ICON]=$'\U2387'                        # ⎇
+}
+prepareCompatibleIcons
+
+# Gets called in powerlevel9k.zsh-theme
+function _powerlevel9kInitializeIconOverrides() {
+  if [[ "${POWERLEVEL9K_HIDE_BRANCH_ICON}" == "true" ]]; then
+    icons_default[VCS_BRANCH_ICON]=''
+    icons_awesome_fontconfig[VCS_BRANCH_ICON]=''
+    icons_awesome_patched[VCS_BRANCH_ICON]=''
+    icons_nerdfont_fontconfig[VCS_BRANCH_ICON]=''
+    icons_flat[VCS_BRANCH_ICON]=''
+    icons_compatible[VCS_BRANCH_ICON]=''
+  fi
+}
+
+function _p9k_get_current_icon_array_name() {
+  defined POWERLEVEL9K_MODE || POWERLEVEL9K_MODE="default"
+  # Replace hyphens with underscores
+  echo "icons_${POWERLEVEL9K_MODE:gs/-/_/}"
+}
 
 # Safety function for printing icons
 # Prints the named icon, or if that icon is undefined, the string name.
 function print_icon() {
   local icon_name=$1
   local ICON_USER_VARIABLE=POWERLEVEL9K_${icon_name}
-  if defined "$ICON_USER_VARIABLE"; then
+  if defined "${ICON_USER_VARIABLE}"; then
     echo -n "${(P)ICON_USER_VARIABLE}"
   else
-    echo -n "${icons[$icon_name]}"
+    local icon_variable="$(_p9k_get_current_icon_array_name)[$icon_name]"
+    echo -n "${(P)icon_variable}"
   fi
 }
 
@@ -320,12 +352,16 @@ function print_icon() {
 #                 otherwise "print_icon" is used, which takes the users
 #                 overrides into account.
 get_icon_names() {
+  local icon_array_name=$(_p9k_get_current_icon_array_name)
+  typeset -Ah icon_array
+  icon_array=${(@Pkv)icon_array_name}
+
   # Iterate over a ordered list of keys of the icons array
-  for key in ${(@kon)icons}; do
+  for key in ${(@kon)icon_array}; do
     echo -n "POWERLEVEL9K_$key: "
     if [[ "${1}" == "original" ]]; then
       # print the original icons as they are defined in the array above
-      echo "${icons[$key]}"
+      echo "${icon_array[$key]}"
     else
       # print the icons as they are configured by the user
       echo "$(print_icon "$key")"

@@ -6,6 +6,7 @@
 # https://github.com/bhilburn/powerlevel9k
 ################################################################
 
+################################################################
 # Exits with 0 if a variable has been previously defined (even if empty)
 # Takes the name of a variable that should be checked.
 function defined() {
@@ -14,6 +15,7 @@ function defined() {
   typeset -p "$varname" > /dev/null 2>&1
 }
 
+################################################################
 # Given the name of a variable and a default value, sets the variable
 # value to the default only if it has not been defined.
 #
@@ -26,6 +28,7 @@ function set_default() {
   defined "$varname" || typeset -g "$varname"="$default_value"
 }
 
+################################################################
 # Converts large memory values into a human-readable unit (e.g., bytes --> GB)
 # Takes two arguments:
 #   * $size - The number which should be prettified
@@ -55,6 +58,7 @@ printSizeHumanReadable() {
   echo "$size${extension[$index]}"
 }
 
+################################################################
 # Gets the first value out of a list of items that is not empty.
 # The items are examined by a callback-function.
 # Takes two arguments:
@@ -79,31 +83,26 @@ function getRelevantItem() {
   done
 }
 
+################################################################
 # OS detection for the `os_icon` segment
 case $(uname) in
     Darwin)
       OS='OSX'
-      OS_ICON=$(print_icon 'APPLE_ICON')
       ;;
     FreeBSD)
       OS='BSD'
-      OS_ICON=$(print_icon 'FREEBSD_ICON')
       ;;
     OpenBSD)
       OS='BSD'
-      OS_ICON=$(print_icon 'FREEBSD_ICON')
       ;;
     DragonFly)
       OS='BSD'
-      OS_ICON=$(print_icon 'FREEBSD_ICON')
       ;;
     Linux)
       OS='Linux'
-      OS_ICON=$(print_icon 'LINUX_ICON')
       ;;
     SunOS)
       OS='Solaris'
-      OS_ICON=$(print_icon 'SUNOS_ICON')
       ;;
     *)
       OS=''
@@ -111,6 +110,56 @@ case $(uname) in
       ;;
 esac
 
+################################################################
+# Identify Terminal Emulator
+# Find out which emulator is being used for terminal specific options
+# The testing order is important, since some override others
+if [[ "$TMUX" =~ "tmux" ]]; then
+  readonly TERMINAL="tmux"
+elif [[ "$TERM_PROGRAM" == "iTerm.app" ]]; then
+  readonly TERMINAL="iterm"
+elif [[ "$TERM_PROGRAM" == "Apple_Terminal" ]]; then
+  readonly TERMINAL="appleterm"
+else
+  if [[ "$OS" == "OSX" ]]; then
+    local termtest=$(ps -o 'command=' -p $(ps -o 'ppid=' -p $$) | tail -1 | awk '{print $NF}')
+    # test if we are in a sudo su -
+    if [[ $termtest == "-" || $termtest == "root" ]]; then
+      termtest=($(ps -o 'command=' -p $(ps -o 'ppid=' -p $(ps -o 'ppid='$$))))
+      termtest=$(basename $termtest[1])
+    fi
+  else
+    local termtest=$(ps -o 'cmd=' -p $(ps -o 'ppid=' -p $$) | tail -1 | awk '{print $NF}')
+    # test if we are in a sudo su -
+    if [[ $termtest == "-" || $termtest == "root" ]]; then
+      termtest=($(ps -o 'cmd=' -p $(ps -o 'ppid=' $(ps -o 'ppid='$$))))
+      if [[ $termtest[1] == "zsh" ]]; then  # gnome terminal works differently than the rest... sigh
+        termtest=$termtest[-1]
+      elif [[ $termtest[1] =~ "python" ]]; then   # as does guake
+        termtest=$termtest[3]
+      else
+        termtest=$termtest[1]
+      fi
+    fi
+  fi
+  case "${termtest##*/}" in
+    gnome-terminal-server)    readonly TERMINAL="gnometerm";;
+    guake.main)               readonly TERMINAL="guake";;
+    iTerm2)                   readonly TERMINAL="iterm";;
+    konsole)                  readonly TERMINAL="konsole";;
+    termite)                  readonly TERMINAL="termite";;
+    urxvt)                    readonly TERMINAL="rxvt";;
+    yakuake)                  readonly TERMINAL="yakuake";;
+    xterm | xterm-256color)   readonly TERMINAL="xterm";;
+    *tty*)                    readonly TERMINAL="tty";;
+    *)                        readonly TERMINAL=${termtest##*/};;
+  esac
+
+  unset termtest
+  unset uname
+fi
+
+################################################################
 # Determine the correct sed parameter.
 #
 # `sed` is unfortunately not consistent across OSes when it comes to flags.
@@ -122,6 +171,7 @@ if [[ "$OS" == 'OSX' ]]; then
   fi
 fi
 
+################################################################
 # Determine if the passed segment is used in the prompt
 #
 # Pass the name of the segment to this function to test for its presence in
@@ -136,6 +186,31 @@ segment_in_use() {
     fi
 }
 
+################################################################
+# Search for a segment in a list of segments.
+# Ignores the "_joined" suffix of segments.
+#   * $1: The segment to be searched for
+#   * $2: The array of segments to be searched in
+get_indices_of_segment() {
+  local segment="${1}"
+  local -a list
+  # Explicitly split the elements by whitespace.
+  list=(${=2})
+
+  local indices=()
+  for ((i=1;$#list[i];i++)); do
+    # Segments could be joined, but that is not an issue here.
+    # So we strip the "_joined" indicator away.
+    local currentSegment="${list[i]%_joined}"
+    if [[ "${currentSegment}" == "${segment}" ]]; then
+      indices+=("${i}")
+    fi
+  done
+
+  echo "${indices[@]}"
+}
+
+################################################################
 # Print a deprecation warning if an old segment is in use.
 # Takes the name of an associative array that contains the
 # deprecated segments as keys, the values contain the new
@@ -152,55 +227,7 @@ print_deprecation_warning() {
   done
 }
 
-# A helper function to determine if a segment should be
-# joined or promoted to a full one.
-# Takes three arguments:
-#   * $1: The array index of the current segment
-#   * $2: The array index of the last printed segment
-#   * $3: The array of segments of the left or right prompt
-function segmentShouldBeJoined() {
-  local current_index=$1
-  local last_segment_index=$2
-  # Explicitly split the elements by whitespace.
-  local -a elements
-  elements=(${=3})
-
-  local current_segment=${elements[$current_index]}
-  local joined=false
-  if [[ ${current_segment[-7,-1]} == '_joined' ]]; then
-    joined=true
-    # promote segment to a full one, if the predecessing full segment
-    # was conditional. So this can only be the case for segments that
-    # are not our direct predecessor.
-    if (( $(($current_index - $last_segment_index)) > 1)); then
-      # Now we have to examine every previous segment, until we reach
-      # the last printed one (found by its index). This is relevant if
-      # all previous segments are joined. Then we want to join our
-      # segment as well.
-      local examined_index=$((current_index - 1))
-      while (( $examined_index > $last_segment_index )); do
-        local previous_segment=${elements[$examined_index]}
-        # If one of the examined segments is not joined, then we know
-        # that the current segment should not be joined, as the target
-        # segment is the wrong one.
-        if [[ ${previous_segment[-7,-1]} != '_joined' ]]; then
-          joined=false
-          break
-        fi
-        examined_index=$((examined_index - 1))
-      done
-    fi
-  fi
-
-  # Return 1 means error; return 0 means no error. So we have
-  # to invert $joined
-  if [[ "$joined" == "true" ]]; then
-    return 0
-  else
-    return 1
-  fi
-}
-
+################################################################
 # Given a directory path, truncate it according to the settings for
 # `truncate_from_right`
 function truncatePathFromRight() {
@@ -209,6 +236,7 @@ function truncatePathFromRight() {
  "s@(([^/]{$((POWERLEVEL9K_SHORTEN_DIR_LENGTH))})([^/]{$delim_len}))[^/]+/@\2$POWERLEVEL9K_SHORTEN_DELIMITER/@g"
 }
 
+################################################################
 # Search recursively in parent folders for given file.
 function upsearch () {
   if [[ "$PWD" == "$HOME" || "$PWD" == "/" ]]; then
