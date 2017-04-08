@@ -20,6 +20,11 @@
 #   * $2: The array index of the last printed segment
 #   * $3: The array of segments of the left or right prompt
 function segmentShouldBeJoined() {
+  if [[ $8 == "false" ]]; then
+    last_left_element_index=$current_index
+    return
+  fi
+
   local current_index=$1
   local last_segment_index=$2
   # Explicitly split the elements by whitespace.
@@ -78,10 +83,16 @@ CURRENT_BG='NONE'
 #   * $5: Bold
 #   * $6: The segment content
 #   * $7: An identifying icon (must be a key of the icons array)
+#   * $8: Should the segment be shown?
 # The latter three can be omitted,
 set_default last_left_element_index 1
 set_default POWERLEVEL9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS " "
 left_prompt_segment() {
+  if [[ $8 == "false" ]]; then
+    last_left_element_index=$current_index
+    return
+  fi
+
   local current_index=$2
   # Check if the segment should be joined with the previous one
   local joined
@@ -116,7 +127,7 @@ left_prompt_segment() {
     local complement
     [[ -n "$4" ]] && complement="$4" || complement=$DEFAULT_COLOR
     echo -n "$bg%F{$complement}"
-    if [[ $joined == false ]]; then
+    if [[ $joined == true ]]; then
       echo -n "$(print_icon 'LEFT_SUBSEGMENT_SEPARATOR')$POWERLEVEL9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS"
     fi
   else
@@ -159,12 +170,14 @@ CURRENT_RIGHT_BG='NONE'
 #   * $5: Bold
 #   * $6: The segment content
 #   * $7: An identifying icon (must be a key of the icons array)
+#   * $8: Should the segment be shown?
 # No ending for the right prompt segment is needed (unlike the left prompt, above).
 set_default last_right_element_index 1
 set_default POWERLEVEL9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS " "
 right_prompt_segment() {
   local current_index=$2
 
+  [[ $8 == "false" ]] && return # exit if segment shouldn't be shown
   # Check if the segment should be joined with the previous one
   local joined
   segmentShouldBeJoined $current_index $last_right_element_index "$POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS" && joined=true || joined=false
@@ -185,17 +198,21 @@ right_prompt_segment() {
   [[ ${(L)5} == "true" ]] && bd="%B" || bd=""
 
   # If CURRENT_RIGHT_BG is "NONE", we are the first right segment.
-  if [[ $joined == false ]] || [[ "$CURRENT_RIGHT_BG" == "NONE" ]]; then
-    if isSameColor "$CURRENT_RIGHT_BG" "$3"; then
-      # Middle segment with same color as previous segment
-      # We take the current foreground color as color for our
-      # subsegment (or the default color). This should have
-      # enough contrast.
-      local complement
-      [[ -n "$4" ]] && complement="$4" || complement=$DEFAULT_COLOR
-      echo -n "%F{$complement}$(print_icon 'RIGHT_SUBSEGMENT_SEPARATOR')%f"
-    else
-      echo -n "%F{$3}$(print_icon 'RIGHT_SEGMENT_SEPARATOR')%f"
+  if [[ "$CURRENT_RIGHT_BG" == "NONE" ]]; then
+    echo -n "%F{$3}$(print_icon 'RIGHT_SEGMENT_SEPARATOR')%f"
+  else # all other segments
+    if [[ $joined == "false" ]]; then # not joined
+      if isSameColor "$CURRENT_RIGHT_BG" "$3"; then
+        # Middle segment with same color as previous segment
+        # We take the current foreground color as color for our
+        # subsegment (or the default color). This should have
+        # enough contrast.
+        local complement
+        [[ -n "$4" ]] && complement="$4" || complement=$DEFAULT_COLOR
+        echo -n "%F{$complement}$(print_icon 'RIGHT_SUBSEGMENT_SEPARATOR')%f"
+      else
+        echo -n "%F{$3}$(print_icon 'RIGHT_SEGMENT_SEPARATOR')%f"
+      fi
     fi
   fi
 
@@ -400,11 +417,11 @@ serialize_segment() {
   # Precompile condition.
   eval "${CONDITION}" && CONDITION=true || CONDITION=false
 
-  if ! ${CONDITION}; then
-    continue
-  fi
+#  if ! ${CONDITION}; then
+#    continue
+#  fi
 
-  "$3_prompt_segment" "${NAME}" "${NAME}" "${BACKGROUND}" "${FOREGROUND}" "${BOLD}" "${CONTENT}" "${VISUAL_IDENTIFIER}"
+  "$3_prompt_segment" "${NAME}" "${INDEX}" "${BACKGROUND}" "${FOREGROUND}" "${BOLD}" "${CONTENT}" "${VISUAL_IDENTIFIER}" "${CONDITION}"
 }
 
 ###############################################################
