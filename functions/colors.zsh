@@ -1,3 +1,4 @@
+#!/usr/bin/env zsh
 # vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
 ################################################################
 # Color functions
@@ -6,8 +7,17 @@
 # https://github.com/bhilburn/powerlevel9k
 ################################################################
 
-# Get numerical color codes. That way we translate ANSI codes
-# into ZSH-Style color codes.
+# @description Get numerical color codes. That way we translate ANSI codes into
+# ZSH-Style color codes.
+#
+# @example
+#   getColorCode 'black'
+#
+# @arg $1 string ANSI color code.
+#
+# @stdout Path to something.
+#
+# @see some:other:func()
 function getColorCode() {
   # Check if given value is already numerical
   if [[ "$1" = <-> ]]; then

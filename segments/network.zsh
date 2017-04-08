@@ -1,3 +1,4 @@
+#!/usr/env/bin zsh
 # vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
 ################################################################
 # Network segments

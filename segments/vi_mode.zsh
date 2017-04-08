@@ -1,3 +1,4 @@
+#!/usr/env/bin zsh
 # vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
 ################################################################
 # VI Mode segments
@@ -53,15 +54,17 @@ prompt_vi_mode() {
 
 ###############################################################
 function rebuild_vi_mode {
-  if (( ${+terminfo[smkx]} )); then
-    printf '%s' ${terminfo[smkx]}
+  if [[ "${POWERLEVEL9K_GENERATOR}" == "async" ]]; then
+    if (( ${+terminfo[smkx]} )); then
+      printf '%s' ${terminfo[smkx]}
+    fi
+    for index in $(get_indices_of_segment "vi_mode" "${POWERLEVEL9K_LEFT_PROMPT_ELEMENTS}"); do
+       prompt_vi_mode "left" "${index}" "${1}" &!
+    done
+    for index in $(get_indices_of_segment "vi_mode" "${POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS}"); do
+       prompt_vi_mode "right" "${index}" "${1}" &!
+    done
   fi
-  for index in $(get_indices_of_segment "vi_mode" "${POWERLEVEL9K_LEFT_PROMPT_ELEMENTS}"); do
-     prompt_vi_mode "left" "${index}" "${1}" &!
-  done
-  for index in $(get_indices_of_segment "vi_mode" "${POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS}"); do
-     prompt_vi_mode "right" "${index}" "${1}" &!
-  done
 }
 
 ###############################################################

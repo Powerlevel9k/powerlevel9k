@@ -1,3 +1,4 @@
+#!/usr/env/bin zsh
 # vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
 ################################################################
 # powerlevel9k Theme
@@ -108,13 +109,7 @@ source $script_location/functions/vcs.zsh
 # Load Prompt Segment Definitions
 ################################################################
 
-source $script_location/segments/develop.zsh
-source $script_location/segments/network.zsh
-source $script_location/segments/system.zsh
-source $script_location/segments/todo.zsh
-source $script_location/segments/vcs.zsh
-[[ "${POWERLEVEL9K_GENERATOR}" == "async" ]] && source $script_location/segments/vi_mode.zsh || prompt_vi_mode() {} # not working in default!
-source $script_location/segments/virtual.zsh
+for segment in $script_location/segments/**/*.zsh; do source $segment; done
 
 ################################################################
 # Choose the engine
