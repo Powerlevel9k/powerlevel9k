@@ -1,14 +1,16 @@
 #!/usr/env/bin zsh
 # vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
 ################################################################
-# powerlevel9k Theme
-# https://github.com/bhilburn/powerlevel9k
+# @title powerlevel9k Theme
+# @source https://github.com/bhilburn/powerlevel9k
 #
-# This theme was inspired by agnoster's Theme:
-# https://gist.github.com/3712874
-################################################################
-
-################################################################
+# @authors
+#   Ben Hilburn
+#   Dominic Ritter
+#
+# @info
+# This theme was inspired by [agnoster's Theme](https://gist.github.com/3712874)
+#
 # For basic documentation, please refer to the README.md in the top-level
 # directory. For more detailed documentation, refer to the project wiki, hosted
 # on Github: https://github.com/bhilburn/powerlevel9k/wiki
@@ -129,6 +131,8 @@ else
   DEFAULT_COLOR=black
   DEFAULT_COLOR_INVERTED=white
 fi
+
+# start your engine...
 prompt_powerlevel9k_setup "$@"
 
 # Show all active traps

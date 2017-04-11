@@ -1,3 +1,6 @@
 [submodule "shunit2"]
 	path = shunit2
-	url = https://github.com/kward/shunit2.git
+	url = https://github.com/kward/shunit2
+[submodule "shelldoc"]
+	path = shelldoc
+	url = https://github.com/onaforeignshore/shelldoc
