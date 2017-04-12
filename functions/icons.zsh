@@ -143,7 +143,7 @@ function _powerlevel9k_setup_awesome_fontconfig_icons() {
       VCS_GIT_GITLAB_ICON            $'\uF296 '             # 
       VCS_HG_ICON                    $'\uF0C3 '             # 
       VCS_SVN_ICON                   '(svn) '
-      RUST_ICON                      $'\uE6A8'              #  
+      RUST_ICON                      $'\uE6A8'              # 
       PYTHON_ICON                    $'\U1F40D'             # 🐍
       SWIFT_ICON                     ''
       PUBLIC_IP_ICON                 ''
@@ -176,7 +176,7 @@ function _powerlevel9k_setup_nerdfont_fontconfig_icons() {
       TEST_ICON                      $'\uF188'              # 
       TODO_ICON                      $'\uF133'              # 
       BATTERY_ICON                   $'\UF240 '             # 
-      DISK_ICON                      $'\uF0A0'              #  
+      DISK_ICON                      $'\uF0A0'              # 
       OK_ICON                        $'\uF00C'              # 
       FAIL_ICON                      $'\uF00D'              # 
       SYMFONY_ICON                   $'\uE757'              # 
@@ -209,16 +209,16 @@ function _powerlevel9k_setup_nerdfont_fontconfig_icons() {
       VCS_GIT_ICON                   $'\uF113 '             # 
       VCS_GIT_GITHUB_ICON            $'\uE709 '             # 
       VCS_GIT_BITBUCKET_ICON         $'\uE703 '             # 
-      VCS_GIT_GITLAB_ICON            $'\uF296 '             #  
+      VCS_GIT_GITLAB_ICON            $'\uF296 '             # 
       VCS_HG_ICON                    $'\uF0C3 '             # 
       VCS_SVN_ICON                   $'\uE72D '             # 
       RUST_ICON                      $'\uE7A8 '             # 
       PYTHON_ICON                    $'\UE73C '             # 
       SWIFT_ICON                     $'\uE755'              # 
       PUBLIC_IP_ICON                 $'\UF0AC'              # 
-      LOCK_ICON                      $'\UF023'              #  
-      EXECUTION_TIME_ICON            $'\uF252'              #  
-      SSH_ICON                       $'\uF489'              #  
+      LOCK_ICON                      $'\UF023'              # 
+      EXECUTION_TIME_ICON            $'\uF252'              # 
+      SSH_ICON                       $'\uF489'              # 
   )
 }
 _powerlevel9k_setup_nerdfont_fontconfig_icons
