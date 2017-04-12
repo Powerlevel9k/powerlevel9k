@@ -1,4 +1,4 @@
-#!/usr/env/bin zsh
+#!usr/bin/env zsh
 # vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
 ################################################################
 # System segments
@@ -94,11 +94,15 @@ prompt_battery() {
     fi
   fi
 
-  if [[ $OS =~ Linux ]]; then
+  if [[ "$OS" == "Linux" || "$OS" == "Android" ]]; then
     local sysp="${ROOT_PATH}/sys/class/power_supply"
     # Reported BAT0 or BAT1 depending on kernel version
     [[ -a $sysp/BAT0 ]] && local bat=$sysp/BAT0
     [[ -a $sysp/BAT1 ]] && local bat=$sysp/BAT1
+
+    # Android-related
+    # Tested on: Moto G falcon (CM 13.0)
+    [[ -a $sysp/battery ]] && local bat=$sysp/battery
 
     if [[ -n "${bat}" ]]; then
       local capacity=$(cat $bat/capacity)

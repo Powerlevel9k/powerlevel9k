@@ -41,6 +41,7 @@ function _powerlevel9k_setup_awesome_patched_icons() {
       NODE_ICON                      $'\u2B22'              # ⬢
       MULTILINE_FIRST_PROMPT_PREFIX  $'\u256D'$'\U2500'
       MULTILINE_SECOND_PROMPT_PREFIX $'\u2570'$'\U2500 '
+      ANDROID_ICON                   $'\uE270'              # 
       APPLE_ICON                     $'\uE26E'              # 
       FREEBSD_ICON                   $'\U1F608 '            # 😈
       LINUX_ICON                     $'\uE271'              # 
@@ -89,10 +90,84 @@ typeset -gAH icons_awesome_fontconfig
 function _powerlevel9k_setup_awesome_fontconfig_icons() {
   # fontconfig with awesome-font required! See
   # https://github.com/gabrielelana/awesome-terminal-fonts
+
+  # if not defined, set recommended linux path
+  typeset -p "POWERLEVEL9K_FONTAWESOME_PATH" > /dev/null 2>&1  || POWERLEVEL9K_FONTAWESOME_PATH=~/.fonts
+
+  source "$POWERLEVEL9K_FONTAWESOME_PATH/fontawesome-regular.sh"
+  # source "$POWERLEVEL9K_FONTAWESOME_PATH/devicons-regular.sh" # no named codepoints
+  source "$POWERLEVEL9K_FONTAWESOME_PATH/octicons-regular.sh"
+
   # Set the right locale to protect special characters
   local LC_ALL="" LC_CTYPE="en_US.UTF-8"
 
   icons_awesome_fontconfig=(
+      LEFT_SEGMENT_SEPARATOR         $'\uE0B0'              # 
+      RIGHT_SEGMENT_SEPARATOR        $'\uE0B2'              # 
+      LEFT_SEGMENT_END_SEPARATOR     ' '                    # Whitespace
+      LEFT_SUBSEGMENT_SEPARATOR      $'\uE0B1'              # 
+      RIGHT_SUBSEGMENT_SEPARATOR     $'\uE0B3'              # 
+      CARRIAGE_RETURN_ICON           $'\u21B5'              # ↵
+      ROOT_ICON                      '\u'$CODEPOINT_OF_OCTICONS_ZAP                 # 
+      RUBY_ICON                      '\u'$CODEPOINT_OF_OCTICONS_RUBY' '             # 
+      AWS_ICON                       '\u'$CODEPOINT_OF_AWESOME_SERVER               # 
+      AWS_EB_ICON                    $'\U1F331 '                                    # 🌱
+      BACKGROUND_JOBS_ICON           '\u'$CODEPOINT_OF_AWESOME_COG' '               # 
+      TEST_ICON                      '\u'$CODEPOINT_OF_AWESOME_BUG                  # 
+      TODO_ICON                      '\u'$CODEPOINT_OF_AWESOME_CHECK_SQUARE_O       # 
+      BATTERY_ICON                   '\U'$CODEPOINT_OF_AWESOME_BATTERY_FULL         # 
+      DISK_ICON                      '\u'$CODEPOINT_OF_AWESOME_HDD_O' '             # 
+      OK_ICON                        '\u'$CODEPOINT_OF_AWESOME_CHECK                # 
+      FAIL_ICON                      '\u'$CODEPOINT_OF_AWESOME_TIMES                # 
+      SYMFONY_ICON                   'SF'
+      NODE_ICON                      $'\u2B22'                                      # ⬢
+      MULTILINE_FIRST_PROMPT_PREFIX  $'\u256D'$'\U2500'                             # ╭─
+      MULTILINE_SECOND_PROMPT_PREFIX $'\u2570'$'\U2500 '                            # ╰─
+      APPLE_ICON                     '\u'$CODEPOINT_OF_AWESOME_APPLE                # 
+      FREEBSD_ICON                   $'\U1F608 '                                    # 😈
+      LINUX_ICON                     '\u'$CODEPOINT_OF_AWESOME_LINUX                # 
+      SUNOS_ICON                     '\u'$CODEPOINT_OF_AWESOME_SUN_O' '             # 
+      HOME_ICON                      '\u'$CODEPOINT_OF_AWESOME_HOME                 # 
+      HOME_SUB_ICON                  '\u'$CODEPOINT_OF_AWESOME_FOLDER_OPEN          # 
+      FOLDER_ICON                    '\u'$CODEPOINT_OF_AWESOME_FOLDER_O             # 
+      NETWORK_ICON                   '\u'$CODEPOINT_OF_AWESOME_RSS                  # 
+      LOAD_ICON                      '\u'$CODEPOINT_OF_AWESOME_BAR_CHART' '         # 
+      SWAP_ICON                      '\u'$CODEPOINT_OF_AWESOME_DASHBOARD            # 
+      RAM_ICON                       '\u'$CODEPOINT_OF_AWESOME_DASHBOARD            # 
+      SERVER_ICON                    '\u'$CODEPOINT_OF_AWESOME_SERVER               # 
+      VCS_UNTRACKED_ICON             '\u'$CODEPOINT_OF_AWESOME_QUESTION_CIRCLE      # 
+      VCS_UNSTAGED_ICON              '\u'$CODEPOINT_OF_AWESOME_EXCLAMATION_CIRCLE   # 
+      VCS_STAGED_ICON                '\u'$CODEPOINT_OF_AWESOME_PLUS_CIRCLE          # 
+      VCS_STASH_ICON                 '\u'$CODEPOINT_OF_AWESOME_INBOX' '             # 
+      VCS_INCOMING_CHANGES_ICON      '\u'$CODEPOINT_OF_AWESOME_ARROW_CIRCLE_DOWN' ' # 
+      VCS_OUTGOING_CHANGES_ICON      '\u'$CODEPOINT_OF_AWESOME_ARROW_CIRCLE_UP' '   # 
+      VCS_TAG_ICON                   '\u'$CODEPOINT_OF_AWESOME_TAG' '               # 
+      VCS_BOOKMARK_ICON              '\u'$CODEPOINT_OF_OCTICONS_BOOKMARK            # 
+      VCS_COMMIT_ICON                '\u'$CODEPOINT_OF_OCTICONS_GIT_COMMIT' '       # 
+      VCS_BRANCH_ICON                '\u'$CODEPOINT_OF_OCTICONS_GIT_BRANCH' '       # 
+      VCS_REMOTE_BRANCH_ICON         '\u'$CODEPOINT_OF_OCTICONS_REPO_PUSH           # 
+      VCS_GIT_ICON                   '\u'$CODEPOINT_OF_AWESOME_GIT' '               # 
+      VCS_GIT_GITHUB_ICON            '\u'$CODEPOINT_OF_AWESOME_GITHUB_ALT' '        # 
+      VCS_GIT_BITBUCKET_ICON         '\u'$CODEPOINT_OF_AWESOME_BITBUCKET' '         # 
+      VCS_GIT_GITLAB_ICON            '\u'$CODEPOINT_OF_AWESOME_GITLAB' '            # 
+      VCS_HG_ICON                    '\u'$CODEPOINT_OF_AWESOME_FLASK' '             # 
+      VCS_SVN_ICON                   '(svn) '
+      RUST_ICON                      $'\uE6A8'                                      # 
+      PYTHON_ICON                    $'\U1F40D'                                     # 🐍
+      SWIFT_ICON                     $'\uE655'                                      # 
+      PUBLIC_IP_ICON                 '\u'$CODEPOINT_OF_AWESOME_GLOBE                # 
+      LOCK_ICON                      '\u'$CODEPOINT_OF_AWESOME_LOCK                 # 
+      EXECUTION_TIME_ICON            '\u'$CODEPOINT_OF_AWESOME_HOURGLASS_END        # 
+      SSH_ICON                       '(ssh)'
+  )
+}
+_powerlevel9k_setup_awesome_fontconfig_icons
+
+typeset -gAH icons_adobeSourceCodePro_fontconfig
+function _powerlevel9k_setup_adobeSourceCodePro_fontconfig_icons() {
+    # Set the right locale to protect special characters
+    local LC_ALL="" LC_CTYPE="en_US.UTF-8"
+    icons_adobeSourceCodePro_fontconfig=(
       LEFT_SEGMENT_SEPARATOR         $'\uE0B0'              # 
       RIGHT_SEGMENT_SEPARATOR        $'\uE0B2'              # 
       LEFT_SEGMENT_END_SEPARATOR     ' '                    # Whitespace
@@ -150,18 +225,18 @@ function _powerlevel9k_setup_awesome_fontconfig_icons() {
       LOCK_ICON                      $'\UE138'              # 
       EXECUTION_TIME_ICON            $'\uF253'
       SSH_ICON                       '(ssh)'
-  )
+  }
 }
-_powerlevel9k_setup_awesome_fontconfig_icons
+_powerlevel9k_setup_adobeSourceCodePro_fontconfig_icons
 
-typeset -gAH icons_nerdfont_fontconfig
-function _powerlevel9k_setup_nerdfont_fontconfig_icons() {
+typeset -gAH icons_nerdfont_complete
+function _powerlevel9k_setup_nerdfont_complete_icons() {
   # Set the right locale to protect special characters
   local LC_ALL="" LC_CTYPE="en_US.UTF-8"
 
   # nerd-font patched (complete) font required! See
   # https://github.com/ryanoasis/nerd-fonts
-  icons_nerdfont_fontconfig=(
+  icons_nerdfont_complete=(
       LEFT_SEGMENT_SEPARATOR         $'\uE0B0'              # 
       RIGHT_SEGMENT_SEPARATOR        $'\uE0B2'              # 
       LEFT_SEGMENT_END_SEPARATOR     ' '                    # Whitespace
@@ -183,6 +258,7 @@ function _powerlevel9k_setup_nerdfont_fontconfig_icons() {
       NODE_ICON                      $'\uE617 '             # 
       MULTILINE_FIRST_PROMPT_PREFIX  $'\u256D'$'\U2500'     # ╭─
       MULTILINE_SECOND_PROMPT_PREFIX $'\u2570'$'\U2500 '    # ╰─
+      ANDROID_ICON                   $'\uF17B'              # 
       APPLE_ICON                     $'\uF179'              # 
       FREEBSD_ICON                   $'\UF30E '             # 
       LINUX_ICON                     $'\uF17C'              # 
@@ -221,7 +297,10 @@ function _powerlevel9k_setup_nerdfont_fontconfig_icons() {
       SSH_ICON                       $'\uF489'              # 
   )
 }
-_powerlevel9k_setup_nerdfont_fontconfig_icons
+_powerlevel9k_setup_nerdfont_complete_icons
+
+# kept for backward compatibility
+icons_nerdfont_fontconfig=icons_nerdfont_complete
 
 typeset -gAH icons_flat
 function prepareFlatIcons() {
@@ -265,6 +344,7 @@ function _powerlevel9k_setup_default_icons() {
       NODE_ICON                      $'\u2B22'              # ⬢
       MULTILINE_FIRST_PROMPT_PREFIX  $'\u256D'$'\u2500'
       MULTILINE_SECOND_PROMPT_PREFIX $'\u2570'$'\u2500 '
+      ANDROID_ICON                   'And'
       APPLE_ICON                     'OSX'
       FREEBSD_ICON                   'BSD'
       LINUX_ICON                     'Lx'
@@ -323,6 +403,7 @@ function _powerlevel9kInitializeIconOverrides() {
     icons_default[VCS_BRANCH_ICON]=''
     icons_awesome_fontconfig[VCS_BRANCH_ICON]=''
     icons_awesome_patched[VCS_BRANCH_ICON]=''
+    icons_adobeSourceCodePro_fontconfig[VCS_BRANCH_ICON]=''
     icons_nerdfont_fontconfig[VCS_BRANCH_ICON]=''
     icons_flat[VCS_BRANCH_ICON]=''
     icons_compatible[VCS_BRANCH_ICON]=''
@@ -352,7 +433,7 @@ function print_icon() {
 #   * $1 string - If "original", then the original icons are printed,
 #                 otherwise "print_icon" is used, which takes the users
 #                 overrides into account.
-get_icon_names() {
+function get_icon_names() {
   local icon_array_name=$(_p9k_get_current_icon_array_name)
   typeset -Ah icon_array
   icon_array=${(@Pkv)icon_array_name}

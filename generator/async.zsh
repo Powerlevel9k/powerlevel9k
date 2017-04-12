@@ -1,4 +1,4 @@
-#!/usr/env/bin zsh
+#!/usr/bin/env zsh
 # vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
 # ASYNC ENGINE
 
@@ -494,8 +494,12 @@ powerlevel9k_prepare_prompts() {
 
   # Timing calculation
   _P9K_COMMAND_DURATION=$((EPOCHREALTIME - _P9K_TIMER_START))
-  # Reset start time
-  _P9K_TIMER_START=99999999999
+  # Reset start time - Maximum integer on 32-bit CPUs
+  [[ "$ARCH" == "x64" ]] && _P9K_TIMER_START=99999999999 || _P9K_TIMER_START=2147483647
+  # I decided to use the value above for better supporting 32-bit CPUs, since the previous value "99999999999" was
+  # causing issues on my Android phone, which is powered by an armv7l
+  # We don't have to change that until 19 January of 2038! :)
+
   # Start segment timing
   _P9K_SEGMENT_TIMER_START="${EPOCHREALTIME}"
 
@@ -524,7 +528,7 @@ powerlevel9k_prepare_prompts() {
 ###############################################################
 prompt_powerlevel9k_setup() {
   # Disable false display of command execution time
-  _P9K_TIMER_START=99999999999
+  [[ "$ARCH" == "x64" ]] && _P9K_TIMER_START=99999999999 || _P9K_TIMER_START=2147483647
 
   # Display a warning if the terminal does not support 256 colors
   local term_colors

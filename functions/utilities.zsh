@@ -106,6 +106,24 @@ case $(uname) in
       ;;
 esac
 
+# Not all OSes support the '-o' parameter
+# That's why this second condition is needed
+case $(uname -o 2>/dev/null) in
+    Android)
+      OS='Android'
+      OS_ICON=$(print_icon 'ANDROID_ICON')
+      ;;
+esac
+
+case $(uname -m 2>/dev/null) in
+    x86_64)
+      ARCH='x64'
+      ;;
+    *)
+      ARCH='x86'
+      ;;
+esac
+
 ################################################################
 # Identify Terminal Emulator
 # Find out which emulator is being used for terminal specific options
