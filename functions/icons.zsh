@@ -94,9 +94,9 @@ function _powerlevel9k_setup_awesome_fontconfig_icons() {
   # if not defined, set recommended linux path
   typeset -p "POWERLEVEL9K_FONTAWESOME_PATH" > /dev/null 2>&1  || POWERLEVEL9K_FONTAWESOME_PATH=~/.fonts
 
-  source "$POWERLEVEL9K_FONTAWESOME_PATH/fontawesome-regular.sh"
+  # source "$POWERLEVEL9K_FONTAWESOME_PATH/fontawesome-regular.sh"
   # source "$POWERLEVEL9K_FONTAWESOME_PATH/devicons-regular.sh" # no named codepoints
-  source "$POWERLEVEL9K_FONTAWESOME_PATH/octicons-regular.sh"
+  # source "$POWERLEVEL9K_FONTAWESOME_PATH/octicons-regular.sh"
 
   # Set the right locale to protect special characters
   local LC_ALL="" LC_CTYPE="en_US.UTF-8"
@@ -225,7 +225,7 @@ function _powerlevel9k_setup_adobeSourceCodePro_fontconfig_icons() {
       LOCK_ICON                      $'\UE138'              # 
       EXECUTION_TIME_ICON            $'\uF253'
       SSH_ICON                       '(ssh)'
-  }
+  )
 }
 _powerlevel9k_setup_adobeSourceCodePro_fontconfig_icons
 
@@ -300,7 +300,7 @@ function _powerlevel9k_setup_nerdfont_complete_icons() {
 _powerlevel9k_setup_nerdfont_complete_icons
 
 # kept for backward compatibility
-icons_nerdfont_fontconfig=icons_nerdfont_complete
+#icons_nerdfont_fontconfig=icons_nerdfont_complete
 
 typeset -gAH icons_flat
 function prepareFlatIcons() {
