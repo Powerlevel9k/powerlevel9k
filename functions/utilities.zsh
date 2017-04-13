@@ -96,6 +96,13 @@ case $(uname) in
       ;;
     Linux)
       OS='Linux'
+      # Not all OSes support the '-o' parameter
+      # That's why this second condition is needed
+      case $(uname -o 2>/dev/null) in
+          Android)
+            OS='Android'
+            ;;
+      esac
       ;;
     SunOS)
       OS='Solaris'
@@ -106,15 +113,7 @@ case $(uname) in
       ;;
 esac
 
-# Not all OSes support the '-o' parameter
-# That's why this second condition is needed
-case $(uname -o 2>/dev/null) in
-    Android)
-      OS='Android'
-      OS_ICON=$(print_icon 'ANDROID_ICON')
-      ;;
-esac
-
+# Architecture detection
 case $(uname -m 2>/dev/null) in
     x86_64)
       ARCH='x64'

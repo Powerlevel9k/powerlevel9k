@@ -538,6 +538,9 @@ prompt_os_icon() {
     Linux)
       OS_ICON=$(print_icon 'LINUX_ICON')
       ;;
+    Android)
+      OS_ICON=$(print_icon 'ANDROID_ICON')
+      ;;
     Solaris)
       OS_ICON=$(print_icon 'SUNOS_ICON')
       ;;
