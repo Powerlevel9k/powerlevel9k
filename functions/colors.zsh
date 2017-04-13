@@ -1,13 +1,24 @@
 # vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
 ################################################################
-# Color functions
-# This file holds some color-functions for
-# the powerlevel9k-ZSH-theme
-# https://github.com/bhilburn/powerlevel9k
-################################################################
+# @title Color functions
+# @source https://github.com/bhilburn/powerlevel9k
+# @info
+# This file holds some color-functions for the powerlevel9k-ZSH-theme
+##
 
-# Get numerical color codes. That way we translate ANSI codes
-# into ZSH-Style color codes.
+################################################################
+# @description
+# Get numerical color codes. That way we translate ANSI codes ZSH-Style color codes.
+##
+# @example
+#   getColorCode 'black'
+#
+# @args
+#   $1 string|number If string, ANSI color code.
+#
+# @returns
+#   Zsh style color code.
+##
 function getColorCode() {
   # Check if given value is already numerical
   if [[ "$1" = <-> ]]; then
@@ -42,7 +53,24 @@ function getColorCode() {
   fi
 }
 
-# Check if two colors are equal, even if one is specified as ANSI code.
+################################################################
+# @description
+# Check if two colors are equal, even if one is specified as an ANSI code.
+##
+# @examples isSameColor 'black' 0
+#   isSameColor 'white' 0
+#
+# @args
+#   $1 string|number First color.
+#   $2 string|number Second color.
+#
+# @returns
+#   true if they are the same color.
+#   false if they are different colors.
+#
+# @see
+#   getColorCode
+##
 function isSameColor() {
   if [[ "$1" == "NONE" || "$2" == "NONE" ]]; then
     return 1
