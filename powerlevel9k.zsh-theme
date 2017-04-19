@@ -1298,6 +1298,8 @@ powerlevel9k_prepare_prompts() {
   # Reset start time
   _P9K_TIMER_START=0xFFFFFFFF
 
+  setopt PROMPT_SUBST
+
   if [[ "$POWERLEVEL9K_PROMPT_ON_NEWLINE" == true ]]; then
     PROMPT='$(print_icon 'MULTILINE_FIRST_PROMPT_PREFIX')%f%b%k$(build_left_prompt)
 $(print_icon 'MULTILINE_SECOND_PROMPT_PREFIX')'
@@ -1371,7 +1373,7 @@ prompt_powerlevel9k_setup() {
 
   setopt LOCAL_OPTIONS
   unsetopt XTRACE KSH_ARRAYS
-  setopt PROMPT_CR PROMPT_PERCENT PROMPT_SUBST MULTIBYTE
+  setopt PROMPT_CR PROMPT_PERCENT MULTIBYTE
 
   # initialize colors
   autoload -U colors && colors
