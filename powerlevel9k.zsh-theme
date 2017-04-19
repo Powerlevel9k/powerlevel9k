@@ -570,10 +570,6 @@ prompt_context() {
 ################################################################
 # User: user (who am I)
 # Note that if $DEFAULT_USER is not set, this prompt segment will always print
-# Parameters:
-#   * $1 Alignment: string - left|right
-#   * $2 Index: integer
-#   * $3 Joined: bool - If the segment should be joined
 set_default POWERLEVEL9K_USER_TEMPLATE "%n"
 prompt_user() {
   local current_state="DEFAULT"
@@ -603,10 +599,6 @@ prompt_user() {
 
 ################################################################
 # Host: machine (where am I)
-# Parameters:
-#   * $1 Alignment: string - left|right
-#   * $2 Index: integer
-#   * $3 Joined: bool - If the segment should be joined
 set_default POWERLEVEL9K_HOST_TEMPLATE "%m"
 prompt_host() {
   local current_state="LOCAL"
