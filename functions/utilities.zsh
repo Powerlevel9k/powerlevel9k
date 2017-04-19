@@ -100,6 +100,14 @@ case $(uname) in
     Linux)
       OS='Linux'
       OS_ICON=$(print_icon 'LINUX_ICON')
+
+      # Check if we're running on Android
+      case $(uname -o 2>/dev/null) in
+        Android)
+          OS='Android'
+          OS_ICON=$(print_icon 'ANDROID_ICON')
+          ;;
+      esac
       ;;
     SunOS)
       OS='Solaris'
