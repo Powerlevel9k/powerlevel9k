@@ -226,7 +226,7 @@ right_prompt_segment() {
     # Print whitespace only if segment is not joined or first right segment
     [[ ${joined} == false ]] || [[ "${CURRENT_RIGHT_BG}" == "NONE" ]] && echo -n "${POWERLEVEL9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS}"
     # Print segment content if there is any
-    [[ -n "$6" ]] && echo -n "${bd}${6}%n${bg}${fg}"
+    [[ -n "$6" ]] && echo -n "${bd}${6}%b${bg}${fg}"
     # Print the visual identifier
     echo -n "${7}${POWERLEVEL9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS}%f"
   fi
@@ -478,10 +478,6 @@ prompt_powerlevel9k_setup() {
 
   # initialize colors
   autoload -U colors && colors
-
-  if segment_in_use "vcs"; then
-    powerlevel9k_vcs_init
-  fi
 
   # initialize timing functions
   zmodload zsh/datetime
