@@ -404,9 +404,9 @@ prompt_dir() {
   fi
 
   local bd
-  [[ -n ${POWERLEVEL9K_DIR_PATH_HIGHLIGHT_BOLD} ]] && bd="%B" || bd=""
+  [[ -n "${POWERLEVEL9K_DIR_PATH_HIGHLIGHT_BOLD}" ]] && bd="%B" || bd=""
 
-  if [[ "${POWERLEVEL9K_DIR_PATH_HIGHLIGHT_FOREGROUND}" ]]; then
+  if [[ -n "${POWERLEVEL9K_DIR_PATH_HIGHLIGHT_FOREGROUND}" ]]; then
     if [[ $path_opt == "/" || $path_opt == "~" || $(dirname $path_opt) == "/" || ${POWERLEVEL9K_DIR_OMIT_FIRST_CHARACTER} ]]; then
       current_path="$bd%F{$POWERLEVEL9K_DIR_PATH_HIGHLIGHT_FOREGROUND}$current_path%F{dir_states[$current_state]_FOREGROUND}"
     else
@@ -414,7 +414,7 @@ prompt_dir() {
     fi
   fi
 
-  if [[ "${POWERLEVEL9K_DIR_PATH_SEPARATOR_FOREGROUND}" && $path_opt != "/" ]]; then
+  if [[ -n "${POWERLEVEL9K_DIR_PATH_SEPARATOR_FOREGROUND}" && $path_opt != "/" ]]; then
     current_path="$( echo "${current_path}" | sed "s/\//%F{$POWERLEVEL9K_DIR_PATH_SEPARATOR_FOREGROUND}\/%F{${dir_states[$current_state]}_FOREGROUND}/g")"
   fi
 
