@@ -53,7 +53,7 @@ elif [[ $(whence -w prompt_powerlevel9k_setup) =~ "function" ]]; then
   autoload -U is-at-least
   if is-at-least 5.0.8; then
     # Try to find the correct path of the script.
-    POWERLEVEL9K_INSTALLATION_PATH=$(whence -v $0 | sed "s/$0 is a shell function from //")
+    POWERLEVEL9K_INSTALLATION_PATH=$(whence -w $0 | sed "s/$0 is a shell function from //")
   elif [[ -f "${ZDOTDIR:-$HOME}/.zprezto/modules/prompt/init.zsh" ]]; then
     # If there is an prezto installation, we assume that powerlevel9k is linked there.
     POWERLEVEL9K_INSTALLATION_PATH="${ZDOTDIR:-$HOME}/.zprezto/modules/prompt/functions/prompt_powerlevel9k_setup"
@@ -66,7 +66,7 @@ fi
 # Resolve the installation path
 if [[ -L "$POWERLEVEL9K_INSTALLATION_PATH" ]]; then
   # If this theme is sourced as a symlink, we need to locate the real URL
-  filename="$(realpath -P $POWERLEVEL9K_INSTALLATION_PATH 2>/dev/null || readlink -f $POWERLEVEL9K_INSTALLATION_PATH 2>/dev/null || perl -MCwd=abs_path -le 'print abs_path readlink(shift);' $POWERLEVEL9K_INSTALLATION_PATH 2>/dev/null || stat -f%N $POWERLEVEL9K_INSTALLATION_PATH 2>/dev/null)"
+  filename="${POWERLEVEL9K_INSTALLATION_PATH:A}"
 elif [[ -d "$POWERLEVEL9K_INSTALLATION_PATH" ]]; then
   # Directory
   filename="${POWERLEVEL9K_INSTALLATION_PATH}/powerlevel9k.zsh-theme"
