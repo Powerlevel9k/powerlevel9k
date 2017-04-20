@@ -404,7 +404,7 @@ function _powerlevel9kInitializeIconOverrides() {
     icons_awesome_fontconfig[VCS_BRANCH_ICON]=''
     icons_awesome_patched[VCS_BRANCH_ICON]=''
     icons_adobeSourceCodePro_fontconfig[VCS_BRANCH_ICON]=''
-    icons_nerdfont_fontconfig[VCS_BRANCH_ICON]=''
+    icons_nerdfont_complete[VCS_BRANCH_ICON]=''
     icons_flat[VCS_BRANCH_ICON]=''
     icons_compatible[VCS_BRANCH_ICON]=''
   fi
