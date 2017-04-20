@@ -379,9 +379,9 @@ $(print_icon 'MULTILINE_SECOND_PROMPT_PREFIX')"
 
   NEWLINE='
 '
-  [[ "${POWERLEVEL9K_PROMPT_ADD_NEWLINE}" == "true" ]] && PROMPT="${NEWLINE}${PROMPT}"
+  [[ "${POWERLEVEL9K_PROMPT_ADD_NEWLINE}" == "true" ]] && PROMPT='${NEWLINE}${PROMPT}'
 
-  # About .reset-promt see:
+  # About .reset-prompt see:
   # https://github.com/sorin-ionescu/prezto/issues/1026
   # https://github.com/zsh-users/zsh-autosuggestions/issues/107#issuecomment-183824034
   zle && zle .reset-prompt
@@ -529,6 +529,11 @@ powerlevel9k_prepare_prompts() {
 prompt_powerlevel9k_setup() {
   # Disable false display of command execution time
   [[ "$ARCH" == "x64" ]] && _P9K_TIMER_START=99999999999 || _P9K_TIMER_START=2147483647
+
+  prompt_opts=(subst percent)
+  # borrowed from promptinit, sets the prompt options in case pure was not
+  # initialized via promptinit.
+  setopt noprompt{bang,cr,percent,subst} "prompt${^prompt_opts[@]}"
 
   # Display a warning if the terminal does not support 256 colors
   local term_colors

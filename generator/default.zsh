@@ -300,8 +300,8 @@ powerlevel9k_prepare_prompts() {
 
 
   if [[ "$POWERLEVEL9K_PROMPT_ON_NEWLINE" == true ]]; then
-    PROMPT="$(print_icon 'MULTILINE_FIRST_PROMPT_PREFIX')%f%b%k$(build_left_prompt)
-$(print_icon 'MULTILINE_SECOND_PROMPT_PREFIX')"
+    PROMPT='$(print_icon 'MULTILINE_FIRST_PROMPT_PREFIX')%f%b%k$(build_left_prompt)
+$(print_icon 'MULTILINE_SECOND_PROMPT_PREFIX')'
     if [[ "$POWERLEVEL9K_RPROMPT_ON_NEWLINE" != true ]]; then
       # The right prompt should be on the same line as the first line of the left
       # prompt. To do so, there is just a quite ugly workaround: Before zsh draws
@@ -316,13 +316,13 @@ $(print_icon 'MULTILINE_SECOND_PROMPT_PREFIX')"
       RPROMPT_SUFFIX=''
     fi
   else
-    PROMPT="%f%b%k$(build_left_prompt)"
+    PROMPT='%f%b%k$(build_left_prompt)'
     RPROMPT_PREFIX=''
     RPROMPT_SUFFIX=''
   fi
 
   if [[ "$POWERLEVEL9K_DISABLE_RPROMPT" != true ]]; then
-    RPROMPT="$RPROMPT_PREFIX%f%b%k$(build_right_prompt)%{$reset_color%}$RPROMPT_SUFFIX"
+    RPROMPT='$RPROMPT_PREFIX%f%b%k$(build_right_prompt)%{$reset_color%}$RPROMPT_SUFFIX'
   fi
 NEWLINE='
 '
@@ -431,6 +431,11 @@ serialize_segment() {
 prompt_powerlevel9k_setup() {
   # Disable false display of command execution time
   [[ "$ARCH" == "x64" ]] && _P9K_TIMER_START=99999999999 || _P9K_TIMER_START=2147483647
+
+  prompt_opts=(subst percent)
+  # borrowed from promptinit, sets the prompt options in case pure was not
+  # initialized via promptinit.
+  setopt noprompt{bang,cr,percent,subst} "prompt${^prompt_opts[@]}"
 
   # Display a warning if the terminal does not support 256 colors
   local term_colors
