@@ -265,7 +265,7 @@ case $POWERLEVEL9K_MODE in
       VCS_TAG_ICON                   ''
       VCS_BOOKMARK_ICON              $'\u263F'              # ☿
       VCS_COMMIT_ICON                ''
-      VCS_BRANCH_ICON                $'\uE0A0'              # 
+      VCS_BRANCH_ICON                $'\uE0A0 '             # 
       VCS_REMOTE_BRANCH_ICON         $'\u2192'              # →
       VCS_GIT_ICON                   ''
       VCS_GIT_GITHUB_ICON            ''
