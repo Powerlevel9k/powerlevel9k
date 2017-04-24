@@ -20,7 +20,6 @@
 #   * $8: Last segments background color
 #   * $9: Boolean - If the segment should be joined or not
 # The latter three can be omitted,
-set_default last_left_element_index 1
 set_default POWERLEVEL9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS " "
 left_prompt_segment() {
   local current_index="${2}"
@@ -52,6 +51,7 @@ left_prompt_segment() {
     fi
   else
     # First segment
+    [[ "${POWERLEVEL9K_FANCY_EDGE}" == "true" ]] && echo -n "%F{$3}${_POWERLEVEL9K_RIGHT_SEGMENT_SEPARATOR}"
     echo -n "${bg}${POWERLEVEL9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS}"
   fi
 
@@ -62,7 +62,6 @@ left_prompt_segment() {
   echo -n "${POWERLEVEL9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS}"
 
   BACKGROUND_OF_LAST_SEGMENT="${3}"
-  last_left_element_index="${current_index}"
 }
 
 ###############################################################
@@ -91,7 +90,6 @@ left_prompt_end() {
 #   * $8: Last segments background color
 #   * $9: Boolean - If the segment should be joined or not
 # No ending for the right prompt segment is needed (unlike the left prompt, above).
-set_default last_right_element_index 1
 set_default POWERLEVEL9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS " "
 right_prompt_segment() {
   local current_index="${2}"
@@ -135,7 +133,6 @@ right_prompt_segment() {
   fi
 
   CURRENT_RIGHT_BG="${3}"
-  last_right_element_index="${current_index}"
 }
 
 ################################################################
@@ -280,7 +277,6 @@ p9k_build_prompt_from_cache() {
   # Set option so that prompt gets expanded
   # See http://zsh.sourceforge.net/Doc/Release/Prompt-Expansion.html
   setopt PROMPT_SUBST
-  last_left_element_index=1 # Reset
   local LAST_LEFT_BACKGROUND='NONE' # Reset
   local LAST_RIGHT_BACKGROUND='NONE' # Reset
   PROMPT='' # Reset
@@ -375,6 +371,7 @@ $(print_icon 'MULTILINE_SECOND_PROMPT_PREFIX')"
   done
   PROMPT+="$(left_prompt_end ${LAST_LEFT_BACKGROUND})"
   PROMPT+="${PROMPT_SUFFIX}"
+  [[ "${POWERLEVEL9K_FANCY_EDGE}" == "true" ]] && RPROMPT+="%k%F{$LAST_RIGHT_BACKGROUND}${_POWERLEVEL9K_LEFT_SEGMENT_SEPARATOR}%f"
   RPROMPT+="${RPROMPT_SUFFIX}"
 
   NEWLINE='

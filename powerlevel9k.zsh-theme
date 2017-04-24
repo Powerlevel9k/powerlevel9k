@@ -120,6 +120,7 @@ for segment in $script_location/segments/**/*.zsh; do source $segment; done
 
 [[ "${(L)POWERLEVEL9K_GENERATOR}" == "default" || -z $POWERLEVEL9K_GENERATOR ]] && source $script_location/generator/default.zsh
 [[ "${(L)POWERLEVEL9K_GENERATOR}" == "async" ]] && source $script_location/generator/async.zsh
+[[ "${(L)POWERLEVEL9K_GENERATOR}" == "async-adv" ]] && source $script_location/generator/async-adv.zsh
 
 ################################################################
 # Color Scheme

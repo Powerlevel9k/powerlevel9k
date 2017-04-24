@@ -5,3 +5,6 @@
 	path = sh2md
   url = https://github.com/onaforeignshore/sh2md
 
+[submodule "zsh-async"]
+	path = zsh-async
+	url = https://github.com/mafredri/zsh-async
