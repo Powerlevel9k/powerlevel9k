@@ -3,7 +3,7 @@
 # ZSH ASYNC ENGINE
 
 # Debugging
-ASYNC_DEBUG=1
+#ASYNC_DEBUG=1
 
 ################################################################
 # Prompt Segment Constructors
@@ -55,12 +55,12 @@ right_prompt_segment() {
     # add the visual identifier
     segment+="${visual_identifier}${POWERLEVEL9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS}"
     # add the content
-    segment+="${bd}${content}%b${bg}${fg}"
+    segment+="${bd}${content}"
   else
     # add the content
-    segment+="${bd}${content}%b${bg}${fg}${POWERLEVEL9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS}"
+    segment+="${POWERLEVEL9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS}${bd}${content}%b${bg}${fg}"
     # add the visual identifier
-    segment+="${visual_identifier}"
+    segment+="${visual_identifier}${POWERLEVEL9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS}"
   fi
   # return the result
   echo "${index}·|·${segment}"
