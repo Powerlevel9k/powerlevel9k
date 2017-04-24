@@ -2,6 +2,9 @@
 # vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
 # ZSH ASYNC ENGINE
 
+# Debugging
+ASYNC_DEBUG=1
+
 ################################################################
 # Prompt Segment Constructors
 ################################################################
