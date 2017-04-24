@@ -406,16 +406,20 @@ prompt_dir() {
   local bd
   [[ -n "${POWERLEVEL9K_DIR_PATH_HIGHLIGHT_BOLD}" ]] && bd="%B" || bd=""
 
+  local dir_state_user_foreground="POWERLEVEL9K_DIR_${current_state}_FOREGROUND"
+  local dir_state_foreground="${(P)dir_state_user_foreground}"
+  [[ -z "${dir_state_foreground}" ]] && dir_state_foreground="${DEFAULT_COLOR}"
+
   if [[ -n "${POWERLEVEL9K_DIR_PATH_HIGHLIGHT_FOREGROUND}" ]]; then
     if [[ $path_opt == "/" || $path_opt == "~" || $(dirname $path_opt) == "/" || ${POWERLEVEL9K_DIR_OMIT_FIRST_CHARACTER} ]]; then
-      current_path="$bd%F{$POWERLEVEL9K_DIR_PATH_HIGHLIGHT_FOREGROUND}$current_path%F{dir_states[$current_state]_FOREGROUND}"
+      current_path="$bd%F{$POWERLEVEL9K_DIR_PATH_HIGHLIGHT_FOREGROUND}$current_path%F{$dir_state_foreground}"
     else
-      current_path="$(dirname $current_path)/$bd%F{$POWERLEVEL9K_DIR_PATH_HIGHLIGHT_FOREGROUND}$(basename $current_path)%F{dir_states[$current_state]_FOREGROUND}"
+      current_path="$(dirname $current_path)/$bd%F{$POWERLEVEL9K_DIR_PATH_HIGHLIGHT_FOREGROUND}$(basename $current_path)%F{$dir_state_foreground}"
     fi
   fi
 
   if [[ -n "${POWERLEVEL9K_DIR_PATH_SEPARATOR_FOREGROUND}" && $path_opt != "/" ]]; then
-    current_path="$( echo "${current_path}" | sed "s/\//%F{$POWERLEVEL9K_DIR_PATH_SEPARATOR_FOREGROUND}\/%F{${dir_states[$current_state]}_FOREGROUND}/g")"
+    current_path="$( echo "${current_path}" | sed "s/\//%F{$POWERLEVEL9K_DIR_PATH_SEPARATOR_FOREGROUND}\/%F{$dir_state_foreground}/g")"
   fi
 
   if [[ "${POWERLEVEL9K_DIR_PATH_SEPARATOR}" != "/" && $path_opt != "/" ]]; then
