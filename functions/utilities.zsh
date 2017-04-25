@@ -209,7 +209,7 @@ get_indices_of_segment() {
   list=(${=2})
 
   local indices=()
-  for ((i=1;$#list[i];i++)); do
+  for ((i = 1; $#list[i]; i++)); do
     # Segments could be joined, but that is not an issue here.
     # So we strip the "_joined" indicator away.
     local currentSegment="${list[i]%_joined}"
