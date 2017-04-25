@@ -51,7 +51,7 @@ left_prompt_segment() {
     fi
   else
     # First segment
-    [[ "${POWERLEVEL9K_FANCY_EDGE}" == "true" ]] && echo -n "%F{$3}${_POWERLEVEL9K_RIGHT_SEGMENT_SEPARATOR}"
+    [[ "${POWERLEVEL9K_FANCY_EDGE}" == "true" ]] && echo -n "%F{${bg}}${_POWERLEVEL9K_RIGHT_SEGMENT_SEPARATOR}"
     echo -n "${bg}${POWERLEVEL9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS}"
   fi
 
