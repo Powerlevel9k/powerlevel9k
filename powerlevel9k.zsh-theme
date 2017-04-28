@@ -1290,6 +1290,12 @@ powerlevel9k_preexec() {
 
 set_default POWERLEVEL9K_PROMPT_ADD_NEWLINE false
 powerlevel9k_prepare_prompts() {
+  # The prompt function will set these prompt_* options after the setup function
+  # returns. We need prompt_subst so we can safely run commands in the prompt
+  # without them being double expanded and we need prompt_percent to expand the
+  # common percent escape sequences.
+  setopt PROMPT_SUBST PROMPT_PERCENT
+
   RETVAL=$?
 
   _P9K_COMMAND_DURATION=$((EPOCHREALTIME - _P9K_TIMER_START))
@@ -1334,12 +1340,6 @@ prompt_powerlevel9k_setup() {
   # Disable false display of command execution time
   # Maximum integer on 32-bit CPUs
   _P9K_TIMER_START=2147483647
-
-  # The prompt function will set these prompt_* options after the setup function
-  # returns. We need prompt_subst so we can safely run commands in the prompt
-  # without them being double expanded and we need prompt_percent to expand the
-  # common percent escape sequences.
-  prompt_opts=(subst percent)
 
   # Borrowed from promptinit, sets the prompt options in case the theme was
   # not initialized via promptinit.
