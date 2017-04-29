@@ -222,7 +222,7 @@ p9k_async_callback() {
         # Determine how many segments are visible in the left prompt
         LSEGMENTS=${#POWERLEVEL9K_LEFT_PROMPT}
         # Build the left prompt string
-        LEFT_PROMPT=""
+        PROMPT=${LEFT_PROMPT_PREFIX}
         for (( i = 1; i <= ${LSEGMENTS}; i++ )); do
           if [[ -n ${POWERLEVEL9K_LEFT_PROMPT[$i]} ]]; then
             LBG=${POWERLEVEL9K_LEFT_PROMPT_BG_COLORS[$i]}
@@ -234,26 +234,26 @@ p9k_async_callback() {
                 if  [[ "${LBG}" == "${LAST_LBG}" ]]; then # Are the backgrounds the same...
                   # We take the current foreground color as color for our subsegment, and
                   # add a left sub segment separator. This should have enough contrast.
-                  LEFT_PROMPT+="%K{${LBG}}%F{${LFG}}${_POWERLEVEL9K_LEFT_SUBSEGMENT_SEPARATOR} "
+                  PROMPT+="%K{${LBG}}%F{${LFG}}${_POWERLEVEL9K_LEFT_SUBSEGMENT_SEPARATOR} "
                 fi
               else # ...not joined
                 # Add a left segment separator
-                LEFT_PROMPT+="%K{${LBG}}%F{${LAST_LBG}}${_POWERLEVEL9K_LEFT_SEGMENT_SEPARATOR} "
+                PROMPT+="%K{${LBG}}%F{${LAST_LBG}}${_POWERLEVEL9K_LEFT_SEGMENT_SEPARATOR} "
               fi
             else # ...otherwise it is the first segment and there is no previous background
-              [[ "${POWERLEVEL9K_FANCY_EDGE}" == "true" ]] && LEFT_PROMPT+="%F{${LBG}}${_POWERLEVEL9K_RIGHT_SEGMENT_SEPARATOR}"
-              LEFT_PROMPT+="%K{${LBG}} "
+              [[ "${POWERLEVEL9K_FANCY_EDGE}" == "true" ]] && PROMPT+="%F{${LBG}}${_POWERLEVEL9K_RIGHT_SEGMENT_SEPARATOR}"
+              PROMPT+="%K{${LBG}} "
             fi
             # Add the segment to the left prompt string
-            LEFT_PROMPT+="${POWERLEVEL9K_LEFT_PROMPT[$i]} "
+            PROMPT+="${POWERLEVEL9K_LEFT_PROMPT[$i]} "
           fi
         done
         # Prompt is complete, so find the background of the last segment
         LBG=$(last_left_bg ${#POWERLEVEL9K_LEFT_PROMPT})
         # Add the last left segment separator and the suffix
-        LEFT_PROMPT+="%F{${LBG}}%k${_POWERLEVEL9K_LEFT_SEGMENT_SEPARATOR}%f%b "
+        PROMPT+="%F{${LBG}}%k${_POWERLEVEL9K_LEFT_SEGMENT_SEPARATOR}%f%b "
         # Set the left prompt
-        PROMPT=${LEFT_PROMPT_PREFIX}${LEFT_PROMPT}${LEFT_PROMPT_SUFFIX}
+        PROMPT+=${LEFT_PROMPT_SUFFIX}
         # About .reset-prompt see:
         # https://github.com/sorin-ionescu/prezto/issues/1026
         # https://github.com/zsh-users/zsh-autosuggestions/issues/107#issuecomment-183824034
@@ -274,7 +274,7 @@ p9k_async_callback() {
         # Determine how many segments are visible in the left prompt
         RSEGMENTS=${#POWERLEVEL9K_RIGHT_PROMPT}
         # Build the left prompt string
-        RIGHT_PROMPT=""
+        RPROMPT=${RIGHT_PROMPT_PREFIX}
         for (( i = 1; i <= ${RSEGMENTS}; i++ )); do
           if [[ -n ${POWERLEVEL9K_RIGHT_PROMPT[$i]} ]]; then
             RBG=${POWERLEVEL9K_RIGHT_PROMPT_BG_COLORS[$i]}
@@ -287,19 +287,19 @@ p9k_async_callback() {
               if [[ "${RBG}" == "${LAST_RBG}" ]]; then
                 # We take the current foreground color as color for our subsegment,
                 # and add a sub segment separator. This should have enough contrast.
-                RIGHT_PROMPT+="%K{${RBG}}%F{${RFG}}${_POWERLEVEL9K_RIGHT_SUBSEGMENT_SEPARATOR}"
+                RPROMPT+="%K{${RBG}}%F{${RFG}}${_POWERLEVEL9K_RIGHT_SUBSEGMENT_SEPARATOR}"
               fi
             else
               # ...otherwise add a right segment separator
-              RIGHT_PROMPT+="%K{${LAST_RBG}}%F{${RBG}}${_POWERLEVEL9K_RIGHT_SEGMENT_SEPARATOR}"
+              RPROMPT+="%K{${LAST_RBG}}%F{${RBG}}${_POWERLEVEL9K_RIGHT_SEGMENT_SEPARATOR}"
             fi
             # Add the segment to the right prompt string
-            RIGHT_PROMPT+="${POWERLEVEL9K_RIGHT_PROMPT[$i]} "
+            RPROMPT+="${POWERLEVEL9K_RIGHT_PROMPT[$i]} "
           fi
         done
-        [[ "${POWERLEVEL9K_FANCY_EDGE}" == "true" ]] && RIGHT_PROMPT+="%k%F{$RBG}${_POWERLEVEL9K_LEFT_SEGMENT_SEPARATOR}%f"
+        [[ "${POWERLEVEL9K_FANCY_EDGE}" == "true" ]] && RPROMPT+="%k%F{$RBG}${_POWERLEVEL9K_LEFT_SEGMENT_SEPARATOR}%f"
         # Set the left prompt
-        RPROMPT=${RIGHT_PROMPT_PREFIX}${RIGHT_PROMPT}${RIGHT_PROMPT_SUFFIX}
+        RPROMPT+=${RIGHT_PROMPT_SUFFIX}
         # About .reset-prompt see:
         # https://github.com/sorin-ionescu/prezto/issues/1026
         # https://github.com/zsh-users/zsh-autosuggestions/issues/107#issuecomment-183824034
