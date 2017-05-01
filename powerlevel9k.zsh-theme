@@ -1519,9 +1519,6 @@ set_default CACHE_DIR /tmp/p9k
 mkdir -p "${CACHE_DIR}" 2> /dev/null
 #   $1 - Signal that should be propagated
 p9k_build_prompt_from_cache() {
-  # Set option so that prompt gets expanded
-  # See http://zsh.sourceforge.net/Doc/Release/Prompt-Expansion.html
-  setopt PROMPT_SUBST
   last_left_element_index=1 # Reset
   local LAST_LEFT_BACKGROUND='NONE' # Reset
   local LAST_RIGHT_BACKGROUND='NONE' # Reset
@@ -1812,6 +1809,7 @@ prompt_powerlevel9k_setup() {
   # without them being double expanded and we need prompt_percent to expand the
   # common percent escape sequences.
   # See https://github.com/zsh-users/zsh/blob/14487ff5cc0233acf4ed3398559d975e92d52d51/Functions/Prompts/promptinit#L171-L180
+  # See http://zsh.sourceforge.net/Doc/Release/Prompt-Expansion.html
   prompt_opts=(subst percent cr)
 
   # Disable KSH style arrays.
