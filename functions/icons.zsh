@@ -42,6 +42,7 @@ function _powerlevel9k_setup_awesome_patched_icons() {
       MULTILINE_SECOND_PROMPT_PREFIX $'\u2570'$'\U2500 '
       APPLE_ICON                     $'\uE26E'              # 
       FREEBSD_ICON                   $'\U1F608 '            # 😈
+      ANDROID_ICON                   $'\uE270'              # 
       LINUX_ICON                     $'\uE271'              # 
       SUNOS_ICON                     $'\U1F31E '            # 🌞
       HOME_ICON                      $'\uE12C'              # 
@@ -115,6 +116,7 @@ function _powerlevel9k_setup_awesome_fontconfig_icons() {
       MULTILINE_SECOND_PROMPT_PREFIX $'\u2570'$'\U2500 '    # ╰─
       APPLE_ICON                     $'\uF179'              # 
       FREEBSD_ICON                   $'\U1F608 '            # 😈
+      ANDROID_ICON                   $'\uE17B'              # 
       LINUX_ICON                     $'\uF17C'              # 
       SUNOS_ICON                     $'\uF185 '             # 
       HOME_ICON                      $'\uF015'              # 
@@ -153,14 +155,14 @@ function _powerlevel9k_setup_awesome_fontconfig_icons() {
 }
 _powerlevel9k_setup_awesome_fontconfig_icons
 
-typeset -gAH icons_nerdfont_fontconfig
+typeset -gAH icons_nerdfont_complete
 function _powerlevel9k_setup_nerdfont_fontconfig_icons() {
   # Set the right locale to protect special characters
   local LC_ALL="" LC_CTYPE="en_US.UTF-8"
 
   # nerd-font patched (complete) font required! See
   # https://github.com/ryanoasis/nerd-fonts
-  icons_nerdfont_fontconfig=(
+  icons_nerdfont_complete=(
       LEFT_SEGMENT_SEPARATOR         $'\uE0B0'              # 
       RIGHT_SEGMENT_SEPARATOR        $'\uE0B2'              # 
       LEFT_SEGMENT_END_SEPARATOR     ' '                    # Whitespace
@@ -184,6 +186,7 @@ function _powerlevel9k_setup_nerdfont_fontconfig_icons() {
       MULTILINE_SECOND_PROMPT_PREFIX $'\u2570'$'\U2500 '    # ╰─
       APPLE_ICON                     $'\uF179'              # 
       FREEBSD_ICON                   $'\UF30E '             # 
+      ANDROID_ICON                   $'\uF17B'              # 
       LINUX_ICON                     $'\uF17C'              # 
       SUNOS_ICON                     $'\uF185 '             # 
       HOME_ICON                      $'\uF015'              # 
@@ -266,6 +269,7 @@ function _powerlevel9k_setup_default_icons() {
       MULTILINE_SECOND_PROMPT_PREFIX $'\u2570'$'\u2500 '
       APPLE_ICON                     'OSX'
       FREEBSD_ICON                   'BSD'
+      ANDROID_ICON                   'And'
       LINUX_ICON                     'Lx'
       SUNOS_ICON                     'Sun'
       HOME_ICON                      ''
@@ -322,7 +326,7 @@ function _powerlevel9kInitializeIconOverrides() {
     icons_default[VCS_BRANCH_ICON]=''
     icons_awesome_fontconfig[VCS_BRANCH_ICON]=''
     icons_awesome_patched[VCS_BRANCH_ICON]=''
-    icons_nerdfont_fontconfig[VCS_BRANCH_ICON]=''
+    icons_nerdfont_complete[VCS_BRANCH_ICON]=''
     icons_flat[VCS_BRANCH_ICON]=''
     icons_compatible[VCS_BRANCH_ICON]=''
   fi
@@ -330,6 +334,8 @@ function _powerlevel9kInitializeIconOverrides() {
 
 function _p9k_get_current_icon_array_name() {
   defined POWERLEVEL9K_MODE || POWERLEVEL9K_MODE="default"
+  # Fallback for renamed "nerdfont-fontconfig" mode
+  [[ "${POWERLEVEL9K_MODE}" == "nerdfont-fontconfig" ]] && POWERLEVEL9K_MODE="nerdfont-complete"
   # Replace hyphens with underscores
   echo "icons_${POWERLEVEL9K_MODE:gs/-/_/}"
 }

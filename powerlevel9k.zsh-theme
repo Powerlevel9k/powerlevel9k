@@ -62,7 +62,7 @@ fi
 # Resolve the installation path
 if [[ -L "$POWERLEVEL9K_INSTALLATION_PATH" ]]; then
   # If this theme is sourced as a symlink, we need to locate the real URL
-  filename="$(realpath -P $POWERLEVEL9K_INSTALLATION_PATH 2>/dev/null || readlink -f $POWERLEVEL9K_INSTALLATION_PATH 2>/dev/null || perl -MCwd=abs_path -le 'print abs_path readlink(shift);' $POWERLEVEL9K_INSTALLATION_PATH 2>/dev/null)"
+  filename="${POWERLEVEL9K_INSTALLATION_PATH:A}"
 elif [[ -d "$POWERLEVEL9K_INSTALLATION_PATH" ]]; then
   # Directory
   filename="${POWERLEVEL9K_INSTALLATION_PATH}/powerlevel9k.zsh-theme"
@@ -404,11 +404,16 @@ prompt_battery() {
     fi
   fi
 
-  if [[ $OS =~ Linux ]]; then
+  if [[ "$OS" =~ "Linux" ]] || [[ "$OS" == "Android" ]]; then
     local sysp="${ROOT_PATH}/sys/class/power_supply"
+
     # Reported BAT0 or BAT1 depending on kernel version
     [[ -a $sysp/BAT0 ]] && local bat=$sysp/BAT0
     [[ -a $sysp/BAT1 ]] && local bat=$sysp/BAT1
+
+    # Android-related
+    # Tested on: Moto G falcon (CM 13.0)
+    [[ -a $sysp/battery ]] && local bat=$sysp/battery
 
     if [[ -n "${bat}" ]]; then
       local capacity=$(cat $bat/capacity)
@@ -598,6 +603,7 @@ prompt_command_execution_time() {
 
 # Dir: current working directory
 set_default POWERLEVEL9K_DIR_PATH_SEPARATOR "/"
+set_default POWERLEVEL9K_HOME_FOLDER_ABBREVIATION "~"
 # Parameters:
 #   * $1 Alignment: string - left|right
 #   * $2 Index: integer
@@ -653,7 +659,7 @@ prompt_dir() {
             break;
           fi
         done
-        
+
         local packageName=$(jq '.name' ${pkgFile} 2> /dev/null \
           || node -e 'console.log(require(process.argv[1]).name);' ${pkgFile} 2>/dev/null \
           || cat "${pkgFile}" 2> /dev/null | grep -m 1 "\"name\"" | awk -F ':' '{print $2}' | awk -F '"' '{print $2}' 2>/dev/null \
@@ -704,6 +710,10 @@ prompt_dir() {
 
   if [[ "${POWERLEVEL9K_DIR_PATH_SEPARATOR}" != "/" ]]; then
     current_path="$( echo "${current_path}" | sed "s/\//${POWERLEVEL9K_DIR_PATH_SEPARATOR}/g")"
+  fi
+
+  if [[ "${POWERLEVEL9K_HOME_FOLDER_ABBREVIATION}" != "~" ]]; then
+    current_path="$( echo "${current_path}" | sed "s/^~/${POWERLEVEL9K_HOME_FOLDER_ABBREVIATION}/")"
   fi
 
   typeset -AH dir_states
@@ -907,6 +917,9 @@ prompt_os_icon() {
     Linux)
       OS_ICON=$(print_icon 'LINUX_ICON')
       ;;
+    Android)
+      OS_ICON=$(print_icon 'ANDROID_ICON')
+      ;;
     Solaris)
       OS_ICON=$(print_icon 'SUNOS_ICON')
       ;;
@@ -1079,7 +1092,7 @@ prompt_status() {
       "STATE"               "OK"
       "CONTENT"             "${RETVAL}"
       "BACKGROUND_COLOR"    "${DEFAULT_COLOR}"
-      "FOREGROUND_COLOR"    "046"
+      "FOREGROUND_COLOR"    "green"
       "VISUAL_IDENTIFIER"   "OK_ICON"
     )
   fi
@@ -1278,6 +1291,12 @@ powerlevel9k_vcs_init() {
   zstyle ':vcs_info:hg*:*' get-revision true
   zstyle ':vcs_info:hg*:*' get-bookmarks true
   zstyle ':vcs_info:hg*+gen-hg-bookmark-string:*' hooks hg-bookmarks
+
+  # For svn, only
+  # TODO fix the %b (branch) format for svn. Using %b breaks
+  # color-encoding of the foreground for the rest of the powerline.
+  zstyle ':vcs_info:svn*:*' formats "$VCS_CHANGESET_PREFIX%c%u"
+  zstyle ':vcs_info:svn*:*' actionformats "$VCS_CHANGESET_PREFIX%c%u %F{${POWERLEVEL9K_VCS_ACTIONFORMAT_FOREGROUND}}| %a%f"
 
   if [[ "$POWERLEVEL9K_SHOW_CHANGESET" == true ]]; then
     zstyle ':vcs_info:*' get-revision true
@@ -1725,8 +1744,9 @@ powerlevel9k_prepare_prompts() {
 
   # Timing calculation
   _P9K_COMMAND_DURATION=$((EPOCHREALTIME - _P9K_TIMER_START))
+
   # Reset start time
-  _P9K_TIMER_START=99999999999
+  _P9K_TIMER_START=0xFFFFFFFF
   # Start segment timing
   _P9K_SEGMENT_TIMER_START="${EPOCHREALTIME}"
 
@@ -1777,13 +1797,27 @@ function zle-keymap-select {
 }
 
 prompt_powerlevel9k_setup() {
+  # I decided to use the value below for better supporting 32-bit CPUs, since the previous value "99999999999" was causing issues on my Android phone, which is powered by an armv7l
+  # We don't have to change that until 19 January of 2038! :)
+
   # Disable false display of command execution time
-  _P9K_TIMER_START=99999999999
+  # Maximum integer on 32-bit CPUs
+  _P9K_TIMER_START=0xFFFFFFFF
+
+  # The prompt function will set these prompt_* options after the setup function
+  # returns. We need prompt_subst so we can safely run commands in the prompt
+  # without them being double expanded and we need prompt_percent to expand the
+  # common percent escape sequences.
+  prompt_opts=(subst percent)
+
+  # Borrowed from promptinit, sets the prompt options in case the theme was
+  # not initialized via promptinit.
+  setopt noprompt{bang,cr,percent,subst} "prompt${^prompt_opts[@]}"
 
   # Display a warning if the terminal does not support 256 colors
   local term_colors
-  term_colors=$(echotc Co)
-  if (( $term_colors < 256 )); then
+  term_colors=$(echotc Co 2>/dev/null)
+  if (( ! $? && ${term_colors:-0} < 256 )); then
     print -P "%F{red}WARNING!%f Your terminal appears to support less than 256 colors!"
     print -P "If your terminal supports 256 colors, please export the appropriate environment variable"
     print -P "_before_ loading this theme in your \~\/.zshrc. In most terminal emulators, putting"

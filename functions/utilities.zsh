@@ -79,7 +79,7 @@ function getRelevantItem() {
   done
 }
 
-# OS detection for the `os_icon` segment
+# OS detection
 case $(uname) in
     Darwin)
       OS='OSX'
@@ -95,13 +95,18 @@ case $(uname) in
       ;;
     Linux)
       OS='Linux'
+      # Check if we're running on Android
+      case $(uname -o 2>/dev/null) in
+        Android)
+          OS='Android'
+          ;;
+      esac
       ;;
     SunOS)
       OS='Solaris'
       ;;
     *)
       OS=''
-      OS_ICON=''
       ;;
 esac
 

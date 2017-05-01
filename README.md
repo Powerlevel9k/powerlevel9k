@@ -30,9 +30,9 @@ this theme focus on four primary goals:
 4. Optimize the code for execution speed as much as possible. A snappy terminal
    is a happy terminal.
 
-Here is `powerlevel9k` in action, with [some simple settings](https://github.com/bhilburn/powerlevel9k/wiki/Show-Off-Your-Config#natemccurdys-configuration).
+Powerlevel9k can be used to create both very useful and beautiful terminal environments:
 
-![](https://camo.githubusercontent.com/80ec23fda88d2f445906a3502690f22827336736/687474703a2f2f692e696d6775722e636f6d2f777942565a51792e676966)
+![](https://camo.githubusercontent.com/b5d7eb49a30bfe6bdb5706fa3c9be95fe8e5956e/687474703a2f2f67696679752e636f6d2f696d616765732f70396b6e65772e676966)
 
 ### Table of Contents
 
@@ -342,6 +342,12 @@ POWERLEVEL9K_DIR_PATH_SEPARATOR="%F{red} $(print_icon 'LEFT_SUBSEGMENT_SEPARATOR
 ```
 To omit the first character (usually a slash that gets replaced if you set `POWERLEVEL9K_DIR_PATH_SEPARATOR`),
 you could set `POWERLEVEL9K_DIR_OMIT_FIRST_CHARACTER=true`.
+
+You can also customize the leading tilde character when you are in `$HOME` using:
+```zsh
+# Double quotes are important here!
+POWERLEVEL9K_HOME_FOLDER_ABBREVIATION="%F{red} $(print_icon 'HOME_ICON') %F{black}"
+```
 
 
 ##### disk_usage
