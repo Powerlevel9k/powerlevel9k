@@ -1797,6 +1797,10 @@ function zle-keymap-select {
 }
 
 prompt_powerlevel9k_setup() {
+  ################################################################
+  # Set default timer variables
+  ################################################################
+
   # I decided to use the value below for better supporting 32-bit CPUs, since the previous value "99999999999" was causing issues on my Android phone, which is powered by an armv7l
   # We don't have to change that until 19 January of 2038! :)
 
@@ -1813,6 +1817,11 @@ prompt_powerlevel9k_setup() {
   # Borrowed from promptinit, sets the prompt options in case the theme was
   # not initialized via promptinit.
   setopt noprompt{bang,cr,percent,subst} "prompt${^prompt_opts[@]}"
+
+  ################################################################
+  # Print warning messages if there is something wrong with the
+  # users configuration.
+  ################################################################
 
   # Display a warning if the terminal does not support 256 colors
   local term_colors
@@ -1834,8 +1843,16 @@ prompt_powerlevel9k_setup() {
       print -P "\t%F{red}WARNING!%f %F{blue}export LANG=\"en_US.UTF-8\"%f at the top of your \~\/.zshrc is sufficient."
   fi
 
+  ################################################################
+  # Set default elements
+  ################################################################
+
   defined POWERLEVEL9K_LEFT_PROMPT_ELEMENTS || POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(context dir rbenv vcs)
   defined POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS || POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status root_indicator background_jobs history time)
+
+  ################################################################
+  # Show a warning message if the users uses deprecated segments
+  ################################################################
 
   # Display a warning if deprecated segments are in use.
   typeset -AH deprecated_segments
@@ -1846,6 +1863,10 @@ prompt_powerlevel9k_setup() {
     'symfony2_tests'    'symfony_tests'
   )
   print_deprecation_warning deprecated_segments
+
+  ################################################################
+  # Autoload functions we rely on
+  ################################################################
 
   # initialize colors
   autoload -U colors && colors
@@ -1858,6 +1879,10 @@ prompt_powerlevel9k_setup() {
 
   # initialize hooks
   autoload -Uz add-zsh-hook
+
+  ################################################################
+  # Set ZSH hooks
+  ################################################################
 
   # prepare prompts
   add-zsh-hook precmd powerlevel9k_prepare_prompts
