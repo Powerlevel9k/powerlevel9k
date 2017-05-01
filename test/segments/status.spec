@@ -67,7 +67,7 @@ function testStatusWorksAsExpectedIfReturnCodeIsZeroAndVerboseIsSet() {
     prompt_status "left" "1" "false"
     p9k_build_prompt_from_cache
 
-    assertEquals "%K{black} %F{046%}✓%f %F{046}0 %k%F{black}%f " "${PROMPT}"
+    assertEquals "%K{black} %F{046%}✓%f %F{green}0 %k%F{black}%f " "${PROMPT}"
 
     unset POWERLEVEL9K_STATUS_VERBOSE
     unset RETVAL
