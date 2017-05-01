@@ -21,20 +21,6 @@
 #set -o xtrace
 
 ################################################################
-# Set required ZSH options
-################################################################
-
-# Fix for Prezto/ZIM. We need to make our traps global, so that
-# they are still active when Prezto/ZIM finally execute the theme.
-setopt nolocaltraps
-
-setopt LOCAL_OPTIONS
-unsetopt KSH_ARRAYS
-setopt PROMPT_CR
-setopt PROMPT_PERCENT
-setopt MULTIBYTE
-
-################################################################
 # Load our functions
 ################################################################
 
@@ -1808,11 +1794,31 @@ prompt_powerlevel9k_setup() {
   # Maximum integer on 32-bit CPUs
   _P9K_TIMER_START=0xFFFFFFFF
 
+  ################################################################
+  # Set required ZSH options
+  ################################################################
+  # See http://zsh.sourceforge.net/Doc/Release/Options.html
+
+  # Fix for Prezto/ZIM. We need to make our traps global, so that
+  # they are still active when Prezto/ZIM finally execute the theme.
+  setopt nolocaltraps
+
+  # Do not use local options. We need this, because "prompt_opts"
+  # below is a global variable that is used by ZSHs promptinit function.
+  unsetopt LOCAL_OPTIONS
+
   # The prompt function will set these prompt_* options after the setup function
   # returns. We need prompt_subst so we can safely run commands in the prompt
   # without them being double expanded and we need prompt_percent to expand the
   # common percent escape sequences.
-  prompt_opts=(subst percent)
+  # See https://github.com/zsh-users/zsh/blob/14487ff5cc0233acf4ed3398559d975e92d52d51/Functions/Prompts/promptinit#L171-L180
+  prompt_opts=(subst percent cr)
+
+  # Disable KSH style arrays.
+  unsetopt KSH_ARRAYS
+
+  # We make heavy use of multibyte characters
+  setopt MULTIBYTE
 
   # Borrowed from promptinit, sets the prompt options in case the theme was
   # not initialized via promptinit.
