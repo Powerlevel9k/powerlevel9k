@@ -761,6 +761,45 @@ prompt_go_version() {
   fi
 }
 
+# power: power status
+prompt_power() {
+
+  POWERNOW_FILE='/sys/devices/LNXSYSTM:00/LNXSYBUS:00/PNP0C0A:00/power_supply/BAT0/charge_now'
+  POWERFULL_FILE='/sys/devices/LNXSYSTM:00/LNXSYBUS:00/PNP0C0A:00/power_supply/BAT0/charge_full'
+  STATUS_FILE='/sys/devices/LNXSYSTM:00/LNXSYBUS:00/PNP0C0A:00/power_supply/BAT0/status'
+
+  # http://stackoverflow.com/questions/8654051/how-to-compare-two-floating-point-numbers-in-a-bash-script
+  POWER=$( echo "scale=2; 100 * $( cat $POWERNOW_FILE ) / $( cat $POWERFULL_FILE )" | bc -l )
+ 
+  GREEN="66"
+  YELLOW="33"
+
+  POWER_GREEN=$( echo "$POWER > $GREEN" | bc)
+  POWER_YELLOW=$( echo "$POWER > $YELLOW" | bc )
+  
+  BAT_COLOR="red"
+  if [[ "$POWER_YELLOW" == "1" ]]; then
+    BAT_COLOR="yellow"
+  fi
+  if [[ "$POWER_GREEN" == "1" ]]; then
+    BAT_COLOR="green"
+  fi
+
+  BAT_STATUS="U"
+  BAT_READING=$(cat $STATUS_FILE)
+  if [[ "$BAT_READING" == "Full" ]]; then
+    BAT_STATUS="F"
+  fi
+  if [[ "$BAT_READING" == "Charging" ]]; then
+    BAT_STATUS="P"
+  fi
+  if [[ "$BAT_READING" == "Discharging" ]]; then
+    BAT_STATUS="B"
+  fi
+
+  "$1_prompt_segment" "$0" "black" "$BAT_COLOR" "$BAT_STATUS $POWER %"
+}
+
 # Command number (in local history)
 prompt_history() {
   "$1_prompt_segment" "$0" "$2" "244" "$DEFAULT_COLOR" '%h'
