@@ -25,62 +25,64 @@ case $POWERLEVEL9K_MODE in
       LEFT_SEGMENT_END_SEPARATOR     ' '                    # Whitespace
       LEFT_SUBSEGMENT_SEPARATOR      $'\uE0B1'              # 
       RIGHT_SUBSEGMENT_SEPARATOR     $'\uE0B3'              # 
-      CARRIAGE_RETURN_ICON           $'\u21B5'              # ↵
-      ROOT_ICON                      $'\uE801'              # 
-      RUBY_ICON                      $'\uE847 '             # 
-      AWS_ICON                       $'\uE895'              # 
-      AWS_EB_ICON                    $'\U1F331 '            # 🌱
-      BACKGROUND_JOBS_ICON           $'\uE82F '             # 
-      TEST_ICON                      $'\uE891'              # 
-      TODO_ICON                      $'\u2611'              # ☑
-      BATTERY_ICON                   $'\uE894'              # 
-      DISK_ICON                      $'\uE1AE '             # 
-      OK_ICON                        $'\u2713'              # ✓
-      FAIL_ICON                      $'\u2718'              # ✘
-      SYMFONY_ICON                   'SF'
-      NODE_ICON                      $'\u2B22'              # ⬢
-      MULTILINE_FIRST_PROMPT_PREFIX  $'\u256D'$'\U2500'
-      MULTILINE_SECOND_PROMPT_PREFIX $'\u2570'$'\U2500 '
-      APPLE_ICON                     $'\uE26E'              # 
-      FREEBSD_ICON                   $'\U1F608 '            # 😈
-      LINUX_ICON                     $'\uE271'              # 
-      SUNOS_ICON                     $'\U1F31E '            # 🌞
-      HOME_ICON                      $'\uE12C'              # 
-      HOME_SUB_ICON                  $'\uE18D'              # 
-      FOLDER_ICON                    $'\uE818'              # 
-      NETWORK_ICON                   $'\uE1AD'              # 
-      LOAD_ICON                      $'\uE190 '             # 
-      SWAP_ICON                      $'\uE87D'              # 
-      RAM_ICON                       $'\uE1E2 '             # 
-      SERVER_ICON                    $'\uE895'              # 
-      VCS_UNTRACKED_ICON             $'\uE16C'              # 
-      VCS_UNSTAGED_ICON              $'\uE17C'              # 
-      VCS_STAGED_ICON                $'\uE168'              # 
-      VCS_STASH_ICON                 $'\uE133 '             # 
       #VCS_INCOMING_CHANGES_ICON     $'\uE1EB '             # 
       #VCS_INCOMING_CHANGES_ICON     $'\uE80D '             # 
-      VCS_INCOMING_CHANGES_ICON      $'\uE131 '             # 
       #VCS_OUTGOING_CHANGES_ICON     $'\uE1EC '             # 
       #VCS_OUTGOING_CHANGES_ICON     $'\uE80E '             # 
-      VCS_OUTGOING_CHANGES_ICON      $'\uE132 '             # 
-      VCS_TAG_ICON                   $'\uE817 '             # 
-      VCS_BOOKMARK_ICON              $'\uE87B'              # 
-      VCS_COMMIT_ICON                $'\uE821 '             # 
-      VCS_BRANCH_ICON                $'\uE220'              # 
-      VCS_REMOTE_BRANCH_ICON         $'\u2192'              # →
-      VCS_GIT_ICON                   $'\uE20E '             # 
-      VCS_GIT_GITHUB_ICON            $'\uE20E '             #
-      VCS_GIT_BITBUCKET_ICON         $'\uE20E '             #
-      VCS_GIT_GITLAB_ICON            $'\uE20E '             #
-      VCS_HG_ICON                    $'\uE1C3 '             # 
-      VCS_SVN_ICON                   '(svn) '
-      RUST_ICON                      ''
-      PYTHON_ICON                    $'\U1F40D'             # 🐍
-      SWIFT_ICON                     ''
-      PUBLIC_IP_ICON                 ''
-      LOCK_ICON                      $'\UE138'              # 
+      APPLE_ICON                     $'\uE26E'              # 
+      AWS_EB_ICON                    $'\U1F331 '            # 🌱
+      AWS_ICON                       $'\uE895'              # 
+      BACKGROUND_JOBS_ICON           $'\uE82F '             # 
+      BATTERY_ICON                   $'\uE894'              # 
+      CARRIAGE_RETURN_ICON           $'\u21B5'              # ↵
+      DATE_ICON                      $'\uE184'              # 
+      DISK_ICON                      $'\uE1AE '             # 
       EXECUTION_TIME_ICON            $'\UE89C'              # 
+      FAIL_ICON                      $'\u2718'              # ✘
+      FOLDER_ICON                    $'\uE818'              # 
+      FREEBSD_ICON                   $'\U1F608 '            # 😈
+      HOME_ICON                      $'\uE12C'              # 
+      HOME_SUB_ICON                  $'\uE18D'              # 
+      LINUX_ICON                     $'\uE271'              # 
+      LOAD_ICON                      $'\uE190 '             # 
+      LOCK_ICON                      $'\UE138'              # 
+      MULTILINE_FIRST_PROMPT_PREFIX  $'\u256D'$'\U2500'
+      MULTILINE_SECOND_PROMPT_PREFIX $'\u2570'$'\U2500 '
+      NETWORK_ICON                   $'\uE1AD'              # 
+      NODE_ICON                      $'\u2B22'              # ⬢
+      OK_ICON                        $'\u2713'              # ✓
+      PUBLIC_IP_ICON                 ''
+      PYTHON_ICON                    $'\U1F40D'             # 🐍
+      RAM_ICON                       $'\uE1E2 '             # 
+      ROOT_ICON                      $'\uE801'              # 
+      RUBY_ICON                      $'\uE847 '             # 
+      RUST_ICON                      ''
+      SERVER_ICON                    $'\uE895'              # 
       SSH_ICON                       '(ssh)'
+      SUNOS_ICON                     $'\U1F31E '            # 🌞
+      SWAP_ICON                      $'\uE87D'              # 
+      SWIFT_ICON                     ''
+      SYMFONY_ICON                   'SF'
+      TEST_ICON                      $'\uE891'              # 
+      TIME_ICON                      $'\uE12E'              # 
+      TODO_ICON                      $'\u2611'              # ☑
+      VCS_BOOKMARK_ICON              $'\uE87B'              # 
+      VCS_BRANCH_ICON                $'\uE220'              # 
+      VCS_COMMIT_ICON                $'\uE821 '             # 
+      VCS_GIT_BITBUCKET_ICON         $'\uE20E '             #
+      VCS_GIT_GITHUB_ICON            $'\uE20E '             #
+      VCS_GIT_GITLAB_ICON            $'\uE20E '             #
+      VCS_GIT_ICON                   $'\uE20E '             # 
+      VCS_HG_ICON                    $'\uE1C3 '             # 
+      VCS_INCOMING_CHANGES_ICON      $'\uE131 '             # 
+      VCS_OUTGOING_CHANGES_ICON      $'\uE132 '             # 
+      VCS_REMOTE_BRANCH_ICON         $'\u2192'              # →
+      VCS_STAGED_ICON                $'\uE168'              # 
+      VCS_STASH_ICON                 $'\uE133 '             # 
+      VCS_SVN_ICON                   '(svn) '
+      VCS_TAG_ICON                   $'\uE817 '             # 
+      VCS_UNSTAGED_ICON              $'\uE17C'              # 
+      VCS_UNTRACKED_ICON             $'\uE16C'              # 
     )
   ;;
   'awesome-fontconfig')
@@ -94,58 +96,60 @@ case $POWERLEVEL9K_MODE in
       LEFT_SEGMENT_END_SEPARATOR     ' '                    # Whitespace
       LEFT_SUBSEGMENT_SEPARATOR      $'\uE0B1'              # 
       RIGHT_SUBSEGMENT_SEPARATOR     $'\uE0B3'              # 
-      CARRIAGE_RETURN_ICON           $'\u21B5'              # ↵
-      ROOT_ICON                      $'\uF201'              # 
-      RUBY_ICON                      $'\uF219 '             # 
-      AWS_ICON                       $'\uF270'              # 
-      AWS_EB_ICON                    $'\U1F331 '            # 🌱
-      BACKGROUND_JOBS_ICON           $'\uF013 '             # 
-      TEST_ICON                      $'\uF291'              # 
-      TODO_ICON                      $'\u2611'              # ☑
-      BATTERY_ICON                   $'\U1F50B'             # 🔋
-      DISK_ICON                      $'\uF0A0 '             # 
-      OK_ICON                        $'\u2713'              # ✓
-      FAIL_ICON                      $'\u2718'              # ✘
-      SYMFONY_ICON                   'SF'
-      NODE_ICON                      $'\u2B22'              # ⬢
-      MULTILINE_FIRST_PROMPT_PREFIX  $'\u256D'$'\U2500'     # ╭─
-      MULTILINE_SECOND_PROMPT_PREFIX $'\u2570'$'\U2500 '    # ╰─
       APPLE_ICON                     $'\uF179'              # 
+      AWS_EB_ICON                    $'\U1F331 '            # 🌱
+      AWS_ICON                       $'\uF270'              # 
+      BACKGROUND_JOBS_ICON           $'\uF013 '             # 
+      BATTERY_ICON                   $'\U1F50B'             # 🔋
+      CARRIAGE_RETURN_ICON           $'\u21B5'              # ↵
+      DATE_ICON                      $'\uF073 '             # 
+      DISK_ICON                      $'\uF0A0 '             # 
+      EXECUTION_TIME_ICON            $'\uF253'
+      FAIL_ICON                      $'\u2718'              # ✘
+      FOLDER_ICON                    $'\uF115'              # 
       FREEBSD_ICON                   $'\U1F608 '            # 😈
-      LINUX_ICON                     $'\uF17C'              # 
-      SUNOS_ICON                     $'\uF185 '             # 
       HOME_ICON                      $'\uF015'              # 
       HOME_SUB_ICON                  $'\uF07C'              # 
-      FOLDER_ICON                    $'\uF115'              # 
-      NETWORK_ICON                   $'\uF09E'              # 
+      LINUX_ICON                     $'\uF17C'              # 
       LOAD_ICON                      $'\uF080 '             # 
-      SWAP_ICON                      $'\uF0E4'              # 
+      LOCK_ICON                      $'\UE138'              # 
+      MULTILINE_FIRST_PROMPT_PREFIX  $'\u256D'$'\U2500'     # ╭─
+      MULTILINE_SECOND_PROMPT_PREFIX $'\u2570'$'\U2500 '    # ╰─
+      NETWORK_ICON                   $'\uF09E'              # 
+      NODE_ICON                      $'\u2B22'              # ⬢
+      OK_ICON                        $'\u2713'              # ✓
+      PUBLIC_IP_ICON                 ''
+      PYTHON_ICON                    $'\U1F40D'             # 🐍
       RAM_ICON                       $'\uF0E4'              # 
+      ROOT_ICON                      $'\uF201'              # 
+      RUBY_ICON                      $'\uF219 '             # 
+      RUST_ICON                      $'\uE6A8'              #  
       SERVER_ICON                    $'\uF233'              # 
-      VCS_UNTRACKED_ICON             $'\uF059'              # 
-      VCS_UNSTAGED_ICON              $'\uF06A'              # 
-      VCS_STAGED_ICON                $'\uF055'              # 
-      VCS_STASH_ICON                 $'\uF01C '             # 
+      SSH_ICON                       '(ssh)'
+      SUNOS_ICON                     $'\uF185 '             # 
+      SWAP_ICON                      $'\uF0E4'              # 
+      SWIFT_ICON                     ''
+      SYMFONY_ICON                   'SF'
+      TEST_ICON                      $'\uF291'              # 
+      TIME_ICON                      $'\uF017 '             # 
+      TODO_ICON                      $'\u2611'              # ☑
+      VCS_BOOKMARK_ICON              $'\uF27B'              # 
+      VCS_BRANCH_ICON                $'\uF126'              # 
+      VCS_COMMIT_ICON                $'\uF221 '             # 
+      VCS_GIT_BITBUCKET_ICON         $'\uF171 '             # 
+      VCS_GIT_GITHUB_ICON            $'\uF113 '             # 
+      VCS_GIT_GITLAB_ICON            $'\uF296 '             # 
+      VCS_GIT_ICON                   $'\uF1D3 '             # 
+      VCS_HG_ICON                    $'\uF0C3 '             # 
       VCS_INCOMING_CHANGES_ICON      $'\uF01A '             # 
       VCS_OUTGOING_CHANGES_ICON      $'\uF01B '             # 
-      VCS_TAG_ICON                   $'\uF217 '             # 
-      VCS_BOOKMARK_ICON              $'\uF27B'              # 
-      VCS_COMMIT_ICON                $'\uF221 '             # 
-      VCS_BRANCH_ICON                $'\uF126'              # 
       VCS_REMOTE_BRANCH_ICON         $'\u2192'              # →
-      VCS_GIT_ICON                   $'\uF1D3 '             # 
-      VCS_GIT_GITHUB_ICON            $'\uF113 '             # 
-      VCS_GIT_BITBUCKET_ICON         $'\uF171 '             # 
-      VCS_GIT_GITLAB_ICON            $'\uF296 '             # 
-      VCS_HG_ICON                    $'\uF0C3 '             # 
+      VCS_STAGED_ICON                $'\uF055'              # 
+      VCS_STASH_ICON                 $'\uF01C '             # 
       VCS_SVN_ICON                   '(svn) '
-      RUST_ICON                      $'\uE6A8'              #  
-      PYTHON_ICON                    $'\U1F40D'             # 🐍
-      SWIFT_ICON                     ''
-      PUBLIC_IP_ICON                 ''
-      LOCK_ICON                      $'\UE138'              # 
-      EXECUTION_TIME_ICON            $'\uF253'
-      SSH_ICON                       '(ssh)'
+      VCS_TAG_ICON                   $'\uF217 '             # 
+      VCS_UNSTAGED_ICON              $'\uF06A'              # 
+      VCS_UNTRACKED_ICON             $'\uF059'              # 
     )
   ;;
   'nerdfont-complete'|'nerdfont-fontconfig')
@@ -159,58 +163,60 @@ case $POWERLEVEL9K_MODE in
       LEFT_SEGMENT_END_SEPARATOR     ' '                    # Whitespace
       LEFT_SUBSEGMENT_SEPARATOR      $'\uE0B1'              # 
       RIGHT_SUBSEGMENT_SEPARATOR     $'\uE0B3'              # 
-      CARRIAGE_RETURN_ICON           $'\u21B5'              # ↵
-      ROOT_ICON                      $'\uE614 '             # 
-      RUBY_ICON                      $'\uF219 '             # 
-      AWS_ICON                       $'\uF270'              # 
-      AWS_EB_ICON                    $'\UF1BD  '            # 
-      BACKGROUND_JOBS_ICON           $'\uF013 '             # 
-      TEST_ICON                      $'\uF188'              # 
-      TODO_ICON                      $'\uF133'              # 
-      BATTERY_ICON                   $'\UF240 '             # 
-      DISK_ICON                      $'\uF0A0'              #  
-      OK_ICON                        $'\uF00C'              # 
-      FAIL_ICON                      $'\uF00D'              # 
-      SYMFONY_ICON                   $'\uE757'              # 
-      NODE_ICON                      $'\uE617 '             # 
-      MULTILINE_FIRST_PROMPT_PREFIX  $'\u256D'$'\U2500'     # ╭─
-      MULTILINE_SECOND_PROMPT_PREFIX $'\u2570'$'\U2500 '    # ╰─
       APPLE_ICON                     $'\uF179'              # 
+      AWS_EB_ICON                    $'\UF1BD  '            # 
+      AWS_ICON                       $'\uF270'              # 
+      BACKGROUND_JOBS_ICON           $'\uF013 '             # 
+      BATTERY_ICON                   $'\UF240 '             # 
+      CARRIAGE_RETURN_ICON           $'\u21B5'              # ↵
+      DATE_ICON                      $'\uF073 '             # 
+      DISK_ICON                      $'\uF0A0'              #  
+      EXECUTION_TIME_ICON            $'\uF252'              #  
+      FAIL_ICON                      $'\uF00D'              # 
+      FOLDER_ICON                    $'\uF115'              # 
       FREEBSD_ICON                   $'\UF30E '             # 
-      LINUX_ICON                     $'\uF17C'              # 
-      SUNOS_ICON                     $'\uF185 '             # 
       HOME_ICON                      $'\uF015'              # 
       HOME_SUB_ICON                  $'\uF07C'              # 
-      FOLDER_ICON                    $'\uF115'              # 
-      NETWORK_ICON                   $'\uF1EB'              # 
+      LINUX_ICON                     $'\uF17C'              # 
       LOAD_ICON                      $'\uF080 '             # 
-      SWAP_ICON                      $'\uF464'              # 
+      LOCK_ICON                      $'\UF023'              #  
+      MULTILINE_FIRST_PROMPT_PREFIX  $'\u256D'$'\U2500'     # ╭─
+      MULTILINE_SECOND_PROMPT_PREFIX $'\u2570'$'\U2500 '    # ╰─
+      NETWORK_ICON                   $'\uF1EB'              # 
+      NODE_ICON                      $'\uE617 '             # 
+      OK_ICON                        $'\uF00C'              # 
+      PUBLIC_IP_ICON                 $'\UF0AC'              # 
+      PYTHON_ICON                    $'\UE73C '             # 
       RAM_ICON                       $'\uF0E4'              # 
+      ROOT_ICON                      $'\uE614 '             # 
+      RUBY_ICON                      $'\uF219 '             # 
+      RUST_ICON                      $'\uE7A8 '             # 
       SERVER_ICON                    $'\uF0AE'              # 
-      VCS_UNTRACKED_ICON             $'\uF059'              # 
-      VCS_UNSTAGED_ICON              $'\uF06A'              # 
-      VCS_STAGED_ICON                $'\uF055'              # 
-      VCS_STASH_ICON                 $'\uF01C '             # 
+      SSH_ICON                       $'\uF489'              #  
+      SUNOS_ICON                     $'\uF185 '             # 
+      SWAP_ICON                      $'\uF464'              # 
+      SWIFT_ICON                     $'\uE755'              # 
+      SYMFONY_ICON                   $'\uE757'              # 
+      TEST_ICON                      $'\uF188'              # 
+      TIME_ICON                      $'\uF017 '             # 
+      TODO_ICON                      $'\uF133'              # 
+      VCS_BOOKMARK_ICON              $'\uF461 '             # 
+      VCS_BRANCH_ICON                $'\uF126 '             # 
+      VCS_COMMIT_ICON                $'\uE729 '             # 
+      VCS_GIT_BITBUCKET_ICON         $'\uE703 '             # 
+      VCS_GIT_GITHUB_ICON            $'\uE709 '             # 
+      VCS_GIT_GITLAB_ICON            $'\uF296 '             #  
+      VCS_GIT_ICON                   $'\uF113 '             # 
+      VCS_HG_ICON                    $'\uF0C3 '             # 
       VCS_INCOMING_CHANGES_ICON      $'\uF01A '             # 
       VCS_OUTGOING_CHANGES_ICON      $'\uF01B '             # 
-      VCS_TAG_ICON                   $'\uF02B '             # 
-      VCS_BOOKMARK_ICON              $'\uF461 '             # 
-      VCS_COMMIT_ICON                $'\uE729 '             # 
-      VCS_BRANCH_ICON                $'\uF126 '             # 
       VCS_REMOTE_BRANCH_ICON         $'\uE728 '             # 
-      VCS_GIT_ICON                   $'\uF113 '             # 
-      VCS_GIT_GITHUB_ICON            $'\uE709 '             # 
-      VCS_GIT_BITBUCKET_ICON         $'\uE703 '             # 
-      VCS_GIT_GITLAB_ICON            $'\uF296 '             #  
-      VCS_HG_ICON                    $'\uF0C3 '             # 
+      VCS_STAGED_ICON                $'\uF055'              # 
+      VCS_STASH_ICON                 $'\uF01C '             # 
       VCS_SVN_ICON                   $'\uE72D '             # 
-      RUST_ICON                      $'\uE7A8 '             # 
-      PYTHON_ICON                    $'\UE73C '             # 
-      SWIFT_ICON                     $'\uE755'              # 
-      PUBLIC_IP_ICON                 $'\UF0AC'              # 
-      LOCK_ICON                      $'\UF023'              #  
-      EXECUTION_TIME_ICON            $'\uF252'              #  
-      SSH_ICON                       $'\uF489'              #  
+      VCS_TAG_ICON                   $'\uF02B '             # 
+      VCS_UNSTAGED_ICON              $'\uF06A'              # 
+      VCS_UNTRACKED_ICON             $'\uF059'              # 
     )
   ;;
   *)
@@ -224,58 +230,60 @@ case $POWERLEVEL9K_MODE in
       LEFT_SEGMENT_END_SEPARATOR     ' '                    # Whitespace
       LEFT_SUBSEGMENT_SEPARATOR      $'\uE0B1'              # 
       RIGHT_SUBSEGMENT_SEPARATOR     $'\uE0B3'              # 
-      CARRIAGE_RETURN_ICON           $'\u21B5'              # ↵
-      ROOT_ICON                      $'\u26A1'              # ⚡
-      RUBY_ICON                      ''
-      AWS_ICON                       'AWS:'
-      AWS_EB_ICON                    $'\U1F331 '            # 🌱
-      BACKGROUND_JOBS_ICON           $'\u2699'              # ⚙
-      TEST_ICON                      ''
-      TODO_ICON                      $'\u2611'              # ☑
-      BATTERY_ICON                   $'\U1F50B'             # 🔋
-      DISK_ICON                      $'hdd '
-      OK_ICON                        $'\u2713'              # ✓
-      FAIL_ICON                      $'\u2718'              # ✘
-      SYMFONY_ICON                   'SF'
-      NODE_ICON                      $'\u2B22'              # ⬢
-      MULTILINE_FIRST_PROMPT_PREFIX  $'\u256D'$'\u2500'
-      MULTILINE_SECOND_PROMPT_PREFIX $'\u2570'$'\u2500 '
       APPLE_ICON                     'OSX'
+      AWS_EB_ICON                    $'\U1F331 '            # 🌱
+      AWS_ICON                       'AWS:'
+      BACKGROUND_JOBS_ICON           $'\u2699'              # ⚙
+      BATTERY_ICON                   $'\U1F50B'             # 🔋
+      CARRIAGE_RETURN_ICON           $'\u21B5'              # ↵
+      DATE_ICON                      $''                    #
+      DISK_ICON                      $'hdd '
+      EXECUTION_TIME_ICON            'Dur'
+      FAIL_ICON                      $'\u2718'              # ✘
+      FOLDER_ICON                    ''
       FREEBSD_ICON                   'BSD'
-      LINUX_ICON                     'Lx'
-      SUNOS_ICON                     'Sun'
       HOME_ICON                      ''
       HOME_SUB_ICON                  ''
-      FOLDER_ICON                    ''
-      NETWORK_ICON                   'IP'
+      LINUX_ICON                     'Lx'
       LOAD_ICON                      'L'
-      SWAP_ICON                      'SWP'
+      LOCK_ICON                      $'\UE0A2'
+      MULTILINE_FIRST_PROMPT_PREFIX  $'\u256D'$'\u2500'
+      MULTILINE_SECOND_PROMPT_PREFIX $'\u2570'$'\u2500 '
+      NETWORK_ICON                   'IP'
+      NODE_ICON                      $'\u2B22'              # ⬢
+      OK_ICON                        $'\u2713'              # ✓
+      PUBLIC_IP_ICON                 ''
+      PYTHON_ICON                    ''
       RAM_ICON                       'RAM'
+      ROOT_ICON                      $'\u26A1'              # ⚡
+      RUBY_ICON                      ''
+      RUST_ICON                      ''
       SERVER_ICON                    ''
-      VCS_UNTRACKED_ICON             '?'
-      VCS_UNSTAGED_ICON              $'\u25CF'              # ●
-      VCS_STAGED_ICON                $'\u271A'              # ✚
-      VCS_STASH_ICON                 $'\u235F'              # ⍟
+      SSH_ICON                       '(ssh)'
+      SUNOS_ICON                     'Sun'
+      SWAP_ICON                      'SWP'
+      SWIFT_ICON                     'Swift'
+      SYMFONY_ICON                   'SF'
+      TEST_ICON                      ''
+      TIME_ICON                      $''                    #
+      TODO_ICON                      $'\u2611'              # ☑
+      VCS_BOOKMARK_ICON              $'\u263F'              # ☿
+      VCS_BRANCH_ICON                $'\uE0A0'              # 
+      VCS_COMMIT_ICON                ''
+      VCS_GIT_BITBUCKET_ICON         ''
+      VCS_GIT_GITHUB_ICON            ''
+      VCS_GIT_GITLAB_ICON            ''
+      VCS_GIT_ICON                   ''
+      VCS_HG_ICON                    ''
       VCS_INCOMING_CHANGES_ICON      $'\u2193'              # ↓
       VCS_OUTGOING_CHANGES_ICON      $'\u2191'              # ↑
-      VCS_TAG_ICON                   ''
-      VCS_BOOKMARK_ICON              $'\u263F'              # ☿
-      VCS_COMMIT_ICON                ''
-      VCS_BRANCH_ICON                $'\uE0A0'              # 
       VCS_REMOTE_BRANCH_ICON         $'\u2192'              # →
-      VCS_GIT_ICON                   ''
-      VCS_GIT_GITHUB_ICON            ''
-      VCS_GIT_BITBUCKET_ICON         ''
-      VCS_GIT_GITLAB_ICON            ''
-      VCS_HG_ICON                    ''
+      VCS_STAGED_ICON                $'\u271A'              # ✚
+      VCS_STASH_ICON                 $'\u235F'              # ⍟
       VCS_SVN_ICON                   ''
-      RUST_ICON                      ''
-      PYTHON_ICON                    ''
-      SWIFT_ICON                     'Swift'
-      PUBLIC_IP_ICON                 ''
-      LOCK_ICON                      $'\UE0A2'
-      EXECUTION_TIME_ICON            'Dur'
-      SSH_ICON                       '(ssh)'
+      VCS_TAG_ICON                   ''
+      VCS_UNSTAGED_ICON              $'\u25CF'              # ●
+      VCS_UNTRACKED_ICON             '?'
     )
   ;;
 esac
