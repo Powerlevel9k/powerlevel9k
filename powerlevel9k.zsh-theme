@@ -1241,6 +1241,17 @@ prompt_dir_writable() {
   fi
 }
 
+# Kubernetes Current Context
+prompt_kubecontext() {
+  local kubectl=$(kubectl version 2>/dev/null)
+
+  if [[ -n "kubectl_version" ]]; then
+     # Get the current Kuberenetes context
+     local k8s_context=$(kubectl config current-context)
+     "$1_prompt_segment" "$0" "$2" "magenta" "white" "$k8s_context \u2388"
+  fi
+}
+
 ################################################################
 # Prompt processing and drawing
 ################################################################
