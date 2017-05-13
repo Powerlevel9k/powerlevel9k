@@ -38,9 +38,8 @@
 #   $6 string Content - Segment content
 #   $7 string Visual Identifier - Segment icon
 ##
+POWERLEVEL9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS=" "
 left_prompt_segment() {
-  # Since this function is run in a subshell, we have to define variables in the subshell
-  POWERLEVEL9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS=" "
   # Name the parameters and add %K and %F to color variables
   local STATEFUL_NAME="${1}" INDEX="${2}" BG="%K{${3}}" FG="%F{${4}}" BOLD="${5}" CONTENT="${6}" VISUAL_IDENTIFIER="${7}"
   # Check if it should be bold
@@ -48,11 +47,14 @@ left_prompt_segment() {
   # Set the colors
   local SEGMENT="${BG}${FG}"
   # Add the visual identifier if it exists
-  [[ -n ${VISUAL_IDENTIFIER} ]] && SEGMENT+="${VISUAL_IDENTIFIER}${POWERLEVEL9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS}"
+  [[ -n ${VISUAL_IDENTIFIER} ]] && SEGMENT+="${VISUAL_IDENTIFIER}"
   # Add the content
-  SEGMENT+="${FG}${BD}${CONTENT}%b"
+  if [[ -n ${CONTENT} ]]; then
+    [[ -n ${VISUAL_IDENTIFIER} ]] && SEGMENT+="${POWERLEVEL9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS}"
+    [[ -n "${BD}" ]] && SEGMENT+="${BD}${CONTENT}%b" || SEGMENT+="${CONTENT}"
+  fi
   # Return the result to the main process, delimited by "·|·"
-  echo "${INDEX}·|·${SEGMENT}"
+  [[ "${INDEX}" != "" ]] && echo "${INDEX}·|·${SEGMENT}"
 }
 
 ###############################################################
@@ -68,9 +70,8 @@ left_prompt_segment() {
 #   $6 string Content - Segment content
 #   $7 string Visual Identifier - Segment icon
 ##
+POWERLEVEL9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS=" "
 right_prompt_segment() {
-  # Since this function is run in a subshell, we have to define variables in the subshell
-  POWERLEVEL9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS=" "
   # Name the parameters and add %K and %F to color variables
   local STATEFUL_NAME="${1}" INDEX="${2}" BG="%K{${3}}" FG="%F{${4}}" CONTENT="${6}" VISUAL_IDENTIFIER="${7}"
   # Check if it should be bold
@@ -81,15 +82,16 @@ right_prompt_segment() {
     # Add the visual identifier if it exists
     [[ -n ${VISUAL_IDENTIFIER} ]] && SEGMENT+="${VISUAL_IDENTIFIER}${POWERLEVEL9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS}"
     # Add the content
-    SEGMENT+="${BD}${CONTENT}"
+    [[ -n "${BD}" ]] && SEGMENT+="${BD}${CONTENT}%b" || SEGMENT+="${CONTENT}"
   else # Content before visual identifier
     # Add the content
-    SEGMENT+="${POWERLEVEL9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS}${BD}${CONTENT}%b${BG}${FG}"
+    SEGMENT+="${POWERLEVEL9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS}"
+      [[ -n "${BD}" ]] && SEGMENT+="${BD}${CONTENT}%b${BG}${FG}" || SEGMENT+="${CONTENT}"
     # Add the visual identifier if it exists
     [[ -n ${VISUAL_IDENTIFIER} ]] && SEGMENT+="${VISUAL_IDENTIFIER}${POWERLEVEL9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS}"
   fi
   # Return the result to the main process, delimited by "·|·"
-  echo "${INDEX}·|·${SEGMENT}"
+  [[ "${INDEX}" != "" ]] && echo "${INDEX}·|·${SEGMENT}"
 }
 
 ###############################################################
@@ -105,8 +107,8 @@ last_left_bg() {
   # Start at the segment before the current segment and work to the left
   for (( i = ${CURRENT_INDEX} - 1; i > 0; i-- )); do
     # If the segment is not empty, we have our color
-    if [[ ${POWERLEVEL9K_LEFT_PROMPT[$i]} != "" ]]; then
-      local LAST_BG="${POWERLEVEL9K_LEFT_PROMPT_BG_COLORS[$i]}"
+    if [[ ${P9K_LP_CONTENT[$i]} != "·" ]]; then
+      local LAST_BG="${P9K_LP_BACKGROUND[$i]}"
       break
     fi
   done
@@ -126,12 +128,93 @@ last_right_bg() {
   # Start at the segment before the current segment and work to the left
   for (( i = ${CURRENT_INDEX} - 1; i > 0; i-- )); do
     # If the segment is not empty, we have our color
-    if [[ ${POWERLEVEL9K_RIGHT_PROMPT[$i]} != "" ]]; then
-      local LAST_BG="${POWERLEVEL9K_RIGHT_PROMPT_BG_COLORS[$i]}"
+    if [[ ${P9K_RP_CONTENT[$i]} != "·" ]]; then
+      local LAST_BG="${P9K_RP_BACKGROUND[$i]}"
       break
     fi
   done
   echo "$LAST_BG"
+}
+
+update_left_prompt() {
+  local LBG LAST_LBG LSEGMENTS
+  # Determine how many segments are visible in the left prompt
+  LSEGMENTS=${#P9K_LP_CONTENT}
+  # Build the left prompt string
+  LEFT_PROMPT=""
+  for (( i = 1; i <= ${LSEGMENTS}; i++ )); do
+    if [[ "${P9K_LP_CONTENT[$i]}" != "·" ]]; then
+      LBG=${P9K_LP_BACKGROUND[$i]}
+      LFG=${P9K_LP_FOREGROUND[$i]}
+      if [[ $i != 1 ]]; then # If it is not the first segment...
+        # Find previous left segment background
+        LAST_LBG=$(last_left_bg $i)
+        if [[ $P9K_LP_JOINED[$i] == "true" ]]; then # If the segment are joined...
+          if  [[ "${LBG}" == "${LAST_LBG}" ]]; then # Are the backgrounds the same...
+            # We take the current foreground color as color for our subsegment, and
+            # add a left sub segment separator. This should have enough contrast.
+            LEFT_PROMPT+="%K{${LBG}}%F{${LFG}}${_POWERLEVEL9K_LEFT_SUBSEGMENT_SEPARATOR} "
+          fi
+        else # ...not joined
+          # Add a left segment separator
+          LEFT_PROMPT+="%K{${LBG}}%F{${LAST_LBG}}${_POWERLEVEL9K_LEFT_SEGMENT_SEPARATOR} "
+        fi
+      else # ...otherwise it is the first segment and there is no previous background
+        [[ "${POWERLEVEL9K_FANCY_EDGE}" == "true" ]] && LEFT_PROMPT+="%F{${LBG}}${_POWERLEVEL9K_RIGHT_SEGMENT_SEPARATOR}"
+        LEFT_PROMPT+="%K{${LBG}} "
+      fi
+      # Add the segment to the left prompt string
+      LEFT_PROMPT+="${P9K_LP_CONTENT[$i]} "
+    fi
+  done
+  # Prompt is complete, so find the background of the last segment
+  local LBI=$((${#P9K_LP_CONTENT} + 1))
+  LBG=$(last_left_bg ${LBI})
+  # Add the last left segment separator and the suffix
+  LEFT_PROMPT+="%F{${LBG}}%k${_POWERLEVEL9K_LEFT_SEGMENT_SEPARATOR}%f%b "
+  # Set the left prompt
+  PROMPT=${LEFT_PROMPT_PREFIX}${LEFT_PROMPT}${LEFT_PROMPT_SUFFIX}
+  # About .reset-prompt see:
+  # https://github.com/sorin-ionescu/prezto/issues/1026
+  # https://github.com/zsh-users/zsh-autosuggestions/issues/107#issuecomment-183824034
+  zle .reset-prompt
+}
+
+update_right_prompt() {
+  local RBG LAST_RBG RSEGMENTS
+  # Determine how many segments are visible in the left prompt
+  RSEGMENTS=${#P9K_RP_CONTENT}
+  # Build the left prompt string
+  RIGHT_PROMPT=""
+  for (( i = 1; i <= ${RSEGMENTS}; i++ )); do
+    if [[ "${P9K_RP_CONTENT[$i]}" != "·" ]]; then
+      RBG=${P9K_RP_BACKGROUND[$i]}
+      RFG=${P9K_RP_FOREGROUND[$i]}
+      # Find previous right segment background
+      LAST_RBG=$(last_right_bg $i)
+      # Should the segment be joined?
+      if [[ $P9K_RP_JOINED[$i] == "true" ]]; then
+        # Are the backgrounds the same...
+        if [[ "${RBG}" == "${LAST_RBG}" ]]; then
+          # We take the current foreground color as color for our subsegment,
+          # and add a sub segment separator. This should have enough contrast.
+          RIGHT_PROMPT+="%K{${RBG}}%F{${RFG}}${_POWERLEVEL9K_RIGHT_SUBSEGMENT_SEPARATOR}"
+        fi
+      else
+        # ...otherwise add a right segment separator
+        RIGHT_PROMPT+="%K{${LAST_RBG}}%F{${RBG}}${_POWERLEVEL9K_RIGHT_SEGMENT_SEPARATOR}"
+      fi
+      # Add the segment to the right prompt string
+      RIGHT_PROMPT+="${P9K_RP_CONTENT[$i]} "
+    fi
+  done
+  [[ "${POWERLEVEL9K_FANCY_EDGE}" == "true" ]] && RIGHT_PROMPT+="%k%F{$RBG}${_POWERLEVEL9K_LEFT_SEGMENT_SEPARATOR}%f"
+  # Set the left prompt
+  RPROMPT=${RIGHT_PROMPT_PREFIX}${RIGHT_PROMPT}${RIGHT_PROMPT_SUFFIX}
+  # About .reset-prompt see:
+  # https://github.com/sorin-ionescu/prezto/issues/1026
+  # https://github.com/zsh-users/zsh-autosuggestions/issues/107#issuecomment-183824034
+  zle .reset-prompt
 }
 
 ################################################################
@@ -149,15 +232,13 @@ last_right_bg() {
 #   $2 number Code - Return code (If the value is -1, then it is likely that there is a bug)
 #   $3 string Output - Resulting (stdout) output from the job
 #   $4 number Exec_Time - Execution time, floating point (in seconds)
+#   $5 string Err - Resulting (stderr) output from the job
 ##
 p9k_async_callback() {
-  setopt localoptions noshwordsplit
-  setopt PROMPT_SUBST
-  local LC_ALL="" LC_CTYPE="en_US.UTF-8" # Set the right locale to protect special characters
-
   # Name the parameters (CODE, EXEC_TIME and ERR are not currently used, but are included for possible future use)
-  local JOB=$1 CODE=$2 OUTPUT=$3 EXEC_TIME=$4
-  # Determine which function finished...
+  local JOB="${1}" CODE="${2}" OUTPUT="${3}" EXEC_TIME="${4}" ERR="${5}"
+
+  # Determine which function returned output...
   case $JOB in
     p9k_serialize_segment) # Segment code was converted into data
       # Make sure we received the data
@@ -167,7 +248,10 @@ p9k_async_callback() {
         local ar=("${(@s:·|·:)OUTPUT}") # split on delimiter "·|·" (@s:<delim>:)
         # Name the parameters
         local STATEFUL_NAME=${ar[1]} ALIGNMENT=${(L)ar[2]} INDEX=${ar[3]} JOINED=${ar[4]} BACKGROUND=${ar[5]} FOREGROUND=${ar[6]} BOLD=${ar[7]} CONTENT=${ar[8]} VISUAL_IDENTIFIER=${ar[9]} CONDITION=${ar[10]}
-        unset ar
+
+        # If $INDEX is not a number, then don't process the output
+        # See: https://www.zsh.org/mla/users/2007/msg00086.html
+        [[ ${INDEX} != <-> ]] && break
 
         # Conditions have three layers:
         # 1. No segment should print if they provide no content (default condition).
@@ -176,7 +260,7 @@ p9k_async_callback() {
         local SEGMENT_CONDITION="POWERLEVEL9K_${STATEFUL_NAME}_CONDITION"
         if defined "${SEGMENT_CONDITION}"; then
           CONDITION="${(P)SEGMENT_CONDITION}"
-        elif [[ -n "${CONDITION}" ]]; then
+        elif [[ -n "${CONDITION}" && "$CONDITION[0,1]" == "[" ]]; then
           CONDITION="${CONDITION}"
         else
           CONDITION='[[ -n "${CONTENT}" ]]'
@@ -187,25 +271,21 @@ p9k_async_callback() {
         if [[ ${CONDITION} == true ]]; then # If the segments condition to print was met, add it...
           if [[ "${ALIGNMENT}" == "left" ]]; then # If it is a left prompt segment...
             # Store the background, foreground and joined states in separate arrays
-            POWERLEVEL9K_LEFT_PROMPT_BG_COLORS[$INDEX]="${BACKGROUND}"
-            POWERLEVEL9K_LEFT_PROMPT_FG_COLORS[$INDEX]="${FOREGROUND}"
-            POWERLEVEL9K_LEFT_PROMPT_JOINED[$INDEX]="${JOINED}"
+            P9K_LP_BACKGROUND[$INDEX]="${BACKGROUND}"
+            P9K_LP_FOREGROUND[$INDEX]="${FOREGROUND}"
+            P9K_LP_JOINED[$INDEX]="${JOINED}"
             # Send the data to a subshell to be converted into a left prompt segment
             async_job "p9k" left_prompt_segment "${STATEFUL_NAME}" "${INDEX}" "${BACKGROUND}" "${FOREGROUND}" "${BOLD}" "${CONTENT}" "${VISUAL_IDENTIFIER}"
           else # ...it is a right prompt segment
             # Store the background, foreground and joined states in separate arrays
-            POWERLEVEL9K_RIGHT_PROMPT_BG_COLORS[$INDEX]="${BACKGROUND}"
-            POWERLEVEL9K_RIGHT_PROMPT_FG_COLORS[$INDEX]="${FOREGROUND}"
-            POWERLEVEL9K_RIGHT_PROMPT_JOINED[$INDEX]="${JOINED}"
+            P9K_RP_BACKGROUND[$INDEX]="${BACKGROUND}"
+            P9K_RP_FOREGROUND[$INDEX]="${FOREGROUND}"
+            P9K_RP_JOINED[$INDEX]="${JOINED}"
             # Send the data to a subshell to be converted into a left prompt segment
             async_job "p9k" right_prompt_segment "${STATEFUL_NAME}" "${INDEX}" "${BACKGROUND}" "${FOREGROUND}" "${BOLD}" "${CONTENT}" "${VISUAL_IDENTIFIER}"
           fi
-        else # ...otherwise set the prompt content array to "" (no segemnt)
-          if [[ "${ALIGNMENT}" == "left" ]]; then
-            POWERLEVEL9K_LEFT_PROMPT[${INDEX}]=""
-          else
-            POWERLEVEL9K_RIGHT_PROMPT[${INDEX}]=""
-          fi
+        else # ...otherwise set the prompt content array to "·" (no segemnt)
+          [[ "${ALIGNMENT}" == "left" ]] && P9K_LP_CONTENT[${INDEX}]="·" || P9K_RP_CONTENT[${INDEX}]="·"
         fi
       fi
     ;;
@@ -214,50 +294,12 @@ p9k_async_callback() {
       if [[ -n $OUTPUT ]]; then
         # Split $OUTPUT into an array - see https://unix.stackexchange.com/a/28873
         local ar=("${(@s:·|·:)OUTPUT}") # split on delimiter "·|·"
-        # Store the segment in the left prompt content array
-        POWERLEVEL9K_LEFT_PROMPT[${ar[1]}]="${ar[2]}"
-        unset ar
 
-        local LBG LAST_LBG LSEGMENTS
-        # Determine how many segments are visible in the left prompt
-        LSEGMENTS=${#POWERLEVEL9K_LEFT_PROMPT}
-        # Build the left prompt string
-        PROMPT=${LEFT_PROMPT_PREFIX}
-        for (( i = 1; i <= ${LSEGMENTS}; i++ )); do
-          if [[ -n ${POWERLEVEL9K_LEFT_PROMPT[$i]} ]]; then
-            LBG=${POWERLEVEL9K_LEFT_PROMPT_BG_COLORS[$i]}
-            LFG=${POWERLEVEL9K_LEFT_PROMPT_FG_COLORS[$i]}
-            if [[ $i != 1 ]]; then # If it is not the first segment...
-              # Find previous left segment background
-              LAST_LBG=$(last_left_bg $i)
-              if [[ $POWERLEVEL9K_LEFT_PROMPT_JOINED[$i] == "true" ]]; then # If the segment are joined...
-                if  [[ "${LBG}" == "${LAST_LBG}" ]]; then # Are the backgrounds the same...
-                  # We take the current foreground color as color for our subsegment, and
-                  # add a left sub segment separator. This should have enough contrast.
-                  PROMPT+="%K{${LBG}}%F{${LFG}}${_POWERLEVEL9K_LEFT_SUBSEGMENT_SEPARATOR} "
-                fi
-              else # ...not joined
-                # Add a left segment separator
-                PROMPT+="%K{${LBG}}%F{${LAST_LBG}}${_POWERLEVEL9K_LEFT_SEGMENT_SEPARATOR} "
-              fi
-            else # ...otherwise it is the first segment and there is no previous background
-              [[ "${POWERLEVEL9K_FANCY_EDGE}" == "true" ]] && PROMPT+="%F{${LBG}}${_POWERLEVEL9K_RIGHT_SEGMENT_SEPARATOR}"
-              PROMPT+="%K{${LBG}} "
-            fi
-            # Add the segment to the left prompt string
-            PROMPT+="${POWERLEVEL9K_LEFT_PROMPT[$i]} "
-          fi
-        done
-        # Prompt is complete, so find the background of the last segment
-        LBG=$(last_left_bg ${#POWERLEVEL9K_LEFT_PROMPT})
-        # Add the last left segment separator and the suffix
-        PROMPT+="%F{${LBG}}%k${_POWERLEVEL9K_LEFT_SEGMENT_SEPARATOR}%f%b "
-        # Set the left prompt
-        PROMPT+=${LEFT_PROMPT_SUFFIX}
-        # About .reset-prompt see:
-        # https://github.com/sorin-ionescu/prezto/issues/1026
-        # https://github.com/zsh-users/zsh-autosuggestions/issues/107#issuecomment-183824034
-        zle && zle .reset-prompt
+        # If $ar[1] (the index) is a number, then store the segment in the left prompt contents array
+        # See: https://www.zsh.org/mla/users/2007/msg00086.html
+        [[ ${ar[1]} == <-> ]] && P9K_LP_CONTENT[${ar[1]}]="${ar[2]}"
+        # Update the left prompt
+        update_left_prompt
       fi
     ;;
     right_prompt_segment) # Data was converted into a right prompt segment
@@ -266,44 +308,12 @@ p9k_async_callback() {
         # Split $OUTPUT into an array - see https://unix.stackexchange.com/a/28873
         #local ar=("${(@f)output}") # split on newline
         local ar=("${(@s:·|·:)OUTPUT}") # split on delimiter "·|·"
-        # Store the segment in the right prompt content array
-        POWERLEVEL9K_RIGHT_PROMPT[${ar[1]}]="${ar[2]}"
-        unset ar
 
-        local RBG LAST_RBG RSEGMENTS
-        # Determine how many segments are visible in the left prompt
-        RSEGMENTS=${#POWERLEVEL9K_RIGHT_PROMPT}
-        # Build the left prompt string
-        RPROMPT=${RIGHT_PROMPT_PREFIX}
-        for (( i = 1; i <= ${RSEGMENTS}; i++ )); do
-          if [[ -n ${POWERLEVEL9K_RIGHT_PROMPT[$i]} ]]; then
-            RBG=${POWERLEVEL9K_RIGHT_PROMPT_BG_COLORS[$i]}
-            RFG=${POWERLEVEL9K_RIGHT_PROMPT_FG_COLORS[$i]}
-            # Find previous right segment background
-            LAST_RBG=$(last_right_bg $i)
-            # Should the segment be joined?
-            if [[ $POWERLEVEL9K_RIGHT_PROMPT_JOINED[$i] == "true" ]]; then
-              # Are the backgrounds the same...
-              if [[ "${RBG}" == "${LAST_RBG}" ]]; then
-                # We take the current foreground color as color for our subsegment,
-                # and add a sub segment separator. This should have enough contrast.
-                RPROMPT+="%K{${RBG}}%F{${RFG}}${_POWERLEVEL9K_RIGHT_SUBSEGMENT_SEPARATOR}"
-              fi
-            else
-              # ...otherwise add a right segment separator
-              RPROMPT+="%K{${LAST_RBG}}%F{${RBG}}${_POWERLEVEL9K_RIGHT_SEGMENT_SEPARATOR}"
-            fi
-            # Add the segment to the right prompt string
-            RPROMPT+="${POWERLEVEL9K_RIGHT_PROMPT[$i]} "
-          fi
-        done
-        [[ "${POWERLEVEL9K_FANCY_EDGE}" == "true" ]] && RPROMPT+="%k%F{$RBG}${_POWERLEVEL9K_LEFT_SEGMENT_SEPARATOR}%f"
-        # Set the left prompt
-        RPROMPT+=${RIGHT_PROMPT_SUFFIX}
-        # About .reset-prompt see:
-        # https://github.com/sorin-ionescu/prezto/issues/1026
-        # https://github.com/zsh-users/zsh-autosuggestions/issues/107#issuecomment-183824034
-        zle && zle .reset-prompt
+        # If $ar[1] (the index) is a number, then store the segment in the right prompt contents array
+        # See: https://www.zsh.org/mla/users/2007/msg00086.html
+        [[ ${ar[1]} == <-> ]] && P9K_RP_CONTENT[${ar[1]}]="${ar[2]}"
+        # Update the right prompt
+        update_right_prompt
       fi
     ;;
   esac
@@ -370,11 +380,14 @@ p9k_serialize_segment() {
     if [[ -n "${VISUAL_IDENTIFIER}" ]]; then
       # Allow users to overwrite the color for the visual identifier only.
       local visual_identifier_color_variable="POWERLEVEL9K_${STATEFUL_NAME}_VISUAL_IDENTIFIER_COLOR"
-      set_default "${visual_identifier_color_variable}" "${FOREGROUND}"
-      VISUAL_IDENTIFIER="%F{${(P)visual_identifier_color_variable}%}${VISUAL_IDENTIFIER}%f"
+      local visual_identifier_color="${(P)visual_identifier_color_variable}"
+      # only add color to icon if override color is set and not equal to foreground
+      if [[ -n "${visual_identifier_color}" && "${visual_identifier_color}" != "${FOREGROUND}" ]]; then
+        VISUAL_IDENTIFIER="%F{${visual_identifier_color}}${VISUAL_IDENTIFIER}%F{${FOREGROUND}}"
+      fi
       # Add an whitespace if we print more than just the visual identifier
       if [[ -n "${CONTENT}" ]]; then
-        [[ "${ALIGNMENT}" == "left" ]] && VISUAL_IDENTIFIER="${VISUAL_IDENTIFIER} "
+        [[ "${POWERLEVEL9K_RPROMPT_ICON_LEFT}" ]] && VISUAL_IDENTIFIER="${VISUAL_IDENTIFIER} " ||
         [[ "${ALIGNMENT}" == "right" ]] && VISUAL_IDENTIFIER=" ${VISUAL_IDENTIFIER}"
       fi
     fi
@@ -393,7 +406,7 @@ p9k_serialize_segment() {
 #   $@ misc The parameters passed from the segment code
 ##
 serialize_segment() {
-  async_job "p9k" p9k_serialize_segment "${@}"
+  async_job "p9k" "p9k_serialize_segment" "${@}"
 }
 
 ################################################################
@@ -422,7 +435,7 @@ build_left_prompt() {
       # Could we display placeholders?
       # -> At most it could be static ones, but
       # e.g. states are the result of calculation..
-      "prompt_$element" "left" "${index}" "${joined}" &!
+      [[ $element != "vi_mode" ]] && "prompt_$element" "left" "${index}" "${joined}" &!
     fi
     index=$((index + 1))
   done
@@ -447,7 +460,7 @@ build_right_prompt() {
     if [[ $element[0,7] =~ "custom_" ]]; then
       "prompt_custom" "right" "$index" "${element[8,-1]}" "${joined}" &!
     else
-      "prompt_$element" "right" "$index" "${joined}" &!
+      [[ $element != "vi_mode" ]] && "prompt_$element" "right" "$index" "${joined}" &!
     fi
     index=$((index + 1))
   done
@@ -484,8 +497,18 @@ powerlevel9k_prepare_prompts() {
   async_flush_jobs "p9k"
 
   # Arrays to hold the left and right prompt segment data
-  declare -A POWERLEVEL9K_LEFT_PROMPT
-  declare -A POWERLEVEL9K_RIGHT_PROMPT
+  if [[ ${#P9K_LP_CONTENT} -ne ${#P9K_LP_ELEMENTS} ]]; then
+    P9K_LP_CONTENT=()
+    P9K_LP_BACKGROUND=()
+    P9K_LP_FOREGROUND=()
+    P9K_LP_JOINED=()
+  fi
+  if [[ ${#P9K_RP_CONTENT} -ne ${#P9K_RP_ELEMENTS} ]]; then
+    P9K_RP_CONTENT=()
+    P9K_RP_BACKGROUND=()
+    P9K_RP_FOREGROUND=()
+    P9K_RP_JOINED=()
+  fi
 
   # Timing calculation
   _P9K_COMMAND_DURATION=$((EPOCHREALTIME - _P9K_TIMER_START))
@@ -494,9 +517,6 @@ powerlevel9k_prepare_prompts() {
   # I decided to use the value above for better supporting 32-bit CPUs, since the previous value "99999999999" was
   # causing issues on my Android phone, which is powered by an armv7l
   # We don't have to change that until 19 January of 2038! :)
-
-  # Start segment timing
-  _P9K_SEGMENT_TIMER_START="${EPOCHREALTIME}"
 
   # Initialize icon overrides
   _powerlevel9kInitializeIconOverrides
@@ -509,7 +529,16 @@ powerlevel9k_prepare_prompts() {
   RIGHT_PROMPT_PREFIX=""
   RIGHT_PROMPT_SUFFIX=""
 
-  setopt PROMPT_SUBST
+  # The prompt function will set these prompt_* options after the setup function
+  # returns. We need prompt_subst so we can safely run commands in the prompt
+  # without them being double expanded and we need prompt_percent to expand the
+  # common percent escape sequences.
+  prompt_opts=(cr percent subst)
+
+  # Borrowed from promptinit, sets the prompt options in case the theme was
+  # not initialized via promptinit.
+  setopt noprompt{bang,cr,percent,subst} "prompt${^prompt_opts[@]}"
+
   local LC_ALL="" LC_CTYPE="en_US.UTF-8" # Set the right locale to protect special characters
 
   # Preset multiline prompt
@@ -542,6 +571,11 @@ $(print_icon 'MULTILINE_SECOND_PROMPT_PREFIX')"
   fi
 }
 
+p9k_chpwd() {
+  powerlevel9k_prepare_prompts
+  powerlevel9k_preexec
+}
+
 ###############################################################
 # @description
 #   This is the main function. It does the necessary checks,
@@ -553,10 +587,10 @@ prompt_powerlevel9k_setup() {
   # Disable false display of command execution time
   [[ "$ARCH" == "x64" ]] && _P9K_TIMER_START=99999999999 || _P9K_TIMER_START=2147483647
 
-  prompt_opts=(subst percent)
+  #prompt_opts=(cr subst percent)
   # borrowed from promptinit, sets the prompt options in case pure was not
   # initialized via promptinit.
-  setopt noprompt{bang,cr,percent,subst} "prompt${^prompt_opts[@]}"
+  #setopt noprompt{bang,cr,percent,subst} "prompt${^prompt_opts[@]}"
 
   # Display a warning if the terminal does not support 256 colors
   local term_colors
@@ -578,8 +612,8 @@ prompt_powerlevel9k_setup() {
       print -P "\t%F{red}WARNING!%f %F{blue}export LANG=\"en_US.UTF-8\"%f at the top of your \~\/.zshrc is sufficient."
   fi
 
-  defined POWERLEVEL9K_LEFT_PROMPT_ELEMENTS || POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(context dir rbenv vcs)
-  defined POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS || POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status root_indicator background_jobs history time)
+  defined P9K_LP_ELEMENTS || P9K_LP_ELEMENTS=(context dir rbenv vcs)
+  defined P9K_RP_ELEMENTS || P9K_RP_ELEMENTS=(status root_indicator background_jobs history time)
 
   # Display a warning if deprecated segments are in use.
   typeset -AH deprecated_segments
@@ -590,6 +624,10 @@ prompt_powerlevel9k_setup() {
     'symfony2_tests'    'symfony_tests'
   )
   print_deprecation_warning deprecated_segments
+
+  # initialize prompt arrays
+  declare -A P9K_LP_CONTENT
+  declare -A P9K_RP_CONTENT
 
   # initialize colors
   autoload -U colors && colors
@@ -604,7 +642,7 @@ prompt_powerlevel9k_setup() {
   # initialize async worker
   (( !${p9k_async_init:-0} )) && {
     async_start_worker "p9k" -n
-    async_register_callback "p9k" p9k_async_callback
+    async_register_callback "p9k" "p9k_async_callback"
     p9k_async_init=1
   }
 
@@ -617,4 +655,10 @@ prompt_powerlevel9k_setup() {
   # prepare prompts
   add-zsh-hook precmd powerlevel9k_prepare_prompts
   add-zsh-hook preexec powerlevel9k_preexec
+
+  # initialize zle
+  zle
+
+  # hook into chpwd for bindkey support
+  chpwd_functions=(${chpwd_functions[@]} "p9k_chpwd")
 }
