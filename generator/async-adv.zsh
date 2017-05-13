@@ -587,11 +587,6 @@ prompt_powerlevel9k_setup() {
   # Disable false display of command execution time
   [[ "$ARCH" == "x64" ]] && _P9K_TIMER_START=99999999999 || _P9K_TIMER_START=2147483647
 
-  #prompt_opts=(cr subst percent)
-  # borrowed from promptinit, sets the prompt options in case pure was not
-  # initialized via promptinit.
-  #setopt noprompt{bang,cr,percent,subst} "prompt${^prompt_opts[@]}"
-
   # Display a warning if the terminal does not support 256 colors
   local term_colors
   term_colors=$(echotc Co)
