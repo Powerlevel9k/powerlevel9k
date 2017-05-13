@@ -54,17 +54,41 @@ prompt_vi_mode() {
 
 ###############################################################
 function rebuild_vi_mode {
-  if [[ "${POWERLEVEL9K_GENERATOR}" == "async" ]]; then
-    if (( ${+terminfo[smkx]} )); then
-      printf '%s' ${terminfo[smkx]}
-    fi
-    for index in $(get_indices_of_segment "vi_mode" "${POWERLEVEL9K_LEFT_PROMPT_ELEMENTS}"); do
-       prompt_vi_mode "left" "${index}" "${1}" &!
-    done
-    for index in $(get_indices_of_segment "vi_mode" "${POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS}"); do
-       prompt_vi_mode "right" "${index}" "${1}" &!
-    done
-  fi
+  case "${POWERLEVEL9K_GENERATOR}" in
+    async)
+      if (( ${+terminfo[smkx]} )); then
+        printf '%s' ${terminfo[smkx]}
+      fi
+      for index in $(get_indices_of_segment "vi_mode" "${POWERLEVEL9K_LEFT_PROMPT_ELEMENTS}"); do
+         prompt_vi_mode "left" "${index}" "${1}" &!
+      done
+      for index in $(get_indices_of_segment "vi_mode" "${POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS}"); do
+         prompt_vi_mode "right" "${index}" "${1}" &!
+      done
+    ;;
+    async-adv)
+      if (( ${+terminfo[smkx]} )); then
+        printf '%s' ${terminfo[smkx]}
+      fi
+      local element
+      for (( i = 1; i <= ${#POWERLEVEL9K_LEFT_PROMPT_ELEMENTS}; i++ )); do
+        element="${(L)POWERLEVEL9K_LEFT_PROMPT_ELEMENTS[$i]}"
+        if [[ "${element}" =~ "vi_mode" ]]; then
+          [[ "${element[-7,-1]}" == '_joined' ]] && joined=true
+          prompt_vi_mode "left" "${i}" "$joined"
+          break
+        fi
+      done
+      for (( i = 1; i <= ${#POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS}; i++ )); do
+        element="${(L)POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS[$i]}"
+        if [[ "${element}" =~ "vi_mode" ]]; then
+          [[ "${element[-7,-1]}" == '_joined' ]] && joined=true
+          prompt_vi_mode "left" "${i}" "$joined"
+          break
+        fi
+      done
+    ;;
+  esac
 }
 
 ###############################################################
@@ -154,7 +178,7 @@ function zle-line-init {
 
 ###############################################################
 function zle-line-finish {
-  rebuild_vi_mode "${KEYMAP}"
+  #rebuild_vi_mode "${KEYMAP}"
   if [[ $POWERLEVEL9K_CURSOR_SHAPE ]]; then
     cursorShape ${POWERLEVEL9K_CURSOR_SHAPE_DEFAULT}
   fi
