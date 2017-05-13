@@ -51,10 +51,9 @@ left_prompt_segment() {
     fi
   else
     # First segment
-    [[ "${POWERLEVEL9K_FANCY_EDGE}" == "true" ]] && echo -n "%F{${bg}}${_POWERLEVEL9K_RIGHT_SEGMENT_SEPARATOR}"
+    [[ "${(L)POWERLEVEL9K_FANCY_EDGE}" == "true" ]] && echo -n "%F{$3}${_POWERLEVEL9K_RIGHT_SEGMENT_SEPARATOR}"
     echo -n "${bg}${POWERLEVEL9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS}"
   fi
-
   # Print the visual identifier
   echo -n "${7}"
   # Print the content of the segment
