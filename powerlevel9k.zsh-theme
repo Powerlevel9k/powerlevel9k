@@ -1130,6 +1130,16 @@ build_test_stats() {
   (( ratio < 50 )) && "$1_prompt_segment" "$2_BAD" "$3" "red" "$DEFAULT_COLOR" "$headline: $ratio%%" "$6"
 }
 
+# System date
+prompt_date() {
+  local date_format "%D{%d.%m.%y}"
+  if [[ -n "$POWERLEVEL9K_DATE_FORMAT" ]]; then
+    date_format="$POWERLEVEL9K_DATE_FORMAT"
+  fi
+
+  "$1_prompt_segment" "$0" "$2" "$DEFAULT_COLOR_INVERTED" "$DEFAULT_COLOR" "${date_format}" "DATE_ICON"
+}
+
 # System time
 prompt_time() {
   local time_format="%D{%H:%M:%S}"
@@ -1137,7 +1147,7 @@ prompt_time() {
     time_format="$POWERLEVEL9K_TIME_FORMAT"
   fi
 
-  "$1_prompt_segment" "$0" "$2" "$DEFAULT_COLOR_INVERTED" "$DEFAULT_COLOR" "$time_format"
+  "$1_prompt_segment" "$0" "$2" "$DEFAULT_COLOR_INVERTED" "$DEFAULT_COLOR" "$time_format" "TIME_ICON"
 }
 
 # todo.sh: shows the number of tasks in your todo.sh file
