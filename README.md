@@ -93,6 +93,7 @@ The segments that are currently available are:
 * [`disk_usage`](#disk_usage) - Disk usage of your current partition.
 * `history` - The command number for the current line.
 * [`ip`](#ip) - Shows the current IP address.
+* [`vpn`](#vpn) - Shows the current VPN IP address.
 * [`public_ip`](#public_ip) - Shows your public IP address.
 * `load` - Your machine's load averages.
 * `os_icon` - Display a nice little icon, depending on your operating system.
