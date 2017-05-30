@@ -1062,9 +1062,10 @@ prompt_symfony2_version() {
   fi
 }
 
+set_default POWERLEVEL9K_VPN_IP_INTERFACE "tun"
 # prompt if vpn active
 prompt_vpn_ip() {
-  if [[ -n "$POWERLEVEL9K_VPN_IP_INTERFACE" && -x /usr/bin/nmcli ]]; then
+  if [[ -x /usr/bin/nmcli ]]; then
     for vpn_iface in $(/usr/bin/nmcli connection show --active |grep $POWERLEVEL9K_VPN_IP_INTERFACE | awk '{print $4}')
     do
       ip=$(ip -4 a show "$vpn_iface" | grep -o "inet\s*[0-9.]*" | grep -o "[0-9.]*")
@@ -1072,7 +1073,7 @@ prompt_vpn_ip() {
     done
   fi
 }
-                             
+
 # Show a ratio of tests vs code
 build_test_stats() {
   local code_amount="$4"
