@@ -150,6 +150,7 @@ case $POWERLEVEL9K_MODE in
       LOCK_ICON                      $'\UE138'              # 
       EXECUTION_TIME_ICON            $'\uF253'
       SSH_ICON                       '(ssh)'
+      VPN_ICON                       $'\uF023'
     )
   ;;
   'nerdfont-complete'|'nerdfont-fontconfig')

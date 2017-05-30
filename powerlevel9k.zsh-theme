@@ -1062,6 +1062,17 @@ prompt_symfony2_version() {
   fi
 }
 
+# prompt if vpn active
+prompt_vpn_ip() {
+  if [[ -n "$POWERLEVEL9K_VPN_IP_INTERFACE" && -x /usr/bin/nmcli ]]; then
+    for vpn_iface in $(/usr/bin/nmcli connection show --active |grep $POWERLEVEL9K_VPN_IP_INTERFACE | awk '{print $4}')
+    do
+      ip=$(ip -4 a show "$vpn_iface" | grep -o "inet\s*[0-9.]*" | grep -o "[0-9.]*")
+      "$1_prompt_segment" "$0" "$2" "cyan" "$DEFAULT_COLOR" "$ip" 'VPN_ICON'
+    done
+  fi
+}
+                             
 # Show a ratio of tests vs code
 build_test_stats() {
   local code_amount="$4"
