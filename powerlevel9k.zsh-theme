@@ -1066,7 +1066,7 @@ set_default POWERLEVEL9K_VPN_IP_INTERFACE "tun"
 # prompt if vpn active
 prompt_vpn_ip() {
   if [[ -x /usr/bin/nmcli ]]; then
-    for vpn_iface in $(/usr/bin/nmcli connection show --active | awk '{print $4}' | grep "$POWERLEVEL9K_VPN_IP_INTERFACE" )
+    for vpn_iface in $(/bin/ip tuntap | grep -e ^"$POWERLEVEL9K_VPN_IP_INTERFACE" | cut -d":" -f1)
     do
       ip=$(ip -4 a show "$vpn_iface" | grep -o "inet\s*[0-9.]*" | grep -o "[0-9.]*")
       "$1_prompt_segment" "$0" "$2" "cyan" "$DEFAULT_COLOR" "$ip" 'VPN_ICON'
