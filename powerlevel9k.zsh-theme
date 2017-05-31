@@ -827,6 +827,16 @@ prompt_ip() {
   "$1_prompt_segment" "$0" "$2" "cyan" "$DEFAULT_COLOR" "$ip" 'NETWORK_ICON'
 }
 
+set_default POWERLEVEL9K_VPN_IP_INTERFACE "tun"
+# prompt if vpn active
+prompt_vpn_ip() {
+  for vpn_iface in $(ip tuntap | grep -e ^"$POWERLEVEL9K_VPN_IP_INTERFACE" | cut -d":" -f1)
+  do
+    ip=$(ip -4 a show "$vpn_iface" | grep -o "inet\s*[0-9.]*" | grep -o "[0-9.]*")
+    "$1_prompt_segment" "$0" "$2" "cyan" "$DEFAULT_COLOR" "$ip" 'VPN_ICON'
+  done
+}
+
 prompt_load() {
   # The load segment can have three different states
   local current_state="unknown"
@@ -1059,18 +1069,6 @@ prompt_symfony2_version() {
     local symfony2_version
     symfony2_version=$(grep " VERSION " app/bootstrap.php.cache | sed -e 's/[^.0-9]*//g')
     "$1_prompt_segment" "$0" "$2" "240" "$DEFAULT_COLOR" "$symfony2_version" 'SYMFONY_ICON'
-  fi
-}
-
-set_default POWERLEVEL9K_VPN_IP_INTERFACE "tun"
-# prompt if vpn active
-prompt_vpn_ip() {
-  if [[ -x /usr/bin/nmcli ]]; then
-    for vpn_iface in $(/bin/ip tuntap | grep -e ^"$POWERLEVEL9K_VPN_IP_INTERFACE" | cut -d":" -f1)
-    do
-      ip=$(ip -4 a show "$vpn_iface" | grep -o "inet\s*[0-9.]*" | grep -o "[0-9.]*")
-      "$1_prompt_segment" "$0" "$2" "cyan" "$DEFAULT_COLOR" "$ip" 'VPN_ICON'
-    done
   fi
 }
 
