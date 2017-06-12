@@ -136,6 +136,7 @@ The segments that are currently available are:
     * [`aws`](#aws) - The current AWS profile, if active.
     * `aws_eb_env` - The current Elastic Beanstalk Environment.
 * `docker_machine` - The current Docker Machine.
+* `kubernetes` - The current Kubernetes Cluster.
 
 **Other:**
 * [`custom_command`](#custom_command) - Create a custom segment to display the

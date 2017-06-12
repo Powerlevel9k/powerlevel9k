@@ -768,6 +768,16 @@ prompt_history() {
   "$1_prompt_segment" "$0" "$2" "244" "$DEFAULT_COLOR" '%h'
 }
 
+# Kubernetes
+prompt_kubernetes() {
+  # Get current context
+  local context="$( cat ~/.kube/config 2>/dev/null | grep "current-context:" | sed "s/current-context: //" ) "
+
+  if [[ -n "$context" ]]; then
+    "$1_prompt_segment" "$0" "$2" "red" "$DEFAULT_COLOR" "$context" 'SERVER_ICON'
+  fi
+}
+
 # Detection for virtualization (systemd based systems only)
 prompt_detect_virt() {
   if ! command -v systemd-detect-virt > /dev/null; then
