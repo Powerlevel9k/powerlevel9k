@@ -1370,7 +1370,7 @@ prompt_kubecontext() {
 
   if [[ -n "$kubectl_version" ]]; then
     # Get the current Kubernetes config context's namespaece
-    local k8s_namespace=$(kubectl config get-contexts --no-headers | grep '*' | awk '{print $5}')
+    local k8s_namespace=$(kubectl config get-contexts --no-headers | grep '*' | awk '{print $NF}')
     # Get the current Kuberenetes context
     local k8s_context=$(kubectl config current-context)
 

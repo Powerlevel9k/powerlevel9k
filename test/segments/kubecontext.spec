@@ -47,6 +47,24 @@ function mockKubectlOtherNamespace() {
   esac
 }
 
+function mockKubectlOtherNamespaceNoAuthInfo() {
+  case "$1" in
+    'version')
+      echo 'non-empty text'
+      ;;
+    'config')
+      case "$2" in
+        'current-context')
+          echo 'alternate'
+          ;;
+        'get-contexts')
+          echo '* alternate alternate   alternateNamespace'
+          ;;
+      esac
+      ;;
+  esac
+}
+
 function testKubeContext() {
   alias kubectl=mockKubectl
   POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(kubecontext)
@@ -74,6 +92,14 @@ function testKubeContextPrintsNothingIfKubectlNotAvailable() {
 
   unset POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
   unset POWERLEVEL9K_CUSTOM_WORLD
+  unalias kubectl
+}
+function testKubeContextOtherNamespaceNoAuthInfo(){
+  alias kubectl=noKubectl
+  POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(kubecontext)
+
+  assertEquals "%K{magenta} %F{white%}⎈%f %F{white}alternate/alternatenamespace %k%F{magenta}%f " "$(build_left_prompt)"
+  unset POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
   unalias kubectl
 }
 
