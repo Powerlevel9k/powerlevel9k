@@ -86,6 +86,10 @@ source $script_location/functions/colors.zsh
 
 source $script_location/functions/vcs.zsh
 
+# variables now unneeded: forget them
+# they could interfere with named directories
+unset filename script_location
+
 ################################################################
 # Color Scheme
 ################################################################
