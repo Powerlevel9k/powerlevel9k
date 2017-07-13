@@ -110,7 +110,7 @@ function testSymfonyVersionSegmentWorks() {
 function testSymfonyVersionSegmentWorksInNestedFolder() {
     mkdir app
     touch app/AppKernel.php
-    
+
     function php() {
         echo "Symfony version 3.1.4 - app/dev/debug"
     }

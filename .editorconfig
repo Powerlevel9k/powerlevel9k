@@ -1,3 +1,7 @@
+# EditorConfig: http://EditorConfig.org
+
+root = true
+
 [*]
 charset = utf-8
 end_of_line = lf
@@ -5,7 +9,11 @@ indent_style = space
 indent_size = 2
 trim_trailing_whitespace = true
 
-[*.spec]
-# Unfortunately, we sometime need trailing whitespace in tests.
-# @see test/core/prompt.spec
-trim_trailing_whitespace = false
+[*.md]
+max_line_length = off
+indent_size = 4
+trim_trailing_whitespace = true
+
+[{*.spec,*.zsh,*.zsh-theme}]
+# Specific hack for (Neo)Vim filetype detection
+vim_filetype = zsh
