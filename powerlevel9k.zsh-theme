@@ -1514,9 +1514,12 @@ serialize_segment() {
 # variables, use that information to
 # glue the segments back togeher and
 # finally reset the prompt.
-set_default CACHE_DIR /tmp/p9k
-# Create cache dir
-mkdir -p "${CACHE_DIR}" 2> /dev/null
+
+# The default CACHE_DIR is following the XDG basedir spec:
+# https://standards.freedesktop.org/basedir-spec/basedir-spec-latest.html
+set_default CACHE_DIR "${XDG_CACHE_HOME:-${HOME}/.cache}/powerlevel9k"
+mkdir -p -m 0700 "${CACHE_DIR}"
+
 #   $1 - Signal that should be propagated
 p9k_build_prompt_from_cache() {
   last_left_element_index=1 # Reset
