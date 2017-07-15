@@ -14,11 +14,11 @@ if [[ -z $PID ]]; then
     exit 1
 fi
 
-TMPFOLDER=/tmp/p9k
-mkdir -p $TMPFOLDER
+CACHE_DIR="${XDG_CACHE_HOME:-${HOME}/.cache}/powerlevel9k"
+mkdir -p -m 0700 "${CACHE_DIR}"
 
 # Read in cached segments
-for file in $(ls -1 ${TMPFOLDER}/p9k_${PID}_*); do
+for file in $(ls -1 ${CACHE_DIR}/p9k_${PID}_*); do
     source $file
 
     # echo $segment
