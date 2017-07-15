@@ -446,7 +446,7 @@ prompt_public_ip() {
   # set default values for segment
   set_default POWERLEVEL9K_PUBLIC_IP_TIMEOUT "300"
   set_default POWERLEVEL9K_PUBLIC_IP_NONE ""
-  set_default POWERLEVEL9K_PUBLIC_IP_FILE "/tmp/p9k_public_ip"
+  set_default POWERLEVEL9K_PUBLIC_IP_FILE "${CACHE_DIR}/p9k_public_ip"
   set_default POWERLEVEL9K_PUBLIC_IP_HOST "http://ident.me"
   defined POWERLEVEL9K_PUBLIC_IP_METHODS || POWERLEVEL9K_PUBLIC_IP_METHODS=(dig curl wget)
 
