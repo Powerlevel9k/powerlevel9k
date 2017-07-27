@@ -987,10 +987,10 @@ prompt_rspec_stats() {
 
 # Ruby Version Manager information
 prompt_rvm() {
-  local gemset=$(echo $GEM_HOME | awk -F'@' '{print $2}')
+  [[ $GEM_HOME =~ '^.*\/ruby-.*@(.*)$' ]] && local gemset=$match[1]
   [ "$gemset" != "" ] && gemset="@$gemset"
 
-  local version=$(echo $MY_RUBY_HOME | awk -F'-' '{print $NF}')
+  [[ $MY_RUBY_HOME =~ '^.*\/ruby-(.*)$' ]] && local version=$match[1]
 
   if [[ -n "$version$gemset" ]]; then
     "$1_prompt_segment" "$0" "$2" "240" "$DEFAULT_COLOR" "$version$gemset" 'RUBY_ICON'
