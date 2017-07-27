@@ -44,7 +44,7 @@ fi
 # Resolve the installation path
 if [[ -L "$POWERLEVEL9K_INSTALLATION_PATH" ]]; then
   # If this theme is sourced as a symlink, we need to locate the real URL
-  filename="$(realpath -P $POWERLEVEL9K_INSTALLATION_PATH 2>/dev/null || readlink -f $POWERLEVEL9K_INSTALLATION_PATH 2>/dev/null || perl -MCwd=abs_path -le 'print abs_path readlink(shift);' $POWERLEVEL9K_INSTALLATION_PATH 2>/dev/null)"
+  filename="${POWERLEVEL9K_INSTALLATION_PATH:A}"
 elif [[ -d "$POWERLEVEL9K_INSTALLATION_PATH" ]]; then
   # Directory
   filename="${POWERLEVEL9K_INSTALLATION_PATH}/powerlevel9k.zsh-theme"
@@ -298,7 +298,7 @@ prompt_anaconda() {
     # config - can be overwritten in users' zshrc file.
     set_default POWERLEVEL9K_ANACONDA_LEFT_DELIMITER "("
     set_default POWERLEVEL9K_ANACONDA_RIGHT_DELIMITER ")"
-    "$1_prompt_segment" "$0" "$2" "$3" "$4" "$POWERLEVEL9K_ANACONDA_LEFT_DELIMITER$(basename $_path)$POWERLEVEL9K_ANACONDA_RIGHT_DELIMITER" 'PYTHON_ICON'
+    "$1_prompt_segment" "$0" "$2" "blue" "$DEFAULT_COLOR" "$POWERLEVEL9K_ANACONDA_LEFT_DELIMITER$(basename $_path)$POWERLEVEL9K_ANACONDA_RIGHT_DELIMITER" 'PYTHON_ICON'
   fi
 }
 
@@ -425,11 +425,16 @@ prompt_battery() {
     esac
   fi
 
-  if [[ $OS =~ Linux ]]; then
+  if [[ "$OS" == 'Linux' ]] || [[ "$OS" == 'Android' ]]; then
     local sysp="/sys/class/power_supply"
+
     # Reported BAT0 or BAT1 depending on kernel version
     [[ -a $sysp/BAT0 ]] && local bat=$sysp/BAT0
     [[ -a $sysp/BAT1 ]] && local bat=$sysp/BAT1
+
+    # Android-related
+    # Tested on: Moto G falcon (CM 13.0)
+    [[ -a $sysp/battery ]] && local bat=$sysp/battery
 
     # Return if no battery found
     [[ -z $bat ]] && return
@@ -613,6 +618,7 @@ prompt_command_execution_time() {
 
 # Dir: current working directory
 set_default POWERLEVEL9K_DIR_PATH_SEPARATOR "/"
+set_default POWERLEVEL9K_HOME_FOLDER_ABBREVIATION "~"
 prompt_dir() {
   local current_path="$(print -P "%~")"
   if [[ -n "$POWERLEVEL9K_SHORTEN_DIR_LENGTH" || "$POWERLEVEL9K_SHORTEN_STRATEGY" == "truncate_with_folder_marker" ]]; then
@@ -655,12 +661,24 @@ prompt_dir() {
         subdirectory_path=$(truncatePathFromRight "${current_dir:${#${(S%%)package_path//$~zero/}}}")
         # Parse the 'name' from the package.json; if there are any problems, just
         # print the file path
-        if name=$( cat "$package_path/package.json" 2> /dev/null | grep -m 1 "\"name\""); then
-          name=$(echo $name | awk -F ':' '{print $2}' | awk -F '"' '{print $2}')
+        defined POWERLEVEL9K_DIR_PACKAGE_FILES || POWERLEVEL9K_DIR_PACKAGE_FILES=(package.json composer.json)
 
+        local pkgFile="unknown"
+        for file in "${POWERLEVEL9K_DIR_PACKAGE_FILES[@]}"; do
+          if [[ -f "${package_path}/${file}" ]]; then
+            pkgFile="${package_path}/${file}"
+            break;
+          fi
+        done
+
+        local packageName=$(jq '.name' ${pkgFile} 2> /dev/null \
+          || node -e 'console.log(require(process.argv[1]).name);' ${pkgFile} 2>/dev/null \
+          || cat "${pkgFile}" 2> /dev/null | grep -m 1 "\"name\"" | awk -F ':' '{print $2}' | awk -F '"' '{print $2}' 2>/dev/null \
+          )
+        if [[ -n "${packageName}" ]]; then
           # Instead of printing out the full path, print out the name of the package
           # from the package.json and append the current subdirectory
-          current_path="`echo $name | tr -d '"'`$subdirectory_path"
+          current_path="`echo $packageName | tr -d '"'`$subdirectory_path"
         else
           current_path=$(truncatePathFromRight "$(pwd | sed -e "s,^$HOME,~,")" )
         fi
@@ -705,6 +723,10 @@ prompt_dir() {
     current_path="$( echo "${current_path}" | sed "s/\//${POWERLEVEL9K_DIR_PATH_SEPARATOR}/g")"
   fi
 
+  if [[ "${POWERLEVEL9K_HOME_FOLDER_ABBREVIATION}" != "~" ]]; then
+    current_path="$( echo "${current_path}" | sed "s/^~/${POWERLEVEL9K_HOME_FOLDER_ABBREVIATION}/")"
+  fi
+
   typeset -AH dir_states
   dir_states=(
     "DEFAULT"         "FOLDER_ICON"
@@ -732,10 +754,12 @@ prompt_docker_machine() {
 # GO prompt
 prompt_go_version() {
   local go_version
+  local go_path
   go_version=$(go version 2>/dev/null | sed -E "s/.*(go[0-9.]*).*/\1/")
+  go_path=$(go env GOPATH 2>/dev/null)
 
-  if [[ -n "$go_version" ]]; then
-    "$1_prompt_segment" "$0" "$2" "green" "255" "$go_version"
+  if [[ -n "$go_version" && "${PWD##$go_path}" != "$PWD" ]]; then
+    "$1_prompt_segment" "$0" "$2" "green" "255" "$go_version" "GO_ICON"
   fi
 }
 
@@ -746,20 +770,19 @@ prompt_history() {
 
 # Detection for virtualization (systemd based systems only)
 prompt_detect_virt() {
-  if ! command -v systemd-detect-virt;then
+  if ! command -v systemd-detect-virt > /dev/null; then
     return
   fi
   local virt=$(systemd-detect-virt)
-  local color="yellow"
   if [[ "$virt" == "none" ]]; then
     if [[ "$(ls -di / | grep -o 2)" != "2" ]]; then
       virt="chroot"
-      "$1_prompt_segment" "$0" "$2" "$color" "$DEFAULT_COLOR" "$virt"
+      "$1_prompt_segment" "$0" "$2" "yellow" "$DEFAULT_COLOR" "$virt"
     else
       ;
     fi
   else
-    "$1_prompt_segment" "$0" "$2" "$color" "$DEFAULT_COLOR" "$virt"
+    "$1_prompt_segment" "$0" "$2" "yellow" "$DEFAULT_COLOR" "$virt"
   fi
 }
 
@@ -891,15 +914,17 @@ prompt_ram() {
   local base=''
   local ramfree=0
   if [[ "$OS" == "OSX" ]]; then
+    # Available = Free + Inactive
+    # See https://support.apple.com/en-us/HT201538
     ramfree=$(vm_stat | grep "Pages free" | grep -o -E '[0-9]+')
+    ramfree=$((ramfree + $(vm_stat | grep "Pages inactive" | grep -o -E '[0-9]+')))
     # Convert pages into Bytes
     ramfree=$(( ramfree * 4096 ))
   else
     if [[ "$OS" == "BSD" ]]; then
-      ramfree=$(vmstat | grep -E '([0-9]+\w+)+' | awk '{print $5}')
-      base='M'
+      ramfree=$(grep 'avail memory' /var/run/dmesg.boot | awk '{print $4}')
     else
-      ramfree=$(grep -o -E "MemFree:\s+[0-9]+" /proc/meminfo | grep -o "[0-9]*")
+      ramfree=$(grep -o -E "MemAvailable:\s+[0-9]+" /proc/meminfo | grep -o "[0-9]*")
       base='K'
     fi
   fi
@@ -965,7 +990,7 @@ prompt_rvm() {
   local gemset=$(echo $GEM_HOME | awk -F'@' '{print $2}')
   [ "$gemset" != "" ] && gemset="@$gemset"
 
-  local version=$(echo $MY_RUBY_HOME | awk -F'-' '{print $2}')
+  local version=$(echo $MY_RUBY_HOME | awk -F'-' '{print $NF}')
 
   if [[ -n "$version$gemset" ]]; then
     "$1_prompt_segment" "$0" "$2" "240" "$DEFAULT_COLOR" "$version$gemset" 'RUBY_ICON'
@@ -989,7 +1014,7 @@ prompt_status() {
       "$1_prompt_segment" "$0_ERROR" "$2" "$DEFAULT_COLOR" "red" "" 'FAIL_ICON'
     fi
   elif [[ "$POWERLEVEL9K_STATUS_VERBOSE" == true || "$POWERLEVEL9K_STATUS_OK_IN_NON_VERBOSE" == true ]]; then
-    "$1_prompt_segment" "$0_OK" "$2" "$DEFAULT_COLOR" "046" "" 'OK_ICON'
+    "$1_prompt_segment" "$0_OK" "$2" "$DEFAULT_COLOR" "green" "" 'OK_ICON'
   fi
 }
 
@@ -1125,6 +1150,12 @@ powerlevel9k_vcs_init() {
   zstyle ':vcs_info:hg*:*' get-revision true
   zstyle ':vcs_info:hg*:*' get-bookmarks true
   zstyle ':vcs_info:hg*+gen-hg-bookmark-string:*' hooks hg-bookmarks
+
+  # For svn, only
+  # TODO fix the %b (branch) format for svn. Using %b breaks
+  # color-encoding of the foreground for the rest of the powerline.
+  zstyle ':vcs_info:svn*:*' formats "$VCS_CHANGESET_PREFIX%c%u"
+  zstyle ':vcs_info:svn*:*' actionformats "$VCS_CHANGESET_PREFIX%c%u %F{${POWERLEVEL9K_VCS_ACTIONFORMAT_FOREGROUND}}| %a%f"
 
   if [[ "$POWERLEVEL9K_SHOW_CHANGESET" == true ]]; then
     zstyle ':vcs_info:*' get-revision true
@@ -1264,12 +1295,13 @@ powerlevel9k_prepare_prompts() {
   RETVAL=$?
 
   _P9K_COMMAND_DURATION=$((EPOCHREALTIME - _P9K_TIMER_START))
+
   # Reset start time
-  _P9K_TIMER_START=99999999999
+  _P9K_TIMER_START=0xFFFFFFFF
 
   if [[ "$POWERLEVEL9K_PROMPT_ON_NEWLINE" == true ]]; then
-    PROMPT="$(print_icon 'MULTILINE_FIRST_PROMPT_PREFIX')%f%b%k$(build_left_prompt)
-$(print_icon 'MULTILINE_SECOND_PROMPT_PREFIX')"
+    PROMPT='$(print_icon 'MULTILINE_FIRST_PROMPT_PREFIX')%f%b%k$(build_left_prompt)
+$(print_icon 'MULTILINE_SECOND_PROMPT_PREFIX')'
     if [[ "$POWERLEVEL9K_RPROMPT_ON_NEWLINE" != true ]]; then
       # The right prompt should be on the same line as the first line of the left
       # prompt. To do so, there is just a quite ugly workaround: Before zsh draws
@@ -1284,13 +1316,13 @@ $(print_icon 'MULTILINE_SECOND_PROMPT_PREFIX')"
       RPROMPT_SUFFIX=''
     fi
   else
-    PROMPT="%f%b%k$(build_left_prompt)"
+    PROMPT='%f%b%k$(build_left_prompt)'
     RPROMPT_PREFIX=''
     RPROMPT_SUFFIX=''
   fi
 
   if [[ "$POWERLEVEL9K_DISABLE_RPROMPT" != true ]]; then
-    RPROMPT="$RPROMPT_PREFIX%f%b%k$(build_right_prompt)%{$reset_color%}$RPROMPT_SUFFIX"
+    RPROMPT='$RPROMPT_PREFIX%f%b%k$(build_right_prompt)%{$reset_color%}$RPROMPT_SUFFIX'
   fi
 NEWLINE='
 '
@@ -1298,13 +1330,27 @@ NEWLINE='
 }
 
 prompt_powerlevel9k_setup() {
+  # I decided to use the value below for better supporting 32-bit CPUs, since the previous value "99999999999" was causing issues on my Android phone, which is powered by an armv7l
+  # We don't have to change that until 19 January of 2038! :)
+
   # Disable false display of command execution time
-  _P9K_TIMER_START=99999999999
+  # Maximum integer on 32-bit CPUs
+  _P9K_TIMER_START=2147483647
+
+  # The prompt function will set these prompt_* options after the setup function
+  # returns. We need prompt_subst so we can safely run commands in the prompt
+  # without them being double expanded and we need prompt_percent to expand the
+  # common percent escape sequences.
+  prompt_opts=(subst percent cr)
+
+  # Borrowed from promptinit, sets the prompt options in case the theme was
+  # not initialized via promptinit.
+  setopt noprompt{bang,cr,percent,subst} "prompt${^prompt_opts[@]}"
 
   # Display a warning if the terminal does not support 256 colors
   local term_colors
-  term_colors=$(echotc Co)
-  if (( $term_colors < 256 )); then
+  term_colors=$(echotc Co 2>/dev/null)
+  if (( ! $? && ${term_colors:-0} < 256 )); then
     print -P "%F{red}WARNING!%f Your terminal appears to support less than 256 colors!"
     print -P "If your terminal supports 256 colors, please export the appropriate environment variable"
     print -P "_before_ loading this theme in your \~\/.zshrc. In most terminal emulators, putting"
@@ -1331,12 +1377,6 @@ prompt_powerlevel9k_setup() {
     'longstatus'      'status'
   )
   print_deprecation_warning deprecated_segments
-
-  setopt prompt_subst
-
-  setopt LOCAL_OPTIONS
-  unsetopt XTRACE KSH_ARRAYS
-  setopt PROMPT_CR PROMPT_PERCENT PROMPT_SUBST MULTIBYTE
 
   # initialize colors
   autoload -U colors && colors

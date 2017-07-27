@@ -30,9 +30,9 @@ this theme focus on four primary goals:
 4. Optimize the code for execution speed as much as possible. A snappy terminal
    is a happy terminal.
 
-Here is `powerlevel9k` in action, with [some simple settings](https://github.com/bhilburn/powerlevel9k/wiki/Show-Off-Your-Config#natemccurdys-configuration).
+Powerlevel9k can be used to create both very useful and beautiful terminal environments:
 
-![](https://camo.githubusercontent.com/80ec23fda88d2f445906a3502690f22827336736/687474703a2f2f692e696d6775722e636f6d2f777942565a51792e676966)
+![](https://camo.githubusercontent.com/b5d7eb49a30bfe6bdb5706fa3c9be95fe8e5956e/687474703a2f2f67696679752e636f6d2f696d616765732f70396b6e65772e676966)
 
 ### Table of Contents
 
@@ -52,7 +52,7 @@ terminal. Once you are done, you can optionally customize your prompt.
 [Installation Instructions](https://github.com/bhilburn/powerlevel9k/wiki/Install-Instructions)
 
 1. [Install the Powerlevel9k Theme](https://github.com/bhilburn/powerlevel9k/wiki/Install-Instructions#step-1-install-powerlevel9k)
-2. [Install Powerline-Patched Fonts](https://github.com/bhilburn/powerlevel9k/wiki/Install-Instructions#step-2-install-powerline-fonts)
+2. [Install Powerline Fonts](https://github.com/bhilburn/powerlevel9k/wiki/Install-Instructions#step-2-install-a-powerline-font)
 
 No configuration is necessary post-installation if you like the default
 settings, but there are plenty of segment customization options available if you
@@ -212,7 +212,7 @@ If you want more precision, just set the
 | Variable | Default Value | Description |
 |----------|---------------|-------------|
 |`POWERLEVEL9K_COMMAND_EXECUTION_TIME_THRESHOLD`|3|Threshold above which to print this segment. Can be set to `0` to always print.|
-|`POWERLEVEL9K_COMMAND_EXECUTION_TIME_PRECISION=2`|2|Number of digits to use in the fractional part of the time value.|
+|`POWERLEVEL9K_COMMAND_EXECUTION_TIME_PRECISION`|2|Number of digits to use in the fractional part of the time value.|
 
 ##### custom_command
 
@@ -275,10 +275,9 @@ end of the hostname.
 
 | Variable | Default Value | Description |
 |----------|---------------|-------------|
-|`DEFAULT_USER`|None|Username to consider a "default context".|
+|`DEFAULT_USER`|None|Username to consider a "default context" (you can also set `$USER`).|
 |`POWERLEVEL9K_ALWAYS_SHOW_CONTEXT`|false|Always show this segment, including $USER and hostname.|
 |`POWERLEVEL9K_ALWAYS_SHOW_USER`|false|Always show the username, but conditionalize the hostname.|
-|`DEFAULT_USER`|None|Username to consider a "default context" (you can also use `$USER`)|
 |`POWERLEVEL9K_CONTEXT_TEMPLATE`|%n@%m|Default context prompt (username@machine). Refer to the [ZSH Documentation](http://zsh.sourceforge.net/Doc/Release/Prompt-Expansion.html) for all possible expansions, including deeper host depths.|
 
 ##### dir
@@ -312,7 +311,7 @@ Customizations available are:
 |Default|Truncate whole directories from left. How many is defined by `POWERLEVEL9K_SHORTEN_DIR_LENGTH`|
 |`truncate_middle`|Truncates the middle part of a folder. E.g. you are in a folder named "~/MySuperProjects/AwesomeFiles/BoringOffice", then it will truncated to "~/MyS..cts/Awe..les/BoringOffice", if `POWERLEVEL9K_SHORTEN_DIR_LENGTH=3` is also set (controls the amount of characters to be left).|
 |`truncate_from_right`|Just leaves the beginning of a folder name untouched. E.g. your folders will be truncated like so: "/ro../Pr../office". How many characters will be untouched is controlled by `POWERLEVEL9K_SHORTEN_DIR_LENGTH`.|
-|`truncate_with_package_name`|Use the `package.json` `name` field to abbreviate the directory path.|
+|`truncate_with_package_name`|Search for a `package.json` or `composer.json` and prints the `name` field to abbreviate the directory path. The precedence and/or files could be set by `POWERLEVEL9K_DIR_PACKAGE_FILES=(package.json composer.json)`. If you have [jq](https://stedolan.github.io/jq/) installed, it will dramatically improve the speed of this strategy.|
 |`truncate_with_folder_marker`|Search for a file that is specified by `POWERLEVEL9K_SHORTEN_FOLDER_MARKER` and truncate everything before that (if found, otherwise stop on $HOME and ROOT).|
 
 For example, if you wanted the truncation behavior of the `fish` shell, which
@@ -343,6 +342,12 @@ POWERLEVEL9K_DIR_PATH_SEPARATOR="%F{red} $(print_icon 'LEFT_SUBSEGMENT_SEPARATOR
 ```
 To omit the first character (usually a slash that gets replaced if you set `POWERLEVEL9K_DIR_PATH_SEPARATOR`),
 you could set `POWERLEVEL9K_DIR_OMIT_FIRST_CHARACTER=true`.
+
+You can also customize the leading tilde character when you are in `$HOME` using:
+```zsh
+# Double quotes are important here!
+POWERLEVEL9K_HOME_FOLDER_ABBREVIATION="%F{red} $(print_icon 'HOME_ICON') %F{black}"
+```
 
 
 ##### disk_usage

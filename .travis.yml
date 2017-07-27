@@ -14,16 +14,17 @@ before_script:
 
 install:
   - "sudo apt-get update -qq"
-  - "sudo apt-get install zsh"
+  - "sudo apt-get install -y zsh"
   - "sudo chsh -s $(which zsh)"
+  - "sudo apt-get install -y git mercurial subversion jq node golang ruby python python-virtualenv"
 
 script:
   - test/powerlevel9k.spec
   - test/functions/utilities.spec
   - test/functions/colors.spec
+  - test/functions/icons.spec
   - test/segments/command_execution_time.spec
   - test/segments/dir.spec
   - test/segments/rust_version.spec
   - test/segments/go_version.spec
   - test/segments/vcs.spec
-

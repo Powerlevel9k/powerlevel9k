@@ -1,3 +1,31 @@
+## v0.6.3
+
+- Fixed susceptibility to [pw3nage exploit](https://github.com/njhartwell/pw3nage).
+- Added support for Android
+- The abbreviation for $HOME is now configurable (doesn't have to be `~`).
+- Fixed colorization of VCS segment in Subversion repos.
+- Improved handling of symlinks in installation paths.
+
+## v0.6.2
+
+- Fixed some issues with the new `nerdfont-fontconfig` option.
+- Fixed typo in README.
+- The `get_icon_names` function can now print sorted output, and show which
+  icons users have overridden.
+- Added a FreeBSD VM for testing.
+
+### Add debug script for iTerm2 issues
+
+A new script `debug/iterm.zsh` was added for easier spotting problems with your iTerm2 configuration.
+
+### Add debug script for font issues
+
+A new script `debug/font-issues.zsh` was added, so that problems with your font could be spotted easier.
+
+### `ram` changes
+
+The `ram` segment now shows the available ram instead of free.
+
 ## v0.6.0
 
 - Fixed a bug where the tag display was broken on detached HEADs.
@@ -24,28 +52,33 @@ Added an option to configure the path separator. If you want something
 else than an ordinary slash, you could set
 `POWERLEVEL9K_DIR_PATH_SEPARATOR` to whatever you want.
 
-### New segment 'command_execution_time' added
+#### `truncate_with_package_name` now searches for `composer.json` as well
+
+Now `composer.json` files are searched as well. By default `package.json` still takes
+precedence. If you want to change that, set `POWERLEVEL9K_DIR_PACKAGE_FILES=(composer.json package.json)`.
+
+### New segment `command_execution_time` added
 
 Shows the duration a command needed to run. By default only durations over 3 seconds
 are shown (can be adjusted by setting POWERLEVEL9K_COMMAND_EXECUTION_TIME_THRESHOLD).
 
-### New segment 'dir_writable' added
+### New segment `dir_writable` added
 
 This segment displays a lock icon if your user has no write permissions in the current folder.
 
-### New segment 'disk_usage' added
+### New segment `disk_usage` added
 
 This segment will show the usage level of your current partition.
 
-### New segment 'public_ip' added
+### New segment `public_ip` added
 
 Fetches your Public IP (using ident.me) and displays it in your prompt.
 
-### New segment 'swift_version' added
+### New segment `swift_version` added
 
 This segment displays the version of Swift that is installed / in your path.
 
-### New segment 'detect_virt' added
+### New segment `detect_virt` added
 
 Detects and reports if you are in a virtualized session using `systemd`.
 
