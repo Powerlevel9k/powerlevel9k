@@ -1714,19 +1714,8 @@ powerlevel9k_preexec() {
   _P9K_TIMER_START=$EPOCHREALTIME
 }
 
-ASYNC_PROC=0
 powerlevel9k_prepare_prompts() {
   RETVAL=$?
-
-  # Kill all spawns that are not the main process!
-  # This method gets called every time, because it
-  # is a precmd hook registered in powerlevel9k_init!
-  # The child processes must be killed, because they
-  # should only be triggered once to build their
-  # segment and nothing else.
-  if [[ "${ASYNC_PROC}" != 0 ]]; then
-    kill -s HUP ${ASYNC_PROC} >/dev/null 2>&1 || :
-  fi
 
   # Timing calculation
   _P9K_COMMAND_DURATION=$((EPOCHREALTIME - _P9K_TIMER_START))
@@ -1754,8 +1743,6 @@ powerlevel9k_prepare_prompts() {
   if [[ "${POWERLEVEL9K_DISABLE_RPROMPT}" != "true" ]]; then
     build_right_prompt
   fi
-
-  ASYNC_PROC=$!
 }
 
 function rebuild_vi_mode {
