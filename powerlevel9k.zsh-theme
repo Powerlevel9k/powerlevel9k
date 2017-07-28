@@ -1479,6 +1479,10 @@ serialize_segment() {
   # Precompile condition, as we are here in the async child process.
   eval "${CONDITION}" && CONDITION=true || CONDITION=false
 
+  if [[ -n "${POWERLEVEL9K_DEBUG}" ]]; then
+    echo "Writing $$"
+  fi
+
   local FILE="${CACHE_DIR}/p9k_$$_${ALIGNMENT}_${(l:3::0:)INDEX}_${NAME}.sh"
 
   # From the manpage of typeset:
@@ -1549,6 +1553,10 @@ $(print_icon 'MULTILINE_SECOND_PROMPT_PREFIX')"
   last_segments_print_states=()
   typeset -Ah last_segments_join_states
   last_segments_join_states=()
+
+  if [[ -n "${POWERLEVEL9K_DEBUG}" ]]; then
+    echo "Building $$"
+  fi
 
   # (N) sets the NULL_GLOB option, so that if the glob does
   # not return files, an error message is suppressed.
