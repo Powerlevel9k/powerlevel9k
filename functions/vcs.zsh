@@ -51,7 +51,7 @@ function +vi-git-remotebranch() {
     remote=${$(git rev-parse --verify HEAD@{upstream} --symbolic-full-name 2>/dev/null)/refs\/(remotes|heads)\/}
     branch_name=$(git symbolic-ref --short HEAD 2>/dev/null)
 
-    hook_com[branch]="$(print_icon 'VCS_BRANCH_ICON')${hook_com[branch]}"
+    hook_com[branch]="$(print_icon 'VCS_BRANCH_ICON') ${hook_com[branch]}"
     # Always show the remote
     #if [[ -n ${remote} ]] ; then
     # Only show the remote if it differs from the local
@@ -77,7 +77,7 @@ function +vi-git-tagname() {
                 # string.
                 local revision
                 revision=$(git rev-list -n 1 --abbrev-commit --abbrev=${POWERLEVEL9K_VCS_INTERNAL_HASH_LENGTH} HEAD)
-                hook_com[branch]="$(print_icon 'VCS_BRANCH_ICON')${revision} $(print_icon 'VCS_TAG_ICON')${tag}"
+                hook_com[branch]="$(print_icon 'VCS_BRANCH_ICON') ${revision} $(print_icon 'VCS_TAG_ICON')${tag}"
             else
                 # We are on both a tag and a branch; print both by appending the tag name.
                 hook_com[branch]+=" $(print_icon 'VCS_TAG_ICON')${tag}"
