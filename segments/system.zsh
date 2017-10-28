@@ -127,6 +127,11 @@ prompt_battery() {
     fi
   fi
 
+  if [[ "$OS" == "LinuxWin" ]]; then
+    battery_status=$(powershell.exe "(Get-WmiObject win32_battery).BatteryStatus")
+    bat_percent=$(powershell.exe "(Get-WmiObject win32_battery).estimatedChargeRemaining")
+  fi
+
   local message
   # Default behavior: Be verbose!
   set_default POWERLEVEL9K_BATTERY_VERBOSE true
@@ -538,6 +543,9 @@ prompt_os_icon() {
       ;;
     BSD)
       OS_ICON=$(print_icon 'FREEBSD_ICON')
+      ;;
+    LinuxWin)
+      OS_ICON=$(print_icon 'WINDOWS_ICON')
       ;;
     Linux)
       OS_ICON=$(print_icon 'LINUX_ICON')

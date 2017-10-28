@@ -406,7 +406,7 @@ p9k_serialize_segment() {
 #   $@ misc The parameters passed from the segment code
 ##
 serialize_segment() {
-  async_job "p9k" "p9k_serialize_segment" "${@}"
+  (async_job "p9k" "p9k_serialize_segment" "${@}")
 }
 
 ################################################################

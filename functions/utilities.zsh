@@ -103,6 +103,9 @@ case $(uname) in
             OS='Android'
             ;;
       esac
+      if $(uname -a | grep -q "Microsoft" 2>/dev/null); then
+        OS='LinuxWin'
+      fi
       ;;
     SunOS)
       OS='Solaris'
