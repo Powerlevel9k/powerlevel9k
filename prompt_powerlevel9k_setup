@@ -701,10 +701,10 @@ prompt_dir() {
 
     case "$POWERLEVEL9K_SHORTEN_STRATEGY" in
       truncate_middle)
-        current_path=$(pwd | sed -e "s,^$HOME,~," | sed $SED_EXTENDED_REGEX_PARAMETER "s/([^/]{$POWERLEVEL9K_SHORTEN_DIR_LENGTH})[^/]+([^/]{$POWERLEVEL9K_SHORTEN_DIR_LENGTH})\//\1$POWERLEVEL9K_SHORTEN_DELIMITER\2\//g")
+        current_path=$(echo "$current_path" | sed $SED_EXTENDED_REGEX_PARAMETER "s/([^/]{$POWERLEVEL9K_SHORTEN_DIR_LENGTH})[^/]+([^/]{$POWERLEVEL9K_SHORTEN_DIR_LENGTH})\//\1$POWERLEVEL9K_SHORTEN_DELIMITER\2\//g")
       ;;
       truncate_from_right)
-        current_path=$(truncatePathFromRight "$(pwd | sed -e "s,^$HOME,~,")" )
+        current_path=$(truncatePathFromRight "$current_path" )
       ;;
       truncate_with_package_name)
         local name repo_path package_path current_dir zero
@@ -754,8 +754,12 @@ prompt_dir() {
           # Instead of printing out the full path, print out the name of the package
           # from the package.json and append the current subdirectory
           current_path="`echo $packageName | tr -d '"'`$subdirectory_path"
+          if [[ "${POWERLEVEL9K_DIR_OMIT_FIRST_CHARACTER}" == "true" ]]; then
+            # add space before the packageName to allow for removing the "first" character, without messing up the package name.
+            current_path=" ${current_path}"
+          fi
         else
-          current_path=$(truncatePathFromRight "$(pwd | sed -e "s,^$HOME,~,")" )
+          current_path=$(truncatePathFromRight "$current_path" )
         fi
       ;;
       truncate_with_folder_marker)
