@@ -753,7 +753,7 @@ prompt_dir() {
         if [[ -n "${packageName}" ]]; then
           # Instead of printing out the full path, print out the name of the package
           # from the package.json and append the current subdirectory
-          current_path=" `echo $packageName | tr -d '"'`$subdirectory_path"
+          current_path="`echo $packageName | tr -d '"'`$subdirectory_path"
           if [[ "${POWERLEVEL9K_DIR_OMIT_FIRST_CHARACTER}" == "true" ]]; then
             # add space before the packageName to allow for removing the "first" character, without messing up the package name.
             current_path=" ${current_path}"
