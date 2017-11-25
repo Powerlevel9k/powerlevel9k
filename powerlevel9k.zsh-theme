@@ -701,10 +701,10 @@ prompt_dir() {
 
     case "$POWERLEVEL9K_SHORTEN_STRATEGY" in
       truncate_middle)
-        current_path=$(current_path | sed $SED_EXTENDED_REGEX_PARAMETER "s/([^/]{$POWERLEVEL9K_SHORTEN_DIR_LENGTH})[^/]+([^/]{$POWERLEVEL9K_SHORTEN_DIR_LENGTH})\//\1$POWERLEVEL9K_SHORTEN_DELIMITER\2\//g")
+        current_path=$($current_path | sed $SED_EXTENDED_REGEX_PARAMETER "s/([^/]{$POWERLEVEL9K_SHORTEN_DIR_LENGTH})[^/]+([^/]{$POWERLEVEL9K_SHORTEN_DIR_LENGTH})\//\1$POWERLEVEL9K_SHORTEN_DELIMITER\2\//g")
       ;;
       truncate_from_right)
-        current_path=$(truncatePathFromRight current_path )
+        current_path=$(truncatePathFromRight $current_path )
       ;;
       truncate_with_package_name)
         local name repo_path package_path current_dir zero
@@ -755,7 +755,7 @@ prompt_dir() {
           # from the package.json and append the current subdirectory
           current_path="`echo $packageName | tr -d '"'`$subdirectory_path"
         else
-          current_path=$(truncatePathFromRight current_path )
+          current_path=$(truncatePathFromRight $current_path )
         fi
       ;;
       truncate_with_folder_marker)
