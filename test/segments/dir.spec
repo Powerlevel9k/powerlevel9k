@@ -240,7 +240,7 @@ function testTruncateWithPackageNameIfRepoIsSymlinkedInsideGitDir() {
   unset POWERLEVEL9K_SHORTEN_DIR_LENGTH
 }
 
-function testTruncateWithPackageNameWorks() {
+function testOmitCharTruncateWithPackageNameWorks() {
   local p9kFolder=$(pwd)
   local BASEFOLDER=/tmp/powerlevel9k-test
   local FOLDER=$BASEFOLDER/1/12/123/1234/12345/123456/1234567/12345678/123456789
@@ -274,7 +274,7 @@ function testTruncateWithPackageNameWorks() {
   unset POWERLEVEL9K_DIR_OMIT_FIRST_CHARACTER
 }
 
-function testTruncateWithPackageNameIfRepoIsSymlinkedInsideDeepFolder() {
+function testOmitCharTruncateWithPackageNameIfRepoIsSymlinkedInsideDeepFolder() {
   local p9kFolder=$(pwd)
   local BASEFOLDER=/tmp/powerlevel9k-test
   local FOLDER=$BASEFOLDER/1/12/123/1234/12345/123456/1234567/12345678/123456789
@@ -315,7 +315,7 @@ function testTruncateWithPackageNameIfRepoIsSymlinkedInsideDeepFolder() {
   unset POWERLEVEL9K_DIR_OMIT_FIRST_CHARACTER
 }
 
-function testTruncateWithPackageNameIfRepoIsSymlinkedInsideGitDir() {
+function testOmitCharTruncateWithPackageNameIfRepoIsSymlinkedInsideGitDir() {
   local p9kFolder=$(pwd)
   local BASEFOLDER=/tmp/powerlevel9k-test
   local FOLDER=$BASEFOLDER/1/12/123/1234/12345/123456/1234567/12345678/123456789
