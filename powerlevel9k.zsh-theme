@@ -1265,10 +1265,18 @@ prompt_time() {
 
 # todo.sh: shows the number of tasks in your todo.sh file
 prompt_todo() {
+  foreground_color="$DEFAULT_COLOR"
+  background_color="grey50"
+  if [[ -n "$POWERLEVEL9K_TODO_FOREGROUND" ]]; then
+    foreground_color="$POWERLEVEL9K_TODO_FOREGROUND"
+  fi
+  if [[ -n "$POWERLEVEL9K_TODO_BACKGROUND" ]]; then
+    background_color="$POWERLEVEL9K_TODO_BACKGROUND"
+  fi
   if $(hash todo.sh 2>&-); then
     count=$(todo.sh ls | egrep "TODO: [0-9]+ of ([0-9]+) tasks shown" | awk '{ print $4 }')
     if [[ "$count" = <-> ]]; then
-      "$1_prompt_segment" "$0" "$2" "grey50" "$DEFAULT_COLOR" "$count" 'TODO_ICON'
+      "$1_prompt_segment" "$0" "$2" "$background_color" "$foreground_color" "$count" 'TODO_ICON'
     fi
   fi
 }
