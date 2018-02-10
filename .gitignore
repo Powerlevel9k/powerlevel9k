@@ -1,3 +1,4 @@
 test-vm/.vagrant
 *.swp
 .idea
+sh2md

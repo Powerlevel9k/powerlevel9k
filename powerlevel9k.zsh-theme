@@ -245,20 +245,23 @@ right_prompt_segment() {
       local visual_identifier_color_variable=POWERLEVEL9K_${(U)1#prompt_}_VISUAL_IDENTIFIER_COLOR
       set_default $visual_identifier_color_variable $4
       visual_identifier="%F{${(P)visual_identifier_color_variable}%}$visual_identifier%f"
-      # Add an whitespace if we print more than just the visual identifier
-      [[ -n "$5" ]] && visual_identifier=" $visual_identifier"
     fi
   fi
 
-  echo -n "${bg}${fg}"
-
   # Print whitespace only if segment is not joined or first right segment
-  [[ $joined == false ]] || [[ "$CURRENT_RIGHT_BG" == "NONE" ]] && echo -n "${POWERLEVEL9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS}"
+  [[ $joined == false ]] || [[ "$CURRENT_RIGHT_BG" == "NONE" ]] && echo -n "${bg}${fg}${POWERLEVEL9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS}"
 
-  # Print segment content if there is any
-  [[ -n "$5" ]] && echo -n "${5}"
-  # Print the visual identifier
-  echo -n "${visual_identifier}${POWERLEVEL9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS}%f"
+    if [[ ${(L)POWERLEVEL9K_RPROMPT_ICON_LEFT} == "true" ]]; then # Visual identifier before content
+      # Print the visual identifier
+      echo -n "${visual_identifier}${POWERLEVEL9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS}"
+      # Print segment content if there is any
+      [[ -n "$5" ]] && echo -n "${bg}${fg}${5} %f"
+    else # Content before visual identifier
+      # Print segment content if there is any
+      [[ -n "$5" ]] && echo -n "${5} "
+      # Print the visual identifier
+      echo -n "${visual_identifier}${POWERLEVEL9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS}%f"
+    fi
 
   CURRENT_RIGHT_BG=$3
   last_right_element_index=$current_index
@@ -1544,6 +1547,7 @@ prompt_dropbox() {
 build_left_prompt() {
   local index=1
   local element
+
   for element in "${POWERLEVEL9K_LEFT_PROMPT_ELEMENTS[@]}"; do
     # Remove joined information in direct calls
     element=${element%_joined}
@@ -1623,6 +1627,10 @@ $(print_icon 'MULTILINE_LAST_PROMPT_PREFIX')'
 NEWLINE='
 '
   [[ $POWERLEVEL9K_PROMPT_ADD_NEWLINE == true ]] && PROMPT="$NEWLINE$PROMPT"
+
+  # Allow iTerm integration to work
+  [[ $ITERM_SHELL_INTEGRATION_INSTALLED == "Yes" ]] && PROMPT="%{$(iterm2_prompt_mark)%}$PROMPT"
+
 }
 
 set_default POWERLEVEL9K_IGNORE_TERM_COLORS false
