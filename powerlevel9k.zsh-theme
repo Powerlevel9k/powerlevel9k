@@ -200,6 +200,7 @@ CURRENT_RIGHT_BG='NONE'
 # No ending for the right prompt segment is needed (unlike the left prompt, above).
 set_default last_right_element_index 1
 set_default POWERLEVEL9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS " "
+set_default POWERLEVEL9K_RPROMPT_ICON_LEFT false
 right_prompt_segment() {
   local current_index=$2
 

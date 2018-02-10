@@ -72,6 +72,7 @@ variables to your `~/.zshrc`.
 |----------|---------------|-------------|
 |`POWERLEVEL9K_LEFT_PROMPT_ELEMENTS`|`(context dir rbenv vcs)`|Segment list for left prompt|
 |`POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS`|`(status root_indicator background_jobs history time)`|Segment list for right prompt|
+|`POWERLEVEL9K_RPROMPT_ICON_LEFT`|`False`|When `True`, icons on the right prompt segments will be shown on the left instead of the right.|
 
 
 The table above shows the default values, so if you wanted to set these
