@@ -72,6 +72,7 @@ variables to your `~/.zshrc`.
 |----------|---------------|-------------|
 |`POWERLEVEL9K_LEFT_PROMPT_ELEMENTS`|`(context dir rbenv vcs)`|Segment list for left prompt|
 |`POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS`|`(status root_indicator background_jobs history time)`|Segment list for right prompt|
+|`POWERLEVEL9K_RPROMPT_ICON_LEFT`|`False`|When `True`, icons on the right prompt segments will be shown on the left instead of the right.|
 
 
 The table above shows the default values, so if you wanted to set these
@@ -81,6 +82,15 @@ your `~/.zshrc`:
 POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(context dir rbenv vcs)
 POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status root_indicator background_jobs history time)
 ```
+
+You can customize each prompt segment by setting the following variables:
+| Variable | Default Value | Description |
+|----------|---------------|-------------|
+|`POWERLEVEL9K_segment_FOREGROUND`|Global foreground color|A custom color from 0 to 255.|
+|`POWERLEVEL9K_segment_BACKGROUND`|Global foreground color|A custom color from 0 to 255.|
+|`POWERLEVEL9K_segment_BOLD`|`False`|Set this to `True` if you want the text in the segment to be bold.|
+|`POWERLEVEL9K_segment_VISUAL_IDENTIFIER_COLOR`|Global foreground color|A custom color from 0 to 255.|
+
 #### Available Prompt Segments
 The segments that are currently available are:
 

@@ -98,7 +98,8 @@ fi
 # right-left but reads the opposite, this isn't necessary for the other side.
 CURRENT_BG='NONE'
 
-# Begin a left prompt segment
+###############################################################
+# Begin a right prompt segment
 # Takes four arguments:
 #   * $1: Name of the function that was originally invoked (mandatory).
 #         Necessary, to make the dynamic color-overwrite mechanism work.
@@ -107,7 +108,6 @@ CURRENT_BG='NONE'
 #   * $4: Foreground color
 #   * $5: The segment content
 #   * $6: An identifying icon (must be a key of the icons array)
-# The latter three can be omitted,
 set_default last_left_element_index 1
 set_default POWERLEVEL9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS " "
 left_prompt_segment() {
@@ -126,9 +126,14 @@ left_prompt_segment() {
   local FG_COLOR_MODIFIER=${(P)FOREGROUND_USER_VARIABLE}
   [[ -n $FG_COLOR_MODIFIER ]] && 4="$FG_COLOR_MODIFIER"
 
-  local bg fg
+  local bg fg bd
   [[ -n "$3" ]] && bg="$(backgroundColor $3)" || bg="$(backgroundColor)"
   [[ -n "$4" ]] && fg="$(foregroundColor $4)" || fg="$(foregroundColor)"
+
+  # Determine if segment should be bold.
+  local BOLD_USER_VARIABLE=POWERLEVEL9K_${(U)1#prompt_}_BOLD
+  local BOLD_MODIFIER=${(P)BOLD_USER_VARIABLE}
+  [[ ${(L)BOLD_MODIFIER} == "true" ]] && bd="%B" || bd=""
 
   if [[ $CURRENT_BG != 'NONE' ]] && ! isSameColor "$3" "$CURRENT_BG"; then
     echo -n "$bg%F{$CURRENT_BG}"
@@ -168,7 +173,7 @@ left_prompt_segment() {
   # Print the visual identifier
   echo -n "${visual_identifier}"
   # Print the content of the segment, if there is any
-  [[ -n "$5" ]] && echo -n "${fg}${5}"
+  [[ -n "$5" ]] && echo -n "${fg}${bd}${5}%b${bg}${fg}"
   echo -n "${POWERLEVEL9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS}"
 
   CURRENT_BG=$3
@@ -188,6 +193,7 @@ left_prompt_end() {
 
 CURRENT_RIGHT_BG='NONE'
 
+###############################################################
 # Begin a right prompt segment
 # Takes four arguments:
 #   * $1: Name of the function that was originally invoked (mandatory).
@@ -200,6 +206,7 @@ CURRENT_RIGHT_BG='NONE'
 # No ending for the right prompt segment is needed (unlike the left prompt, above).
 set_default last_right_element_index 1
 set_default POWERLEVEL9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS " "
+set_default POWERLEVEL9K_RPROMPT_ICON_LEFT false
 right_prompt_segment() {
   local current_index=$2
 
@@ -217,9 +224,14 @@ right_prompt_segment() {
   local FG_COLOR_MODIFIER=${(P)FOREGROUND_USER_VARIABLE}
   [[ -n $FG_COLOR_MODIFIER ]] && 4="$FG_COLOR_MODIFIER"
 
-  local bg fg
+  local bg fg bd
   [[ -n "$3" ]] && bg="$(backgroundColor $3)" || bg="$(backgroundColor)"
   [[ -n "$4" ]] && fg="$(foregroundColor $4)" || fg="$(foregroundColor)"
+
+  # Determine if segment should be bold.
+  local BOLD_USER_VARIABLE=POWERLEVEL9K_${(U)1#prompt_}_BOLD
+  local BOLD_MODIFIER=${(P)BOLD_USER_VARIABLE}
+  [[ ${(L)BOLD_MODIFIER} == "true" ]] && bd="%B" || bd=""
 
   # If CURRENT_RIGHT_BG is "NONE", we are the first right segment.
   if [[ $joined == false ]] || [[ "$CURRENT_RIGHT_BG" == "NONE" ]]; then
@@ -245,20 +257,23 @@ right_prompt_segment() {
       local visual_identifier_color_variable=POWERLEVEL9K_${(U)1#prompt_}_VISUAL_IDENTIFIER_COLOR
       set_default $visual_identifier_color_variable $4
       visual_identifier="%F{${(P)visual_identifier_color_variable}%}$visual_identifier%f"
-      # Add an whitespace if we print more than just the visual identifier
-      [[ -n "$5" ]] && visual_identifier=" $visual_identifier"
     fi
   fi
 
-  echo -n "${bg}${fg}"
-
   # Print whitespace only if segment is not joined or first right segment
-  [[ $joined == false ]] || [[ "$CURRENT_RIGHT_BG" == "NONE" ]] && echo -n "${POWERLEVEL9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS}"
+  [[ $joined == false ]] || [[ "$CURRENT_RIGHT_BG" == "NONE" ]] && echo -n "${bg}${fg}${POWERLEVEL9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS}"
 
-  # Print segment content if there is any
-  [[ -n "$5" ]] && echo -n "${5}"
-  # Print the visual identifier
-  echo -n "${visual_identifier}${POWERLEVEL9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS}%f"
+    if [[ ${(L)POWERLEVEL9K_RPROMPT_ICON_LEFT} == "true" ]]; then # Visual identifier before content
+      # Print the visual identifier
+      echo -n "${visual_identifier}${POWERLEVEL9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS}"
+      # Print segment content if there is any
+      [[ -n "$5" ]] && echo -n "${bg}${fg}${bd}${5}%b${bg}${fg}${POWERLEVEL9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS}%f"
+    else # Content before visual identifier
+      # Print segment content if there is any
+      [[ -n "$5" ]] && echo -n "${bg}${fg}${bd}${5}%b${bg}${fg}${POWERLEVEL9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS}%f"
+      # Print the visual identifier
+      echo -n "${visual_identifier}${POWERLEVEL9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS}%f"
+    fi
 
   CURRENT_RIGHT_BG=$3
   last_right_element_index=$current_index
@@ -1544,6 +1559,7 @@ prompt_dropbox() {
 build_left_prompt() {
   local index=1
   local element
+
   for element in "${POWERLEVEL9K_LEFT_PROMPT_ELEMENTS[@]}"; do
     # Remove joined information in direct calls
     element=${element%_joined}
