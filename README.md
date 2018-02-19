@@ -115,7 +115,7 @@ The segments that are currently available are:
 * **GoLang Segments:**
     * `go_version` - Show the current GO version.
 * **Javascript / Node.js Segments:**
-    * `node_version` - Show the version number of the installed Node.js.
+    * [`node_version`](#node_version) - Show the version number of the installed Node.js.
     * `nodeenv` - [nodeenv](https://github.com/ekalinin/nodeenv) prompt for displaying node version and environment name.
     * `nvm` - Show the version of Node that is currently active, if it differs from the version used by NVM
 * **PHP Segments:**
@@ -637,6 +637,15 @@ you are using the [ZSH Line Editor](http://zsh.sourceforge.net/Doc/Release/Zsh-L
 |----------|---------------|-------------|
 |`POWERLEVEL9K_VI_INSERT_MODE_STRING`|`"INSERT"`|String to display while in 'Insert' mode.|
 |`POWERLEVEL9K_VI_COMMAND_MODE_STRING`|`"NORMAL"`|String to display while in 'Command' mode.|
+
+##### node_version
+
+This segment shows the _NodeJS_ version, that is currently active.
+
+| Variable | Default Value | Description |
+|----------|---------------|-------------|
+|`POWERLEVEL9K_NODE_VERSION_PROJECT_ONLY`|`false`|If `true` this segment only appears inside _NodeJS_ projects described by a `package.json`.|
+
 
 #### Unit Test Ratios
 
