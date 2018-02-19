@@ -1023,9 +1023,9 @@ prompt_load() {
   # Replace comma
   load_avg=${load_avg//,/.}
 
-  if [[ "$load_avg" -gt $(bc -l <<< "${cores} * 0.7") ]]; then
+  if [[ "$load_avg" -gt $((${cores} * 0.7)) ]]; then
     current_state="critical"
-  elif [[ "$load_avg" -gt $(bc -l <<< "${cores} * 0.5") ]]; then
+  elif [[ "$load_avg" -gt $((${cores} * 0.5)) ]]; then
     current_state="warning"
   else
     current_state="normal"
@@ -1034,13 +1034,37 @@ prompt_load() {
   "$1_prompt_segment" "${0}_${current_state}" "$2" "${load_states[$current_state]}" "$DEFAULT_COLOR" "$load_avg" 'LOAD_ICON'
 }
 
-################################################################
-# Segment to diplay Node version
-prompt_node_version() {
-  local node_version=$(node -v 2>/dev/null)
-  [[ -z "${node_version}" ]] && return
+# Node version
+set_default POWERLEVEL9K_NODE_VERSION_PROJECT_ONLY=false
 
-  "$1_prompt_segment" "$0" "$2" "green" "white" "${node_version:1}" 'NODE_ICON'
+prompt_node_version() {
+  if [ "$POWERLEVEL9K_NODE_VERSION_PROJECT_ONLY" = true ] ; then
+    local foundProject=false # Variable to stop searching if a project has been found.
+    local currentDir=$(pwd) # Variable to iterate trough the path reverse.
+
+    # Search as long as no project could been found or the root directory has been reached.
+    while [ "$foundProject" = false -a ! "$currentDir" = "/" ] ; do
+      # Check if directory contain a project description.
+      if [[ -a "$currentDir/package.json" ]] ; then
+        foundProject=true
+      fi
+
+      # Go to the parent directory.
+      currentDir="$(dirname "$currentDir")"
+    done
+  fi
+
+  # Show version if it should been shown always or if a project has been found.
+  if [ "$POWERLEVEL9K_NODE_VERSION_PROJECT_ONLY" = false -o "$foundProject" = true ] ; then
+    # Get the node version.
+    local node_version=$(node -v 2>/dev/null)
+
+    # Return if node is not installed (version output empty).
+    [[ -z "${node_version}" ]] && return
+
+    # Define the segments itself.
+    "$1_prompt_segment" "$0" "$2" "green" "white" "${node_version:1}" 'NODE_ICON'
+  fi
 }
 
 ################################################################
