@@ -1,0 +1,7 @@
+################################################################
+# Segment to display SSH icon when connected
+prompt_ssh() {
+  if [[ -n "$SSH_CLIENT" ]] || [[ -n "$SSH_TTY" ]]; then
+    "$1_prompt_segment" "$0" "$2" "$DEFAULT_COLOR" "yellow" "" 'SSH_ICON'
+  fi
+}

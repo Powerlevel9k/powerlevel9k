@@ -1,0 +1,36 @@
+################################################################
+# User: user (who am I)
+# Note that if $DEFAULT_USER is not set, this prompt segment will always print
+set_default POWERLEVEL9K_USER_TEMPLATE "%n"
+prompt_user() {
+  local current_state="DEFAULT"
+  typeset -AH user_state
+  if [[ "$POWERLEVEL9K_ALWAYS_SHOW_USER" == true ]] || [[ "$(whoami)" != "$DEFAULT_USER" ]]; then
+    if [[ $(print -P "%#") == '#' ]]; then
+      user_state=(
+        "STATE"               "ROOT"
+        "CONTENT"             "${POWERLEVEL9K_USER_TEMPLATE}"
+        "BACKGROUND_COLOR"    "${DEFAULT_COLOR}"
+        "FOREGROUND_COLOR"    "yellow"
+        "VISUAL_IDENTIFIER"   "ROOT_ICON"
+      )
+    elif sudo -n true 2>/dev/null; then
+      user_state=(
+        "STATE"               "SUDO"
+        "CONTENT"             "${POWERLEVEL9K_USER_TEMPLATE}"
+        "BACKGROUND_COLOR"    "${DEFAULT_COLOR}"
+        "FOREGROUND_COLOR"    "yellow"
+        "VISUAL_IDENTIFIER"   "SUDO_ICON"
+      )
+    else
+      user_state=(
+        "STATE"               "DEFAULT"
+        "CONTENT"             "$(whoami)"
+        "BACKGROUND_COLOR"    "${DEFAULT_COLOR}"
+        "FOREGROUND_COLOR"    "yellow"
+        "VISUAL_IDENTIFIER"   "USER_ICON"
+      )
+    fi
+    "$1_prompt_segment" "${0}_${user_state[STATE]}" "$2" "${user_state[BACKGROUND_COLOR]}" "${user_state[FOREGROUND_COLOR]}" "${user_state[CONTENT]}" "${user_state[VISUAL_IDENTIFIER]}"
+  fi
+}

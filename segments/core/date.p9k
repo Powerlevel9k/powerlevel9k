@@ -1,0 +1,7 @@
+################################################################
+# System date
+prompt_date() {
+  set_default POWERLEVEL9K_DATE_FORMAT "%D{%d.%m.%y}"
+
+  "$1_prompt_segment" "$0" "$2" "$DEFAULT_COLOR_INVERTED" "$DEFAULT_COLOR" "$POWERLEVEL9K_DATE_FORMAT" "DATE_ICON"
+}

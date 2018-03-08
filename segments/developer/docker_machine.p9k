@@ -1,0 +1,9 @@
+################################################################
+# Docker machine
+prompt_docker_machine() {
+  local docker_machine="$DOCKER_MACHINE_NAME"
+
+  if [[ -n "$docker_machine" ]]; then
+    "$1_prompt_segment" "$0" "$2" "magenta" "$DEFAULT_COLOR" "$docker_machine" 'SERVER_ICON'
+  fi
+}

@@ -1,0 +1,8 @@
+################################################################
+# pyenv: current active python version (with restrictions)
+# https://github.com/pyenv/pyenv#choosing-the-python-version
+prompt_pyenv() {
+  if [[ -n "$PYENV_VERSION" ]]; then
+    "$1_prompt_segment" "$0" "$2" "blue" "$DEFAULT_COLOR" "$PYENV_VERSION" 'PYTHON_ICON'
+  fi
+}

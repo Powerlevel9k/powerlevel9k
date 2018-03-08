@@ -1,0 +1,5 @@
+################################################################
+# Segment to print a little OS icon
+prompt_os_icon() {
+  "$1_prompt_segment" "$0" "$2" "black" "white" "$OS_ICON"
+}

@@ -1,0 +1,11 @@
+################################################################
+# Symfony2-PHPUnit test ratio
+prompt_symfony2_tests() {
+  if [[ (-d src && -d app && -f app/AppKernel.php) ]]; then
+    local code_amount tests_amount
+    code_amount=$(ls -1 src/**/*.php | grep -vc Tests)
+    tests_amount=$(ls -1 src/**/*.php | grep -c Tests)
+
+    build_test_stats "$1" "$0" "$2" "$code_amount" "$tests_amount" "SF2" 'TEST_ICON'
+  fi
+}

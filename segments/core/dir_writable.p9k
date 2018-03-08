@@ -1,0 +1,7 @@
+###############################################################
+# dir_writable: Display information about the user's permission to write in the current directory
+prompt_dir_writable() {
+  if [[ ! -w "$PWD" ]]; then
+    "$1_prompt_segment" "$0_FORBIDDEN" "$2" "red" "yellow1" "" 'LOCK_ICON'
+  fi
+}

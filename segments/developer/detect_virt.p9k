@@ -1,0 +1,18 @@
+################################################################
+# Detection for virtualization (systemd based systems only)
+prompt_detect_virt() {
+  if ! command -v systemd-detect-virt > /dev/null; then
+    return
+  fi
+  local virt=$(systemd-detect-virt)
+  if [[ "$virt" == "none" ]]; then
+    if [[ "$(ls -di / | grep -o 2)" != "2" ]]; then
+      virt="chroot"
+      "$1_prompt_segment" "$0" "$2" "$DEFAULT_COLOR" "yellow" "$virt"
+    else
+      ;
+    fi
+  else
+    "$1_prompt_segment" "$0" "$2" "$DEFAULT_COLOR" "yellow" "$virt"
+  fi
+}
