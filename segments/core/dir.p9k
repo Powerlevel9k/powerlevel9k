@@ -1,6 +1,74 @@
 #!/usr/bin/env zsh
 # vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
 ################################################################
+# powerlevel9k Theme
+# https://github.com/bhilburn/powerlevel9k
+#
+# This theme was inspired by agnoster's Theme:
+# https://gist.github.com/3712874
+################################################################
+
+# Icon array format:
+#   <name>
+#   <flat/awesome-patched>
+#   <awesome-fontconfig>
+#   <awesome-mapped-fontconfig>
+#   <nerdfont>
+#   <generic>
+local prompt_icon=(
+  "HOME_ICON"
+   ''
+   $'\uE12C' # 
+   $'\uF015' # 
+   '\u'$CODEPOINT_OF_AWESOME_HOME # 
+   $'\uF015' # 
+)
+register_icon "$prompt_icon[@]"
+
+#                                                                                
+#register_icon "HOME_ICON"  ''  $'\uE12C'  $'\uF015'  '\u'$CODEPOINT_OF_AWESOME_HOME  $'\uF015'
+
+prompt_icon=(
+  "HOME_SUB_ICON"
+   ''
+   $'\uE18D' # 
+   $'\uF07C' # 
+   '\u'$CODEPOINT_OF_AWESOME_FOLDER_OPEN # 
+   $'\uF07C' # 
+)
+register_icon "$prompt_icon[@]"
+
+#                                                                                           
+#register_icon "HOME_SUB_ICON"  ''  $'\uE18D'  $'\uF07C'  '\u'$CODEPOINT_OF_AWESOME_FOLDER_OPEN  $'\uF07C'
+
+prompt_icon=(
+  "FOLDER_ICON"
+   ''
+   $'\uE818' # 
+   $'\uF115' # 
+   '\u'$CODEPOINT_OF_AWESOME_FOLDER_O # 
+   $'\uF115' # 
+)
+register_icon "$prompt_icon[@]"
+
+#                                                                                      
+#register_icon "FOLDER_ICON"  ''  $'\uE818'  $'\uF115'  '\u'$CODEPOINT_OF_AWESOME_FOLDER_O  $'\uF115'
+
+prompt_icon=(
+  "LOCK_ICON"
+   $'\UE0A2'
+   $'\UE138' # 
+   $'\UF023' # 
+   '\u'$CODEPOINT_OF_AWESOME_LOCK # 
+   $'\UF023' # 
+)
+register_icon "$prompt_icon[@]"
+unset prompt_icon
+
+#                                                                                        
+#register_icon "LOCK_ICON"  $'\UE0A2'  $'\UE138'  $'\UF023'  '\u'$CODEPOINT_OF_AWESOME_LOCK  $'\UF023'
+
+################################################################
 # Dir: current working directory
 # Parameters:
 #   * $1 Alignment: string - left|right

@@ -1,3 +1,28 @@
+#!/usr/bin/env zsh
+# vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
+################################################################
+# powerlevel9k Theme
+# https://github.com/bhilburn/powerlevel9k
+#
+# This theme was inspired by agnoster's Theme:
+# https://gist.github.com/3712874
+################################################################
+
+local prompt_icon
+prompt_icon=(
+  "TIME_ICON"
+  ''
+  $'\uE12E' # 
+  $'\uF017 ' # 
+  $'\uF017 ' # 
+  $'\uF017 ' # 
+)
+register_icon "$prompt_icon[@]"
+unset prompt_icon
+
+#                                                             
+#register_icon "TIME_ICON"  ''  $'\uE12E'  $'\uF017 '  $'\uF017 '  $'\uF017 '
+
 ################################################################
 # System time
 prompt_time() {

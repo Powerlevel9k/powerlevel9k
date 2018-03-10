@@ -1,3 +1,4 @@
+#!/usr/bin/env zsh
 # vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
 ################################################################
 # powerlevel9k Theme
@@ -31,7 +32,7 @@ else
       # https://github.com/zsh-users/antigen/issues/581
       p9k_directory=$PWD
     else
-      print -P "%F{red}You must set POWERLEVEL9K_INSTALLATION_DIR work from within an (eval).%f"
+      print -P "%F{red}You must set POWERLEVEL9K_INSTALLATION_DIR to work from within an (eval).%f"
       return 1
     fi
   else
@@ -283,22 +284,6 @@ prompt_custom() {
 }
 
 ################################################################
-# Vi Mode: show editing mode (NORMAL|INSERT)
-set_default POWERLEVEL9K_VI_INSERT_MODE_STRING "INSERT"
-set_default POWERLEVEL9K_VI_COMMAND_MODE_STRING "NORMAL"
-prompt_vi_mode() {
-  case ${KEYMAP} in
-    vicmd)
-      "$1_prompt_segment" "$0_NORMAL" "$2" "$DEFAULT_COLOR" "default" "$POWERLEVEL9K_VI_COMMAND_MODE_STRING"
-    ;;
-    main|viins|*)
-      if [[ -z $POWERLEVEL9K_VI_INSERT_MODE_STRING ]]; then return; fi
-      "$1_prompt_segment" "$0_INSERT" "$2" "$DEFAULT_COLOR" "blue" "$POWERLEVEL9K_VI_INSERT_MODE_STRING"
-    ;;
-  esac
-}
-
-################################################################
 # Prompt processing and drawing
 ################################################################
 # Main prompt
@@ -395,11 +380,6 @@ NEWLINE='
   [[ $ITERM_SHELL_INTEGRATION_INSTALLED == "Yes" ]] && PROMPT="%{$(iterm2_prompt_mark)%}$PROMPT"
 }
 
-zle-keymap-select () {
-	zle reset-prompt
-	zle -R
-}
-
 set_default POWERLEVEL9K_IGNORE_TERM_COLORS false
 set_default POWERLEVEL9K_IGNORE_TERM_LANG false
 
@@ -451,9 +431,9 @@ prompt_powerlevel9k_setup() {
   autoload -U colors && colors
 
   # load only the segments that are being used!
+  local segment_name
   for segment in $p9k_directory/segments/**/*.p9k; do
-    local segment_file=${segment##*/}
-    local segment_name=${segment_file//.p9k/}
+    segment_name=${${segment##*/}%.p9k}
     if segment_in_use "$segment_name"; then
       source "${segment}"
     fi
@@ -461,10 +441,6 @@ prompt_powerlevel9k_setup() {
 
   # cleanup temporary variable
   unset p9k_directory
-
-  if segment_in_use "vcs"; then
-    powerlevel9k_vcs_init
-  fi
 
   # initialize timing functions
   zmodload zsh/datetime
@@ -478,8 +454,6 @@ prompt_powerlevel9k_setup() {
   # prepare prompts
   add-zsh-hook precmd powerlevel9k_prepare_prompts
   add-zsh-hook preexec powerlevel9k_preexec
-
-  zle -N zle-keymap-select
 }
 
 prompt_powerlevel9k_teardown() {

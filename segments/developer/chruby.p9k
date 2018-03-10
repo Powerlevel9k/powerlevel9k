@@ -1,3 +1,27 @@
+#!/usr/bin/env zsh
+# vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
+################################################################
+# powerlevel9k Theme
+# https://github.com/bhilburn/powerlevel9k
+#
+# This theme was inspired by agnoster's Theme:
+# https://gist.github.com/3712874
+################################################################
+
+local prompt_icon=(
+  "RUBY_ICON"
+   ''
+   $'\uE847 ' # 
+   $'\uF219 ' # 
+   '\u'$CODEPOINT_OF_OCTICONS_RUBY' ' # 
+   $'\uF219 ' # 
+)
+register_icon "$prompt_icon[@]"
+unset prompt_icon
+
+#                                                                                     
+#register_icon "RUBY_ICON"  ''  $'\uE847 '  $'\uF219 '  '\u'$CODEPOINT_OF_OCTICONS_RUBY' '  $'\uF219 '
+
 ################################################################
 # Segment to display chruby information
 # see https://github.com/postmodern/chruby/issues/245 for chruby_auto issue with ZSH

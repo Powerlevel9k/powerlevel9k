@@ -1,5 +1,15 @@
+#!/usr/bin/env zsh
+# vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
 ################################################################
-# A newline in your prompt, so you can segments on multiple lines.
+# powerlevel9k Theme
+# https://github.com/bhilburn/powerlevel9k
+#
+# This theme was inspired by agnoster's Theme:
+# https://gist.github.com/3712874
+################################################################
+
+################################################################
+# A newline in your prompt, so you can do segments on multiple lines.
 prompt_newline() {
   local lws newline
   [[ "$1" == "right" ]] && return

@@ -1,10 +1,34 @@
+#!/usr/bin/env zsh
 # vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
+################################################################
+# powerlevel9k Theme
+# https://github.com/bhilburn/powerlevel9k
+#
+# This theme was inspired by agnoster's Theme:
+# https://gist.github.com/3712874
+################################################################
+
 ################################################################
 # Utility functions
 # This file holds some utility-functions for
 # the powerlevel9k-ZSH-theme
 # https://github.com/bhilburn/powerlevel9k
 ################################################################
+
+# Determine OS and version (if applicable)
+case $(uname) in
+  Darwin) OS='macOS' ;;
+  CYGWIN_NT-*) OS='Windows' ;;
+  FreeBSD|OpenBSD|DragonFly) OS='BSD' ;;
+  Linux)
+    OS='Linux'
+    OS_ID="$(grep -E '^ID=([a-zA-Z]*)' /etc/os-release | cut -d '=' -f 2)"
+    case $(uname -o 2>/dev/null) in
+      Android) OS='Android' ;;
+    esac
+  ;;
+  SunOS) OS='Solaris' ;;
+esac
 
 # Exits with 0 if a variable has been previously defined (even if empty)
 # Takes the name of a variable that should be checked.
@@ -79,105 +103,19 @@ function getRelevantItem() {
   done
 }
 
-# OS detection
-case $(uname) in
-    Darwin)
-      OS='OSX'
-      OS_ICON=$(print_icon 'APPLE_ICON')
-      ;;
-    CYGWIN_NT-*)
-      OS='Windows'
-      OS_ICON=$(print_icon 'WINDOWS_ICON')
-      ;;
-    FreeBSD)
-      OS='BSD'
-      OS_ICON=$(print_icon 'FREEBSD_ICON')
-      ;;
-    OpenBSD)
-      OS='BSD'
-      OS_ICON=$(print_icon 'FREEBSD_ICON')
-      ;;
-    DragonFly)
-      OS='BSD'
-      OS_ICON=$(print_icon 'FREEBSD_ICON')
-      ;;
-    Linux)
-      OS='Linux'
-      os_release_id="$(grep -E '^ID=([a-zA-Z]*)' /etc/os-release | cut -d '=' -f 2)"
-      case "$os_release_id" in
-        "arch")
-        OS_ICON=$(print_icon 'LINUX_ARCH_ICON')
-        ;;
-        "debian")
-        OS_ICON=$(print_icon 'LINUX_DEBIAN_ICON')
-        ;;
-       "ubuntu")
-        OS_ICON=$(print_icon 'LINUX_UBUNTU_ICON')
-        ;;
-       "elementary")
-        OS_ICON=$(print_icon 'LINUX_ELEMENTARY_ICON')
-        ;;
-       "fedora")
-        OS_ICON=$(print_icon 'LINUX_FEDORA_ICON')
-        ;;
-       "coreos")
-        OS_ICON=$(print_icon 'LINUX_COREOS_ICON')
-        ;;
-       "gentoo")
-        OS_ICON=$(print_icon 'LINUX_GENTOO_ICON')
-        ;;
-       "mageia")
-        OS_ICON=$(print_icon 'LINUX_MAGEIA_ICON')
-        ;;
-       "centos")
-        OS_ICON=$(print_icon 'LINUX_CENTOS_ICON')
-        ;;
-       "opensuse"|"tumbleweed")
-        OS_ICON=$(print_icon 'LINUX_OPENSUSE_ICON')
-        ;;
-       "sabayon")
-        OS_ICON=$(print_icon 'LINUX_SABAYON_ICON')
-        ;;
-       "slackware")
-        OS_ICON=$(print_icon 'LINUX_SLACKWARE_ICON')
-        ;;
-       "linuxmint")
-        OS_ICON=$(print_icon 'LINUX_MINT_ICON')
-        ;;
-        *)
-        OS='Linux'
-        OS_ICON=$(print_icon 'LINUX_ICON')
-        ;;
-      esac
-
-      # Check if we're running on Android
-      case $(uname -o 2>/dev/null) in
-        Android)
-          OS='Android'
-          OS_ICON=$(print_icon 'ANDROID_ICON')
-          ;;
-      esac
-      ;;
-    SunOS)
-      OS='Solaris'
-      OS_ICON=$(print_icon 'SUNOS_ICON')
-      ;;
-    *)
-      OS=''
-      OS_ICON=''
-      ;;
-esac
-
 # Determine the correct sed parameter.
 #
 # `sed` is unfortunately not consistent across OSes when it comes to flags.
 SED_EXTENDED_REGEX_PARAMETER="-r"
-if [[ "$OS" == 'OSX' ]]; then
+if [[ "$OS" == 'macOS' ]]; then
   local IS_BSD_SED="$(sed --version &>> /dev/null || echo "BSD sed")"
   if [[ -n "$IS_BSD_SED" ]]; then
     SED_EXTENDED_REGEX_PARAMETER="-E"
   fi
 fi
+
+# Combine the PROMPT_ELEMENTS
+POWERLEVEL9K_PROMPT_ELEMENTS=(union $POWERLEVEL9K_LEFT_PROMPT_ELEMENTS $POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS)
 
 # Determine if the passed segment is used in the prompt
 #
@@ -356,4 +294,18 @@ function upsearch () {
     upsearch "$1"
     popd > /dev/null
   fi
+}
+
+# Union of two or more arrays
+# USAGE:
+#   union [arr1[ arr2[ ...]]]
+# EXAMPLE:
+#   $ arr1=('a' 'b' 'c')
+#   $ arr2=('b' 'c' 'd')
+#   $ arr2=('c' 'd' 'e')
+#   $ union $arr1 $arr2 $arr3
+#   > a b c d e
+union() {
+  typeset -U sections=("$@")
+  echo $sections
 }

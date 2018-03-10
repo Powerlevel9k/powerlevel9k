@@ -1,3 +1,27 @@
+#!/usr/bin/env zsh
+# vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
+################################################################
+# powerlevel9k Theme
+# https://github.com/bhilburn/powerlevel9k
+#
+# This theme was inspired by agnoster's Theme:
+# https://gist.github.com/3712874
+################################################################
+
+local prompt_icon=(
+  "ROOT_ICON"
+   $'\u26A1' # ⚡
+   $'\uE801' # 
+   $'\uF201' # 
+   '\u'$CODEPOINT_OF_OCTICONS_ZAP # 
+   $'\uE614 ' # 
+)
+register_icon "$prompt_icon[@]"
+unset prompt_icon
+
+#                          ⚡                                                           
+#register_icon "ROOT_ICON"  $'\u26A1'  $'\uE801'  $'\uF201'  '\u'$CODEPOINT_OF_OCTICONS_ZAP  $'\uE614 '
+
 ################################################################
 # Segment to print an icon if user is root.
 prompt_root_indicator() {

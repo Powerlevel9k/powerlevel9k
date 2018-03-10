@@ -1,3 +1,28 @@
+#!/usr/bin/env zsh
+# vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
+################################################################
+# powerlevel9k Theme
+# https://github.com/bhilburn/powerlevel9k
+#
+# This theme was inspired by agnoster's Theme:
+# https://gist.github.com/3712874
+################################################################
+
+local prompt_icon=(
+  "DISK_ICON"
+   $'hdd '
+   $'\uE1AE ' # 
+   $'\uF0A0 ' # 
+   '\u'$CODEPOINT_OF_AWESOME_HDD_O' ' # 
+   $'\uF0A0' # 
+)
+register_icon "$prompt_icon[@]"
+unset prompt_icon
+
+#                                                                                           
+#register_icon "DISK_ICON"  $'hdd '  $'\uE1AE '  $'\uF0A0 '  '\u'$CODEPOINT_OF_AWESOME_HDD_O' '  $'\uF0A0'
+
+
 ################################################################
 # Segment that indicates usage level of current partition.
 set_default POWERLEVEL9K_DISK_USAGE_ONLY_WARNING false

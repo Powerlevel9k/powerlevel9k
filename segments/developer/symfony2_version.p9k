@@ -1,3 +1,27 @@
+#!/usr/bin/env zsh
+# vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
+################################################################
+# powerlevel9k Theme
+# https://github.com/bhilburn/powerlevel9k
+#
+# This theme was inspired by agnoster's Theme:
+# https://gist.github.com/3712874
+################################################################
+
+local prompt_icon=(
+  "SYMFONY_ICON"
+   'SF'
+   'SF'
+   'SF'
+   'SF'
+   $'\uE757' # 
+)
+register_icon "$prompt_icon[@]"
+unset prompt_icon
+
+#                                                     
+#register_icon "SYMFONY_ICON"  'SF'  'SF'  'SF'  'SF'  $'\uE757'
+
 ################################################################
 # Segment to display Symfony2-Version
 prompt_symfony2_version() {

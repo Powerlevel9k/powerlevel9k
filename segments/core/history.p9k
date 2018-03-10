@@ -1,5 +1,29 @@
+#!/usr/bin/env zsh
+# vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
+################################################################
+# powerlevel9k Theme
+# https://github.com/bhilburn/powerlevel9k
+#
+# This theme was inspired by agnoster's Theme:
+# https://gist.github.com/3712874
+################################################################
+
+local prompt_icon=(
+  "HISTORY_ICON"
+   ''
+   ''
+   $'\uE29A' # 
+   $'\uE29A' # 
+   $'\uE29A' # 
+)
+register_icon "$prompt_icon[@]"
+unset prompt_icon
+
+#                                                               
+#register_icon "VCS_UNTRACKED_ICON"  ''  ''  $'\uE29A'  $'\uE29A'  $'\uE29A'
+
 ################################################################
 # Command number (in local history)
 prompt_history() {
-  "$1_prompt_segment" "$0" "$2" "grey50" "$DEFAULT_COLOR" '%h'
+  "$1_prompt_segment" "$0" "$2" "grey50" "$DEFAULT_COLOR" '%h' 'HISTORY_ICON'
 }
