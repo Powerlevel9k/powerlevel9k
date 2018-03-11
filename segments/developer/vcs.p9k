@@ -127,7 +127,7 @@ register_icon "VCS_COMMIT_ICON"  ''  $'\uE821 '  $'\uF221 '  '\u'$CODEPOINT_OF_O
 
 if [[ "$POWERLEVEL9K_HIDE_BRANCH_ICON" != true ]]; then
   local branch_icon
-  [[ $POWERLEVEL9K_MODE == 'compatible' ]] && branch_icon="@" || branch_icon=$'\uE0A0 ' # 
+  [[ $POWERLEVEL9K_MODE == 'compatible' ]] && branch_icon="@ " || branch_icon=$'\uE0A0 ' # 
   # prompt_icon=(
   #   "VCS_BRANCH_ICON"
   #    $branch_icon
@@ -138,8 +138,8 @@ if [[ "$POWERLEVEL9K_HIDE_BRANCH_ICON" != true ]]; then
   # )
   # register_icon "$prompt_icon[@]"
 
-  #                                                                                                             
-  register_icon "VCS_BRANCH_ICON"  $branch_icon  $'\uE220 '  $'\uF126 '  '\u'$CODEPOINT_OF_OCTICONS_GIT_BRANCH' '  $'\uF126 '
+  #                                                                                                               
+  register_icon "VCS_BRANCH_ICON"  ${branch_icon}  $'\uE220 '  $'\uF126 '  '\u'$CODEPOINT_OF_OCTICONS_GIT_BRANCH' '  $'\uF126 '
 fi
 
 # prompt_icon=(
