@@ -8,32 +8,32 @@
 # https://gist.github.com/3712874
 ################################################################
 
-prompt_icon=(
-  "PUBLIC_IP_ICON"
-   ''
-   ''
-   ''
-   '\u'$CODEPOINT_OF_AWESOME_GLOBE # 
-   $'\UF0AC' # 
-)
-register_icon "$prompt_icon[@]"
+# prompt_icon=(
+#   "PUBLIC_IP_ICON"
+#    ''
+#    ''
+#    ''
+#    '\u'$CODEPOINT_OF_AWESOME_GLOBE # 
+#    $'\UF0AC' # 
+# )
+# register_icon "$prompt_icon[@]"
 
 #                                                                           
-#register_icon "PUBLIC_IP_ICON"  ''  ''  ''  '\u'$CODEPOINT_OF_AWESOME_GLOBE  $'\UF0AC'
+register_icon "PUBLIC_IP_ICON"  ''  ''  ''  '\u'$CODEPOINT_OF_AWESOME_GLOBE  $'\UF0AC'
 
-prompt_icon=(
-  "VPN_ICON"
-   '(vpn)'
-   '(vpn)'
-   $'\uF023' # 
-   '\u'$CODEPOINT_OF_AWESOME_LOCK
-   '(vpn)'
-)
-register_icon "$prompt_icon[@]"
-unset prompt_icon
+# prompt_icon=(
+#   "VPN_ICON"
+#    '(vpn)'
+#    '(vpn)'
+#    $'\uF023' # 
+#    '\u'$CODEPOINT_OF_AWESOME_LOCK
+#    '(vpn)'
+# )
+# register_icon "$prompt_icon[@]"
+# unset prompt_icon
 
 #
-#register_icon "VPN_ICON"  '(vpn)'  '(vpn)'  $'\uF023'  '\u'$CODEPOINT_OF_AWESOME_LOCK  '(vpn)'
+register_icon "VPN_ICON"  '(vpn)'  '(vpn)'  $'\uF023'  '\u'$CODEPOINT_OF_AWESOME_LOCK  '(vpn)'
 
 ################################################################
 # Public IP segment

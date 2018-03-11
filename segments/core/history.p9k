@@ -8,19 +8,19 @@
 # https://gist.github.com/3712874
 ################################################################
 
-prompt_icon=(
-  "HISTORY_ICON"
-   ''
-   ''
-   $'\uE29A' # 
-   $'\uE29A' # 
-   $'\uE29A' # 
-)
-register_icon "$prompt_icon[@]"
-unset prompt_icon
+# prompt_icon=(
+#   "HISTORY_ICON"
+#    ''
+#    ''
+#    $'\uE29A' # 
+#    $'\uE29A' # 
+#    $'\uE29A' # 
+# )
+# register_icon "$prompt_icon[@]"
+# unset prompt_icon
 
 #                                                               
-#register_icon "VCS_UNTRACKED_ICON"  ''  ''  $'\uE29A'  $'\uE29A'  $'\uE29A'
+register_icon "VCS_UNTRACKED_ICON"  ''  ''  $'\uE29A'  $'\uE29A'  $'\uE29A'
 
 ################################################################
 # Command number (in local history)

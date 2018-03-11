@@ -8,19 +8,19 @@
 # https://gist.github.com/3712874
 ################################################################
 
-prompt_icon=(
-  "NODE_ICON"
-   $'\u2B22' # ⬢
-   $'\u2B22' # ⬢
-   $'\u2B22' # ⬢
-   $'\u2B22' # ⬢
-   $'\uE617 ' # 
-)
-register_icon "$prompt_icon[@]"
-unset prompt_icon
+# prompt_icon=(
+#   "NODE_ICON"
+#    $'\u2B22' # ⬢
+#    $'\u2B22' # ⬢
+#    $'\u2B22' # ⬢
+#    $'\u2B22' # ⬢
+#    $'\uE617 ' # 
+# )
+# register_icon "$prompt_icon[@]"
+# unset prompt_icon
 
-#                          ⬢         ⬢          ⬢         ⬢          
-#register_icon "NODE_ICON"  $'\u2B22'  $'\u2B22'  $'\u2B22'  $'\u2B22'  $'\uE617 '
+#                          ⬢         ⬢          ⬢          ⬢          
+register_icon "NODE_ICON"  $'\u2B22'  $'\u2B22'  $'\u2B22'  $'\u2B22'  $'\uE617 '
 
 ################################################################
 # Segment to display Node version from NVM

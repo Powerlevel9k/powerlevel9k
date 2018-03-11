@@ -8,19 +8,19 @@
 # https://gist.github.com/3712874
 ################################################################
 
-prompt_icon=(
-  "RAM_ICON"
-   'RAM'
-   $'\uE1E2 ' # 
-   $'\uF0E4' # 
-   '\u'$CODEPOINT_OF_AWESOME_DASHBOARD # 
-   $'\uF0E4' # 
-)
-register_icon "$prompt_icon[@]"
-unset prompt_icon
+# prompt_icon=(
+#   "RAM_ICON"
+#    'RAM'
+#    $'\uE1E2 ' # 
+#    $'\uF0E4' # 
+#    '\u'$CODEPOINT_OF_AWESOME_DASHBOARD # 
+#    $'\uF0E4' # 
+# )
+# register_icon "$prompt_icon[@]"
+# unset prompt_icon
 
 #                                                                                        
-#register_icon "RAM_ICON"  'RAM'  $'\uE1E2 '  $'\uF0E4'  '\u'$CODEPOINT_OF_AWESOME_DASHBOARD  $'\uF0E4'
+register_icon "RAM_ICON"  'RAM'  $'\uE1E2 '  $'\uF0E4'  '\u'$CODEPOINT_OF_AWESOME_DASHBOARD  $'\uF0E4'
 
 ################################################################
 # Segment to display free RAM and used Swap

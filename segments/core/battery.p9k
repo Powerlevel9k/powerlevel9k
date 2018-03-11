@@ -8,19 +8,19 @@
 # https://gist.github.com/3712874
 ################################################################
 
-prompt_icon=(
-  "BATTERY_ICON"
-   $'\U1F50B' # 🔋
-   $'\uE894' # 
-   $'\U1F50B' # 🔋
-   '\U'$CODEPOINT_OF_AWESOME_BATTERY_FULL # 
-   $'\UF240 ' # 
-)
-register_icon "$prompt_icon[@]"
-unset prompt_icon
+# prompt_icon=(
+#   "BATTERY_ICON"
+#    $'\U1F50B' # 🔋
+#    $'\uE894' # 
+#    $'\U1F50B' # 🔋
+#    '\U'$CODEPOINT_OF_AWESOME_BATTERY_FULL # 
+#    $'\UF240 ' # 
+# )
+# register_icon "$prompt_icon[@]"
+# unset prompt_icon
 
 #                             🔋                    🔋                                                 
-#register_icon "BATTERY_ICON"  $'\U1F50B'  $'\uE894'  $'\U1F50B'  '\U'$CODEPOINT_OF_AWESOME_BATTERY_FULL  $'\UF240 '
+register_icon "BATTERY_ICON"  $'\U1F50B'  $'\uE894'  $'\U1F50B'  '\U'$CODEPOINT_OF_AWESOME_BATTERY_FULL  $'\UF240 '
 
 ################################################################
 # Segment that displays the battery status in levels and colors

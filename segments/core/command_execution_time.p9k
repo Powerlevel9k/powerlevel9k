@@ -8,19 +8,19 @@
 # https://gist.github.com/3712874
 ################################################################
 
-prompt_icon=(
-  "EXECUTION_TIME_ICON"
-   'Dur'
-   $'\UE89C' # 
-   $'\uF253'
-   '\u'$CODEPOINT_OF_AWESOME_HOURGLASS_END # 
-   $'\uF252' # 
-)
-register_icon "$prompt_icon[@]"
-unset prompt_icon
+# prompt_icon=(
+#   "EXECUTION_TIME_ICON"
+#    'Dur'
+#    $'\UE89C' # 
+#    $'\uF253'
+#    '\u'$CODEPOINT_OF_AWESOME_HOURGLASS_END # 
+#    $'\uF252' # 
+# )
+# register_icon "$prompt_icon[@]"
+# unset prompt_icon
 
 #                                                                                                       
-#register_icon "EXECUTION_TIME_ICON"  'Dur'  $'\UE89C'  $'\uF253'  '\u'$CODEPOINT_OF_AWESOME_HOURGLASS_END  $'\uF252'
+register_icon "EXECUTION_TIME_ICON"  'Dur'  $'\UE89C'  $'\uF253'  '\u'$CODEPOINT_OF_AWESOME_HOURGLASS_END  $'\uF252'
 
 ################################################################
 # Display the duration the command needed to run.
