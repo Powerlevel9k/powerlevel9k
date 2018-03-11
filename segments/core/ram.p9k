@@ -8,7 +8,7 @@
 # https://gist.github.com/3712874
 ################################################################
 
-local prompt_icon=(
+prompt_icon=(
   "RAM_ICON"
    'RAM'
    $'\uE1E2 ' # 

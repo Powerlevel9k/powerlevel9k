@@ -8,7 +8,7 @@
 # https://gist.github.com/3712874
 ################################################################
 
-local prompt_icon=(
+prompt_icon=(
   "EXECUTION_TIME_ICON"
    'Dur'
    $'\UE89C' # 

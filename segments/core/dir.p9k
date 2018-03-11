@@ -15,7 +15,7 @@
 #   <awesome-mapped-fontconfig>
 #   <nerdfont>
 #   <generic>
-local prompt_icon=(
+prompt_icon=(
   "HOME_ICON"
    ''
    $'\uE12C' # 

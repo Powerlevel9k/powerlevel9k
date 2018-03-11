@@ -10,7 +10,6 @@ function setUp() {
   # Load Powerlevel9k
   source powerlevel9k.zsh-theme
   source functions/*
-  source segments/**/*
 
   # Unset mode, so that user settings
   # do not interfere with tests

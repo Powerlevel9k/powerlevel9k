@@ -8,7 +8,6 @@
 # https://gist.github.com/3712874
 ################################################################
 
-local prompt_icon
 prompt_icon=(
   "TIME_ICON"
   ''
