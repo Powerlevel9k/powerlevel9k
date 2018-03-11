@@ -22,16 +22,7 @@
 # `compatible`. This shows all icons in regular symbols.
 ################################################################
 
-typeset -gAH icons arr
-
-local map
-case $POWERLEVEL9K_MODE in
-	'flat'|'awesome-patched')                   map=3 ;;
-	'awesome-fontconfig')                       map=4 ;;
-	'awesome-mapped-fontconfig')                map=5 ;;
-	'nerdfont-complete'|'nerdfont-fontconfig')  map=6 ;;
-	*)                                          map=2 ;;
-esac
+typeset -gAH icons
 
 ################################################################
 # This function allows a segment to register the icons that it requires.
@@ -53,8 +44,16 @@ esac
 #   register_icon "$prompt_icon[@]"
 #   unset prompt_icon
 register_icon() {
-	arr=("$@")
-	icons[${arr[1]}]=${arr[$map]}
+  local map
+  case $POWERLEVEL9K_MODE in
+  	'flat'|'awesome-patched')                   map=$3 ;;
+  	'awesome-fontconfig')                       map=$4 ;;
+  	'awesome-mapped-fontconfig')                map=$5 ;;
+  	'nerdfont-complete'|'nerdfont-fontconfig')  map=$6 ;;
+  	*)                                          map=$2 ;;
+  esac
+	# local arr=("$@")
+	icons[$1]=${map}
 }
 
 # Initialize the icon list according to the user's `POWERLEVEL9K_MODE`.
