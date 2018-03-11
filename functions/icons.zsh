@@ -53,7 +53,8 @@ esac
 #   register_icon "$prompt_icon[@]"
 #   unset prompt_icon
 register_icon() {
-	local arr=("$@")
+	local arr
+	arr=("$@")
 	icons[${arr[1]}]=${arr[$map]}
 }
 
