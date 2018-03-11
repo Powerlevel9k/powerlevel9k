@@ -9,6 +9,7 @@ function setUp() {
   export TERM="xterm-256color"
   # Load Powerlevel9k
   source powerlevel9k.zsh-theme
+  source segments/developer/vcs.p9k
 }
 
 function testColorOverridingForCleanStateWorks() {

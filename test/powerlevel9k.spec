@@ -16,7 +16,7 @@ function setUp() {
   unset POWERLEVEL9K_MODE
 
   # Load all segments that need to be tested so that they can be sourced
-  POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(dir root_indicator background_jobs command_execution_time go_version kubecontext rust_version vcs)
+  POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(dir root_indicator background_jobs)
 }
 
 function testJoinedSegments() {
