@@ -22,7 +22,7 @@
 # `compatible`. This shows all icons in regular symbols.
 ################################################################
 
-typeset -gAH icons
+typeset -gAH icons arr
 
 local map
 case $POWERLEVEL9K_MODE in
@@ -53,7 +53,6 @@ esac
 #   register_icon "$prompt_icon[@]"
 #   unset prompt_icon
 register_icon() {
-	local arr
 	arr=("$@")
 	icons[${arr[1]}]=${arr[$map]}
 }
