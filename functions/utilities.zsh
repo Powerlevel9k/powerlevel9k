@@ -115,7 +115,14 @@ if [[ "$OS" == 'macOS' ]]; then
 fi
 
 # Combine the PROMPT_ELEMENTS
-POWERLEVEL9K_PROMPT_ELEMENTS=(union $POWERLEVEL9K_LEFT_PROMPT_ELEMENTS $POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS)
+#POWERLEVEL9K_PROMPT_ELEMENTS=(union $POWERLEVEL9K_LEFT_PROMPT_ELEMENTS $POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS)
+local -a POWERLEVEL9K_PROMPT_ELEMENTS
+for (( i=0; i <= ${#POWERLEVEL9K_LEFT_PROMPT_ELEMENTS}; i++ )) do
+  POWERLEVEL9K_PROMPT_ELEMENTS+=${POWERLEVEL9K_LEFT_PROMPT_ELEMENTS[$i]%_joined}
+done
+for (( i=0; i <= ${#POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS}; i++ )) do
+  POWERLEVEL9K_PROMPT_ELEMENTS+=${POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS[$i]%_joined}
+done
 
 # Determine if the passed segment is used in the prompt
 #
@@ -124,7 +131,7 @@ POWERLEVEL9K_PROMPT_ELEMENTS=(union $POWERLEVEL9K_LEFT_PROMPT_ELEMENTS $POWERLEV
 #    * $1: The segment to be tested.
 segment_in_use() {
     local key=$1
-    if [[ -n "${POWERLEVEL9K_LEFT_PROMPT_ELEMENTS[(r)$key]}" ]] || [[ -n "${POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS[(r)$key]}" ]]; then
+    if [[ -n "${POWERLEVEL9K_PROMPT_ELEMENTS[(r)$key]}" ]]; then
         return 0
     else
         return 1
