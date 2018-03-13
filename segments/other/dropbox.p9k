@@ -8,17 +8,7 @@
 # https://gist.github.com/3712874
 ################################################################
 
-# prompt_icon=(
-#   "DROPBOX_ICON"
-#    'Dropbox'
-#    $'\UF16B' # 
-#    $'\UF16B' # 
-#    '\u'$CODEPOINT_OF_AWESOME_DROPBOX # 
-#    $'\UF16B' # 
-# )
-# register_icon "$prompt_icon[@]"
-# unset prompt_icon
-
+# Register icons
 #                                                                                             
 register_icon "DROPBOX_ICON"  'Dropbox'  $'\UF16B'  $'\UF16B'  '\u'$CODEPOINT_OF_AWESOME_DROPBOX  $'\UF16B'
 

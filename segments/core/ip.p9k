@@ -8,17 +8,7 @@
 # https://gist.github.com/3712874
 ################################################################
 
-# prompt_icon=(
-#   "NETWORK_ICON"
-#    'IP'
-#    $'\uE1AD' # 
-#    $'\uF09E' # 
-#    '\u'$CODEPOINT_OF_AWESOME_RSS # 
-#    $'\uF1EB' # 
-# )
-# register_icon "$prompt_icon[@]"
-# unset prompt_icon
-
+# Register icons
 #                                                                                    
 register_icon "NETWORK_ICON"  'IP'  $'\uE1AD'  $'\uF09E'  '\u'$CODEPOINT_OF_AWESOME_RSS  $'\uF1EB'
 

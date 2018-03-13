@@ -11,51 +11,18 @@
 # OS detection
 case "$OS" in
   "macOS")
-    # prompt_icon=(
-    #   "APPLE_ICON"
-    #    'macOS'
-    #    $'\uE26E' # 
-    #    $'\uF179' # 
-    #    '\u'$CODEPOINT_OF_AWESOME_APPLE # 
-    #    $'\uF179' # 
-    # )
-    # register_icon "$prompt_icon[@]"
-
     #                                                                                     
     register_icon "APPLE_ICON"  'OSX'  $'\uE26E'  $'\uF179'  '\u'$CODEPOINT_OF_AWESOME_APPLE  $'\uF179'
-
     OS_ICON='APPLE_ICON'
   ;;
   "Windows")
-    # prompt_icon=(
-    #   "WINDOWS_ICON"
-    #    'WIN'
-    #    $'\uE26F' # 
-    #    $'\uF17A' # 
-    #    $'\uF17A' # 
-    #    $'\uF17A' # 
-    # )
-    # register_icon "$prompt_icon[@]"
-
     #                                                                 
     register_icon "WINDOWS_ICON"  'WIN'  $'\uE26F'  $'\uF17A'  $'\uF17A'  $'\uF17A'
-
     OS_ICON='WINDOWS_ICON'
   ;;
   "BSD")
-    # prompt_icon=(
-    #   "FREEBSD_ICON"
-    #    'BSD'
-    #    $'\U1F608 ' # 😈
-    #    $'\U1F608 ' # 😈
-    #    $'\U1F608 ' # 😈
-    #    $'\UF30E ' # 
-    # )
-    # register_icon "$prompt_icon[@]"
-
     #                                    😈           😈           😈            
     register_icon "FREEBSD_ICON"  'BSD'  $'\U1F608 '  $'\U1F608 '  $'\U1F608 '  $'\UF30E '
-
     OS_ICON='FREEBSD_ICON'
   ;;
 #  OpenBSD)
@@ -67,261 +34,85 @@ case "$OS" in
   "Linux")
     case "$OS_ID" in
       "arch")
-        # prompt_icon=(
-        #   "LINUX_ARCH_ICON"
-        #    'Arc'
-        #    'Arc'
-        #    'Arc'
-        #    'Arc'
-        #    $'\uF300' # 
-        # )
-        # register_icon "$prompt_icon[@]"
-
         #                                                             
         register_icon "LINUX_ARCH_ICON"  'Arc'  'Arc'  'Arc'  'Arc'  $'\uF300'
-
         OS_ICON='LINUX_ARCH_ICON'
       ;;
       "debian")
-        # prompt_icon=(
-        #   "LINUX_DEBIAN_ICON"
-        #    'Deb'
-        #    'Deb'
-        #    'Deb'
-        #    'Deb'
-        #    $'\uF302' # 
-        # )
-        # register_icon "$prompt_icon[@]"
-
         #                                                              
         register_icon "LINUX_DEBIAN_ICON"  'Deb'  'Deb'  'Deb'  'Deb'  $'\uF302'
-
         OS_ICON='LINUX_DEBIAN_ICON'
       ;;
       "ubuntu")
-        # prompt_icon=(
-        #   "LINUX_UBUNTU_ICON"
-        #    'Ubu'
-        #    'Ubu'
-        #    'Ubu'
-        #    'Ubu'
-        #    $'\uF30C' # 
-        # )
-        # register_icon "$prompt_icon[@]"
-
         #                                                              
         register_icon "LINUX_UBUNTU_ICON"  'Ubu'  'Ubu'  'Ubu'  'Ubu'  $'\uF30C'
-
         OS_ICON='LINUX_UBUNTU_ICON'
       ;;
       "elementary")
-        # prompt_icon=(
-        #   "LINUX_ELEMENTARY_ICON"
-        #    'Elm'
-        #    'Elm'
-        #    'Elm'
-        #    'Elm'
-        #    $'\uF311' # 
-        # )
-        # register_icon "$prompt_icon[@]"
-
         #                                                                  
         register_icon "LINUX_ELEMENTARY_ICON"  'Elm'  'Elm'  'Elm'  'Elm'  $'\uF311'
-
         OS_ICON='LINUX_ELEMENTARY_ICON'
       ;;
       "fedora")
-        # prompt_icon=(
-        #   "LINUX_FEDORA_ICON"
-        #    'Fed'
-        #    'Fed'
-        #    'Fed'
-        #    'Fed'
-        #    $'\uF303' # 
-        # )
-        # register_icon "$prompt_icon[@]"
-
         #                                                              
         register_icon "LINUX_FEDORA_ICON"  'Fed'  'Fed'  'Fed'  'Fed'  $'\uF303'
-
         OS_ICON='LINUX_FEDORA_ICON'
       ;;
       "coreos")
-        # prompt_icon=(
-        #   "LINUX_COREOS_ICON"
-        #    'Cor'
-        #    'Cor'
-        #    'Cor'
-        #    'Cor'
-        #    $'\uF30F' # 
-        # )
-        # register_icon "$prompt_icon[@]"
-
         #                                                              
         register_icon "LINUX_COREOS_ICON"  'Cor'  'Cor'  'Cor'  'Cor'  $'\uF30F'
-
         OS_ICON='LINUX_COREOS_ICON'
       ;;
       "gentoo")
-        # prompt_icon=(
-        #   "LINUX_GENTOO_ICON"
-        #    'Gen'
-        #    'Gen'
-        #    'Gen'
-        #    'Gen'
-        #    $'\uF310' # 
-        # )
-        # register_icon "$prompt_icon[@]"
-
         #                                                              
         register_icon "LINUX_GENTOO_ICON"  'Gen'  'Gen'  'Gen'  'Gen'  $'\uF310'
-
         OS_ICON='LINUX_GENTOO_ICON'
       ;;
       "mageia")
-        # prompt_icon=(
-        #   "LINUX_MAGEIA_ICON"
-        #    'Mag'
-        #    'Mag'
-        #    'Mag'
-        #    'Mag'
-        #    $'\uF306' # 
-        # )
-        # register_icon "$prompt_icon[@]"
-
         #                                                              
         register_icon "LINUX_MAGEIA_ICON"  'Mag'  'Mag'  'Mag'  'Mag'  $'\uF306'
-
         OS_ICON='LINUX_MAGEIA_ICON'
       ;;
       "centos")
-        # prompt_icon=(
-        #   "LINUX_CENTOS_ICON"
-        #    'Cen'
-        #    'Cen'
-        #    'Cen'
-        #    'Cen'
-        #    $'\uF301' # 
-        # )
-        # register_icon "$prompt_icon[@]"
-
         #                                                              
         register_icon "LINUX_CENTOS_ICON"  'Cen'  'Cen'  'Cen'  'Cen'  $'\uF301'
-
         OS_ICON='LINUX_CENTOS_ICON'
       ;;
       "opensuse"|"tumbleweed")
-        # prompt_icon=(
-        #   "LINUX_OPENSUSE_ICON"
-        #    'OSu'
-        #    'OSu'
-        #    'OSu'
-        #    'OSu'
-        #    $'\uF308' # 
-        # )
-        # register_icon "$prompt_icon[@]"
-
         #                                                                
         register_icon "LINUX_OPENSUSE_ICON"  'OSu'  'OSu'  'OSu'  'OSu'  $'\uF308'
-
         OS_ICON='LINUX_OPENSUSE_ICON'
       ;;
       "sabayon")
-        # prompt_icon=(
-        #   "LINUX_SABAYON_ICON"
-        #    'Sab'
-        #    'Sab'
-        #    'Sab'
-        #    'Sab'
-        #    $'\uF313' # 
-        # )
-        # register_icon "$prompt_icon[@]"
-
         #                                                               
         register_icon "LINUX_SABAYON_ICON"  'Sab'  'Sab'  'Sab'  'Sab'  $'\uF313'
-
         OS_ICON='LINUX_SABAYON_ICON'
       ;;
       "slackware")
-        # prompt_icon=(
-        #   "LINUX_SLACKWARE_ICON"
-        #    'Sla'
-        #    'Sla'
-        #    'Sla'
-        #    'Sla'
-        #    $'\uF30A' # 
-        # )
-        # register_icon "$prompt_icon[@]"
-
         #                                                                 
         register_icon "LINUX_SLACKWARE_ICON"  'Sla'  'Sla'  'Sla'  'Sla'  $'\uF30A'
-
         OS_ICON='LINUX_SLACKWARE_ICON'
       ;;
       "linuxmint")
-        # prompt_icon=(
-        #   "LINUX_MINT_ICON"
-        #   'LMi'
-        #   'LMi'
-        #   'LMi'
-        #   'LMi'
-        #   $'\uF304' # 
-        # )
-        # register_icon "$prompt_icon[@]"
-
         #                                                            
         register_icon "LINUX_MINT_ICON"  'LMi'  'LMi'  'LMi'  'LMi'  $'\uF304'
-
         OS_ICON='LINUX_MINT_ICON'
       ;;
       *)
-        # prompt_icon=(
-        #   "LINUX_ICON"
-        #    'Lx'
-        #    $'\uE271' # 
-        #    $'\uF17C' # 
-        #    '\u'$CODEPOINT_OF_AWESOME_LINUX # 
-        #    $'\uF17C' # 
-        # )
-        # register_icon "$prompt_icon[@]"
-
         #                                                                                    
         register_icon "LINUX_ICON"  'Lx'  $'\uE271'  $'\uF17C'  '\u'$CODEPOINT_OF_AWESOME_LINUX  $'\uF17C'
-
         OS_ICON='LINUX_ICON'
       ;;
     esac
   ;;
   "Android")
-    # prompt_icon=(
-    #   "ANDROID_ICON"
-    #    'And'
-    #    $'\uE270' # 
-    #    $'\uE17B' # 
-    #    $'\uF17B' # 
-    #    $'\uF17B' # 
-    # )
-    # register_icon "$prompt_icon[@]"
-
     #                                                                 
     register_icon "ANDROID_ICON"  'And'  $'\uE270'  $'\uE17B'  $'\uF17B'  $'\uF17B'
-
     OS_ICON='ANDROID_ICON'
   ;;
   "Solaris")
-    # prompt_icon=(
-    #   "SUNOS_ICON"
-    #    'Sun'
-    #    $'\U1F31E ' # 🌞
-    #    $'\uF185 ' # 
-    #    '\u'$CODEPOINT_OF_AWESOME_SUN_O' ' # 
-    #    $'\uF185 ' # 
-    # )
-    # register_icon "$prompt_icon[@]"
-
     #                                  🌞                                                        
     register_icon "SUNOS_ICON"  'Sun'  $'\U1F31E '  $'\uF185 '  '\u'$CODEPOINT_OF_AWESOME_SUN_O' '  $'\uF185 '
-
     OS_ICON='SUNOS_ICON'
     ;;
   *)
@@ -329,8 +120,6 @@ case "$OS" in
     OS_ICON=''
     ;;
 esac
-
-# unset prompt_icon
 
 ################################################################
 # Segment to print a little OS icon

@@ -8,19 +8,15 @@
 # https://gist.github.com/3712874
 ################################################################
 
-# prompt_icon=(
-#   "PYTHON_ICON"
-#    ''
-#    $'\ue63c' # 
-#    $'\ue63c' # 
-#    $'\U1F40D' # 🐍
-#    $'\UE73C ' # 
-# )
-# register_icon "$prompt_icon[@]"
-# unset prompt_icon
-
+################################################################
+# Register segment icon
 #                                                   🐍          
 register_icon "PYTHON_ICON"  ''  $'\ue63c'  $'\ue63c'  $'\U1F40D'  $'\UE73C '
+
+################################################################
+# Register segment default values
+set_default POWERLEVEL9K_ANACONDA_LEFT_DELIMITER "("
+set_default POWERLEVEL9K_ANACONDA_RIGHT_DELIMITER ")"
 
 ################################################################
 # Anaconda Environment
@@ -29,9 +25,6 @@ prompt_anaconda() {
   # variant works even if both are set.
   _path=$CONDA_ENV_PATH$CONDA_PREFIX
   if ! [ -z "$_path" ]; then
-    # config - can be overwritten in users' zshrc file.
-    set_default POWERLEVEL9K_ANACONDA_LEFT_DELIMITER "("
-    set_default POWERLEVEL9K_ANACONDA_RIGHT_DELIMITER ")"
     "$1_prompt_segment" "$0" "$2" "blue" "$DEFAULT_COLOR" "$POWERLEVEL9K_ANACONDA_LEFT_DELIMITER$(basename $_path)$POWERLEVEL9K_ANACONDA_RIGHT_DELIMITER" 'PYTHON_ICON'
   fi
 }

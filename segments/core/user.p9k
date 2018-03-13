@@ -8,45 +8,13 @@
 # https://gist.github.com/3712874
 ################################################################
 
-# prompt_icon=(
-#   "ROOT_ICON"
-#    $'\u26A1' # ⚡
-#    $'\uE801' # 
-#    $'\uF201' # 
-#    '\u'$CODEPOINT_OF_OCTICONS_ZAP # 
-#    $'\uE614 ' # 
-# )
-# register_icon "$prompt_icon[@]"
-
+# Register icons
 #                          ⚡                                                           
 register_icon "ROOT_ICON"  $'\u26A1'  $'\uE801'  $'\uF201'  '\u'$CODEPOINT_OF_OCTICONS_ZAP  $'\uE614 '
-
-# prompt_icon=(
-#   "SUDO_ICON"
-#    $'\uE0A2' # 
-#    $'\uF09C' # 
-#    $'\uF09C' # 
-#    '\u'$CODEPOINT_OF_AWESOME_UNLOCK # 
-#    $'\uF09C' # 
-# )
-# register_icon "$prompt_icon[@]"
-
 #                                                                                        
 register_icon "SUDO_ICON"  $'\uE0A2'  $'\uF09C'  $'\uF09C'  '\u'$CODEPOINT_OF_AWESOME_UNLOCK  $'\uF09C'
-
-# prompt_icon=(
-#   "USER_ICON"
-#    ''
-#    ''
-#    $'\uF2C0' # 
-#    $'\uF2C0' # 
-#    $'\uF2C0' # 
-# )
-# register_icon "$prompt_icon[@]"
-# unset prompt_icon
-
-#                                                       
-register_icon "SUDO_ICON"  ''  ''  $'\uF2C0'  $'\uF2C0'  $'\uF2C0'
+#                                                      
+register_icon "USER_ICON"  ''  ''  $'\uF2C0'  $'\uF2C0'  $'\uF2C0'
 
 ################################################################
 # User: user (who am I)

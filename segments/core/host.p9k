@@ -8,30 +8,9 @@
 # https://gist.github.com/3712874
 ################################################################
 
-# prompt_icon=(
-#   "SSH_ICON"
-#    '(ssh)'
-#    '(ssh)'
-#    '(ssh)'
-#    '(ssh)'
-#    $'\uF489' # 
-# )
-# register_icon "$prompt_icon[@]"
-
+# Register icons
 #                                                             
 register_icon "SSH_ICON"  '(ssh)'  '(ssh)'  '(ssh)'  '(ssh)'  $'\uF489'
-
-# prompt_icon=(
-#   "HOST_ICON"
-#    ''
-#    ''
-#    $'\uF67C' # 
-#    $'\uF67C' # 
-#    $'\uF67C' # 
-# )
-# register_icon "$prompt_icon[@]"
-# unset prompt_icon
-
 #                                                     
 register_icon "HOST_ICON"  ''  ''  $'\uF67C'  $'\uF67C' $'\uF67C'
 

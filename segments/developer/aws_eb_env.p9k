@@ -8,17 +8,7 @@
 # https://gist.github.com/3712874
 ################################################################
 
-# prompt_icon=(
-#   "AWS_EB_ICON"
-#    $'\U1F331 ' # 🌱
-#    $'\U1F331 ' # 🌱
-#    $'\U1F331 ' # 🌱
-#    $'\U1F331 ' # 🌱
-#    $'\UF1BD ' # 
-# )
-# register_icon "$prompt_icon[@]"
-# unset prompt_icon
-
+# Register icons
 #                            🌱           🌱           🌱            🌱           
 register_icon "AWS_EB_ICON"  $'\U1F331 '  $'\U1F331 '  $'\U1F331 '  $'\U1F331 '  $'\UF1BD '
 

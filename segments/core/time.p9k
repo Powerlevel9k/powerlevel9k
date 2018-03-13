@@ -8,17 +8,7 @@
 # https://gist.github.com/3712874
 ################################################################
 
-# prompt_icon=(
-#   "TIME_ICON"
-#   ''
-#   $'\uE12E' # 
-#   $'\uF017 ' # 
-#   $'\uF017 ' # 
-#   $'\uF017 ' # 
-# )
-# register_icon "$prompt_icon[@]"
-# unset prompt_icon
-
+# Register icons
 #                                                             
 register_icon "TIME_ICON"  ''  $'\uE12E'  $'\uF017 '  $'\uF017 '  $'\uF017 '
 

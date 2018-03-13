@@ -8,56 +8,13 @@
 # https://gist.github.com/3712874
 ################################################################
 
-# prompt_icon=(
-#   "HOME_ICON"
-#    ''
-#    $'\uE12C' # 
-#    $'\uF015' # 
-#    '\u'$CODEPOINT_OF_AWESOME_HOME # 
-#    $'\uF015' # 
-# )
-# register_icon "$prompt_icon[@]"
-
+# Register icons
 #                                                                                
 register_icon "HOME_ICON"  ''  $'\uE12C'  $'\uF015'  '\u'$CODEPOINT_OF_AWESOME_HOME  $'\uF015'
-
-# prompt_icon=(
-#   "HOME_SUB_ICON"
-#    ''
-#    $'\uE18D' # 
-#    $'\uF07C' # 
-#    '\u'$CODEPOINT_OF_AWESOME_FOLDER_OPEN # 
-#    $'\uF07C' # 
-# )
-# register_icon "$prompt_icon[@]"
-
 #                                                                                           
 register_icon "HOME_SUB_ICON"  ''  $'\uE18D'  $'\uF07C'  '\u'$CODEPOINT_OF_AWESOME_FOLDER_OPEN  $'\uF07C'
-
-# prompt_icon=(
-#   "FOLDER_ICON"
-#    ''
-#    $'\uE818' # 
-#    $'\uF115' # 
-#    '\u'$CODEPOINT_OF_AWESOME_FOLDER_O # 
-#    $'\uF115' # 
-# )
-# register_icon "$prompt_icon[@]"
-
 #                                                                                      
 register_icon "FOLDER_ICON"  ''  $'\uE818'  $'\uF115'  '\u'$CODEPOINT_OF_AWESOME_FOLDER_O  $'\uF115'
-
-# prompt_icon=(
-#   "LOCK_ICON"
-#    $'\UE0A2'
-#    $'\UE138' # 
-#    $'\UF023' # 
-#    '\u'$CODEPOINT_OF_AWESOME_LOCK # 
-#    $'\UF023' # 
-# )
-# register_icon "$prompt_icon[@]"
-# unset prompt_icon
-
 #                                                                                        
 register_icon "LOCK_ICON"  $'\UE0A2'  $'\UE138'  $'\UF023'  '\u'$CODEPOINT_OF_AWESOME_LOCK  $'\UF023'
 

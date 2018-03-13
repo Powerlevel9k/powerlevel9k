@@ -8,43 +8,11 @@
 # https://gist.github.com/3712874
 ################################################################
 
-# prompt_icon=(
-#   "CARRIAGE_RETURN_ICON"
-#    $'\u21B5' # ↵
-#    $'\u21B5' # ↵
-#    $'\u21B5' # ↵
-#    $'\u21B5' # ↵
-#    $'\u21B5' # ↵
-# )
-# register_icon "$prompt_icon[@]"
-
-#              ↵ ↵ ↵ ↵ ↵
+# Register icons
+#                                     ↵         ↵         ↵         ↵         ↵
 register_icon "CARRIAGE_RETURN_ICON"  $'\u21B5'  $'\u21B5'  $'\u21B5'  $'\u21B5'  $'\u21B5'
-
-# prompt_icon=(
-#   "OK_ICON"
-#    $'\u2714' # ✔
-#    $'\u2714' # ✔
-#    $'\u2714' # ✔
-#    '\u'$CODEPOINT_OF_AWESOME_CHECK # 
-#    $'\uF00C' # 
-# )
-# register_icon "$prompt_icon[@]"
-
 #                        ✔         ✔          ✔                                         
 register_icon "OK_ICON"  $'\u2714'  $'\u2714'  $'\u2714'  '\u'$CODEPOINT_OF_AWESOME_CHECK  $'\uF00C'
-
-# prompt_icon=(
-#   "FAIL_ICON"
-#    $'\u2718' # ✘
-#    $'\u2718' # ✘
-#    $'\u2718' # ✘
-#    '\u'$CODEPOINT_OF_AWESOME_TIMES # 
-#    $'\uF00D' # 
-# )
-# register_icon "$prompt_icon[@]"
-# unset prompt_icon
-
 #                          ✘          ✘         ✘                                          
 register_icon "FAIL_ICON"  $'\u2718'  $'\u2718'  $'\u2718'  '\u'$CODEPOINT_OF_AWESOME_TIMES  $'\uF00D'
 

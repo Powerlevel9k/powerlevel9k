@@ -8,17 +8,7 @@
 # https://gist.github.com/3712874
 ################################################################
 
-# prompt_icon=(
-#   "AWS_ICON"
-#    'AWS:'
-#    $'\uE895' # 
-#    $'\uF270' # 
-#    '\u'$CODEPOINT_OF_AWESOME_SERVER # 
-#    $'\uF270' # 
-# )
-# register_icon "$prompt_icon[@]"
-# unset prompt_icon
-
+# Register icons
 #                                                                                     
 register_icon "AWS_ICON"  'AWS:'  $'\uE895'  $'\uF270'  '\u'$CODEPOINT_OF_AWESOME_SERVER  $'\uF270'
 

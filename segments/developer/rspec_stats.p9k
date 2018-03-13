@@ -8,17 +8,7 @@
 # https://gist.github.com/3712874
 ################################################################
 
-# prompt_icon=(
-#   "TEST_ICON"
-#    ''
-#    $'\uE891' # 
-#    $'\uF291' # 
-#    '\u'$CODEPOINT_OF_AWESOME_BUG # 
-#    $'\uF188' # 
-# )
-# register_icon "$prompt_icon[@]"
-# unset prompt_icon
-
+# Register icons
 #                                                                               
 register_icon "TEST_ICON"  ''  $'\uE891'  $'\uF291'  '\u'$CODEPOINT_OF_AWESOME_BUG  $'\uF188'
 

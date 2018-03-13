@@ -8,17 +8,7 @@
 # https://gist.github.com/3712874
 ################################################################
 
-# prompt_icon=(
-#   "SWIFT_ICON"
-#    'Swift'
-#    ''
-#    ''
-#    $'\uE655' # 
-#    $'\uE755' # 
-# )
-# register_icon "$prompt_icon[@]"
-# unset prompt_icon
-
+# Register icons
 #                                                      
 register_icon "SWIFT_ICON"  'Swift'  ''  ''  $'\uE655'  $'\uE755'
 
