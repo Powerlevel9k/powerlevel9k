@@ -1,10 +1,6 @@
 #!/usr/bin/env zsh
 #vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
 
-# Resource the relevant code
-source functions/*
-source segments/core/dir.p9k
-
 # Required for shunit2 to run correctly
 setopt shwordsplit
 SHUNIT_PARENT=$0
@@ -13,6 +9,8 @@ function setUp() {
   export TERM="xterm-256color"
   # Load Powerlevel9k
   source powerlevel9k.zsh-theme
+  source functions/*
+  source segments/core/dir.p9k
 
   # Every test should at least use the dir segment
   POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(dir)
