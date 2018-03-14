@@ -10,7 +10,9 @@ function setUp() {
   # Load Powerlevel9k
   source powerlevel9k.zsh-theme
   source functions/*
-  source segments/core/*
+  source segments/core/dir.p9k
+  source segments/core/background_jobs.p9k
+  source segments/core/root_indicator.p9k
 
   # Unset mode, so that user settings
   # do not interfere with tests
@@ -87,6 +89,7 @@ function testColoringOfVisualIdentifiersDoesNotOverwriteColoringOfSegment() {
   # Re-Source the icons, as the POWERLEVEL9K_MODE is directly
   # evaluated there.
   source functions/icons.zsh
+  source segments/core/dir.p9k
 
   cd /tmp
 
