@@ -1,7 +1,8 @@
 #!/usr/bin/env zsh
 #vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
 
-# Resource the dir.p9k component
+# Resource the relevant code
+source functions/*
 source segments/core/dir.p9k
 
 # Required for shunit2 to run correctly
