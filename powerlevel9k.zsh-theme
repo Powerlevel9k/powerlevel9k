@@ -262,6 +262,104 @@ right_prompt_segment() {
   last_right_element_index=$current_index
 }
 
+###############################################################
+# This function wraps left_prompt_segment and right_prompt_segment to serializes a segment (for compatibility with the async branch)
+#
+# Parameters for serialize_segment:
+#   * $1 Name: string - Name of the segment
+#   * $2 State: string - The state the segment is in
+#   * $3 Alignment: string - left|right
+#   * $4 Index: integer
+#   * $5 Joined: bool - If the segment should be joined
+#   * $6 Background: string - The default background color of the segment
+#   * $7 Foreground: string - The default foreground color of the segment
+#   * $8 Content: string - Content of the segment
+#   * $9 Visual identifier: string - Icon of the segment
+#   * $10 Condition: string - The condition, if the segment should be printed (gets evaluated)
+#
+# Parameters for [left|right]_prompt_segment:
+#   * $1: Name of the function that was originally invoked (mandatory).
+#         Necessary, to make the dynamic color-overwrite mechanism work.
+#   * $2: The array index of the current segment
+#   * $3: Background color
+#   * $4: Foreground color
+#   * $5: Bold
+#   * $6: The segment content
+#   * $7: An identifying icon (must be a key of the icons array)
+# The latter three can be omitted,
+serialize_segment() {
+  local NAME="${1}"
+  local STATE="${2}"
+  local ALIGNMENT="${3}"
+  local INDEX="${4}"
+  local JOINED="${5}"
+
+  local STATEFUL_NAME="${(U)NAME#prompt_}"
+  [[ -n "${STATE}" ]] && STATEFUL_NAME="${STATEFUL_NAME}_${(U)STATE}"
+
+  # Overwrite given background-color by user defined variable for this segment.
+  local BACKGROUND_USER_VARIABLE="POWERLEVEL9K_${STATEFUL_NAME}_BACKGROUND"
+  local BACKGROUND="${(P)BACKGROUND_USER_VARIABLE}"
+  [[ -z "${BACKGROUND}" ]] && BACKGROUND="${6}"
+
+  # Overwrite given foreground-color by user defined variable for this segment.
+  local FOREGROUND_USER_VARIABLE="POWERLEVEL9K_${STATEFUL_NAME}_FOREGROUND"
+  local FOREGROUND="${(P)FOREGROUND_USER_VARIABLE}"
+  [[ -z "${FOREGROUND}" ]] && FOREGROUND="${7}"
+
+  # Overwrite given bold directive by user defined variable for this segment.
+  local BOLD_USER_VARIABLE="POWERLEVEL9K_${STATEFUL_NAME}_BOLD"
+  local BOLD="${(P)BOLD_USER_VARIABLE}"
+  [[ -z "${BOLD}" ]] && BOLD=false
+
+  local CONTENT="${8}"
+
+  local VISUAL_IDENTIFIER
+  if [[ -n "${9}" ]]; then
+    VISUAL_IDENTIFIER="$(print_icon ${9})"
+    if [[ -n "${VISUAL_IDENTIFIER}" ]]; then
+      # Allow users to overwrite the color for the visual identifier only.
+      local visual_identifier_color_variable="POWERLEVEL9K_${STATEFUL_NAME}_VISUAL_IDENTIFIER_COLOR"
+      set_default "${visual_identifier_color_variable}" "${FOREGROUND}"
+      VISUAL_IDENTIFIER="%F{${(P)visual_identifier_color_variable}%}${VISUAL_IDENTIFIER}%f"
+      # Add an whitespace if we print more than just the visual identifier
+      if [[ -n "${CONTENT}" ]]; then
+        [[ "${ALIGNMENT}" == "left" ]] && VISUAL_IDENTIFIER="${VISUAL_IDENTIFIER} "
+        [[ "${ALIGNMENT}" == "right" ]] && VISUAL_IDENTIFIER=" ${VISUAL_IDENTIFIER}"
+      fi
+    fi
+  fi
+  # Conditions have three layers:
+  # 1. All segments should not print
+  #    a segment, if they provide no
+  #    content (default condition).
+  # 2. All segments could define a
+  #    default condition on their
+  #    own, overriding the previous
+  #    one.
+  # 3. Users could set a condition
+  #    for each segment. This is
+  #    the trump card, and has
+  #    highest precedence.
+  local CONDITION
+  local SEGMENT_CONDITION="POWERLEVEL9K_${STATEFUL_NAME}_CONDITION"
+  if defined "${SEGMENT_CONDITION}"; then
+    CONDITION="${(P)SEGMENT_CONDITION}"
+  elif [[ -n "${10}" ]]; then
+    CONDITION="${10}"
+  else
+    CONDITION='[[ -n "${8}" ]]'
+  fi
+  # Precompile condition.
+  eval "${CONDITION}" && CONDITION=true || CONDITION=false
+
+#  if ! ${CONDITION}; then
+#    continue
+#  fi
+
+  "$3_prompt_segment" "${NAME}" "${INDEX}" "${BACKGROUND}" "${FOREGROUND}" "${BOLD}" "${CONTENT}" "${VISUAL_IDENTIFIER}" "${CONDITION}"
+}
+
 ################################################################
 # Prompt Segment Definitions
 ################################################################
