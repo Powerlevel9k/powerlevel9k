@@ -12,6 +12,9 @@
 #                                                                               
 register_icon "TEST_ICON"  ''  $'\uE891'  $'\uF291'  '\u'$CODEPOINT_OF_AWESOME_BUG  $'\uF188'
 
+# Source test stats script
+source $p9k_directory/segments/developer/test_stats.p9k
+
 ################################################################
 # Segment to display RSpec test ratio
 prompt_rspec_stats() {
@@ -20,6 +23,6 @@ prompt_rspec_stats() {
     code_amount=$(ls -1 app/**/*.rb | wc -l)
     tests_amount=$(ls -1 spec/**/*.rb | wc -l)
 
-    build_test_stats "$1" "$0" "$2" "$code_amount" "$tests_amount" "RSpec" 'TEST_ICON'
+    build_test_stats "$0" "$1" $2 $3 "$code_amount" "$tests_amount" "RSpec" 'TEST_ICON'
   fi
 }

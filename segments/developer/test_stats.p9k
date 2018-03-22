@@ -1,0 +1,34 @@
+#!/usr/bin/env zsh
+# vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
+################################################################
+# powerlevel9k Theme
+# https://github.com/bhilburn/powerlevel9k
+#
+# This theme was inspired by agnoster's Theme:
+# https://gist.github.com/3712874
+################################################################
+
+################################################################
+# Show a ratio of tests vs code
+# Parameters for build_test_stats
+#   * $1 Name: string - Name of the calling segment
+#   * $2 Align: string - left|right
+#   * $3 Index: integer
+#   * $4 Joined: bool
+#   * $5 Code Amount: string
+#   * $6 Tests Amount: string
+#   * $7 Headline: string
+#   * $8 Icon: string
+build_test_stats() {
+  local code_amount="$5"
+  local tests_amount="$6"+0.00001
+  local headline="$7"
+
+  # Set float precision to 2 digits:
+  typeset -F 2 ratio
+  local ratio=$(( (tests_amount/code_amount) * 100 ))
+
+  (( ratio >= 75 )) && serialize_segment "$1" "GOOD" "$2" $3 $4 "cyan" "$DEFAULT_COLOR" "$headline: $ratio%%" "$6"
+  (( ratio >= 50 && ratio < 75 )) && serialize_segment "$1" "AVG" "$2" $3 $4 "yellow" "$DEFAULT_COLOR" "$headline: $ratio%%" "$6"
+  (( ratio < 50 )) && serialize_segment "$1" "BAD" "$2" $3 $4 "red" "$DEFAULT_COLOR" "$headline: $ratio%%" "$6"
+}

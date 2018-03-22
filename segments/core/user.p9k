@@ -49,6 +49,6 @@ prompt_user() {
         "VISUAL_IDENTIFIER"   "USER_ICON"
       )
     fi
-    "$1_prompt_segment" "${0}_${user_state[STATE]}" "$2" "${user_state[BACKGROUND_COLOR]}" "${user_state[FOREGROUND_COLOR]}" "${user_state[CONTENT]}" "${user_state[VISUAL_IDENTIFIER]}"
+    serialize_segment "$0" ${(U)user_state[STATE]} $1 "$2" $3 "${user_state[BACKGROUND_COLOR]}" "${user_state[FOREGROUND_COLOR]}" "${user_state[CONTENT]}" "${user_state[VISUAL_IDENTIFIER]}"
   fi
 }

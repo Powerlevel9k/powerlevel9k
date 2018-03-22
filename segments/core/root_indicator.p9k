@@ -16,6 +16,6 @@ register_icon "ROOT_ICON"  $'\u26A1'  $'\uE801'  $'\uF201'  '\u'$CODEPOINT_OF_OC
 # Segment to print an icon if user is root.
 prompt_root_indicator() {
   if [[ "$UID" -eq 0 ]]; then
-    "$1_prompt_segment" "$0" "$2" "$DEFAULT_COLOR" "yellow" "" 'ROOT_ICON'
+    serialize_segment "$0" "" $1 "$2" $3 "$DEFAULT_COLOR" "yellow" "" 'ROOT_ICON'
   fi
 }

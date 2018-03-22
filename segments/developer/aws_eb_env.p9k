@@ -18,6 +18,6 @@ prompt_aws_eb_env() {
   local eb_env=$(grep environment .elasticbeanstalk/config.yml 2> /dev/null | awk '{print $2}')
 
   if [[ -n "$eb_env" ]]; then
-    "$1_prompt_segment" "$0" "$2" black green "$eb_env" 'AWS_EB_ICON'
+    serialize_segment "$0" "" $1 "$2" $3 black green "$eb_env" 'AWS_EB_ICON'
   fi
 }

@@ -90,6 +90,6 @@ prompt_public_ip() {
         break
       done
     fi
-    $1_prompt_segment "$0" "$2" "$DEFAULT_COLOR" "$DEFAULT_COLOR_INVERTED" "${public_ip}" "$icon"
+    serialize_segment "$0" "" $1 "$2" $3 "$DEFAULT_COLOR" "$DEFAULT_COLOR_INVERTED" "${public_ip}" "$icon"
   fi
 }

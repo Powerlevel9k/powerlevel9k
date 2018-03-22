@@ -17,5 +17,5 @@ register_icon "TIME_ICON"  ''  $'\uE12E'  $'\uF017 '  $'\uF017 '  $'\uF017 '
 prompt_time() {
   set_default POWERLEVEL9K_TIME_FORMAT "%D{%H:%M:%S}"
 
-  "$1_prompt_segment" "$0" "$2" "$DEFAULT_COLOR_INVERTED" "$DEFAULT_COLOR" "$POWERLEVEL9K_TIME_FORMAT" "TIME_ICON"
+  serialize_segment "$0" "" $1 "$2" $3 "$DEFAULT_COLOR_INVERTED" "$DEFAULT_COLOR" "$POWERLEVEL9K_TIME_FORMAT" "TIME_ICON"
 }

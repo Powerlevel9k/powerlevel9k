@@ -19,7 +19,7 @@ prompt_swift_version() {
   local swift_version=$(swift --version 2>/dev/null | grep -o -E "[0-9.]+" | head -n 1)
   [[ -z "${swift_version}" ]] && return
 
-  "$1_prompt_segment" "$0" "$2" "magenta" "white" "${swift_version}" 'SWIFT_ICON'
+  serialize_segment "$0" "" $1 "$2" $3 "magenta" "white" "${swift_version}" 'SWIFT_ICON'
 }
 
 #

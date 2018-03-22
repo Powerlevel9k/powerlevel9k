@@ -124,5 +124,5 @@ esac
 ################################################################
 # Segment to print a little OS icon
 prompt_os_icon() {
-  "$1_prompt_segment" "$0" "$2" "black" "white" $(print_icon "$OS_ICON")
+  serialize_segment "$0" "" $1 "$2" $3 "black" "white" $(print_icon "$OS_ICON")
 }

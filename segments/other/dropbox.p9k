@@ -25,7 +25,7 @@ prompt_dropbox() {
       dropbox_status=""
     fi
 
-    "$1_prompt_segment" "$0" "$2" "white" "blue" "$dropbox_status" "DROPBOX_ICON"
+    serialize_segment "$0" "" $1 "$2" $3 "white" "blue" "$dropbox_status" "DROPBOX_ICON"
   fi
 
 }

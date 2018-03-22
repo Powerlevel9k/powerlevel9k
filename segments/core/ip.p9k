@@ -41,5 +41,5 @@ prompt_ip() {
     fi
   fi
 
-  "$1_prompt_segment" "$0" "$2" "cyan" "$DEFAULT_COLOR" "$ip" 'NETWORK_ICON'
+  serialize_segment "$0" "" $1 "$2" $3 "cyan" "$DEFAULT_COLOR" "$ip" 'NETWORK_ICON'
 }

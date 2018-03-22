@@ -15,5 +15,5 @@ register_icon "VCS_UNTRACKED_ICON"  ''  ''  $'\uE29A'  $'\uE29A'  $'\uE29A'
 ################################################################
 # Command number (in local history)
 prompt_history() {
-  "$1_prompt_segment" "$0" "$2" "grey50" "$DEFAULT_COLOR" '%h' 'HISTORY_ICON'
+  serialize_segment "$0" "" $1 "$2" $3 "grey50" "$DEFAULT_COLOR" '%h' 'HISTORY_ICON'
 }

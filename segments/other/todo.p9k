@@ -18,7 +18,7 @@ prompt_todo() {
   if $(hash todo.sh 2>&-); then
     count=$(todo.sh ls | egrep "TODO: [0-9]+ of ([0-9]+) tasks shown" | awk '{ print $4 }')
     if [[ "$count" = <-> ]]; then
-      "$1_prompt_segment" "$0" "$2" "grey50" "$DEFAULT_COLOR" "$count" 'TODO_ICON'
+      serialize_segment "$0" "" $1 "$2" $3 "grey50" "$DEFAULT_COLOR" "$count" 'TODO_ICON'
     fi
   fi
 }

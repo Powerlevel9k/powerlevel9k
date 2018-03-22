@@ -37,5 +37,5 @@ prompt_host() {
       "VISUAL_IDENTIFIER"   "HOST_ICON"
     )
   fi
-  "$1_prompt_segment" "$0_${host_state[STATE]}" "$2" "${host_state[BACKGROUND_COLOR]}" "${host_state[FOREGROUND_COLOR]}" "${host_state[CONTENT]}" "${host_state[VISUAL_IDENTIFIER]}"
+  serialize_segment "$0" "${(U)host_state[STATE]}" $1 "$2" $3 "${host_state[BACKGROUND_COLOR]}" "${host_state[FOREGROUND_COLOR]}" "${host_state[CONTENT]}" "${host_state[VISUAL_IDENTIFIER]}"
 }

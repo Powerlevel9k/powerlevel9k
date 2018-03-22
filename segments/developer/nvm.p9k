@@ -25,5 +25,5 @@ prompt_nvm() {
   nvm_default=$(nvm_version default)
   [[ "$node_version" =~ "$nvm_default" ]] && return
 
-  $1_prompt_segment "$0" "$2" "magenta" "black" "${node_version:1}" 'NODE_ICON'
+  serialize_segment "$0" "" $1 "$2" $3 "magenta" "black" "${node_version:1}" 'NODE_ICON'
 }

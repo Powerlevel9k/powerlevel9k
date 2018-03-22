@@ -277,5 +277,5 @@ prompt_dir() {
     current_path=${current_path:s/~/$POWERLEVEL9K_HOME_FOLDER_ABBREVIATION}
   fi
 
-  "$1_prompt_segment" "$0_${current_state}" "$2" "blue" "$DEFAULT_COLOR" "${current_path}" "${dir_states[$current_state]}"
+  serialize_segment "$0" "${(U)current_state}" $1 "$2" $3 "blue" "$DEFAULT_COLOR" "${current_path}" "${dir_states[$current_state]}"
 }

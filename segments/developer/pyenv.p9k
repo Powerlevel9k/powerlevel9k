@@ -17,6 +17,6 @@ register_icon "PYTHON_ICON"  ''  $'\ue63c'  $'\ue63c'  $'\U1F40D'  $'\UE73C '
 # https://github.com/pyenv/pyenv#choosing-the-python-version
 prompt_pyenv() {
   if [[ -n "$PYENV_VERSION" ]]; then
-    "$1_prompt_segment" "$0" "$2" "blue" "$DEFAULT_COLOR" "$PYENV_VERSION" 'PYTHON_ICON'
+    serialize_segment "$0" "" $1 "$2" $3 "blue" "$DEFAULT_COLOR" "$PYENV_VERSION" 'PYTHON_ICON'
   fi
 }

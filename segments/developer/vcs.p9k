@@ -53,8 +53,11 @@ register_icon "VCS_HG_ICON"  ''  $'\uE1C3 '  $'\uF0C3 '  '\u'$CODEPOINT_OF_AWESO
 #                                                               
 register_icon "VCS_SVN_ICON"  ''  '(svn) '  '(svn) '  '(svn) '  $'\uE72D '
 
-# unset prompt_icon
+################################################################
+# Source VCS_INFO hooks / helper functions
+################################################################
 
+source "${p9k_directory}/functions/vcs.zsh"
 
 ################################################################
 # VCS segment: shows the state of your repository, if you are in a folder under
@@ -145,7 +148,7 @@ prompt_vcs() {
         current_state='clean'
       fi
     fi
-    "$1_prompt_segment" "${0}_${(U)current_state}" "$2" "${vcs_states[$current_state]}" "$DEFAULT_COLOR" "$vcs_prompt" "$vcs_visual_identifier"
+    serialize_segment $0 ${(U)current_state} $1 "$2" $3 "${vcs_states[$current_state]}" "$DEFAULT_COLOR" "$vcs_prompt" "$vcs_visual_identifier"
   fi
 }
 
