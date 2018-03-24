@@ -42,11 +42,6 @@ prompt_dir() {
     local delim=$(echo -n $POWERLEVEL9K_SHORTEN_DELIMITER)
 
     case "$POWERLEVEL9K_SHORTEN_STRATEGY" in
-      truncate_absolute_chars)
-        if [ ${#current_path} -gt $(( $POWERLEVEL9K_SHORTEN_DIR_LENGTH + ${#POWERLEVEL9K_SHORTEN_DELIMITER} )) ]; then
-          current_path=$POWERLEVEL9K_SHORTEN_DELIMITER${current_path:(-POWERLEVEL9K_SHORTEN_DIR_LENGTH)}
-        fi
-      ;;
       truncate_middle)
         # truncate characters from the middle of the path
         current_path=$(truncatePath $current_path $POWERLEVEL9K_SHORTEN_DIR_LENGTH $POWERLEVEL9K_SHORTEN_DELIMITER "middle")
@@ -55,7 +50,7 @@ prompt_dir() {
         # truncate characters from the right of the path
         current_path=$(truncatePath "$current_path" $POWERLEVEL9K_SHORTEN_DIR_LENGTH $POWERLEVEL9K_SHORTEN_DELIMITER)
       ;;
-      truncate_absolute)
+      truncate_absolute|truncate_absolute_chars)
         # truncate all characters except the last POWERLEVEL9K_SHORTEN_DIR_LENGTH characters
         if [ ${#current_path} -gt $(( $POWERLEVEL9K_SHORTEN_DIR_LENGTH + ${#POWERLEVEL9K_SHORTEN_DELIMITER} )) ]; then
           current_path=$POWERLEVEL9K_SHORTEN_DELIMITER${current_path:(-POWERLEVEL9K_SHORTEN_DIR_LENGTH)}
@@ -183,7 +178,7 @@ prompt_dir() {
         fi
       ;;
       *)
-        current_path="$(print "%$((POWERLEVEL9K_SHORTEN_DIR_LENGTH+1))(c:$POWERLEVEL9K_SHORTEN_DELIMITER/:)%${POWERLEVEL9K_SHORTEN_DIR_LENGTH}c")"
+        current_path="$(print -P "%$((POWERLEVEL9K_SHORTEN_DIR_LENGTH+1))(c:$POWERLEVEL9K_SHORTEN_DELIMITER/:)%${POWERLEVEL9K_SHORTEN_DIR_LENGTH}c")"
       ;;
     esac
   fi
