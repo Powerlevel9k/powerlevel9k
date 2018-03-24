@@ -84,17 +84,7 @@ left_prompt_segment() {
   fi
 
   local visual_identifier
-  if [[ -n $7 ]]; then
-    visual_identifier="$7"
-    # if [[ -n "$visual_identifier" ]]; then
-    #   # Allow users to overwrite the color for the visual identifier only.
-    #   local visual_identifier_color_variable=POWERLEVEL9K_${(U)1#prompt_}_VISUAL_IDENTIFIER_COLOR
-    #   set_default $visual_identifier_color_variable $4
-    #   visual_identifier="%F{${(P)visual_identifier_color_variable}%}$visual_identifier%f"
-    #   # Add an whitespace if we print more than just the visual identifier
-    #   [[ -n "$6" ]] && visual_identifier="$visual_identifier "
-    # fi
-  fi
+  [[ -n $7 ]] && visual_identifier="$7"
 
   # Print the visual identifier
   echo -n "${visual_identifier}"
@@ -169,17 +159,7 @@ right_prompt_segment() {
   fi
 
   local visual_identifier
-  if [[ -n "$7" ]]; then
-    visual_identifier="$7"
-    # if [[ -n "$visual_identifier" ]]; then
-    #   # Allow users to overwrite the color for the visual identifier only.
-    #   local visual_identifier_color_variable=POWERLEVEL9K_${(U)1#prompt_}_VISUAL_IDENTIFIER_COLOR
-    #   set_default $visual_identifier_color_variable $4
-    #   visual_identifier="%F{${(P)visual_identifier_color_variable}%}$visual_identifier%f"
-    #   # Add an whitespace if we print more than just the visual identifier
-    #   [[ -n "$6" ]] && visual_identifier=" $visual_identifier"
-    # fi
-  fi
+  [[ -n "$7" ]] && visual_identifier="$7"
 
   echo -n "${bg}${fg}"
 
