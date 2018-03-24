@@ -30,6 +30,55 @@ case $(uname) in
   SunOS) OS='Solaris' ;;
 esac
 
+################################################################
+# Identify Terminal Emulator
+# Find out which emulator is being used for terminal specific options
+# The testing order is important, since some override others
+if [[ "$TMUX" =~ "tmux" ]]; then
+  readonly TERMINAL="tmux"
+elif [[ "$TERM_PROGRAM" == "iTerm.app" ]]; then
+  readonly TERMINAL="iterm"
+elif [[ "$TERM_PROGRAM" == "Apple_Terminal" ]]; then
+  readonly TERMINAL="appleterm"
+else
+  if [[ "$OS" == "OSX" ]]; then
+    local termtest=$(ps -o 'command=' -p $(ps -o 'ppid=' -p $$) | tail -1 | awk '{print $NF}')
+    # test if we are in a sudo su -
+    if [[ $termtest == "-" || $termtest == "root" ]]; then
+      termtest=($(ps -o 'command=' -p $(ps -o 'ppid=' -p $(ps -o 'ppid='$$))))
+      termtest=$(basename $termtest[1])
+    fi
+  else
+    local termtest=$(ps -o 'cmd=' -p $(ps -o 'ppid=' -p $$) | tail -1 | awk '{print $NF}')
+    # test if we are in a sudo su -
+    if [[ $termtest == "-" || $termtest == "root" ]]; then
+      termtest=($(ps -o 'cmd=' -p $(ps -o 'ppid=' $(ps -o 'ppid='$$))))
+      if [[ $termtest[1] == "zsh" ]]; then  # gnome terminal works differently than the rest... sigh
+        termtest=$termtest[-1]
+      elif [[ $termtest[1] =~ "python" ]]; then   # as does guake
+        termtest=$termtest[3]
+      else
+        termtest=$termtest[1]
+      fi
+    fi
+  fi
+  case "${termtest##*/}" in
+    gnome-terminal-server)    readonly TERMINAL="gnometerm";;
+    guake.main)               readonly TERMINAL="guake";;
+    iTerm2)                   readonly TERMINAL="iterm";;
+    konsole)                  readonly TERMINAL="konsole";;
+    termite)                  readonly TERMINAL="termite";;
+    urxvt)                    readonly TERMINAL="rxvt";;
+    yakuake)                  readonly TERMINAL="yakuake";;
+    xterm | xterm-256color)   readonly TERMINAL="xterm";;
+    *tty*)                    readonly TERMINAL="tty";;
+    *)                        readonly TERMINAL=${termtest##*/};;
+  esac
+
+  unset termtest
+  unset uname
+fi
+
 # Exits with 0 if a variable has been previously defined (even if empty)
 # Takes the name of a variable that should be checked.
 function defined() {

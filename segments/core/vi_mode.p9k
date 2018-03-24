@@ -50,18 +50,18 @@ prompt_vi_mode() {
 ###############################################################
 function rebuild_vi_mode {
   case "${POWERLEVEL9K_GENERATOR}" in
-    async)
-      if (( ${+terminfo[smkx]} )); then
-        printf '%s' ${terminfo[smkx]}
-      fi
-      for index in $(get_indices_of_segment "vi_mode" "${POWERLEVEL9K_LEFT_PROMPT_ELEMENTS}"); do
-         prompt_vi_mode "left" "${index}" "${1}" &!
-      done
-      for index in $(get_indices_of_segment "vi_mode" "${POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS}"); do
-         prompt_vi_mode "right" "${index}" "${1}" &!
-      done
-    ;;
-    async-adv)
+    # async)
+    #   if (( ${+terminfo[smkx]} )); then
+    #     printf '%s' ${terminfo[smkx]}
+    #   fi
+    #   for index in $(get_indices_of_segment "vi_mode" "${POWERLEVEL9K_LEFT_PROMPT_ELEMENTS}"); do
+    #      prompt_vi_mode "left" "${index}" "${1}" &!
+    #   done
+    #   for index in $(get_indices_of_segment "vi_mode" "${POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS}"); do
+    #      prompt_vi_mode "right" "${index}" "${1}" &!
+    #   done
+    # ;;
+    zsh-async)
       if (( ${+terminfo[smkx]} )); then
         printf '%s' ${terminfo[smkx]}
       fi
