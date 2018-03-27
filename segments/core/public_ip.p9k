@@ -1,14 +1,18 @@
 #!/usr/bin/env zsh
 # vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
 ################################################################
-# powerlevel9k Theme
-# https://github.com/bhilburn/powerlevel9k
-#
-# This theme was inspired by agnoster's Theme:
-# https://gist.github.com/3712874
-################################################################
+# @title powerlevel9k Segment - Public IP
+# @source https://github.com/bhilburn/powerlevel9k
+##
+# @authors
+#   Ben Hilburn (bhilburn)
+#   Dominic Ritter (dritter)
+##
 
-# Register icons
+################################################################
+# Register segment icon
+# Parameters:
+#   name_of_icon  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
 #                                                                           
 register_icon "PUBLIC_IP_ICON"  ''  ''  ''  '\u'$CODEPOINT_OF_AWESOME_GLOBE  $'\UF0AC'
 #                                                                                    

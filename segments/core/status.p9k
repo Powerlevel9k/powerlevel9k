@@ -1,14 +1,18 @@
 #!/usr/bin/env zsh
 # vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
 ################################################################
-# powerlevel9k Theme
-# https://github.com/bhilburn/powerlevel9k
-#
-# This theme was inspired by agnoster's Theme:
-# https://gist.github.com/3712874
-################################################################
+# @title powerlevel9k Segment - Status
+# @source https://github.com/bhilburn/powerlevel9k
+##
+# @authors
+#   Ben Hilburn (bhilburn)
+#   Dominic Ritter (dritter)
+##
 
-# Register icons
+################################################################
+# Register segment icon
+# Parameters:
+#   name_of_icon  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
 #                                     ↵         ↵         ↵         ↵         ↵
 register_icon "CARRIAGE_RETURN_ICON"  $'\u21B5'  $'\u21B5'  $'\u21B5'  $'\u21B5'  $'\u21B5'
 #                        ✔         ✔          ✔                                         
@@ -16,10 +20,6 @@ register_icon "OK_ICON"  $'\u2714'  $'\u2714'  $'\u2714'  '\u'$CODEPOINT_OF_AWES
 #                          ✘          ✘         ✘                                          
 register_icon "FAIL_ICON"  $'\u2718'  $'\u2718'  $'\u2718'  '\u'$CODEPOINT_OF_AWESOME_TIMES  $'\uF00D'
 
-################################################################
-# Status: When an error occur, return the error code, or a cross icon if option is set
-# Display an ok icon when no error occur, or hide the segment if option is set to false
-#
 set_default POWERLEVEL9K_STATUS_CROSS false
 set_default POWERLEVEL9K_STATUS_OK true
 set_default POWERLEVEL9K_STATUS_SHOW_PIPESTATUS true
@@ -41,6 +41,16 @@ exit_code_or_status() {
   fi
 }
 
+################################################################
+# @description
+#   Display an ok icon when no error occur, or hide the segment if option is set to false.
+#   When an error occurs, return the error code, or a cross icon if option is set.
+##
+# @args
+#   $1 string Alignment - left | right
+#   $2 integer Segment index
+#   $3 boolean Whether the segment should be joined
+##
 prompt_status() {
   local ec_text
   local ec_sum

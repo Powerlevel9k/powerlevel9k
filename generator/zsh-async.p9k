@@ -16,9 +16,9 @@
 #   This file contains an async generator for the powerlevel9k
 #   project. It makes use of zsh-async in order to build the
 #   prompts asynchronously.
+#
+#   Please note that this is A WORK IN PROGRESS, so use at your own risk!
 ##
-
-# Please note that this is A WORK IN PROGRESS, so use at your own risk!
 
 # Debugging
 #ASYNC_DEBUG=1
@@ -27,11 +27,12 @@
 # Prompt Segment Constructors
 ################################################################
 
+POWERLEVEL9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS=" "
 ###############################################################
 # @description
 #   Spawn a subshell to convert the data into a left prompt segment
 ##
-# @arg
+# @args
 #   $1 string Name - The stateful name of the function that was originally invoked (mandatory).
 #   $2 integer Index - Segment array index
 #   $3 string Background - Segment background color
@@ -40,7 +41,6 @@
 #   $6 string Content - Segment content
 #   $7 string Visual Identifier - Segment icon
 ##
-POWERLEVEL9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS=" "
 left_prompt_segment() {
   # Name the parameters and add %K and %F to color variables
   local STATEFUL_NAME="${1}" INDEX="${2}" BG="%K{${3}}" FG="%F{${4}}" BOLD="${5}" CONTENT="${6}" VISUAL_IDENTIFIER="${7}"
@@ -59,11 +59,12 @@ left_prompt_segment() {
   [[ "${INDEX}" != "" ]] && echo "${INDEX}·|·${SEGMENT}"
 }
 
+POWERLEVEL9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS=" "
 ###############################################################
 # @description
 #   Spawn a subshell to convert the data into a right prompt segment
 ##
-# @arg
+# @args
 #   $1 string Name - The stateful name of the function that was originally invoked (mandatory).
 #   $2 integer Index - Segment array index
 #   $3 string Background - Segment background color
@@ -72,7 +73,6 @@ left_prompt_segment() {
 #   $6 string Content - Segment content
 #   $7 string Visual Identifier - Segment icon
 ##
-POWERLEVEL9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS=" "
 right_prompt_segment() {
   # Name the parameters and add %K and %F to color variables
   local STATEFUL_NAME="${1}" INDEX="${2}" BG="%K{${3}}" FG="%F{${4}}" CONTENT="${6}" VISUAL_IDENTIFIER="${7}"
@@ -100,7 +100,7 @@ right_prompt_segment() {
 # @description
 #   This function determines the background of the previous VISIBLE segment in the left prompt.
 ##
-# @arg
+# @args
 #   $1 integer Index - Left prompt source segment index
 ##
 last_left_bg() {
@@ -121,7 +121,7 @@ last_left_bg() {
 # @description
 #   This function determines the background of the previous VISIBLE segment in the right prompt.
 ##
-# @arg
+# @args
 #   $1 integer Index - Right prompt source segment index
 ##
 last_right_bg() {
@@ -138,6 +138,13 @@ last_right_bg() {
   echo "$LAST_BG"
 }
 
+###############################################################
+# @description
+#   This function walks through the Left Prompt segment array and rebuilds
+#   the left prompt every time a subshell returns.
+##
+# @noargs
+##
 update_left_prompt() {
   local LBG LAST_LBG LSEGMENTS
   # Determine how many segments are visible in the left prompt
@@ -182,6 +189,13 @@ update_left_prompt() {
   zle .reset-prompt
 }
 
+###############################################################
+# @description
+#   This function walks through the Right Prompt segment array and rebuilds
+#   the right prompt every time a subshell returns.
+##
+# @noargs
+##
 update_right_prompt() {
   local RBG LAST_RBG RSEGMENTS
   # Determine how many segments are visible in the left prompt
@@ -229,7 +243,7 @@ update_right_prompt() {
 #   subshell is completed, this function is called to deal with
 #   the generated output.
 ##
-# @arg
+# @args
 #   $1 string Job - The name of the calling function or job
 #   $2 number Code - Return code (If the value is -1, then it is likely that there is a bug)
 #   $3 string Output - Resulting (stdout) output from the job
@@ -330,7 +344,7 @@ p9k_async_callback() {
 #   This function processes the segment code in a subshell.
 #   When done, the resulting data is sent to `p9k_async_callback`.
 ##
-# @arg
+# @args
 #   $1 string Name - Segment name
 #   $2 string State - Segment state
 #   $3 string Alignment - left|right
@@ -404,7 +418,7 @@ p9k_serialize_segment() {
 #   process and passes the parameters from the segment code to the
 #   subshells.
 ##
-# @arg
+# @args
 #   $@ misc The parameters passed from the segment code
 ##
 serialize_segment() {
@@ -416,8 +430,15 @@ serialize_segment() {
 ################################################################
 
 ################################################################
-# The 'custom` prompt provides a way for users to invoke commands and display
-# the output in a segment.
+# @description
+#   The `custom` prompt provides a way for users to invoke commands and display
+#   the output in a segment.
+##
+# @args
+#   $1 string Left|Right
+#   $2 integer Segment index
+#   $3 boolean Whether the segment should be joined
+#   $4 string Custom segment name
 prompt_custom() {
   local command=POWERLEVEL9K_CUSTOM_$4:u
   local segment_content="$(eval ${(P)command})"
@@ -432,7 +453,7 @@ prompt_custom() {
 #   This function loops through the left prompt elements and calls
 #   the related segment functions.
 ##
-# @noarg
+# @noargs
 ##
 build_left_prompt() {
   local index=1
@@ -447,7 +468,7 @@ build_left_prompt() {
     # Check if it is a custom command, otherwise interpet it as
     # a prompt.
     if [[ $element[0,7] =~ "custom_" ]]; then
-      "prompt_custom" "left" "${index}" "${element[8,-1]}" "${joined}" &!
+      "prompt_custom" "left" "${index}" "${joined}" "${element[8,-1]}" &!
     else
       # Could we display placeholders?
       # -> At most it could be static ones, but
@@ -463,7 +484,7 @@ build_left_prompt() {
 #   This function loops through the right prompt elements and calls
 #   the related segment functions.
 ##
-# @noarg
+# @noargs
 ##
 build_right_prompt() {
   local index=1
@@ -491,7 +512,7 @@ build_right_prompt() {
 #   This function is a hook that runs before the command runs.
 #   It sets the start timer.
 ##
-# @noarg
+# @noargs
 ##
 powerlevel9k_preexec() {
   # The Timer is started here, but the end
@@ -508,7 +529,7 @@ powerlevel9k_preexec() {
 #   If sets all the required variables for the prompts and then
 #   calls the prompt segment building functions.
 ##
-# @noarg
+# @noargs
 ##
 powerlevel9k_prepare_prompts() {
   setopt localoptions noshwordsplit
@@ -588,6 +609,12 @@ $(print_icon 'MULTILINE_SECOND_PROMPT_PREFIX')"
   fi
 }
 
+###############################################################
+# @description
+#   This function is a hook into chpwd to add bindkey support.
+##
+# @noargs
+##
 p9k_chpwd() {
   powerlevel9k_prepare_prompts
   powerlevel9k_preexec
@@ -598,7 +625,7 @@ p9k_chpwd() {
 #   This is the main function. It does the necessary checks,
 #   loads the required resources and sets the required hooks.
 ##
-# @noarg
+# @noargs
 ##
 prompt_powerlevel9k_setup() {
   # The value below was set to better support 32-bit CPUs.
@@ -680,4 +707,17 @@ prompt_powerlevel9k_setup() {
 
   # hook into chpwd for bindkey support
   chpwd_functions=(${chpwd_functions[@]} "p9k_chpwd")
+}
+
+###############################################################
+# @description
+#   This function removed PowerLevel9k hooks and resets the prompts.
+##
+# @noargs
+##
+prompt_powerlevel9k_teardown() {
+  add-zsh-hook -D precmd powerlevel9k_\*
+  add-zsh-hook -D preexec powerlevel9k_\*
+  PROMPT='%m%# '
+  RPROMPT=
 }

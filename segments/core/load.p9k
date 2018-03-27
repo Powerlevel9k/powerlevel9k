@@ -1,20 +1,31 @@
 #!/usr/bin/env zsh
 # vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
 ################################################################
-# powerlevel9k Theme
-# https://github.com/bhilburn/powerlevel9k
-#
-# This theme was inspired by agnoster's Theme:
-# https://gist.github.com/3712874
-################################################################
+# @title powerlevel9k Segment - Load
+# @source https://github.com/bhilburn/powerlevel9k
+##
+# @authors
+#   Ben Hilburn (bhilburn)
+#   Dominic Ritter (dritter)
+##
 
-# Register icons
+################################################################
+# Register segment icon
+# Parameters:
+#   name_of_icon  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
 #                                                                                           
 register_icon "LOAD_ICON"  'L'  $'\uE190 '  $'\uF080 '  '\u'$CODEPOINT_OF_AWESOME_BAR_CHART' '  $'\uF080 '
 
-################################################################
-# Segment to display load
 set_default POWERLEVEL9K_LOAD_WHICH 5
+################################################################
+# @description
+#   Display the current load.
+##
+# @args
+#   $1 string Alignment - left | right
+#   $2 integer Segment index
+#   $3 boolean Whether the segment should be joined
+##
 prompt_load() {
   # The load segment can have three different states
   local current_state="unknown"

@@ -1,19 +1,30 @@
 #!/usr/bin/env zsh
 # vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
 ################################################################
-# powerlevel9k Theme
-# https://github.com/bhilburn/powerlevel9k
-#
-# This theme was inspired by agnoster's Theme:
-# https://gist.github.com/3712874
-################################################################
+# @title powerlevel9k Segment - Battery
+# @source https://github.com/bhilburn/powerlevel9k
+##
+# @authors
+#   Ben Hilburn (bhilburn)
+#   Dominic Ritter (dritter)
+##
 
-# Register icons
+################################################################
+# Register segment icon
+# Parameters:
+#   name_of_icon  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
 #                             🔋                    🔋                                                 
 register_icon "BATTERY_ICON"  $'\U1F50B'  $'\uE894'  $'\U1F50B'  '\U'$CODEPOINT_OF_AWESOME_BATTERY_FULL  $'\UF240 '
 
 ################################################################
-# Segment that displays the battery status in levels and colors
+# @description
+#   Displays the battery statys in levels and colors.
+##
+# @args
+#   $1 string Alignment - left | right
+#   $2 integer Segment index
+#   $3 boolean Whether the segment should be joined
+##
 prompt_battery() {
   # The battery can have four different states - default to 'unknown'.
   local current_state='unknown'

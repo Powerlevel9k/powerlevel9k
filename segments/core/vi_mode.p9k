@@ -1,15 +1,13 @@
 #!/usr/bin/env zsh
 # vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
 ################################################################
-# powerlevel9k Theme
-# https://github.com/bhilburn/powerlevel9k
-#
-# This theme was inspired by agnoster's Theme:
-# https://gist.github.com/3712874
-################################################################
-
-# Visual mode only works if the user has installed zsh-vimode-visual
-# (Requires https://github.com/b4b4r07/zsh-vimode-visual)
+# @title powerlevel9k Segment - VI Mode
+# @source https://github.com/bhilburn/powerlevel9k
+##
+# @authors
+#   Ben Hilburn (bhilburn)
+#   Dominic Ritter (dritter)
+##
 
 set_default "POWERLEVEL9K_VI_INSERT_MODE_STRING" "INSERT"
 set_default "POWERLEVEL9K_VI_COMMAND_MODE_STRING" "NORMAL"
@@ -20,6 +18,21 @@ set_default "POWERLEVEL9K_VI_VISUAL_MODE_STRING" "VISUAL"
 #   * $1 Alignment: string - left|right
 #   * $2 Index: integer
 #   * $3 Joined: bool - If the segment should be joined
+################################################################
+# @description
+#   Display information about the editing mode - Normal | Insert | Visual.
+##
+# @args
+#   $1 string Alignment - left | right
+#   $2 integer Segment index
+#   $3 boolean Whether the segment should be joined
+##
+# @note
+#   Visual mode only works if the user has installed zsh-vimode-visual.
+##
+# @requires
+#   [zsh-vimode-visual](https://github.com/b4b4r07/zsh-vimode-visual)
+##
 prompt_vi_mode() {
   local vi_mode
   local current_state
@@ -191,7 +204,10 @@ function zle-keymap-select {
       break;
     ;;
     *)
-      zle reset-prompt
+      # About .reset-prompt see:
+      # https://github.com/sorin-ionescu/prezto/issues/1026
+      # https://github.com/zsh-users/zsh-autosuggestions/issues/107#issuecomment-183824034
+      zle .reset-prompt
       zle -R
     ;;
   esac

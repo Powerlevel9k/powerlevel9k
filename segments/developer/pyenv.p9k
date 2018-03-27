@@ -1,20 +1,33 @@
 #!/usr/bin/env zsh
 # vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
 ################################################################
-# powerlevel9k Theme
-# https://github.com/bhilburn/powerlevel9k
-#
-# This theme was inspired by agnoster's Theme:
-# https://gist.github.com/3712874
-################################################################
+# @title powerlevel9k Segment - Python Environment
+# @source https://github.com/bhilburn/powerlevel9k
+##
+# @authors
+#   Ben Hilburn (bhilburn)
+#   Dominic Ritter (dritter)
+##
 
-# Register icons
+################################################################
+# Register segment icon
+# Parameters:
+#   name_of_icon  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
 #                                                   🐍          
 register_icon "PYTHON_ICON"  ''  $'\ue63c'  $'\ue63c'  $'\U1F40D'  $'\UE73C '
 
 ################################################################
-# pyenv: current active python version (with restrictions)
-# https://github.com/pyenv/pyenv#choosing-the-python-version
+# @description
+#   Display the current active python version (with restrictions).
+##
+# @args
+#   $1 string Alignment - left | right
+#   $2 integer Segment index
+#   $3 boolean Whether the segment should be joined
+##
+# @see
+#   [Choosing the Python Version](https://github.com/pyenv/pyenv#choosing-the-python-version)
+##
 prompt_pyenv() {
   if [[ -n "$PYENV_VERSION" ]]; then
     serialize_segment "$0" "" $1 "$2" $3 "blue" "$DEFAULT_COLOR" "$PYENV_VERSION" 'PYTHON_ICON'

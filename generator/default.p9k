@@ -1,12 +1,16 @@
 #!/usr/bin/env zsh
 # vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
 ################################################################
-# powerlevel9k Theme
-# https://github.com/bhilburn/powerlevel9k
-#
-# This theme was inspired by agnoster's Theme:
-# https://gist.github.com/3712874
-################################################################
+# @title powerlevel9k Default Engine
+# @source https://github.com/bhilburn/powerlevel9k
+##
+# @authors
+#   Ben Hilburn (bhilburn)
+#   Dominic Ritter (dritter)
+##
+# @info
+#   This file contains the default generator for the powerlevel9k project.
+##
 
 ################################################################
 # DEFAULT ENGINE - Synchronous
@@ -29,18 +33,21 @@
 # right-left but reads the opposite, this isn't necessary for the other side.
 CURRENT_BG='NONE'
 
-# Begin a left prompt segment
-# Takes seven arguments:
-#   * $1 Name: string - Name of the function that was originally invoked (mandatory).
-#   * $2 Index: integer
-#   * $3 Background: string
-#   * $4 Foreground: string
-#   * $5 Bold: bool
-#   * $6 Content: string
-#   * $7 Visual identifier: string - Icon (must be a key of the icons array)
-# The latter three can be omitted,
 set_default last_left_element_index 1
 set_default POWERLEVEL9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS " "
+################################################################
+# @description
+#   Construct a left prompt segment
+##
+# @args
+#   $1 string Name of the function that was originally invoked (mandatory).
+#   $2 integer Index of the segment
+#   $3 string Background color
+#   $4 string Foreground color
+#   $5 bool Whether the segment should be bold
+#   $6 string Content of the segment
+#   $7 string Visual identifier (must be a key of the icons array)
+##
 left_prompt_segment() {
   local current_index=$2
   # Check if the segment should be joined with the previous one
@@ -96,7 +103,12 @@ left_prompt_segment() {
   last_left_element_index=$current_index
 }
 
-# End the left prompt, closes the final segment.
+################################################################
+# @description
+#   End the left prompt, closes the final segment
+##
+# @noargs
+##
 left_prompt_end() {
   if [[ -n $CURRENT_BG ]]; then
     echo -n "%k%F{$CURRENT_BG}$(print_icon 'LEFT_SEGMENT_SEPARATOR')"
@@ -109,18 +121,24 @@ left_prompt_end() {
 
 CURRENT_RIGHT_BG='NONE'
 
-# Begin a right prompt segment
-# Takes seven arguments:
-#   * $1 Name: string - Name of the function that was originally invoked (mandatory).
-#   * $2 Index: integer
-#   * $3 Background: string
-#   * $4 Foreground: string
-#   * $5 Bold: bool
-#   * $6 Content: string
-#   * $7 Visual identifier: string - Icon (must be a key of the icons array)
-# No ending for the right prompt segment is needed (unlike the left prompt, above).
 set_default last_right_element_index 1
 set_default POWERLEVEL9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS " "
+################################################################
+# @description
+#   Construct a right prompt segment
+##
+# @args
+#   $1 string Name of the function that was originally invoked (mandatory).
+#   $2 integer Index of the segment
+#   $3 string Background color
+#   $4 string Foreground color
+#   $5 bool Whether the segment should be bold
+#   $6 string Content of the segment
+#   $7 string Visual identifier (must be a key of the icons array)
+##
+# @notes
+#   No ending for the right prompt segment is needed (unlike the left prompt, above).
+##
 right_prompt_segment() {
   local current_index=$2
 
@@ -175,30 +193,23 @@ right_prompt_segment() {
   last_right_element_index=$current_index
 }
 
-###############################################################
-# This function wraps left_prompt_segment and right_prompt_segment to serializes a segment (for compatibility with the async branch)
-#
-# Parameters for serialize_segment:
-#   * $1 Name: string - Name of the segment
-#   * $2 State: string - The state the segment is in
-#   * $3 Alignment: string - left|right
-#   * $4 Index: integer
-#   * $5 Joined: bool - If the segment should be joined
-#   * $6 Background: string - The default background color of the segment
-#   * $7 Foreground: string - The default foreground color of the segment
-#   * $8 Content: string - Content of the segment
-#   * $9 Visual identifier: string - Icon of the segment
-#   * $10 Condition: string - The condition, if the segment should be printed (gets evaluated)
-#
-# Parameters for [left|right]_prompt_segment:
-#   * $1 Name: string - Name of the function that was originally invoked (mandatory).
-#   * $2 Index: integer
-#   * $3 Background: string
-#   * $4 Foreground: string
-#   * $5 Bold: bool
-#   * $6 Content: string
-#   * $7 Visual identifier: string - Icon (must be a key of the icons array)
-# The latter three can be omitted,
+################################################################
+# @description
+#   This function wraps `left_prompt_segment` and `right_prompt_segment`
+#   (for compatibility with the async generator).
+##
+# @args
+#   $1 string Name of the function that was originally invoked (mandatory).
+#   $2 string State of the segment.
+#   $3 string Alignment (left|right).
+#   $4 integer Index of the segment.
+#   $5 bool Whether the segment should be joined.
+#   $6 string Background color.
+#   $7 string Foreground color.
+#   $8 string Content of the segment.
+#   $9 string Visual identifier (must be a key of the icons array).
+#   $10 string The condition - if the segment should be shown (gets evaluated).
+##
 serialize_segment() {
   local NAME="${1}"
   local STATE="${2}"
@@ -281,8 +292,16 @@ serialize_segment() {
 CURRENT_BG='NONE'
 
 ################################################################
-# The 'custom` prompt provides a way for users to invoke commands and display
-# the output in a segment.
+# @description
+#   The `custom` prompt provides a way for users to invoke commands and display
+#   the output in a segment.
+##
+# @args
+#   $1 string Left|Right
+#   $2 integer Segment index
+#   $3 boolean Whether the segment should be joined
+#   $4 string Custom segment name
+##
 prompt_custom() {
   local command=POWERLEVEL9K_CUSTOM_$4:u
   local segment_content="$(eval ${(P)command})"
@@ -295,7 +314,14 @@ prompt_custom() {
 ################################################################
 # Prompt processing and drawing
 ################################################################
-# Main prompt
+
+###############################################################
+# @description
+#   This function loops through the left prompt elements and calls
+#   the related segment functions.
+##
+# @noargs
+##
 build_left_prompt() {
   local index=1
   local element joined
@@ -320,7 +346,13 @@ build_left_prompt() {
   left_prompt_end
 }
 
-# Right prompt
+###############################################################
+# @description
+#   This function loops through the right prompt elements and calls
+#   the related segment functions.
+##
+# @noargs
+##
 build_right_prompt() {
   local index=1
   local joined
@@ -343,11 +375,26 @@ build_right_prompt() {
   done
 }
 
+###############################################################
+# @description
+#   This function is a hook that runs before the command runs.
+#   It sets the start timer.
+##
+# @noargs
+##
 powerlevel9k_preexec() {
   _P9K_TIMER_START=$EPOCHREALTIME
 }
 
 set_default POWERLEVEL9K_PROMPT_ADD_NEWLINE false
+###############################################################
+# @description
+#   This function is a hook that is run before the prompts are created.
+#   If sets all the required variables for the prompts and then
+#   calls the prompt segment building functions.
+##
+# @noargs
+##
 powerlevel9k_prepare_prompts() {
   RETVAL=$?
   RETVALS=( "$pipestatus[@]" )
@@ -399,6 +446,24 @@ NEWLINE='
 set_default POWERLEVEL9K_IGNORE_TERM_COLORS false
 set_default POWERLEVEL9K_IGNORE_TERM_LANG false
 
+###############################################################
+# @description
+#   This function is a hook into chpwd to add bindkey support.
+##
+# @noargs
+##
+p9k_chpwd() {
+  powerlevel9k_prepare_prompts
+  powerlevel9k_preexec
+}
+
+###############################################################
+# @description
+#   This is the main function. It does the necessary checks,
+#   loads the required resources and sets the required hooks.
+##
+# @noargs
+##
 prompt_powerlevel9k_setup() {
   # The value below was set to better support 32-bit CPUs.
   # It's the maximum _signed_ integer value on 32-bit CPUs.
@@ -458,8 +523,17 @@ prompt_powerlevel9k_setup() {
   # prepare prompts
   add-zsh-hook precmd powerlevel9k_prepare_prompts
   add-zsh-hook preexec powerlevel9k_preexec
+
+  # hook into chpwd for bindkey support
+  chpwd_functions=(${chpwd_functions[@]} "p9k_chpwd")
 }
 
+###############################################################
+# @description
+#   This function removed PowerLevel9k hooks and resets the prompts.
+##
+# @noargs
+##
 prompt_powerlevel9k_teardown() {
   add-zsh-hook -D precmd powerlevel9k_\*
   add-zsh-hook -D preexec powerlevel9k_\*

@@ -1,24 +1,37 @@
 #!/usr/bin/env zsh
 # vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
 ################################################################
-# powerlevel9k Theme
-# https://github.com/bhilburn/powerlevel9k
-#
-# This theme was inspired by agnoster's Theme:
-# https://gist.github.com/3712874
-################################################################
+# @title powerlevel9k Support File - Test Statistics
+# @source https://github.com/bhilburn/powerlevel9k
+##
+# @authors
+#   Ben Hilburn (bhilburn)
+#   Dominic Ritter (dritter)
+##
 
 ################################################################
-# Show a ratio of tests vs code
-# Parameters for build_test_stats
-#   * $1 Name: string - Name of the calling segment
-#   * $2 Align: string - left|right
-#   * $3 Index: integer
-#   * $4 Joined: bool
-#   * $5 Code Amount: string
-#   * $6 Tests Amount: string
-#   * $7 Headline: string
-#   * $8 Icon: string
+# Register segment icon
+# Parameters:
+#   name_of_icon  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
+#                                                                               
+register_icon "TEST_ICON"  ''  $'\uE891'  $'\uF291'  '\u'$CODEPOINT_OF_AWESOME_BUG  $'\uF188'
+
+################################################################
+# @description
+#   Show a ratio of tests vs code.
+##
+# @args
+#   $1 string of the calling segment
+#   $2 string Alignment - left | right
+#   $3 integer Index
+#   $4 bool Whether the segment should be joined
+#   $5 string Code Amount
+#   $6 string Tests Amount
+#   $7 string Headline
+#   $8 string Icon
+##
+# @note
+#   This function is called by prompt segments to display the information required.
 build_test_stats() {
   local code_amount="$5"
   local tests_amount="$6"+0.00001

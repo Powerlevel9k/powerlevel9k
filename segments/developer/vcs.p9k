@@ -1,14 +1,18 @@
 #!/usr/bin/env zsh
 # vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
 ################################################################
-# powerlevel9k Theme
-# https://github.com/bhilburn/powerlevel9k
-#
-# This theme was inspired by agnoster's Theme:
-# https://gist.github.com/3712874
-################################################################
+# @title powerlevel9k Segment - VCS
+# @source https://github.com/bhilburn/powerlevel9k
+##
+# @authors
+#   Ben Hilburn (bhilburn)
+#   Dominic Ritter (dritter)
+##
 
-# Register icons
+################################################################
+# Register segment icon
+# Parameters:
+#   name_of_icon  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
 #                                                                                                     
 register_icon "VCS_UNTRACKED_ICON"  '?'  $'\uE16C'  $'\uF059'  '\u'$CODEPOINT_OF_AWESOME_QUESTION_CIRCLE  $'\uF059'
 #                                  ●                                                                          
@@ -65,6 +69,15 @@ source "${p9k_directory}/functions/vcs.zsh"
 set_default POWERLEVEL9K_VCS_ACTIONFORMAT_FOREGROUND "red"
 # Default: Just display the first 8 characters of our changeset-ID.
 set_default POWERLEVEL9K_VCS_INTERNAL_HASH_LENGTH "8"
+################################################################
+# @description
+#   Initializes the VCS segment by setting the required ZSH options.
+##
+# @noargs
+##
+# @note
+#   This function is only called once.
+##
 powerlevel9k_vcs_init() {
   if [[ -n "$POWERLEVEL9K_CHANGESET_HASH_LENGTH" ]]; then
     POWERLEVEL9K_VCS_INTERNAL_HASH_LENGTH="$POWERLEVEL9K_CHANGESET_HASH_LENGTH"
@@ -126,7 +139,14 @@ powerlevel9k_vcs_init() {
 }
 
 ################################################################
-# Segment to show VCS information
+# @description
+#   Display the current VCS information.
+##
+# @args
+#   $1 string Alignment - left | right
+#   $2 integer Segment index
+#   $3 boolean Whether the segment should be joined
+##
 prompt_vcs() {
   VCS_WORKDIR_DIRTY=false
   VCS_WORKDIR_HALF_DIRTY=false

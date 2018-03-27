@@ -1,14 +1,18 @@
 #!/usr/bin/env zsh
 # vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
 ################################################################
-# powerlevel9k Theme
-# https://github.com/bhilburn/powerlevel9k
-#
-# This theme was inspired by agnoster's Theme:
-# https://gist.github.com/3712874
-################################################################
+# @title powerlevel9k Segment - User
+# @source https://github.com/bhilburn/powerlevel9k
+##
+# @authors
+#   Ben Hilburn (bhilburn)
+#   Dominic Ritter (dritter)
+##
 
-# Register icons
+################################################################
+# Register segment icon
+# Parameters:
+#   name_of_icon  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
 #                          ⚡                                                           
 register_icon "ROOT_ICON"  $'\u26A1'  $'\uE801'  $'\uF201'  '\u'$CODEPOINT_OF_OCTICONS_ZAP  $'\uE614 '
 #                                                                                        
@@ -16,10 +20,18 @@ register_icon "SUDO_ICON"  $'\uE0A2'  $'\uF09C'  $'\uF09C'  '\u'$CODEPOINT_OF_AW
 #                                                      
 register_icon "USER_ICON"  ''  ''  $'\uF2C0'  $'\uF2C0'  $'\uF2C0'
 
-################################################################
-# User: user (who am I)
-# Note that if $DEFAULT_USER is not set, this prompt segment will always print
 set_default POWERLEVEL9K_USER_TEMPLATE "%n"
+################################################################
+# @description
+#   Display information about the user (Who am I).
+##
+# @args
+#   $1 string Alignment - left | right
+#   $2 integer Segment index
+#   $3 boolean Whether the segment should be joined
+# @note
+#   If $DEFAULT_USER is not set, this prompt segment will always print.
+##
 prompt_user() {
   local current_state="DEFAULT"
   typeset -AH user_state
