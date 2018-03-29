@@ -248,7 +248,8 @@ if [[ "$OS" == 'macOS' ]]; then
 fi
 
 # Combine the PROMPT_ELEMENTS
-typeset -gU P9K_PROMPT_ELEMENTS=("${P9K_LEFT_PROMPT_ELEMENTS[@]}" "${P9K_RIGHT_PROMPT_ELEMENTS[@]}")
+typeset -gU P9K_PROMPT_ELEMENTS
+P9K_PROMPT_ELEMENTS=("${P9K_LEFT_PROMPT_ELEMENTS[@]}" "${P9K_RIGHT_PROMPT_ELEMENTS[@]}")
 
 ###############################################################
 # @description
