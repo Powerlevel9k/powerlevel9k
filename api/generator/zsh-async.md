@@ -28,12 +28,12 @@
 
 - [leftPromptSegment()](#leftPromptSegment)
 - [rightPromptSegment()](#rightPromptSegment)
-- [last_left_bg()](#last_left_bg)
-- [last_right_bg()](#last_right_bg)
-- [update_left_prompt()](#update_left_prompt)
-- [update_right_prompt()](#update_right_prompt)
-- [p9k_async_callback()](#p9k_async_callback)
-- [p9k_serializeSegment()](#p9k_serializeSegment)
+- [lastLeftBg()](#lastLeftBg)
+- [lastRightBg()](#lastRightBg)
+- [updateLeftPrompt()](#updateLeftPrompt)
+- [updateRightPrompt()](#updateRightPrompt)
+- [p9kAsyncCallback()](#p9kAsyncCallback)
+- [p9kSerializeSegment()](#p9kSerializeSegment)
 - [serializeSegment()](#serializeSegment)
 - [prompt_custom()](#prompt_custom)
 - [buildLeftPrompt()](#buildLeftPrompt)
@@ -72,7 +72,7 @@
 - **$7** (string) Visual Identifier - Segment icon
 
 
-## last_left_bg()
+## lastLeftBg()
 *This function determines the background of the previous VISIBLE segment in the left prompt. *
 
 #### Arguments
@@ -80,7 +80,7 @@
 - **$1** (integer) Index - Left prompt source segment index
 
 
-## last_right_bg()
+## lastRightBg()
 *This function determines the background of the previous VISIBLE segment in the right prompt. *
 
 #### Arguments
@@ -88,7 +88,7 @@
 - **$1** (integer) Index - Right prompt source segment index
 
 
-## update_left_prompt()
+## updateLeftPrompt()
 *This function walks through the Left Prompt segment array and rebuilds the left prompt every time a subshell returns. *
 
 #### Arguments
@@ -96,7 +96,7 @@
 - *Function has no arguments.*
 
 
-## update_right_prompt()
+## updateRightPrompt()
 *This function walks through the Right Prompt segment array and rebuilds the right prompt every time a subshell returns. *
 
 #### Arguments
@@ -104,7 +104,7 @@
 - *Function has no arguments.*
 
 
-## p9k_async_callback()
+## p9kAsyncCallback()
 *This function is the heart of the async engine. Whenever a subshell is completed, this function is called to deal with the generated output. *
 
 #### Arguments
@@ -116,8 +116,8 @@
 - **$5** (string) Err - Resulting (stderr) output from the job
 
 
-## p9k_serializeSegment()
-*This function processes the segment code in a subshell. When done, the resulting data is sent to `p9k_async_callback`. *
+## p9kSerializeSegment()
+*This function processes the segment code in a subshell. When done, the resulting data is sent to `p9kAsyncCallback`. *
 
 #### Arguments
 
