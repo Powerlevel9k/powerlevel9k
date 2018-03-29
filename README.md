@@ -37,11 +37,14 @@ Powerlevel9k can be used to create both very useful and beautiful terminal envir
 ### Table of Contents
 
 1. [Installation](#installation)
-2. [Customization](#prompt-customization)
+2. [Disabling / Enabling Powerlevel9k](#disabling-/-enabling-powerlevel9k)
+3. [Prompt Customization](#prompt-customization)
     1. [Stylizing Your Prompt](https://github.com/bhilburn/powerlevel9k/wiki/Stylizing-Your-Prompt)
     2. [Customizing Prompt Segments](#customizing-prompt-segments)
     3. [Available Prompt Segments](#available-prompt-segments)
-3. [Troubleshooting](https://github.com/bhilburn/powerlevel9k/wiki/Troubleshooting)
+4. [Troubleshooting](https://github.com/bhilburn/powerlevel9k/wiki/Troubleshooting)
+5. [tl; dr](#tl;-dr)
+6. [License](#license)
 
 Be sure to also [check out the Wiki](https://github.com/bhilburn/powerlevel9k/wiki)!
 
@@ -50,13 +53,27 @@ There are two installation steps to go from a vanilla terminal to a PL9k
 terminal. Once you are done, you can optionally customize your prompt.
 
 [Installation Instructions](https://github.com/bhilburn/powerlevel9k/wiki/Install-Instructions)
-
 1. [Install the Powerlevel9k Theme](https://github.com/bhilburn/powerlevel9k/wiki/Install-Instructions#step-1-install-powerlevel9k)
 2. [Install Powerline Fonts](https://github.com/bhilburn/powerlevel9k/wiki/Install-Instructions#step-2-install-a-powerline-font)
 
 No configuration is necessary post-installation if you like the default
 settings, but there are plenty of segment customization options available if you
 are interested.
+
+### Disabling / Enabling Powerlevel9k
+
+You can disable P9k and return to a very basic prompt at any time simply by
+calling:
+
+```zsh
+$ prompt_p9k_teardown
+```
+
+You can then re-enable it by calling:
+
+```zsh
+$ prompt_powerlevel9k_setup
+```
 
 ### Prompt Customization
 
@@ -81,10 +98,10 @@ your `~/.zshrc`:
 P9K_LEFT_PROMPT_ELEMENTS=(context dir rbenv vcs)
 P9K_RIGHT_PROMPT_ELEMENTS=(status root_indicator background_jobs history time)
 ```
-#### Available Prompt Segments
-The segments that are currently available are:
+### Available Prompt Segments
+The available segments are:
 
-**System Status Segments:**
+#### System Status Segments
 * [`background_jobs`](#background_jobs) - Indicator for background jobs.
 * [`battery`](#battery) - Current battery status.
 * [`context`](#context) - Your username and host, conditionalized based on $USER and SSH status.
@@ -95,27 +112,29 @@ The segments that are currently available are:
 * `history` - The command number for the current line.
 * [`host`](#host) - Your current host name
 * [`ip`](#ip) - Shows the current IP address.
-* [`vpn_ip`](#vpn_ip) - Shows the current VPN IP address.
 * [`public_ip`](#public_ip) - Shows your public IP address.
+* [`vpn_ip`](#vpn_ip) - Shows the current VPN IP address.
 * [`load`](#load) - Your machine's load averages.
 * `os_icon` - Display a nice little icon, depending on your operating system.
-* `ram` - Show free RAM.
+* [`ram`](#ram) - Show free RAM.
 * `root_indicator` - An indicator if the user has superuser status.
+* `ssh` - Indicates whether or not you are in an SSH session.
 * [`status`](#status) - The return code of the previous command.
 * `swap` - Prints the current swap size.
 * [`time`](#time) - System time.
 * [`user`](#user) - Your current username
 * [`vi_mode`](#vi_mode)- Your prompt's Vi editing mode (NORMAL|INSERT).
-* `ssh` - Indicates whether or not you are in an SSH session.
 
-**Development Environment Segments:**
+#### Development Environment Segments
 * [`vcs`](#vcs) - Information about this `git` or `hg` repository (if you are in one).
 
-**Language Segments:**
+#### Language Segments
 * **GoLang Segments:**
     * `go_version` - Show the current GO version.
+* **Java Segments:**
+    * `java_version` - Show the current Java version.
 * **Javascript / Node.js Segments:**
-    * `node_version` - Show the version number of the installed Node.js.
+    * [`node_version`](#node_version) - Show the version number of the installed Node.js.
     * `nodeenv` - [nodeenv](https://github.com/ekalinin/nodeenv) prompt for displaying node version and environment name.
     * `nvm` - Show the version of Node that is currently active, if it differs from the version used by NVM
 * **PHP Segments:**
@@ -123,9 +142,9 @@ The segments that are currently available are:
     * [`symfony2_tests`](#symfony2_tests) - Show a ratio of test classes vs code classes for Symfony2.
     * `symfony2_version` - Show the current Symfony2 version, if you are in a Symfony2-Project dir.
 * **Python Segments:**
-    * `virtualenv` - Your Python [VirtualEnv](https://virtualenv.pypa.io/en/latest/).
     * [`anaconda`](#anaconda) - Your active [Anaconda](https://www.continuum.io/why-anaconda) environment.
     * `pyenv` - Your active python version as reported by the first word of [`pyenv version`](https://github.com/yyuu/pyenv). Note that the segment is not displayed if that word is _system_ i.e. the segment is inactive if you are using system python.
+    * `virtualenv` - Your Python [VirtualEnv](https://virtualenv.pypa.io/en/latest/).
 * **Ruby Segments:**
     * [`chruby`](#chruby) - Ruby environment information using `chruby` (if one is active).
     * [`rbenv`](#rbenv) - Ruby environment information using `rbenv` (if one is active).
@@ -134,57 +153,31 @@ The segments that are currently available are:
     * `rust_version` - Display the current rust version and [logo](https://www.rust-lang.org/logos/rust-logo-blk.svg).
 * **Swift Segments:**
     * `swift_version` - Show the version number of the installed Swift.
-* **Java Segments:**
-    * `java_version` - Show the current Java version.
 
-**Cloud Segments:**
+#### Cloud Segments
 * **AWS Segments:**
     * [`aws`](#aws) - The current AWS profile, if active.
     * `aws_eb_env` - The current Elastic Beanstalk Environment.
-* `docker_machine` - The current Docker Machine.
-* `kubecontext` - The current context of your `kubectl` configuration.
-* `dropbox` - Indicates Dropbox directory and syncing status using `dropbox-cli`
 
-**Other:**
+
+* `docker_machine` - The current Docker Machine.
+* `dropbox` - Indicates Dropbox directory and syncing status using `dropbox-cli`
+* `kubecontext` - The current context of your `kubectl` configuration.
+
+#### Other
 * [`custom_command`](#custom_command) - Create a custom segment to display the
   output of an arbitrary command.
 * [`command_execution_time`](#command_execution_time) - Display the time the current command took to execute.
-* [`todo`](http://todotxt.com/) - Shows the number of tasks in your todo.txt tasks file.
 * `detect_virt` - Virtualization detection with systemd
-* `newline` - Continues the prompt on a new line.
+* [`todo`](http://todotxt.com/) - Shows the number of tasks in your todo.txt tasks file.
+* [`newline`](#newline) - Continues the prompt on a new line.
 * `openfoam` - Shows the currently sourced [OpenFOAM](https://openfoam.org/) environment.
 
 ---------------------------------------------------------------------------------
 
+### Segment Descriptions
 
-##### anaconda
-
-This segment shows your active anaconda environment. It relies on either the
-`CONDA_ENV_PATH` or the `CONDA_PREFIX` (depending on the `conda` version)
-environment variable to be set which happens when you properly `source
-activate` an environment.
-
-Special configuration variables:
-
-| Variable | Default Value | Description |
-|----------|---------------|-------------|
-|`P9K_ANACONDA_LEFT_DELIMITER`|"("|The left delimiter just before the environment name.|
-|`P9K_ANACONDA_RIGHT_DELIMITER`|")"|The right delimiter just after the environment name.|
-
-Additionally the following segment specific parameters can be used to customize
-it: `P9K_PYTHON_ICON`, `P9K_ANACONDA_BACKGROUND`, and
-`P9K_ANACONDA_FOREGROUND`.
-
-##### aws
-
-If you would like to display the [current AWS
-profile](http://docs.aws.amazon.com/cli/latest/userguide/installing.html), add
-the `aws` segment to one of the prompts, and define `AWS_DEFAULT_PROFILE` in
-your `~/.zshrc`:
-
-| Variable | Default Value | Description |
-|----------|---------------|-------------|
-|`AWS_DEFAULT_PROFILE`|None|Your AWS profile name|
+#### System Status Segments
 
 ##### background_jobs
 
@@ -216,6 +209,7 @@ level. This will override the default battery icon. In order to do this, you
 need to define the `POWERLEVEL9k_BATTERY_STAGES` variable.
 
 | Variable | Default Value | Description |
+|----------|---------------|-------------|
 | `P9K_BATTERY_STAGES`|Unset|A string or array, which each index indicates a charge level.|
 
 Powerlevel9k will use each index of the string or array as a stage to indicate battery
@@ -256,59 +250,12 @@ As with the battery stages, you can use any number of colors and Powerlevel9k
 will automatically use all of them appropriately.
 
 Some example settings:
+
 |Brightness|Possible Array|
+|----------|--------------|
 |Bright Colors|(red1 orangered1 darkorange orange1 gold1 yellow1 yellow2 greenyellow chartreuse1 chartreuse2 green1)|
 |Normal Colors|(red3 darkorange3 darkgoldenrod gold3 yellow3 chartreuse2 mediumspringgreen green3 green3 green4 darkgreen)|
 |Subdued Colors|(darkred orange4 yellow4 yellow4 chartreuse3 green3 green4 darkgreen)|
-
-##### command_execution_time
-
-Display the time the previous command took to execute if the time is above
-`P9K_COMMAND_EXECUTION_TIME_THRESHOLD`. The time is formatted to be
-"human readable", and so scales the units based on the length of execution time.
-If you want more precision, just set the
-`P9K_COMMAND_EXECUTION_TIME_PRECISION` field.
-
-| Variable | Default Value | Description |
-|----------|---------------|-------------|
-|`P9K_COMMAND_EXECUTION_TIME_THRESHOLD`|3|Threshold above which to print this segment. Can be set to `0` to always print.|
-|`P9K_COMMAND_EXECUTION_TIME_PRECISION`|2|Number of digits to use in the fractional part of the time value.|
-
-##### custom_command
-
-The `custom_...` segment allows you to turn the output of a custom command into
-a prompt segment. As an example, if you wanted to create a custom segment to
-display your WiFi signal strength, you might define a custom segment called
-`custom_wifi_signal` like this:
-```zsh
-P9K_LEFT_PROMPT_ELEMENTS=(context time battery dir vcs virtualenv custom_wifi_signal)
-P9K_CUSTOM_WIFI_SIGNAL="echo signal: \$(nmcli device wifi | grep yes | awk '{print \$8}')"
-P9K_CUSTOM_WIFI_SIGNAL_BACKGROUND="blue"
-P9K_CUSTOM_WIFI_SIGNAL_FOREGROUND="yellow"
-```
-If you prefer, you can also define the function in your `.zshrc` rather than
-putting it in-line with the variable export, as shown above. Just don't forget
-to invoke your function from your segment! Example code that achieves the same
-result as the above:
-```zsh
-zsh_wifi_signal(){
-    local signal=$(nmcli device wifi | grep yes | awk '{print $8}')
-    local color='%F{yellow}'
-    [[ $signal -gt 75 ]] && color='%F{green}'
-    [[ $signal -lt 50 ]] && color='%F{red}'
-    echo -n "%{$color%}\uf230  $signal%{%f%}" # \uf230 is 
-}
-
-P9K_CUSTOM_WIFI_SIGNAL="zsh_wifi_signal"
-P9K_LEFT_PROMPT_ELEMENTS=(context time battery dir vcs virtualenv custom_wifi_signal)
-```
-The command, above, gives you the wireless signal segment shown below:
-
-![signal](http://i.imgur.com/hviMATC.png)
-
-You can define as many custom segments as you wish. If you think you have
-a segment that others would find useful, please consider upstreaming it to the
-main theme distribution so that everyone can use it!
 
 ##### context
 
@@ -463,7 +410,6 @@ P9K_HOST_ICON="\uF109 "
 P9K_SSH_ICON="\uF489 "
 ```
 
-
 ##### ip
 
 This segment tries to examine all currently used network interfaces and prints
@@ -473,14 +419,6 @@ specify the correct network interface by setting:
 | Variable | Default Value | Description |
 |----------|---------------|-------------|
 |`P9K_IP_INTERFACE`|None|The NIC for which you wish to display the IP address. Example: `eth0`.|
-
-##### vpn_ip
-
-This segment tries to extract the VPN related IP addresses from nmcli, based on the NIC type:
-
-| Variable | Default Value | Description |
-|----------|---------------|-------------|
-|`P9K_VPN_IP_INTERFACE`|`tun`|The VPN interface.|
 
 ##### public_ip
 
@@ -507,6 +445,14 @@ segment will not be displayed.
 |`P9K_PUBLIC_IP_METHODS`|(dig curl wget)| These methods in that order are used to refresh your IP.|
 |`P9K_PUBLIC_IP_NONE`|None|The string displayed when an IP was not obtained|
 
+##### vpn_ip
+
+This segment tries to extract the VPN related IP addresses from nmcli, based on the NIC type:
+
+| Variable | Default Value | Description |
+|----------|---------------|-------------|
+|`P9K_VPN_IP_INTERFACE`|`tun`|The VPN interface.|
+
 ##### load
 
 Displays one of your load averages with appropriate state coloring. The thresholds are:
@@ -518,31 +464,11 @@ Displays one of your load averages with appropriate state coloring. The threshol
 |----------|---------------|-------------|
 |`P9K_LOAD_WHICH`|5|Which average to show. Possible values: 1, 5 or 15|
 
-##### newline
+##### ram
 
-Puts a newline in your prompt so you can continue using segments on the next
-line. This allows you to use segments on both lines, unlike
-`P9K_PROMPT_ON_NEWLINE`, which simply separates segments from the
-prompt itself.
-
-This only works on the left side.  On the right side it does nothing.
-
-##### rbenv
-
-This segment shows the version of Ruby being used when using `rbenv` to change your current Ruby stack.
-
-It figures out the version being used by taking the output of the `rbenv version-name` command.
-
-* If `rbenv` is not in $PATH, nothing will be shown.
-* By default, if the current local Ruby version is the same as the global Ruby version, nothing will be shown. See the configuration variable, below, to modify this behavior.
-
-Variable | Default Value | Description |
+| Variable | Default Value | Description |
 |----------|---------------|-------------|
-|`P9K_RBENV_ALWAYS`|'false'|Always show the `rbenv` segment, even if the local version matches the global.|
-
-##### rspec_stats
-
-See [Unit Test Ratios](#unit-test-ratios), below.
+|`P9K_RAM_ELEMENTS`|Both|Specify `ram_free` or `swap_used` to only show one or the other rather than both.|
 
 ##### status
 
@@ -554,16 +480,6 @@ This segment shows the return code of the last command.
 |`P9K_STATUS_OK`|`true`|Set to true if you wish to show this segment when the last command completed successfully, false to hide it.|
 |`P9K_STATUS_SHOW_PIPESTATUS`|`true`|Set to true if you wish to show the exit status for all piped commands.|
 |`P9K_STATUS_HIDE_SIGNAME`|`false`|Set to true return the raw exit code (`1-255`).  When set to false, values over 128 are shown as `SIGNAME(-n)` (e.g. `KILL(-9)`)|
-
-##### ram
-
-| Variable | Default Value | Description |
-|----------|---------------|-------------|
-|`P9K_RAM_ELEMENTS`|Both|Specify `ram_free` or `swap_used` to only show one or the other rather than both.|
-
-##### symfony2_tests
-
-See [Unit Test Ratios](#unit-test-ratios), below.
 
 ##### time
 
@@ -600,6 +516,22 @@ P9K_SUDO_ICON=$'\uF09C' # 
 |`P9K_ALWAYS_SHOW_USER`|`false`|Always print this segment.|
 |`P9K_USER_TEMPLATE`|`%n`|Default username prompt. Refer to the [ZSH Documentation](http://zsh.sourceforge.net/Doc/Release/Prompt-Expansion.html) for all possible expansions|
 
+##### vi_mode
+
+This segment shows ZSH's current input mode. Note that this is only useful if
+you are using the [ZSH Line Editor](http://zsh.sourceforge.net/Doc/Release/Zsh-Line-Editor.html)
+(VI mode).  You can enable this either by `.zshrc` configuration or using a plugin, like
+[Oh-My-Zsh's vi-mode plugin](https://github.com/robbyrussell/oh-my-zsh/blob/master/plugins/vi-mode/vi-mode.plugin.zsh).
+
+| Variable | Default Value | Description |
+|----------|---------------|-------------|
+|`P9K_VI_INSERT_MODE_STRING`|`"INSERT"`|String to display while in 'Insert' mode.|
+|`P9K_VI_COMMAND_MODE_STRING`|`"NORMAL"`|String to display while in 'Command' mode.|
+
+To hide the segment entirely when in `INSERT` mode, set `P9K_VI_INSERT_MODE_STRING=''`
+
+#### Development Environment Segments
+
 ##### vcs
 
 By default, the `vcs` segment will provide quite a bit of information. Further
@@ -618,7 +550,7 @@ customization is provided via:
 |`P9K_VCS_ACTIONFORMAT_FOREGROUND`|`red`|The color of the foreground font during actions (e.g., `REBASE`).|
 
 
-##### vcs symbols
+###### vcs symbols
 
 The `vcs` segment uses various symbols to tell you the state of your repository.
 These symbols depend on your installed font and selected `P9K_MODE`
@@ -639,19 +571,140 @@ from the [Installation](#Installation) section above.
 | None         |  None               | ![icon_git](https://cloud.githubusercontent.com/assets/1544760/7976092/b5909f80-0a76-11e5-9950-1438b9d72465.gif) | Repository is a git repository
 | None         |  None               | ![icon_mercurial](https://cloud.githubusercontent.com/assets/1544760/7976090/b5908da6-0a76-11e5-8c91-452b6e73f631.gif) | Repository is a Mercurial repository
 
-##### vi_mode
+#### Language Segments
 
-This segment shows ZSH's current input mode. Note that this is only useful if
-you are using the [ZSH Line Editor](http://zsh.sourceforge.net/Doc/Release/Zsh-Line-Editor.html)
-(VI mode).  You can enable this either by `.zshrc` configuration or using a plugin, like
-[Oh-My-Zsh's vi-mode plugin](https://github.com/robbyrussell/oh-my-zsh/blob/master/plugins/vi-mode/vi-mode.plugin.zsh).
+##### Javascript / Node.js Segments
+
+###### node_version
+
+This segment shows the _NodeJS_ version, that is currently active.
 
 | Variable | Default Value | Description |
 |----------|---------------|-------------|
-|`P9K_VI_INSERT_MODE_STRING`|`"INSERT"`|String to display while in 'Insert' mode.|
-|`P9K_VI_COMMAND_MODE_STRING`|`"NORMAL"`|String to display while in 'Command' mode.|
+|`POWERLEVEL9K_NODE_VERSION_PROJECT_ONLY`|`false`|If `true` this segment only appears inside _NodeJS_ projects described by a `package.json`.|
 
-To hide the segment entirely when in `INSERT` mode, set `P9K_VI_INSERT_MODE_STRING=''`
+##### PHP Segments
+
+##### symfony2_tests
+
+See [Unit Test Ratios](#unit-test-ratios), below.
+
+##### Python Segments
+
+###### anaconda
+
+This segment shows your active anaconda environment. It relies on either the
+`CONDA_ENV_PATH` or the `CONDA_PREFIX` (depending on the `conda` version)
+environment variable to be set which happens when you properly `source
+activate` an environment.
+
+Special configuration variables:
+
+| Variable | Default Value | Description |
+|----------|---------------|-------------|
+|`P9K_ANACONDA_LEFT_DELIMITER`|"("|The left delimiter just before the environment name.|
+|`P9K_ANACONDA_RIGHT_DELIMITER`|")"|The right delimiter just after the environment name.|
+
+Additionally the following segment specific parameters can be used to customize
+it: `P9K_PYTHON_ICON`, `P9K_ANACONDA_BACKGROUND`, and
+`P9K_ANACONDA_FOREGROUND`.
+
+##### Ruby Segments
+
+###### chruby
+
+###### rbenv
+
+This segment shows the version of Ruby being used when using `rbenv` to change your current Ruby stack.
+
+It figures out the version being used by taking the output of the `rbenv version-name` command.
+
+* If `rbenv` is not in $PATH, nothing will be shown.
+* By default, if the current local Ruby version is the same as the global Ruby version, nothing will be shown. See the configuration variable, below, to modify this behavior.
+
+Variable | Default Value | Description |
+|----------|---------------|-------------|
+|`P9K_RBENV_ALWAYS`|'false'|Always show the `rbenv` segment, even if the local version matches the global.|
+
+###### rspec_stats
+
+See [Unit Test Ratios](#unit-test-ratios), below.
+
+#### Cloud Segments
+
+##### AWS Segments
+
+###### aws
+
+If you would like to display the [current AWS
+profile](http://docs.aws.amazon.com/cli/latest/userguide/installing.html), add
+the `aws` segment to one of the prompts, and define `AWS_DEFAULT_PROFILE` in
+your `~/.zshrc`:
+
+| Variable | Default Value | Description |
+|----------|---------------|-------------|
+|`AWS_DEFAULT_PROFILE`|None|Your AWS profile name|
+
+
+#### Other
+
+##### custom_command
+
+The `custom_...` segment allows you to turn the output of a custom command into
+a prompt segment. As an example, if you wanted to create a custom segment to
+display your WiFi signal strength, you might define a custom segment called
+`custom_wifi_signal` like this:
+```zsh
+P9K_LEFT_PROMPT_ELEMENTS=(context time battery dir vcs virtualenv custom_wifi_signal)
+P9K_CUSTOM_WIFI_SIGNAL="echo signal: \$(nmcli device wifi | grep yes | awk '{print \$8}')"
+P9K_CUSTOM_WIFI_SIGNAL_BACKGROUND="blue"
+P9K_CUSTOM_WIFI_SIGNAL_FOREGROUND="yellow"
+```
+If you prefer, you can also define the function in your `.zshrc` rather than
+putting it in-line with the variable export, as shown above. Just don't forget
+to invoke your function from your segment! Example code that achieves the same
+result as the above:
+```zsh
+zsh_wifi_signal(){
+    local signal=$(nmcli device wifi | grep yes | awk '{print $8}')
+    local color='%F{yellow}'
+    [[ $signal -gt 75 ]] && color='%F{green}'
+    [[ $signal -lt 50 ]] && color='%F{red}'
+    echo -n "%{$color%}\uf230  $signal%{%f%}" # \uf230 is 
+}
+
+P9K_CUSTOM_WIFI_SIGNAL="zsh_wifi_signal"
+P9K_LEFT_PROMPT_ELEMENTS=(context time battery dir vcs virtualenv custom_wifi_signal)
+```
+The command, above, gives you the wireless signal segment shown below:
+
+![signal](http://i.imgur.com/hviMATC.png)
+
+You can define as many custom segments as you wish. If you think you have
+a segment that others would find useful, please consider upstreaming it to the
+main theme distribution so that everyone can use it!
+
+##### command_execution_time
+
+Display the time the previous command took to execute if the time is above
+`P9K_COMMAND_EXECUTION_TIME_THRESHOLD`. The time is formatted to be
+"human readable", and so scales the units based on the length of execution time.
+If you want more precision, just set the
+`P9K_COMMAND_EXECUTION_TIME_PRECISION` field.
+
+| Variable | Default Value | Description |
+|----------|---------------|-------------|
+|`P9K_COMMAND_EXECUTION_TIME_THRESHOLD`|3|Threshold above which to print this segment. Can be set to `0` to always print.|
+|`P9K_COMMAND_EXECUTION_TIME_PRECISION`|2|Number of digits to use in the fractional part of the time value.|
+
+##### newline
+
+Puts a newline in your prompt so you can continue using segments on the next
+line. This allows you to use segments on both lines, unlike
+`P9K_PROMPT_ON_NEWLINE`, which simply separates segments from the
+prompt itself.
+
+This only works on the left side.  On the right side it does nothing.
 
 #### Unit Test Ratios
 
@@ -661,21 +714,6 @@ and does not show your code coverage or any sophisticated stats. All this does
 is count your source files and test files, and calculate the ratio between them.
 Just enough to give you a quick overview about the test situation of the project
 you are dealing with.
-
-### Disabling / Enabling Powerlevel9k
-
-You can disable P9k and return to a very basic prompt at any time simply by
-calling:
-
-```zsh
-$ prompt_p9k_teardown
-```
-
-You can then re-enable it by calling:
-
-```zsh
-$ prompt_powerlevel9k_setup
-```
 
 ### tl; dr
 
