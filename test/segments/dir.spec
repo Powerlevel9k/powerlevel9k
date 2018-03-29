@@ -10,7 +10,6 @@ function setUp() {
   # Load Powerlevel9k
   source powerlevel9k.zsh-theme
   source functions/*
-  source segments/core/dir.p9k
 
   # Every test should at least use the dir segment
   P9K_LEFT_PROMPT_ELEMENTS=(dir)

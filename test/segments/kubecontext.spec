@@ -9,7 +9,6 @@ function setUp() {
   export TERM="xterm-256color"
   # Load Powerlevel9k
   source powerlevel9k.zsh-theme
-  source segments/developer/kubecontext.p9k
 }
 
 function mockKubectl() {
