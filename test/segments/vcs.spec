@@ -13,29 +13,29 @@ function setUp() {
 }
 
 function testColorOverridingForCleanStateWorks() {
-  POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(vcs)
-  POWERLEVEL9K_VCS_CLEAN_FOREGROUND='cyan'
-  POWERLEVEL9K_VCS_CLEAN_BACKGROUND='white'
+  P9K_LEFT_PROMPT_ELEMENTS=(vcs)
+  P9K_VCS_CLEAN_FOREGROUND='cyan'
+  P9K_VCS_CLEAN_BACKGROUND='white'
 
   FOLDER=/tmp/powerlevel9k-test/vcs-test
   mkdir -p $FOLDER
   cd $FOLDER
   git init 1>/dev/null
 
-  assertEquals "%K{white} %F{cyan} master %k%F{white}%f " "$(build_left_prompt)"
+  assertEquals "%K{white} %F{cyan} master %k%F{white}%f " "$(buildLeftPrompt)"
 
   cd -
   rm -fr /tmp/powerlevel9k-test
 
-  unset POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
-  unset POWERLEVEL9K_VCS_CLEAN_FOREGROUND
-  unset POWERLEVEL9K_VCS_CLEAN_BACKGROUND
+  unset P9K_LEFT_PROMPT_ELEMENTS
+  unset P9K_VCS_CLEAN_FOREGROUND
+  unset P9K_VCS_CLEAN_BACKGROUND
 }
 
 function testColorOverridingForModifiedStateWorks() {
-  POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(vcs)
-  POWERLEVEL9K_VCS_MODIFIED_FOREGROUND='red'
-  POWERLEVEL9K_VCS_MODIFIED_BACKGROUND='yellow'
+  P9K_LEFT_PROMPT_ELEMENTS=(vcs)
+  P9K_VCS_MODIFIED_FOREGROUND='red'
+  P9K_VCS_MODIFIED_BACKGROUND='yellow'
 
   FOLDER=/tmp/powerlevel9k-test/vcs-test
   mkdir -p $FOLDER
@@ -48,20 +48,20 @@ function testColorOverridingForModifiedStateWorks() {
   git commit -m "test" 1>/dev/null
   echo "test" > testfile
 
-  assertEquals "%K{yellow} %F{red} master ● %k%F{yellow}%f " "$(build_left_prompt)"
+  assertEquals "%K{yellow} %F{red} master ● %k%F{yellow}%f " "$(buildLeftPrompt)"
 
   cd -
   rm -fr /tmp/powerlevel9k-test
 
-  unset POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
-  unset POWERLEVEL9K_VCS_MODIFIED_FOREGROUND
-  unset POWERLEVEL9K_VCS_MODIFIED_BACKGROUND
+  unset P9K_LEFT_PROMPT_ELEMENTS
+  unset P9K_VCS_MODIFIED_FOREGROUND
+  unset P9K_VCS_MODIFIED_BACKGROUND
 }
 
 function testColorOverridingForUntrackedStateWorks() {
-  POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(vcs)
-  POWERLEVEL9K_VCS_UNTRACKED_FOREGROUND='cyan'
-  POWERLEVEL9K_VCS_UNTRACKED_BACKGROUND='yellow'
+  P9K_LEFT_PROMPT_ELEMENTS=(vcs)
+  P9K_VCS_UNTRACKED_FOREGROUND='cyan'
+  P9K_VCS_UNTRACKED_BACKGROUND='yellow'
 
   FOLDER=/tmp/powerlevel9k-test/vcs-test
   mkdir -p $FOLDER
@@ -69,14 +69,14 @@ function testColorOverridingForUntrackedStateWorks() {
   git init 1>/dev/null
   touch testfile
 
-  assertEquals "%K{yellow} %F{cyan} master ? %k%F{yellow}%f " "$(build_left_prompt)"
+  assertEquals "%K{yellow} %F{cyan} master ? %k%F{yellow}%f " "$(buildLeftPrompt)"
 
   cd -
   rm -fr /tmp/powerlevel9k-test
 
-  unset POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
-  unset POWERLEVEL9K_VCS_UNTRACKED_FOREGROUND
-  unset POWERLEVEL9K_VCS_UNTRACKED_BACKGROUND
+  unset P9K_LEFT_PROMPT_ELEMENTS
+  unset P9K_VCS_UNTRACKED_FOREGROUND
+  unset P9K_VCS_UNTRACKED_BACKGROUND
 }
 
 source shunit2/source/2.1/src/shunit2

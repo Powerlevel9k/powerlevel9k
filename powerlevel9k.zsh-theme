@@ -26,23 +26,23 @@
 #set -o xtrace
 
 # Try to set the installation path
-if [[ -n "$POWERLEVEL9K_INSTALLATION_DIR" ]]; then
-  p9k_directory=${POWERLEVEL9K_INSTALLATION_DIR:A}
+if [[ -n "$P9K_INSTALLATION_DIR" ]]; then
+  p9kDirectory=${P9K_INSTALLATION_DIR:A}
 else
   if [[ "${(%):-%N}" == '(eval)' ]]; then
     if [[ "$0" == '-antigen-load' ]] && [[ -r "${PWD}/powerlevel9k.zsh-theme" ]]; then
       # Antigen uses eval to load things so it can change the plugin (!!)
       # https://github.com/zsh-users/antigen/issues/581
-      p9k_directory=$PWD
+      p9kDirectory=$PWD
     else
-      print -P "%F{red}You must set POWERLEVEL9K_INSTALLATION_DIR to work from within an (eval).%f"
+      print -P "%F{red}You must set P9K_INSTALLATION_DIR to work from within an (eval).%f"
       return 1
     fi
   else
     # Get the path to file this code is executing in; then
     # get the absolute path and strip the filename.
     # See https://stackoverflow.com/a/28336473/108857
-    p9k_directory=${${(%):-%x}:A:h}
+    p9kDirectory=${${(%):-%x}:A:h}
   fi
 fi
 
@@ -50,25 +50,25 @@ fi
 # Source icon functions
 ################################################################
 
-source "${p9k_directory}/functions/icons.zsh"
+source "${p9kDirectory}/functions/icons.zsh"
 
 ################################################################
 # Source utility functions
 ################################################################
 
-source "${p9k_directory}/functions/utilities.zsh"
+source "${p9kDirectory}/functions/utilities.zsh"
 
 ################################################################
 # Source color functions
 ################################################################
 
-source "${p9k_directory}/functions/colors.zsh"
+source "${p9kDirectory}/functions/colors.zsh"
 
 ################################################################
 # Color Scheme
 ################################################################
 
-if [[ "$POWERLEVEL9K_COLOR_SCHEME" == "light" ]]; then
+if [[ "$P9K_COLOR_SCHEME" == "light" ]]; then
   DEFAULT_COLOR=white
   DEFAULT_COLOR_INVERTED=black
 else
@@ -77,33 +77,35 @@ else
 fi
 
 ################################################################
+# Choose the generator
+################################################################
+
+case "${(L)P9K_GENERATOR}" in
+  "zsh-async")
+    source "${p9kDirectory}/generator/zsh-async.p9k"
+  ;;
+  *)
+    source "${p9kDirectory}/generator/default.p9k"
+  ;;
+esac
+
+################################################################
 # Load Prompt Segment Definitions
 ################################################################
 
 # load only the segments that are being used!
-local segment_name
-for segment in $p9k_directory/segments/**/*.p9k; do
-  segment_name=${${segment##*/}%.p9k}
-  if segment_in_use "$segment_name"; then
-    source "${segment}"
+local segmentName
+typeset -gU loadedSegments
+for segment in $p9kDirectory/segments/*.p9k; do
+  segmentName=${${segment##*/}%.p9k}
+  if segmentInUse "$segmentName"; then
+    source "${segment}" 2>&1
+    loadedSegments+=("${segmentName}")
   fi
 done
 
-# cleanup temporary variable
-#unset p9k_directory
-
-################################################################
-# Choose the generator
-################################################################
-
-case "${(L)POWERLEVEL9K_GENERATOR}" in
-  "zsh-async")
-    source "${p9k_directory}/generator/zsh-async.p9k"
-  ;;
-  *)
-    source "${p9k_directory}/generator/default.p9k"
-  ;;
-esac
+# cleanup temporary variable - not done because it is used for autoloading segments
+#unset p9kDirectory
 
 # Launch the generator
 prompt_powerlevel9k_setup "$@"

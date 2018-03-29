@@ -14,7 +14,7 @@
 #
 #   These characters require the Powerline fonts to work properly. If you see
 #   boxes or bizarre characters below, your fonts are not correctly installed. If
-#   you do not want to install a special font, you can set `POWERLEVEL9K_MODE` to
+#   you do not want to install a special font, you can set `P9K_MODE` to
 #   `compatible`. This shows all icons in regular symbols.
 ##
 
@@ -38,14 +38,14 @@ typeset -gAH icons
 #   You can specify a string, unicode string or codepoint string (for Mapped fonts only).
 ##
 # @usage
-#   register_icon "name_of_icon" 'Gen' $'\uXXX' $'\uXXX' '\u'$CODEPOINT_OF_AWESOME_xxx '\uXXX'
+#   registerIcon "name_of_icon" 'Gen' $'\uXXX' $'\uXXX' '\u'$CODEPOINT_OF_AWESOME_xxx '\uXXX'
 ##
 # @example
-#   register_icon "LOCK_ICON"  $'\UE0A2'  $'\UE138'  $'\UF023'  '\u'$CODEPOINT_OF_AWESOME_LOCK  $'\UF023'
+#   registerIcon "LOCK_ICON"  $'\UE0A2'  $'\UE138'  $'\UF023'  '\u'$CODEPOINT_OF_AWESOME_LOCK  $'\UF023'
 ##
-register_icon() {
+registerIcon() {
   local map
-  case $POWERLEVEL9K_MODE in
+  case $P9K_MODE in
   	'flat'|'awesome-patched')                   map=$3 ;;
   	'awesome-fontconfig')                       map=$4 ;;
   	'awesome-mapped-fontconfig')                map=$5 ;;
@@ -55,9 +55,9 @@ register_icon() {
 	icons[$1]=${map}
 }
 
-# Initialize the icon list according to the user's `POWERLEVEL9K_MODE`.
+# Initialize the icon list according to the user's `P9K_MODE`.
 typeset -gAH icons
-case $POWERLEVEL9K_MODE in
+case $P9K_MODE in
   'flat'|'awesome-patched')
     # Awesome-Patched Font required! See:
     # https://github.com/gabrielelana/awesome-terminal-fonts/tree/patching-strategy/patched
@@ -151,7 +151,7 @@ case $POWERLEVEL9K_MODE in
 esac
 
 # Override the above icon settings with any user-defined variables.
-case $POWERLEVEL9K_MODE in
+case $P9K_MODE in
 	'flat')
 		# Set the right locale to protect special characters
 		local LC_ALL="" LC_CTYPE="en_US.UTF-8"
@@ -168,6 +168,9 @@ case $POWERLEVEL9K_MODE in
 	;;
 esac
 
+# Hide branch icon if user wants it hidden
+[[ "$P9K_HIDE_BRANCH_ICON" == true ]] && icons[VCS_BRANCH_ICON]=''
+
 ################################################################
 # @description
 #   Safety function for printing icons. Prints the named icon,
@@ -176,9 +179,9 @@ esac
 # @args
 #   $1 string Name of icon
 ##
-function print_icon() {
+function printIcon() {
 	local icon_name=$1
-	local ICON_USER_VARIABLE=POWERLEVEL9K_${icon_name}
+	local ICON_USER_VARIABLE=P9K_${icon_name}
 	if defined "$ICON_USER_VARIABLE"; then
 		echo -n "${(P)ICON_USER_VARIABLE}"
 	else
@@ -188,18 +191,18 @@ function print_icon() {
 
 # Get a list of configured icons
 #   * $1 string - If "original", then the original icons are printed,
-#                 otherwise "print_icon" is used, which takes the users
+#                 otherwise "printIcon" is used, which takes the users
 #                 overrides into account.
 get_icon_names() {
 	# Iterate over a ordered list of keys of the icons array
 	for key in ${(@kon)icons}; do
-		echo -n "POWERLEVEL9K_$key: "
+		echo -n "P9K_$key: "
 		if [[ "${1}" == "original" ]]; then
 			# print the original icons as they are defined in the array above
 			echo "${icons[$key]}"
 		else
 			# print the icons as they are configured by the user
-			echo "$(print_icon "$key")"
+			echo "$(printIcon "$key")"
 		fi
 	done
 }

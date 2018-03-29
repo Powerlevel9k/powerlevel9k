@@ -20,10 +20,10 @@
 # @noargs
 ##
 # @note
-#   You can bypass this check by setting `POWERLEVEL9K_IGNORE_TERM_COLORS=true`.
+#   You can bypass this check by setting `P9K_IGNORE_TERM_COLORS=true`.
 ##
 function termColors() {
-  [[ $POWERLEVEL9K_IGNORE_TERM_COLORS == true ]] && return
+  [[ $P9K_IGNORE_TERM_COLORS == true ]] && return
 
   local term_colors
 
@@ -55,11 +55,11 @@ function getColor() {
     fi
   else
     # named color added to parameter expansion print -P to test if the name exists in terminal
-    named="%K{$1}"
+    local named="%K{$1}"
     # https://misc.flogisoft.com/bash/tip_colors_and_formatting
-    default="$'\033'\[49m"
+    local default="$'\033'\[49m"
     # http://zsh.sourceforge.net/Doc/Release/Prompt-Expansion.html
-    quoted=$(printf "%q" $(print -P "$named"))
+    local quoted=$(printf "%q" $(print -P "$named"))
     if [[ $quoted = "$'\033'\[49m" && $1 != "black" ]]; then
         # color not found, so try to get the code
         1=$(getColorCode $1)

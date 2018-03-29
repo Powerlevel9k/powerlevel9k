@@ -1,0 +1,175 @@
+#!/usr/bin/env zsh
+# vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
+################################################################
+# @title powerlevel9k Segment - VCS
+# @source https://github.com/bhilburn/powerlevel9k
+##
+# @authors
+#   Ben Hilburn (bhilburn)
+#   Dominic Ritter (dritter)
+##
+
+################################################################
+# Register segment icon
+# Parameters:
+#   name_of_icon  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
+#                                                                                                     
+registerIcon "VCS_UNTRACKED_ICON"  '?'  $'\uE16C'  $'\uF059'  '\u'$CODEPOINT_OF_AWESOME_QUESTION_CIRCLE  $'\uF059'
+#                                  ●                                                                          
+registerIcon "VCS_UNSTAGED_ICON"  $'\u25CF'  $'\uE17C'  $'\uF06A'  '\u'$CODEPOINT_OF_AWESOME_EXCLAMATION_CIRCLE  $'\uF06A'
+#                                ✚                                                                   
+registerIcon "VCS_STAGED_ICON"  $'\u271A'  $'\uE168'  $'\uF055'  '\u'$CODEPOINT_OF_AWESOME_PLUS_CIRCLE  $'\uF055'
+#                               ⍟                                                                  
+registerIcon "VCS_STASH_ICON"  $'\u235F'  $'\uE133 '  $'\uF01C '  '\u'$CODEPOINT_OF_AWESOME_INBOX' '  $'\uF01C '
+#                                          ↓                                                                              
+registerIcon "VCS_INCOMING_CHANGES_ICON"  $'\u2193'  $'\uE131 '  $'\uF01A '  '\u'$CODEPOINT_OF_AWESOME_ARROW_CIRCLE_DOWN' '  $'\uF01A '
+#                                          ↑                                                                            
+registerIcon "VCS_OUTGOING_CHANGES_ICON"  $'\u2191'  $'\uE132 '  $'\uF01B '  '\u'$CODEPOINT_OF_AWESOME_ARROW_CIRCLE_UP' '  $'\uF01B '
+#                                                                                       
+registerIcon "VCS_TAG_ICON"  ''  $'\uE817 '  $'\uF217 '  '\u'$CODEPOINT_OF_AWESOME_TAG' '  $'\uF02B '
+#                                  ☿                                                                 
+registerIcon "VCS_BOOKMARK_ICON"  $'\u263F'  $'\uE87B'  $'\uF27B'  '\u'$CODEPOINT_OF_OCTICONS_BOOKMARK  $'\uF461 '
+#                                                                                                  
+registerIcon "VCS_COMMIT_ICON"  ''  $'\uE821 '  $'\uF221 '  '\u'$CODEPOINT_OF_OCTICONS_GIT_COMMIT' '  $'\uE729 '
+
+if [[ "$P9K_HIDE_BRANCH_ICON" != true ]]; then
+  if [[ $P9K_MODE != 'compatible' ]]; then
+    #                                                                                                          
+    registerIcon "VCS_BRANCH_ICON"  $'\uE0A0 '  $'\uE220 '  $'\uF126 '  '\u'$CODEPOINT_OF_OCTICONS_GIT_BRANCH' '  $'\uF126 '
+  else
+    #                                                                                                               
+    registerIcon "VCS_BRANCH_ICON"  "@ "  $'\uE220 '  $'\uF126 '  '\u'$CODEPOINT_OF_OCTICONS_GIT_BRANCH' '  $'\uF126 '
+  fi
+fi
+
+#                                       →         →         →                                              
+registerIcon "VCS_REMOTE_BRANCH_ICON"  $'\u2192'  $'\u2192'  $'\u2192'  '\u'$CODEPOINT_OF_OCTICONS_REPO_PUSH  $'\uE728 '
+#                                                                                       
+registerIcon "VCS_GIT_ICON"  ''  $'\uE20E '  $'\uF1D3 '  '\u'$CODEPOINT_OF_AWESOME_GIT' '  $'\uF1D3 '
+#                                                                                                      
+registerIcon "VCS_GIT_GITHUB_ICON"  ''  $'\uE20E '  $'\uF113 '  '\u'$CODEPOINT_OF_AWESOME_GITHUB_ALT' '  $'\uF113 '
+#                                                                                                        
+registerIcon "VCS_GIT_BITBUCKET_ICON"  ''  $'\uE20E '  $'\uF171 '  '\u'$CODEPOINT_OF_AWESOME_BITBUCKET' '  $'\uE703 '
+#                                                                                                  
+registerIcon "VCS_GIT_GITLAB_ICON"  ''  $'\uE20E '  $'\uF296 '  '\u'$CODEPOINT_OF_AWESOME_GITLAB' '  $'\uF296 '
+#                                                                                        
+registerIcon "VCS_HG_ICON"  ''  $'\uE1C3 '  $'\uF0C3 '  '\u'$CODEPOINT_OF_AWESOME_FLASK' '  $'\uF0C3 '
+#                                                               
+registerIcon "VCS_SVN_ICON"  ''  '(svn) '  '(svn) '  '(svn) '  $'\uE72D '
+
+################################################################
+# Source VCS_INFO hooks / helper functions
+################################################################
+
+source "${p9kDirectory}/functions/vcs.zsh"
+
+################################################################
+# VCS segment: shows the state of your repository, if you are in a folder under
+# version control
+setDefault P9K_VCS_ACTIONFORMAT_FOREGROUND "red"
+# Default: Just display the first 8 characters of our changeset-ID.
+setDefault P9K_VCS_INTERNAL_HASH_LENGTH "8"
+################################################################
+# @description
+#   Initializes the VCS segment by setting the required ZSH options.
+##
+# @noargs
+##
+# @note
+#   This function is only called once.
+##
+p9k_vcs_init() {
+  if [[ -n "$P9K_CHANGESET_HASH_LENGTH" ]]; then
+    P9K_VCS_INTERNAL_HASH_LENGTH="$P9K_CHANGESET_HASH_LENGTH"
+  fi
+
+  # Load VCS_INFO
+  autoload -Uz vcs_info
+
+  VCS_WORKDIR_DIRTY=false
+  VCS_WORKDIR_HALF_DIRTY=false
+
+  # The vcs segment can have three different states - defaults to 'clean'.
+  typeset -gAH vcs_states
+  vcs_states=(
+    'clean'         'green'
+    'modified'      'yellow'
+    'untracked'     'green'
+  )
+
+  VCS_CHANGESET_PREFIX=''
+  if [[ "$P9K_SHOW_CHANGESET" == true ]]; then
+    VCS_CHANGESET_PREFIX="$(printIcon 'VCS_COMMIT_ICON')%0.$P9K_VCS_INTERNAL_HASH_LENGTH""i "
+  fi
+
+  zstyle ':vcs_info:*' enable git hg svn
+  zstyle ':vcs_info:*' check-for-changes true
+
+  VCS_DEFAULT_FORMAT="$VCS_CHANGESET_PREFIX%b%c%u%m"
+  zstyle ':vcs_info:*' formats "$VCS_DEFAULT_FORMAT"
+
+  zstyle ':vcs_info:*' actionformats "%b %F{${P9K_VCS_ACTIONFORMAT_FOREGROUND}}| %a%f"
+
+  zstyle ':vcs_info:*' stagedstr " $(printIcon 'VCS_STAGED_ICON')"
+  zstyle ':vcs_info:*' unstagedstr " $(printIcon 'VCS_UNSTAGED_ICON')"
+
+  defined P9K_VCS_GIT_HOOKS || P9K_VCS_GIT_HOOKS=(vcs-detect-changes git-untracked git-aheadbehind git-stash git-remotebranch git-tagname)
+  zstyle ':vcs_info:git*+set-message:*' hooks $P9K_VCS_GIT_HOOKS
+  defined P9K_VCS_HG_HOOKS || P9K_VCS_HG_HOOKS=(vcs-detect-changes)
+  zstyle ':vcs_info:hg*+set-message:*' hooks $P9K_VCS_HG_HOOKS
+  defined P9K_VCS_SVN_HOOKS || P9K_VCS_SVN_HOOKS=(vcs-detect-changes svn-detect-changes)
+  zstyle ':vcs_info:svn*+set-message:*' hooks $P9K_VCS_SVN_HOOKS
+
+  # For Hg, only show the branch name
+  zstyle ':vcs_info:hg*:*' branchformat "$(printIcon 'VCS_BRANCH_ICON')%b"
+  # The `get-revision` function must be turned on for dirty-check to work for Hg
+  zstyle ':vcs_info:hg*:*' get-revision true
+  zstyle ':vcs_info:hg*:*' get-bookmarks true
+  zstyle ':vcs_info:hg*+gen-hg-bookmark-string:*' hooks hg-bookmarks
+
+  # For svn, only
+  # TODO fix the %b (branch) format for svn. Using %b breaks
+  # color-encoding of the foreground for the rest of the powerline.
+  zstyle ':vcs_info:svn*:*' formats "$VCS_CHANGESET_PREFIX%c%u"
+  zstyle ':vcs_info:svn*:*' actionformats "$VCS_CHANGESET_PREFIX%c%u %F{${P9K_VCS_ACTIONFORMAT_FOREGROUND}}| %a%f"
+
+  if [[ "$P9K_SHOW_CHANGESET" == true ]]; then
+    zstyle ':vcs_info:*' get-revision true
+  fi
+}
+
+################################################################
+# @description
+#   Display the current VCS information.
+##
+# @args
+#   $1 string Alignment - left | right
+#   $2 integer Segment index
+#   $3 boolean Whether the segment should be joined
+##
+prompt_vcs() {
+  VCS_WORKDIR_DIRTY=false
+  VCS_WORKDIR_HALF_DIRTY=false
+  local current_state=""
+
+  # Actually invoke vcs_info manually to gather all information.
+  vcs_info
+  local vcs_prompt="${vcs_info_msg_0_}"
+
+  if [[ -n "$vcs_prompt" ]]; then
+    if [[ "$VCS_WORKDIR_DIRTY" == true ]]; then
+      # $vcs_visual_identifier gets set in +vi-vcs-detect-changes in functions/vcs.zsh,
+      # as we have there access to vcs_info internal hooks.
+      current_state='modified'
+    else
+      if [[ "$VCS_WORKDIR_HALF_DIRTY" == true ]]; then
+        current_state='untracked'
+      else
+        current_state='clean'
+      fi
+    fi
+    serializeSegment $0 ${(U)current_state} $1 "$2" $3 "${vcs_states[$current_state]}" "$DEFAULT_COLOR" "$vcs_prompt" "$vcs_visual_identifier"
+  fi
+}
+
+p9k_vcs_init

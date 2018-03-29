@@ -16,14 +16,14 @@
 
 *This file contains some the core icon definitions and icon-functions. *
 
-*These characters require the Powerline fonts to work properly. If you see boxes or bizarre characters below, your fonts are not correctly installed. If you do not want to install a special font, you can set `POWERLEVEL9K_MODE` to `compatible`. This shows all icons in regular symbols. *
+*These characters require the Powerline fonts to work properly. If you see boxes or bizarre characters below, your fonts are not correctly installed. If you do not want to install a special font, you can set `P9K_MODE` to `compatible`. This shows all icons in regular symbols. *
 
 ## Table of Contents
 
-- [register_icon](#register_icon)
-- [print_icon](#print_icon)
+- [registerIcon](#registerIcon)
+- [printIcon](#printIcon)
 
-## register_icon
+## registerIcon
 *This function allows a segment to register the icons that it requires. These icons may be overriden by the user later. Arguments may be a direct call or an array. *
 
 #### Arguments
@@ -43,18 +43,18 @@
 #### Usage
 
 ```sh
-register_icon "name_of_icon" 'Gen' $'\uXXX' $'\uXXX' '\u'$CODEPOINT_OF_AWESOME_xxx '\uXXX'
+registerIcon "name_of_icon" 'Gen' $'\uXXX' $'\uXXX' '\u'$CODEPOINT_OF_AWESOME_xxx '\uXXX'
 
 ```
 
 #### Example
 
 ```sh
-register_icon "LOCK_ICON"  $'\UE0A2'  $'\UE138'  $'\UF023'  '\u'$CODEPOINT_OF_AWESOME_LOCK  $'\UF023'
+registerIcon "LOCK_ICON"  $'\UE0A2'  $'\UE138'  $'\UF023'  '\u'$CODEPOINT_OF_AWESOME_LOCK  $'\UF023'
 
 ```
 
-## print_icon
+## printIcon
 *Safety function for printing icons. Prints the named icon, or if that icon is undefined, the string name. *
 
 #### Arguments

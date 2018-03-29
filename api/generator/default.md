@@ -18,20 +18,20 @@
 
 ## Table of Contents
 
-- [left_prompt_segment()](#left_prompt_segment)
-- [left_prompt_end()](#left_prompt_end)
-- [right_prompt_segment()](#right_prompt_segment)
-- [serialize_segment()](#serialize_segment)
+- [leftPromptSegment()](#leftPromptSegment)
+- [leftPromptEnd()](#leftPromptEnd)
+- [rightPromptSegment()](#rightPromptSegment)
+- [serializeSegment()](#serializeSegment)
 - [prompt_custom()](#prompt_custom)
-- [build_left_prompt()](#build_left_prompt)
-- [build_right_prompt()](#build_right_prompt)
-- [powerlevel9k_preexec()](#powerlevel9k_preexec)
-- [powerlevel9k_prepare_prompts()](#powerlevel9k_prepare_prompts)
-- [p9k_chpwd()](#p9k_chpwd)
+- [buildLeftPrompt()](#buildLeftPrompt)
+- [buildRightPrompt()](#buildRightPrompt)
+- [p9k_preexec()](#p9k_preexec)
+- [p9kPreparePrompts()](#p9kPreparePrompts)
+- [p9kChPwd()](#p9kChPwd)
 - [prompt_powerlevel9k_setup()](#prompt_powerlevel9k_setup)
-- [prompt_powerlevel9k_teardown()](#prompt_powerlevel9k_teardown)
+- [prompt_p9k_teardown()](#prompt_p9k_teardown)
 
-## left_prompt_segment()
+## leftPromptSegment()
 *Construct a left prompt segment *
 
 #### Arguments
@@ -45,7 +45,7 @@
 - **$7** (string) Visual identifier (must be a key of the icons array)
 
 
-## left_prompt_end()
+## leftPromptEnd()
 *End the left prompt, closes the final segment *
 
 #### Arguments
@@ -53,7 +53,7 @@
 - *Function has no arguments.*
 
 
-## right_prompt_segment()
+## rightPromptSegment()
 *Construct a right prompt segment *
 
 #### Arguments
@@ -67,8 +67,8 @@
 - **$7** (string) Visual identifier (must be a key of the icons array)
 
 
-## serialize_segment()
-*This function wraps `left_prompt_segment` and `right_prompt_segment` (for compatibility with the async generator). *
+## serializeSegment()
+*This function wraps `leftPromptSegment` and `rightPromptSegment` (for compatibility with the async generator). *
 
 #### Arguments
 
@@ -95,7 +95,7 @@
 - **$4** (string) Custom segment name
 
 
-## build_left_prompt()
+## buildLeftPrompt()
 *This function loops through the left prompt elements and calls the related segment functions. *
 
 #### Arguments
@@ -103,7 +103,7 @@
 - *Function has no arguments.*
 
 
-## build_right_prompt()
+## buildRightPrompt()
 *This function loops through the right prompt elements and calls the related segment functions. *
 
 #### Arguments
@@ -111,7 +111,7 @@
 - *Function has no arguments.*
 
 
-## powerlevel9k_preexec()
+## p9k_preexec()
 *This function is a hook that runs before the command runs. It sets the start timer. *
 
 #### Arguments
@@ -119,7 +119,7 @@
 - *Function has no arguments.*
 
 
-## powerlevel9k_prepare_prompts()
+## p9kPreparePrompts()
 *This function is a hook that is run before the prompts are created. If sets all the required variables for the prompts and then calls the prompt segment building functions. *
 
 #### Arguments
@@ -127,7 +127,7 @@
 - *Function has no arguments.*
 
 
-## p9k_chpwd()
+## p9kChPwd()
 *This function is a hook into chpwd to add bindkey support. *
 
 #### Arguments
@@ -143,7 +143,7 @@
 - *Function has no arguments.*
 
 
-## prompt_powerlevel9k_teardown()
+## prompt_p9k_teardown()
 *This function removed PowerLevel9k hooks and resets the prompts. *
 
 #### Arguments

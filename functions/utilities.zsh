@@ -83,6 +83,49 @@ fi
 
 ###############################################################
 # @description
+#   This function determines if POWERLEVEL9K_ variables have
+#   been previously defined and changes them to P9K_ variables.
+##
+# @noargs
+##
+updateEnvironmentVars() {
+  local envVar var varName origVar newVar newVal
+  local oldVarsFound=false
+  for envVar in $(declare); do
+    if [[ $envVar =~ "POWERLEVEL9K_" ]]; then
+      oldVarsFound=true
+      var=$(declare -p ${envVar})
+      varName=${${var##*POWERLEVEL9K_}%=*}
+      origVar="POWERLEVEL9K_${varName}"
+      newVar="P9K_${varName}"
+      if [[ ${var[13]} == "a" ]]; then # array variable
+        newVal=${${var##*\(}%\)*}
+        case ${(U)varName} in
+          BATTERY_LEVEL_BACKGROUND) typeset -g -a P9K_BATTERY_LEVEL_BACKGROUND=(${(s: :)newVal});;
+          BATTERY_STAGES)
+            local newVal=${${(P)origVar}//\'/}
+            typeset -g -a P9K_BATTERY_STAGES=( ${(s: :)newVal} )
+          ;;
+          LEFT_PROMPT_ELEMENTS)     typeset -g -a P9K_LEFT_PROMPT_ELEMENTS=(${(s: :)newVal});;
+          RIGHT_PROMPT_ELEMENTS)    typeset -g -a P9K_RIGHT_PROMPT_ELEMENTS=(${(s: :)newVal});;
+        esac
+      else
+        newVal=${(P)origVar}
+        typeset -g $newVar=$newVal
+      fi
+      unset $origVar
+    fi
+  done
+  [[ P9K_IGNORE_VAR_WARNING ]] && oldVarsFound=false # disable warning if user sets P9K_IGNORE_VAR_WARNING to true.
+  [[ oldVarsFound ]] && print -P "%F{yellow}Information!%f As of this update, the %F{cyan}POWERLEVEL9K_*%f variables have been replaced by %F{cyan}P9K_*%f.
+  Variables are been converted automatically, but there may still be some errors. For more informations, have a look at the CHANGELOG.md.
+  To disable this warning, please modify your configuration file to use the new style variables, or add %F{green}P9K_IGNORE_VAR_WARNING=true%f to your config."
+}
+
+updateEnvironmentVars
+
+###############################################################
+# @description
 #   This function determines if a variable has been previously
 #   defined, even if empty.
 ##
@@ -114,7 +157,7 @@ function defined() {
 #   Typeset cannot set the value for an array, so this will only work
 #   for scalar values.
 ##
-function set_default() {
+function setDefault() {
   local varname="$1"
   local default_value="$2"
 
@@ -141,6 +184,7 @@ printSizeHumanReadable() {
 
   # if the base is not Bytes
   if [[ -n $2 ]]; then
+    local idx
     for idx in "${extension[@]}"; do
       if [[ "$2" == "$idx" ]]; then
         break
@@ -204,14 +248,7 @@ if [[ "$OS" == 'macOS' ]]; then
 fi
 
 # Combine the PROMPT_ELEMENTS
-#POWERLEVEL9K_PROMPT_ELEMENTS=(union $POWERLEVEL9K_LEFT_PROMPT_ELEMENTS $POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS)
-local -a POWERLEVEL9K_PROMPT_ELEMENTS
-for (( i=0; i <= ${#POWERLEVEL9K_LEFT_PROMPT_ELEMENTS}; i++ )) do
-  POWERLEVEL9K_PROMPT_ELEMENTS+=${POWERLEVEL9K_LEFT_PROMPT_ELEMENTS[$i]%_joined}
-done
-for (( i=0; i <= ${#POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS}; i++ )) do
-  POWERLEVEL9K_PROMPT_ELEMENTS+=${POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS[$i]%_joined}
-done
+typeset -gU P9K_PROMPT_ELEMENTS=("${P9K_LEFT_PROMPT_ELEMENTS[@]}" "${P9K_RIGHT_PROMPT_ELEMENTS[@]}")
 
 ###############################################################
 # @description
@@ -221,13 +258,9 @@ done
 # @args
 #   $1 string The segment to be tested.
 ##
-segment_in_use() {
-    local key=$1
-    if [[ -n "${POWERLEVEL9K_PROMPT_ELEMENTS[(r)$key]}" ]]; then
-        return 0
-    else
-        return 1
-    fi
+segmentInUse() {
+  local key=$1
+  [[ -n "${P9K_PROMPT_ELEMENTS[(r)$key]}" ]] && return 0 || return 1
 }
 
 ###############################################################
@@ -237,12 +270,12 @@ segment_in_use() {
 #   $1 associative-array An associative array that contains the
 #   deprecated segments as keys, and the new segment names as values.
 ##
-print_deprecation_warning() {
+printDeprecationWarning() {
   typeset -AH raw_deprecated_segments
   raw_deprecated_segments=(${(kvP@)1})
 
   for key in ${(@k)raw_deprecated_segments}; do
-    if segment_in_use $key; then
+    if segmentInUse $key; then
       # segment is deprecated
       print -P "%F{yellow}Warning!%f The '$key' segment is deprecated. Use '%F{blue}${raw_deprecated_segments[$key]}%f' instead. For more informations, have a look at the CHANGELOG.md."
     fi
@@ -393,9 +426,9 @@ function truncatePath() {
 #   Deprecated. Use `truncatePath` instead.
 ##
 function truncatePathFromRight() {
-  local delim_len=${#POWERLEVEL9K_SHORTEN_DELIMITER:-1}
+  local delim_len=${#P9K_SHORTEN_DELIMITER:-1}
   echo $1 | sed $SED_EXTENDED_REGEX_PARAMETER \
- "s@(([^/]{$((POWERLEVEL9K_SHORTEN_DIR_LENGTH))})([^/]{$delim_len}))[^/]+/@\2$POWERLEVEL9K_SHORTEN_DELIMITER/@g"
+ "s@(([^/]{$((P9K_SHORTEN_DIR_LENGTH))})([^/]{$delim_len}))[^/]+/@\2$P9K_SHORTEN_DELIMITER/@g"
 }
 
 ###############################################################
@@ -418,32 +451,4 @@ function upsearch () {
     upsearch "$1"
     popd > /dev/null
   fi
-}
-
-###############################################################
-# @description
-#   Union of two or more arrays.
-##
-# @args
-#   $@ arrays The arrays to combine.
-##
-# @returns
-#   array of unique items.
-##
-# @note
-#   This does not work with indexed arrays.
-##
-# @usage
-#   union [arr1[ arr2[ ...]]]
-##
-# @example
-#   $ arr1=('a' 'b' 'c')
-#   $ arr2=('b' 'c' 'd')
-#   $ arr2=('c' 'd' 'e')
-#   $ union $arr1 $arr2 $arr3
-#   > a b c d e
-##
-union() {
-  typeset -U sections=("$@")
-  echo $sections
 }

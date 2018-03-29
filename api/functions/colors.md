@@ -35,7 +35,7 @@
 
 #### Notes
 
-*You can bypass this check by setting `POWERLEVEL9K_IGNORE_TERM_COLORS=true`. *
+*You can bypass this check by setting `P9K_IGNORE_TERM_COLORS=true`. *
 
 ## getColor
 *This function gets the proper color code if it does not exist as a name. *

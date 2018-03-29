@@ -23,7 +23,7 @@ function testDefinedDoesNotFindUndefinedVariable() {
 }
 
 function testSetDefaultSetsVariable() {
-  set_default 'my_var' 'x'
+  setDefault 'my_var' 'x'
 
   assertEquals 'x' "$my_var"
   unset my_var

@@ -26,25 +26,25 @@
 
 ## Table of Contents
 
-- [left_prompt_segment()](#left_prompt_segment)
-- [right_prompt_segment()](#right_prompt_segment)
+- [leftPromptSegment()](#leftPromptSegment)
+- [rightPromptSegment()](#rightPromptSegment)
 - [last_left_bg()](#last_left_bg)
 - [last_right_bg()](#last_right_bg)
 - [update_left_prompt()](#update_left_prompt)
 - [update_right_prompt()](#update_right_prompt)
 - [p9k_async_callback()](#p9k_async_callback)
-- [p9k_serialize_segment()](#p9k_serialize_segment)
-- [serialize_segment()](#serialize_segment)
+- [p9k_serializeSegment()](#p9k_serializeSegment)
+- [serializeSegment()](#serializeSegment)
 - [prompt_custom()](#prompt_custom)
-- [build_left_prompt()](#build_left_prompt)
-- [build_right_prompt()](#build_right_prompt)
-- [powerlevel9k_preexec()](#powerlevel9k_preexec)
-- [powerlevel9k_prepare_prompts()](#powerlevel9k_prepare_prompts)
-- [p9k_chpwd()](#p9k_chpwd)
+- [buildLeftPrompt()](#buildLeftPrompt)
+- [buildRightPrompt()](#buildRightPrompt)
+- [p9k_preexec()](#p9k_preexec)
+- [p9kPreparePrompts()](#p9kPreparePrompts)
+- [p9kChPwd()](#p9kChPwd)
 - [prompt_powerlevel9k_setup()](#prompt_powerlevel9k_setup)
-- [prompt_powerlevel9k_teardown()](#prompt_powerlevel9k_teardown)
+- [prompt_p9k_teardown()](#prompt_p9k_teardown)
 
-## left_prompt_segment()
+## leftPromptSegment()
 *Spawn a subshell to convert the data into a left prompt segment *
 
 #### Arguments
@@ -58,7 +58,7 @@
 - **$7** (string) Visual Identifier - Segment icon
 
 
-## right_prompt_segment()
+## rightPromptSegment()
 *Spawn a subshell to convert the data into a right prompt segment *
 
 #### Arguments
@@ -116,7 +116,7 @@
 - **$5** (string) Err - Resulting (stderr) output from the job
 
 
-## p9k_serialize_segment()
+## p9k_serializeSegment()
 *This function processes the segment code in a subshell. When done, the resulting data is sent to `p9k_async_callback`. *
 
 #### Arguments
@@ -133,7 +133,7 @@
 - **$10** (string) Condition - The condition, if the segment should be printed (gets evaluated)
 
 
-## serialize_segment()
+## serializeSegment()
 *This function is a wrapper function that starts off the async process and passes the parameters from the segment code to the subshells. *
 
 #### Arguments
@@ -152,7 +152,7 @@
 - **$4** (string) Custom segment name
 
 
-## build_left_prompt()
+## buildLeftPrompt()
 *This function loops through the left prompt elements and calls the related segment functions. *
 
 #### Arguments
@@ -160,7 +160,7 @@
 - *Function has no arguments.*
 
 
-## build_right_prompt()
+## buildRightPrompt()
 *This function loops through the right prompt elements and calls the related segment functions. *
 
 #### Arguments
@@ -168,7 +168,7 @@
 - *Function has no arguments.*
 
 
-## powerlevel9k_preexec()
+## p9k_preexec()
 *This function is a hook that runs before the command runs. It sets the start timer. *
 
 #### Arguments
@@ -176,7 +176,7 @@
 - *Function has no arguments.*
 
 
-## powerlevel9k_prepare_prompts()
+## p9kPreparePrompts()
 *This function is a hook that is run before the prompts are created. If sets all the required variables for the prompts and then calls the prompt segment building functions. *
 
 #### Arguments
@@ -184,7 +184,7 @@
 - *Function has no arguments.*
 
 
-## p9k_chpwd()
+## p9kChPwd()
 *This function is a hook into chpwd to add bindkey support. *
 
 #### Arguments
@@ -200,7 +200,7 @@
 - *Function has no arguments.*
 
 
-## prompt_powerlevel9k_teardown()
+## prompt_p9k_teardown()
 *This function removed PowerLevel9k hooks and resets the prompts. *
 
 #### Arguments

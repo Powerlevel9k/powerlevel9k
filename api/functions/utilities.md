@@ -19,16 +19,15 @@
 ## Table of Contents
 
 - [defined](#defined)
-- [set_default](#set_default)
+- [setDefault](#setDefault)
 - [printSizeHumanReadable](#printSizeHumanReadable)
 - [getRelevantItem](#getRelevantItem)
-- [segment_in_use](#segment_in_use)
-- [print_deprecation_warning](#print_deprecation_warning)
+- [segmentInUse](#segmentInUse)
+- [printDeprecationWarning](#printDeprecationWarning)
 - [segmentShouldBeJoined](#segmentShouldBeJoined)
 - [truncatePath](#truncatePath)
 - [truncatePathFromRight](#truncatePathFromRight)
 - [upsearch](#upsearch)
-- [union](#union)
 
 ## defined
 *This function determine if a variable has been previously defined, even if empty. *
@@ -43,7 +42,7 @@
 - 0 if the variable has been defined.
 
 
-## set_default
+## setDefault
 *This function determine if a variable has been previously defined, and only sets the value to the specified default if it hasn't. *
 
 #### Arguments
@@ -87,7 +86,7 @@
 
 *The callback function has access to the inner variable $item. *
 
-## segment_in_use
+## segmentInUse
 *Determine if the passed segment is used in either the LEFT or RIGHT prompt arrays. *
 
 #### Arguments
@@ -95,7 +94,7 @@
 - **$1** (string) The segment to be tested.
 
 
-## print_deprecation_warning
+## printDeprecationWarning
 *Print a deprecation warning if an old segment is in use. *
 
 #### Arguments
@@ -136,40 +135,4 @@
 #### Arguments
 
 - **$1** (string) Filename to search for.
-
-
-## union
-*Union of two or more arrays. *
-
-#### Arguments
-
-- **...** (arrays) The arrays to combine.
-
-
-#### Returns
-
-- array of unique items.
-
-
-#### Notes
-
-*This does not work with indexed arrays. *
-
-#### Usage
-
-```sh
-union [arr1[ arr2[ ...]]]
-
-```
-
-#### Example
-
-```sh
-$ arr1=('a' 'b' 'c')
-$ arr2=('b' 'c' 'd')
-$ arr2=('c' 'd' 'e')
-$ union $arr1 $arr2 $arr3
-> a b c d e
-
-```
 
