@@ -107,9 +107,9 @@ lastLeftBg() {
   # Name the parameters
   local CURRENT_INDEX="${1}" LAST_BG=0
   # Start at the segment before the current segment and work to the left
-  for (( i = ${CURRENT_INDEX} - 1; i > 0; i-- )); do
+  for (( i = ${CURRENT_INDEX} - 1; i >= 0; i-- )); do
     # If the segment is not empty, we have our color
-    if [[ ${P9K_LP_CONTENT[$i]} != "·" ]]; then
+    if [[ ${P9K_LP_CONTENT[$i]} != "" ]]; then
       local LAST_BG="${P9K_LP_BACKGROUND[$i]}"
       break
     fi
@@ -128,9 +128,9 @@ lastRightBg() {
   # Name the parameters
   local CURRENT_INDEX="${1}" LAST_BG=0
   # Start at the segment before the current segment and work to the left
-  for (( i = ${CURRENT_INDEX} - 1; i > 0; i-- )); do
+  for (( i = ${CURRENT_INDEX} - 1; i >= 0; i-- )); do
     # If the segment is not empty, we have our color
-    if [[ ${P9K_RP_CONTENT[$i]} != "·" ]]; then
+    if [[ ${P9K_RP_CONTENT[$i]} != "" ]]; then
       local LAST_BG="${P9K_RP_BACKGROUND[$i]}"
       break
     fi
@@ -146,7 +146,7 @@ lastRightBg() {
 # @noargs
 ##
 updateLeftPrompt() {
-  local LBG LAST_LBG LSEGMENTS
+  local LBG LAST_LBG LEFT_PROMPT LSEGMENTS
   # Determine how many segments are visible in the left prompt
   LSEGMENTS=${#P9K_LP_CONTENT}
   # Build the left prompt string
@@ -197,7 +197,7 @@ updateLeftPrompt() {
 # @noargs
 ##
 updateRightPrompt() {
-  local RBG LAST_RBG RSEGMENTS
+  local RBG LAST_RBG RIGHT_PROMPT RSEGMENTS firstSegment=false
   # Determine how many segments are visible in the left prompt
   RSEGMENTS=${#P9K_RP_CONTENT}
   # Build the left prompt string
@@ -215,9 +215,15 @@ updateRightPrompt() {
           # We take the current foreground color as color for our subsegment,
           # and add a sub segment separator. This should have enough contrast.
           RIGHT_PROMPT+="%K{${RBG}}%F{${RFG}}${_P9K_RIGHT_SUBSEGMENT_SEPARATOR}"
+          firstSegment=true
         else
           # ...otherwise add a right segment separator
-          RIGHT_PROMPT+="%K{${LAST_RBG}}%F{${RBG}}${_P9K_RIGHT_SEGMENT_SEPARATOR}"
+          if [[ $firstSegment == true ]]; then
+            RIGHT_PROMPT+="%K{${LAST_RBG}}%F{${RBG}}${_P9K_RIGHT_SEGMENT_SEPARATOR}"
+          else
+            # don't set the background color on the first segment
+            RIGHT_PROMPT+="%F{${RBG}}${_P9K_RIGHT_SEGMENT_SEPARATOR}"
+          fi
         fi
       fi
       # Add the segment to the right prompt string
@@ -403,7 +409,7 @@ p9kSerializeSegment() {
       fi
       # Add an whitespace if we print more than just the visual identifier
       if [[ -n "${CONTENT}" ]]; then
-        [[ "${P9K_RPROMPT_ICON_LEFT}" ]] && VISUAL_IDENTIFIER="${VISUAL_IDENTIFIER} " ||
+        [[ "${P9K_RPROMPT_ICON_LEFT}" ]] && VISUAL_IDENTIFIER="${VISUAL_IDENTIFIER} "
         [[ "${ALIGNMENT}" == "right" ]] && VISUAL_IDENTIFIER=" ${VISUAL_IDENTIFIER}"
       fi
     fi
@@ -615,7 +621,7 @@ p9kPreparePrompts() {
   if [[ "${P9K_PROMPT_ON_NEWLINE}" == true ]]; then
     LPROMPT_PREFIX="$(printIcon 'MULTILINE_FIRST_PROMPT_PREFIX')%f%b%k${PROMPT}"
     LPROMPT_SUFFIX="
-$(printIcon 'MULTILINE_SECOND_PROMPT_PREFIX')"
+$(printIcon 'MULTILINE_LAST_PROMPT_PREFIX')"
     if [[ "${P9K_RPROMPT_ON_NEWLINE}" != true ]]; then
       # The right prompt should be on the same line as the first line of the left
       # prompt. To do so, there is just a quite ugly workaround: Before zsh draws
@@ -633,21 +639,21 @@ $(printIcon 'MULTILINE_SECOND_PROMPT_PREFIX')"
     RPROMPT_SUFFIX=''
   fi
 
-# Precompile the Segment Separators here!
+  # Precompile the Segment Separators here!
   _P9K_LEFT_SEGMENT_SEPARATOR="$(printIcon 'LEFT_SEGMENT_SEPARATOR')"
   _P9K_LEFT_SUBSEGMENT_SEPARATOR="$(printIcon 'LEFT_SUBSEGMENT_SEPARATOR')"
   _P9K_LEFT_SEGMENT_END_SEPARATOR="$(printIcon 'LEFT_SEGMENT_END_SEPARATOR')"
   _P9K_RIGHT_SEGMENT_SEPARATOR="$(printIcon 'RIGHT_SEGMENT_SEPARATOR')"
   _P9K_RIGHT_SUBSEGMENT_SEPARATOR="$(printIcon 'RIGHT_SUBSEGMENT_SEPARATOR')"
 
+  # Allow iTerm integration to work
+  [[ $ITERM_SHELL_INTEGRATION_INSTALLED == "Yes" ]] && LPROMPT_PREFIX="%{$(iterm2_prompt_mark)%}$LPROMPT_PREFIX"
+
   # Call the prompt building functions
   buildLeftPrompt
   if [[ "${(L)P9K_DISABLE_RPROMPT}" != "true" ]]; then
     buildRightPrompt
   fi
-
-  # Allow iTerm integration to work
-  [[ $ITERM_SHELL_INTEGRATION_INSTALLED == "Yes" ]] && PROMPT="%{$(iterm2_prompt_mark)%}$PROMPT"
 }
 
 setDefault P9K_IGNORE_TERM_COLORS false

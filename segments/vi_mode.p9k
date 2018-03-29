@@ -78,7 +78,7 @@ function rebuild_vi_mode {
       if (( ${+terminfo[smkx]} )); then
         printf '%s' ${terminfo[smkx]}
       fi
-      local element
+      local element joined=false
       for (( i = 1; i <= ${#P9K_LEFT_PROMPT_ELEMENTS}; i++ )); do
         element="${(L)P9K_LEFT_PROMPT_ELEMENTS[$i]}"
         if [[ "${element}" =~ "vi_mode" ]]; then
@@ -201,7 +201,6 @@ function zle-keymap-select {
   case $P9K_GENERATOR in
     zsh-async)
       rebuild_vi_mode "${KEYMAP}"
-      break;
     ;;
     *)
       # About .reset-prompt see:
