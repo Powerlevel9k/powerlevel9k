@@ -336,14 +336,20 @@ buildLeftPrompt() {
     # a prompt.
     if [[ $element[0,7] =~ "custom_" ]]; then
       if [[ -z "${loadedSegments[(r)$element]}" ]]; then
-        source "${p9kDirectory}/segments/custom/${element}.p9k" 2>&1
-        loadedSegments+=("$element")
+        if [[ -n "$P9K_${(U)element}" ]]; then # check if custom segment is a definition
+          loadedSegments+=("$element")
+        elif [[ -f "${p9kDirectory}/segments/custom/${element}.p9k" ]]; then # check if custom segment file exists
+          source "${p9kDirectory}/segments/custom/${element}.p9k" 2>&1
+          loadedSegments+=("$element")
+        fi
       fi
       "prompt_custom" "left" "$index" $joined $element[8,-1]
     else
       if [[ -z "${loadedSegments[(r)$element]}" ]]; then
-        source "${p9kDirectory}/segments/${element}.p9k" 2>&1
-        loadedSegments+=("$element")
+        if [[ -f "${p9kDirectory}/segments/${element}.p9k" ]]; then # check if segment file exists
+          source "${p9kDirectory}/segments/${element}.p9k" 2>&1
+          loadedSegments+=("$element")
+        fi
       fi
       "prompt_$element" "left" "$index" $joined
     fi
@@ -375,12 +381,16 @@ buildRightPrompt() {
     # a prompt.
     if [[ $element[0,7] =~ "custom_" ]]; then
       if [[ -z "${loadedSegments[(r)$element]}" ]]; then
-        source "${p9kDirectory}/segments/custom/${element}.p9k" 2>&1
-        loadedSegments+=("$element")
+        if [[ -n "$P9K_${(U)element}" ]]; then # check if custom segment is a definition
+          loadedSegments+=("$element")
+        elif [[ -f "${p9kDirectory}/segments/custom/${element}.p9k" ]]; then # check if custom segment file exists
+          source "${p9kDirectory}/segments/custom/${element}.p9k" 2>&1
+          loadedSegments+=("$element")
+        fi
       fi
       "prompt_custom" "right" "$index" $joined $element[8,-1]
     else
-      if [[ -z "${loadedSegments[(r)$element]}" ]]; then
+      if [[ -z "${loadedSegments[(r)$element]}" ]]; then # check if segment file exists
         source "${p9kDirectory}/segments/${element}.p9k" 2>&1
         loadedSegments+=("$element")
       fi

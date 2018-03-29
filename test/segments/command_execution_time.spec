@@ -9,7 +9,6 @@ function setUp() {
   export TERM="xterm-256color"
   # Load Powerlevel9k
   source powerlevel9k.zsh-theme
-  source segments/core/command_execution_time.p9k
 }
 
 function testCommandExecutionTimeIsNotShownIfTimeIsBelowThreshold() {
