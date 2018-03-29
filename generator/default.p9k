@@ -93,10 +93,18 @@ leftPromptSegment() {
   local visual_identifier
   [[ -n $7 ]] && visual_identifier="$7"
 
+  # Support for bold segment
+  local bld_on=""
+  local bld_off=""
+  if [[ $5 == true ]]; then
+    bld_on="%B"
+    bld_off="%b"
+  fi
+
   # Print the visual identifier
   echo -n "${visual_identifier}"
   # Print the content of the segment, if there is any
-  [[ -n "$6" ]] && echo -n "${fg}${6}"
+  [[ -n "$6" ]] && echo -n "${fg}${bld_on}${6}${bld_off}"
   echo -n "${P9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS}"
 
   CURRENT_BG=$3
@@ -184,10 +192,25 @@ rightPromptSegment() {
   # Print whitespace only if segment is not joined or first right segment
   [[ $joined == false ]] || [[ "$CURRENT_RIGHT_BG" == "NONE" ]] && echo -n "${P9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS}"
 
-  # Print segment content if there is any
-  [[ -n "$6" ]] && echo -n "${6}"
-  # Print the visual identifier
-  echo -n "${visual_identifier}${P9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS}%f"
+  # Support for bold segment
+  local bld_on=""
+  local bld_off=""
+  if [[ $5 == true ]]; then
+    bld_on="%B"
+    bld_off="%b"
+  fi
+
+  if [[ ${(L)P9K_RPROMPT_ICON_LEFT} == "true" ]]; then # Visual identifier before content
+    # Print the visual identifier
+    echo -n "${visual_identifier}${P9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS}"
+    # Print segment content if there is any
+    [[ -n "$6" ]] && echo -n "${bld_on}${6}${bld_off}${P9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS}%f"
+  else
+    # Print segment content if there is any
+    [[ -n "$6" ]] && echo -n "${bld_on}${6}${bld_off}"
+    # Print the visual identifier
+    echo -n "${visual_identifier}${P9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS}%f"
+  fi
 
   CURRENT_RIGHT_BG=$3
   last_right_element_index=$current_index
