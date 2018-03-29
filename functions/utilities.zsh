@@ -116,8 +116,8 @@ updateEnvironmentVars() {
       unset $origVar
     fi
   done
-  [[ $P9K_IGNORE_VAR_WARNING ]] && oldVarsFound=false # disable warning if user sets P9K_IGNORE_VAR_WARNING to true.
-  [[ $oldVarsFound ]] && print -P "%F{yellow}Information!%f As of this update, the %F{cyan}POWERLEVEL9K_*%f variables have been replaced by %F{cyan}P9K_*%f.
+  [[ $P9K_IGNORE_VAR_WARNING == true ]] && oldVarsFound=false # disable warning if user sets P9K_IGNORE_VAR_WARNING to true.
+  [[ $oldVarsFound == true ]] && print -P "%F{yellow}Information!%f As of this update, the %F{cyan}POWERLEVEL9K_*%f variables have been replaced by %F{cyan}P9K_*%f.
   Variables are been converted automatically, but there may still be some errors. For more informations, have a look at the CHANGELOG.md.
   To disable this warning, please modify your configuration file to use the new style variables, or add %F{green}P9K_IGNORE_VAR_WARNING=true%f to your config."
 }
