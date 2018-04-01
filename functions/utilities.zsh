@@ -17,7 +17,7 @@
 # description
 #   Determine the OS and version (if applicable).
 case $(uname) in
-  Darwin) OS='macOS' ;;
+  Darwin) OS='OSX' ;;
   CYGWIN_NT-*) OS='Windows' ;;
   FreeBSD|OpenBSD|DragonFly) OS='BSD' ;;
   Linux)
@@ -43,7 +43,7 @@ elif [[ "$TERM_PROGRAM" == "iTerm.app" ]]; then
 elif [[ "$TERM_PROGRAM" == "Apple_Terminal" ]]; then
   readonly TERMINAL="appleterm"
 else
-  if [[ "$OS" == "macOS" ]]; then
+  if [[ "$OS" == "OSX" ]]; then
     local termtest=$(ps -o 'command=' -p $(ps -o 'ppid=' -p $$) | tail -1 | awk '{print $NF}')
     # test if we are in a sudo su -
     if [[ $termtest == "-" || $termtest == "root" ]]; then
@@ -240,7 +240,7 @@ function getRelevantItem() {
 #   `sed` is unfortunately not consistent across OSes when it comes to flags.
 ##
 SED_EXTENDED_REGEX_PARAMETER="-r"
-if [[ "$OS" == 'macOS' ]]; then
+if [[ "$OS" == 'OSX' ]]; then
   local IS_BSD_SED="$(sed --version &>> /dev/null || echo "BSD sed")"
   if [[ -n "$IS_BSD_SED" ]]; then
     SED_EXTENDED_REGEX_PARAMETER="-E"
