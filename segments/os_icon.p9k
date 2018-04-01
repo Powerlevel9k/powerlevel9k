@@ -14,7 +14,7 @@
 # Parameters:
 #   name_of_icon  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
 case "$OS" in
-  "macOS")
+  "OSX")
     #                                                                                     
     registerIcon "APPLE_ICON"  'OSX'  $'\uE26E'  $'\uF179'  '\u'$CODEPOINT_OF_AWESOME_APPLE  $'\uF179'
     OS_ICON='APPLE_ICON'
