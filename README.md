@@ -335,7 +335,7 @@ Customizations available are:
 |`truncate_with_package_name`|Search for a `package.json` or `composer.json` and prints the `name` field to abbreviate the directory path. The precedence and/or files could be set by `P9K_DIR_PACKAGE_FILES=(package.json composer.json)`. If you have [jq](https://stedolan.github.io/jq/) installed, it will dramatically improve the speed of this strategy.|
 |`truncate_with_folder_marker`|Search for a file that is specified by `P9K_SHORTEN_FOLDER_MARKER` and truncate everything before that (if found, otherwise stop on $HOME and ROOT).|
 
-For example, if you wanted the truncation behavior of the `fish` shell, which
+For example, if you wanted the truncation behavior similar to the `fish` shell, which
 truncates `/usr/share/plasma` to `/u/s/plasma`, you would use the following:
 ```zsh
 P9K_SHORTEN_DIR_LENGTH=1
