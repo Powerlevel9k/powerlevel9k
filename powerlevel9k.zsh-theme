@@ -6,7 +6,7 @@
 ##
 # @authors
 #   Ben Hilburn
-#   Dominic Ritter
+#   Dominik Ritter
 ##
 # @info
 #   This theme was inspired by [agnoster's Theme](https://gist.github.com/3712874)

@@ -6,7 +6,7 @@
 ##
 # @authors
 #   Ben Hilburn (bhilburn)
-#   Dominic Ritter (dritter)
+#   Dominik Ritter (dritter)
 ##
 
 setDefault P9K_ALWAYS_SHOW_CONTEXT false

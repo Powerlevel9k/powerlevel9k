@@ -6,7 +6,7 @@
 ##
 # @authors
 #   Ben Hilburn (bhilburn)
-#   Dominic Ritter (dritter)
+#   Dominik Ritter (dritter)
 ##
 # @info
 #   This file contains some the core icon definitions and

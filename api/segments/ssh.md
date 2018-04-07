@@ -9,7 +9,7 @@
 ### Author(s)
 
 - Ben Hilburn (bhilburn)
-- Dominic Ritter (dritter)
+- Dominik Ritter (dritter)
 
 
 ## Table of Contents
