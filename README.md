@@ -549,6 +549,28 @@ customization is provided via:
 |`P9K_VCS_SVN_HOOKS`|`(vcs-detect-changes svn-detect-changes)`|Layout of the segment for SVN repositories.|
 |`P9K_VCS_ACTIONFORMAT_FOREGROUND`|`red`|The color of the foreground font during actions (e.g., `REBASE`).|
 
+You can limit the branch name to a certain length by truncating long names.
+Customizations available are:
+
+| Variable | Default Value | Description |
+|----------|---------------|-------------|
+|`P9K_VCS_SHORTEN_LENGTH`|None|This field determines how many characters to show.|
+|`P9K_VCS_SHORTEN_MIN_LENGTH`|None|This field determines minimum branch length. Branch name will be truncated if its length greater than this field.|
+|`P9K_VCS_SHORTEN_STRATEGY`|None|This field determines how branch name should be truncated. See the table below for more information.|
+|`PK_SHORTEN_DELIMITER`|`...`|Delimiter to use in truncated strings. This can be any string you choose, including an empty string if you wish to have no delimiter.|
+
+| Strategy Name | Description |
+|---------------|-------------|
+|`truncate_middle`|Truncates the middle part of a branch. E.g. branch name is `1234-super_super_long_branch_name`, then it will truncated to `1234-..._name`, if `POWERLEVEL9K_VCS_SHORTEN_LENGTH=5` is also set (controls the amount of characters to be left).|
+|`truncate_from_right`|Just leaves the beginning of a branch name untouched. E.g. branch name will be truncated like so: `1234-...`. How many characters will be untouched is controlled by `POWERLEVEL9K_VCS_SHORTEN_LENGTH`.|
+
+For example, if you want to truncate `1234-super_super_long_branch_name` to `1234-..` and don't do it with `development`:
+```zsh
+POWERLEVEL9K_VCS_SHORTEN_LENGTH=4
+POWERLEVEL9K_VCS_SHORTEN_MIN_LENGTH=11
+POWERLEVEL9K_SHORTEN_STRATEGY="truncate_from_right"
+POWERLEVEL9K_VCS_SHORTEN_DELIMITER=".."
+```
 
 ###### vcs symbols
 
