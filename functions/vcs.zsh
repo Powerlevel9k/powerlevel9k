@@ -61,7 +61,7 @@ function +vi-git-remotebranch() {
     branch_name=$(command git symbolic-ref --short HEAD 2>/dev/null)
 
     if [[ -n "$POWERLEVEL9K_VCS_SHORTEN_LENGTH" ]] && [[ -n "$POWERLEVEL9K_VCS_SHORTEN_MIN_LENGTH" ]]; then
-      set_default POWERLEVEL9K_VCS_SHORTEN_DELIMITER $'\U2026'
+      setDefault POWERLEVEL9K_VCS_SHORTEN_DELIMITER $'\U2026'
 
        if [ ${#hook_com[branch]} -gt $POWERLEVEL9K_VCS_SHORTEN_MIN_LENGTH ] && [ ${#hook_com[branch]} -gt $POWERLEVEL9K_VCS_SHORTEN_LENGTH ]; then
         case "$POWERLEVEL9K_VCS_SHORTEN_STRATEGY" in
