@@ -213,22 +213,22 @@ case $POWERLEVEL9K_MODE in
       VCS_COMMIT_ICON                $'\uE729 '             # 
       VCS_BRANCH_ICON                $'\uF126 '             # 
       VCS_REMOTE_BRANCH_ICON         $'\uE728 '             # 
-      VCS_GIT_ICON                   $'\uF113 '             # 
+      VCS_GIT_ICON                   $''                    # 
       VCS_GIT_GITHUB_ICON            $'\uE709 '             # 
       VCS_GIT_BITBUCKET_ICON         $'\uE703 '             # 
       VCS_GIT_GITLAB_ICON            $'\uF296 '             # 
-      VCS_HG_ICON                    $'\uF0C3 '             # 
-      VCS_SVN_ICON                   $'\uE72D '             # 
+      VCS_HG_ICON                    $''                    # 
+      VCS_SVN_ICON                   $''                    # 
       RUST_ICON                      $'\uE7A8 '             # 
-      PYTHON_ICON                    $'\UE73C '             # 
+      PYTHON_ICON                    $'\uE73C '             # 
       SWIFT_ICON                     $'\uE755'              # 
       GO_ICON                        $'\uE626'              # 
-      PUBLIC_IP_ICON                 $'\UF0AC'              # 
-      LOCK_ICON                      $'\UF023'              # 
+      PUBLIC_IP_ICON                 $'\uF0AC'              # 
+      LOCK_ICON                      $'\uF023'              # 
       EXECUTION_TIME_ICON            $'\uF252'              # 
       SSH_ICON                       $'\uF489'              # 
-      VPN_ICON                       '(vpn)'
-      KUBERNETES_ICON                $'\U2388'              # ⎈
+      VPN_ICON                       $'\uFA81'              # 嬨
+      KUBERNETES_ICON                $'\u2388'              # ⎈
     )
   ;;
   *)
