@@ -752,3 +752,9 @@ information!](https://github.com/bhilburn/powerlevel9k/wiki)
 Project: MIT
 
 Logo: CC-BY-SA. Source repository: https://github.com/bhilburn/powerlevel9k-logo
+
+#### zsh-async
+
+P9k uses the [zsh-async](https://github.com/mafredri/zsh-async) project. It is
+located in the `zsh-async/` directory as a subtree, and carries its own
+`LICENSE` file. It is `Copyright (c) 2015 Mathias Fredriksson <mafredri@gmail.com>`.
