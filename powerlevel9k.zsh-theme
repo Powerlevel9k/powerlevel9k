@@ -1385,10 +1385,11 @@ prompt_vi_mode() {
 prompt_virtualenv() {
   local virtualenv_path="$VIRTUAL_ENV"
   if [[ -n "$virtualenv_path" && "$VIRTUAL_ENV_DISABLE_PROMPT" != true ]]; then
-    "$1_prompt_segment" "$0" "$2" "blue" "$DEFAULT_COLOR" "$(basename "$virtualenv_path")" 'PYTHON_ICON'
+    "$1_prompt_segment" "$0" "$2" "blue" "$DEFAULT_COLOR"  "$(basename $virtualenv_path):$(pyenv version | sed -e 's/ (set.*$//' | tr '\n' ' ' | sed   's/.$//')" 'PYTHON_ICON'
+  elif which pyenv &> /dev/null; then
+    "$1_prompt_segment" "$0" "$2" "blue" "$DEFAULT_COLOR"  "$(pyenv version | sed -e 's/ (set.*$//' | tr '\n' ' ' | sed 's/.$//')" 'PYTHON_ICON'
   fi
-}
-
+  }
 # pyenv: current active python version (with restrictions)
 # https://github.com/pyenv/pyenv#choosing-the-python-version
 prompt_pyenv() {
