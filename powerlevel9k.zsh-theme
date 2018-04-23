@@ -278,7 +278,7 @@ CURRENT_BG='NONE'
 prompt_anaconda() {
   # Depending on the conda version, either might be set. This
   # variant works even if both are set.
-  local _path=$CONDA_ENV_PATH$CONDA_PREFIX
+  local _path="${CONDA_ENV_PATH//\\n/}${CONDA_PREFIX//\\n/}"
   if ! [ -z "$_path" ]; then
     # config - can be overwritten in users' zshrc file.
     set_default POWERLEVEL9K_ANACONDA_LEFT_DELIMITER "("
