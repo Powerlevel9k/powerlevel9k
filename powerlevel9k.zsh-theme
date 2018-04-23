@@ -1397,6 +1397,11 @@ prompt_pyenv() {
   fi
 }
 
+# pyver: current python version (eval with pyenv version)
+prompt_pyver() {
+  "$1_prompt_segment" "$0" "$2" "blue" "$DEFAULT_COLOR" "$(pyenv version | sed -e 's/ (set.*$//' | tr '\n' ' ' | sed 's/.$//')"  'PYTHON_ICON'
+}
+
 # Swift version
 prompt_swift_version() {
   # Get the first number as this is probably the "main" version number..
