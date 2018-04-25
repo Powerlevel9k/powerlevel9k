@@ -21,12 +21,51 @@ function testConda() {
   unset CONDA_PREFIX
 }
 
-function testCondaSegmentWithWindowsPath() {
+function testCondaSegmentWithNewlineInPath() {
   local CONDA_ENV_PATH="C:\app\anaconda3\lib\site-packages\newton\conda\cli"
   POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(anaconda)
 
-  # Careful! This string contains special characters! Look with hexdump or similar.
-  assertEquals "%K{blue} %F{black}(C:ppnaconda3\lib\site-packagesewton %k%F{blue}%f " "$(build_left_prompt)"
+  assertEquals "%K{blue} %F{black}(C:appanaconda3libsite-packagesnewtoncondacli) %k%F{blue}%f " "$(build_left_prompt)"
+
+  unset POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
+  unset CONDA_ENV_PATH
+}
+
+function testCondaSegmentWithCarriageReturnInPath() {
+  local CONDA_ENV_PATH="C:\app\anaconda3\lib\site-packages\redmond\conda\cli"
+  POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(anaconda)
+
+  assertEquals "%K{blue} %F{black}(C:appanaconda3libsite-packagesredmondcondacli) %k%F{blue}%f " "$(build_left_prompt)"
+
+  unset POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
+  unset CONDA_ENV_PATH
+}
+
+function testCondaSegmentWithNewlineAndCarriageReturnInPath() {
+  local CONDA_ENV_PATH="C:\app\anaconda3\lib\site-packages\newton\redmond\conda\cli"
+  POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(anaconda)
+
+  assertEquals "%K{blue} %F{black}(C:appanaconda3libsite-packagesnewtonredmondcondacli) %k%F{blue}%f " "$(build_left_prompt)"
+
+  unset POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
+  unset CONDA_ENV_PATH
+}
+
+function testCondaSegmentWithCarriageReturnAndNewlineInPath() {
+  local CONDA_ENV_PATH="C:\app\anaconda3\lib\site-packages\redmond\newton\conda\cli"
+  POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(anaconda)
+
+  assertEquals "%K{blue} %F{black}(C:appanaconda3libsite-packagesredmondnewtoncondacli) %k%F{blue}%f " "$(build_left_prompt)"
+
+  unset POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
+  unset CONDA_ENV_PATH
+}
+
+function testCondaSegmentWithCarriageReturnNewlineBellAndTabInPath() {
+  local CONDA_ENV_PATH="C:\app\anaconda3\lib\t\a\n\site-packages\redmond\newton\conda\cli"
+  POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(anaconda)
+
+  assertEquals "%K{blue} %F{black}(C:appanaconda3libtansite-packagesredmondnewtoncondacli) %k%F{blue}%f " "$(build_left_prompt)"
 
   unset POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
   unset CONDA_ENV_PATH

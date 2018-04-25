@@ -278,7 +278,12 @@ CURRENT_BG='NONE'
 prompt_anaconda() {
   # Depending on the conda version, either might be set. This
   # variant works even if both are set.
-  local _path="${CONDA_ENV_PATH//\\n/}${CONDA_PREFIX//\\n/}"
+  # Caret notation: ^J is Newline (LF), ^M is Carriage Return (CR),
+  # ^G is Bell (BEL), ^I is horizontal tab (TAB)
+  # see https://en.wikipedia.org/wiki/ASCII#ASCII_control_characters
+  local SANITIZATION_CHARACTER_GROUP="[\^J\^M\^G\^I]"
+  local _path="${CONDA_ENV_PATH//${~SANITIZATION_CHARACTER_GROUP}/}${CONDA_PREFIX//${~SANITIZATION_CHARACTER_GROUP}}/"
+
   if ! [ -z "$_path" ]; then
     # config - can be overwritten in users' zshrc file.
     set_default POWERLEVEL9K_ANACONDA_LEFT_DELIMITER "("
