@@ -440,7 +440,7 @@ segment will not be displayed.
 
 | Variable | Default Value | Description |
 |----------|---------------|-------------|
-|`P9K_PUBLIC_IP_FILE`|'/tmp/p8k_public_ip'|This is the file your public IP is cached in.|
+|`P9K_PUBLIC_IP_FILE`|'/tmp/p9k_public_ip'|This is the file your public IP is cached in.|
 |`P9K_PUBLIC_IP_HOST`|'http://ident.me'|This is the default host to get your public IP.|
 |`P9K_PUBLIC_IP_TIMEOUT`|300|The amount of time in seconds between refreshing your cached IP.|
 |`P9K_PUBLIC_IP_METHODS`|(dig curl wget)| These methods in that order are used to refresh your IP.|
