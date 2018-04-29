@@ -281,7 +281,7 @@ prompt_anaconda() {
   # Caret notation: ^J is Newline (LF), ^M is Carriage Return (CR),
   # ^G is Bell (BEL), ^I is horizontal tab (TAB)
   # see https://en.wikipedia.org/wiki/ASCII#ASCII_control_characters
-  local SANITIZATION_CHARACTER_GROUP="[\^J\^M\^G\^I]"
+  local SANITIZATION_CHARACTER_GROUP="[\^J\^M\^G\^I"$'\n\r\a\t'"]"
   local _path="${CONDA_ENV_PATH//${~SANITIZATION_CHARACTER_GROUP}/}${CONDA_PREFIX//${~SANITIZATION_CHARACTER_GROUP}}/"
 
   if ! [ -z "$_path" ]; then
