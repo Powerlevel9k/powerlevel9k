@@ -56,7 +56,7 @@ leftPromptSegment() {
     [[ -n "${BD}" ]] && SEGMENT+="${BD}${CONTENT}%b" || SEGMENT+="${CONTENT}"
   fi
   # Return the result to the main process, delimited by "·|·"
-  [[ "${INDEX}" != "" ]] && echo "${INDEX}·|·${SEGMENT}"
+  echo "${INDEX}·|·${SEGMENT}"
 }
 
 P9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS=" "
@@ -93,7 +93,7 @@ rightPromptSegment() {
     [[ -n ${VISUAL_IDENTIFIER} ]] && SEGMENT+="${VISUAL_IDENTIFIER}${P9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS}"
   fi
   # Return the result to the main process, delimited by "·|·"
-  [[ "${INDEX}" != "" ]] && echo "${INDEX}·|·${SEGMENT}"
+  echo "${INDEX}·|·${SEGMENT}"
 }
 
 ###############################################################
@@ -152,7 +152,7 @@ updateLeftPrompt() {
   # Build the left prompt string
   LEFT_PROMPT=""
   for (( i = 1; i <= ${LSEGMENTS}; i++ )); do
-    if [[ "${P9K_LP_CONTENT[$i]}" != "·" ]]; then
+    if [[ "${P9K_LP_CONTENT[$i]}" != "" ]]; then
       LBG=${P9K_LP_BACKGROUND[$i]}
       LFG=${P9K_LP_FOREGROUND[$i]}
       if [[ $i != 1 ]]; then # If it is not the first segment...
@@ -198,12 +198,12 @@ updateLeftPrompt() {
 ##
 updateRightPrompt() {
   local RBG LAST_RBG RIGHT_PROMPT RSEGMENTS firstSegment=false
-  # Determine how many segments are visible in the left prompt
+  # Determine how many segments are visible in the right prompt
   RSEGMENTS=${#P9K_RP_CONTENT}
   # Build the left prompt string
   RIGHT_PROMPT=""
   for (( i = 1; i <= ${RSEGMENTS}; i++ )); do
-    if [[ "${P9K_RP_CONTENT[$i]}" != "·" ]]; then
+    if [[ "${P9K_RP_CONTENT[$i]}" != "" ]]; then
       RBG=${P9K_RP_BACKGROUND[$i]}
       RFG=${P9K_RP_FOREGROUND[$i]}
       # Find previous right segment background
@@ -231,7 +231,7 @@ updateRightPrompt() {
     fi
   done
   [[ "${P9K_FANCY_EDGE}" == "true" ]] && RIGHT_PROMPT+="%k%F{$RBG}${_P9K_LEFT_SEGMENT_SEPARATOR}%f"
-  # Set the left prompt
+  # Set the right prompt
   RPROMPT=${RPROMPT_PREFIX}${RIGHT_PROMPT}${RPROMPT_SUFFIX}
   # About .reset-prompt see:
   # https://github.com/sorin-ionescu/prezto/issues/1026
@@ -307,7 +307,7 @@ p9kAsyncCallback() {
             async_job "p9k" rightPromptSegment "${STATEFUL_NAME}" "${INDEX}" "${BACKGROUND}" "${FOREGROUND}" "${BOLD}" "${CONTENT}" "${VISUAL_IDENTIFIER}"
           fi
         else # ...otherwise set the prompt content array to "·" (no segemnt)
-          [[ "${ALIGNMENT}" == "left" ]] && P9K_LP_CONTENT[${INDEX}]="·" || P9K_RP_CONTENT[${INDEX}]="·"
+          [[ "${ALIGNMENT}" == "left" ]] && P9K_LP_CONTENT[${INDEX}]="" || P9K_RP_CONTENT[${INDEX}]=""
         fi
       fi
     ;;
@@ -427,7 +427,7 @@ p9kSerializeSegment() {
 # @args
 #   $@ misc The parameters passed from the segment code
 ##
-serializeSegment() {
+p9kPrepareSegment() {
   (async_job "p9k" "p9kSerializeSegment" "${@}")
 }
 
@@ -450,7 +450,7 @@ prompt_custom() {
   local segment_content="$(eval ${(P)command})"
 
   if [[ -n $segment_content ]]; then
-    serializeSegment "${4:u}" "" "$1" $2 $3 $DEFAULT_COLOR_INVERTED $DEFAULT_COLOR "$segment_content"
+    p9kPrepareSegment "${4:u}" "" "$1" $2 $3 $DEFAULT_COLOR_INVERTED $DEFAULT_COLOR "$segment_content"
   fi
 }
 
@@ -474,26 +474,26 @@ buildLeftPrompt() {
     # Check if it is a custom command, otherwise interpet it as
     # a prompt.
     if [[ $element[0,7] =~ "custom_" ]]; then
-      if [[ -z "${loadedSegments[(r)$element]}" ]]; then
-        if [[ -n "$P9K_${(U)element}" ]]; then # check if custom segment is a definition
-          loadedSegments+=("$element")
-        elif [[ -f "${p9kDirectory}/segments/custom/${element}.p9k" ]]; then # check if custom segment file exists
-          source "${p9kDirectory}/segments/custom/${element}.p9k" 2>&1
-          loadedSegments+=("$element")
-        fi
-      fi
-      "prompt_custom" "left" "${index}" "${joined}" "${element[8,-1]}" &!
+      # if [[ -z "${loadedSegments[(r)$element]}" ]]; then
+      #   if [[ -n "$P9K_${(U)element}" ]]; then # check if custom segment is a definition
+      #     loadedSegments+=("$element")
+      #   elif [[ -f "${p9kDirectory}/segments/custom/${element}.p9k" ]]; then # check if custom segment file exists
+      #     source "${p9kDirectory}/segments/custom/${element}.p9k" 2>&1
+      #     loadedSegments+=("$element")
+      #   fi
+      # fi
+      "prompt_custom" "left" "${index}" "${joined}" "${element[8,-1]}"
     else
-      if [[ -z "${loadedSegments[(r)$element]}" ]]; then
-        if [[ -f "${p9kDirectory}/segments/${element}.p9k" ]]; then # check if segment file exists
-          source "${p9kDirectory}/segments/${element}.p9k" 2>&1
-          loadedSegments+=("$element")
-        fi
-      fi
+      # if [[ -z "${loadedSegments[(r)$element]}" ]]; then
+      #   if [[ -f "${p9kDirectory}/segments/${element}.p9k" ]]; then # check if segment file exists
+      #     source "${p9kDirectory}/segments/${element}.p9k" 2>&1
+      #     loadedSegments+=("$element")
+      #   fi
+      # fi
       # Could we display placeholders?
       # -> At most it could be static ones, but
       # e.g. states are the result of calculation..
-      "prompt_$element" "left" "${index}" "${joined}" &!
+      "prompt_$element" "left" "${index}" "${joined}"
     fi
     index=$((index + 1))
   done
@@ -519,22 +519,22 @@ buildRightPrompt() {
     # Check if it is a custom command, otherwise interpet it as
     # a prompt.
     if [[ $element[0,7] =~ "custom_" ]]; then
-     if [[ -z "${loadedSegments[(r)$element]}" ]]; then
-        if [[ -n "$P9K_${(U)element}" ]]; then # check if custom segment is a definition
-          loadedSegments+=("$element")
-        elif [[ -f "${p9kDirectory}/segments/custom/${element}.p9k" ]]; then # check if custom segment file exists
-          source "${p9kDirectory}/segments/custom/${element}.p9k" 2>&1
-          loadedSegments+=("$element")
-        fi
-      fi
+     # if [[ -z "${loadedSegments[(r)$element]}" ]]; then
+     #    if [[ -n "$P9K_${(U)element}" ]]; then # check if custom segment is a definition
+     #      loadedSegments+=("$element")
+     #    elif [[ -f "${p9kDirectory}/segments/custom/${element}.p9k" ]]; then # check if custom segment file exists
+     #      source "${p9kDirectory}/segments/custom/${element}.p9k" 2>&1
+     #      loadedSegments+=("$element")
+     #    fi
+     #  fi
       "prompt_custom" "right" "$index" $joined "${element[8,-1]}" &!
     else
-      if [[ -z "${loadedSegments[(r)$element]}" ]]; then
-        if [[ -f "${p9kDirectory}/segments/${element}.p9k" ]]; then # check if segment file exists
-          source "${p9kDirectory}/segments/${element}.p9k" 2>&1
-          loadedSegments+=("$element")
-        fi
-      fi
+      # if [[ -z "${loadedSegments[(r)$element]}" ]]; then
+      #   if [[ -f "${p9kDirectory}/segments/${element}.p9k" ]]; then # check if segment file exists
+      #     source "${p9kDirectory}/segments/${element}.p9k" 2>&1
+      #     loadedSegments+=("$element")
+      #   fi
+      # fi
       "prompt_$element" "right" "$index" "${joined}" &!
     fi
     index=$((index + 1))

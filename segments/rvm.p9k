@@ -29,6 +29,6 @@ prompt_rvm() {
   local version_and_gemset=${rvm_env_string/ruby-}
 
   if [[ -n "$version_and_gemset" ]]; then
-    serializeSegment "$0" "" $1 "$2" $3 "grey35" "$DEFAULT_COLOR" "$version_and_gemset" 'RUBY_ICON'
+    p9kPrepareSegment "$0" "" $1 "$2" $3 "grey35" "$DEFAULT_COLOR" "$version_and_gemset" 'RUBY_ICON'
   fi
 }

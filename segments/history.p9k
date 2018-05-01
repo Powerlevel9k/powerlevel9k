@@ -13,8 +13,8 @@
 # Register segment icon
 # Parameters:
 #   name_of_icon  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
-#                                                               
-registerIcon "VCS_UNTRACKED_ICON"  ''  ''  $'\uE29A'  $'\uE29A'  $'\uE29A'
+#                                                       
+registerIcon "HISTORY_ICON"  ''  ''  $'\uE29A'  $'\uE29A'  $'\uE29A'
 
 ################################################################
 # @description
@@ -26,5 +26,5 @@ registerIcon "VCS_UNTRACKED_ICON"  ''  ''  $'\uE29A'  $'\uE29A'  $'\uE29A'
 #   $3 boolean Whether the segment should be joined
 ##
 prompt_history() {
-  serializeSegment "$0" "" $1 "$2" $3 "grey50" "$DEFAULT_COLOR" '%h' 'HISTORY_ICON'
+  p9kPrepareSegment "$0" "" $1 "$2" $3 "grey50" "$DEFAULT_COLOR" '%h' 'HISTORY_ICON'
 }

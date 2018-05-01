@@ -28,5 +28,5 @@ registerIcon "DATE_ICON"  ''  $'\uE184'  $'\uF073 '  $'\uF073 '  $'\uF073 '
 prompt_date() {
   setDefault P9K_DATE_FORMAT "%D{%d.%m.%y}"
 
-  serializeSegment "$0" "" $1 "$2" $3 "$DEFAULT_COLOR_INVERTED" "$DEFAULT_COLOR" "$P9K_DATE_FORMAT" "DATE_ICON"
+  p9kPrepareSegment "$0" "" $1 "$2" $3 "$DEFAULT_COLOR_INVERTED" "$DEFAULT_COLOR" "$P9K_DATE_FORMAT" "DATE_ICON"
 }

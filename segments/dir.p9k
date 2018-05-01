@@ -280,5 +280,5 @@ prompt_dir() {
     current_path=${current_path:s/~/$P9K_HOME_FOLDER_ABBREVIATION}
   fi
 
-  serializeSegment "$0" "${(U)current_state}" $1 "$2" $3 "blue" "$DEFAULT_COLOR" "${current_path}" "${dir_states[$current_state]}"
+  p9kPrepareSegment "$0" "${(U)current_state}" $1 "$2" $3 "blue" "$DEFAULT_COLOR" "${current_path}" "${dir_states[$current_state]}"
 }

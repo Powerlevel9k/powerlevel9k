@@ -21,7 +21,7 @@
 - [leftPromptSegment()](#leftPromptSegment)
 - [leftPromptEnd()](#leftPromptEnd)
 - [rightPromptSegment()](#rightPromptSegment)
-- [serializeSegment()](#serializeSegment)
+- [p9kPrepareSegment()](#p9kPrepareSegment)
 - [prompt_custom()](#prompt_custom)
 - [buildLeftPrompt()](#buildLeftPrompt)
 - [buildRightPrompt()](#buildRightPrompt)
@@ -67,7 +67,7 @@
 - **$7** (string) Visual identifier (must be a key of the icons array)
 
 
-## serializeSegment()
+## p9kPrepareSegment()
 *This function wraps `leftPromptSegment` and `rightPromptSegment` (for compatibility with the async generator). *
 
 #### Arguments

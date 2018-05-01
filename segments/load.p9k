@@ -77,5 +77,5 @@ prompt_load() {
     current_state="normal"
   fi
 
-  serializeSegment "$0" "${current_state}" $1 "$2" $3 "${load_states[$current_state]}" "$DEFAULT_COLOR" "$load_avg" 'LOAD_ICON'
+  p9kPrepareSegment "$0" "${current_state}" $1 "$2" $3 "${load_states[$current_state]}" "$DEFAULT_COLOR" "$load_avg" 'LOAD_ICON'
 }

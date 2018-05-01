@@ -29,6 +29,6 @@ prompt_docker_machine() {
   local docker_machine="$DOCKER_MACHINE_NAME"
 
   if [[ -n "$docker_machine" ]]; then
-    serializeSegment "$0" "" $1 "$2" $3 "magenta" "$DEFAULT_COLOR" "$docker_machine" 'SERVER_ICON'
+    p9kPrepareSegment "$0" "" $1 "$2" $3 "magenta" "$DEFAULT_COLOR" "$docker_machine" 'SERVER_ICON'
   fi
 }

@@ -53,6 +53,6 @@ prompt_command_execution_time() {
   fi
 
   if (( _P9K_COMMAND_DURATION >= P9K_COMMAND_EXECUTION_TIME_THRESHOLD )); then
-    serializeSegment "$0" "" $1 "$2" $3 "red" "yellow1" "${humanReadableDuration}" 'EXECUTION_TIME_ICON'
+    p9kPrepareSegment "$0" "" $1 "$2" $3 "red" "yellow1" "${humanReadableDuration}" 'EXECUTION_TIME_ICON'
   fi
 }

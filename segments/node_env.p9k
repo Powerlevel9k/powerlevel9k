@@ -29,6 +29,6 @@ prompt_node_env() {
   local node_env_path="$NODE_VIRTUAL_ENV"
   if [[ -n "$node_env_path" && "$NODE_VIRTUAL_ENV_DISABLE_PROMPT" != true ]]; then
     local info="$(node -v)[$(basename "$node_env_path")]"
-    serializeSegment "$0" "" $1 "$2" $3 "black" "green" "$info" 'NODE_ICON'
+    p9kPrepareSegment "$0" "" $1 "$2" $3 "black" "green" "$info" 'NODE_ICON'
   fi
 }

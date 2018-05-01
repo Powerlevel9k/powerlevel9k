@@ -46,5 +46,5 @@ prompt_swap() {
     base='K'
   fi
 
-  serializeSegment "$0" "" $1 "$2" $3 "yellow" "$DEFAULT_COLOR" "$(printSizeHumanReadable "$swap_used" $base)" 'SWAP_ICON'
+  p9kPrepareSegment "$0" "" $1 "$2" $3 "yellow" "$DEFAULT_COLOR" "$(printSizeHumanReadable "$swap_used" $base)" 'SWAP_ICON'
 }

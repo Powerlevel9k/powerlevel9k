@@ -29,5 +29,5 @@ prompt_node_version() {
   local node_version=$(node -v 2>/dev/null)
   [[ -z "${node_version}" ]] && return
 
-  serializeSegment "$0" "" $1 "$2" $3 "green" "white" "${node_version:1}" 'NODE_ICON'
+  p9kPrepareSegment "$0" "" $1 "$2" $3 "green" "white" "${node_version:1}" 'NODE_ICON'
 }

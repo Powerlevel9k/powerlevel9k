@@ -29,6 +29,6 @@ prompt_aws() {
   local aws_profile="${AWS_PROFILE:-$AWS_DEFAULT_PROFILE}"
 
   if [[ -n "$aws_profile" ]]; then
-    serializeSegment "$0" "" $1 "$2" $3 red white "$aws_profile" 'AWS_ICON'
+    p9kPrepareSegment "$0" "" $1 "$2" $3 red white "$aws_profile" 'AWS_ICON'
   fi
 }

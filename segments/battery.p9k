@@ -129,10 +129,10 @@ prompt_battery() {
     if [[ -n "$P9K_BATTERY_LEVEL_BACKGROUND" ]] && [[ "${(t)P9K_BATTERY_LEVEL_BACKGROUND}" =~ "array" ]]; then
       local segment=$(( 100.0 / (${#P9K_BATTERY_LEVEL_BACKGROUND} - 1 ) ))
       local offset=$(( ($bat_percent / $segment) + 1 ))
-      serializeSegment "$0" "${(U)current_state}" $1 "$2" $3 "${P9K_BATTERY_LEVEL_BACKGROUND[$offset]}" "${battery_states[$current_state]}" "${message}" "BATTERY_ICON"
+      p9kPrepareSegment "$0" "${(U)current_state}" $1 "$2" $3 "${P9K_BATTERY_LEVEL_BACKGROUND[$offset]}" "${battery_states[$current_state]}" "${message}" "BATTERY_ICON"
     fi
   else
     # Draw the prompt_segment
-    serializeSegment "$0" "${(U)current_state}" $1 "$2" $3 "${DEFAULT_COLOR}" "${battery_states[$current_state]}" "${message}" "BATTERY_ICON"
+    p9kPrepareSegment "$0" "${(U)current_state}" $1 "$2" $3 "${DEFAULT_COLOR}" "${battery_states[$current_state]}" "${message}" "BATTERY_ICON"
   fi
 }

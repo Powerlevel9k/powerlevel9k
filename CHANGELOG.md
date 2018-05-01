@@ -9,7 +9,7 @@
   - Only core icons are registered by default.
   - Each segment is responsible to register its own icons.
 - Moved all segments to their own files under `segments`.
-  - Segments now use `serializeSegment()` instead of `$1_prompt_segment()`.
+  - Segments now use `p9kPrepareSegment()` instead of `$1_prompt_segment()`.
   - Only segments in use are dynamically loaded (including their icons).
   - The autoloader checks if a file exists before calling it to catch any errors. For `custom_prompt` segments, it checks if it is a variable/definition before checking for a file.
   - Custom segment files have to be placed in `segments/custom` directory, and have to follow the naming convention.
@@ -37,7 +37,7 @@
   - All comments have been updated for uniformity and for API generation.
   - iTerm integration added.
   - Added `POWERLEVEL9K_PROMPT_SEGMENTS` to allow testing for segment usage in a single variable.
-  - Replaced `$1_prompt_segment()` with `serializeSegment()` to enable single call from segments irrespective of generator.
+  - Replaced `$1_prompt_segment()` with `p9kPrepareSegment()` to enable single call from segments irrespective of generator.
   - Changed all internal functions to use `camelCase`. Exceptions are listed below:
     - prompt functions still use `prompt_x()` so that we can differentiate between internal (core) functionality and segments.
     - `prompt_powerlevel9k_setup()`, `prompt_powerlevel9k_teardown()`, and `p9k_preexec()`.

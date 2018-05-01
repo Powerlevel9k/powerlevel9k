@@ -48,5 +48,5 @@ prompt_host() {
       "VISUAL_IDENTIFIER"   "HOST_ICON"
     )
   fi
-  serializeSegment "$0" "${(U)host_state[STATE]}" $1 "$2" $3 "${host_state[BACKGROUND_COLOR]}" "${host_state[FOREGROUND_COLOR]}" "${host_state[CONTENT]}" "${host_state[VISUAL_IDENTIFIER]}"
+  p9kPrepareSegment "$0" "${(U)host_state[STATE]}" $1 "$2" $3 "${host_state[BACKGROUND_COLOR]}" "${host_state[FOREGROUND_COLOR]}" "${host_state[CONTENT]}" "${host_state[VISUAL_IDENTIFIER]}"
 }

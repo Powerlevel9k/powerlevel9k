@@ -139,5 +139,5 @@ esac
 #   otherwise just uses the Tux icon.
 ##
 prompt_os_icon() {
-  serializeSegment "$0" "" $1 "$2" $3 "black" "white" $(printIcon "$OS_ICON")
+  p9kPrepareSegment "$0" "" $1 "$2" $3 "black" "white" $(printIcon "$OS_ICON")
 }

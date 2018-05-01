@@ -35,6 +35,6 @@ prompt_background_jobs() {
     if [[ "$P9K_BACKGROUND_JOBS_VERBOSE" == "true" ]] && ([[ "$background_jobs_number" -gt 1 ]] || [[ "$P9K_BACKGROUND_JOBS_VERBOSE_ALWAYS" == "true" ]]); then
       background_jobs_number_print="$background_jobs_number"
     fi
-    serializeSegment "$0" "" $1 "$2" $3 "$DEFAULT_COLOR" "cyan" "$background_jobs_number_print" 'BACKGROUND_JOBS_ICON'
+    p9kPrepareSegment "$0" "" $1 "$2" $3 "$DEFAULT_COLOR" "cyan" "$background_jobs_number_print" 'BACKGROUND_JOBS_ICON'
   fi
 }

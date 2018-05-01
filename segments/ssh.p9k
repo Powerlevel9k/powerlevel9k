@@ -27,6 +27,6 @@ registerIcon "SSH_ICON"  '(ssh)'  '(ssh)'  '(ssh)'  '(ssh)'  $'\uF489'
 ##
 prompt_ssh() {
   if [[ -n "$SSH_CLIENT" ]] || [[ -n "$SSH_TTY" ]]; then
-    serializeSegment "$0" "" $1 "$2" $3 "$DEFAULT_COLOR" "yellow" "" 'SSH_ICON'
+    p9kPrepareSegment "$0" "" $1 "$2" $3 "$DEFAULT_COLOR" "yellow" "" 'SSH_ICON'
   fi
 }

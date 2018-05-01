@@ -9,8 +9,7 @@
 #   Dominik Ritter (dritter)
 ##
 # @info
-#   This file contains some the core icon definitions and
-#   icon-functions.
+#   This file contains the core icon definitions and icon-functions.
 #
 #   These characters require the Powerline fonts to work properly. If you see
 #   boxes or bizarre characters below, your fonts are not correctly installed. If
@@ -22,9 +21,10 @@ typeset -gAH icons
 
 ################################################################
 # @description
-#   This function allows a segment to register the icons that it requires.
-#   These icons may be overriden by the user later.
-#   Arguments may be a direct call or an array.
+#   This function allows a segment to register the icons that it
+#   requires. It will check for icons overriden by the user first
+#   and if found, will use those instead of the ones defined by
+#   the segment.
 ##
 # @args
 #   $1 string Name of icon
@@ -45,13 +45,18 @@ typeset -gAH icons
 ##
 registerIcon() {
   local map
-  case $P9K_MODE in
-  	'flat'|'awesome-patched')                   map=$3 ;;
-  	'awesome-fontconfig')                       map=$4 ;;
-  	'awesome-mapped-fontconfig')                map=$5 ;;
-  	'nerdfont-complete'|'nerdfont-fontconfig')  map=$6 ;;
-  	*)                                          map=$2 ;;
-  esac
+	local ICON_USER_VARIABLE=P9K_${1}
+	if defined "$ICON_USER_VARIABLE"; then # check for icon override first
+		map="${(P)ICON_USER_VARIABLE}"
+	else # use the icons that are registered by the segment
+    case $P9K_MODE in
+    	'flat'|'awesome-patched')                   map=$3 ;;
+    	'awesome-fontconfig')                       map=$4 ;;
+    	'awesome-mapped-fontconfig')                map=$5 ;;
+    	'nerdfont-complete'|'nerdfont-fontconfig')  map=$6 ;;
+    	*)                                          map=$2 ;;
+    esac
+  fi
 	icons[$1]=${map}
 }
 
@@ -173,36 +178,21 @@ esac
 
 ################################################################
 # @description
-#   Safety function for printing icons. Prints the named icon,
-#   or if that icon is undefined, the string name.
+#   Prints the requested icon.
 ##
 # @args
 #   $1 string Name of icon
 ##
 function printIcon() {
-	local icon_name=$1
-	local ICON_USER_VARIABLE=P9K_${icon_name}
-	if defined "$ICON_USER_VARIABLE"; then
-		echo -n "${(P)ICON_USER_VARIABLE}"
-	else
-		echo -n "${icons[$icon_name]}"
-	fi
+	echo -n "${icons[$1]}"
 }
 
-# Get a list of configured icons
-#   * $1 string - If "original", then the original icons are printed,
-#                 otherwise "printIcon" is used, which takes the users
-#                 overrides into account.
-get_icon_names() {
-	# Iterate over a ordered list of keys of the icons array
-	for key in ${(@kon)icons}; do
-		echo -n "P9K_$key: "
-		if [[ "${1}" == "original" ]]; then
-			# print the original icons as they are defined in the array above
-			echo "${icons[$key]}"
-		else
-			# print the icons as they are configured by the user
-			echo "$(printIcon "$key")"
-		fi
-	done
+################################################################
+# @description
+#   Print all the configured icons alphabetically as KEY -> VALUE pairs.
+##
+# @noargs
+##
+showDefinedIcons() {
+  for k v in ${(kv)icons}; do; echo "$k -> $v"; done | sort
 }

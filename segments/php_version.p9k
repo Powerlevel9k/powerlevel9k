@@ -30,6 +30,6 @@ prompt_php_version() {
   php_version=$(php -v 2>&1 | grep -oe "^PHP\s*[0-9.]*")
 
   if [[ -n "$php_version" ]]; then
-    serializeSegment "$0" "" $1 "$2" $3 "fuchsia" "grey93" "${php_version}" 'PHP_ICON'
+    p9kPrepareSegment "$0" "" $1 "$2" $3 "fuchsia" "grey93" "${php_version}" 'PHP_ICON'
   fi
 }

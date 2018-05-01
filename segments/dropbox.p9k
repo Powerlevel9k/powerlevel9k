@@ -36,7 +36,7 @@ prompt_dropbox() {
       dropbox_status=""
     fi
 
-    serializeSegment "$0" "" $1 "$2" $3 "white" "blue" "$dropbox_status" "DROPBOX_ICON"
+    p9kPrepareSegment "$0" "" $1 "$2" $3 "white" "blue" "$dropbox_status" "DROPBOX_ICON"
   fi
 
 }

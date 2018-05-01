@@ -31,6 +31,6 @@ registerIcon "PYTHON_ICON"  ''  $'\ue63c'  $'\ue63c'  $'\U1F40D'  $'\UE73C '
 prompt_virtualenv() {
   local virtualenv_path="$VIRTUAL_ENV"
   if [[ -n "$virtualenv_path" && "$VIRTUAL_ENV_DISABLE_PROMPT" != true ]]; then
-    serializeSegment "$0" "" $1 "$2" $3 "blue" "$DEFAULT_COLOR" "$(basename "$virtualenv_path")" 'PYTHON_ICON'
+    p9kPrepareSegment "$0" "" $1 "$2" $3 "blue" "$DEFAULT_COLOR" "$(basename "$virtualenv_path")" 'PYTHON_ICON'
   fi
 }

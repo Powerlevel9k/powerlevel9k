@@ -57,5 +57,5 @@ prompt_context() {
     current_state="SUDO"
   fi
 
-  serializeSegment "$0" "${(U)current_state}" $1 "$2" $3 "$DEFAULT_COLOR" "${context_states[$current_state]}" "${content}"
+  p9kPrepareSegment "$0" "${(U)current_state}" $1 "$2" $3 "$DEFAULT_COLOR" "${context_states[$current_state]}" "${content}"
 }

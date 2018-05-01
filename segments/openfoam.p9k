@@ -22,8 +22,8 @@ prompt_openfoam() {
   local wm_project_version="$WM_PROJECT_VERSION"
   local wm_fork="$WM_FORK"
   if [[ -n "$wm_project_version" ]] &&  [[ -z "$wm_fork" ]] ; then
-    serializeSegment "$0" "" $1 "$2" $3 "yellow" "$DEFAULT_COLOR" "OF: $(basename "$wm_project_version")"
+    p9kPrepareSegment "$0" "" $1 "$2" $3 "yellow" "$DEFAULT_COLOR" "OF: $(basename "$wm_project_version")"
   elif [[ -n "$wm_project_version" ]] && [[ -n "$wm_fork" ]] ; then
-    serializeSegment "$0" "" $1 "$2" $3 "yellow" "$DEFAULT_COLOR" "F-X: $(basename "$wm_project_version")"
+    p9kPrepareSegment "$0" "" $1 "$2" $3 "yellow" "$DEFAULT_COLOR" "F-X: $(basename "$wm_project_version")"
   fi
 }

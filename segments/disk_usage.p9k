@@ -63,6 +63,6 @@ prompt_disk_usage() {
 
   # Draw the prompt_segment
   if [[ -n $disk_usage ]]; then
-    serializeSegment "$0" "${(U)current_state}" $1 "$2" $3 "${hdd_usage_backcolors[$current_state]}" "${hdd_usage_forecolors[$current_state]}" "$message" 'DISK_ICON'
+    p9kPrepareSegment "$0" "${(U)current_state}" $1 "$2" $3 "${hdd_usage_backcolors[$current_state]}" "${hdd_usage_forecolors[$current_state]}" "$message" 'DISK_ICON'
   fi
 }

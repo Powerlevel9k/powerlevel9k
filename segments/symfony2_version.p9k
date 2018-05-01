@@ -30,6 +30,6 @@ prompt_symfony2_version() {
   if [[ -f app/bootstrap.php.cache ]]; then
     local symfony2_version
     symfony2_version=$(grep " VERSION " app/bootstrap.php.cache | sed -e 's/[^.0-9]*//g')
-    serializeSegment "$0" "" $1 "$2" $3 "grey35" "$DEFAULT_COLOR" "$symfony2_version" 'SYMFONY_ICON'
+    p9kPrepareSegment "$0" "" $1 "$2" $3 "grey35" "$DEFAULT_COLOR" "$symfony2_version" 'SYMFONY_ICON'
   fi
 }

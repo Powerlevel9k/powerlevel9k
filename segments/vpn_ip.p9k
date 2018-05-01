@@ -30,6 +30,6 @@ prompt_vpn_ip() {
   for vpn_iface in $(/sbin/ifconfig | grep -e ^"$P9K_VPN_IP_INTERFACE" | cut -d":" -f1)
   do
     ip=$(/sbin/ifconfig "$vpn_iface" | grep -o "inet\s.*" | cut -d' ' -f2)
-    serializeSegment "$0" "" $1 "$2" $3 "cyan" "$DEFAULT_COLOR" "$ip" 'VPN_ICON'
+    p9kPrepareSegment "$0" "" $1 "$2" $3 "cyan" "$DEFAULT_COLOR" "$ip" 'VPN_ICON'
   done
 }

@@ -61,6 +61,6 @@ prompt_user() {
         "VISUAL_IDENTIFIER"   "USER_ICON"
       )
     fi
-    serializeSegment "$0" ${(U)user_state[STATE]} $1 "$2" $3 "${user_state[BACKGROUND_COLOR]}" "${user_state[FOREGROUND_COLOR]}" "${user_state[CONTENT]}" "${user_state[VISUAL_IDENTIFIER]}"
+    p9kPrepareSegment "$0" ${(U)user_state[STATE]} $1 "$2" $3 "${user_state[BACKGROUND_COLOR]}" "${user_state[FOREGROUND_COLOR]}" "${user_state[CONTENT]}" "${user_state[VISUAL_IDENTIFIER]}"
   fi
 }

@@ -94,6 +94,6 @@ prompt_public_ip() {
         break
       done
     fi
-    serializeSegment "$0" "" $1 "$2" $3 "$DEFAULT_COLOR" "$DEFAULT_COLOR_INVERTED" "${public_ip}" "$icon"
+    p9kPrepareSegment "$0" "" $1 "$2" $3 "$DEFAULT_COLOR" "$DEFAULT_COLOR_INVERTED" "${public_ip}" "$icon"
   fi
 }

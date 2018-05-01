@@ -27,6 +27,6 @@ registerIcon "LOCK_ICON"  $'\UE0A2'  $'\UE138'  $'\UF023'  '\u'$CODEPOINT_OF_AWE
 ##
 prompt_dir_writable() {
   if [[ ! -w "$PWD" ]]; then
-    serializeSegment "$0" "FORBIDDEN" $1 "$2" $3 "red" "yellow1" "" 'LOCK_ICON'
+    p9kPrepareSegment "$0" "FORBIDDEN" $1 "$2" $3 "red" "yellow1" "" 'LOCK_ICON'
   fi
 }

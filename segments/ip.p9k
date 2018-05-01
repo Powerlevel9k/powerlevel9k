@@ -52,5 +52,5 @@ prompt_ip() {
     fi
   fi
 
-  serializeSegment "$0" "" $1 "$2" $3 "cyan" "$DEFAULT_COLOR" "$ip" 'NETWORK_ICON'
+  p9kPrepareSegment "$0" "" $1 "$2" $3 "cyan" "$DEFAULT_COLOR" "$ip" 'NETWORK_ICON'
 }

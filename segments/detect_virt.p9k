@@ -26,11 +26,11 @@ prompt_detect_virt() {
   if [[ "$virt" == "none" ]]; then
     if [[ "$(ls -di / | grep -o 2)" != "2" ]]; then
       virt="chroot"
-      serializeSegment "$0" "" $1 "$2" $3 "$DEFAULT_COLOR" "yellow" "$virt"
+      p9kPrepareSegment "$0" "" $1 "$2" $3 "$DEFAULT_COLOR" "yellow" "$virt"
     else
       ;
     fi
   else
-    serializeSegment "$0" "" $1 "$2" $3 "$DEFAULT_COLOR" "yellow" "$virt"
+    p9kPrepareSegment "$0" "" $1 "$2" $3 "$DEFAULT_COLOR" "yellow" "$virt"
   fi
 }

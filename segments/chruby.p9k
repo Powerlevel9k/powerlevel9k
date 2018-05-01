@@ -34,6 +34,6 @@ prompt_chruby() {
   chrb_env="$(chruby 2> /dev/null | grep \* | tr -d '* ')"
   # Don't show anything if the chruby did not change the default ruby
   if [[ "${chrb_env:-system}" != "system" ]]; then
-    serializeSegment "$0" "" $1 "$2" $3 "red" "$DEFAULT_COLOR" "${chrb_env}" 'RUBY_ICON'
+    p9kPrepareSegment "$0" "" $1 "$2" $3 "red" "$DEFAULT_COLOR" "${chrb_env}" 'RUBY_ICON'
   fi
 }

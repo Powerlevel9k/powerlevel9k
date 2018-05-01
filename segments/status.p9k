@@ -83,11 +83,11 @@ prompt_status() {
 
   if (( ec_sum > 0 )); then
     if [[ "$P9K_STATUS_CROSS" == false && "$P9K_STATUS_VERBOSE" == true ]]; then
-      serializeSegment "$0" "ERROR" $1 "$2" $3 "red" "yellow1" "$ec_text" 'CARRIAGE_RETURN_ICON'
+      p9kPrepareSegment "$0" "ERROR" $1 "$2" $3 "red" "yellow1" "$ec_text" 'CARRIAGE_RETURN_ICON'
     else
-      serializeSegment "$0" "ERROR" $1 "$2" $3 "$DEFAULT_COLOR" "red" "" 'FAIL_ICON'
+      p9kPrepareSegment "$0" "ERROR" $1 "$2" $3 "$DEFAULT_COLOR" "red" "" 'FAIL_ICON'
     fi
   elif [[ "$P9K_STATUS_OK" == true ]] && [[ "$P9K_STATUS_VERBOSE" == true || "$P9K_STATUS_OK_IN_NON_VERBOSE" == true ]]; then
-    serializeSegment "$0" "OK" $1 "$2" $3 "$DEFAULT_COLOR" "green" "" 'OK_ICON'
+    p9kPrepareSegment "$0" "OK" $1 "$2" $3 "$DEFAULT_COLOR" "green" "" 'OK_ICON'
   fi
 }

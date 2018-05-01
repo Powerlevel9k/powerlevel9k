@@ -41,7 +41,7 @@ build_test_stats() {
   typeset -F 2 ratio
   local ratio=$(( (tests_amount/code_amount) * 100 ))
 
-  (( ratio >= 75 )) && serializeSegment "$1" "GOOD" "$2" $3 $4 "cyan" "$DEFAULT_COLOR" "$headline: $ratio%%" "$6"
-  (( ratio >= 50 && ratio < 75 )) && serializeSegment "$1" "AVG" "$2" $3 $4 "yellow" "$DEFAULT_COLOR" "$headline: $ratio%%" "$6"
-  (( ratio < 50 )) && serializeSegment "$1" "BAD" "$2" $3 $4 "red" "$DEFAULT_COLOR" "$headline: $ratio%%" "$6"
+  (( ratio >= 75 )) && p9kPrepareSegment "$1" "GOOD" "$2" $3 $4 "cyan" "$DEFAULT_COLOR" "$headline: $ratio%%" "$6"
+  (( ratio >= 50 && ratio < 75 )) && p9kPrepareSegment "$1" "AVG" "$2" $3 $4 "yellow" "$DEFAULT_COLOR" "$headline: $ratio%%" "$6"
+  (( ratio < 50 )) && p9kPrepareSegment "$1" "BAD" "$2" $3 $4 "red" "$DEFAULT_COLOR" "$headline: $ratio%%" "$6"
 }

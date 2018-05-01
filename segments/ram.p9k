@@ -44,5 +44,5 @@ prompt_ram() {
     fi
   fi
 
-  serializeSegment "$0" "" $1 "$2" $3 "yellow" "$DEFAULT_COLOR" "$(printSizeHumanReadable "$ramfree" $base)" 'RAM_ICON'
+  p9kPrepareSegment "$0" "" $1 "$2" $3 "yellow" "$DEFAULT_COLOR" "$(printSizeHumanReadable "$ramfree" $base)" 'RAM_ICON'
 }

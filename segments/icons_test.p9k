@@ -24,6 +24,6 @@ prompt_icons_test() {
     # the next color has enough contrast to read.
     local random_color=$((RANDOM % 8))
     local next_color=$((random_color+1))
-    serializeSegment "$0" "" $1 "$2" $3 "$random_color" "$next_color" "$key" "$key"
+    p9kPrepareSegment "$0" "" $1 "$2" $3 "$random_color" "$next_color" "$key" "$key"
   done
 }

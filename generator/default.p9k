@@ -233,7 +233,7 @@ rightPromptSegment() {
 #   $9 string Visual identifier (must be a key of the icons array).
 #   $10 string The condition - if the segment should be shown (gets evaluated).
 ##
-serializeSegment() {
+p9kPrepareSegment() {
   local NAME="${1}"
   local STATE="${2}"
   local ALIGNMENT="${3}"
@@ -302,7 +302,7 @@ serializeSegment() {
 #  if ! ${CONDITION}; then
 #    continue
 #  fi
-  [[ $CONDITION == true ]] && "$3PromptSegment" "${NAME}" "${INDEX}" "${BACKGROUND}" "${FOREGROUND}" "${BOLD}" "${CONTENT}" "${VISUAL_IDENTIFIER}"
+  [[ $CONDITION == true ]] && "${ALIGNMENT}PromptSegment" "${NAME}" "${INDEX}" "${BACKGROUND}" "${FOREGROUND}" "${BOLD}" "${CONTENT}" "${VISUAL_IDENTIFIER}"
 }
 
 ################################################################
@@ -330,7 +330,7 @@ prompt_custom() {
   local segment_content="$(eval ${(P)command})"
 
   if [[ -n $segment_content ]]; then
-    serializeSegment "${4:u}" "" "$1" $2 $3 $DEFAULT_COLOR_INVERTED $DEFAULT_COLOR "$segment_content"
+    p9kPrepareSegment "${4:u}" "" "$1" $2 $3 $DEFAULT_COLOR_INVERTED $DEFAULT_COLOR "$segment_content"
   fi
 }
 

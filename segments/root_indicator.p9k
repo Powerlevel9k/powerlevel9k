@@ -27,6 +27,6 @@ registerIcon "ROOT_ICON"  $'\u26A1'  $'\uE801'  $'\uF201'  '\u'$CODEPOINT_OF_OCT
 ##
 prompt_root_indicator() {
   if [[ "$UID" -eq 0 ]]; then
-    serializeSegment "$0" "" $1 "$2" $3 "$DEFAULT_COLOR" "yellow" "" 'ROOT_ICON'
+    p9kPrepareSegment "$0" "" $1 "$2" $3 "$DEFAULT_COLOR" "yellow" "" 'ROOT_ICON'
   fi
 }

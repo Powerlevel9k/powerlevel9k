@@ -34,7 +34,7 @@
 - [updateRightPrompt()](#updateRightPrompt)
 - [p9kAsyncCallback()](#p9kAsyncCallback)
 - [p9kSerializeSegment()](#p9kSerializeSegment)
-- [serializeSegment()](#serializeSegment)
+- [p9kPrepareSegment()](#p9kPrepareSegment)
 - [prompt_custom()](#prompt_custom)
 - [buildLeftPrompt()](#buildLeftPrompt)
 - [buildRightPrompt()](#buildRightPrompt)
@@ -133,7 +133,7 @@
 - **$10** (string) Condition - The condition, if the segment should be printed (gets evaluated)
 
 
-## serializeSegment()
+## p9kPrepareSegment()
 *This function is a wrapper function that starts off the async process and passes the parameters from the segment code to the subshells. *
 
 #### Arguments

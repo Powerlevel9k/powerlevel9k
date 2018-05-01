@@ -46,6 +46,6 @@ prompt_kubecontext() {
       k8s_final_text="$cur_ctx/$cur_namespace"
     fi
 
-    serializeSegment "$0" "" $1 "$2" $3 "magenta" "white" "$k8s_final_text" "KUBERNETES_ICON"
+    p9kPrepareSegment "$0" "" $1 "$2" $3 "magenta" "white" "$k8s_final_text" "KUBERNETES_ICON"
   fi
 }

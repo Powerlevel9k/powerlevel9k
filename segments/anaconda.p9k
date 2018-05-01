@@ -35,6 +35,6 @@ prompt_anaconda() {
   # variant works even if both are set.
   _path=$CONDA_ENV_PATH$CONDA_PREFIX
   if ! [ -z "$_path" ]; then
-    serializeSegment "$0" "" $1 "$2" $3 "blue" "$DEFAULT_COLOR" "$P9K_ANACONDA_LEFT_DELIMITER$(basename $_path)$P9K_ANACONDA_RIGHT_DELIMITER" 'PYTHON_ICON'
+    p9kPrepareSegment "$0" "" $1 "$2" $3 "blue" "$DEFAULT_COLOR" "$P9K_ANACONDA_LEFT_DELIMITER$(basename $_path)$P9K_ANACONDA_RIGHT_DELIMITER" 'PYTHON_ICON'
   fi
 }
