@@ -1570,6 +1570,10 @@ prompt_virtualenv() {
   local virtualenv_path="$VIRTUAL_ENV"
   if [[ -n "$virtualenv_path" && "$VIRTUAL_ENV_DISABLE_PROMPT" != true ]]; then
     "$1_prompt_segment" "$0" "$2" "blue" "$DEFAULT_COLOR" "$(basename "$virtualenv_path")" 'PYTHON_ICON'
+
+    if [[ -v "POWERLEVEL9K_VIRTUALENV_SHOW_VERSION" && "$POWERLEVEL9K_VIRTUALENV_SHOW_VERSION" == true ]]; then
+      "$1_prompt_segment" "$0" "$2" "blue" "$DEFAULT_COLOR" "$(python -c 'import sys; version=sys.version_info[:3]; print("{0}.{1}.{2}".format(*version))')"
+    fi
   fi
 }
 
