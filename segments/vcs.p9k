@@ -89,7 +89,10 @@ registerIcon "VCS_BOOKMARK_ICON"  $'\u263F'  $'\uE87B'  $'\uF27B'  '\u'$CODEPOIN
 #                                                                                                  
 registerIcon "VCS_COMMIT_ICON"  ''  $'\uE821 '  $'\uF221 '  '\u'$CODEPOINT_OF_OCTICONS_GIT_COMMIT' '  $'\uE729 '
 
-if [[ "$P9K_HIDE_BRANCH_ICON" != true ]]; then
+# Hide branch icon if user wants it hidden
+if [[ "$P9K_HIDE_BRANCH_ICON" == true ]]; then
+  icons[VCS_BRANCH_ICON]=''
+else
   if [[ $P9K_MODE != 'compatible' ]]; then
     #                                                                                                          
     registerIcon "VCS_BRANCH_ICON"  $'\uE0A0 '  $'\uE220 '  $'\uF126 '  '\u'$CODEPOINT_OF_OCTICONS_GIT_BRANCH' '  $'\uF126 '
