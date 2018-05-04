@@ -1,0 +1,254 @@
+#!/usr/bin/env zsh
+# vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
+################################################################
+# @title powerlevel9k Segment - VCS
+# @source https://github.com/bhilburn/powerlevel9k
+##
+# @authors
+#   Ben Hilburn (bhilburn)
+#   Dominik Ritter (dritter)
+##
+
+################################################################
+# From: http://zsh.sourceforge.net/Doc/Release/User-Contributions.html#Version-Control-Information
+#
+# formats & actionformats
+# -----------------------
+# In normal formats and actionformats the following replacements are done:
+#
+# %s  The VCS in use (git, hg, svn, etc.).
+# %b  Information about the current branch.
+# %a  An identifier that describes the action. Only makes sense in actionformats.
+# %i  The current revision number or identifier. For hg the hgrevformat style may be used to customize the output.
+# %c  The string from the stagedstr style if there are staged changes in the repository.
+# %u  The string from the unstagedstr style if there are unstaged changes in the repository.
+# %R  The base directory of the repository.
+# %r  The repository name. If %R is /foo/bar/repoXY, %r is repoXY.
+# %S  A subdirectory within a repository. If $PWD is /foo/bar/repoXY/beer/tasty, %S is beer/tasty.
+# %m  A "misc" replacement. It is at the discretion of the backend to decide what this replacement expands to.
+#     The hg and git backends use this expando to display patch information. hg sources patch information from the mq extensions; git from in-progress rebase and cherry-pick operations and from the stgit extension. The patch-format and nopatch-format styles control the generated string. The former is used when at least one patch from the patch queue has been applied, and the latter otherwise.
+#     The hg backend displays bookmark information in this expando (in addition to mq information). See the get-mq and get-bookmarks styles. Both of these styles may be enabled at the same time. If both are enabled, both resulting strings will be shown separated by a semicolon (that cannot currently be customized).
+#     The quilt ‘standalone’ backend sets this expando to the same value as the %Q expando.
+# %Q  Quilt series information. When quilt is used (either in ‘addon’ mode or as a ‘standalone’ backend), this expando is set to quilt series’ patch-format string. The set-patch-format hook and nopatch-format style are honoured.
+#
+# In branchformat these replacements are done:
+#
+# %b  The branch name.
+# %r  The current revision number or the hgrevformat style for hg.
+#
+# In hgrevformat these replacements are done:
+#
+# %r  The current local revision number.
+# %h  The current global revision identifier.
+#
+# In patch-format and nopatch-format these replacements are done:
+#
+# %p  The name of the top-most applied patch (applied-string).
+# %u  The number of unapplied patches (unapplied-string).
+# %n  The number of applied patches.
+# %c  The number of unapplied patches.
+# %a  The number of all patches.
+# %g  The names of active mq guards (hg backend).
+# %G  The number of active mq guards (hg backend).
+#
+# Not all VCS backends have to support all replacements. For nvcsformats no replacements are performed at all, it is just a string.
+#
+# set-message
+# -----------
+# Called each time before a ‘vcs_info_msg_N_’ message is set. It takes two arguments; the first being the ‘N’ in the message variable name, the second is the currently configured formats or actionformats.
+# There are a number of ‘hook_com’ keys, that are used here: ‘action’, ‘branch’, ‘base’, ‘base-name’, ‘subdir’, ‘staged’, ‘unstaged’, ‘revision’, ‘misc’, ‘vcs’ and one ‘miscN’ entry for each backend-specific data field (N starting at zero). They are set to the values figured out so far by vcs_info and any change will be used directly when the actual replacement is done.
+# Since this hook is triggered multiple times (once for each configured formats or actionformats), each of the ‘hook_com’ keys mentioned above (except for the miscN entries) has an ‘_orig’ counterpart, so even if you changed a value to your liking you can still get the original value in the next run. Changing the ‘_orig’ values is probably not a good idea.
+# If ret is set to non-zero, the string in ${hook_com[message]} will be used unchanged as the message by vcs_info.
+#
+# Oddities
+# --------
+# If you want to use the %b (bold off) prompt expansion in formats, which expands %b itself, use %%b. That will cause the vcs_info expansion to replace %%b with %b, so that zsh’s prompt expansion mechanism can handle it. Similarly, to hand down %b from branchformat, use %%%%b. Sorry for this inconvenience, but it cannot be easily avoided. Luckily we do not clash with a lot of prompt expansions and this only needs to be done for those.
+################################################################
+
+
+################################################################
+# Register segment icon
+# Parameters:
+#   name_of_icon  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
+#                                                                                                     
+registerIcon "VCS_UNTRACKED_ICON"  '?'  $'\uE16C'  $'\uF059'  '\u'$CODEPOINT_OF_AWESOME_QUESTION_CIRCLE  $'\uF059'
+#                                  ●                                                                          
+registerIcon "VCS_UNSTAGED_ICON"  $'\u25CF'  $'\uE17C'  $'\uF06A'  '\u'$CODEPOINT_OF_AWESOME_EXCLAMATION_CIRCLE  $'\uF06A'
+#                                ✚                                                                   
+registerIcon "VCS_STAGED_ICON"  $'\u271A'  $'\uE168'  $'\uF055'  '\u'$CODEPOINT_OF_AWESOME_PLUS_CIRCLE  $'\uF055'
+#                               ⍟                                                                  
+registerIcon "VCS_STASH_ICON"  $'\u235F'  $'\uE133 '  $'\uF01C '  '\u'$CODEPOINT_OF_AWESOME_INBOX' '  $'\uF01C '
+#                                          ↓                                                                              
+registerIcon "VCS_INCOMING_CHANGES_ICON"  $'\u2193'  $'\uE131 '  $'\uF01A '  '\u'$CODEPOINT_OF_AWESOME_ARROW_CIRCLE_DOWN' '  $'\uF01A '
+#                                          ↑                                                                            
+registerIcon "VCS_OUTGOING_CHANGES_ICON"  $'\u2191'  $'\uE132 '  $'\uF01B '  '\u'$CODEPOINT_OF_AWESOME_ARROW_CIRCLE_UP' '  $'\uF01B '
+#                                                                                       
+registerIcon "VCS_TAG_ICON"  ''  $'\uE817 '  $'\uF217 '  '\u'$CODEPOINT_OF_AWESOME_TAG' '  $'\uF02B '
+#                                  ☿                                                                 
+registerIcon "VCS_BOOKMARK_ICON"  $'\u263F'  $'\uE87B'  $'\uF27B'  '\u'$CODEPOINT_OF_OCTICONS_BOOKMARK  $'\uF461 '
+#                                                                                                  
+registerIcon "VCS_COMMIT_ICON"  ''  $'\uE821 '  $'\uF221 '  '\u'$CODEPOINT_OF_OCTICONS_GIT_COMMIT' '  $'\uE729 '
+
+# Hide branch icon if user wants it hidden
+if [[ "$P9K_HIDE_BRANCH_ICON" == true ]]; then
+  icons[VCS_BRANCH_ICON]=''
+else
+  if [[ $P9K_MODE != 'compatible' ]]; then
+    #                                                                                                          
+    registerIcon "VCS_BRANCH_ICON"  $'\uE0A0 '  $'\uE220 '  $'\uF126 '  '\u'$CODEPOINT_OF_OCTICONS_GIT_BRANCH' '  $'\uF126 '
+  else
+    #                                                                                                               
+    registerIcon "VCS_BRANCH_ICON"  "@ "  $'\uE220 '  $'\uF126 '  '\u'$CODEPOINT_OF_OCTICONS_GIT_BRANCH' '  $'\uF126 '
+  fi
+fi
+
+#                                       →         →         →                                              
+registerIcon "VCS_REMOTE_BRANCH_ICON"  $'\u2192'  $'\u2192'  $'\u2192'  '\u'$CODEPOINT_OF_OCTICONS_REPO_PUSH  $'\uE728 '
+#                                                                                       
+registerIcon "VCS_GIT_ICON"  ''  $'\uE20E '  $'\uF1D3 '  '\u'$CODEPOINT_OF_AWESOME_GIT' '  $'\uF1D3 '
+#                                                                                                      
+registerIcon "VCS_GIT_GITHUB_ICON"  ''  $'\uE20E '  $'\uF113 '  '\u'$CODEPOINT_OF_AWESOME_GITHUB_ALT' '  $'\uF113 '
+#                                                                                                        
+registerIcon "VCS_GIT_BITBUCKET_ICON"  ''  $'\uE20E '  $'\uF171 '  '\u'$CODEPOINT_OF_AWESOME_BITBUCKET' '  $'\uE703 '
+#                                                                                                  
+registerIcon "VCS_GIT_GITLAB_ICON"  ''  $'\uE20E '  $'\uF296 '  '\u'$CODEPOINT_OF_AWESOME_GITLAB' '  $'\uF296 '
+#                                                                                        
+registerIcon "VCS_HG_ICON"  ''  $'\uE1C3 '  $'\uF0C3 '  '\u'$CODEPOINT_OF_AWESOME_FLASK' '  $'\uF0C3 '
+#                                                               
+registerIcon "VCS_SVN_ICON"  ''  '(svn) '  '(svn) '  '(svn) '  $'\uE72D '
+
+################################################################
+# Source VCS_INFO hooks / helper functions
+################################################################
+
+source "${p9kDirectory}/functions/vcs.zsh"
+
+################################################################
+# VCS segment: shows the state of your repository, if you are in a folder under
+# version control
+setDefault P9K_VCS_ACTIONFORMAT_FOREGROUND "red"
+# Default: Just display the first 8 characters of our changeset-ID.
+setDefault P9K_VCS_INTERNAL_HASH_LENGTH "8"
+################################################################
+# @description
+#   Initializes the VCS segment by setting the required ZSH options.
+##
+# @noargs
+##
+# @note
+#   This function is only called once.
+##
+p9k_vcs_init() {
+  if [[ -n "$P9K_CHANGESET_HASH_LENGTH" ]]; then
+    P9K_VCS_INTERNAL_HASH_LENGTH="$P9K_CHANGESET_HASH_LENGTH"
+  fi
+
+  # Load VCS_INFO
+  autoload -Uz vcs_info
+
+  VCS_WORKDIR_DIRTY=false
+  VCS_WORKDIR_HALF_DIRTY=false
+
+  # The vcs segment can have three different states - defaults to 'clean'.
+  typeset -gAH vcs_states
+  vcs_states=(
+    'clean'         'green'
+    'modified'      'yellow'
+    'untracked'     'green'
+  )
+
+  VCS_CHANGESET_PREFIX=''
+  if [[ "$P9K_SHOW_CHANGESET" == true ]]; then
+    VCS_CHANGESET_PREFIX="$(printIcon 'VCS_COMMIT_ICON')%0.$P9K_VCS_INTERNAL_HASH_LENGTH""i "
+  fi
+
+  # Load supported version control backends
+  zstyle ':vcs_info:*' enable git hg svn
+
+  # If enabled, this style causes the %c and %u format escapes to show when the working directory has uncommitted changes. The strings displayed by these escapes can be controlled via the stagedstr and unstagedstr styles. The only backends that currently support this option are git, hg, and bzr (the latter two only support unstaged).
+  zstyle ':vcs_info:*' check-for-changes true
+
+  # A list of formats, used when actionformats is not used (which is most of the time).
+  VCS_DEFAULT_FORMAT="$VCS_CHANGESET_PREFIX%b%c%u%m"
+  zstyle ':vcs_info:*' formats "$VCS_DEFAULT_FORMAT"
+
+  # A list of formats, used if there is a special action going on in your current repository; like an interactive rebase or a merge conflict.
+  zstyle ':vcs_info:*' actionformats "%b %F{${P9K_VCS_ACTIONFORMAT_FOREGROUND}}| %a%f"
+
+  # This string will be used in the %c escape if there are staged changes in the repository.
+  zstyle ':vcs_info:*' stagedstr " $(printIcon 'VCS_STAGED_ICON')"
+
+  # This string will be used in the %u escape if there are unstaged changes in the repository.
+  zstyle ':vcs_info:*' unstagedstr " $(printIcon 'VCS_UNSTAGED_ICON')"
+
+  # Hooks are places in vcs_info where you can run your own code. That code can communicate with the code that called it and through that, change the system’s behaviour.
+  # For configuration, hooks change the style context:
+  #   :vcs_info:vcs-string+hook-name:user-context:repo-root-name
+  defined P9K_VCS_GIT_HOOKS || P9K_VCS_GIT_HOOKS=(vcs-detect-changes git-untracked git-aheadbehind git-stash git-remotebranch git-tagname)
+  zstyle ':vcs_info:git*+set-message:*' hooks $P9K_VCS_GIT_HOOKS
+  defined P9K_VCS_HG_HOOKS || P9K_VCS_HG_HOOKS=(vcs-detect-changes)
+  zstyle ':vcs_info:hg*+set-message:*' hooks $P9K_VCS_HG_HOOKS
+  defined P9K_VCS_SVN_HOOKS || P9K_VCS_SVN_HOOKS=(vcs-detect-changes svn-detect-changes)
+  zstyle ':vcs_info:svn*+set-message:*' hooks $P9K_VCS_SVN_HOOKS
+
+  # For Hg, only show the branch name
+  zstyle ':vcs_info:hg*:*' branchformat "$(printIcon 'VCS_BRANCH_ICON')%b"
+
+  # look for a Mercurial Queue (mq) patch directory. Information will be available via the ‘%m’ replacement.
+  zstyle ':vcs_info:hg:*' get-mq true
+
+  # The `get-revision` function must be turned on for dirty-check to work for Hg
+  # The revision of a repository’s work tree (currently for the git and hg backends, where this kind of information is not always vital). For git, the hash value of the currently checked out commit is available via the %i expansion. With hg, the local revision number and the corresponding global hash are available via %i.
+  zstyle ':vcs_info:hg*:*' get-revision true
+
+  # If set to true, the hg backend will try to get a list of current bookmarks. They will be available via the ‘%m’ replacement.
+  # The default is to generate a comma-separated list of all bookmark names that refer to the currently checked out revision. If a bookmark is active, its name is suffixed an asterisk and placed first in the list.
+  zstyle ':vcs_info:hg*:*' get-bookmarks true
+  zstyle ':vcs_info:hg*+gen-hg-bookmark-string:*' hooks hg-bookmarks
+
+  # For svn, only
+  # TODO fix the %b (branch) format for svn. Using %b breaks
+  # color-encoding of the foreground for the rest of the powerline.
+  zstyle ':vcs_info:svn*:*' formats "$VCS_CHANGESET_PREFIX%c%u"
+  zstyle ':vcs_info:svn*:*' actionformats "$VCS_CHANGESET_PREFIX%c%u %F{${P9K_VCS_ACTIONFORMAT_FOREGROUND}}| %a%f"
+
+  if [[ "$P9K_SHOW_CHANGESET" == true ]]; then
+    zstyle ':vcs_info:*' get-revision true
+  fi
+}
+
+################################################################
+# @description
+#   Display the current VCS information.
+##
+# @args
+#   $1 string Alignment - left | right
+#   $2 integer Segment index
+#   $3 boolean Whether the segment should be joined
+##
+prompt_vcs() {
+  VCS_WORKDIR_DIRTY=false
+  VCS_WORKDIR_HALF_DIRTY=false
+  local current_state=""
+
+  # Actually invoke vcs_info manually to gather all information.
+  vcs_info
+  local vcs_prompt="${vcs_info_msg_0_}"
+
+  if [[ -n "$vcs_prompt" ]]; then
+    if [[ "$VCS_WORKDIR_DIRTY" == true ]]; then
+      # $vcs_visual_identifier gets set in +vi-vcs-detect-changes in functions/vcs.zsh,
+      # as we have there access to vcs_info internal hooks.
+      current_state='modified'
+    else
+      if [[ "$VCS_WORKDIR_HALF_DIRTY" == true ]]; then
+        current_state='untracked'
+      else
+        current_state='clean'
+      fi
+    fi
+  fi
+  p9kPrepareSegment $0 ${(U)current_state} $1 "$2" $3 "${vcs_states[$current_state]}" "$DEFAULT_COLOR" "$vcs_prompt" "$vcs_visual_identifier" "[[ -n '$vcs_info_msg_0_' ]]"
+}
+
+p9k_vcs_init

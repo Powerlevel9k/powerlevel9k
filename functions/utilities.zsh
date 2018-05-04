@@ -1,35 +1,180 @@
+#!/usr/bin/env zsh
 # vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
 ################################################################
-# Utility functions
-# This file holds some utility-functions for
-# the powerlevel9k-ZSH-theme
-# https://github.com/bhilburn/powerlevel9k
-################################################################
+# @title powerlevel9k Utility Functions
+# @source https://github.com/bhilburn/powerlevel9k
+##
+# @authors
+#   Ben Hilburn (bhilburn)
+#   Dominik Ritter (dritter)
+##
+# @info
+#   This file contains some utility-functions for
+#   the powerlevel9k ZSH theme.
+##
 
-# Exits with 0 if a variable has been previously defined (even if empty)
-# Takes the name of a variable that should be checked.
+###############################################################
+# description
+#   Determine the OS and version (if applicable).
+case $(uname) in
+  Darwin) OS='OSX' ;;
+  CYGWIN_NT-*) OS='Windows' ;;
+  FreeBSD|OpenBSD|DragonFly) OS='BSD' ;;
+  Linux)
+    OS='Linux'
+    OS_ID="$(grep -E '^ID=([a-zA-Z]*)' /etc/os-release | cut -d '=' -f 2)"
+    case $(uname -o 2>/dev/null) in
+      Android) OS='Android' ;;
+    esac
+  ;;
+  SunOS) OS='Solaris' ;;
+esac
+
+################################################################
+# description
+#   Identify Terminal Emulator.
+##
+#   Find out which emulator is being used for terminal specific options
+#   The testing order is important, since some override others.
+if [[ "$TMUX" =~ "tmux" ]]; then
+  readonly TERMINAL="tmux"
+elif [[ "$TERM_PROGRAM" == "iTerm.app" ]]; then
+  readonly TERMINAL="iterm"
+elif [[ "$TERM_PROGRAM" == "Apple_Terminal" ]]; then
+  readonly TERMINAL="appleterm"
+else
+  if [[ "$OS" == "OSX" ]]; then
+    local termtest=$(ps -o 'command=' -p $(ps -o 'ppid=' -p $$) | tail -1 | awk '{print $NF}')
+    # test if we are in a sudo su -
+    if [[ $termtest == "-" || $termtest == "root" ]]; then
+      termtest=($(ps -o 'command=' -p $(ps -o 'ppid=' -p $(ps -o 'ppid='$$))))
+      termtest=$(basename $termtest[1])
+    fi
+  else
+    local termtest=$(ps -o 'cmd=' -p $(ps -o 'ppid=' -p $$) | tail -1 | awk '{print $NF}')
+    # test if we are in a sudo su -
+    if [[ $termtest == "-" || $termtest == "root" ]]; then
+      termtest=($(ps -o 'cmd=' -p $(ps -o 'ppid=' $(ps -o 'ppid='$$))))
+      if [[ $termtest[1] == "zsh" ]]; then  # gnome terminal works differently than the rest... sigh
+        termtest=$termtest[-1]
+      elif [[ $termtest[1] =~ "python" ]]; then   # as does guake
+        termtest=$termtest[3]
+      else
+        termtest=$termtest[1]
+      fi
+    fi
+  fi
+  case "${termtest##*/}" in
+    gnome-terminal-server)    readonly TERMINAL="gnometerm";;
+    guake.main)               readonly TERMINAL="guake";;
+    iTerm2)                   readonly TERMINAL="iterm";;
+    konsole)                  readonly TERMINAL="konsole";;
+    termite)                  readonly TERMINAL="termite";;
+    urxvt)                    readonly TERMINAL="rxvt";;
+    yakuake)                  readonly TERMINAL="yakuake";;
+    xterm | xterm-256color)   readonly TERMINAL="xterm";;
+    *tty*)                    readonly TERMINAL="tty";;
+    *)                        readonly TERMINAL=${termtest##*/};;
+  esac
+
+  unset termtest
+  unset uname
+fi
+
+###############################################################
+# @description
+#   This function determines if POWERLEVEL9K_ variables have
+#   been previously defined and changes them to P9K_ variables.
+##
+# @noargs
+##
+updateEnvironmentVars() {
+  local envVar var varName origVar newVar newVal
+  local oldVarsFound=false
+  for envVar in $(declare); do
+    if [[ $envVar =~ "POWERLEVEL9K_" ]]; then
+      oldVarsFound=true
+      var=$(declare -p ${envVar})
+      varName=${${var##*POWERLEVEL9K_}%=*}
+      origVar="POWERLEVEL9K_${varName}"
+      newVar="P9K_${varName}"
+      if [[ ${var[13]} == "a" ]]; then # array variable
+        newVal=${${var##*\(}%\)*}
+        case ${(U)varName} in
+          BATTERY_LEVEL_BACKGROUND) typeset -g -a P9K_BATTERY_LEVEL_BACKGROUND=(${(s: :)newVal});;
+          BATTERY_STAGES)
+            local newVal=${${(P)origVar}//\'/}
+            typeset -g -a P9K_BATTERY_STAGES=( ${(s: :)newVal} )
+          ;;
+          LEFT_PROMPT_ELEMENTS)     typeset -g -a P9K_LEFT_PROMPT_ELEMENTS=(${(s: :)newVal});;
+          RIGHT_PROMPT_ELEMENTS)    typeset -g -a P9K_RIGHT_PROMPT_ELEMENTS=(${(s: :)newVal});;
+        esac
+      else
+        newVal=${(P)origVar}
+        typeset -g $newVar=$newVal
+      fi
+      unset $origVar
+    fi
+  done
+  [[ $P9K_IGNORE_VAR_WARNING == true ]] && oldVarsFound=false # disable warning if user sets P9K_IGNORE_VAR_WARNING to true.
+  [[ $oldVarsFound == true ]] && print -P "%F{yellow}Information!%f As of this update, the %F{cyan}POWERLEVEL9K_*%f variables have been replaced by %F{cyan}P9K_*%f.
+  Variables are been converted automatically, but there may still be some errors. For more informations, have a look at the CHANGELOG.md.
+  To disable this warning, please modify your configuration file to use the new style variables, or add %F{green}P9K_IGNORE_VAR_WARNING=true%f to your config."
+}
+
+updateEnvironmentVars
+
+###############################################################
+# @description
+#   This function determines if a variable has been previously
+#   defined, even if empty.
+##
+# @args
+#   $1 string The name of the variable that should be checked.
+##
+# @returns
+#   0 if the variable has been defined.
+##
 function defined() {
   local varname="$1"
 
   typeset -p "$varname" > /dev/null 2>&1
 }
 
-# Given the name of a variable and a default value, sets the variable
-# value to the default only if it has not been defined.
-#
-# Typeset cannot set the value for an array, so this will only work
-# for scalar values.
-function set_default() {
+###############################################################
+# @description
+#   This function determine if a variable has been previously defined,
+#   and only sets the value to the specified default if it hasn't.
+##
+# @args
+#   $1 string The name of the variable that should be checked.
+#   $2 string The default value
+##
+# @returns
+#   Nothing.
+##
+# @note
+#   Typeset cannot set the value for an array, so this will only work
+#   for scalar values.
+##
+function setDefault() {
   local varname="$1"
   local default_value="$2"
 
   defined "$varname" || typeset -g "$varname"="$default_value"
 }
 
-# Converts large memory values into a human-readable unit (e.g., bytes --> GB)
-# Takes two arguments:
-#   * $size - The number which should be prettified
-#   * $base - The base of the number (default Bytes)
+###############################################################
+# @description
+#   Converts large memory values into a human-readable unit (e.g., bytes --> GB)
+##
+# @args
+#   $1 integer Size - The number which should be prettified.
+#   $2 string Base - The base of the number (default Bytes).
+##
+# @note
+#   The base can be any of the following: B, K, M, G, T, P, E, Z, Y.
+##
 printSizeHumanReadable() {
   typeset -F 2 size
   size="$1"+0.00001
@@ -56,13 +201,18 @@ printSizeHumanReadable() {
   echo "$size${extension[$index]}"
 }
 
-# Gets the first value out of a list of items that is not empty.
-# The items are examined by a callback-function.
-# Takes two arguments:
-#   * $list - A list of items
-#   * $callback - A callback function to examine if the item is
-#                 worthy. The callback function has access to
-#                 the inner variable $item.
+###############################################################
+# @description
+#   Gets the first value out of a list of items that is not empty.
+#   The items are examined by a callback-function.
+##
+# @args
+#   $1 array A list of items.
+#   $2 string A callback function to examine if the item is worthy.
+##
+# @notes
+#   The callback function has access to the inner variable $item.
+##
 function getRelevantItem() {
   local -a list
   local callback
@@ -80,113 +230,15 @@ function getRelevantItem() {
   done
 }
 
-# OS detection
-case $(uname) in
-    Darwin)
-      OS='OSX'
-      OS_ICON=$(print_icon 'APPLE_ICON')
-      ;;
-    CYGWIN_NT-*)
-      OS='Windows'
-      OS_ICON=$(print_icon 'WINDOWS_ICON')
-      ;;
-    FreeBSD)
-      OS='BSD'
-      OS_ICON=$(print_icon 'FREEBSD_ICON')
-      ;;
-    OpenBSD)
-      OS='BSD'
-      OS_ICON=$(print_icon 'FREEBSD_ICON')
-      ;;
-    DragonFly)
-      OS='BSD'
-      OS_ICON=$(print_icon 'FREEBSD_ICON')
-      ;;
-    Linux)
-      OS='Linux'
-      os_release_id="$(grep -E '^ID=([a-zA-Z]*)' /etc/os-release | cut -d '=' -f 2)"
-      case "$os_release_id" in
-        "arch")
-        OS_ICON=$(print_icon 'LINUX_ARCH_ICON')
-        ;;
-        "debian")
-        OS_ICON=$(print_icon 'LINUX_DEBIAN_ICON')
-        ;;
-       "ubuntu")
-        OS_ICON=$(print_icon 'LINUX_UBUNTU_ICON')
-        ;;
-       "elementary")
-        OS_ICON=$(print_icon 'LINUX_ELEMENTARY_ICON')
-        ;;
-       "fedora")
-        OS_ICON=$(print_icon 'LINUX_FEDORA_ICON')
-        ;;
-       "coreos")
-        OS_ICON=$(print_icon 'LINUX_COREOS_ICON')
-        ;;
-       "gentoo")
-        OS_ICON=$(print_icon 'LINUX_GENTOO_ICON')
-        ;;
-       "mageia")
-        OS_ICON=$(print_icon 'LINUX_MAGEIA_ICON')
-        ;;
-       "centos")
-        OS_ICON=$(print_icon 'LINUX_CENTOS_ICON')
-        ;;
-       "opensuse"|"tumbleweed")
-        OS_ICON=$(print_icon 'LINUX_OPENSUSE_ICON')
-        ;;
-       "sabayon")
-        OS_ICON=$(print_icon 'LINUX_SABAYON_ICON')
-        ;;
-       "slackware")
-        OS_ICON=$(print_icon 'LINUX_SLACKWARE_ICON')
-        ;;
-       "linuxmint")
-        OS_ICON=$(print_icon 'LINUX_MINT_ICON')
-        ;;
-       "alpine")
-        OS_ICON=$(print_icon 'LINUX_ALPINE_ICON')
-        ;;
-       "aosc")
-        OS_ICON=$(print_icon 'LINUX_AOSC_ICON')
-        ;;
-       "nixos")
-        OS_ICON=$(print_icon 'LINUX_NIXOS_ICON')
-        ;;
-       "devuan")
-        OS_ICON=$(print_icon 'LINUX_DEVUAN_ICON')
-        ;;
-       "manjaro")
-        OS_ICON=$(print_icon 'LINUX_MANJARO_ICON')
-        ;;
-        *)
-        OS='Linux'
-        OS_ICON=$(print_icon 'LINUX_ICON')
-        ;;
-      esac
-
-      # Check if we're running on Android
-      case $(uname -o 2>/dev/null) in
-        Android)
-          OS='Android'
-          OS_ICON=$(print_icon 'ANDROID_ICON')
-          ;;
-      esac
-      ;;
-    SunOS)
-      OS='Solaris'
-      OS_ICON=$(print_icon 'SUNOS_ICON')
-      ;;
-    *)
-      OS=''
-      OS_ICON=''
-      ;;
-esac
-
-# Determine the correct sed parameter.
-#
-# `sed` is unfortunately not consistent across OSes when it comes to flags.
+###############################################################
+# description
+#   Determines the correct sed parameter.
+##
+# noargs
+##
+# note
+#   `sed` is unfortunately not consistent across OSes when it comes to flags.
+##
 SED_EXTENDED_REGEX_PARAMETER="-r"
 if [[ "$OS" == 'OSX' ]]; then
   local IS_BSD_SED="$(sed --version &>> /dev/null || echo "BSD sed")"
@@ -195,42 +247,52 @@ if [[ "$OS" == 'OSX' ]]; then
   fi
 fi
 
-# Determine if the passed segment is used in the prompt
-#
-# Pass the name of the segment to this function to test for its presence in
-# either the LEFT or RIGHT prompt arrays.
-#    * $1: The segment to be tested.
-segment_in_use() {
-    local key=$1
-    if [[ -n "${POWERLEVEL9K_LEFT_PROMPT_ELEMENTS[(r)$key]}" ]] || [[ -n "${POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS[(r)$key]}" ]]; then
-        return 0
-    else
-        return 1
-    fi
+# Combine the PROMPT_ELEMENTS
+typeset -gU P9K_PROMPT_ELEMENTS
+P9K_PROMPT_ELEMENTS=("${P9K_LEFT_PROMPT_ELEMENTS[@]}" "${P9K_RIGHT_PROMPT_ELEMENTS[@]}")
+
+###############################################################
+# @description
+#   Determine if the passed segment is used in either the LEFT or
+#   RIGHT prompt arrays.
+##
+# @args
+#   $1 string The segment to be tested.
+##
+segmentInUse() {
+  local key=$1
+  [[ -n "${P9K_PROMPT_ELEMENTS[(r)$key]}" ]] && return 0 || return 1
 }
 
-# Print a deprecation warning if an old segment is in use.
-# Takes the name of an associative array that contains the
-# deprecated segments as keys, the values contain the new
-# segment names.
-print_deprecation_warning() {
+###############################################################
+# @description
+#   Print a deprecation warning if an old segment is in use.
+# @args
+#   $1 associative-array An associative array that contains the
+#   deprecated segments as keys, and the new segment names as values.
+##
+printDeprecationWarning() {
   typeset -AH raw_deprecated_segments
   raw_deprecated_segments=(${(kvP@)1})
 
   for key in ${(@k)raw_deprecated_segments}; do
-    if segment_in_use $key; then
+    if segmentInUse $key; then
       # segment is deprecated
       print -P "%F{yellow}Warning!%f The '$key' segment is deprecated. Use '%F{blue}${raw_deprecated_segments[$key]}%f' instead. For more informations, have a look at the CHANGELOG.md."
     fi
   done
 }
 
-# A helper function to determine if a segment should be
-# joined or promoted to a full one.
-# Takes three arguments:
-#   * $1: The array index of the current segment
-#   * $2: The array index of the last printed segment
-#   * $3: The array of segments of the left or right prompt
+###############################################################
+# @description
+#   A helper function to determine if a segment should be
+#   joined or promoted to a full one.
+##
+# args
+#   $1 integer The array index of the current segment.
+#   $2 integer The array index of the last printed segment.
+#   $3 array The array of segments of the left or right prompt.
+##
 function segmentShouldBeJoined() {
   local current_index=$1
   local last_segment_index=$2
@@ -275,12 +337,15 @@ function segmentShouldBeJoined() {
 }
 
 ################################################################
-# Given a directory path, truncate it according to the settings.
-# Parameters:
-#   * $1 Path: string - the directory path to be truncated
-#   * $2 Length: integer - length to truncate to
-#   * $3 Delimiter: string - the delimiter to use
-#   * $4 From: string - "right" | "middle". If omited, assumes right.
+# @description
+#   Given a directory path, truncate it according to the settings.
+##
+# @args
+#   $1 string The directory path to be truncated.
+#   $2 integer Length to truncate to.
+#   $3 string Delimiter to use.
+#   $4 string Where to truncate from - "right" | "middle". If omited, assumes right.
+##
 function truncatePath() {
   # if the current path is not 1 character long (e.g. "/" or "~")
   if (( ${#1} > 1 )); then
@@ -350,15 +415,30 @@ function truncatePath() {
   fi
 }
 
-# Given a directory path, truncate it according to the settings for
-# `truncate_from_right`
+###############################################################
+# @description
+#   Given a directory path, truncate it according to the settings for
+#   `truncate_from_right`.
+##
+# @args
+#   $1 string Directory path.
+##
+# @note
+#   Deprecated. Use `truncatePath` instead.
+##
 function truncatePathFromRight() {
-  local delim_len=${#POWERLEVEL9K_SHORTEN_DELIMITER:-1}
+  local delim_len=${#P9K_SHORTEN_DELIMITER:-1}
   echo $1 | sed $SED_EXTENDED_REGEX_PARAMETER \
- "s@(([^/]{$((POWERLEVEL9K_SHORTEN_DIR_LENGTH))})([^/]{$delim_len}))[^/]+/@\2$POWERLEVEL9K_SHORTEN_DELIMITER/@g"
+ "s@(([^/]{$((P9K_SHORTEN_DIR_LENGTH))})([^/]{$delim_len}))[^/]+/@\2$P9K_SHORTEN_DELIMITER/@g"
 }
 
-# Search recursively in parent folders for given file.
+###############################################################
+# @description
+#   Search recursively in parent folders for given file.
+##
+# @args
+#   $1 string Filename to search for.
+##
 function upsearch () {
   if [[ "$PWD" == "$HOME" || "$PWD" == "/" ]]; then
     echo "$PWD"

@@ -1,0 +1,138 @@
+#!/usr/bin/env zsh
+# vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
+################################################################
+# @title powerlevel9k Segment - Battery
+# @source https://github.com/bhilburn/powerlevel9k
+##
+# @authors
+#   Ben Hilburn (bhilburn)
+#   Dominik Ritter (dritter)
+##
+
+################################################################
+# Register segment icon
+# Parameters:
+#   name_of_icon  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
+#                             🔋                    🔋                                                 
+registerIcon "BATTERY_ICON"  $'\U1F50B'  $'\uE894'  $'\U1F50B'  '\U'$CODEPOINT_OF_AWESOME_BATTERY_FULL  $'\UF240 '
+
+################################################################
+# @description
+#   Displays the battery statys in levels and colors.
+##
+# @args
+#   $1 string Alignment - left | right
+#   $2 integer Segment index
+#   $3 boolean Whether the segment should be joined
+##
+prompt_battery() {
+  # The battery can have four different states - default to 'unknown'.
+  local current_state='unknown'
+  typeset -AH battery_states
+  battery_states=(
+    'low'           'red'
+    'charging'      'yellow'
+    'charged'       'green'
+    'disconnected'  "$DEFAULT_COLOR_INVERTED"
+  )
+  # Set default values if the user did not configure them
+  setDefault P9K_BATTERY_LOW_THRESHOLD  10
+
+  if [[ $OS =~ "OSX" && -f /usr/bin/pmset && -x /usr/bin/pmset ]]; then
+    # obtain battery information from system
+    local raw_data="$(pmset -g batt | awk 'FNR==2{print}')"
+    # return if there is no battery on system
+    [[ -z $(echo $raw_data | grep "InternalBattery") ]] && return
+
+    # Time remaining on battery operation (charging/discharging)
+    local tstring=$(echo $raw_data | awk -F ';' '{print $3}' | awk '{print $1}')
+    # If time has not been calculated by system yet
+    [[ $tstring =~ '(\(no|not)' ]] && tstring="..."
+
+    # percent of battery charged
+    typeset -i 10 bat_percent
+    bat_percent=$(echo $raw_data | grep -o '[0-9]*%' | sed 's/%//')
+
+    local remain=""
+    # Logic for string output
+    case $(echo $raw_data | awk -F ';' '{print $2}' | awk '{$1=$1};1') in
+      # for a short time after attaching power, status will be 'AC attached;'
+      'charging'|'finishing charge'|'AC attached')
+        current_state="charging"
+        remain=" ($tstring)"
+        ;;
+      'discharging')
+        [[ $bat_percent -lt $P9K_BATTERY_LOW_THRESHOLD ]] && current_state="low" || current_state="disconnected"
+        remain=" ($tstring)"
+        ;;
+      *)
+        current_state="charged"
+        ;;
+    esac
+  fi
+
+  if [[ "$OS" == 'Linux' ]] || [[ "$OS" == 'Android' ]]; then
+    local sysp="/sys/class/power_supply"
+
+    # Reported BAT0 or BAT1 depending on kernel version
+    [[ -a $sysp/BAT0 ]] && local bat=$sysp/BAT0
+    [[ -a $sysp/BAT1 ]] && local bat=$sysp/BAT1
+
+    # Android-related
+    # Tested on: Moto G falcon (CM 13.0)
+    [[ -a $sysp/battery ]] && local bat=$sysp/battery
+
+    # Return if no battery found
+    [[ -z $bat ]] && return
+    local capacity=$(cat $bat/capacity)
+    local battery_status=$(cat $bat/status)
+    [[ $capacity -gt 100 ]] && local bat_percent=100 || local bat_percent=$capacity
+    [[ $battery_status =~ Charging || $battery_status =~ Full ]] && local connected=true
+    if [[ -z  $connected ]]; then
+      [[ $bat_percent -lt $P9K_BATTERY_LOW_THRESHOLD ]] && current_state="low" || current_state="disconnected"
+    else
+      [[ $bat_percent =~ 100 ]] && current_state="charged"
+      [[ $bat_percent -lt 100 ]] && current_state="charging"
+    fi
+    if [[ -f /usr/bin/acpi ]]; then
+      local time_remaining=$(acpi | awk '{ print $5 }')
+      if [[ $time_remaining =~ rate ]]; then
+        local tstring="..."
+      elif [[ $time_remaining =~ "[[:digit:]]+" ]]; then
+        local tstring=${(f)$(date -u -d "$(echo $time_remaining)" +%k:%M 2> /dev/null)}
+      fi
+    fi
+    [[ -n $tstring ]] && local remain=" ($tstring)"
+  fi
+
+  local message
+  # Default behavior: Be verbose!
+  setDefault P9K_BATTERY_VERBOSE true
+  if [[ "$P9K_BATTERY_VERBOSE" == true ]]; then
+    message="$bat_percent%%$remain"
+  else
+    message="$bat_percent%%"
+  fi
+
+  if [[ -n "$P9K_BATTERY_STAGES" ]] && [[ -n "$P9K_BATTERY_LEVEL_BACKGROUND" ]]; then
+    # override default icon if we are using battery stages
+    if [[ -n "$P9K_BATTERY_STAGES" ]]; then
+      local segment=$(( 100.0 / (${#P9K_BATTERY_STAGES} - 1 ) ))
+      if [[ $segment > 1 ]]; then
+        local offset=$(( ($bat_percent / $segment) + 1 ))
+        # check if the stages are in an array or a string
+        [[ "${(t)P9K_BATTERY_STAGES}" =~ "array" ]] && P9K_BATTERY_ICON="$P9K_BATTERY_STAGES[$offset]" || P9K_BATTERY_ICON=${P9K_BATTERY_STAGES:$offset:1}
+      fi
+    fi
+
+    # override the default color if we are using a color level array
+    if [[ -n "$P9K_BATTERY_LEVEL_BACKGROUND" ]] && [[ "${(t)P9K_BATTERY_LEVEL_BACKGROUND}" =~ "array" ]]; then
+      local segment=$(( 100.0 / (${#P9K_BATTERY_LEVEL_BACKGROUND} - 1 ) ))
+      local offset=$(( ($bat_percent / $segment) + 1 ))
+      p9kPrepareSegment "$0" "${(U)current_state}" $1 "$2" $3 "${P9K_BATTERY_LEVEL_BACKGROUND[$offset]}" "${battery_states[$current_state]}" "${message}" "BATTERY_ICON"
+    fi
+  else
+    # Draw the prompt_segment
+    p9kPrepareSegment "$0" "${(U)current_state}" $1 "$2" $3 "${DEFAULT_COLOR}" "${battery_states[$current_state]}" "${message}" "BATTERY_ICON"
+  fi
+}

@@ -1,0 +1,50 @@
+#!/usr/bin/env zsh
+# vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
+################################################################
+# @title powerlevel9k Segment - Swap
+# @source https://github.com/bhilburn/powerlevel9k
+##
+# @authors
+#   Ben Hilburn (bhilburn)
+#   Dominik Ritter (dritter)
+##
+
+################################################################
+# Register segment icon
+# Parameters:
+#   name_of_icon  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
+#                                                                                        
+registerIcon "SWAP_ICON"  'SWP'  $'\uE87D'  $'\uF0E4'  '\u'$CODEPOINT_OF_AWESOME_DASHBOARD  $'\uF464'
+
+################################################################
+# @description
+#   Display information the swap file.
+##
+# @args
+#   $1 string Alignment - left | right
+#   $2 integer Segment index
+#   $3 boolean Whether the segment should be joined
+##
+prompt_swap() {
+  local swap_used=0
+  local base=''
+
+  if [[ "$OS" == "OSX" ]]; then
+    local raw_swap_used
+    raw_swap_used=$(sysctl vm.swapusage | grep -o "used\s*=\s*[0-9,.A-Z]*" | grep -o "[0-9,.A-Z]*$")
+
+    typeset -F 2 swap_used
+    swap_used=${$(echo $raw_swap_used | grep -o "[0-9,.]*")//,/.}
+    # Replace comma
+    swap_used=${swap_used//,/.}
+
+    base=$(echo "$raw_swap_used" | grep -o "[A-Z]*$")
+  else
+    swap_total=$(grep -o -E "SwapTotal:\s+[0-9]+" /proc/meminfo | grep -o "[0-9]*")
+    swap_free=$(grep -o -E "SwapFree:\s+[0-9]+" /proc/meminfo | grep -o "[0-9]*")
+    swap_used=$(( swap_total - swap_free ))
+    base='K'
+  fi
+
+  p9kPrepareSegment "$0" "" $1 "$2" $3 "yellow" "$DEFAULT_COLOR" "$(printSizeHumanReadable "$swap_used" $base)" 'SWAP_ICON'
+}

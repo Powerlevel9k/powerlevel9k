@@ -13,92 +13,95 @@ function setUp() {
 
   # Unset mode, so that user settings
   # do not interfere with tests
-  unset POWERLEVEL9K_MODE
+  unset P9K_MODE
+
+  # Load all segments that need to be tested so that they can be sourced
+  P9K_LEFT_PROMPT_ELEMENTS=(dir root_indicator background_jobs)
 }
 
 function testJoinedSegments() {
-  POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(dir dir_joined)
+  P9K_LEFT_PROMPT_ELEMENTS=(dir dir_joined)
   cd /tmp
 
-  assertEquals "%K{blue} %F{black}/tmp %K{blue}%F{black}%F{black}/tmp %k%F{blue}%f " "$(build_left_prompt)"
+  assertEquals "%K{blue} %F{black}/tmp %K{blue}%F{black}%F{black}/tmp %k%F{blue}%f " "$(buildLeftPrompt)"
 
-  unset POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
+  unset P9K_LEFT_PROMPT_ELEMENTS
   cd -
 }
 
 function testTransitiveJoinedSegments() {
-  POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(dir root_indicator_joined dir_joined)
+  P9K_LEFT_PROMPT_ELEMENTS=(dir root_indicator_joined dir_joined)
   cd /tmp
 
-  assertEquals "%K{blue} %F{black}/tmp %K{blue}%F{black}%F{black}/tmp %k%F{blue}%f " "$(build_left_prompt)"
+  assertEquals "%K{blue} %F{black}/tmp %K{blue}%F{black}%F{black}/tmp %k%F{blue}%f " "$(buildLeftPrompt)"
 
-  unset POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
+  unset P9K_LEFT_PROMPT_ELEMENTS
   cd -
 }
 
 function testJoiningWithConditionalSegment() {
-  POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(dir background_jobs dir_joined)
+  P9K_LEFT_PROMPT_ELEMENTS=(dir background_jobs dir_joined)
   cd /tmp
 
-  assertEquals "%K{blue} %F{black}/tmp %K{blue}%F{black} %F{black}/tmp %k%F{blue}%f " "$(build_left_prompt)"
+  assertEquals "%K{blue} %F{black}/tmp %K{blue}%F{black} %F{black}/tmp %k%F{blue}%f " "$(buildLeftPrompt)"
 
-  unset POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
+  unset P9K_LEFT_PROMPT_ELEMENTS
   cd -
 }
 
 function testDynamicColoringOfSegmentsWork() {
-  POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(dir)
-  POWERLEVEL9K_DIR_DEFAULT_BACKGROUND='red'
+  P9K_LEFT_PROMPT_ELEMENTS=(dir)
+  P9K_DIR_DEFAULT_BACKGROUND='red'
   cd /tmp
 
-  assertEquals "%K{red} %F{black}/tmp %k%F{red}%f " "$(build_left_prompt)"
+  assertEquals "%K{red} %F{black}/tmp %k%F{red}%f " "$(buildLeftPrompt)"
 
-  unset POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
-  unset POWERLEVEL9K_DIR_DEFAULT_BACKGROUND
+  unset P9K_LEFT_PROMPT_ELEMENTS
+  unset P9K_DIR_DEFAULT_BACKGROUND
   cd -
 }
 
 function testDynamicColoringOfVisualIdentifiersWork() {
-  POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(dir)
-  POWERLEVEL9K_DIR_DEFAULT_VISUAL_IDENTIFIER_COLOR='green'
-  POWERLEVEL9K_FOLDER_ICON="icon-here"
+  P9K_LEFT_PROMPT_ELEMENTS=(dir)
+  P9K_DIR_DEFAULT_VISUAL_IDENTIFIER_COLOR='green'
+  P9K_FOLDER_ICON="icon-here"
 
   cd /tmp
 
-  assertEquals "%K{blue} %F{green%}icon-here%f %F{black}/tmp %k%F{blue}%f " "$(build_left_prompt)"
+  assertEquals "%K{blue} %F{green%}icon-here%f %F{black}/tmp %k%F{blue}%f " "$(buildLeftPrompt)"
 
-  unset POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
-  unset POWERLEVEL9K_DIR_DEFAULT_VISUAL_IDENTIFIER_COLOR
-  unset POWERLEVEL9K_FOLDER_ICON
+  unset P9K_LEFT_PROMPT_ELEMENTS
+  unset P9K_DIR_DEFAULT_VISUAL_IDENTIFIER_COLOR
+  unset P9K_FOLDER_ICON
   cd -
 }
 
 function testColoringOfVisualIdentifiersDoesNotOverwriteColoringOfSegment() {
-  POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(dir)
-  POWERLEVEL9K_DIR_DEFAULT_VISUAL_IDENTIFIER_COLOR='green'
-  POWERLEVEL9K_DIR_DEFAULT_FOREGROUND='red'
-  POWERLEVEL9K_DIR_DEFAULT_BACKGROUND='yellow'
-  POWERLEVEL9K_FOLDER_ICON="icon-here"
+  P9K_LEFT_PROMPT_ELEMENTS=(dir)
+  P9K_DIR_DEFAULT_VISUAL_IDENTIFIER_COLOR='green'
+  P9K_DIR_DEFAULT_FOREGROUND='red'
+  P9K_DIR_DEFAULT_BACKGROUND='yellow'
+  P9K_FOLDER_ICON="icon-here"
 
-  # Re-Source the icons, as the POWERLEVEL9K_MODE is directly
+  # Re-Source the icons, as the P9K_MODE is directly
   # evaluated there.
   source functions/icons.zsh
 
   cd /tmp
 
-  assertEquals "%K{yellow} %F{green%}icon-here%f %F{red}/tmp %k%F{yellow}%f " "$(build_left_prompt)"
+  assertEquals "%K{yellow} %F{green%}icon-here%f %F{red}/tmp %k%F{yellow}%f " "$(buildLeftPrompt)"
 
-  unset POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
-  unset POWERLEVEL9K_DIR_DEFAULT_VISUAL_IDENTIFIER_COLOR
-  unset POWERLEVEL9K_DIR_DEFAULT_FOREGROUND
-  unset POWERLEVEL9K_DIR_DEFAULT_BACKGROUND
-  unset POWERLEVEL9K_FOLDER_ICON
+  unset P9K_LEFT_PROMPT_ELEMENTS
+  unset P9K_DIR_DEFAULT_VISUAL_IDENTIFIER_COLOR
+  unset P9K_DIR_DEFAULT_FOREGROUND
+  unset P9K_DIR_DEFAULT_BACKGROUND
+  unset P9K_FOLDER_ICON
   cd -
 }
 
 function testOverwritingIconsWork() {
-  POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(dir)
-  POWERLEVEL9K_FOLDER_ICON='icon-here'
+  P9K_LEFT_PROMPT_ELEMENTS=(dir)
+  P9K_FOLDER_ICON='icon-here'
   #local testFolder=$(mktemp -d -p p9k)
   # Move testFolder under home folder
   #mv testFolder ~
@@ -106,10 +109,10 @@ function testOverwritingIconsWork() {
   #cd ~/$testFolder
 
   cd /tmp
-  assertEquals "%K{blue} %F{black%}icon-here%f %F{black}/tmp %k%F{blue}%f " "$(build_left_prompt)"
+  assertEquals "%K{blue} %F{black%}icon-here%f %F{black}/tmp %k%F{blue}%f " "$(buildLeftPrompt)"
 
-  unset POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
-  unset POWERLEVEL9K_DIR_FOLDER_ICON
+  unset P9K_LEFT_PROMPT_ELEMENTS
+  unset P9K_DIR_FOLDER_ICON
   cd -
   # rm -fr ~/$testFolder
 }

@@ -1,0 +1,40 @@
+#!/usr/bin/env zsh
+# vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
+################################################################
+# @title powerlevel9k Segment - Background Jobs
+# @source https://github.com/bhilburn/powerlevel9k
+##
+# @authors
+#   Ben Hilburn (bhilburn)
+#   Dominik Ritter (dritter)
+##
+
+# Register icons
+#                                     ⚙                                                               
+registerIcon "BACKGROUND_JOBS_ICON"  $'\u2699'  $'\uE82F '  $'\uF013 '  '\u'$CODEPOINT_OF_AWESOME_COG' '  $'\uF013 '
+
+setDefault P9K_BACKGROUND_JOBS_VERBOSE true
+setDefault P9K_BACKGROUND_JOBS_VERBOSE_ALWAYS false
+################################################################
+# @description
+#   Displays the number of background jobs with an icon.
+##
+# @args
+#   $1 string Alignment - left | right
+#   $2 integer Segment index
+#   $3 boolean Whether the segment should be joined
+##
+prompt_background_jobs() {
+  local background_jobs_number=${$(jobs -l | wc -l)// /}
+  local wrong_lines=`jobs -l | awk '/pwd now/{ count++ } END {print count}'`
+  if [[ wrong_lines -gt 0 ]]; then
+     background_jobs_number=$(( $background_jobs_number - $wrong_lines ))
+  fi
+  if [[ background_jobs_number -gt 0 ]]; then
+    local background_jobs_number_print=""
+    if [[ "$P9K_BACKGROUND_JOBS_VERBOSE" == "true" ]] && ([[ "$background_jobs_number" -gt 1 ]] || [[ "$P9K_BACKGROUND_JOBS_VERBOSE_ALWAYS" == "true" ]]); then
+      background_jobs_number_print="$background_jobs_number"
+    fi
+    p9kPrepareSegment "$0" "" $1 "$2" $3 "$DEFAULT_COLOR" "cyan" "$background_jobs_number_print" 'BACKGROUND_JOBS_ICON'
+  fi
+}

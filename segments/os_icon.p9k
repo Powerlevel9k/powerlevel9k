@@ -1,0 +1,143 @@
+#!/usr/bin/env zsh
+# vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
+################################################################
+# @title powerlevel9k Segment - OS Icon
+# @source https://github.com/bhilburn/powerlevel9k
+##
+# @authors
+#   Ben Hilburn (bhilburn)
+#   Dominik Ritter (dritter)
+##
+
+################################################################
+# Register segment icon
+# Parameters:
+#   name_of_icon  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
+case "$OS" in
+  "OSX")
+    #                                                                                     
+    registerIcon "APPLE_ICON"  'OSX'  $'\uE26E'  $'\uF179'  '\u'$CODEPOINT_OF_AWESOME_APPLE  $'\uF179'
+    OS_ICON='APPLE_ICON'
+  ;;
+  "Windows")
+    #                                                                 
+    registerIcon "WINDOWS_ICON"  'WIN'  $'\uE26F'  $'\uF17A'  $'\uF17A'  $'\uF17A'
+    OS_ICON='WINDOWS_ICON'
+  ;;
+  "BSD")
+    #                                    😈           😈           😈            
+    registerIcon "FREEBSD_ICON"  'BSD'  $'\U1F608 '  $'\U1F608 '  $'\U1F608 '  $'\UF30E '
+    OS_ICON='FREEBSD_ICON'
+  ;;
+#  OpenBSD)
+#    OS_ICON='FREEBSD_ICON'
+#    ;;
+#  DragonFly)
+#    OS_ICON='FREEBSD_ICON'
+#    ;;
+  "Linux")
+    case "$OS_ID" in
+      "arch")
+        #                                                             
+        registerIcon "LINUX_ARCH_ICON"  'Arc'  'Arc'  'Arc'  'Arc'  $'\uF300'
+        OS_ICON='LINUX_ARCH_ICON'
+      ;;
+      "debian")
+        #                                                              
+        registerIcon "LINUX_DEBIAN_ICON"  'Deb'  'Deb'  'Deb'  'Deb'  $'\uF302'
+        OS_ICON='LINUX_DEBIAN_ICON'
+      ;;
+      "ubuntu")
+        #                                                              
+        registerIcon "LINUX_UBUNTU_ICON"  'Ubu'  'Ubu'  'Ubu'  'Ubu'  $'\uF30C'
+        OS_ICON='LINUX_UBUNTU_ICON'
+      ;;
+      "elementary")
+        #                                                                  
+        registerIcon "LINUX_ELEMENTARY_ICON"  'Elm'  'Elm'  'Elm'  'Elm'  $'\uF311'
+        OS_ICON='LINUX_ELEMENTARY_ICON'
+      ;;
+      "fedora")
+        #                                                              
+        registerIcon "LINUX_FEDORA_ICON"  'Fed'  'Fed'  'Fed'  'Fed'  $'\uF303'
+        OS_ICON='LINUX_FEDORA_ICON'
+      ;;
+      "coreos")
+        #                                                              
+        registerIcon "LINUX_COREOS_ICON"  'Cor'  'Cor'  'Cor'  'Cor'  $'\uF30F'
+        OS_ICON='LINUX_COREOS_ICON'
+      ;;
+      "gentoo")
+        #                                                              
+        registerIcon "LINUX_GENTOO_ICON"  'Gen'  'Gen'  'Gen'  'Gen'  $'\uF310'
+        OS_ICON='LINUX_GENTOO_ICON'
+      ;;
+      "mageia")
+        #                                                              
+        registerIcon "LINUX_MAGEIA_ICON"  'Mag'  'Mag'  'Mag'  'Mag'  $'\uF306'
+        OS_ICON='LINUX_MAGEIA_ICON'
+      ;;
+      "centos")
+        #                                                              
+        registerIcon "LINUX_CENTOS_ICON"  'Cen'  'Cen'  'Cen'  'Cen'  $'\uF301'
+        OS_ICON='LINUX_CENTOS_ICON'
+      ;;
+      "opensuse"|"tumbleweed")
+        #                                                                
+        registerIcon "LINUX_OPENSUSE_ICON"  'OSu'  'OSu'  'OSu'  'OSu'  $'\uF308'
+        OS_ICON='LINUX_OPENSUSE_ICON'
+      ;;
+      "sabayon")
+        #                                                               
+        registerIcon "LINUX_SABAYON_ICON"  'Sab'  'Sab'  'Sab'  'Sab'  $'\uF313'
+        OS_ICON='LINUX_SABAYON_ICON'
+      ;;
+      "slackware")
+        #                                                                 
+        registerIcon "LINUX_SLACKWARE_ICON"  'Sla'  'Sla'  'Sla'  'Sla'  $'\uF30A'
+        OS_ICON='LINUX_SLACKWARE_ICON'
+      ;;
+      "linuxmint")
+        #                                                            
+        registerIcon "LINUX_MINT_ICON"  'LMi'  'LMi'  'LMi'  'LMi'  $'\uF304'
+        OS_ICON='LINUX_MINT_ICON'
+      ;;
+      *)
+        #                                                                                    
+        registerIcon "LINUX_ICON"  'Lx'  $'\uE271'  $'\uF17C'  '\u'$CODEPOINT_OF_AWESOME_LINUX  $'\uF17C'
+        OS_ICON='LINUX_ICON'
+      ;;
+    esac
+  ;;
+  "Android")
+    #                                                                 
+    registerIcon "ANDROID_ICON"  'And'  $'\uE270'  $'\uE17B'  $'\uF17B'  $'\uF17B'
+    OS_ICON='ANDROID_ICON'
+  ;;
+  "Solaris")
+    #                                  🌞                                                        
+    registerIcon "SUNOS_ICON"  'Sun'  $'\U1F31E '  $'\uF185 '  '\u'$CODEPOINT_OF_AWESOME_SUN_O' '  $'\uF185 '
+    OS_ICON='SUNOS_ICON'
+    ;;
+  *)
+    OS=''
+    OS_ICON=''
+    ;;
+esac
+
+################################################################
+# @description
+#   Displays the OS icon only.
+##
+# @args
+#   $1 string Alignment - left | right
+#   $2 integer Segment index
+#   $3 boolean Whether the segment should be joined
+##
+# @note
+#   Only displays the specific Linux distro icon if available,
+#   otherwise just uses the Tux icon.
+##
+prompt_os_icon() {
+  p9kPrepareSegment "$0" "" $1 "$2" $3 "black" "white" $(printIcon "$OS_ICON")
+}

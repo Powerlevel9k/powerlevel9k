@@ -1,0 +1,48 @@
+#!/usr/bin/env zsh
+# vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
+################################################################
+# @title powerlevel9k Segment - Ram
+# @source https://github.com/bhilburn/powerlevel9k
+##
+# @authors
+#   Ben Hilburn (bhilburn)
+#   Dominik Ritter (dritter)
+##
+
+################################################################
+# Register segment icon
+# Parameters:
+#   name_of_icon  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
+#                                                                                        
+registerIcon "RAM_ICON"  'RAM'  $'\uE1E2 '  $'\uF0E4'  '\u'$CODEPOINT_OF_AWESOME_DASHBOARD  $'\uF0E4'
+
+################################################################
+# @description
+#   Display information about the free RAM and used Swap.
+##
+# @args
+#   $1 string Alignment - left | right
+#   $2 integer Segment index
+#   $3 boolean Whether the segment should be joined
+##
+prompt_ram() {
+  local base=''
+  local ramfree=0
+  if [[ "$OS" == "OSX" ]]; then
+    # Available = Free + Inactive
+    # See https://support.apple.com/en-us/HT201538
+    ramfree=$(vm_stat | grep "Pages free" | grep -o -E '[0-9]+')
+    ramfree=$((ramfree + $(vm_stat | grep "Pages inactive" | grep -o -E '[0-9]+')))
+    # Convert pages into Bytes
+    ramfree=$(( ramfree * 4096 ))
+  else
+    if [[ "$OS" == "BSD" ]]; then
+      ramfree=$(grep 'avail memory' /var/run/dmesg.boot | awk '{print $4}')
+    else
+      ramfree=$(grep -o -E "MemAvailable:\s+[0-9]+" /proc/meminfo | grep -o "[0-9]*")
+      base='K'
+    fi
+  fi
+
+  p9kPrepareSegment "$0" "" $1 "$2" $3 "yellow" "$DEFAULT_COLOR" "$(printSizeHumanReadable "$ramfree" $base)" 'RAM_ICON'
+}

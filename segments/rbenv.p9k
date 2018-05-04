@@ -1,0 +1,40 @@
+#!/usr/bin/env zsh
+# vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
+################################################################
+# @title powerlevel9k Segment - Ruby Environment
+# @source https://github.com/bhilburn/powerlevel9k
+##
+# @authors
+#   Ben Hilburn (bhilburn)
+#   Dominik Ritter (dritter)
+##
+
+################################################################
+# Register segment icon
+# Parameters:
+#   name_of_icon  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
+#                                                                                     
+registerIcon "RUBY_ICON"  ''  $'\uE847 '  $'\uF219 '  '\u'$CODEPOINT_OF_OCTICONS_RUBY' '  $'\uF219 '
+
+setDefault P9K_RBENV_ALWAYS false
+################################################################
+# @description
+#   Display the current rbenv information.
+##
+# @args
+#   $1 string Alignment - left | right
+#   $2 integer Segment index
+#   $3 boolean Whether the segment should be joined
+##
+prompt_rbenv() {
+  if which rbenv 2>/dev/null >&2; then
+    local rbenv_version_name="$(rbenv version-name)"
+    local rbenv_global="$(rbenv global)"
+
+    # Don't show anything if the current Ruby is the same as the global Ruby
+    # unless `P9K_RBENV_ALWAYS` is set.
+    if [[ $P9K_RBENV_ALWAYS == true || $rbenv_version_name != $rbenv_global ]]; then
+      p9kPrepareSegment "$0" "" $1 "$2" $3 "red" "$DEFAULT_COLOR" "$rbenv_version_name" 'RUBY_ICON'
+    fi
+  fi
+}

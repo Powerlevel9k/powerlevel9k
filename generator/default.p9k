@@ -1,0 +1,606 @@
+#!/usr/bin/env zsh
+# vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
+################################################################
+# @title powerlevel9k Default Engine
+# @source https://github.com/bhilburn/powerlevel9k
+##
+# @authors
+#   Ben Hilburn (bhilburn)
+#   Dominik Ritter (dritter)
+##
+# @info
+#   This file contains the default generator for the powerlevel9k project.
+##
+
+################################################################
+# DEFAULT ENGINE - Synchronous
+################################################################
+
+################################################################
+# Prompt Segment Constructors
+#
+# Methodology behind user-defined variables overwriting colors:
+#     The first parameter to the segment constructors is the calling function's
+#     name. From this function name, we strip the "prompt_"-prefix and
+#     uppercase it. This is then prefixed with "P9K_" and suffixed
+#     with either "_BACKGROUND" or "_FOREGROUND", thus giving us the variable
+#     name. So each new segment is user-overwritten by a variable following
+#     this naming convention.
+################################################################
+
+# The `CURRENT_BG` variable is used to remember what the last BG color used was
+# when building the left-hand prompt. Because the RPROMPT is created from
+# right-left but reads the opposite, this isn't necessary for the other side.
+CURRENT_BG='NONE'
+
+setDefault last_left_element_index 1
+setDefault P9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS " "
+################################################################
+# @description
+#   Construct a left prompt segment
+##
+# @args
+#   $1 string Name of the function that was originally invoked (mandatory).
+#   $2 integer Index of the segment
+#   $3 string Background color
+#   $4 string Foreground color
+#   $5 bool Whether the segment should be bold
+#   $6 string Content of the segment
+#   $7 string Visual identifier (must be a key of the icons array)
+##
+leftPromptSegment() {
+  local current_index=$2
+  # Check if the segment should be joined with the previous one
+  local joined
+  segmentShouldBeJoined $current_index $last_left_element_index "$P9K_LEFT_PROMPT_ELEMENTS" && joined=true || joined=false
+
+  # Overwrite given background-color by user defined variable for this segment.
+  local BACKGROUND_USER_VARIABLE=P9K_${(U)1#prompt_}_BACKGROUND
+  local BG_COLOR_MODIFIER=${(P)BACKGROUND_USER_VARIABLE}
+  [[ -n $BG_COLOR_MODIFIER ]] && 3="$BG_COLOR_MODIFIER"
+
+  # Overwrite given foreground-color by user defined variable for this segment.
+  local FOREGROUND_USER_VARIABLE=P9K_${(U)1#prompt_}_FOREGROUND
+  local FG_COLOR_MODIFIER=${(P)FOREGROUND_USER_VARIABLE}
+  [[ -n $FG_COLOR_MODIFIER ]] && 4="$FG_COLOR_MODIFIER"
+
+  local bg fg
+  [[ -n "$3" ]] && bg="$(backgroundColor $3)" || bg="$(backgroundColor)"
+  [[ -n "$4" ]] && fg="$(foregroundColor $4)" || fg="$(foregroundColor)"
+
+  if [[ $CURRENT_BG != 'NONE' ]] && ! isSameColor "$3" "$CURRENT_BG"; then
+    echo -n "$bg%F{$CURRENT_BG}"
+    if [[ $joined == false ]]; then
+      # Middle segment
+      echo -n "$(printIcon 'LEFT_SEGMENT_SEPARATOR')$P9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS"
+    fi
+  elif isSameColor "$CURRENT_BG" "$3"; then
+    # Middle segment with same color as previous segment
+    # We take the current foreground color as color for our
+    # subsegment (or the default color). This should have
+    # enough contrast.
+    local complement
+    [[ -n "$4" ]] && complement="$fg" || complement="$(foregroundColor $DEFAULT_COLOR)"
+    echo -n "${bg}${complement}"
+    if [[ $joined == false ]]; then
+      echo -n "$(printIcon 'LEFT_SUBSEGMENT_SEPARATOR')$P9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS"
+    fi
+  else
+    # First segment
+    echo -n "${bg}$P9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS"
+  fi
+
+  local visual_identifier
+  [[ -n $7 ]] && visual_identifier="$7"
+
+  # Support for bold segment
+  local bld_on=""
+  local bld_off=""
+  if [[ $5 == true ]]; then
+    bld_on="%B"
+    bld_off="%b"
+  fi
+
+  # Print the visual identifier
+  echo -n "${visual_identifier}"
+  # Print the content of the segment, if there is any
+  [[ -n "$6" ]] && echo -n "${fg}${bld_on}${6}${bld_off}"
+  echo -n "${P9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS}"
+
+  CURRENT_BG=$3
+  last_left_element_index=$current_index
+}
+
+################################################################
+# @description
+#   End the left prompt, closes the final segment
+##
+# @noargs
+##
+leftPromptEnd() {
+  if [[ -n $CURRENT_BG ]]; then
+    echo -n "%k%F{$CURRENT_BG}$(printIcon 'LEFT_SEGMENT_SEPARATOR')"
+  else
+    echo -n "%k"
+  fi
+  echo -n "%f$(printIcon 'LEFT_SEGMENT_END_SEPARATOR')"
+  CURRENT_BG=''
+}
+
+CURRENT_RIGHT_BG='NONE'
+
+setDefault last_right_element_index 1
+setDefault P9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS " "
+################################################################
+# @description
+#   Construct a right prompt segment
+##
+# @args
+#   $1 string Name of the function that was originally invoked (mandatory).
+#   $2 integer Index of the segment
+#   $3 string Background color
+#   $4 string Foreground color
+#   $5 bool Whether the segment should be bold
+#   $6 string Content of the segment
+#   $7 string Visual identifier (must be a key of the icons array)
+##
+# @notes
+#   No ending for the right prompt segment is needed (unlike the left prompt, above).
+##
+rightPromptSegment() {
+  local current_index=$2
+
+  # Check if the segment should be joined with the previous one
+  local joined
+  segmentShouldBeJoined $current_index $last_right_element_index "$P9K_RIGHT_PROMPT_ELEMENTS" && joined=true || joined=false
+
+  # Overwrite given background-color by user defined variable for this segment.
+  local BACKGROUND_USER_VARIABLE=P9K_${(U)1#prompt_}_BACKGROUND
+  local BG_COLOR_MODIFIER=${(P)BACKGROUND_USER_VARIABLE}
+  [[ -n $BG_COLOR_MODIFIER ]] && 3="$BG_COLOR_MODIFIER"
+
+  # Overwrite given foreground-color by user defined variable for this segment.
+  local FOREGROUND_USER_VARIABLE=P9K_${(U)1#prompt_}_FOREGROUND
+  local FG_COLOR_MODIFIER=${(P)FOREGROUND_USER_VARIABLE}
+  [[ -n $FG_COLOR_MODIFIER ]] && 4="$FG_COLOR_MODIFIER"
+
+  local bg fg
+  [[ -n "$3" ]] && bg="$(backgroundColor $3)" || bg="$(backgroundColor)"
+  [[ -n "$4" ]] && fg="$(foregroundColor $4)" || fg="$(foregroundColor)"
+
+  # If CURRENT_RIGHT_BG is "NONE", we are the first right segment.
+  if [[ $joined == false ]] || [[ "$CURRENT_RIGHT_BG" == "NONE" ]]; then
+    if isSameColor "$CURRENT_RIGHT_BG" "$3"; then
+      # Middle segment with same color as previous segment
+      # We take the current foreground color as color for our
+      # subsegment (or the default color). This should have
+      # enough contrast.
+      local complement
+      [[ -n "$4" ]] && complement="$fg" || complement="$(foregroundColor $DEFAULT_COLOR)"
+      echo -n "$complement$(printIcon 'RIGHT_SUBSEGMENT_SEPARATOR')%f"
+    else
+      # Use the new BG color for the foreground with separator
+      echo -n "$(foregroundColor $3)$(printIcon 'RIGHT_SEGMENT_SEPARATOR')%f"
+    fi
+  fi
+
+  local visual_identifier
+  [[ -n "$7" ]] && visual_identifier="$7"
+
+  echo -n "${bg}${fg}"
+
+  # Print whitespace only if segment is not joined or first right segment
+  [[ $joined == false ]] || [[ "$CURRENT_RIGHT_BG" == "NONE" ]] && echo -n "${P9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS}"
+
+  # Support for bold segment
+  local bld_on=""
+  local bld_off=""
+  if [[ $5 == true ]]; then
+    bld_on="%B"
+    bld_off="%b"
+  fi
+
+  if [[ ${(L)P9K_RPROMPT_ICON_LEFT} == "true" ]]; then # Visual identifier before content
+    # Print the visual identifier
+    echo -n "${visual_identifier}${P9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS}"
+    # Print segment content if there is any
+    [[ -n "$6" ]] && echo -n "${bld_on}${6}${bld_off}${P9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS}%f"
+  else
+    # Print segment content if there is any
+    [[ -n "$6" ]] && echo -n "${bld_on}${6}${bld_off}"
+    # Print the visual identifier
+    echo -n "${visual_identifier}${P9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS}%f"
+  fi
+
+  CURRENT_RIGHT_BG=$3
+  last_right_element_index=$current_index
+}
+
+################################################################
+# @description
+#   This function wraps `leftPromptSegment` and `rightPromptSegment`
+#   (for compatibility with the async generator).
+##
+# @args
+#   $1 string Name of the function that was originally invoked (mandatory).
+#   $2 string State of the segment.
+#   $3 string Alignment (left|right).
+#   $4 integer Index of the segment.
+#   $5 bool Whether the segment should be joined.
+#   $6 string Background color.
+#   $7 string Foreground color.
+#   $8 string Content of the segment.
+#   $9 string Visual identifier (must be a key of the icons array).
+#   $10 string The condition - if the segment should be shown (gets evaluated).
+##
+p9kPrepareSegment() {
+  local NAME="${1}"
+  local STATE="${2}"
+  local ALIGNMENT="${3}"
+  local INDEX="${4}"
+  local JOINED="${5}"
+
+  local STATEFUL_NAME="${(U)NAME#prompt_}"
+  [[ -n "${STATE}" ]] && STATEFUL_NAME="${STATEFUL_NAME}_${(U)STATE}"
+
+  # Overwrite given background-color by user defined variable for this segment.
+  local BACKGROUND_USER_VARIABLE="P9K_${STATEFUL_NAME}_BACKGROUND"
+  local BACKGROUND="${(P)BACKGROUND_USER_VARIABLE}"
+  [[ -z "${BACKGROUND}" ]] && BACKGROUND="${6}"
+
+  # Overwrite given foreground-color by user defined variable for this segment.
+  local FOREGROUND_USER_VARIABLE="P9K_${STATEFUL_NAME}_FOREGROUND"
+  local FOREGROUND="${(P)FOREGROUND_USER_VARIABLE}"
+  [[ -z "${FOREGROUND}" ]] && FOREGROUND="${7}"
+
+  # Overwrite given bold directive by user defined variable for this segment.
+  local BOLD_USER_VARIABLE="P9K_${STATEFUL_NAME}_BOLD"
+  local BOLD="${(P)BOLD_USER_VARIABLE}"
+  [[ -z "${BOLD}" ]] && BOLD=false || BOLD=true
+
+  local CONTENT="${8}"
+
+  local VISUAL_IDENTIFIER
+  if [[ -n "${9}" ]]; then
+    VISUAL_IDENTIFIER="$(printIcon ${9})"
+    if [[ -n "${VISUAL_IDENTIFIER}" ]]; then
+      # Allow users to overwrite the color for the visual identifier only.
+      local visual_identifier_color_variable="P9K_${STATEFUL_NAME}_VISUAL_IDENTIFIER_COLOR"
+      setDefault "${visual_identifier_color_variable}" "${FOREGROUND}"
+      VISUAL_IDENTIFIER="%F{${(P)visual_identifier_color_variable}%}${VISUAL_IDENTIFIER}%f"
+      # Add an whitespace if we print more than just the visual identifier
+      if [[ -n "${CONTENT}" ]]; then
+        [[ "${ALIGNMENT}" == "left" ]] && VISUAL_IDENTIFIER="${VISUAL_IDENTIFIER} "
+        [[ "${ALIGNMENT}" == "right" ]] && VISUAL_IDENTIFIER=" ${VISUAL_IDENTIFIER}"
+      fi
+    fi
+  fi
+  # Conditions have three layers:
+  # 1. All segments should not print
+  #    a segment, if they provide no
+  #    content (default condition).
+  # 2. All segments could define a
+  #    default condition on their
+  #    own, overriding the previous
+  #    one.
+  # 3. Users could set a condition
+  #    for each segment. This is
+  #    the trump card, and has
+  #    highest precedence.
+  local CONDITION
+  local SEGMENT_CONDITION="P9K_${STATEFUL_NAME}_CONDITION"
+  if defined "${SEGMENT_CONDITION}"; then
+    CONDITION="${(P)SEGMENT_CONDITION}"
+  elif [[ -n "${10}" ]]; then
+    CONDITION="${10}"
+  else
+    CONDITION='[[ -n "${8}" ]]'
+  fi
+  # Precompile condition.
+  eval "${CONDITION}" && CONDITION=true || CONDITION=false
+
+#  if ! ${CONDITION}; then
+#    continue
+#  fi
+  [[ $CONDITION == true ]] && "${ALIGNMENT}PromptSegment" "${NAME}" "${INDEX}" "${BACKGROUND}" "${FOREGROUND}" "${BOLD}" "${CONTENT}" "${VISUAL_IDENTIFIER}"
+}
+
+################################################################
+# Prompt Segment Definitions
+################################################################
+
+# The `CURRENT_BG` variable is used to remember what the last BG color used was
+# when building the left-hand prompt. Because the RPROMPT is created from
+# right-left but reads the opposite, this isn't necessary for the other side.
+CURRENT_BG='NONE'
+
+################################################################
+# @description
+#   The `custom` prompt provides a way for users to invoke commands and display
+#   the output in a segment.
+##
+# @args
+#   $1 string Left|Right
+#   $2 integer Segment index
+#   $3 boolean Whether the segment should be joined
+#   $4 string Custom segment name
+##
+prompt_custom() {
+  local command=P9K_CUSTOM_$4:u
+  local segment_content="$(eval ${(P)command})"
+
+  if [[ -n $segment_content ]]; then
+    p9kPrepareSegment "${4:u}" "" "$1" $2 $3 $DEFAULT_COLOR_INVERTED $DEFAULT_COLOR "$segment_content"
+  fi
+}
+
+################################################################
+# Prompt processing and drawing
+################################################################
+
+###############################################################
+# @description
+#   This function loops through the left prompt elements and calls
+#   the related segment functions.
+##
+# @noargs
+##
+buildLeftPrompt() {
+  local index=1
+  local element joined
+  for element in "${P9K_LEFT_PROMPT_ELEMENTS[@]}"; do
+    # Check if segment should be joined
+    [[ "${element[-7,-1]}" == '_joined' ]] && joined=true || joined=false
+
+    # Remove joined information in direct calls
+    element="${element%_joined}"
+
+    # Check if it is a custom command, otherwise interpet it as
+    # a prompt.
+    if [[ $element[0,7] =~ "custom_" ]]; then
+      if [[ -z "${loadedSegments[(r)$element]}" ]]; then
+        if [[ -n "$P9K_${(U)element}" ]]; then # check if custom segment is a definition
+          loadedSegments+=("$element")
+        elif [[ -f "${p9kDirectory}/segments/custom/${element}.p9k" ]]; then # check if custom segment file exists
+          source "${p9kDirectory}/segments/custom/${element}.p9k" 2>&1
+          loadedSegments+=("$element")
+        fi
+      fi
+      "prompt_custom" "left" "$index" $joined $element[8,-1]
+    else
+      if [[ -z "${loadedSegments[(r)$element]}" ]]; then
+        if [[ -f "${p9kDirectory}/segments/${element}.p9k" ]]; then # check if segment file exists
+          source "${p9kDirectory}/segments/${element}.p9k" 2>&1
+          loadedSegments+=("$element")
+        fi
+      fi
+      "prompt_$element" "left" "$index" $joined
+    fi
+
+    index=$((index + 1))
+  done
+
+  leftPromptEnd
+}
+
+###############################################################
+# @description
+#   This function loops through the right prompt elements and calls
+#   the related segment functions.
+##
+# @noargs
+##
+buildRightPrompt() {
+  local index=1
+  local element joined
+  for element in "${P9K_RIGHT_PROMPT_ELEMENTS[@]}"; do
+    # Check if segment should be joined
+    [[ "${element[-7,-1]}" == '_joined' ]] && joined=true || joined=false
+
+    # Remove joined information in direct calls
+    element="${element%_joined}"
+
+    # Check if it is a custom command, otherwise interpet it as
+    # a prompt.
+    if [[ $element[0,7] =~ "custom_" ]]; then
+      if [[ -z "${loadedSegments[(r)$element]}" ]]; then
+        if [[ -n "$P9K_${(U)element}" ]]; then # check if custom segment is a definition
+          loadedSegments+=("$element")
+        elif [[ -f "${p9kDirectory}/segments/custom/${element}.p9k" ]]; then # check if custom segment file exists
+          source "${p9kDirectory}/segments/custom/${element}.p9k" 2>&1
+          loadedSegments+=("$element")
+        fi
+      fi
+      "prompt_custom" "right" "$index" $joined $element[8,-1]
+    else
+      if [[ -z "${loadedSegments[(r)$element]}" ]]; then
+        if [[ -f "${p9kDirectory}/segments/${element}.p9k" ]]; then # check if segment file exists
+          source "${p9kDirectory}/segments/${element}.p9k" 2>&1
+          loadedSegments+=("$element")
+        fi
+      fi
+      "prompt_$element" "right" "$index" $joined
+    fi
+
+    index=$((index + 1))
+  done
+}
+
+###############################################################
+# @description
+#   This function is a hook that runs before the command runs.
+#   It sets the start timer.
+##
+# @noargs
+##
+p9k_preexec() {
+  # The Timer is started here, but the end
+  # is taken in p9kPreparePrompts, as this
+  # method is a precmd hook and runs right
+  # before the prompt gets rendered. So we
+  # can calculate the duration there.
+  _P9K_TIMER_START=${EPOCHREALTIME}
+}
+
+setDefault P9K_PROMPT_ADD_NEWLINE false
+###############################################################
+# @description
+#   This function is a hook that is run before the prompts are created.
+#   If sets all the required variables for the prompts and then
+#   calls the prompt segment building functions.
+##
+# @noargs
+##
+p9kPreparePrompts() {
+  local RETVAL RETVALS RPROMPT_PREFIX RPROMPT_SUFFIX
+  RETVAL=$?
+  RETVALS=( "$pipestatus[@]" )
+
+  _P9K_COMMAND_DURATION=$((EPOCHREALTIME - _P9K_TIMER_START))
+
+  # Reset start time
+  _P9K_TIMER_START=0x7FFFFFFF
+
+  local LC_ALL="" LC_CTYPE="en_US.UTF-8" # Set the right locale to protect special characters
+
+  if [[ "$P9K_PROMPT_ON_NEWLINE" == true ]]; then
+    PROMPT='$(printIcon 'MULTILINE_FIRST_PROMPT_PREFIX')%f%b%k$(buildLeftPrompt)
+$(printIcon 'MULTILINE_LAST_PROMPT_PREFIX')'
+    if [[ "$P9K_RPROMPT_ON_NEWLINE" != true ]]; then
+      # The right prompt should be on the same line as the first line of the left
+      # prompt. To do so, there is just a quite ugly workaround: Before zsh draws
+      # the RPROMPT, we advise it, to go one line up. At the end of RPROMPT, we
+      # advise it to go one line down. See:
+      # http://superuser.com/questions/357107/zsh-right-justify-in-ps1
+      RPROMPT_PREFIX='%{'$'\e[1A''%}' # one line up
+      RPROMPT_SUFFIX='%{'$'\e[1B''%}' # one line down
+    else
+      RPROMPT_PREFIX=''
+      RPROMPT_SUFFIX=''
+    fi
+  else
+    PROMPT='%f%b%k$(buildLeftPrompt)'
+    RPROMPT_PREFIX=''
+    RPROMPT_SUFFIX=''
+  fi
+
+  if [[ "$P9K_DISABLE_RPROMPT" != true ]]; then
+    RPROMPT='$RPROMPT_PREFIX%f%b%k$(buildRightPrompt)%{$reset_color%}$RPROMPT_SUFFIX'
+  fi
+
+local NEWLINE='
+'
+
+  if [[ $P9K_PROMPT_ADD_NEWLINE == true ]]; then
+    NEWLINES=""
+    repeat ${P9K_PROMPT_ADD_NEWLINE_COUNT:-1} { NEWLINES+=$NEWLINE }
+    PROMPT="$NEWLINES$PROMPT"
+  fi
+
+  # Allow iTerm integration to work
+  [[ $ITERM_SHELL_INTEGRATION_INSTALLED == "Yes" ]] && PROMPT="%{$(iterm2_prompt_mark)%}$PROMPT"
+}
+
+setDefault P9K_IGNORE_TERM_COLORS false
+setDefault P9K_IGNORE_TERM_LANG false
+
+###############################################################
+# @description
+#   This function is a hook into chpwd to add bindkey support.
+##
+# @noargs
+##
+p9kChPwd() {
+  p9kPreparePrompts
+  p9k_preexec
+}
+
+###############################################################
+# @description
+#   This is the main function. It does the necessary checks,
+#   loads the required resources and sets the required hooks.
+##
+# @noargs
+##
+prompt_powerlevel9k_setup() {
+  # The value below was set to better support 32-bit CPUs.
+  # It's the maximum _signed_ integer value on 32-bit CPUs.
+  # Please don't change it until 19 January of 2038. ;)
+
+  # Disable false display of command execution time
+  _P9K_TIMER_START=0x7FFFFFFF
+
+  # The prompt function will set these prompt_* options after the setup function
+  # returns. We need prompt_subst so we can safely run commands in the prompt
+  # without them being double expanded and we need prompt_percent to expand the
+  # common percent escape sequences.
+  prompt_opts=(cr percent sp subst)
+
+  # Borrowed from promptinit, sets the prompt options in case the theme was
+  # not initialized via promptinit.
+  setopt noprompt{bang,cr,percent,sp,subst} "prompt${^prompt_opts[@]}"
+
+  # Display a warning if the terminal does not support 256 colors
+  termColors
+
+  # If the terminal `LANG` is set to `C`, this theme will not work at all.
+  if [[ $P9K_IGNORE_TERM_LANG == false ]]; then
+      local term_lang
+      term_lang=$(echo $LANG)
+      if [[ $term_lang == 'C' ]]; then
+          print -P "\t%F{red}WARNING!%f Your terminal's 'LANG' is set to 'C', which breaks this theme!"
+          print -P "\t%F{red}WARNING!%f Please set your 'LANG' to a UTF-8 language, like 'en_US.UTF-8'"
+          print -P "\t%F{red}WARNING!%f _before_ loading this theme in your \~\.zshrc. Putting"
+          print -P "\t%F{red}WARNING!%f %F{blue}export LANG=\"en_US.UTF-8\"%f at the top of your \~\/.zshrc is sufficient."
+      fi
+  fi
+
+  if ! defined P9K_LEFT_PROMPT_ELEMENTS; then
+    P9K_LEFT_PROMPT_ELEMENTS=(context dir rbenv vcs)
+    P9K_PROMPT_ELEMENTS=("${P9K_LEFT_PROMPT_ELEMENTS[@]}" "${P9K_RIGHT_PROMPT_ELEMENTS[@]}")
+  fi
+  if ! defined P9K_RIGHT_PROMPT_ELEMENTS; then
+    P9K_RIGHT_PROMPT_ELEMENTS=(status root_indicator background_jobs history time)
+    P9K_PROMPT_ELEMENTS=("${P9K_LEFT_PROMPT_ELEMENTS[@]}" "${P9K_RIGHT_PROMPT_ELEMENTS[@]}")
+  fi
+
+  # Display a warning if deprecated segments are in use.
+  typeset -AH deprecated_segments
+  # old => new
+  deprecated_segments=(
+    'longstatus'      'status'
+  )
+  printDeprecationWarning deprecated_segments
+
+  # initialize colors
+  autoload -U colors && colors
+
+  # initialize timing functions
+  zmodload zsh/datetime
+
+  # Initialize math functions
+  zmodload zsh/mathfunc
+
+  # initialize hooks
+  autoload -Uz add-zsh-hook
+
+  # prepare prompts
+  add-zsh-hook precmd p9kPreparePrompts
+  add-zsh-hook preexec p9k_preexec
+
+  # hook into chpwd for bindkey support
+  chpwd_functions=(${chpwd_functions[@]} "p9kChPwd")
+}
+
+###############################################################
+# @description
+#   This function removed PowerLevel9k hooks and resets the prompts.
+##
+# @noargs
+##
+prompt_powerlevel9k_teardown() {
+  add-zsh-hook -D precmd p9k_\*
+  add-zsh-hook -D preexec p9k_\*
+  PROMPT='%m%# '
+  RPROMPT=
+}

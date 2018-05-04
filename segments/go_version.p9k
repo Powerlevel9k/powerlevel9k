@@ -1,0 +1,37 @@
+#!/usr/bin/env zsh
+# vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
+################################################################
+# @title powerlevel9k Segment - Go Version
+# @source https://github.com/bhilburn/powerlevel9k
+##
+# @authors
+#   Ben Hilburn (bhilburn)
+#   Dominik Ritter (dritter)
+##
+
+################################################################
+# Register segment icon
+# Parameters:
+#   name_of_icon  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
+#                                          
+registerIcon "GO_ICON"  'Go'  ''  ''  ''  $'\uE626'
+
+################################################################
+# @description
+#   Display the current Go version.
+##
+# @args
+#   $1 string Alignment - left | right
+#   $2 integer Segment index
+#   $3 boolean Whether the segment should be joined
+##
+prompt_go_version() {
+  local go_version
+  local go_path
+  go_version=$(go version 2>/dev/null | sed -E "s/.*(go[0-9.]*).*/\1/")
+  go_path=$(go env GOPATH 2>/dev/null)
+
+  if [[ -n "$go_version" && "${PWD##$go_path}" != "$PWD" ]]; then
+    p9kPrepareSegment "$0" "" $1 "$2" $3 "green" "grey93" "$go_version" "GO_ICON"
+  fi
+}

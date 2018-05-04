@@ -1,3 +1,50 @@
+## v0.7.0
+- Moved all environment variables from `POWERLEVEL9K_` to `P9K_`
+- `utilities.zsh`
+  - Added OS detection logic to allow use of `$OS` in segments.
+  - Added OS version detection logic for Linux to allow use of `$OS_ID` in segments.
+  - Added Terminal detection logic to allow use of `$TERMINAL` in segments.
+  - Added function `updateEnvironmentVars()` to automatically change user variables for backward compatibility. NOTE: There may be minor issues with arrays, so this still needs review.
+- `icons.zsh`
+  - Only core icons are registered by default.
+  - Each segment is responsible to register its own icons.
+- Moved all segments to their own files under `segments`.
+  - Segments now use `p9kPrepareSegment()` instead of `$1_prompt_segment()`.
+  - Only segments in use are dynamically loaded (including their icons).
+  - The autoloader checks if a file exists before calling it to catch any errors. For `custom_prompt` segments, it checks if it is a variable/definition before checking for a file.
+  - Custom segment files have to be placed in `segments/custom` directory, and have to follow the naming convention.
+    - Segment file should be named `segment_name.p9k`.
+    - Segment definition should be `prompt_custom_segment_name()`.
+- Moved prompt generators to their own files under `generator`.
+  - `default.p9k` is the default (current) generator.
+  - `zsh-async` has been included but is still experimental. To use, set `POWERLEVEL9K_GENERATOR="zsh-async"` in `powerlevel9k.zsh`.
+- Segments and generators use the `*.p9k` extention to ensure that they don't conflict with similarly names `*.zsh` scripts.
+- Segment updates
+  - `vi_mode.p9k`
+    - Rewrote to support both `default` and `zsh-async` generators.
+    - Added support to change cursor shape.
+    - To enable cursor shape change, set `POWERLEVEL9K_CURSOR_SHAPE=true`. On supported terminals, cursor shape can be `box` [], `hbar` _ or `vbar` |.
+    - Changed `zle reset-prompt` to `zle .reset-prompt`.
+  - `prompt_php_version` - Added support for icon.
+  - `rspec_stats` / `symfony2_test` - Both segments call `test_stats.p9k` (which also initializes the icon).
+  - `prompt_java_version` added and `README.md` updated.
+- `README.md`
+  - Added missing items and links to the index.
+  - Rearranged the content to match the index.
+- API created!
+  - Added `API` folder. This contains all the Markdown documentation generated from the function description comments (using `sh2md`) for all of the `*.p9k` files.
+- Internal changes:
+  - All comments have been updated for uniformity and for API generation.
+  - iTerm integration added.
+  - Added `POWERLEVEL9K_PROMPT_SEGMENTS` to allow testing for segment usage in a single variable.
+  - Replaced `$1_prompt_segment()` with `p9kPrepareSegment()` to enable single call from segments irrespective of generator.
+  - Changed all internal functions to use `camelCase`. Exceptions are listed below:
+    - prompt functions still use `prompt_x()` so that we can differentiate between internal (core) functionality and segments.
+    - `prompt_powerlevel9k_setup()`, `prompt_powerlevel9k_teardown()`, and `p9k_preexec()`.
+  - `default.p9k`
+    - Added support for bold segments (already in `zsh-async`).
+    - Added support for the right segment icons to be shown on the left instead (already in `zsh-async`).
+
 ## v0.6.4
 
 - `load` segment now has configurable averages.

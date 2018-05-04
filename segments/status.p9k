@@ -1,0 +1,93 @@
+#!/usr/bin/env zsh
+# vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
+################################################################
+# @title powerlevel9k Segment - Status
+# @source https://github.com/bhilburn/powerlevel9k
+##
+# @authors
+#   Ben Hilburn (bhilburn)
+#   Dominik Ritter (dritter)
+##
+
+################################################################
+# Register segment icon
+# Parameters:
+#   name_of_icon  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
+#                                     ↵         ↵         ↵         ↵         ↵
+registerIcon "CARRIAGE_RETURN_ICON"  $'\u21B5'  $'\u21B5'  $'\u21B5'  $'\u21B5'  $'\u21B5'
+#                        ✔         ✔          ✔                                         
+registerIcon "OK_ICON"  $'\u2714'  $'\u2714'  $'\u2714'  '\u'$CODEPOINT_OF_AWESOME_CHECK  $'\uF00C'
+#                          ✘          ✘         ✘                                          
+registerIcon "FAIL_ICON"  $'\u2718'  $'\u2718'  $'\u2718'  '\u'$CODEPOINT_OF_AWESOME_TIMES  $'\uF00D'
+
+setDefault P9K_STATUS_CROSS false
+setDefault P9K_STATUS_OK true
+setDefault P9K_STATUS_SHOW_PIPESTATUS true
+setDefault P9K_STATUS_HIDE_SIGNAME false
+# old options, retro compatibility
+setDefault P9K_STATUS_VERBOSE true
+setDefault P9K_STATUS_OK_IN_NON_VERBOSE false
+
+################################################################
+# @description
+#   Returns an exit code or status text.
+##
+# @args
+#   $1 integer Exit code
+##
+exit_code_or_status() {
+  local ec=$1
+  if [[ "$P9K_STATUS_HIDE_SIGNAME" = true ]]; then
+    echo "$ec"
+  elif (( ec <= 128 )); then
+    echo "$ec"
+  else
+    local sig=$(( ec - 128 ))
+    local idx=$(( sig + 1 ))
+    echo "SIG${signals[$idx]}(${sig})"
+  fi
+}
+
+################################################################
+# @description
+#   Display an ok icon when no error occur, or hide the segment if option is set to false.
+#   When an error occurs, return the error code, or a cross icon if option is set.
+##
+# @args
+#   $1 string Alignment - left | right
+#   $2 integer Segment index
+#   $3 boolean Whether the segment should be joined
+##
+prompt_status() {
+  local ec_text ec_sum
+  local ec
+
+  if [[ $P9K_STATUS_SHOW_PIPESTATUS == true ]]; then
+    if (( $#RETVALS > 1 )); then
+      ec_text=$(exit_code_or_status "${RETVALS[1]}")
+      ec_sum=${RETVALS[1]}
+      for ec in "${(@)RETVALS[2,-1]}"; do
+        ec_text="${ec_text}|$(exit_code_or_status "$ec")"
+        ec_sum=$(( $ec_sum + $ec ))
+      done
+    else
+      ec_text=$(exit_code_or_status "${RETVAL}")
+      ec_sum=${RETVAL}
+    fi
+  else
+    # We use RETVAL instead of the right-most RETVALS item because
+    # PIPE_FAIL may be set.
+    ec_text=$(exit_code_or_status "${RETVAL}")
+    ec_sum=${RETVAL}
+  fi
+
+  if (( ec_sum > 0 )); then
+    if [[ "$P9K_STATUS_CROSS" == false && "$P9K_STATUS_VERBOSE" == true ]]; then
+      p9kPrepareSegment "$0" "ERROR" $1 "$2" $3 "red" "yellow1" "$ec_text" 'CARRIAGE_RETURN_ICON'
+    else
+      p9kPrepareSegment "$0" "ERROR" $1 "$2" $3 "$DEFAULT_COLOR" "red" "" 'FAIL_ICON'
+    fi
+  elif [[ "$P9K_STATUS_OK" == true ]] && [[ "$P9K_STATUS_VERBOSE" == true || "$P9K_STATUS_OK_IN_NON_VERBOSE" == true ]]; then
+    p9kPrepareSegment "$0" "OK" $1 "$2" $3 "$DEFAULT_COLOR" "green" "" 'OK_ICON'
+  fi
+}

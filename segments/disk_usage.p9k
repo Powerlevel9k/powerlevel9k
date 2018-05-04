@@ -1,0 +1,68 @@
+#!/usr/bin/env zsh
+# vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
+################################################################
+# @title powerlevel9k Segment - Disk Usage
+# @source https://github.com/bhilburn/powerlevel9k
+##
+# @authors
+#   Ben Hilburn (bhilburn)
+#   Dominik Ritter (dritter)
+##
+
+################################################################
+# Register segment icon
+# Parameters:
+#   name_of_icon  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
+#                                                                                           
+registerIcon "DISK_ICON"  $'hdd '  $'\uE1AE '  $'\uF0A0 '  '\u'$CODEPOINT_OF_AWESOME_HDD_O' '  $'\uF0A0'
+
+
+setDefault P9K_DISK_USAGE_ONLY_WARNING false
+setDefault P9K_DISK_USAGE_WARNING_LEVEL 90
+setDefault P9K_DISK_USAGE_CRITICAL_LEVEL 95
+################################################################
+# @description
+#   Display information about the usage level of current partition.
+##
+# @args
+#   $1 string Alignment - left | right
+#   $2 integer Segment index
+#   $3 boolean Whether the segment should be joined
+##
+prompt_disk_usage() {
+  local current_state="unknown"
+  typeset -AH hdd_usage_forecolors
+  hdd_usage_forecolors=(
+    'normal'        'yellow'
+    'warning'       "$DEFAULT_COLOR"
+    'critical'      'white'
+  )
+  typeset -AH hdd_usage_backcolors
+  hdd_usage_backcolors=(
+    'normal'        $DEFAULT_COLOR
+    'warning'       'yellow'
+    'critical'      'red'
+  )
+
+  local disk_usage="${$(\df -P . | sed -n '2p' | awk '{ print $5 }')%%\%}"
+
+  if [ "$disk_usage" -ge "$P9K_DISK_USAGE_WARNING_LEVEL" ]; then
+    current_state='warning'
+    if [ "$disk_usage" -ge "$P9K_DISK_USAGE_CRITICAL_LEVEL" ]; then
+        current_state='critical'
+    fi
+  else
+    if [[ "$P9K_DISK_USAGE_ONLY_WARNING" == true ]]; then
+        current_state=''
+        return
+    fi
+    current_state='normal'
+  fi
+
+  local message="${disk_usage}%%"
+
+  # Draw the prompt_segment
+  if [[ -n $disk_usage ]]; then
+    p9kPrepareSegment "$0" "${(U)current_state}" $1 "$2" $3 "${hdd_usage_backcolors[$current_state]}" "${hdd_usage_forecolors[$current_state]}" "$message" 'DISK_ICON'
+  fi
+}
