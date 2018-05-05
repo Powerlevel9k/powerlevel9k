@@ -439,7 +439,7 @@ function truncatePathFromRight() {
 # @args
 #   $1 string Filename to search for.
 ##
-function upsearch () {
+function upsearch() {
   if [[ "$PWD" == "$HOME" || "$PWD" == "/" ]]; then
     echo "$PWD"
   elif test -e "$1"; then
