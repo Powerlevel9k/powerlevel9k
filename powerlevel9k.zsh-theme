@@ -1123,10 +1123,10 @@ prompt_rspec_stats() {
 
 # Ruby Version Manager information
 prompt_rvm() {
-  local version_and_gemset=${rvm_env_string/ruby-}
-
-  if [[ -n "$version_and_gemset" ]]; then
-    "$1_prompt_segment" "$0" "$2" "240" "$DEFAULT_COLOR" "$version_and_gemset" 'RUBY_ICON'
+  local rvm_prompt
+  rvm_prompt=$(rvm-prompt)
+  if [ "$rvm_prompt" != "" ]; then
+    "$1_prompt_segment" "$0" "240" "$DEFAULT_COLOR" "$rvm_prompt $(print_icon 'RUBY_ICON') "
   fi
 }
 
