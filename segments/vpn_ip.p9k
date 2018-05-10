@@ -4,17 +4,13 @@
 # @title powerlevel9k Segment - VPN IP
 # @source https://github.com/bhilburn/powerlevel9k
 ##
-# @authors
-#   Ben Hilburn (bhilburn)
-#   Dominik Ritter (dritter)
-##
 
 ################################################################
-# Register segment icon
+# Register segment
 # Parameters:
-#   name_of_icon  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
+#   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
 #
-registerIcon "VPN_ICON"  '(vpn)'  '(vpn)'  $'\uF023'  '\u'$CODEPOINT_OF_AWESOME_LOCK  '(vpn)'
+registerSegment "VPN_IP" "" "cyan" "${DEFAULT_COLOR}"  '(vpn)'  '(vpn)'  $'\uF023'  '\u'$CODEPOINT_OF_AWESOME_LOCK  '(vpn)'
 
 setDefault P9K_VPN_IP_INTERFACE "tun"
 ################################################################
@@ -30,6 +26,6 @@ prompt_vpn_ip() {
   for vpn_iface in $(/sbin/ifconfig | grep -e ^"$P9K_VPN_IP_INTERFACE" | cut -d":" -f1)
   do
     ip=$(/sbin/ifconfig "$vpn_iface" | grep -o "inet\s.*" | cut -d' ' -f2)
-    p9kPrepareSegment "$0" "" $1 "$2" $3 "cyan" "$DEFAULT_COLOR" "$ip" 'VPN_ICON'
+    p9kPrepareSegment "$0" "" $1 "$2" $3 "$ip"
   done
 }

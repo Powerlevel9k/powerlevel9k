@@ -4,17 +4,17 @@
 # @title powerlevel9k Segment - Disk Usage
 # @source https://github.com/bhilburn/powerlevel9k
 ##
-# @authors
-#   Ben Hilburn (bhilburn)
-#   Dominik Ritter (dritter)
-##
 
 ################################################################
-# Register segment icon
+# Register segment
 # Parameters:
-#   name_of_icon  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
-#                                                                                           
-registerIcon "DISK_ICON"  $'hdd '  $'\uE1AE '  $'\uF0A0 '  '\u'$CODEPOINT_OF_AWESOME_HDD_O' '  $'\uF0A0'
+#   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
+#                                                                                                                                                
+registerSegment "DISK_USAGE" "NORMAL"   "${DEFAULT_COLOR}"  "green1"            $'hdd '  $'\uE1AE '  $'\uF0A0 '  '\u'$CODEPOINT_OF_AWESOME_HDD_O' '  $'\uF0A0'
+#                                                                                                                                                
+registerSegment "DISK_USAGE" "WARNING"  "yellow"            "${DEFAULT_COLOR}"  $'hdd '  $'\uE1AE '  $'\uF0A0 '  '\u'$CODEPOINT_OF_AWESOME_HDD_O' '  $'\uF0A0'
+#                                                                                                                                                
+registerSegment "DISK_USAGE" "CRITICAL" "red"               "white"             $'hdd '  $'\uE1AE '  $'\uF0A0 '  '\u'$CODEPOINT_OF_AWESOME_HDD_O' '  $'\uF0A0'
 
 
 setDefault P9K_DISK_USAGE_ONLY_WARNING false
@@ -31,19 +31,6 @@ setDefault P9K_DISK_USAGE_CRITICAL_LEVEL 95
 ##
 prompt_disk_usage() {
   local current_state="unknown"
-  typeset -AH hdd_usage_forecolors
-  hdd_usage_forecolors=(
-    'normal'        'yellow'
-    'warning'       "$DEFAULT_COLOR"
-    'critical'      'white'
-  )
-  typeset -AH hdd_usage_backcolors
-  hdd_usage_backcolors=(
-    'normal'        $DEFAULT_COLOR
-    'warning'       'yellow'
-    'critical'      'red'
-  )
-
   local disk_usage="${$(\df -P . | sed -n '2p' | awk '{ print $5 }')%%\%}"
 
   if [ "$disk_usage" -ge "$P9K_DISK_USAGE_WARNING_LEVEL" ]; then
@@ -63,6 +50,6 @@ prompt_disk_usage() {
 
   # Draw the prompt_segment
   if [[ -n $disk_usage ]]; then
-    p9kPrepareSegment "$0" "${(U)current_state}" $1 "$2" $3 "${hdd_usage_backcolors[$current_state]}" "${hdd_usage_forecolors[$current_state]}" "$message" 'DISK_ICON'
+    p9kPrepareSegment "$0" "${current_state}" $1 "$2" $3 "$message"
   fi
 }

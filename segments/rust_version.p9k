@@ -4,17 +4,13 @@
 # @title powerlevel9k Segment - Rust Version
 # @source https://github.com/bhilburn/powerlevel9k
 ##
-# @authors
-#   Ben Hilburn (bhilburn)
-#   Dominik Ritter (dritter)
-##
 
 ################################################################
-# Register segment icon
+# Register segment
 # Parameters:
-#   name_of_icon  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
-#                                                      
-registerIcon "RUST_ICON"  ''  ''  $'\uE6A8'  $'\uE6A8'  $'\uE7A8 '
+#   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
+#                                                                                           
+registerSegment "RUST_VERSION" "" "darkorange" "$DEFAULT_COLOR"  ''  ''  $'\uE6A8'  $'\uE6A8'  $'\uE7A8 '
 
 ################################################################
 # @description
@@ -30,6 +26,6 @@ prompt_rust_version() {
   rust_version=$(rustc --version 2>&1 | grep -oe "^rustc\s*[^ ]*" | grep -o '[0-9.a-z\\\-]*$')
 
   if [[ -n "$rust_version" ]]; then
-    p9kPrepareSegment "$0" "" $1 "$2" $3 "darkorange" "$DEFAULT_COLOR" "Rust $rust_version" 'RUST_ICON'
+    p9kPrepareSegment "$0" "" $1 "$2" $3 "Rust $rust_version"
   fi
 }

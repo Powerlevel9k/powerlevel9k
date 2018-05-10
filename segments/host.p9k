@@ -4,19 +4,15 @@
 # @title powerlevel9k Segment - Host
 # @source https://github.com/bhilburn/powerlevel9k
 ##
-# @authors
-#   Ben Hilburn (bhilburn)
-#   Dominik Ritter (dritter)
-##
 
 ################################################################
-# Register segment icon
+# Register segment
 # Parameters:
-#   name_of_icon  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
-#                                                             
-registerIcon "SSH_ICON"  '(ssh)'  '(ssh)'  '(ssh)'  '(ssh)'  $'\uF489'
-#                                                     
-registerIcon "HOST_ICON"  ''  ''  $'\uF67C'  $'\uF67C' $'\uF67C'
+#   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
+#                                                                                                
+registerSegment "HOST" "REMOTE" "yellow"           "${DEFAULT_COLOR}"  '(ssh)'  '(ssh)'  '(ssh)'  '(ssh)'  $'\uF489'
+#                                                                                                
+registerSegment "HOST" "LOCAL"  "${DEFAULT_COLOR}" "yellow"            ''  ''  $'\uF67C'  $'\uF67C' $'\uF67C'
 
 setDefault P9K_HOST_TEMPLATE "%m"
 ################################################################
@@ -30,23 +26,8 @@ setDefault P9K_HOST_TEMPLATE "%m"
 ##
 prompt_host() {
   local current_state="LOCAL"
-  typeset -AH host_state
   if [[ -n "$SSH_CLIENT" ]] || [[ -n "$SSH_TTY" ]]; then
-    host_state=(
-      "STATE"               "REMOTE"
-      "CONTENT"             "${P9K_HOST_TEMPLATE}"
-      "BACKGROUND_COLOR"    "${DEFAULT_COLOR}"
-      "FOREGROUND_COLOR"    "yellow"
-      "VISUAL_IDENTIFIER"   "SSH_ICON"
-    )
-  else
-    host_state=(
-      "STATE"               "LOCAL"
-      "CONTENT"             "${P9K_HOST_TEMPLATE}"
-      "BACKGROUND_COLOR"    "${DEFAULT_COLOR}"
-      "FOREGROUND_COLOR"    "yellow"
-      "VISUAL_IDENTIFIER"   "HOST_ICON"
-    )
+    current_state="REMOTE"
   fi
-  p9kPrepareSegment "$0" "${(U)host_state[STATE]}" $1 "$2" $3 "${host_state[BACKGROUND_COLOR]}" "${host_state[FOREGROUND_COLOR]}" "${host_state[CONTENT]}" "${host_state[VISUAL_IDENTIFIER]}"
+  p9kPrepareSegment "$0" "${current_state}" $1 "$2" $3 "${P9K_HOST_TEMPLATE}"
 }

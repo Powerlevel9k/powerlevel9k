@@ -4,13 +4,9 @@
 # @title powerlevel9k Segment - RSpec Statistics
 # @source https://github.com/bhilburn/powerlevel9k
 ##
-# @authors
-#   Ben Hilburn (bhilburn)
-#   Dominik Ritter (dritter)
-##
 
 # Source test stats script & icons
-source $p9kDirectory/segments/developer/test_stats.p9k
+source $p9kDirectory/segments/test_stats.p9k
 
 ###############################################################
 # @description
@@ -27,6 +23,6 @@ prompt_rspec_stats() {
     code_amount=$(ls -1 app/**/*.rb | wc -l)
     tests_amount=$(ls -1 spec/**/*.rb | wc -l)
 
-    build_test_stats "$0" "$1" $2 $3 "$code_amount" "$tests_amount" "RSpec" 'TEST_ICON'
+    build_test_stats "$0" "$1" $2 $3 "$code_amount" "$tests_amount" "RSpec"
   fi
 }

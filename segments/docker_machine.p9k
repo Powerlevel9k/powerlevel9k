@@ -4,17 +4,13 @@
 # @title powerlevel9k Segment - Docker Machine
 # @source https://github.com/bhilburn/powerlevel9k
 ##
-# @authors
-#   Ben Hilburn (bhilburn)
-#   Dominik Ritter (dritter)
-##
 
 ################################################################
-# Register segment icon
+# Register segment
 # Parameters:
-#   name_of_icon  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
-#                                                                                    
-registerIcon "SERVER_ICON"  ''  $'\uE895'  $'\uF233'  '\u'$CODEPOINT_OF_AWESOME_SERVER  $'\uF0AE'
+#   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
+#                                                                                                                       
+registerSegment "DOCKER_MACHINE" '' "magenta" "$DEFAULT_COLOR"  ''  $'\uE895'  $'\uF233'  '\u'$CODEPOINT_OF_AWESOME_SERVER  $'\uF0AE'
 
 ################################################################
 # @description
@@ -29,6 +25,6 @@ prompt_docker_machine() {
   local docker_machine="$DOCKER_MACHINE_NAME"
 
   if [[ -n "$docker_machine" ]]; then
-    p9kPrepareSegment "$0" "" $1 "$2" $3 "magenta" "$DEFAULT_COLOR" "$docker_machine" 'SERVER_ICON'
+    p9kPrepareSegment "$0" "" $1 "$2" $3 "$docker_machine"
   fi
 }

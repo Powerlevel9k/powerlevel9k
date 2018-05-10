@@ -4,17 +4,13 @@
 # @title powerlevel9k Segment - Go Version
 # @source https://github.com/bhilburn/powerlevel9k
 ##
-# @authors
-#   Ben Hilburn (bhilburn)
-#   Dominik Ritter (dritter)
-##
 
 ################################################################
-# Register segment icon
+# Register segment
 # Parameters:
-#   name_of_icon  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
-#                                          
-registerIcon "GO_ICON"  'Go'  ''  ''  ''  $'\uE626'
+#   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
+#                                                                  
+registerSegment "GO_VERSION" '' 'green' 'grey93' 'Go'  ''  ''  ''  $'\uE626'
 
 ################################################################
 # @description
@@ -32,6 +28,6 @@ prompt_go_version() {
   go_path=$(go env GOPATH 2>/dev/null)
 
   if [[ -n "$go_version" && "${PWD##$go_path}" != "$PWD" ]]; then
-    p9kPrepareSegment "$0" "" $1 "$2" $3 "green" "grey93" "$go_version" "GO_ICON"
+    p9kPrepareSegment "$0" "" $1 "$2" $3 "$go_version"
   fi
 }

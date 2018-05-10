@@ -4,17 +4,13 @@
 # @title powerlevel9k Segment - AWS
 # @source https://github.com/bhilburn/powerlevel9k
 ##
-# @authors
-#   Ben Hilburn (bhilburn)
-#   Dominik Ritter (dritter)
-##
 
 ################################################################
-# Register segment icon
+# Register segment
 # Parameters:
-#   name_of_icon  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
-#                                                                                     
-registerIcon "AWS_ICON"  'AWS:'  $'\uE895'  $'\uF270'  '\u'$CODEPOINT_OF_AWESOME_SERVER  $'\uF270'
+#   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
+#                                                                                                          
+registerSegment 'AWS' '' red white "AWS_ICON"  'AWS:'  $'\uE895'  $'\uF270'  '\u'$CODEPOINT_OF_AWESOME_SERVER  $'\uF270'
 
 ################################################################
 # @description
@@ -29,6 +25,6 @@ prompt_aws() {
   local aws_profile="${AWS_PROFILE:-$AWS_DEFAULT_PROFILE}"
 
   if [[ -n "$aws_profile" ]]; then
-    p9kPrepareSegment "$0" "" $1 "$2" $3 red white "$aws_profile" 'AWS_ICON'
+    p9kPrepareSegment "$0" "" $1 "$2" $3 "$aws_profile" 'AWS_ICON'
   fi
 }

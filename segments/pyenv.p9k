@@ -4,17 +4,13 @@
 # @title powerlevel9k Segment - Python Environment
 # @source https://github.com/bhilburn/powerlevel9k
 ##
-# @authors
-#   Ben Hilburn (bhilburn)
-#   Dominik Ritter (dritter)
-##
 
 ################################################################
-# Register segment icon
+# Register segment
 # Parameters:
-#   name_of_icon  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
-#                                                   🐍          
-registerIcon "PYTHON_ICON"  ''  $'\ue63c'  $'\ue63c'  $'\U1F40D'  $'\UE73C '
+#   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
+#                                                                         🐍          
+registerSegment "PYENV" "" "blue" "$DEFAULT_COLOR" ''  $'\ue63c'  $'\ue63c'  $'\U1F40D'  $'\UE73C '
 
 ################################################################
 # @description
@@ -30,6 +26,6 @@ registerIcon "PYTHON_ICON"  ''  $'\ue63c'  $'\ue63c'  $'\U1F40D'  $'\UE73C '
 ##
 prompt_pyenv() {
   if [[ -n "$PYENV_VERSION" ]]; then
-    p9kPrepareSegment "$0" "" $1 "$2" $3 "blue" "$DEFAULT_COLOR" "$PYENV_VERSION" 'PYTHON_ICON'
+    p9kPrepareSegment "$0" "" $1 "$2" $3 "$PYENV_VERSION"
   fi
 }

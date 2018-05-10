@@ -4,17 +4,13 @@
 # @title powerlevel9k Segment - Kube Context
 # @source https://github.com/bhilburn/powerlevel9k
 ##
-# @authors
-#   Ben Hilburn (bhilburn)
-#   Dominik Ritter (dritter)
-##
 
 ################################################################
 # Register segment icon
 # Parameters:
 #   name_of_icon  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
-#                                ⎈         ⎈         ⎈         ⎈         ⎈
-registerIcon "KUBERNETES_ICON"  $'\U2388'  $'\U2388'  $'\U2388'  $'\U2388'  $'\U2388'
+#                                                  ⎈         ⎈         ⎈         ⎈         ⎈
+registerSegment "KUBECONTEXT" "" "magenta" "white" $'\U2388'  $'\U2388'  $'\U2388'  $'\U2388'  $'\U2388'
 
 ################################################################
 # @description
@@ -46,6 +42,6 @@ prompt_kubecontext() {
       k8s_final_text="$cur_ctx/$cur_namespace"
     fi
 
-    p9kPrepareSegment "$0" "" $1 "$2" $3 "magenta" "white" "$k8s_final_text" "KUBERNETES_ICON"
+    p9kPrepareSegment "$0" "" $1 "$2" $3 "$k8s_final_text"
   fi
 }

@@ -4,17 +4,16 @@
 # @title powerlevel9k Segment - Battery
 # @source https://github.com/bhilburn/powerlevel9k
 ##
-# @authors
-#   Ben Hilburn (bhilburn)
-#   Dominik Ritter (dritter)
-##
 
 ################################################################
-# Register segment icon
+# Register segment
 # Parameters:
-#   name_of_icon  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
-#                             🔋                    🔋                                                 
-registerIcon "BATTERY_ICON"  $'\U1F50B'  $'\uE894'  $'\U1F50B'  '\U'$CODEPOINT_OF_AWESOME_BATTERY_FULL  $'\UF240 '
+#   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
+#                                                                                         🔋                    🔋                                                 
+registerSegment "BATTERY" "LOW"           "${DEFAULT_COLOR}" "red"                        $'\U1F50B'  $'\uE894'  $'\U1F50B'  '\U'$CODEPOINT_OF_AWESOME_BATTERY_FULL  $'\UF240 '
+registerSegment "BATTERY" "CHARGING"      "${DEFAULT_COLOR}" "yellow"                     $'\U1F50B'  $'\uE894'  $'\U1F50B'  '\U'$CODEPOINT_OF_AWESOME_BATTERY_FULL  $'\UF240 '
+registerSegment "BATTERY" "CHARGED"       "${DEFAULT_COLOR}" "green"                      $'\U1F50B'  $'\uE894'  $'\U1F50B'  '\U'$CODEPOINT_OF_AWESOME_BATTERY_FULL  $'\UF240 '
+registerSegment "BATTERY" "DISCONNECTED"  "${DEFAULT_COLOR}" "${DEFAULT_COLOR_INVERTED}"  $'\U1F50B'  $'\uE894'  $'\U1F50B'  '\U'$CODEPOINT_OF_AWESOME_BATTERY_FULL  $'\UF240 '
 
 ################################################################
 # @description
@@ -29,12 +28,6 @@ prompt_battery() {
   # The battery can have four different states - default to 'unknown'.
   local current_state='unknown'
   typeset -AH battery_states
-  battery_states=(
-    'low'           'red'
-    'charging'      'yellow'
-    'charged'       'green'
-    'disconnected'  "$DEFAULT_COLOR_INVERTED"
-  )
   # Set default values if the user did not configure them
   setDefault P9K_BATTERY_LOW_THRESHOLD  10
 
@@ -119,9 +112,10 @@ prompt_battery() {
     if [[ -n "$P9K_BATTERY_STAGES" ]]; then
       local segment=$(( 100.0 / (${#P9K_BATTERY_STAGES} - 1 ) ))
       if [[ $segment > 1 ]]; then
+        local NEW_ICON
         local offset=$(( ($bat_percent / $segment) + 1 ))
         # check if the stages are in an array or a string
-        [[ "${(t)P9K_BATTERY_STAGES}" =~ "array" ]] && P9K_BATTERY_ICON="$P9K_BATTERY_STAGES[$offset]" || P9K_BATTERY_ICON=${P9K_BATTERY_STAGES:$offset:1}
+        [[ "${(t)P9K_BATTERY_STAGES}" =~ "array" ]] && NEW_ICON="$P9K_BATTERY_STAGES[$offset]" || NEW_ICON="${P9K_BATTERY_STAGES:$offset:1}"
       fi
     fi
 
@@ -129,10 +123,11 @@ prompt_battery() {
     if [[ -n "$P9K_BATTERY_LEVEL_BACKGROUND" ]] && [[ "${(t)P9K_BATTERY_LEVEL_BACKGROUND}" =~ "array" ]]; then
       local segment=$(( 100.0 / (${#P9K_BATTERY_LEVEL_BACKGROUND} - 1 ) ))
       local offset=$(( ($bat_percent / $segment) + 1 ))
-      p9kPrepareSegment "$0" "${(U)current_state}" $1 "$2" $3 "${P9K_BATTERY_LEVEL_BACKGROUND[$offset]}" "${battery_states[$current_state]}" "${message}" "BATTERY_ICON"
+      p9k_bgs[BATTERY_${(U)current_state}]="${P9K_BATTERY_LEVEL_BACKGROUND[$offset]}"
+      p9kPrepareSegment "$0" "${(U)current_state}" $1 "$2" $3 "${message}" "" "$NEW_ICON"
     fi
   else
     # Draw the prompt_segment
-    p9kPrepareSegment "$0" "${(U)current_state}" $1 "$2" $3 "${DEFAULT_COLOR}" "${battery_states[$current_state]}" "${message}" "BATTERY_ICON"
+    p9kPrepareSegment "$0" "${(U)current_state}" $1 "$2" $3 "${message}"
   fi
 }

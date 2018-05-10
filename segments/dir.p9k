@@ -4,23 +4,19 @@
 # @title powerlevel9k Segment - Dir Writable
 # @source https://github.com/bhilburn/powerlevel9k
 ##
-# @authors
-#   Ben Hilburn (bhilburn)
-#   Dominik Ritter (dritter)
-##
 
 ################################################################
-# Register segment icon
+# Register segment
 # Parameters:
-#   name_of_icon  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
-#                                                                                
-registerIcon "HOME_ICON"  ''  $'\uE12C'  $'\uF015'  '\u'$CODEPOINT_OF_AWESOME_HOME  $'\uF015'
-#                                                                                           
-registerIcon "HOME_SUB_ICON"  ''  $'\uE18D'  $'\uF07C'  '\u'$CODEPOINT_OF_AWESOME_FOLDER_OPEN  $'\uF07C'
-#                                                                                      
-registerIcon "FOLDER_ICON"  ''  $'\uE818'  $'\uF115'  '\u'$CODEPOINT_OF_AWESOME_FOLDER_O  $'\uF115'
-#                                                                                        
-registerIcon "LOCK_ICON"  $'\UE0A2'  $'\UE138'  $'\UF023'  '\u'$CODEPOINT_OF_AWESOME_LOCK  $'\UF023'
+#   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
+#                                                                                                                                
+registerSegment "DIR" 'DEFAULT'         "blue" "$DEFAULT_COLOR" ''         $'\uE818'  $'\uF115'  '\u'$CODEPOINT_OF_AWESOME_FOLDER_O  $'\uF115'
+#                                                                                                                            
+registerSegment "DIR" 'HOME'            "blue" "$DEFAULT_COLOR" ''         $'\uE12C'  $'\uF015'  '\u'$CODEPOINT_OF_AWESOME_HOME  $'\uF015'
+#                                                                                                                                   
+registerSegment "DIR" 'HOME_SUBFOLDER'  "blue" "$DEFAULT_COLOR" ''         $'\uE18D'  $'\uF07C'  '\u'$CODEPOINT_OF_AWESOME_FOLDER_OPEN  $'\uF07C'
+#                                                                                                                            
+registerSegment "DIR" 'NOT_WRITABLE'    "blue" "$DEFAULT_COLOR" $'\uE0A2'  $'\uE138'  $'\uF023'  '\u'$CODEPOINT_OF_AWESOME_LOCK  $'\uF023'
 
 setDefault P9K_DIR_PATH_SEPARATOR "/"
 setDefault P9K_HOME_FOLDER_ABBREVIATION "~"
@@ -194,13 +190,6 @@ prompt_dir() {
   # save state of path for highlighting and bold options
   local path_opt=$current_path
 
-  typeset -AH dir_states
-  dir_states=(
-    "DEFAULT"         "FOLDER_ICON"
-    "HOME"            "HOME_ICON"
-    "HOME_SUBFOLDER"  "HOME_SUB_ICON"
-    "NOT_WRITABLE"    "LOCK_ICON"
-  )
   local state_path="$(print -P '%~')"
   local current_state="DEFAULT"
   if [[ "${P9K_DIR_SHOW_WRITABLE}" == true && ! -w "$PWD" ]]; then
@@ -280,5 +269,5 @@ prompt_dir() {
     current_path=${current_path:s/~/$P9K_HOME_FOLDER_ABBREVIATION}
   fi
 
-  p9kPrepareSegment "$0" "${(U)current_state}" $1 "$2" $3 "blue" "$DEFAULT_COLOR" "${current_path}" "${dir_states[$current_state]}"
+  p9kPrepareSegment "$0" "${(U)current_state}" $1 "$2" $3 "${current_path}"
 }

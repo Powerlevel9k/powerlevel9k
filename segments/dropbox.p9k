@@ -4,17 +4,13 @@
 # @title powerlevel9k Segment - Dropbox
 # @source https://github.com/bhilburn/powerlevel9k
 ##
-# @authors
-#   Ben Hilburn (bhilburn)
-#   Dominik Ritter (dritter)
-##
 
 ################################################################
-# Register segment icon
+# Register segment
 # Parameters:
-#   name_of_icon  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
+#   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
 #                                                                                             
-registerIcon "DROPBOX_ICON"  'Dropbox'  $'\UF16B'  $'\UF16B'  '\u'$CODEPOINT_OF_AWESOME_DROPBOX  $'\UF16B'
+registerSegment "DROPBOX" '' 'white' 'blue' 'Dropbox'  $'\UF16B'  $'\UF16B'  '\u'$CODEPOINT_OF_AWESOME_DROPBOX  $'\UF16B'
 
 ################################################################
 # @description
@@ -33,10 +29,10 @@ prompt_dropbox() {
   if [[ "$dropbox_status" != 'unwatched' && "$dropbox_status" != "isn't running!" ]]; then
     # If "up to date", only show the icon
     if [[ "$dropbox_status" =~ 'up to date' ]]; then
-      dropbox_status=""
+      dropbox_status=" "
     fi
 
-    p9kPrepareSegment "$0" "" $1 "$2" $3 "white" "blue" "$dropbox_status" "DROPBOX_ICON"
+    p9kPrepareSegment "$0" "" $1 "$2" $3 "$dropbox_status"
   fi
 
 }

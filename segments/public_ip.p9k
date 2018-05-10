@@ -4,18 +4,14 @@
 # @title powerlevel9k Segment - Public IP
 # @source https://github.com/bhilburn/powerlevel9k
 ##
-# @authors
-#   Ben Hilburn (bhilburn)
-#   Dominik Ritter (dritter)
-##
 
 ################################################################
-# Register segment icon
+# Register segment
 # Parameters:
-#   name_of_icon  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
-#                                                                           
-registerIcon "PUBLIC_IP_ICON"  ''  ''  ''  '\u'$CODEPOINT_OF_AWESOME_GLOBE  $'\UF0AC'
-#                                                                                    
+#   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
+#                                                                                                                      
+registerSegment "PUBLIC_IP" "" "$DEFAULT_COLOR" "$DEFAULT_COLOR_INVERTED"  ''  ''  ''  '\u'$CODEPOINT_OF_AWESOME_GLOBE  $'\UF0AC'
+#                                                                                   
 registerIcon "VPN_ICON"  '(vpn)'  '(vpn)'  $'\uF023'  '\u'$CODEPOINT_OF_AWESOME_LOCK  $'\uF023'
 
 ################################################################
@@ -85,15 +81,18 @@ prompt_public_ip() {
 
   # Draw the prompt segment
   if [[ -n $public_ip ]]; then
-    icon='PUBLIC_IP_ICON'
+    icon='PUBLIC_IP'
+
+    # TODO: Where is this variable actually set?
+
     # Check VPN is on if VPN interface is set
     if [[ -n $P9K_PUBLIC_IP_VPN_INTERFACE ]]; then
       for vpn_iface in $(/sbin/ifconfig | grep -e ^"$P9K_PUBLIC_IP_VPN_INTERFACE" | cut -d":" -f1)
       do
-        icon='VPN_ICON'
+        icon='VPN'
         break
       done
     fi
-    p9kPrepareSegment "$0" "" $1 "$2" $3 "$DEFAULT_COLOR" "$DEFAULT_COLOR_INVERTED" "${public_ip}" "$icon"
+    p9kPrepareSegment "$0" "" $1 "$2" $3 "${public_ip}" "" "$icon"
   fi
 }

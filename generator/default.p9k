@@ -54,19 +54,9 @@ leftPromptSegment() {
   local joined
   segmentShouldBeJoined $current_index $last_left_element_index "$P9K_LEFT_PROMPT_ELEMENTS" && joined=true || joined=false
 
-  # Overwrite given background-color by user defined variable for this segment.
-  local BACKGROUND_USER_VARIABLE=P9K_${(U)1#prompt_}_BACKGROUND
-  local BG_COLOR_MODIFIER=${(P)BACKGROUND_USER_VARIABLE}
-  [[ -n $BG_COLOR_MODIFIER ]] && 3="$BG_COLOR_MODIFIER"
-
-  # Overwrite given foreground-color by user defined variable for this segment.
-  local FOREGROUND_USER_VARIABLE=P9K_${(U)1#prompt_}_FOREGROUND
-  local FG_COLOR_MODIFIER=${(P)FOREGROUND_USER_VARIABLE}
-  [[ -n $FG_COLOR_MODIFIER ]] && 4="$FG_COLOR_MODIFIER"
-
   local bg fg
-  [[ -n "$3" ]] && bg="$(backgroundColor $3)" || bg="$(backgroundColor)"
-  [[ -n "$4" ]] && fg="$(foregroundColor $4)" || fg="$(foregroundColor)"
+  bg="$(backgroundColor $3)"
+  fg="$(foregroundColor $4)"
 
   if [[ $CURRENT_BG != 'NONE' ]] && ! isSameColor "$3" "$CURRENT_BG"; then
     echo -n "$bg%F{$CURRENT_BG}"
@@ -92,6 +82,11 @@ leftPromptSegment() {
 
   local visual_identifier
   [[ -n $7 ]] && visual_identifier="$7"
+
+  # Allow users to overwrite the color for the visual identifier only.
+  local visual_identifier_color_variable="P9K_${STATEFUL_NAME}_VISUAL_IDENTIFIER_COLOR"
+  setDefault "${visual_identifier_color_variable}" "${FOREGROUND}"
+  visual_identifier="%F{${(P)visual_identifier_color_variable}%}${visual_identifier}${fg}"
 
   # Support for bold segment
   local bld_on=""
@@ -154,19 +149,9 @@ rightPromptSegment() {
   local joined
   segmentShouldBeJoined $current_index $last_right_element_index "$P9K_RIGHT_PROMPT_ELEMENTS" && joined=true || joined=false
 
-  # Overwrite given background-color by user defined variable for this segment.
-  local BACKGROUND_USER_VARIABLE=P9K_${(U)1#prompt_}_BACKGROUND
-  local BG_COLOR_MODIFIER=${(P)BACKGROUND_USER_VARIABLE}
-  [[ -n $BG_COLOR_MODIFIER ]] && 3="$BG_COLOR_MODIFIER"
-
-  # Overwrite given foreground-color by user defined variable for this segment.
-  local FOREGROUND_USER_VARIABLE=P9K_${(U)1#prompt_}_FOREGROUND
-  local FG_COLOR_MODIFIER=${(P)FOREGROUND_USER_VARIABLE}
-  [[ -n $FG_COLOR_MODIFIER ]] && 4="$FG_COLOR_MODIFIER"
-
   local bg fg
-  [[ -n "$3" ]] && bg="$(backgroundColor $3)" || bg="$(backgroundColor)"
-  [[ -n "$4" ]] && fg="$(foregroundColor $4)" || fg="$(foregroundColor)"
+  bg="$(backgroundColor $3)"
+  fg="$(foregroundColor $4)"
 
   # If CURRENT_RIGHT_BG is "NONE", we are the first right segment.
   if [[ $joined == false ]] || [[ "$CURRENT_RIGHT_BG" == "NONE" ]]; then
@@ -186,6 +171,11 @@ rightPromptSegment() {
 
   local visual_identifier
   [[ -n "$7" ]] && visual_identifier="$7"
+
+  # Allow users to overwrite the color for the visual identifier only.
+  local visual_identifier_color_variable="P9K_${STATEFUL_NAME}_VISUAL_IDENTIFIER_COLOR"
+  setDefault "${visual_identifier_color_variable}" "${FOREGROUND}"
+  visual_identifier="%F{${(P)visual_identifier_color_variable}%}${visual_identifier}${fg}"
 
   echo -n "${bg}${fg}"
 
@@ -222,16 +212,14 @@ rightPromptSegment() {
 #   (for compatibility with the async generator).
 ##
 # @args
-#   $1 string Name of the function that was originally invoked (mandatory).
-#   $2 string State of the segment.
-#   $3 string Alignment (left|right).
-#   $4 integer Index of the segment.
-#   $5 bool Whether the segment should be joined.
-#   $6 string Background color.
-#   $7 string Foreground color.
-#   $8 string Content of the segment.
-#   $9 string Visual identifier name (must be a key of the icons array).
-#   $10 string The condition - if the segment should be shown (gets evaluated).
+#   $1 string Name of the function that was originally invoked (mandatory)
+#   $2 string State of the segment
+#   $3 string Alignment (left|right)
+#   $4 integer Index of the segment
+#   $5 bool Whether the segment should be joined
+#   $6 string Content of the segment
+#   $7 string The condition - if the segment should be shown (gets evaluated)
+#   $8 string Visual identifier name (must be a key of the icons array) - override icon only
 ##
 p9kPrepareSegment() {
   local NAME="${1}"
@@ -243,38 +231,6 @@ p9kPrepareSegment() {
   local STATEFUL_NAME="${(U)NAME#prompt_}"
   [[ -n "${STATE}" ]] && STATEFUL_NAME="${STATEFUL_NAME}_${(U)STATE}"
 
-  # Overwrite given background-color by user defined variable for this segment.
-  local BACKGROUND_USER_VARIABLE="P9K_${STATEFUL_NAME}_BACKGROUND"
-  local BACKGROUND="${(P)BACKGROUND_USER_VARIABLE}"
-  [[ -z "${BACKGROUND}" ]] && BACKGROUND="${6}"
-
-  # Overwrite given foreground-color by user defined variable for this segment.
-  local FOREGROUND_USER_VARIABLE="P9K_${STATEFUL_NAME}_FOREGROUND"
-  local FOREGROUND="${(P)FOREGROUND_USER_VARIABLE}"
-  [[ -z "${FOREGROUND}" ]] && FOREGROUND="${7}"
-
-  # Overwrite given bold directive by user defined variable for this segment.
-  local BOLD_USER_VARIABLE="P9K_${STATEFUL_NAME}_BOLD"
-  local BOLD="${(P)BOLD_USER_VARIABLE}"
-  [[ -z "${BOLD}" ]] && BOLD=false || BOLD=true
-
-  local CONTENT="${8}"
-
-  local VISUAL_IDENTIFIER
-  if [[ -n "${9}" ]]; then
-    VISUAL_IDENTIFIER="$(printIcon ${9})"
-    if [[ -n "${VISUAL_IDENTIFIER}" ]]; then
-      # Allow users to overwrite the color for the visual identifier only.
-      local visual_identifier_color_variable="P9K_${STATEFUL_NAME}_VISUAL_IDENTIFIER_COLOR"
-      setDefault "${visual_identifier_color_variable}" "${FOREGROUND}"
-      VISUAL_IDENTIFIER="%F{${(P)visual_identifier_color_variable}%}${VISUAL_IDENTIFIER}%f"
-      # Add an whitespace if we print more than just the visual identifier
-      if [[ -n "${CONTENT}" ]]; then
-        [[ "${ALIGNMENT}" == "left" ]] && VISUAL_IDENTIFIER="${VISUAL_IDENTIFIER} "
-        [[ "${ALIGNMENT}" == "right" ]] && VISUAL_IDENTIFIER=" ${VISUAL_IDENTIFIER}"
-      fi
-    fi
-  fi
   # Conditions have three layers:
   # 1. All segments should not print
   #    a segment, if they provide no
@@ -291,18 +247,40 @@ p9kPrepareSegment() {
   local SEGMENT_CONDITION="P9K_${STATEFUL_NAME}_CONDITION"
   if defined "${SEGMENT_CONDITION}"; then
     CONDITION="${(P)SEGMENT_CONDITION}"
-  elif [[ -n "${10}" ]]; then
-    CONDITION="${10}"
+  elif [[ -n "${7}" ]]; then
+    CONDITION="${7}"
   else
-    CONDITION='[[ -n "${8}" ]]'
+    CONDITION='[[ -n "${6}" ]]'
   fi
   # Precompile condition.
   eval "${CONDITION}" && CONDITION=true || CONDITION=false
+  if ! ${CONDITION}; then
+    continue
+  fi
 
-#  if ! ${CONDITION}; then
-#    continue
-#  fi
-  [[ $CONDITION == true ]] && "${ALIGNMENT}PromptSegment" "${NAME}" "${INDEX}" "${BACKGROUND}" "${FOREGROUND}" "${BOLD}" "${CONTENT}" "${VISUAL_IDENTIFIER}"
+  local BACKGROUND="${p9k_bgs[$STATEFUL_NAME]}"
+  local FOREGROUND="${p9k_fgs[$STATEFUL_NAME]}"
+
+  # Overwrite given bold directive by user defined variable for this segment.
+  local BOLD_USER_VARIABLE="P9K_${STATEFUL_NAME}_BOLD"
+  local BOLD="${(P)BOLD_USER_VARIABLE}"
+  [[ -z "${BOLD}" ]] && BOLD=false || BOLD=true
+
+  local CONTENT="${6}"
+
+  local VISUAL_IDENTIFIER
+  if [[ -z "${8}" ]]; then
+    VISUAL_IDENTIFIER="${p9k_icons[$STATEFUL_NAME]}"
+  else
+
+    [[ "${(U)8[1]}" =~ '[A-Z]' ]] && VISUAL_IDENTIFIER="$(printIcon ${8})" || VISUAL_IDENTIFIER="$(echo -n ${8})"
+  fi
+  # Add an whitespace if we print more than just the visual identifier
+  if [[ -n "${CONTENT}" ]]; then
+    [[ "${ALIGNMENT}" == "left" ]] && VISUAL_IDENTIFIER="${VISUAL_IDENTIFIER} "
+    [[ "${ALIGNMENT}" == "right" ]] && VISUAL_IDENTIFIER=" ${VISUAL_IDENTIFIER}"
+  fi
+  "${ALIGNMENT}PromptSegment" "${NAME}" "${INDEX}" "${BACKGROUND}" "${FOREGROUND}" "${BOLD}" "${CONTENT}" "${VISUAL_IDENTIFIER}"
 }
 
 ################################################################

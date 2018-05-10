@@ -4,10 +4,6 @@
 # @title powerlevel9k Segment - VCS
 # @source https://github.com/bhilburn/powerlevel9k
 ##
-# @authors
-#   Ben Hilburn (bhilburn)
-#   Dominik Ritter (dritter)
-##
 
 ################################################################
 # From: http://zsh.sourceforge.net/Doc/Release/User-Contributions.html#Version-Control-Information
@@ -65,57 +61,64 @@
 # If you want to use the %b (bold off) prompt expansion in formats, which expands %b itself, use %%b. That will cause the vcs_info expansion to replace %%b with %b, so that zsh’s prompt expansion mechanism can handle it. Similarly, to hand down %b from branchformat, use %%%%b. Sorry for this inconvenience, but it cannot be easily avoided. Luckily we do not clash with a lot of prompt expansions and this only needs to be done for those.
 ################################################################
 
+################################################################
+# Register segment
+# Parameters:
+#   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
+registerSegment  "VCS" "CLEAN"     "green"  "${DEFAULT_COLOR}" ''  ''  ''  ''  ''
+registerSegment  "VCS" "MODIFIED"  "yellow" "${DEFAULT_COLOR}" ''  ''  ''  ''  ''
+registerSegment  "VCS" "UNTRACKED" "green"  "${DEFAULT_COLOR}" ''  ''  ''  ''  ''
 
 ################################################################
 # Register segment icon
 # Parameters:
 #   name_of_icon  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
-#                                                                                                     
-registerIcon "VCS_UNTRACKED_ICON"  '?'  $'\uE16C'  $'\uF059'  '\u'$CODEPOINT_OF_AWESOME_QUESTION_CIRCLE  $'\uF059'
-#                                  ●                                                                          
-registerIcon "VCS_UNSTAGED_ICON"  $'\u25CF'  $'\uE17C'  $'\uF06A'  '\u'$CODEPOINT_OF_AWESOME_EXCLAMATION_CIRCLE  $'\uF06A'
-#                                ✚                                                                   
-registerIcon "VCS_STAGED_ICON"  $'\u271A'  $'\uE168'  $'\uF055'  '\u'$CODEPOINT_OF_AWESOME_PLUS_CIRCLE  $'\uF055'
-#                               ⍟                                                                  
-registerIcon "VCS_STASH_ICON"  $'\u235F'  $'\uE133 '  $'\uF01C '  '\u'$CODEPOINT_OF_AWESOME_INBOX' '  $'\uF01C '
-#                                          ↓                                                                              
-registerIcon "VCS_INCOMING_CHANGES_ICON"  $'\u2193'  $'\uE131 '  $'\uF01A '  '\u'$CODEPOINT_OF_AWESOME_ARROW_CIRCLE_DOWN' '  $'\uF01A '
-#                                          ↑                                                                            
-registerIcon "VCS_OUTGOING_CHANGES_ICON"  $'\u2191'  $'\uE132 '  $'\uF01B '  '\u'$CODEPOINT_OF_AWESOME_ARROW_CIRCLE_UP' '  $'\uF01B '
-#                                                                                       
-registerIcon "VCS_TAG_ICON"  ''  $'\uE817 '  $'\uF217 '  '\u'$CODEPOINT_OF_AWESOME_TAG' '  $'\uF02B '
-#                                  ☿                                                                 
-registerIcon "VCS_BOOKMARK_ICON"  $'\u263F'  $'\uE87B'  $'\uF27B'  '\u'$CODEPOINT_OF_OCTICONS_BOOKMARK  $'\uF461 '
-#                                                                                                  
-registerIcon "VCS_COMMIT_ICON"  ''  $'\uE821 '  $'\uF221 '  '\u'$CODEPOINT_OF_OCTICONS_GIT_COMMIT' '  $'\uE729 '
+#                                                                                                                         
+registerIcon "VCS_UNTRACKED_ICON"         '?'         $'\uE16C'   $'\uF059'   '\u'$CODEPOINT_OF_AWESOME_QUESTION_CIRCLE       $'\uF059'
+#                                         ●                                                                               
+registerIcon "VCS_UNSTAGED_ICON"          $'\u25CF'   $'\uE17C'   $'\uF06A'   '\u'$CODEPOINT_OF_AWESOME_EXCLAMATION_CIRCLE    $'\uF06A'
+#                                         ✚                                                                               
+registerIcon "VCS_STAGED_ICON"            $'\u271A'   $'\uE168'   $'\uF055'   '\u'$CODEPOINT_OF_AWESOME_PLUS_CIRCLE           $'\uF055'
+#                                         ⍟                                                                               
+registerIcon "VCS_STASH_ICON"             $'\u235F'   $'\uE133 '  $'\uF01C '  '\u'$CODEPOINT_OF_AWESOME_INBOX' '              $'\uF01C '
+#                                         ↓                                                                               
+registerIcon "VCS_INCOMING_CHANGES_ICON"  $'\u2193'   $'\uE131 '  $'\uF01A '  '\u'$CODEPOINT_OF_AWESOME_ARROW_CIRCLE_DOWN' '  $'\uF01A '
+#                                         ↑                                                                               
+registerIcon "VCS_OUTGOING_CHANGES_ICON"  $'\u2191'   $'\uE132 '  $'\uF01B '  '\u'$CODEPOINT_OF_AWESOME_ARROW_CIRCLE_UP' '    $'\uF01B '
+#                                                                                                                         
+registerIcon "VCS_TAG_ICON"               ''          $'\uE817 '  $'\uF217 '  '\u'$CODEPOINT_OF_AWESOME_TAG' '                $'\uF02B '
+#                                         ☿                                                                               
+registerIcon "VCS_BOOKMARK_ICON"          $'\u263F'   $'\uE87B'   $'\uF27B'   '\u'$CODEPOINT_OF_OCTICONS_BOOKMARK             $'\uF461 '
+#                                                                                                                         
+registerIcon "VCS_COMMIT_ICON"            ''          $'\uE821 '  $'\uF221 '  '\u'$CODEPOINT_OF_OCTICONS_GIT_COMMIT' '        $'\uE729 '
 
 # Hide branch icon if user wants it hidden
 if [[ "$P9K_HIDE_BRANCH_ICON" == true ]]; then
   icons[VCS_BRANCH_ICON]=''
 else
   if [[ $P9K_MODE != 'compatible' ]]; then
-    #                                                                                                          
-    registerIcon "VCS_BRANCH_ICON"  $'\uE0A0 '  $'\uE220 '  $'\uF126 '  '\u'$CODEPOINT_OF_OCTICONS_GIT_BRANCH' '  $'\uF126 '
+    #                                                                                                                     
+    registerIcon "VCS_BRANCH_ICON"        $'\uE0A0 '  $'\uE220 '  $'\uF126 '  '\u'$CODEPOINT_OF_OCTICONS_GIT_BRANCH' '        $'\uF126 '
   else
-    #                                                                                                               
-    registerIcon "VCS_BRANCH_ICON"  "@ "  $'\uE220 '  $'\uF126 '  '\u'$CODEPOINT_OF_OCTICONS_GIT_BRANCH' '  $'\uF126 '
+    #                                                                                                                      
+    registerIcon "VCS_BRANCH_ICON"        "@ "        $'\uE220 '  $'\uF126 '  '\u'$CODEPOINT_OF_OCTICONS_GIT_BRANCH' '        $'\uF126 '
   fi
 fi
 
-#                                       →         →         →                                              
-registerIcon "VCS_REMOTE_BRANCH_ICON"  $'\u2192'  $'\u2192'  $'\u2192'  '\u'$CODEPOINT_OF_OCTICONS_REPO_PUSH  $'\uE728 '
-#                                                                                       
-registerIcon "VCS_GIT_ICON"  ''  $'\uE20E '  $'\uF1D3 '  '\u'$CODEPOINT_OF_AWESOME_GIT' '  $'\uF1D3 '
-#                                                                                                      
-registerIcon "VCS_GIT_GITHUB_ICON"  ''  $'\uE20E '  $'\uF113 '  '\u'$CODEPOINT_OF_AWESOME_GITHUB_ALT' '  $'\uF113 '
-#                                                                                                        
-registerIcon "VCS_GIT_BITBUCKET_ICON"  ''  $'\uE20E '  $'\uF171 '  '\u'$CODEPOINT_OF_AWESOME_BITBUCKET' '  $'\uE703 '
-#                                                                                                  
-registerIcon "VCS_GIT_GITLAB_ICON"  ''  $'\uE20E '  $'\uF296 '  '\u'$CODEPOINT_OF_AWESOME_GITLAB' '  $'\uF296 '
-#                                                                                        
-registerIcon "VCS_HG_ICON"  ''  $'\uE1C3 '  $'\uF0C3 '  '\u'$CODEPOINT_OF_AWESOME_FLASK' '  $'\uF0C3 '
-#                                                               
-registerIcon "VCS_SVN_ICON"  ''  '(svn) '  '(svn) '  '(svn) '  $'\uE72D '
+#                                         →          →          →                                                         
+registerIcon "VCS_REMOTE_BRANCH_ICON"     $'\u2192'   $'\u2192'   $'\u2192'   '\u'$CODEPOINT_OF_OCTICONS_REPO_PUSH            $'\uE728 '
+#                                                                                                                         
+registerIcon "VCS_GIT_ICON"               ''          $'\uE20E '  $'\uF1D3 '  '\u'$CODEPOINT_OF_AWESOME_GIT' '                $'\uF1D3 '
+#                                                                                                                          
+registerIcon "VCS_GIT_GITHUB_ICON"        ''          $'\uE20E '  $'\uF113 '  '\u'$CODEPOINT_OF_AWESOME_GITHUB_ALT' '         $'\uF113 '
+#                                                                                                                          
+registerIcon "VCS_GIT_BITBUCKET_ICON"     ''          $'\uE20E '  $'\uF171 '  '\u'$CODEPOINT_OF_AWESOME_BITBUCKET' '          $'\uE703 '
+#                                                                                                                          
+registerIcon "VCS_GIT_GITLAB_ICON"        ''          $'\uE20E '  $'\uF296 '  '\u'$CODEPOINT_OF_AWESOME_GITLAB' '             $'\uF296 '
+#                                                                                                                         
+registerIcon "VCS_HG_ICON"                ''          $'\uE1C3 '  $'\uF0C3 '  '\u'$CODEPOINT_OF_AWESOME_FLASK' '              $'\uF0C3 '
+#                                                                                                                             
+registerIcon "VCS_SVN_ICON"               ''          '(svn) '    '(svn) '    '(svn) '                                        $'\uE72D '
 
 ################################################################
 # Source VCS_INFO hooks / helper functions
@@ -148,14 +151,6 @@ p9k_vcs_init() {
 
   VCS_WORKDIR_DIRTY=false
   VCS_WORKDIR_HALF_DIRTY=false
-
-  # The vcs segment can have three different states - defaults to 'clean'.
-  typeset -gAH vcs_states
-  vcs_states=(
-    'clean'         'green'
-    'modified'      'yellow'
-    'untracked'     'green'
-  )
 
   VCS_CHANGESET_PREFIX=''
   if [[ "$P9K_SHOW_CHANGESET" == true ]]; then
@@ -247,8 +242,9 @@ prompt_vcs() {
         current_state='clean'
       fi
     fi
+    p9kPrepareSegment $0 ${(U)current_state} $1 "$2" $3 "$vcs_prompt"
   fi
-  p9kPrepareSegment $0 ${(U)current_state} $1 "$2" $3 "${vcs_states[$current_state]}" "$DEFAULT_COLOR" "$vcs_prompt" "$vcs_visual_identifier" "[[ -n '$vcs_info_msg_0_' ]]"
+#  p9kPrepareSegment $0 ${(U)current_state} $1 "$2" $3 "$vcs_prompt" "[[ -n '$vcs_info_msg_0_' ]]"
 }
 
 p9k_vcs_init

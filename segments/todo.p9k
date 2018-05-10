@@ -4,17 +4,13 @@
 # @title powerlevel9k Segment - ToDo
 # @source https://github.com/bhilburn/powerlevel9k
 ##
-# @authors
-#   Ben Hilburn (bhilburn)
-#   Dominik Ritter (dritter)
-##
 
 ################################################################
-# Register segment icon
+# Register segment
 # Parameters:
-#   name_of_icon  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
+#   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
 #                          ☑          ☑          ☑                                                   
-registerIcon "TODO_ICON"  $'\u2611'  $'\u2611'  $'\u2611'  '\u'$CODEPOINT_OF_AWESOME_CHECK_SQUARE_O  $'\uF133'
+registerSegment "TODO" "" "grey50" "${DEFAULT_COLOR}"  $'\u2611'  $'\u2611'  $'\u2611'  '\u'$CODEPOINT_OF_AWESOME_CHECK_SQUARE_O  $'\uF133'
 
 ################################################################
 # @description
@@ -29,7 +25,7 @@ prompt_todo() {
   if $(hash todo.sh 2>&-); then
     count=$(todo.sh ls | egrep "TODO: [0-9]+ of ([0-9]+) tasks shown" | awk '{ print $4 }')
     if [[ "$count" = <-> ]]; then
-      p9kPrepareSegment "$0" "" $1 "$2" $3 "grey50" "$DEFAULT_COLOR" "$count" 'TODO_ICON'
+      p9kPrepareSegment "$0" "" $1 "$2" $3 "$DEFAULT_COLOR" "$count"
     fi
   fi
 }
