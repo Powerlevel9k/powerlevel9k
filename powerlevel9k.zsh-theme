@@ -488,15 +488,19 @@ prompt_battery() {
     fi
   fi
 
-  # override the default color if we are using a color level array
-  if [[ -n "$POWERLEVEL9K_BATTERY_LEVEL_BACKGROUND" ]] && [[ "${(t)POWERLEVEL9K_BATTERY_LEVEL_BACKGROUND}" =~ "array" ]]; then
-    local segment=$(( 100.0 / (${#POWERLEVEL9K_BATTERY_LEVEL_BACKGROUND} - 1 ) ))
-    local offset=$(( ($bat_percent / $segment) + 1 ))
-    "$1_prompt_segment" "$0_${current_state}" "$2" "${POWERLEVEL9K_BATTERY_LEVEL_BACKGROUND[$offset]}" "${battery_states[$current_state]}" "${message}" "BATTERY_ICON"
-  else
-    # Draw the prompt_segment
-    "$1_prompt_segment" "$0_${current_state}" "$2" "${DEFAULT_COLOR}" "${battery_states[$current_state]}" "${message}" "BATTERY_ICON"
+  if [[ -v "POWERLEVEL9K_BATTERY_HIDE_ABOVE_THRESHOLD" && "${bat_percent}" -ge $POWERLEVEL9K_BATTERY_HIDE_ABOVE_THRESHOLD ]]; then
+    return
   fi
+
+    # override the default color if we are using a color level array
+    if [[ -n "$POWERLEVEL9K_BATTERY_LEVEL_BACKGROUND" ]] && [[ "${(t)POWERLEVEL9K_BATTERY_LEVEL_BACKGROUND}" =~ "array" ]]; then
+      local segment=$(( 100.0 / (${#POWERLEVEL9K_BATTERY_LEVEL_BACKGROUND} - 1 ) ))
+      local offset=$(( ($bat_percent / $segment) + 1 ))
+      "$1_prompt_segment" "$0_${current_state}" "$2" "${POWERLEVEL9K_BATTERY_LEVEL_BACKGROUND[$offset]}" "${battery_states[$current_state]}" "${message}" "BATTERY_ICON"
+    else
+      # Draw the prompt_segment
+      "$1_prompt_segment" "$0_${current_state}" "$2" "${DEFAULT_COLOR}" "${battery_states[$current_state]}" "${message}" "BATTERY_ICON"
+    fi
 }
 
 ################################################################
@@ -637,14 +641,14 @@ prompt_user() {
         "FOREGROUND_COLOR"    "yellow"
         "VISUAL_IDENTIFIER"   "ROOT_ICON"
       )
-    elif sudo -n true 2>/dev/null; then 
-      user_state=( 
-        "STATE"               "SUDO" 
-        "CONTENT"             "${POWERLEVEL9K_USER_TEMPLATE}" 
-        "BACKGROUND_COLOR"    "${DEFAULT_COLOR}" 
-        "FOREGROUND_COLOR"    "yellow" 
-        "VISUAL_IDENTIFIER"   "SUDO_ICON" 
-      ) 
+    elif sudo -n true 2>/dev/null; then
+      user_state=(
+        "STATE"               "SUDO"
+        "CONTENT"             "${POWERLEVEL9K_USER_TEMPLATE}"
+        "BACKGROUND_COLOR"    "${DEFAULT_COLOR}"
+        "FOREGROUND_COLOR"    "yellow"
+        "VISUAL_IDENTIFIER"   "SUDO_ICON"
+      )
     else
       user_state=(
         "STATE"               "DEFAULT"
@@ -909,10 +913,13 @@ prompt_dir() {
     "HOME"            "HOME_ICON"
     "HOME_SUBFOLDER"  "HOME_SUB_ICON"
     "NOT_WRITABLE"    "LOCK_ICON"
+    "ETC"             "ETC_ICON"
   )
   local state_path="$(print -P '%~')"
   local current_state="DEFAULT"
-  if [[ "${POWERLEVEL9K_DIR_SHOW_WRITABLE}" == true && ! -w "$PWD" ]]; then
+  if [[ $state_path == '/etc'* ]]; then
+    current_state='ETC'
+  elif [[ "${POWERLEVEL9K_DIR_SHOW_WRITABLE}" == true && ! -w "$PWD" ]]; then
     current_state="NOT_WRITABLE"
   elif [[ $state_path == '~' ]]; then
     current_state="HOME"
@@ -1570,6 +1577,10 @@ prompt_virtualenv() {
   local virtualenv_path="$VIRTUAL_ENV"
   if [[ -n "$virtualenv_path" && "$VIRTUAL_ENV_DISABLE_PROMPT" != true ]]; then
     "$1_prompt_segment" "$0" "$2" "blue" "$DEFAULT_COLOR" "$(basename "$virtualenv_path")" 'PYTHON_ICON'
+
+    if [[ -v "POWERLEVEL9K_VIRTUALENV_SHOW_VERSION" && "$POWERLEVEL9K_VIRTUALENV_SHOW_VERSION" == true ]]; then
+      "$1_prompt_segment" "$0" "$2" "blue" "$DEFAULT_COLOR" "$(python -c 'import sys; version=sys.version_info[:3]; print("{0}.{1}.{2}".format(*version))')"
+    fi
   fi
 }
 
