@@ -47,8 +47,12 @@ setDefault P9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS " "
 #   $5 bool Whether the segment should be bold
 #   $6 string Content of the segment
 #   $7 string Visual identifier name (must be a key of the icons array)
+#   $8 boolean Whether the segment should be printed or not
 ##
 leftPromptSegment() {
+  # Check the condition and skip if not true
+  [[ "${(L)8}" != "true" ]] && return
+
   local current_index=$2
   # Check if the segment should be joined with the previous one
   local joined
@@ -138,11 +142,15 @@ setDefault P9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS " "
 #   $5 bool Whether the segment should be bold
 #   $6 string Content of the segment
 #   $7 string Visual identifier (must be a key of the icons array)
+#   $8 boolean Whether the segment should be printed or not
 ##
 # @notes
 #   No ending for the right prompt segment is needed (unlike the left prompt, above).
 ##
 rightPromptSegment() {
+  # Check the condition and skip if not true
+  [[ "${(L)8}" != "true" ]] && return
+
   local current_index=$2
 
   # Check if the segment should be joined with the previous one
@@ -179,8 +187,8 @@ rightPromptSegment() {
 
   echo -n "${bg}${fg}"
 
-  # Print whitespace only if segment is not joined or first right segment
-  [[ $joined == false ]] || [[ "$CURRENT_RIGHT_BG" == "NONE" ]] && echo -n "${P9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS}"
+  # Print whitespace only if segment is not joined or first right segment, and icon not on the left
+  ( [[ $joined == false ]] || [[ "$CURRENT_RIGHT_BG" == "NONE" ]] ) && [[ "${(L)P9K_RPROMPT_ICON_LEFT}" != "true" ]] && echo -n "${P9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS}"
 
   # Support for bold segment
   local bld_on=""
@@ -192,14 +200,14 @@ rightPromptSegment() {
 
   if [[ ${(L)P9K_RPROMPT_ICON_LEFT} == "true" ]]; then # Visual identifier before content
     # Print the visual identifier
-    echo -n "${visual_identifier}${P9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS}"
+    echo -n "${visual_identifier}"
     # Print segment content if there is any
     [[ -n "$6" ]] && echo -n "${bld_on}${6}${bld_off}${P9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS}%f"
   else
     # Print segment content if there is any
     [[ -n "$6" ]] && echo -n "${bld_on}${6}${bld_off}"
     # Print the visual identifier
-    echo -n "${visual_identifier}${P9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS}%f"
+    echo -n "${visual_identifier}%f"
   fi
 
   CURRENT_RIGHT_BG=$3
@@ -219,44 +227,16 @@ rightPromptSegment() {
 #   $5 bool Whether the segment should be joined
 #   $6 string Content of the segment
 #   $7 string The condition - if the segment should be shown (gets evaluated)
-#   $8 string Visual identifier name (must be a key of the icons array) - override icon only
+#   $8 string Visual identifier override
 ##
 p9kPrepareSegment() {
-  local NAME="${1}"
-  local STATE="${2}"
-  local ALIGNMENT="${3}"
-  local INDEX="${4}"
-  local JOINED="${5}"
+  local NAME="${(U)1}" STATE="${(U)2}" ALIGNMENT="${3}" INDEX="${4}" JOINED="${5}" CONTENT="${6}" USER_CONDITION="${7}"
 
-  local STATEFUL_NAME="${(U)NAME#prompt_}"
-  [[ -n "${STATE}" ]] && STATEFUL_NAME="${STATEFUL_NAME}_${(U)STATE}"
+  local STATEFUL_NAME="${(U)NAME#PROMPT_}"
+  [[ -n "${STATE}" ]] && STATEFUL_NAME="${STATEFUL_NAME}_${STATE}"
 
-  # Conditions have three layers:
-  # 1. All segments should not print
-  #    a segment, if they provide no
-  #    content (default condition).
-  # 2. All segments could define a
-  #    default condition on their
-  #    own, overriding the previous
-  #    one.
-  # 3. Users could set a condition
-  #    for each segment. This is
-  #    the trump card, and has
-  #    highest precedence.
-  local CONDITION
-  local SEGMENT_CONDITION="P9K_${STATEFUL_NAME}_CONDITION"
-  if defined "${SEGMENT_CONDITION}"; then
-    CONDITION="${(P)SEGMENT_CONDITION}"
-  elif [[ -n "${7}" ]]; then
-    CONDITION="${7}"
-  else
-    CONDITION='[[ -n "${6}" ]]'
-  fi
   # Precompile condition.
-  eval "${CONDITION}" && CONDITION=true || CONDITION=false
-  if ! ${CONDITION}; then
-    continue
-  fi
+  segmentShouldBePrinted "${STATEFUL_NAME}" "${USER_CONDITION}" "${CONTENT}" && CONDITION=true || CONDITION=false
 
   local BACKGROUND="${p9k_bgs[$STATEFUL_NAME]}"
   local FOREGROUND="${p9k_fgs[$STATEFUL_NAME]}"
@@ -266,13 +246,11 @@ p9kPrepareSegment() {
   local BOLD="${(P)BOLD_USER_VARIABLE}"
   [[ -z "${BOLD}" ]] && BOLD=false || BOLD=true
 
-  local CONTENT="${6}"
-
   local VISUAL_IDENTIFIER
   if [[ -z "${8}" ]]; then
     VISUAL_IDENTIFIER="${p9k_icons[$STATEFUL_NAME]}"
   else
-
+    # test if the VISUAL_IDENTIFIER string is a ICON NAME otherwise treat it as a curston string
     [[ "${(U)8[1]}" =~ '[A-Z]' ]] && VISUAL_IDENTIFIER="$(printIcon ${8})" || VISUAL_IDENTIFIER="$(echo -n ${8})"
   fi
   # Add an whitespace if we print more than just the visual identifier
@@ -280,7 +258,7 @@ p9kPrepareSegment() {
     [[ "${ALIGNMENT}" == "left" ]] && VISUAL_IDENTIFIER="${VISUAL_IDENTIFIER} "
     [[ "${ALIGNMENT}" == "right" ]] && VISUAL_IDENTIFIER=" ${VISUAL_IDENTIFIER}"
   fi
-  "${ALIGNMENT}PromptSegment" "${NAME}" "${INDEX}" "${BACKGROUND}" "${FOREGROUND}" "${BOLD}" "${CONTENT}" "${VISUAL_IDENTIFIER}"
+  "${ALIGNMENT}PromptSegment" "${NAME}" "${INDEX}" "${BACKGROUND}" "${FOREGROUND}" "${BOLD}" "${CONTENT}" "${VISUAL_IDENTIFIER}" "${CONDITION}"
 }
 
 ################################################################
