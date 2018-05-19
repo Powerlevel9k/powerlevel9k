@@ -110,28 +110,28 @@ updateEnvironmentVars() {
   local envVar var varName origVar newVar newVal
   local oldVarsFound=false
   for envVar in $(declare); do
-    if [[ $envVar =~ "POWERLEVEL9K_" ]]; then
+    if [[ "${envVar}" =~ "POWERLEVEL9K_" ]]; then
       oldVarsFound=true
-      var=$(declare -p ${envVar})
-      varName=${${var##*POWERLEVEL9K_}%=*}
+      var="$(declare -p ${envVar})"
+      varName="${${var##*POWERLEVEL9K_}%=*}"
       origVar="POWERLEVEL9K_${varName}"
       newVar="P9K_${varName}"
-      if [[ ${var[13]} == "a" ]]; then # array variable
-        newVal=${${var##*\(}%\)*}
-        case ${(U)varName} in
+      if [[ "${var[13]}" == "a" ]]; then # array variable
+        newVal="${${var##*\(}%\)*}"
+        case "${(U)varName}" in
           BATTERY_LEVEL_BACKGROUND) typeset -g -a P9K_BATTERY_LEVEL_BACKGROUND=(${(s: :)newVal});;
           BATTERY_STAGES)
-            local newVal=${${(P)origVar}//\'/}
+            local newVal="${${(P)origVar}//\'/}"
             typeset -g -a P9K_BATTERY_STAGES=( ${(s: :)newVal} )
           ;;
           LEFT_PROMPT_ELEMENTS)     typeset -g -a P9K_LEFT_PROMPT_ELEMENTS=(${(s: :)newVal});;
           RIGHT_PROMPT_ELEMENTS)    typeset -g -a P9K_RIGHT_PROMPT_ELEMENTS=(${(s: :)newVal});;
         esac
       else
-        newVal=${(P)origVar}
+        newVal="${(P)origVar}"
         typeset -g $newVar=$newVal
       fi
-      unset $origVar
+      unset "${origVar}"
     fi
   done
   [[ $P9K_IGNORE_VAR_WARNING == true ]] && oldVarsFound=false # disable warning if user sets P9K_IGNORE_VAR_WARNING to true.
@@ -278,8 +278,13 @@ P9K_PROMPT_ELEMENTS=("${P9K_LEFT_PROMPT_ELEMENTS[@]}" "${P9K_RIGHT_PROMPT_ELEMEN
 #   $1 string The segment to be tested.
 ##
 segmentInUse() {
-  local key=$1
-  [[ -n "${P9K_PROMPT_ELEMENTS[(r)$key]}" ]] && return 0 || return 1
+  local key="${1}"
+  [[ -n "${P9K_PROMPT_ELEMENTS[(r)$key]}" ]] && return 0
+  # Check for joined segments
+  key="${key}_joined"
+  [[ -n "${P9K_PROMPT_ELEMENTS[(r)$key]}" ]] && return 0
+  # Default: not found
+  return 1
 }
 
 ###############################################################
@@ -306,7 +311,7 @@ printDeprecationWarning() {
 #   A helper function to determine if a segment should be
 #   joined or promoted to a full one.
 ##
-# args
+# @args
 #   $1 integer The array index of the current segment.
 #   $2 integer The array index of the last printed segment.
 #   $3 array The array of segments of the left or right prompt.
@@ -352,6 +357,44 @@ function segmentShouldBeJoined() {
   else
     return 1
   fi
+}
+
+###############################################################
+# @description
+#   A helper function to determine if a segment should be
+#   printed or not.
+#
+#   Conditions have three layers:
+#     1. No segment should print if they provide no
+#        content (default condition).
+#     2. Segments can define a default condition on
+#        their own, overriding the previous one.
+#     3. Users can set a condition for each segment.
+#        This is the trump card, and has highest
+#        precedence.
+##
+# @args
+#   $1 string The stateful name of the segment
+#   $2 string The user condition that gets evaluated
+#   $3 string Content of the segment (for default condition)
+##
+segmentShouldBePrinted() {
+  local STATEFUL_NAME="${1}"
+  local USER_CONDITION="${2}"
+  local CONTENT="${3}"
+
+  local CONDITION
+  local SEGMENT_CONDITION="P9K_${STATEFUL_NAME}_CONDITION"
+  if defined "${SEGMENT_CONDITION}"; then
+    CONDITION="${(P)SEGMENT_CONDITION}"
+  elif [[ -n "${USER_CONDITION}" && "${USER_CONDITION[0,1]}" == "[" ]]; then
+    CONDITION="${USER_CONDITION}"
+  else
+    CONDITION='[[ -n "${CONTENT}" ]]'
+  fi
+  # Precompile condition.
+  eval "${CONDITION}"
+  return $?
 }
 
 ################################################################
@@ -509,7 +552,8 @@ fi
 ##
 function registerIcon() {
   local map
-	local ICON_USER_VARIABLE=P9K_${1}
+	local ICON_USER_VARIABLE
+  [[ "${1}" =~ "SEGMENT" ]] && ICON_USER_VARIABLE="P9K_${1}" || ICON_USER_VARIABLE="P9K_${1}_ICON"
 	if defined "$ICON_USER_VARIABLE"; then # check for icon override first
 		map="${(P)ICON_USER_VARIABLE}"
 	else # use the icons that are registered by the segment
@@ -555,14 +599,14 @@ function registerSegment() {
   # add state if required
   [[ -n $2 ]] && 1=${(U)1}_${(U)2}
 
-  local BG_USER_VARIABLE=P9K_${1}_BACKGROUND
+  local BG_USER_VARIABLE="P9K_${1}_BACKGROUND"
   if defined "$BG_USER_VARIABLE"; then # check for background override first
     p9k_bgs[$1]=${(P)BG_USER_VARIABLE}
   else
     p9k_bgs[$1]=$3
   fi
 
-  local FG_USER_VARIABLE=P9K_${1}_FOREGROUND
+  local FG_USER_VARIABLE="P9K_${1}_FOREGROUND"
   if defined "$FG_USER_VARIABLE"; then # check for foreground override first
     p9k_fgs[$1]=${(P)FG_USER_VARIABLE}
   else
@@ -570,7 +614,7 @@ function registerSegment() {
   fi
 
   local map
-	local ICON_USER_VARIABLE=P9K_${1}
+	local ICON_USER_VARIABLE="P9K_${1}_ICON"
 	if defined "$ICON_USER_VARIABLE"; then # check for icon override first
 		map="${(P)ICON_USER_VARIABLE}"
 	else # use the icons that are registered by the segment
