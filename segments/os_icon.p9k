@@ -76,5 +76,5 @@ esac
 #   otherwise just uses the Tux icon.
 ##
 prompt_os_icon() {
-  p9kPrepareSegment "$0" "" $1 "$2" $3 "" "true"
+  p9kPrepareSegment "$0" "" $1 "$2" $3 "" "[[ true ]]"
 }

@@ -242,7 +242,7 @@ prompt_vcs() {
         current_state='clean'
       fi
     fi
-    p9kPrepareSegment $0 ${(U)current_state} $1 "$2" $3 "$vcs_prompt"
+    p9kPrepareSegment $0 ${current_state} $1 "$2" $3 "$vcs_prompt" "" "$vcs_visual_identifier"
   fi
 #  p9kPrepareSegment $0 ${(U)current_state} $1 "$2" $3 "$vcs_prompt" "[[ -n '$vcs_info_msg_0_' ]]"
 }
