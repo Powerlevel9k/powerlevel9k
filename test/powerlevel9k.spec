@@ -85,7 +85,7 @@ function testColoringOfVisualIdentifiersDoesNotOverwriteColoringOfSegment() {
 
   # Re-Source the icons, as the P9K_MODE is directly
   # evaluated there.
-  source functions/icons.zsh
+  source functions/utilities.zsh
 
   cd /tmp
 
