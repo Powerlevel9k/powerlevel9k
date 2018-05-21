@@ -89,8 +89,8 @@ leftPromptSegment() {
 
   # Allow users to overwrite the color for the visual identifier only.
   local visual_identifier_color_variable="P9K_${STATEFUL_NAME}_VISUAL_IDENTIFIER_COLOR"
-  setDefault "${visual_identifier_color_variable}" "${FOREGROUND}"
-  visual_identifier="%F{${(P)visual_identifier_color_variable}%}${visual_identifier}${fg}"
+  setDefault "${visual_identifier_color_variable}" "${4}"
+  [[ "${(P)visual_identifier_color_variable}" != "${4}" ]] && visual_identifier="$(foregroundColor ${(P)visual_identifier_color_variable})${visual_identifier}${fg}"
 
   # Support for bold segment
   local bld_on=""
@@ -182,8 +182,8 @@ rightPromptSegment() {
 
   # Allow users to overwrite the color for the visual identifier only.
   local visual_identifier_color_variable="P9K_${STATEFUL_NAME}_VISUAL_IDENTIFIER_COLOR"
-  setDefault "${visual_identifier_color_variable}" "${FOREGROUND}"
-  visual_identifier="%F{${(P)visual_identifier_color_variable}%}${visual_identifier}${fg}"
+  setDefault "${visual_identifier_color_variable}" "${4}"
+  [[ "${(P)visual_identifier_color_variable}" != "${4}" ]] && visual_identifier="$(foregroundColor ${(P)visual_identifier_color_variable})${visual_identifier}${fg}"
 
   echo -n "${bg}${fg}"
 
