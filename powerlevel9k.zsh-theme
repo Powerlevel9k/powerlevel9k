@@ -282,13 +282,14 @@ prompt_anaconda() {
   # ^G is Bell (BEL), ^I is horizontal tab (TAB)
   # see https://en.wikipedia.org/wiki/ASCII#ASCII_control_characters
   local SANITIZATION_CHARACTER_GROUP="[\^J\^M\^G\^I"$'\n\r\a\t'"]"
-  local _path="${CONDA_ENV_PATH//${~SANITIZATION_CHARACTER_GROUP}/}${CONDA_PREFIX//${~SANITIZATION_CHARACTER_GROUP}}/"
+  local _CONDA_ENV="$(basename ${CONDA_ENV_PATH}${CONDA_PREFIX})"
+  _CONDA_ENV="${_CONDA_ENV//${~SANITIZATION_CHARACTER_GROUP}/}"
 
-  if ! [ -z "$_path" ]; then
+  if ! [ -z "${_CONDA_ENV}" ]; then
     # config - can be overwritten in users' zshrc file.
     set_default POWERLEVEL9K_ANACONDA_LEFT_DELIMITER "("
     set_default POWERLEVEL9K_ANACONDA_RIGHT_DELIMITER ")"
-    "$1_prompt_segment" "$0" "$2" "blue" "$DEFAULT_COLOR" "$POWERLEVEL9K_ANACONDA_LEFT_DELIMITER$(basename $_path)$POWERLEVEL9K_ANACONDA_RIGHT_DELIMITER" 'PYTHON_ICON'
+    "$1_prompt_segment" "$0" "$2" "blue" "$DEFAULT_COLOR" "${POWERLEVEL9K_ANACONDA_LEFT_DELIMITER}${_CONDA_ENV}${POWERLEVEL9K_ANACONDA_RIGHT_DELIMITER}" 'PYTHON_ICON'
   fi
 }
 
