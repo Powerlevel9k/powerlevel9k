@@ -97,13 +97,17 @@ for segment in $p9kDirectory/segments/*.p9k; do
 done
 
 # load all custom segments
-for segment in $p9kDirectory/segments/custom/*.p9k; do
-  source "${segment}" 2>&1
-done
+if [[ -d $p9kDirectory/segments/custom ]]; then
+  for segment in $p9kDirectory/segments/custom/*.p9k; do
+    [[ -f $segment ]] && source "${segment}" 2>&1
+  done
+fi
 
-for segment in $HOME/.config/p9k/*.p9k; do
-  source "${segment}" 2>&1
-done
+if [[ -d $HOME/.config/p9k ]]; then
+  for segment in $HOME/.config/p9k/*.p9k; do
+    [[ -f $segment ]] && source "${segment}" 2>&1
+  done
+fi
 
 # cleanup temporary variable - not done because it is used for autoloading segments
 #unset p9kDirectory
