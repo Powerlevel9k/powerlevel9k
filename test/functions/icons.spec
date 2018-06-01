@@ -23,48 +23,48 @@ function tearDown() {
     P9K_MODE="${_OLD_P9K_MODE}"
 }
 
-function testLcCtypeIsSetCorrectlyInDefaultMode() {
-  P9K_MODE="default"
-  # Load Powerlevel9k
-
-  assertEquals 'en_US.UTF-8' "${LC_CTYPE}"
-}
-
-function testLcCtypeIsSetCorrectlyInAwesomePatchedMode() {
-  P9K_MODE="awesome-patched"
-  # Load Powerlevel9k
-
-  assertEquals 'en_US.UTF-8' "${LC_CTYPE}"
-}
-
-function testLcCtypeIsSetCorrectlyInAwesomeFontconfigMode() {
-  P9K_MODE="awesome-fontconfig"
-  # Load Powerlevel9k
-
-  assertEquals 'en_US.UTF-8' "${LC_CTYPE}"
-}
-
-function testLcCtypeIsSetCorrectlyInNerdfontFontconfigMode() {
-  P9K_MODE="nerdfont-fontconfig"
-  # Load Powerlevel9k
-
-  assertEquals 'en_US.UTF-8' "${LC_CTYPE}"
-}
-
-function testLcCtypeIsSetCorrectlyInFlatMode() {
-  P9K_MODE="flat"
-  # Load Powerlevel9k
-
-  assertEquals 'en_US.UTF-8' "${LC_CTYPE}"
-}
-
-function testLcCtypeIsSetCorrectlyInCompatibleMode() {
-  P9K_MODE="compatible"
-  # Load Powerlevel9k
-
-  assertEquals 'en_US.UTF-8' "${LC_CTYPE}"
-}
-
+# function testLcCtypeIsSetCorrectlyInDefaultMode() {
+#   P9K_MODE="default"
+#   # Load Powerlevel9k
+#
+#   assertEquals 'en_US.UTF-8' "${LC_CTYPE}"
+# }
+# 
+# function testLcCtypeIsSetCorrectlyInAwesomePatchedMode() {
+#   P9K_MODE="awesome-patched"
+#   # Load Powerlevel9k
+#
+#   assertEquals 'en_US.UTF-8' "${LC_CTYPE}"
+# }
+#
+# function testLcCtypeIsSetCorrectlyInAwesomeFontconfigMode() {
+#   P9K_MODE="awesome-fontconfig"
+#   # Load Powerlevel9k
+#
+#   assertEquals 'en_US.UTF-8' "${LC_CTYPE}"
+# }
+#
+# function testLcCtypeIsSetCorrectlyInNerdfontFontconfigMode() {
+#   P9K_MODE="nerdfont-fontconfig"
+#   # Load Powerlevel9k
+#
+#   assertEquals 'en_US.UTF-8' "${LC_CTYPE}"
+# }
+#
+# function testLcCtypeIsSetCorrectlyInFlatMode() {
+#   P9K_MODE="flat"
+#   # Load Powerlevel9k
+#
+#   assertEquals 'en_US.UTF-8' "${LC_CTYPE}"
+# }
+#
+# function testLcCtypeIsSetCorrectlyInCompatibleMode() {
+#   P9K_MODE="compatible"
+#   # Load Powerlevel9k
+#
+#   assertEquals 'en_US.UTF-8' "${LC_CTYPE}"
+# }
+#
 # Go through all icons defined in default mode, and
 # check if all of them are defined in the other modes.
 function testAllIconsAreDefinedLikeInDefaultMode() {
