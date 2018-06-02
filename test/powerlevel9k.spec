@@ -55,6 +55,8 @@ function testJoiningWithConditionalSegment() {
 function testDynamicColoringOfSegmentsWork() {
   P9K_LEFT_PROMPT_ELEMENTS=(dir)
   P9K_DIR_DEFAULT_BACKGROUND='red'
+  source functions/utilities.zsh
+  source powerlevel9k.zsh-theme
   cd /tmp
 
   assertEquals "%K{red} %F{black}/tmp %k%F{red}%f " "$(buildLeftPrompt)"
