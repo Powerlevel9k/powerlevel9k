@@ -114,7 +114,6 @@ left_prompt_segment() {
   local current_index=$2
   local SEGMENT_NAME="${(U)1#prompt_}"
   local PREVIOUS_SEGMENT="${POWERLEVEL9K_LEFT_PROMPT_ELEMENTS[${last_left_element_index}]}"
-  echo $current_index
 
   # Check if the current segment is a newline one. In this case
   # print an end segment first to end the previous segment well.
