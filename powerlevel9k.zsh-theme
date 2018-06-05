@@ -221,18 +221,31 @@ set_default last_right_element_index 1
 set_default POWERLEVEL9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS " "
 right_prompt_segment() {
   local current_index=$2
+  local SEGMENT_NAME="${(U)1#prompt_}"
+
+  # Check if the current segment is a newline one.
+  if [[ "${SEGMENT_NAME}" == "NEWLINE" ]]; then
+    # End Background colors first!
+    echo -n "%k"
+    # Print newline
+    echo -n "${5}"
+    # Reset Background, to start color as if next segment would be first.
+    CURRENT_RIGHT_BG='NONE'
+    # Early exit
+    return
+  fi
 
   # Check if the segment should be joined with the previous one
   local joined
   segmentShouldBeJoined $current_index $last_right_element_index "$POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS" && joined=true || joined=false
 
   # Overwrite given background-color by user defined variable for this segment.
-  local BACKGROUND_USER_VARIABLE=POWERLEVEL9K_${(U)1#prompt_}_BACKGROUND
+  local BACKGROUND_USER_VARIABLE=POWERLEVEL9K_${SEGMENT_NAME}_BACKGROUND
   local BG_COLOR_MODIFIER=${(P)BACKGROUND_USER_VARIABLE}
   [[ -n $BG_COLOR_MODIFIER ]] && 3="$BG_COLOR_MODIFIER"
 
   # Overwrite given foreground-color by user defined variable for this segment.
-  local FOREGROUND_USER_VARIABLE=POWERLEVEL9K_${(U)1#prompt_}_FOREGROUND
+  local FOREGROUND_USER_VARIABLE=POWERLEVEL9K_${SEGMENT_NAME}_FOREGROUND
   local FG_COLOR_MODIFIER=${(P)FOREGROUND_USER_VARIABLE}
   [[ -n $FG_COLOR_MODIFIER ]] && 4="$FG_COLOR_MODIFIER"
 
@@ -261,7 +274,7 @@ right_prompt_segment() {
     visual_identifier="$(print_icon $6)"
     if [[ -n "$visual_identifier" ]]; then
       # Allow users to overwrite the color for the visual identifier only.
-      local visual_identifier_color_variable=POWERLEVEL9K_${(U)1#prompt_}_VISUAL_IDENTIFIER_COLOR
+      local visual_identifier_color_variable=POWERLEVEL9K_${SEGMENT_NAME}_VISUAL_IDENTIFIER_COLOR
       set_default $visual_identifier_color_variable $4
       visual_identifier="%F{${(P)visual_identifier_color_variable}%}$visual_identifier%f"
       # Add an whitespace if we print more than just the visual identifier
@@ -359,8 +372,9 @@ prompt_newline() {
     # On right prompt we cannot work with a
     # newline because this would trigger ZSH's
     # feature of hiding the right prompt
-    # (TRANSIENT_RPROMPT).
-    return
+    # (TRANSIENT_RPROMPT). As a workaround we
+    # move the cursor by hand one line down.
+    NEWLINE='%{'$'\e[1B''%}'
   fi
 
   local whitespaceVariableName="POWERLEVEL9K_WHITESPACE_BETWEEN_${PLACEMENT}_SEGMENTS"
