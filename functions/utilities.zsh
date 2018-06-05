@@ -209,6 +209,9 @@ segment_in_use() {
     fi
 }
 
+# Count occurrences of items in a flat array.
+#   * $1: The item to search for
+#   * $2: The array to search in
 count_in_array() {
   local needle="${1}"
   # Explicitly split on whitespaces
