@@ -112,17 +112,35 @@ set_default last_left_element_index 1
 set_default POWERLEVEL9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS " "
 left_prompt_segment() {
   local current_index=$2
+  local SEGMENT_NAME="${(U)1#prompt_}"
+  local PREVIOUS_SEGMENT="${POWERLEVEL9K_LEFT_PROMPT_ELEMENTS[${last_left_element_index}]}"
+
+  # Check if the current segment is a newline one. In this case
+  # print an end segment first to end the previous segment well.
+  if [[ "${SEGMENT_NAME}" == "NEWLINE" ]]; then
+    # Add segment end to previous segment if current segment is
+    # not first and not if previous segment was a newline as well.
+    if [[ "${current_index}" != "1" && "${PREVIOUS_SEGMENT}" != "newline" ]]; then
+      echo -n "%k%F{$CURRENT_BG}$(print_icon 'LEFT_SEGMENT_SEPARATOR')"
+    fi
+    echo -n "${5}"
+    # Reset Background, to start color as if next segment would be first.
+    CURRENT_BG='NONE'
+    # Early exit
+    return
+  fi
+
   # Check if the segment should be joined with the previous one
   local joined
   segmentShouldBeJoined $current_index $last_left_element_index "$POWERLEVEL9K_LEFT_PROMPT_ELEMENTS" && joined=true || joined=false
 
   # Overwrite given background-color by user defined variable for this segment.
-  local BACKGROUND_USER_VARIABLE=POWERLEVEL9K_${(U)1#prompt_}_BACKGROUND
+  local BACKGROUND_USER_VARIABLE=POWERLEVEL9K_${SEGMENT_NAME}_BACKGROUND
   local BG_COLOR_MODIFIER=${(P)BACKGROUND_USER_VARIABLE}
   [[ -n $BG_COLOR_MODIFIER ]] && 3="$BG_COLOR_MODIFIER"
 
   # Overwrite given foreground-color by user defined variable for this segment.
-  local FOREGROUND_USER_VARIABLE=POWERLEVEL9K_${(U)1#prompt_}_FOREGROUND
+  local FOREGROUND_USER_VARIABLE=POWERLEVEL9K_${SEGMENT_NAME}_FOREGROUND
   local FG_COLOR_MODIFIER=${(P)FOREGROUND_USER_VARIABLE}
   [[ -n $FG_COLOR_MODIFIER ]] && 4="$FG_COLOR_MODIFIER"
 
@@ -157,7 +175,7 @@ left_prompt_segment() {
     visual_identifier="$(print_icon $6)"
     if [[ -n "$visual_identifier" ]]; then
       # Allow users to overwrite the color for the visual identifier only.
-      local visual_identifier_color_variable=POWERLEVEL9K_${(U)1#prompt_}_VISUAL_IDENTIFIER_COLOR
+      local visual_identifier_color_variable=POWERLEVEL9K_${SEGMENT_NAME}_VISUAL_IDENTIFIER_COLOR
       set_default $visual_identifier_color_variable $4
       visual_identifier="%F{${(P)visual_identifier_color_variable}%}$visual_identifier%f"
       # Add an whitespace if we print more than just the visual identifier
@@ -202,18 +220,31 @@ set_default last_right_element_index 1
 set_default POWERLEVEL9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS " "
 right_prompt_segment() {
   local current_index=$2
+  local SEGMENT_NAME="${(U)1#prompt_}"
+
+  # Check if the current segment is a newline one.
+  if [[ "${SEGMENT_NAME}" == "NEWLINE" ]]; then
+    # End Background colors first!
+    echo -n "%k"
+    # Print newline
+    echo -n "${5}"
+    # Reset Background, to start color as if next segment would be first.
+    CURRENT_RIGHT_BG='NONE'
+    # Early exit
+    return
+  fi
 
   # Check if the segment should be joined with the previous one
   local joined
   segmentShouldBeJoined $current_index $last_right_element_index "$POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS" && joined=true || joined=false
 
   # Overwrite given background-color by user defined variable for this segment.
-  local BACKGROUND_USER_VARIABLE=POWERLEVEL9K_${(U)1#prompt_}_BACKGROUND
+  local BACKGROUND_USER_VARIABLE=POWERLEVEL9K_${SEGMENT_NAME}_BACKGROUND
   local BG_COLOR_MODIFIER=${(P)BACKGROUND_USER_VARIABLE}
   [[ -n $BG_COLOR_MODIFIER ]] && 3="$BG_COLOR_MODIFIER"
 
   # Overwrite given foreground-color by user defined variable for this segment.
-  local FOREGROUND_USER_VARIABLE=POWERLEVEL9K_${(U)1#prompt_}_FOREGROUND
+  local FOREGROUND_USER_VARIABLE=POWERLEVEL9K_${SEGMENT_NAME}_FOREGROUND
   local FG_COLOR_MODIFIER=${(P)FOREGROUND_USER_VARIABLE}
   [[ -n $FG_COLOR_MODIFIER ]] && 4="$FG_COLOR_MODIFIER"
 
@@ -242,7 +273,7 @@ right_prompt_segment() {
     visual_identifier="$(print_icon $6)"
     if [[ -n "$visual_identifier" ]]; then
       # Allow users to overwrite the color for the visual identifier only.
-      local visual_identifier_color_variable=POWERLEVEL9K_${(U)1#prompt_}_VISUAL_IDENTIFIER_COLOR
+      local visual_identifier_color_variable=POWERLEVEL9K_${SEGMENT_NAME}_VISUAL_IDENTIFIER_COLOR
       set_default $visual_identifier_color_variable $4
       visual_identifier="%F{${(P)visual_identifier_color_variable}%}$visual_identifier%f"
       # Add an whitespace if we print more than just the visual identifier
@@ -329,19 +360,35 @@ prompt_background_jobs() {
 ################################################################
 # A newline in your prompt, so you can segments on multiple lines.
 prompt_newline() {
-  local lws newline
-  [[ "$1" == "right" ]] && return
-  newline=$'\n'
-  lws=$POWERLEVEL9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS
-  if [[ "$POWERLEVEL9K_PROMPT_ON_NEWLINE" == true ]]; then
-    newline="${newline}$(print_icon 'MULTILINE_NEWLINE_PROMPT_PREFIX')"
+  local PLACEMENT="${(U)1}"
+
+  local NEWLINE
+  if [[ "${PLACEMENT}" == "LEFT" ]]; then
+    # On left prompt we just print a newline,
+    # as this sets the cursor position correctly.
+    NEWLINE=$'\n'
+  else
+    # On right prompt we cannot work with a
+    # newline because this would trigger ZSH's
+    # feature of hiding the right prompt
+    # (TRANSIENT_RPROMPT). As a workaround we
+    # move the cursor by hand one line down.
+    NEWLINE='%{'$'\e[1B''%}'
   fi
-  POWERLEVEL9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS=
-  "$1_prompt_segment" \
-    "$0" \
-    "$2" \
-    "NONE" "NONE" "${newline}"
-  POWERLEVEL9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS=$lws
+
+  local whitespaceVariableName="POWERLEVEL9K_WHITESPACE_BETWEEN_${PLACEMENT}_SEGMENTS"
+  local WHITESPACE="${(P)whitespaceVariableName}"
+  # if [[ "$POWERLEVEL9K_PROMPT_ON_NEWLINE" == true ]]; then
+  #   NEWLINE="${NEWLINE}$(print_icon 'MULTILINE_NEWLINE_PROMPT_PREFIX')"
+  # fi
+  unset POWERLEVEL9K_WHITESPACE_BETWEEN_${PLACEMENT}_SEGMENTS
+  "$1_prompt_segment" "$0" "$2" "NONE" "NONE" "${NEWLINE}"
+
+  if [[ "${PLACEMENT}" == "LEFT" ]]; then
+    POWERLEVEL9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS="${WHITESPACE}"
+  else
+    POWERLEVEL9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS="${WHITESPACE}"
+  fi
 }
 
 ################################################################
@@ -1717,39 +1764,47 @@ powerlevel9k_prepare_prompts() {
   # Reset start time
   _P9K_TIMER_START=0x7FFFFFFF
 
-  if [[ "$POWERLEVEL9K_PROMPT_ON_NEWLINE" == true ]]; then
-    PROMPT='$(print_icon 'MULTILINE_FIRST_PROMPT_PREFIX')%f%b%k$(build_left_prompt)
-$(print_icon 'MULTILINE_LAST_PROMPT_PREFIX')'
-    if [[ "$POWERLEVEL9K_RPROMPT_ON_NEWLINE" != true ]]; then
-      # The right prompt should be on the same line as the first line of the left
-      # prompt. To do so, there is just a quite ugly workaround: Before zsh draws
-      # the RPROMPT, we advise it, to go one line up. At the end of RPROMPT, we
-      # advise it to go one line down. See:
-      # http://superuser.com/questions/357107/zsh-right-justify-in-ps1
-      local LC_ALL="" LC_CTYPE="en_US.UTF-8" # Set the right locale to protect special characters
-      RPROMPT_PREFIX='%{'$'\e[1A''%}' # one line up
-      RPROMPT_SUFFIX='%{'$'\e[1B''%}' # one line down
-    else
-      RPROMPT_PREFIX=''
-      RPROMPT_SUFFIX=''
-    fi
+  if [[ "${POWERLEVEL9K_PROMPT_ADD_NEWLINE}" == "true" ]]; then
+    local NEWLINES=""
+    repeat ${POWERLEVEL9K_PROMPT_ADD_NEWLINE_COUNT:-1} { NEWLINES+="newline" }
+    # Prepend Newline Segments to Left Prompt Elements
+    # See https://www.zsh.org/mla/users/2013/msg00046.html
+    POWERLEVEL9K_LEFT_PROMPT_ELEMENTS[1]+=(${NEWLINES})
+  fi
+
+  if [[ "$POWERLEVEL9K_RPROMPT_ON_NEWLINE" == "true" ]]; then
+    # Prepend Newline Segment to Right Prompt
+    POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS[1]+=("newline")
+  fi
+
+  # Determine how much steps we need to move cursor up to match left prompt
+  local RPROMPT_CURSOR_STEPS=$(count_in_array "newline" "${POWERLEVEL9K_LEFT_PROMPT_ELEMENTS}")
+  if [[ "${RPROMPT_CURSOR_STEPS}" -gt 0 ]]; then
+    # The right prompt should be on the same line as the first line of the left
+    # prompt. To do so, there is just a quite ugly workaround: Before zsh draws
+    # the RPROMPT, we advise it, to go one line up. At the end of RPROMPT, we
+    # advise it to go one line down. See:
+    # http://superuser.com/questions/357107/zsh-right-justify-in-ps1
+    local LC_ALL="" LC_CTYPE="en_US.UTF-8" # Set the right locale to protect special characters
+
+    # See http://tldp.org/HOWTO/Bash-Prompt-HOWTO/x361.html
+    RPROMPT_PREFIX='%{'$'\e['${RPROMPT_CURSOR_STEPS}'A''%}' # move X lines up
+    RPROMPT_SUFFIX='%{'$'\e['${RPROMPT_CURSOR_STEPS}'B''%}' # move X lines down
   else
-    PROMPT='%f%b%k$(build_left_prompt)'
     RPROMPT_PREFIX=''
     RPROMPT_SUFFIX=''
   fi
 
-  if [[ "$POWERLEVEL9K_DISABLE_RPROMPT" != true ]]; then
-    RPROMPT='$RPROMPT_PREFIX%f%b%k$(build_right_prompt)%{$reset_color%}$RPROMPT_SUFFIX'
+  # TODO: Do we still want this? This could be done with the help of newline segments
+  if [[ "$POWERLEVEL9K_PROMPT_ON_NEWLINE" == true ]]; then
+    PROMPT='$(print_icon 'MULTILINE_FIRST_PROMPT_PREFIX')%f%b%k$(build_left_prompt)
+$(print_icon 'MULTILINE_LAST_PROMPT_PREFIX')'
+  else
+    PROMPT='%f%b%k$(build_left_prompt)'
   fi
 
-local NEWLINE='
-'
-
-  if [[ $POWERLEVEL9K_PROMPT_ADD_NEWLINE == true ]]; then
-    NEWLINES=""
-    repeat ${POWERLEVEL9K_PROMPT_ADD_NEWLINE_COUNT:-1} { NEWLINES+=$NEWLINE }
-    PROMPT="$NEWLINES$PROMPT"
+  if [[ "$POWERLEVEL9K_DISABLE_RPROMPT" != true ]]; then
+    RPROMPT="${RPROMPT_PREFIX}"'%f%b%k$(build_right_prompt)%{$reset_color%}'"${RPROMPT_SUFFIX}"
   fi
 
   # Allow iTerm integration to work

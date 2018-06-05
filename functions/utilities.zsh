@@ -209,6 +209,24 @@ segment_in_use() {
     fi
 }
 
+# Count occurrences of items in a flat array.
+#   * $1: The item to search for
+#   * $2: The array to search in
+count_in_array() {
+  local needle="${1}"
+  # Explicitly split on whitespaces
+  local haystack=(${=2})
+  local count=0
+
+  for key in ${haystack}; do
+    if [[ "${key}" == "${needle}" ]]; then
+      count=$((count + 1))
+    fi
+  done
+
+  echo "${count}"
+}
+
 # Print a deprecation warning if an old segment is in use.
 # Takes the name of an associative array that contains the
 # deprecated segments as keys, the values contain the new
