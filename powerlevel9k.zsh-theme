@@ -1802,8 +1802,6 @@ powerlevel9k_prepare_prompts() {
 $(print_icon 'MULTILINE_LAST_PROMPT_PREFIX')'
   else
     PROMPT='%f%b%k$(build_left_prompt)'
-    # RPROMPT_PREFIX=''
-    # RPROMPT_SUFFIX=''
   fi
 
   if [[ "$POWERLEVEL9K_DISABLE_RPROMPT" != true ]]; then
