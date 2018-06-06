@@ -68,12 +68,12 @@ function testDynamicColoringOfSegmentsWork() {
 function testDynamicColoringOfVisualIdentifiersWork() {
   P9K_LEFT_PROMPT_ELEMENTS=(dir)
   P9K_DIR_DEFAULT_VISUAL_IDENTIFIER_COLOR='green'
-  P9K_FOLDER_ICON="icon-here"
+  P9K_FOLDER_ICON="*icon-here"
   source powerlevel9k.zsh-theme
 
   cd /tmp
 
-  assertEquals "%K{blue} %F{green%}icon-here%f %F{black}/tmp %k%F{blue}%f " "$(buildLeftPrompt)"
+  assertEquals "%K{blue} %F{green%}*icon-here%f %F{black}/tmp %k%F{blue}%f " "$(buildLeftPrompt)"
 
   unset P9K_LEFT_PROMPT_ELEMENTS
   unset P9K_DIR_DEFAULT_VISUAL_IDENTIFIER_COLOR
@@ -86,13 +86,13 @@ function testColoringOfVisualIdentifiersDoesNotOverwriteColoringOfSegment() {
   P9K_DIR_DEFAULT_VISUAL_IDENTIFIER_COLOR='green'
   P9K_DIR_DEFAULT_FOREGROUND='red'
   P9K_DIR_DEFAULT_BACKGROUND='yellow'
-  P9K_FOLDER_ICON="icon-here"
+  P9K_FOLDER_ICON="*icon-here"
 
   source powerlevel9k.zsh-theme
 
   cd /tmp
 
-  assertEquals "%K{yellow} %F{green%}icon-here%f %F{red}/tmp %k%F{yellow}%f " "$(buildLeftPrompt)"
+  assertEquals "%K{yellow} %F{green%}*icon-here%f %F{red}/tmp %k%F{yellow}%f " "$(buildLeftPrompt)"
 
   unset P9K_LEFT_PROMPT_ELEMENTS
   unset P9K_DIR_DEFAULT_VISUAL_IDENTIFIER_COLOR
@@ -104,15 +104,17 @@ function testColoringOfVisualIdentifiersDoesNotOverwriteColoringOfSegment() {
 
 function testOverwritingIconsWork() {
   P9K_LEFT_PROMPT_ELEMENTS=(dir)
-  P9K_FOLDER_ICON='icon-here'
+  P9K_FOLDER_ICON='*icon-here'
   #local testFolder=$(mktemp -d -p p9k)
   # Move testFolder under home folder
   #mv testFolder ~
   # Go into testFolder
   #cd ~/$testFolder
 
+  source powerlevel9k.zsh-theme
+
   cd /tmp
-  assertEquals "%K{blue} %F{black%}icon-here%f %F{black}/tmp %k%F{blue}%f " "$(buildLeftPrompt)"
+  assertEquals "%K{blue} %F{black%}*icon-here%f %F{black}/tmp %k%F{blue}%f " "$(buildLeftPrompt)"
 
   unset P9K_LEFT_PROMPT_ELEMENTS
   unset P9K_DIR_FOLDER_ICON
