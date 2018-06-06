@@ -201,14 +201,11 @@ prompt_dir() {
   fi
 
   # declare variables used for bold and state colors
-  local bld_on bld_off dir_state_foreground dir_state_user_foreground
+  local bld_on="" bld_off="" dir_state_foreground dir_state_user_foreground
   # test if user wants the last directory printed in bold
   if [[ "${(L)P9K_DIR_PATH_HIGHLIGHT_BOLD}" == "true" ]]; then
     bld_on="%B"
     bld_off="%b"
-  else
-    bld_on=""
-    bld_off=""
   fi
   # determine is the user has set a last directory color
   local dir_state_user_foreground=P9K_DIR_${current_state}_FOREGROUND
