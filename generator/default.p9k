@@ -86,7 +86,7 @@ leftPromptSegment() {
   # Allow users to overwrite the color for the visual identifier only.
   local visual_identifier_color_variable="P9K_${STATEFUL_NAME}_VISUAL_IDENTIFIER_COLOR"
   setDefault "${visual_identifier_color_variable}" "${4}"
-  [[ "${(P)visual_identifier_color_variable}" != "${4}" ]] && visual_identifier="$(foregroundColor ${(P)visual_identifier_color_variable})${visual_identifier}${fg}"
+  [[ "${(P)visual_identifier_color_variable}" != "${4}" ]] && visual_identifier="$(foregroundColor ${(P)visual_identifier_color_variable})${visual_identifier}"
 
   # Support for bold segment
   local bld_on=""
