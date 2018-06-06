@@ -55,7 +55,6 @@ function testJoiningWithConditionalSegment() {
 function testDynamicColoringOfSegmentsWork() {
   P9K_LEFT_PROMPT_ELEMENTS=(dir)
   P9K_DIR_DEFAULT_BACKGROUND='red'
-  source functions/utilities.zsh
   source powerlevel9k.zsh-theme
   cd /tmp
 
@@ -70,6 +69,7 @@ function testDynamicColoringOfVisualIdentifiersWork() {
   P9K_LEFT_PROMPT_ELEMENTS=(dir)
   P9K_DIR_DEFAULT_VISUAL_IDENTIFIER_COLOR='green'
   P9K_FOLDER_ICON="icon-here"
+  source powerlevel9k.zsh-theme
 
   cd /tmp
 
@@ -88,9 +88,7 @@ function testColoringOfVisualIdentifiersDoesNotOverwriteColoringOfSegment() {
   P9K_DIR_DEFAULT_BACKGROUND='yellow'
   P9K_FOLDER_ICON="icon-here"
 
-  # Re-Source the icons, as the P9K_MODE is directly
-  # evaluated there.
-  source functions/utilities.zsh
+  source powerlevel9k.zsh-theme
 
   cd /tmp
 
