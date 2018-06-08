@@ -416,22 +416,3 @@ function getColorCode() {
     fi
   fi
 }
-
-################################################################
-# @description
-#   Check if two colors are equal, even if one is specified as ANSI code.
-##
-# @args
-#   $1 misc First color (number or string)
-#   $2 misc Second color (number or string)
-##
-function isSameColor() {
-  if [[ "$1" == "NONE" || "$2" == "NONE" ]]; then
-    return 1
-  fi
-
-  local color1=$(getColorCode "$1")
-  local color2=$(getColorCode "$2")
-
-  return $(( color1 != color2 ))
-}
