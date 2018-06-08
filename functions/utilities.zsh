@@ -516,6 +516,7 @@ function upsearch() {
 }
 
 typeset -gAH p9k_icons
+typeset -gAH p9k_icon_fgs
 typeset -gAH p9k_bgs
 typeset -gAH p9k_fgs
 
@@ -601,16 +602,16 @@ function registerSegment() {
 
   local BG_USER_VARIABLE="P9K_${1}_BACKGROUND"
   if defined "$BG_USER_VARIABLE"; then # check for background override first
-    p9k_bgs[$1]=${(P)BG_USER_VARIABLE}
+    p9k_bgs[$1]="$(backgroundColor ${(P)BG_USER_VARIABLE})"
   else
-    p9k_bgs[$1]=$3
+    p9k_bgs[$1]="$(backgroundColor $3)"
   fi
 
   local FG_USER_VARIABLE="P9K_${1}_FOREGROUND"
   if defined "$FG_USER_VARIABLE"; then # check for foreground override first
-    p9k_fgs[$1]=${(P)FG_USER_VARIABLE}
+    p9k_fgs[$1]="$(foregroundColor ${(P)FG_USER_VARIABLE})"
   else
-    p9k_fgs[$1]=$4
+    p9k_fgs[$1]="$(foregroundColor $4)"
   fi
 
   local map
@@ -626,6 +627,14 @@ function registerSegment() {
     	*)                                          map=$5 ;;
     esac
   fi
+
+  local ICON_COLOR_USER_VARIABLE="P9K_${1}_VISUAL_IDENTIFIER_COLOR"
+  if defined "$ICON_COLOR_USER_VARIABLE"; then # check for foreground override first
+    p9k_icon_fgs[$1]="$(foregroundColor ${(P)ICON_COLOR_USER_VARIABLE})"
+  else
+    p9k_icon_fgs[$1]="$(foregroundColor $4)"
+  fi
+
 	p9k_icons[${(U)1}]=${map}
 }
 
