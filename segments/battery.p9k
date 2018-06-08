@@ -123,7 +123,7 @@ prompt_battery() {
     if [[ -n "$P9K_BATTERY_LEVEL_BACKGROUND" ]] && [[ "${(t)P9K_BATTERY_LEVEL_BACKGROUND}" =~ "array" ]]; then
       local segment=$(( 100.0 / (${#P9K_BATTERY_LEVEL_BACKGROUND} - 1 ) ))
       local offset=$(( ($bat_percent / $segment) + 1 ))
-      p9k_bgs[BATTERY_${(U)current_state}]="${P9K_BATTERY_LEVEL_BACKGROUND[$offset]}"
+      p9k_bgs[BATTERY_${(U)current_state}]="$(backgroundColor ${P9K_BATTERY_LEVEL_BACKGROUND[$offset]})"
       p9kPrepareSegment "$0" "${(U)current_state}" $1 "$2" $3 "${message}" "" "$NEW_ICON"
     fi
   else
