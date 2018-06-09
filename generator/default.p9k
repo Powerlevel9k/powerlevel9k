@@ -41,39 +41,39 @@ setDefault P9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS " "
 ##
 # @args
 #   $1 string Name of the function that was originally invoked (mandatory).
-#   $2 string Current state
-#   $3 integer Index of the segment
-#   $4 bool Whether the segment should be bold
-#   $5 string Content of the segment
-#   $6 string Visual identifier (must be a key of the icons array)
+#   $2 integer Index of the segment
+#   $3 string Background color
+#   $4 string Foreground color
+#   $5 bool Whether the segment should be bold
+#   $6 string Content of the segment
+#   $7 string Visual identifier name (must be a key of the icons array)
 ##
 leftPromptSegment() {
-  local current_index=$3
+  local current_index=$2
   # Check if the segment should be joined with the previous one
   local joined
   segmentShouldBeJoined $current_index $last_left_element_index "$P9K_LEFT_PROMPT_ELEMENTS" && joined=true || joined=false
 
-  local STATEFUL_NAME="${(U)NAME#PROMPT_}"
-  [[ -n "${STATE}" ]] && STATEFUL_NAME="${STATEFUL_NAME}_${STATE}"
-  local bg="${p9k_bgs[$STATEFUL_NAME]}"
-  local fg="${p9k_fgs[$STATEFUL_NAME]}"
-  local vi="${p9k_icon_fgs[$STATEFUL_NAME]}"
+  local bg fg
+  bg="$(backgroundColor $3)"
+  fg="$(foregroundColor $4)"
 
-  if [[ $CURRENT_BG != 'NONE' ]] && [[ "$bg" != "$CURRENT_BG" ]]; then
-    echo -n "$bg%F${CURRENT_BG#%K}"
+  if [[ $CURRENT_BG != 'NONE' ]] && ! isSameColor "$3" "$CURRENT_BG"; then
+    echo -n "$bg%F{$CURRENT_BG}"
     if [[ $joined == false ]]; then
       # Middle segment
-      echo -n "${p9k_icons[LEFT_SEGMENT_SEPARATOR]}$P9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS"
+      echo -n "$(printIcon 'LEFT_SEGMENT_SEPARATOR')$P9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS"
     fi
-  elif [[ "$bg" == "$CURRENT_BG" ]]; then
+  elif isSameColor "$CURRENT_BG" "$3"; then
     # Middle segment with same color as previous segment
     # We take the current foreground color as color for our
     # subsegment (or the default color). This should have
     # enough contrast.
+    local complement
+    [[ -n "$4" ]] && complement="$fg" || complement="$(foregroundColor $DEFAULT_COLOR)"
+    echo -n "${bg}${complement}"
     if [[ $joined == false ]]; then
-      local complement
-      [[ -n "$fg" ]] && complement="$fg" || complement="$(foregroundColor $DEFAULT_COLOR)"
-      echo -n "${bg}${complement}${p9k_icons[LEFT_SUBSEGMENT_SEPARATOR]}$P9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS"
+      echo -n "$(printIcon 'LEFT_SUBSEGMENT_SEPARATOR')$P9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS"
     fi
   else
     # First segment
@@ -81,23 +81,28 @@ leftPromptSegment() {
   fi
 
   local visual_identifier
-  [[ -n $6 ]] && visual_identifier="$6"
+  [[ -n $7 ]] && visual_identifier="$7"
+
+  # Allow users to overwrite the color for the visual identifier only.
+  local visual_identifier_color_variable="P9K_${STATEFUL_NAME}_VISUAL_IDENTIFIER_COLOR"
+  setDefault "${visual_identifier_color_variable}" "${4}"
+  [[ "${(P)visual_identifier_color_variable}" != "${4}" ]] && visual_identifier="$(foregroundColor ${(P)visual_identifier_color_variable})${visual_identifier}"
 
   # Support for bold segment
   local bld_on=""
   local bld_off=""
-  if [[ $4 == true ]]; then
+  if [[ $5 == true ]]; then
     bld_on="%B"
     bld_off="%b"
   fi
 
   # Print the visual identifier
-  echo -n "${vi}${visual_identifier}"
+  echo -n "${visual_identifier}"
   # Print the content of the segment, if there is any
-  [[ -n "$5" ]] && echo -n "${fg}${bld_on}${5}${bld_off}"
+  [[ -n "$6" ]] && echo -n "${fg}${bld_on}${6}${bld_off}"
   echo -n "${P9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS}"
 
-  CURRENT_BG=$bg
+  CURRENT_BG=$3
   last_left_element_index=$current_index
 }
 
@@ -109,11 +114,11 @@ leftPromptSegment() {
 ##
 leftPromptEnd() {
   if [[ -n $CURRENT_BG ]]; then
-    echo -n "%k%F${CURRENT_BG#%K}${p9k_icons[LEFT_SEGMENT_SEPARATOR]}"
+    echo -n "%k%F{$CURRENT_BG}$(printIcon 'LEFT_SEGMENT_SEPARATOR')"
   else
     echo -n "%k"
   fi
-  echo -n "%f${p9k_icons[LEFT_SEGMENT_END_SEPARATOR]}"
+  echo -n "%f$(printIcon 'LEFT_SEGMENT_END_SEPARATOR')"
   CURRENT_BG=''
 }
 
@@ -127,50 +132,51 @@ setDefault P9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS " "
 ##
 # @args
 #   $1 string Name of the function that was originally invoked (mandatory).
-#   $2 string Current state
-#   $3 integer Index of the segment
-#   $4 bool Whether the segment should be bold
-#   $5 string Content of the segment
-#   $6 string Visual identifier (must be a key of the icons array)
+#   $2 integer Index of the segment
+#   $3 string Background color
+#   $4 string Foreground color
+#   $5 bool Whether the segment should be bold
+#   $6 string Content of the segment
+#   $7 string Visual identifier (must be a key of the icons array)
 ##
 # @notes
 #   No ending for the right prompt segment is needed (unlike the left prompt, above).
 ##
 rightPromptSegment() {
-  local current_index=$3
+  local current_index=$2
 
   # Check if the segment should be joined with the previous one
   local joined
   segmentShouldBeJoined $current_index $last_right_element_index "$P9K_RIGHT_PROMPT_ELEMENTS" && joined=true || joined=false
 
-  local STATEFUL_NAME="${(U)NAME#PROMPT_}"
-  [[ -n "${STATE}" ]] && STATEFUL_NAME="${STATEFUL_NAME}_${STATE}"
-  local bg="${p9k_bgs[$STATEFUL_NAME]}"
-  local fg="${p9k_fgs[$STATEFUL_NAME]}"
-  local vi="${p9k_icon_fgs[$STATEFUL_NAME]}"
+  local bg fg
+  bg="$(backgroundColor $3)"
+  fg="$(foregroundColor $4)"
 
   # If CURRENT_RIGHT_BG is "NONE", we are the first right segment.
-  if [[ $CURRENT_BG != 'NONE' ]] && [[ "$bg" != "$CURRENT_RIGHT_BG" ]]; then
-    echo -n "$bg%F${CURRENT_BG#%K}"
-    if [[ $joined == false ]]; then
-      # Middle segment
-      echo -n "${p9k_icons[RIGHT_SEGMENT_SEPARATOR]}$P9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS"
+  if [[ $joined == false ]] || [[ "$CURRENT_RIGHT_BG" == "NONE" ]]; then
+    if isSameColor "$CURRENT_RIGHT_BG" "$3"; then
+      # Middle segment with same color as previous segment
+      # We take the current foreground color as color for our
+      # subsegment (or the default color). This should have
+      # enough contrast.
+      local complement
+      [[ -n "$4" ]] && complement="$fg" || complement="$(foregroundColor $DEFAULT_COLOR)"
+      echo -n "$complement$(printIcon 'RIGHT_SUBSEGMENT_SEPARATOR')%f"
+    else
+      # Use the new BG color for the foreground with separator
+      echo -n "$(foregroundColor $3)$(printIcon 'RIGHT_SEGMENT_SEPARATOR')%f"
     fi
-  elif [[ "$bg" == "$CURRENT_RIGHT_BG" ]]; then
-    # Middle segment with same color as previous segment
-    # We take the current foreground color as color for our
-    # subsegment (or the default color). This should have
-    # enough contrast.
-    if [[ $joined == false ]]; then
-      echo -n "${fg}${p9k_icons[RIGHT_SUBSEGMENT_SEPARATOR]}$P9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS"
-    fi
-  else
-    # First segment
-    echo -n "%F${bg#%K}${p9k_icons[RIGHT_SEGMENT_SEPARATOR]}"
   fi
 
   local visual_identifier
-  [[ -n "$6" ]] && visual_identifier="$6"
+  [[ -n "$7" ]] && visual_identifier="$7"
+
+  # Allow users to overwrite the color for the visual identifier only.
+  local visual_identifier_color_variable="P9K_${STATEFUL_NAME}_VISUAL_IDENTIFIER_COLOR"
+  [[ "${(P)visual_identifier_color_variable}" != "${4}" ]] && visual_identifier="$(foregroundColor ${(P)visual_identifier_color_variable})${visual_identifier}${fg}" || visual_identifier="${fg}${visual_identifier}"
+
+  echo -n "${bg}${fg}"
 
   # Print whitespace only if segment is not joined or first right segment, and icon not on the left
   ( [[ $joined == false ]] || [[ "$CURRENT_RIGHT_BG" == "NONE" ]] ) && [[ "${(L)P9K_RPROMPT_ICON_LEFT}" != "true" ]] && echo -n "${P9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS}"
@@ -178,25 +184,24 @@ rightPromptSegment() {
   # Support for bold segment
   local bld_on=""
   local bld_off=""
-  if [[ $4 == true ]]; then
+  if [[ $5 == true ]]; then
     bld_on="%B"
     bld_off="%b"
   fi
 
   if [[ ${(L)P9K_RPROMPT_ICON_LEFT} == "true" ]]; then # Visual identifier before content
     # Print the visual identifier
-    echo -n "${bg}${vi}${visual_identifier}${fg}"
+    echo -n "${visual_identifier}"
     # Print segment content if there is any
-    [[ -n "$5" ]] && echo -n "${bld_on}${5}${bld_off}${P9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS}"
+    [[ -n "$6" ]] && echo -n "${bld_on}${6}${bld_off}${P9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS}%f"
   else
-    #echo -n "${bg}${fg}"
     # Print segment content if there is any
-    [[ -n "$5" ]] && echo -n "${bld_on}${5}${bld_off}"
+    [[ -n "$6" ]] && echo -n "${bld_on}${6}${bld_off}"
     # Print the visual identifier
-    echo -n "${vi}${visual_identifier}"
+    echo -n "${visual_identifier}%f"
   fi
 
-  CURRENT_RIGHT_BG=$bg
+  CURRENT_RIGHT_BG=$3
   last_right_element_index=$current_index
 }
 
@@ -245,7 +250,7 @@ p9kPrepareSegment() {
       [[ "${ALIGNMENT}" == "left" ]] && VISUAL_IDENTIFIER="${VISUAL_IDENTIFIER} "
       [[ "${ALIGNMENT}" == "right" ]] && VISUAL_IDENTIFIER=" ${VISUAL_IDENTIFIER}"
     fi
-    "${ALIGNMENT}PromptSegment" "${NAME}" "${STATE}" "${INDEX}" "${BOLD}" "${CONTENT}" "${VISUAL_IDENTIFIER}"
+    "${ALIGNMENT}PromptSegment" "${NAME}" "${INDEX}" "${BACKGROUND}" "${FOREGROUND}" "${BOLD}" "${CONTENT}" "${VISUAL_IDENTIFIER}"
   fi
 }
 
