@@ -14,7 +14,7 @@
 # Parameters:
 #   name_of_icon  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
 #                                                      
-registerIcon "RUST_ICON"  ''  ''  $'\uE6A8'  $'\uE6A8'  $'\uE7A8 '
+registerIcon "RUST_ICON"  'Rust'  'Rust'  $'\uE6A8'  $'\uE6A8'  $'\uE7A8 '
 
 ################################################################
 # @description
@@ -34,6 +34,6 @@ prompt_rust_version() {
   rust_version=${${rust_version/rustc /}%% *}
 
   if [[ -n "$rust_version" ]]; then
-    p9kPrepareSegment "$0" "" $1 "$2" $3 "darkorange" "$DEFAULT_COLOR" "Rust $rust_version" 'RUST_ICON'
+    p9kPrepareSegment "$0" "" $1 "$2" $3 "darkorange" "$DEFAULT_COLOR" "$rust_version" 'RUST_ICON'
   fi
 }
