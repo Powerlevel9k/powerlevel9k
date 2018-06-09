@@ -31,8 +31,8 @@ registerIcon "RUBY_ICON"  ''  $'\uE847 '  $'\uF219 '  '\u'$CODEPOINT_OF_OCTICONS
 ##
 prompt_chruby() {
   # Uses $RUBY_VERSION and $RUBY_ENGINE set by chruby
-  set_default P9K_CHRUBY_SHOW_VERSION true
-  set_default P9K_CHRUBY_SHOW_ENGINE true
+  setDefault P9K_CHRUBY_SHOW_VERSION true
+  setDefault P9K_CHRUBY_SHOW_ENGINE true
   local chruby_label=""
 
   if [[ "$P9K_CHRUBY_SHOW_ENGINE" == true ]]; then

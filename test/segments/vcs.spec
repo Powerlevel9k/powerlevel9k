@@ -159,10 +159,10 @@ function testBranchNameTruncatingShortenStrategy() {
 }
 
 function testBranchNameTruncatingShortenLength() {
-  POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(vcs)
-  POWERLEVEL9K_VCS_SHORTEN_LENGTH=6
-  POWERLEVEL9K_VCS_SHORTEN_MIN_LENGTH=3
-  POWERLEVEL9K_VCS_SHORTEN_STRATEGY="truncate_from_right"
+  P9K_LEFT_PROMPT_ELEMENTS=(vcs)
+  P9K_VCS_SHORTEN_LENGTH=6
+  P9K_VCS_SHORTEN_MIN_LENGTH=3
+  P9K_VCS_SHORTEN_STRATEGY="truncate_from_right"
 
   FOLDER=/tmp/powerlevel9k-test/vcs-test
   mkdir -p $FOLDER
@@ -172,23 +172,23 @@ function testBranchNameTruncatingShortenLength() {
 
   assertEquals "%K{green} %F{black} master ? %k%F{green}%f " "$(build_left_prompt)"
 
-  POWERLEVEL9K_VCS_SHORTEN_LENGTH=3
+  P9K_VCS_SHORTEN_LENGTH=3
   assertEquals "%K{green} %F{black} mas… ? %k%F{green}%f " "$(build_left_prompt)"
 
   cd -
   rm -fr /tmp/powerlevel9k-test
 
-  unset POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
-  unset POWERLEVEL9K_VCS_SHORTEN_LENGTH
-  unset POWERLEVEL9K_VCS_SHORTEN_MIN_LENGTH
-  unset POWERLEVEL9K_VCS_SHORTEN_STRATEGY
+  unset P9K_LEFT_PROMPT_ELEMENTS
+  unset P9K_VCS_SHORTEN_LENGTH
+  unset P9K_VCS_SHORTEN_MIN_LENGTH
+  unset P9K_VCS_SHORTEN_STRATEGY
 }
 
 function testBranchNameTruncatingMinLength() {
-  POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(vcs)
-  POWERLEVEL9K_VCS_SHORTEN_LENGTH=3
-  POWERLEVEL9K_VCS_SHORTEN_MIN_LENGTH=6
-  POWERLEVEL9K_VCS_SHORTEN_STRATEGY="truncate_from_right"
+  P9K_LEFT_PROMPT_ELEMENTS=(vcs)
+  P9K_VCS_SHORTEN_LENGTH=3
+  P9K_VCS_SHORTEN_MIN_LENGTH=6
+  P9K_VCS_SHORTEN_STRATEGY="truncate_from_right"
 
   FOLDER=/tmp/powerlevel9k-test/vcs-test
   mkdir -p $FOLDER
@@ -198,24 +198,24 @@ function testBranchNameTruncatingMinLength() {
 
   assertEquals "%K{green} %F{black} master ? %k%F{green}%f " "$(build_left_prompt)"
 
-  POWERLEVEL9K_VCS_SHORTEN_MIN_LENGTH=7
+  P9K_VCS_SHORTEN_MIN_LENGTH=7
 
   assertEquals "%K{green} %F{black} master ? %k%F{green}%f " "$(build_left_prompt)"
 
   cd -
   rm -fr /tmp/powerlevel9k-test
 
-  unset POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
-  unset POWERLEVEL9K_VCS_SHORTEN_LENGTH
-  unset POWERLEVEL9K_VCS_SHORTEN_MIN_LENGTH
-  unset POWERLEVEL9K_VCS_SHORTEN_STRATEGY
+  unset P9K_LEFT_PROMPT_ELEMENTS
+  unset P9K_VCS_SHORTEN_LENGTH
+  unset P9K_VCS_SHORTEN_MIN_LENGTH
+  unset P9K_VCS_SHORTEN_STRATEGY
 }
 
 function testBranchNameTruncatingShortenStrategy() {
-  POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(vcs)
-  POWERLEVEL9K_VCS_SHORTEN_LENGTH=3
-  POWERLEVEL9K_VCS_SHORTEN_MIN_LENGTH=3
-  POWERLEVEL9K_VCS_SHORTEN_STRATEGY="truncate_from_right"
+  P9K_LEFT_PROMPT_ELEMENTS=(vcs)
+  P9K_VCS_SHORTEN_LENGTH=3
+  P9K_VCS_SHORTEN_MIN_LENGTH=3
+  P9K_VCS_SHORTEN_STRATEGY="truncate_from_right"
 
   FOLDER=/tmp/powerlevel9k-test/vcs-test
   mkdir -p $FOLDER
@@ -225,17 +225,17 @@ function testBranchNameTruncatingShortenStrategy() {
 
   assertEquals "%K{green} %F{black} mas… ? %k%F{green}%f " "$(build_left_prompt)"
 
-  POWERLEVEL9K_VCS_SHORTEN_STRATEGY="truncate_middle"
+  P9K_VCS_SHORTEN_STRATEGY="truncate_middle"
 
   assertEquals "%K{green} %F{black} mas…ter ? %k%F{green}%f " "$(build_left_prompt)"
 
   cd -
   rm -fr /tmp/powerlevel9k-test
 
-  unset POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
-  unset POWERLEVEL9K_VCS_SHORTEN_LENGTH
-  unset POWERLEVEL9K_VCS_SHORTEN_MIN_LENGTH
-  unset POWERLEVEL9K_VCS_SHORTEN_STRATEGY
+  unset P9K_LEFT_PROMPT_ELEMENTS
+  unset P9K_VCS_SHORTEN_LENGTH
+  unset P9K_VCS_SHORTEN_MIN_LENGTH
+  unset P9K_VCS_SHORTEN_STRATEGY
 }
 
 source shunit2/source/2.1/src/shunit2

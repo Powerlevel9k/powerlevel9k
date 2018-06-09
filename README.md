@@ -577,15 +577,15 @@ Customizations available are:
 
 | Strategy Name | Description |
 |---------------|-------------|
-|`truncate_middle`|Truncates the middle part of a branch. E.g. branch name is `1234-super_super_long_branch_name`, then it will truncated to `1234-..._name`, if `POWERLEVEL9K_VCS_SHORTEN_LENGTH=5` is also set (controls the amount of characters to be left).|
-|`truncate_from_right`|Just leaves the beginning of a branch name untouched. E.g. branch name will be truncated like so: `1234-...`. How many characters will be untouched is controlled by `POWERLEVEL9K_VCS_SHORTEN_LENGTH`.|
+|`truncate_middle`|Truncates the middle part of a branch. E.g. branch name is `1234-super_super_long_branch_name`, then it will truncated to `1234-..._name`, if `P9K_VCS_SHORTEN_LENGTH=5` is also set (controls the amount of characters to be left).|
+|`truncate_from_right`|Just leaves the beginning of a branch name untouched. E.g. branch name will be truncated like so: `1234-...`. How many characters will be untouched is controlled by `P9K_VCS_SHORTEN_LENGTH`.|
 
 For example, if you want to truncate `1234-super_super_long_branch_name` to `1234-..` and don't do it with `development`:
 ```zsh
-POWERLEVEL9K_VCS_SHORTEN_LENGTH=4
-POWERLEVEL9K_VCS_SHORTEN_MIN_LENGTH=11
-POWERLEVEL9K_SHORTEN_STRATEGY="truncate_from_right"
-POWERLEVEL9K_VCS_SHORTEN_DELIMITER=".."
+P9K_VCS_SHORTEN_LENGTH=4
+P9K_VCS_SHORTEN_MIN_LENGTH=11
+P9K_SHORTEN_STRATEGY="truncate_from_right"
+P9K_VCS_SHORTEN_DELIMITER=".."
 ```
 
 ###### vcs symbols
@@ -642,7 +642,7 @@ This segment shows the _NodeJS_ version, that is currently active.
 
 | Variable | Default Value | Description |
 |----------|---------------|-------------|
-|`POWERLEVEL9K_NODE_VERSION_PROJECT_ONLY`|`false`|If `true` this segment only appears inside _NodeJS_ projects described by a `package.json`.|
+|`P9K_NODE_VERSION_PROJECT_ONLY`|`false`|If `true` this segment only appears inside _NodeJS_ projects described by a `package.json`.|
 
 ##### PHP Segments
 

@@ -48,7 +48,7 @@ function testTruncateFoldersWorks() {
 }
 
 function testTruncateFolderWithHomeDirWorks() {
-  POWERLEVEL9K_SHORTEN_DIR_LENGTH=1
+  P9K_SHORTEN_DIR_LENGTH=1
   CURRENT_DIR=$(pwd)
 
   cd ~
@@ -65,7 +65,7 @@ function testTruncateFolderWithHomeDirWorks() {
 
   unset CURRENT_DIR
   unset FOLDER
-  unset POWERLEVEL9K_SHORTEN_DIR_LENGTH
+  unset P9K_SHORTEN_DIR_LENGTH
 }
 
 function testTruncateMiddleWorks() {

@@ -239,7 +239,7 @@ prompt_dir() {
   base_name=${path_opt##*/}
 
   # if the user wants the last directory colored...
-  if [[ -n ${POWERLEVEL9K_DIR_PATH_HIGHLIGHT_FOREGROUND} ]]; then
+  if [[ -n ${P9K_DIR_PATH_HIGHLIGHT_FOREGROUND} ]]; then
     # it the path is "/" or "~"
     if [[ $path_opt == "/" || $path_opt == "~" ]]; then
       current_path="${bld_on}%F{$P9K_DIR_PATH_HIGHLIGHT_FOREGROUND}${current_path}${bld_off}"
