@@ -68,9 +68,12 @@ leftPromptSegment() {
   elif [[ "$bg" == "$CURRENT_BG" ]]; then
     # Middle segment with same color as previous segment
     # We take the current foreground color as color for our
-    # subsegment. This should have enough contrast.
+    # subsegment (or the default color). This should have
+    # enough contrast.
     if [[ $joined == false ]]; then
-      echo -n "${p9k_icons[LEFT_SUBSEGMENT_SEPARATOR]}$P9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS"
+      local complement
+      [[ -n "$fg" ]] && complement="$fg" || complement="$(foregroundColor $DEFAULT_COLOR)"
+      echo -n "${bg}${complement}${p9k_icons[LEFT_SUBSEGMENT_SEPARATOR]}$P9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS"
     fi
   else
     # First segment
@@ -91,8 +94,7 @@ leftPromptSegment() {
   # Print the visual identifier
   echo -n "${vi}${visual_identifier}"
   # Print the content of the segment, if there is any
-  [[ "$fg" != "$vi" ]] && echo -n "${fg}"
-  [[ -n "$5" ]] && echo -n "${bld_on}${5}${bld_off}"
+  [[ -n "$5" ]] && echo -n "${fg}${bld_on}${5}${bld_off}"
   echo -n "${P9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS}"
 
   CURRENT_BG=$bg
