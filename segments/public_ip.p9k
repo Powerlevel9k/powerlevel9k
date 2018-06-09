@@ -1,0 +1,99 @@
+#!/usr/bin/env zsh
+# vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
+################################################################
+# @title powerlevel9k Segment - Public IP
+# @source https://github.com/bhilburn/powerlevel9k
+##
+# @authors
+#   Ben Hilburn (bhilburn)
+#   Dominik Ritter (dritter)
+##
+
+################################################################
+# Register segment icon
+# Parameters:
+#   name_of_icon  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
+#                                                                           
+registerIcon "PUBLIC_IP_ICON"  ''  ''  ''  '\u'$CODEPOINT_OF_AWESOME_GLOBE  $'\UF0AC'
+#                                                                                    
+registerIcon "VPN_ICON"  '(vpn)'  '(vpn)'  $'\uF023'  '\u'$CODEPOINT_OF_AWESOME_LOCK  $'\uF023'
+
+################################################################
+# Public IP segment
+# Parameters:
+#   * $1 Alignment: string - left|right
+#   * $2 Index: integer
+#   * $3 Joined: bool - If the segment should be joined
+prompt_public_ip() {
+  # set default values for segment
+  setDefault P9K_PUBLIC_IP_TIMEOUT "300"
+  setDefault P9K_PUBLIC_IP_NONE ""
+  setDefault P9K_PUBLIC_IP_FILE "/tmp/p9k_public_ip"
+  setDefault P9K_PUBLIC_IP_HOST "http://ident.me"
+  defined P9K_PUBLIC_IP_METHODS || P9K_PUBLIC_IP_METHODS=(dig curl wget)
+
+  # Do we need a fresh IP?
+  local refresh_ip=false
+  if [[ -f $P9K_PUBLIC_IP_FILE ]]; then
+    typeset -i timediff
+    # if saved IP is more than
+    if [[ "$OS" == "OSX" ]]; then
+      timediff=$(($(date +%s) - $(stat -f "%m" $P9K_PUBLIC_IP_FILE)))
+    else
+      timediff=$(($(date +%s) - $(date -r $P9K_PUBLIC_IP_FILE +%s)))
+    fi
+    [[ $timediff -gt $P9K_PUBLIC_IP_TIMEOUT ]] && refresh_ip=true
+    # If tmp file is empty get a fresh IP
+    [[ -z $(cat $P9K_PUBLIC_IP_FILE) ]] && refresh_ip=true
+    [[ -n $P9K_PUBLIC_IP_NONE ]] && [[ $(cat $P9K_PUBLIC_IP_FILE) =~ "$P9K_PUBLIC_IP_NONE" ]] && refresh_ip=true
+  else
+    touch $P9K_PUBLIC_IP_FILE && refresh_ip=true
+  fi
+
+  # grab a fresh IP if needed
+  local fresh_ip
+  if [[ $refresh_ip =~ true && -w $P9K_PUBLIC_IP_FILE ]]; then
+    for method in "${P9K_PUBLIC_IP_METHODS[@]}"; do
+      case $method in
+        'dig')
+            fresh_ip="$(dig +time=1 +tries=1 +short myip.opendns.com @resolver1.opendns.com 2> /dev/null)"
+            [[ "$fresh_ip" =~ ^\; ]] && unset fresh_ip
+          ;;
+        'curl')
+            fresh_ip="$(curl --max-time 10 -w '\n' "$P9K_PUBLIC_IP_HOST" 2> /dev/null)"
+          ;;
+        'wget')
+            fresh_ip="$(wget -T 10 -qO- "$P9K_PUBLIC_IP_HOST" 2> /dev/null)"
+          ;;
+      esac
+      # If we found a fresh IP, break loop.
+      if [[ -n "${fresh_ip}" ]]; then
+        break;
+      fi
+    done
+
+    # write IP to tmp file or clear tmp file if an IP was not retrieved
+    # Redirection with `>!`. From the manpage: Same as >, except that the file
+    #   is truncated to zero length if it exists, even if CLOBBER is unset.
+    # If the file already exists, and a simple `>` redirection and CLOBBER
+    # unset, ZSH will produce an error.
+    [[ -n "${fresh_ip}" ]] && echo $fresh_ip >! $P9K_PUBLIC_IP_FILE || echo $P9K_PUBLIC_IP_NONE >! $P9K_PUBLIC_IP_FILE
+  fi
+
+  # read public IP saved to tmp file
+  local public_ip="$(cat $P9K_PUBLIC_IP_FILE)"
+
+  # Draw the prompt segment
+  if [[ -n $public_ip ]]; then
+    icon='PUBLIC_IP_ICON'
+    # Check VPN is on if VPN interface is set
+    if [[ -n $P9K_PUBLIC_IP_VPN_INTERFACE ]]; then
+      for vpn_iface in $(/sbin/ifconfig | grep -e ^"$P9K_PUBLIC_IP_VPN_INTERFACE" | cut -d":" -f1)
+      do
+        icon='VPN_ICON'
+        break
+      done
+    fi
+    p9kPrepareSegment "$0" "" $1 "$2" $3 "$DEFAULT_COLOR" "$DEFAULT_COLOR_INVERTED" "${public_ip}" "$icon"
+  fi
+}

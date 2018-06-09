@@ -1,0 +1,66 @@
+#!/usr/bin/env zsh
+# vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
+################################################################
+# @title powerlevel9k Segment - User
+# @source https://github.com/bhilburn/powerlevel9k
+##
+# @authors
+#   Ben Hilburn (bhilburn)
+#   Dominik Ritter (dritter)
+##
+
+################################################################
+# Register segment icon
+# Parameters:
+#   name_of_icon  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
+#                          ⚡                                                           
+registerIcon "ROOT_ICON"  $'\u26A1'  $'\uE801'  $'\uF201'  '\u'$CODEPOINT_OF_OCTICONS_ZAP  $'\uE614 '
+#                                                                                        
+registerIcon "SUDO_ICON"  $'\uE0A2'  $'\uF09C'  $'\uF09C'  '\u'$CODEPOINT_OF_AWESOME_UNLOCK  $'\uF09C'
+#                                                      
+registerIcon "USER_ICON"  ''  ''  $'\uF2C0'  $'\uF2C0'  $'\uF2C0'
+
+setDefault P9K_USER_TEMPLATE "%n"
+################################################################
+# @description
+#   Display information about the user (Who am I).
+##
+# @args
+#   $1 string Alignment - left | right
+#   $2 integer Segment index
+#   $3 boolean Whether the segment should be joined
+# @note
+#   If $DEFAULT_USER is not set, this prompt segment will always print.
+##
+prompt_user() {
+  local current_state="DEFAULT"
+  typeset -AH user_state
+  if [[ "$P9K_ALWAYS_SHOW_USER" == true ]] || [[ "$(whoami)" != "$DEFAULT_USER" ]]; then
+    if [[ $(print -P "%#") == '#' ]]; then
+      user_state=(
+        "STATE"               "ROOT"
+        "CONTENT"             "${P9K_USER_TEMPLATE}"
+        "BACKGROUND_COLOR"    "${DEFAULT_COLOR}"
+        "FOREGROUND_COLOR"    "yellow"
+        "VISUAL_IDENTIFIER"   "ROOT_ICON"
+      )
+    elif sudo -n true 2>/dev/null; then
+      user_state=(
+        "STATE"               "SUDO"
+        "CONTENT"             "${P9K_USER_TEMPLATE}"
+        "BACKGROUND_COLOR"    "${DEFAULT_COLOR}"
+        "FOREGROUND_COLOR"    "yellow"
+        "VISUAL_IDENTIFIER"   "SUDO_ICON"
+      )
+    else
+      user_state=(
+        "STATE"               "DEFAULT"
+        "CONTENT"             "$(whoami)"
+        "BACKGROUND_COLOR"    "${DEFAULT_COLOR}"
+        "FOREGROUND_COLOR"    "yellow"
+        "VISUAL_IDENTIFIER"   "USER_ICON"
+      )
+    fi
+    p9kPrepareSegment "$0" ${(U)user_state[STATE]} $1 "$2" $3 "${user_state[BACKGROUND_COLOR]}" "${user_state[FOREGROUND_COLOR]}" "${user_state[CONTENT]}" "${user_state[VISUAL_IDENTIFIER]}"
+  fi
+}

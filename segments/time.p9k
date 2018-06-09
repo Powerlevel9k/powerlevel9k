@@ -1,0 +1,32 @@
+#!/usr/bin/env zsh
+# vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
+################################################################
+# @title powerlevel9k Segment - Time
+# @source https://github.com/bhilburn/powerlevel9k
+##
+# @authors
+#   Ben Hilburn (bhilburn)
+#   Dominik Ritter (dritter)
+##
+
+################################################################
+# Register segment icon
+# Parameters:
+#   name_of_icon  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
+#                                                             
+registerIcon "TIME_ICON"  ''  $'\uE12E'  $'\uF017 '  $'\uF017 '  $'\uF017 '
+
+################################################################
+# @description
+#   Display the system time.
+##
+# @args
+#   $1 string Alignment - left | right
+#   $2 integer Segment index
+#   $3 boolean Whether the segment should be joined
+##
+prompt_time() {
+  setDefault P9K_TIME_FORMAT "%D{%H:%M:%S}"
+
+  p9kPrepareSegment "$0" "" $1 "$2" $3 "$DEFAULT_COLOR_INVERTED" "$DEFAULT_COLOR" "$P9K_TIME_FORMAT" "TIME_ICON"
+}

@@ -1,0 +1,29 @@
+#!/usr/bin/env zsh
+# vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
+################################################################
+# @title powerlevel9k Segment - Test Icons
+# @source https://github.com/bhilburn/powerlevel9k
+##
+# @authors
+#   Ben Hilburn (bhilburn)
+#   Dominik Ritter (dritter)
+##
+
+################################################################
+# @description
+#   Print some test icons in a segment.
+##
+# @args
+#   $1 string Alignment - left | right
+#   $2 integer Segment index
+#   $3 boolean Whether the segment should be joined
+##
+prompt_icons_test() {
+  for key in ${(@k)icons}; do
+    # The lower color spectrum in ZSH makes big steps. Choosing
+    # the next color has enough contrast to read.
+    local random_color=$((RANDOM % 8))
+    local next_color=$((random_color+1))
+    p9kPrepareSegment "$0" "" $1 "$2" $3 "$random_color" "$next_color" "$key" "$key"
+  done
+}

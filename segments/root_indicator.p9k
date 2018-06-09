@@ -1,0 +1,32 @@
+#!/usr/bin/env zsh
+# vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
+################################################################
+# @title powerlevel9k Segment - Root Indicator
+# @source https://github.com/bhilburn/powerlevel9k
+##
+# @authors
+#   Ben Hilburn (bhilburn)
+#   Dominik Ritter (dritter)
+##
+
+################################################################
+# Register segment icon
+# Parameters:
+#   name_of_icon  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
+#                          ⚡                                                           
+registerIcon "ROOT_ICON"  $'\u26A1'  $'\uE801'  $'\uF201'  '\u'$CODEPOINT_OF_OCTICONS_ZAP  $'\uE614 '
+
+################################################################
+# @description
+#   Displays an icon if user is root.
+##
+# @args
+#   $1 string Alignment - left | right
+#   $2 integer Segment index
+#   $3 boolean Whether the segment should be joined
+##
+prompt_root_indicator() {
+  if [[ "$UID" -eq 0 ]]; then
+    p9kPrepareSegment "$0" "" $1 "$2" $3 "$DEFAULT_COLOR" "yellow" "" 'ROOT_ICON'
+  fi
+}

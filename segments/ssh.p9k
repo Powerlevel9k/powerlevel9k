@@ -1,0 +1,32 @@
+#!/usr/bin/env zsh
+# vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
+################################################################
+# @title powerlevel9k Segment - SSH
+# @source https://github.com/bhilburn/powerlevel9k
+##
+# @authors
+#   Ben Hilburn (bhilburn)
+#   Dominik Ritter (dritter)
+##
+
+################################################################
+# Register segment icon
+# Parameters:
+#   name_of_icon  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
+#                                                             
+registerIcon "SSH_ICON"  '(ssh)'  '(ssh)'  '(ssh)'  '(ssh)'  $'\uF489'
+
+################################################################
+# @description
+#   Displays an SSH icon when connected.
+##
+# @args
+#   $1 string Alignment - left | right
+#   $2 integer Segment index
+#   $3 boolean Whether the segment should be joined
+##
+prompt_ssh() {
+  if [[ -n "$SSH_CLIENT" ]] || [[ -n "$SSH_TTY" ]]; then
+    p9kPrepareSegment "$0" "" $1 "$2" $3 "$DEFAULT_COLOR" "yellow" "" 'SSH_ICON'
+  fi
+}

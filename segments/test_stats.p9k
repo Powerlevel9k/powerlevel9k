@@ -1,0 +1,47 @@
+#!/usr/bin/env zsh
+# vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
+################################################################
+# @title powerlevel9k Support File - Test Statistics
+# @source https://github.com/bhilburn/powerlevel9k
+##
+# @authors
+#   Ben Hilburn (bhilburn)
+#   Dominik Ritter (dritter)
+##
+
+################################################################
+# Register segment icon
+# Parameters:
+#   name_of_icon  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
+#                                                                               
+registerIcon "TEST_ICON"  ''  $'\uE891'  $'\uF291'  '\u'$CODEPOINT_OF_AWESOME_BUG  $'\uF188'
+
+################################################################
+# @description
+#   Show a ratio of tests vs code.
+##
+# @args
+#   $1 string of the calling segment
+#   $2 string Alignment - left | right
+#   $3 integer Index
+#   $4 bool Whether the segment should be joined
+#   $5 string Code Amount
+#   $6 string Tests Amount
+#   $7 string Headline
+#   $8 string Icon
+##
+# @note
+#   This function is called by prompt segments to display the information required.
+build_test_stats() {
+  local code_amount="$5"
+  local tests_amount="$6"+0.00001
+  local headline="$7"
+
+  # Set float precision to 2 digits:
+  typeset -F 2 ratio
+  local ratio=$(( (tests_amount/code_amount) * 100 ))
+
+  (( ratio >= 75 )) && p9kPrepareSegment "$1" "GOOD" "$2" $3 $4 "cyan" "$DEFAULT_COLOR" "$headline: $ratio%%" "$6"
+  (( ratio >= 50 && ratio < 75 )) && p9kPrepareSegment "$1" "AVG" "$2" $3 $4 "yellow" "$DEFAULT_COLOR" "$headline: $ratio%%" "$6"
+  (( ratio < 50 )) && p9kPrepareSegment "$1" "BAD" "$2" $3 $4 "red" "$DEFAULT_COLOR" "$headline: $ratio%%" "$6"
+}
