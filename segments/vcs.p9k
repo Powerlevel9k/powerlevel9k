@@ -27,7 +27,7 @@
 # %S  A subdirectory within a repository. If $PWD is /foo/bar/repoXY/beer/tasty, %S is beer/tasty.
 # %m  A "misc" replacement. It is at the discretion of the backend to decide what this replacement expands to.
 #     The hg and git backends use this expando to display patch information. hg sources patch information from the mq extensions; git from in-progress rebase and cherry-pick operations and from the stgit extension. The patch-format and nopatch-format styles control the generated string. The former is used when at least one patch from the patch queue has been applied, and the latter otherwise.
-#     The hg backend displays bookmark information in this expando (in addition to mq information). See the get-mq and get-bookmarks styles. Both of these styles may be enabled at the same time. If both are enabled, both resulting strings will be shown separated by a semicolon (that cannot currently be customized).
+#     The hg backend displays bookmark information in this expando.
 #     The quilt ‘standalone’ backend sets this expando to the same value as the %Q expando.
 # %Q  Quilt series information. When quilt is used (either in ‘addon’ mode or as a ‘standalone’ backend), this expando is set to quilt series’ patch-format string. The set-patch-format hook and nopatch-format style are honoured.
 #
@@ -48,8 +48,6 @@
 # %n  The number of applied patches.
 # %c  The number of unapplied patches.
 # %a  The number of all patches.
-# %g  The names of active mq guards (hg backend).
-# %G  The number of active mq guards (hg backend).
 #
 # Not all VCS backends have to support all replacements. For nvcsformats no replacements are performed at all, it is just a string.
 #
@@ -193,9 +191,6 @@ p9k_vcs_init() {
 
   # For Hg, only show the branch name
   zstyle ':vcs_info:hg*:*' branchformat "$(printIcon 'VCS_BRANCH_ICON')%b"
-
-  # look for a Mercurial Queue (mq) patch directory. Information will be available via the ‘%m’ replacement.
-  zstyle ':vcs_info:hg:*' get-mq true
   
   # The `get-revision` function must be turned on for dirty-check to work for Hg
   # The revision of a repository’s work tree (currently for the git and hg backends, where this kind of information is not always vital). For git, the hash value of the currently checked out commit is available via the %i expansion. With hg, the local revision number and the corresponding global hash are available via %i.
