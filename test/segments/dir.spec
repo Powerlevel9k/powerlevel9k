@@ -58,7 +58,7 @@ function testTruncateFolderWithHomeDirWorks() {
   # Switch back to home folder as this causes the problem.
   cd ..
 
-  assertEquals "%K{blue} %F{black}~ %k%F{blue}%f " "$(build_left_prompt)"
+  assertEquals "%K{blue} %F{black}~ %k%F{blue}%f " "$(buildLeftPrompt)"
 
   rmdir $FOLDER
   cd ${CURRENT_DIR}

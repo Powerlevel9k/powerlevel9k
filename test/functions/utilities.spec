@@ -7,8 +7,8 @@ SHUNIT_PARENT=$0
 
 function setUp() {
   # Load Powerlevel9k
-  source functions/icons.zsh
   source functions/utilities.zsh
+  source functions/icons.zsh
 }
 
 function testDefinedFindsDefinedVariable() {

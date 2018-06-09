@@ -6,6 +6,9 @@ setopt shwordsplit
 SHUNIT_PARENT=$0
 
 function setUp() {
+    # Load necessary functions
+    source functions/utilities.zsh
+
     # Store old value for LC_CTYPE
     _OLD_LC_CTYPE="${LC_CTYPE}"
     # Reset actual LC_CTYPE
