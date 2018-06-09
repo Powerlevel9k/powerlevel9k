@@ -1,0 +1,46 @@
+#!/usr/bin/env zsh
+# vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
+################################################################
+# @title powerlevel9k Segment - User
+# @source https://github.com/bhilburn/powerlevel9k
+##
+
+################################################################
+# Register segment
+# Parameters:
+#   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
+#                                                             ⚡                                                           
+registerSegment "USER" "ROOT"    "yellow" "${DEFAULT_COLOR}"  $'\u26A1'  $'\uE801'  $'\uF201'  '\u'$CODEPOINT_OF_OCTICONS_ZAP  $'\uE614 '
+#                                                                                                                           
+registerSegment "USER" "SUDO"    "yellow" "${DEFAULT_COLOR}"  $'\uE0A2'  $'\uF09C'  $'\uF09C'  '\u'$CODEPOINT_OF_AWESOME_UNLOCK  $'\uF09C'
+#                                                                                 
+registerSegment "USER" "DEFAULT" "yellow" "${DEFAULT_COLOR}"  ''  ''  $'\uF2C0'  $'\uF2C0'  $'\uF2C0'
+
+setDefault P9K_USER_TEMPLATE "%n"
+################################################################
+# @description
+#   Display information about the user (Who am I).
+##
+# @args
+#   $1 string Alignment - left | right
+#   $2 integer Segment index
+#   $3 boolean Whether the segment should be joined
+# @note
+#   If $DEFAULT_USER is not set, this prompt segment will always print.
+##
+prompt_user() {
+  local current_state="DEFAULT"
+  typeset -AH user_state
+  if [[ "$P9K_ALWAYS_SHOW_USER" == true ]] || [[ "$(whoami)" != "$DEFAULT_USER" ]]; then
+    if [[ $(print -P "%#") == '#' ]]; then
+      current_state="ROOT"
+      segment_content="${P9K_USER_TEMPLATE}"
+    elif sudo -n true 2>/dev/null; then
+      current_state="SUDO"
+      segment_content="${P9K_USER_TEMPLATE}"
+    else
+      segment_content="$(whoami)"
+    fi
+    p9kPrepareSegment "$0" ${current_state} $1 "$2" $3 "${segment_content}"
+  fi
+}

@@ -1,0 +1,30 @@
+#!/usr/bin/env zsh
+# vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
+################################################################
+# @title powerlevel9k Segment - AWS EB Environment
+# @source https://github.com/bhilburn/powerlevel9k
+##
+
+################################################################
+# Register segment
+# Parameters:
+#   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
+#                                                          🌱           🌱           🌱            🌱           
+registerSegment 'AWS_EB_ENV' '' black green "AWS_EB_ICON"  $'\U1F331 '  $'\U1F331 '  $'\U1F331 '  $'\U1F331 '  $'\UF1BD '
+
+################################################################
+# @description
+#   Display the current Elastic Beanstalk environment.
+##
+# @args
+#   $1 string Alignment - left | right
+#   $2 integer Segment index
+#   $3 boolean Whether the segment should be joined
+##
+prompt_aws_eb_env() {
+  local eb_env=$(grep environment .elasticbeanstalk/config.yml 2> /dev/null | awk '{print $2}')
+
+  if [[ -n "$eb_env" ]]; then
+    p9kPrepareSegment "$0" "" $1 "$2" $3 "$eb_env"
+  fi
+}
