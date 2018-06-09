@@ -56,9 +56,7 @@ leftPromptSegment() {
   local STATEFUL_NAME="${(U)NAME#PROMPT_}"
   [[ -n "${STATE}" ]] && STATEFUL_NAME="${STATEFUL_NAME}_${STATE}"
   local bg="${p9k_bgs[$STATEFUL_NAME]}"
-  [[ -z $bg ]] && bg="$(backgroundColor $DEFAULT_COLOR_INVERTED)"
   local fg="${p9k_fgs[$STATEFUL_NAME]}"
-  [[ -z $fg ]] && fg="$(foregroundColor $DEFAULT_COLOR)"
   local vi="${p9k_icon_fgs[$STATEFUL_NAME]}"
 
   if [[ $CURRENT_BG != 'NONE' ]] && [[ "$bg" != "$CURRENT_BG" ]]; then
@@ -146,9 +144,7 @@ rightPromptSegment() {
   local STATEFUL_NAME="${(U)NAME#PROMPT_}"
   [[ -n "${STATE}" ]] && STATEFUL_NAME="${STATEFUL_NAME}_${STATE}"
   local bg="${p9k_bgs[$STATEFUL_NAME]}"
-  [[ -z $bg ]] && bg="$(backgroundColor $DEFAULT_COLOR_INVERTED)"
   local fg="${p9k_fgs[$STATEFUL_NAME]}"
-  [[ -z $fg ]] && fg="$(foregroundColor $DEFAULT_COLOR)"
   local vi="${p9k_icon_fgs[$STATEFUL_NAME]}"
 
   # If CURRENT_RIGHT_BG is "NONE", we are the first right segment.
@@ -227,6 +223,9 @@ p9kPrepareSegment() {
   segmentShouldBePrinted "${STATEFUL_NAME}" "${USER_CONDITION}" "${CONTENT}" && CONDITION=true || CONDITION=false
 
   if [[ $CONDITION == true ]]; then
+    local BACKGROUND="${p9k_bgs[$STATEFUL_NAME]}"
+    local FOREGROUND="${p9k_fgs[$STATEFUL_NAME]}"
+
     # Overwrite given bold directive by user defined variable for this segment.
     local BOLD_USER_VARIABLE="P9K_${STATEFUL_NAME}_BOLD"
     local BOLD="${(P)BOLD_USER_VARIABLE}"
@@ -273,7 +272,7 @@ prompt_custom() {
   local segment_content="$(eval ${(P)command})"
 
   if [[ -n $segment_content ]]; then
-    p9kPrepareSegment "${4:u}" "" "$1" $2 $3 "$segment_content"
+    p9kPrepareSegment "${4:u}" "" "$1" $2 $3 $DEFAULT_COLOR_INVERTED $DEFAULT_COLOR "$segment_content"
   fi
 }
 
