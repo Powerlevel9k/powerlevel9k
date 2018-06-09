@@ -21,8 +21,6 @@ registerSegment "DIR" 'NOT_WRITABLE'    "blue" "$DEFAULT_COLOR" $'\uE0A2'  $'\uE
 setDefault P9K_DIR_PATH_SEPARATOR "/"
 setDefault P9K_HOME_FOLDER_ABBREVIATION "~"
 setDefault P9K_DIR_PATH_HIGHLIGHT_BOLD false
-setDefault P9K_SHORTEN_DELIMITER "\u2026"
-setDefault P9K_SHORTEN_FOLDER_MARKER ".shorten_folder_marker"
 ################################################################
 # @description
 #   Display information about the current working directory.
@@ -43,6 +41,7 @@ prompt_dir() {
   (( ${#current_path} > 1 )) && paths=(${(s:/:)${current_path//"~\/"/}}) || paths=()
   # only run the code if SHORTEN_DIR_LENGTH is set, or we are using the two strategies that don't rely on it.
   if [[ -n "$P9K_SHORTEN_DIR_LENGTH" || "$P9K_SHORTEN_STRATEGY" == "truncate_with_folder_marker" || "$P9K_SHORTEN_STRATEGY" == "truncate_to_last" ]]; then
+    setDefault P9K_SHORTEN_DELIMITER "\u2026"
     # convert delimiter from unicode to literal character, so that we can get the correct length later
     local delim=$(echo -n $P9K_SHORTEN_DELIMITER)
 
@@ -107,6 +106,7 @@ prompt_dir() {
       truncate_with_folder_marker)
         if (( ${#paths} > 0 )); then # root and home are exceptions and won't have paths, so skip this
           local last_marked_folder marked_folder
+          setDefault P9K_SHORTEN_FOLDER_MARKER ".shorten_folder_marker"
 
           # Search for the folder marker in the parent directories and
           # buildup a pattern that is removed from the current path
