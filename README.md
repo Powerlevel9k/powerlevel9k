@@ -609,6 +609,8 @@ from the [Installation](#Installation) section above.
 | None         |  None               | ![icon_git](https://cloud.githubusercontent.com/assets/1544760/7976092/b5909f80-0a76-11e5-9950-1438b9d72465.gif) | Repository is a git repository
 | None         |  None               | ![icon_mercurial](https://cloud.githubusercontent.com/assets/1544760/7976090/b5908da6-0a76-11e5-8c91-452b6e73f631.gif) | Repository is a Mercurial repository
 
+##### vcs truncation
+
 You can limit the branch name to a certain length by truncating long names.
 Customizations available are:
 
@@ -628,7 +630,7 @@ For example, if you want to truncate `1234-super_super_long_branch_name` to `123
 ```zsh
 P9K_VCS_SHORTEN_LENGTH=4
 P9K_VCS_SHORTEN_MIN_LENGTH=11
-P9K_SHORTEN_STRATEGY="truncate_from_right"
+P9K_VCS_SHORTEN_STRATEGY="truncate_from_right"
 P9K_VCS_SHORTEN_DELIMITER=".."
 ```
 
