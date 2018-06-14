@@ -336,6 +336,44 @@ function segmentShouldBeJoined() {
   fi
 }
 
+###############################################################
+# @description
+#   A helper function to determine if a segment should be
+#   printed or not.
+#
+#   Conditions have three layers:
+#     1. No segment should print if they provide no
+#        content (default condition).
+#     2. Segments can define a default condition on
+#        their own, overriding the previous one.
+#     3. Users can set a condition for each segment.
+#        This is the trump card, and has highest
+#        precedence.
+##
+# @args
+#   $1 string The stateful name of the segment
+#   $2 string The user condition that gets evaluated
+#   $3 string Content of the segment (for default condition)
+##
+segmentShouldBePrinted() {
+  local STATEFUL_NAME="${1}"
+  local USER_CONDITION="${2}"
+  local CONTENT="${3}"
+
+  local CONDITION
+  local SEGMENT_CONDITION="P9K_${STATEFUL_NAME}_CONDITION"
+  if defined "${SEGMENT_CONDITION}"; then
+    CONDITION="${(P)SEGMENT_CONDITION}"
+  elif [[ -n "${USER_CONDITION}" && "${USER_CONDITION[0,1]}" == "[" ]]; then
+    CONDITION="${USER_CONDITION}"
+  else
+    CONDITION='[[ -n "${CONTENT}" ]]'
+  fi
+  # Precompile condition.
+  eval "${CONDITION}"
+  return $?
+}
+
 ################################################################
 # @description
 #   Given a directory path, truncate it according to the settings.
