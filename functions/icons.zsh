@@ -27,7 +27,8 @@
 
 # Set the right locale to protect special characters
 local LC_ALL="" LC_CTYPE="en_US.UTF-8"
-typeset -gAH icons
+typeset -gAH p9k_data
+typeset -gAH p9k_icons
 
 if [[ P9K_MODE == "awesome-mapped-fontconfig" && -z "$AWESOME_GLYPHS_LOADED" ]]; then
     echo "Powerlevel9k warning: Awesome-Font mappings have not been loaded.
@@ -38,13 +39,13 @@ fi
 
 ################################################################
 # @description
-#   This function allows a segment to register the icons that it
-#   requires. It will check for icons overriden by the user first
-#   and if found, will use those instead of the ones defined by
-#   the segment.
+#   This function allows the core code to register the icons that it
+#   requires. It will check for icons overriden by the user first,
+#   and, if found, will use those instead of the ones defined by the
+#   core code.
 ##
 # @args
-#   $1 string Name of icon
+#   $1 string Icon name
 #   $2 string Generic icon
 #   $3 string Flat / Awesome Patched icon
 #   $4 string Awesome FontConfig icon
@@ -58,11 +59,11 @@ fi
 #   registerIcon "name_of_icon" 'Gen' $'\uXXX' $'\uXXX' '\u'$CODEPOINT_OF_AWESOME_xxx '\uXXX'
 ##
 # @example
-#   registerIcon "LOCK_ICON"  $'\UE0A2'  $'\UE138'  $'\UF023'  '\u'$CODEPOINT_OF_AWESOME_LOCK  $'\UF023'
+#   registerIcon "LOCK_ICON"  $'\uE0A2'  $'\uE138'  $'\uF023'  '\u'$CODEPOINT_OF_AWESOME_LOCK  $'\uF023'
 ##
 function registerIcon() {
   local map
-	local ICON_USER_VARIABLE=P9K_${1}
+	local ICON_USER_VARIABLE="P9K_${1}"
 	if defined "$ICON_USER_VARIABLE"; then # check for icon override first
 		map="${(P)ICON_USER_VARIABLE}"
 	else # use the icons that are registered by the segment
@@ -74,7 +75,83 @@ function registerIcon() {
     	*)                                          map=$2 ;;
     esac
   fi
-	icons[$1]=${map}
+	p9k_icons[$1]=${map}
+}
+
+################################################################
+# @description
+#   This function allows a segment to register the colors and icons
+#   that it requires. It will check for user icon / color overrides
+#   first and, if found, will use those instead of the ones defined
+#   by the segment.
+##
+# @args
+#   $1 string Segment name
+#   $2 string State name or ""
+#   $3 misc Default background color
+#   $4 misc Default foreground color
+#   $5 string Generic icon
+#   $6 string Flat / Awesome Patched icon
+#   $7 string Awesome FontConfig icon
+#   $8 string Awesome Mapped FontConfig icon
+#   $9 string NerdFont Complete / FontConfig icon
+##
+# @note
+#   You can specify a string, unicode string or codepoint string (for Mapped fonts only).
+##
+# @usage
+#   registerSegment "segmentName" "stateNameOrEmpty" "backgroundColor" "foregroundColor" 'Gen' $'\uXXX' $'\uXXX' '\u'$CODEPOINT_OF_AWESOME_xxx '\uXXX'
+##
+# @example
+#   registerSegment "DIR_WRITABLE" "" "red" "yellow1"  $'\uE0A2'  $'\uE138'  $'\uF023'  '\u'$CODEPOINT_OF_AWESOME_LOCK  $'\uF023'
+##
+function registerSegment() {
+  local STATEFUL_NAME=${(U)1#PROMPT_}
+  # add state if required
+  [[ -n $2 ]] && STATEFUL_NAME=${STATEFUL_NAME}_${(U)2}
+  [[ -z $3 ]] && 3=${DEFAULT_COLOR_INVERTED}
+  [[ -z $4 ]] && 4=${DEFAULT_COLOR}
+
+  local BG_USER_VARIABLE="P9K_${STATEFUL_NAME}_BACKGROUND"
+  if defined "$BG_USER_VARIABLE"; then # check for background override first
+    p9k_data[${STATEFUL_NAME}_BG]="$(backgroundColor ${(P)BG_USER_VARIABLE})"
+  else
+    p9k_data[${STATEFUL_NAME}_BG]="$(backgroundColor $3)"
+  fi
+
+  local FG_USER_VARIABLE="P9K_${STATEFUL_NAME}_FOREGROUND"
+  if defined "$FG_USER_VARIABLE"; then # check for foreground override first
+    p9k_data[${STATEFUL_NAME}_FG]="$(foregroundColor ${(P)FG_USER_VARIABLE})"
+  else
+    p9k_data[${STATEFUL_NAME}_FG]="$(foregroundColor $4)"
+  fi
+
+  local map
+	local ICON_USER_VARIABLE="P9K_${STATEFUL_NAME}_ICON"
+	if defined "$ICON_USER_VARIABLE"; then # check for icon override first
+		map="${(P)ICON_USER_VARIABLE}"
+	else # use the icons that are registered by the segment
+    case $P9K_MODE in
+    	'flat'|'awesome-patched')                   map=$6 ;;
+    	'awesome-fontconfig')                       map=$7 ;;
+    	'awesome-mapped-fontconfig')                map=$8 ;;
+    	'nerdfont-complete'|'nerdfont-fontconfig')  map=$9 ;;
+    	*)                                          map=$5 ;;
+    esac
+  fi
+	p9k_icons[${STATEFUL_NAME}]=${map}
+
+  local ICON_COLOR_VARIABLE="P9K_${STATEFUL_NAME}_ICON_COLOR"
+  if defined "$ICON_COLOR_VARIABLE"; then
+    p9k_data[${STATEFUL_NAME}_VI]="$(foregroundColor ${(P)ICON_COLOR_VARIABLE})"
+  else
+    p9k_data[${STATEFUL_NAME}_VI]=$p9k_data[${STATEFUL_NAME}_FG]
+  fi
+
+  # Overwrite given bold directive by user defined variable for this segment.
+  local BOLD_USER_VARIABLE="P9K_${STATEFUL_NAME}_BOLD"
+  local BOLD="${(P)BOLD_USER_VARIABLE}"
+  [[ -z "${BOLD}" ]] || p9k_data[${STATEFUL_NAME}_BD]=true
 }
 
 #                                                                                                                           
@@ -120,7 +197,7 @@ esac
 #   $1 string Name of icon
 ##
 function printIcon() {
-	echo -n "${icons[$1]}"
+	echo -n "${p9k_icons[$1]}"
 }
 
 ################################################################
@@ -130,5 +207,6 @@ function printIcon() {
 # @noargs
 ##
 showDefinedIcons() {
-  for k v in ${(kv)icons}; do; echo "$k -> $v"; done | sort
+  # changed (kv) to (k) in case there are empty keys, which causes the printing to be done wrong
+  for k in ${(k)p9k_icons}; do; echo "$k -> '$p9k_icons[$k]'"; done | sort
 }
