@@ -1368,10 +1368,14 @@ prompt_vcs() {
 # Vi Mode: show editing mode (NORMAL|INSERT)
 set_default POWERLEVEL9K_VI_INSERT_MODE_STRING "INSERT"
 set_default POWERLEVEL9K_VI_COMMAND_MODE_STRING "NORMAL"
+set_default POWERLEVEL9K_VI_SEARCH_MODE_STRING "SEARCH"
 prompt_vi_mode() {
-  case ${KEYMAP} in
+  case ${VIM_MODE_KEYMAP:-$KEYMAP} in
     vicmd)
       [[ -n "$POWERLEVEL9K_VI_COMMAND_MODE_STRING" ]] && "$1_prompt_segment" "$0_NORMAL" "$2" "$DEFAULT_COLOR" "default" "$POWERLEVEL9K_VI_COMMAND_MODE_STRING"
+    ;;
+    isearch)
+      [[ -n "$POWERLEVEL9K_VI_SEARCH_MODE_STRING" ]] && "$1_prompt_segment" "$0_SEARCH" "$2" "$DEFAULT_COLOR" "magenta" "$POWERLEVEL9K_VI_SEARCH_MODE_STRING"
     ;;
     main|viins|*)
       [[ -n "$POWERLEVEL9K_VI_INSERT_MODE_STRING" ]] && "$1_prompt_segment" "$0_INSERT" "$2" "$DEFAULT_COLOR" "blue" "$POWERLEVEL9K_VI_INSERT_MODE_STRING"

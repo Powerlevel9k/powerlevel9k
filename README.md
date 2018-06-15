@@ -629,6 +629,9 @@ you are using the [ZSH Line Editor](http://zsh.sourceforge.net/Doc/Release/Zsh-L
 |----------|---------------|-------------|
 |`POWERLEVEL9K_VI_INSERT_MODE_STRING`|`"INSERT"`|String to display while in 'Insert' mode.|
 |`POWERLEVEL9K_VI_COMMAND_MODE_STRING`|`"NORMAL"`|String to display while in 'Command' mode.|
+|`POWERLEVEL9K_VI_SEARCH_MODE_STRING`|`"SEARCH"`|String to display while in 'Search' mode (requires the [vim-mode][] plugin).|
+
+[vim-mode]: https://github.com/softmoth/zsh-vim-mode
 
 #### Unit Test Ratios
 
