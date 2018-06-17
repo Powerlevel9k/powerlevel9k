@@ -4,14 +4,13 @@
 # @title powerlevel9k Segment - Background Jobs
 # @source https://github.com/bhilburn/powerlevel9k
 ##
-# @authors
-#   Ben Hilburn (bhilburn)
-#   Dominik Ritter (dritter)
-##
 
-# Register icons
-#                                     ⚙                                                               
-registerIcon "BACKGROUND_JOBS_ICON"  $'\u2699'  $'\uE82F '  $'\uF013 '  '\u'$CODEPOINT_OF_AWESOME_COG' '  $'\uF013 '
+################################################################
+# Register segment
+# Parameters:
+#   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
+#                                                            ⚙                                                               
+registerSegment 'BACKGROUND_JOBS' '' "$DEFAULT_COLOR" "cyan" $'\u2699'  $'\uE82F '  $'\uF013 '  '\u'$CODEPOINT_OF_AWESOME_COG' '  $'\uF013 '
 
 setDefault P9K_BACKGROUND_JOBS_VERBOSE true
 setDefault P9K_BACKGROUND_JOBS_VERBOSE_ALWAYS false
@@ -35,6 +34,6 @@ prompt_background_jobs() {
     if [[ "$P9K_BACKGROUND_JOBS_VERBOSE" == "true" ]] && ([[ "$background_jobs_number" -gt 1 ]] || [[ "$P9K_BACKGROUND_JOBS_VERBOSE_ALWAYS" == "true" ]]); then
       background_jobs_number_print="$background_jobs_number"
     fi
-    p9kPrepareSegment "$0" "" $1 "$2" $3 "$DEFAULT_COLOR" "cyan" "$background_jobs_number_print" 'BACKGROUND_JOBS_ICON'
+    p9kPrepareSegment "$0" "" $1 "$2" $3 "$background_jobs_number_print"
   fi
 }
