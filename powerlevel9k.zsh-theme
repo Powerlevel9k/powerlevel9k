@@ -1470,12 +1470,13 @@ powerlevel9k_vcs_init() {
   VCS_WORKDIR_DIRTY=false
   VCS_WORKDIR_HALF_DIRTY=false
 
-  # The vcs segment can have three different states - defaults to 'clean'.
+  # The vcs segment can have different states - defaults to 'clean'.
   typeset -gAH vcs_states
   vcs_states=(
     'clean'         'green'
     'modified'      'yellow'
     'untracked'     'green'
+    'clobbered'     'red'
   )
 
   VCS_CHANGESET_PREFIX=''
@@ -1494,7 +1495,7 @@ powerlevel9k_vcs_init() {
   zstyle ':vcs_info:*' stagedstr " $(print_icon 'VCS_STAGED_ICON')"
   zstyle ':vcs_info:*' unstagedstr " $(print_icon 'VCS_UNSTAGED_ICON')"
 
-  defined POWERLEVEL9K_VCS_GIT_HOOKS || POWERLEVEL9K_VCS_GIT_HOOKS=(vcs-detect-changes git-untracked git-aheadbehind git-stash git-remotebranch git-tagname)
+  defined POWERLEVEL9K_VCS_GIT_HOOKS || POWERLEVEL9K_VCS_GIT_HOOKS=(vcs-detect-changes git-untracked git-aheadbehind git-stash git-remotebranch git-gitdir git-tagname)
   zstyle ':vcs_info:git*+set-message:*' hooks $POWERLEVEL9K_VCS_GIT_HOOKS
   defined POWERLEVEL9K_VCS_HG_HOOKS || POWERLEVEL9K_VCS_HG_HOOKS=(vcs-detect-changes)
   zstyle ':vcs_info:hg*+set-message:*' hooks $POWERLEVEL9K_VCS_HG_HOOKS
@@ -1522,6 +1523,7 @@ powerlevel9k_vcs_init() {
 ################################################################
 # Segment to show VCS information
 prompt_vcs() {
+  VCS_WORKDIR_CLOBBERED=false
   VCS_WORKDIR_DIRTY=false
   VCS_WORKDIR_HALF_DIRTY=false
   local current_state=""
@@ -1531,9 +1533,9 @@ prompt_vcs() {
   local vcs_prompt="${vcs_info_msg_0_}"
 
   if [[ -n "$vcs_prompt" ]]; then
-    if [[ "$VCS_WORKDIR_DIRTY" == true ]]; then
-      # $vcs_visual_identifier gets set in +vi-vcs-detect-changes in functions/vcs.zsh,
-      # as we have there access to vcs_info internal hooks.
+    if [[ "$VCS_WORKDIR_CLOBBERED" == true ]]; then
+      current_state='clobbered'
+    elif [[ "$VCS_WORKDIR_DIRTY" == true ]]; then
       current_state='modified'
     else
       if [[ "$VCS_WORKDIR_HALF_DIRTY" == true ]]; then
@@ -1542,6 +1544,9 @@ prompt_vcs() {
         current_state='clean'
       fi
     fi
+
+    # $vcs_visual_identifier gets set in +vi-vcs-detect-changes in functions/vcs.zsh,
+    # as we have there access to vcs_info internal hooks.
     "$1_prompt_segment" "${0}_${(U)current_state}" "$2" "${vcs_states[$current_state]}" "$DEFAULT_COLOR" "$vcs_prompt" "$vcs_visual_identifier"
   fi
 }

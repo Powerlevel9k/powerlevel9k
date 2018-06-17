@@ -60,6 +60,30 @@ function +vi-git-remotebranch() {
     fi
 }
 
+function +vi-git-gitdir () {
+    if (( $+GIT_DIR )); then
+        local gitdir
+        print -v gitdir -D "$GIT_DIR"
+        local icon="$(print_icon 'FOLDER_ICON')"
+
+        local inner
+        () {
+            # See if current working directory is a shadowed repository
+            local GIT_DIR GIT_WORK_TREE
+            inner=$(git rev-parse --verify HEAD 2> /dev/null)
+        }
+
+        if [[ -n $inner && $inner != "$(git rev-parse --verify HEAD 2> /dev/null)" ]]; then
+            # GIT_DIR is shadowing a different repo. This can be
+            # very confusing! Flag to alert.
+            VCS_WORKDIR_CLOBBERED=true
+            icon="$(print_icon 'FAIL_ICON') $icon"
+        fi
+
+        hook_com[branch]="$icon $gitdir ${hook_com[branch]}"
+    fi
+}
+
 set_default POWERLEVEL9K_VCS_HIDE_TAGS false
 function +vi-git-tagname() {
     if [[ "$POWERLEVEL9K_VCS_HIDE_TAGS" == "false" ]]; then
