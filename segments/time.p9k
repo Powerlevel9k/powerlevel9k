@@ -4,17 +4,13 @@
 # @title powerlevel9k Segment - Time
 # @source https://github.com/bhilburn/powerlevel9k
 ##
-# @authors
-#   Ben Hilburn (bhilburn)
-#   Dominik Ritter (dritter)
-##
 
 ################################################################
-# Register segment icon
+# Register segment
 # Parameters:
-#   name_of_icon  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
+#   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
 #                                                             
-registerIcon "TIME_ICON"  ''  $'\uE12E'  $'\uF017 '  $'\uF017 '  $'\uF017 '
+registerSegment "TIME" "" "${DEFAULT_COLOR_INVERTED}" "${DEFAULT_COLOR}"  ''  $'\uE12E'  $'\uF017 '  $'\uF017 '  $'\uF017 '
 
 ################################################################
 # @description
@@ -28,5 +24,5 @@ registerIcon "TIME_ICON"  ''  $'\uE12E'  $'\uF017 '  $'\uF017 '  $'\uF017 '
 prompt_time() {
   setDefault P9K_TIME_FORMAT "%D{%H:%M:%S}"
 
-  p9kPrepareSegment "$0" "" $1 "$2" $3 "$DEFAULT_COLOR_INVERTED" "$DEFAULT_COLOR" "$P9K_TIME_FORMAT" "TIME_ICON"
+  p9kPrepareSegment "$0" "" $1 "$2" $3 "$P9K_TIME_FORMAT"
 }
