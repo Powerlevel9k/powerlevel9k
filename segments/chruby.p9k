@@ -4,17 +4,13 @@
 # @title powerlevel9k Segment - chruby
 # @source https://github.com/bhilburn/powerlevel9k
 ##
-# @authors
-#   Ben Hilburn (bhilburn)
-#   Dominik Ritter (dritter)
-##
 
 ################################################################
-# Register segment icon
+# Register segment
 # Parameters:
-#   name_of_icon  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
-#                                                                                     
-registerIcon "RUBY_ICON"  ''  $'\uE847 '  $'\uF219 '  '\u'$CODEPOINT_OF_OCTICONS_RUBY' '  $'\uF219 '
+#   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
+#                                                                                                             
+registerSegment 'CHRUBY' '' "red" "$DEFAULT_COLOR" ''  $'\uE847 '  $'\uF219 '  '\u'$CODEPOINT_OF_OCTICONS_RUBY' '  $'\uF219 '
 
 ################################################################
 # Segment to display
@@ -29,10 +25,10 @@ registerIcon "RUBY_ICON"  ''  $'\uE847 '  $'\uF219 '  '\u'$CODEPOINT_OF_OCTICONS
 # @see
 #   [chruby_auto issue with ZSH](https://github.com/postmodern/chruby/issues/245).
 ##
+setDefault P9K_CHRUBY_SHOW_VERSION true
+setDefault P9K_CHRUBY_SHOW_ENGINE true
 prompt_chruby() {
   # Uses $RUBY_VERSION and $RUBY_ENGINE set by chruby
-  setDefault P9K_CHRUBY_SHOW_VERSION true
-  setDefault P9K_CHRUBY_SHOW_ENGINE true
   local chruby_label=""
 
   if [[ "$P9K_CHRUBY_SHOW_ENGINE" == true ]]; then
@@ -47,6 +43,6 @@ prompt_chruby() {
 
   # Don't show anything if the chruby did not change the default ruby
   if [[ "$RUBY_ENGINE" != "" ]]; then
-    p9kPrepareSegment "$0" "" $1 "$2" $3 "red" "$DEFAULT_COLOR" "${chruby_label}" 'RUBY_ICON'
+    p9kPrepareSegment "$0" "" $1 "$2" $3 "${chruby_label}"
   fi
 }
