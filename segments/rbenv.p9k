@@ -4,17 +4,13 @@
 # @title powerlevel9k Segment - Ruby Environment
 # @source https://github.com/bhilburn/powerlevel9k
 ##
-# @authors
-#   Ben Hilburn (bhilburn)
-#   Dominik Ritter (dritter)
-##
 
 ################################################################
-# Register segment icon
+# Register segment
 # Parameters:
-#   name_of_icon  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
-#                                                                                     
-registerIcon "RUBY_ICON"  ''  $'\uE847 '  $'\uF219 '  '\u'$CODEPOINT_OF_OCTICONS_RUBY' '  $'\uF219 '
+#   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
+#                                                                                                               
+registerSegment "RBENV" "" "red" "${DEFAULT_COLOR}"  ''  $'\uE847 '  $'\uF219 '  '\u'$CODEPOINT_OF_OCTICONS_RUBY' '  $'\uF219 '
 
 setDefault P9K_RBENV_ALWAYS false
 ################################################################
@@ -27,16 +23,14 @@ setDefault P9K_RBENV_ALWAYS false
 #   $3 boolean Whether the segment should be joined
 ##
 prompt_rbenv() {
-  if command which rbenv 2>/dev/null >&2; then
+  if which rbenv 2>/dev/null >&2; then
     local rbenv_version_name="$(rbenv version-name)"
     local rbenv_global="$(rbenv global)"
 
     # Don't show anything if the current Ruby is the same as the global Ruby
-    # unless `P9K_RBENV_PROMPT_ALWAYS_SHOW` is set.
-    if [[ $rbenv_version_name == $rbenv_global && "$P9K_RBENV_PROMPT_ALWAYS_SHOW" = false ]]; then
-      return
+    # unless `P9K_RBENV_ALWAYS` is set.
+    if [[ $P9K_RBENV_ALWAYS == true || $rbenv_version_name != $rbenv_global ]]; then
+      p9kPrepareSegment "$0" "" $1 "$2" $3 "$rbenv_version_name"
     fi
-
-    p9kPrepareSegment "$0" "" $1 "$2" $3 "red" "$DEFAULT_COLOR" "$rbenv_version_name" 'RUBY_ICON'
   fi
 }
