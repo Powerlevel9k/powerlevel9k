@@ -4,21 +4,17 @@
 # @title powerlevel9k Segment - Status
 # @source https://github.com/bhilburn/powerlevel9k
 ##
-# @authors
-#   Ben Hilburn (bhilburn)
-#   Dominik Ritter (dritter)
-##
 
 ################################################################
-# Register segment icon
+# Register segment
 # Parameters:
-#   name_of_icon  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
-#                                     ↵         ↵         ↵         ↵         ↵
-registerIcon "CARRIAGE_RETURN_ICON"  $'\u21B5'  $'\u21B5'  $'\u21B5'  $'\u21B5'  $'\u21B5'
-#                        ✔         ✔          ✔                                         
-registerIcon "OK_ICON"  $'\u2714'  $'\u2714'  $'\u2714'  '\u'$CODEPOINT_OF_AWESOME_CHECK  $'\uF00C'
-#                          ✘          ✘         ✘                                          
-registerIcon "FAIL_ICON"  $'\u2718'  $'\u2718'  $'\u2718'  '\u'$CODEPOINT_OF_AWESOME_TIMES  $'\uF00D'
+#   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
+#                                                               ✔         ✔          ✔                                         
+registerSegment "STATUS" "OK"       "$DEFAULT_COLOR" "green"    $'\u2714'  $'\u2714'  $'\u2714'  '\u'$CODEPOINT_OF_AWESOME_CHECK  $'\uF00C'
+#                                                               ✘          ✘         ✘                                          
+registerSegment "STATUS" "ERROR"    "$DEFAULT_COLOR" "red"      $'\u2718'  $'\u2718'  $'\u2718'  '\u'$CODEPOINT_OF_AWESOME_TIMES  $'\uF00D'
+#                                                               ↵         ↵         ↵         ↵                               ↵
+registerSegment "STATUS" "ERROR_CR" "red"            "yellow1"  $'\u21B5'  $'\u21B5'  $'\u21B5'  $'\u21B5'                        $'\u21B5'
 
 setDefault P9K_STATUS_CROSS false
 setDefault P9K_STATUS_OK true
@@ -59,25 +55,23 @@ exit_code_or_status() {
 #   $3 boolean Whether the segment should be joined
 ##
 prompt_status() {
-  local ec_text
-  local ec_sum
+  local ec_text ec_sum
   local ec
 
   if [[ $P9K_STATUS_SHOW_PIPESTATUS == true ]]; then
     if (( $#RETVALS > 1 )); then
       ec_text=$(exit_code_or_status "${RETVALS[1]}")
       ec_sum=${RETVALS[1]}
+      for ec in "${(@)RETVALS[2,-1]}"; do
+        if [[ -n "${ec}" ]]; then
+          ec_text="${ec_text}|$(exit_code_or_status "$ec")"
+          ec_sum=$(( $ec_sum + $ec ))
+        fi
+      done
     else
       ec_text=$(exit_code_or_status "${RETVAL}")
       ec_sum=${RETVAL}
     fi
-
-    for ec in "${(@)RETVALS[2,-1]}"; do
-      if [[ -n "${ec}" ]]; then
-        ec_text="${ec_text}|$(exit_code_or_status "$ec")"
-        ec_sum=$(( $ec_sum + $ec ))
-      fi
-    done
   else
     # We use RETVAL instead of the right-most RETVALS item because
     # PIPE_FAIL may be set.
@@ -87,11 +81,11 @@ prompt_status() {
 
   if (( ec_sum > 0 )); then
     if [[ "$P9K_STATUS_CROSS" == false && "$P9K_STATUS_VERBOSE" == true ]]; then
-      p9kPrepareSegment "$0" "ERROR" $1 "$2" $3 "red" "yellow1" "$ec_text" 'CARRIAGE_RETURN_ICON'
+      p9kPrepareSegment "$0" "ERROR_CR" $1 "$2" $3 "$ec_text"
     else
-      p9kPrepareSegment "$0" "ERROR" $1 "$2" $3 "$DEFAULT_COLOR" "red" "" 'FAIL_ICON'
+      p9kPrepareSegment "$0" "ERROR" $1 "$2" $3 "" "true"
     fi
   elif [[ "$P9K_STATUS_OK" == true ]] && [[ "$P9K_STATUS_VERBOSE" == true || "$P9K_STATUS_OK_IN_NON_VERBOSE" == true ]]; then
-    p9kPrepareSegment "$0" "OK" $1 "$2" $3 "$DEFAULT_COLOR" "green" "" 'OK_ICON'
+    p9kPrepareSegment "$0" "OK" $1 "$2" $3  "" "true"
   fi
 }
