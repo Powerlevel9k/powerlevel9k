@@ -4,10 +4,13 @@
 # @title powerlevel9k Segment - Openfoam
 # @source https://github.com/bhilburn/powerlevel9k
 ##
-# @authors
-#   Ben Hilburn (bhilburn)
-#   Dominik Ritter (dritter)
-##
+
+################################################################
+# Register segment
+# Parameters:
+#   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
+#
+registerSegment "OPENFOAM" "" "yellow" "${DEFAULT_COLOR}"  ''  ''  ''  ''  ''
 
 ################################################################
 # @description
@@ -22,8 +25,8 @@ prompt_openfoam() {
   local wm_project_version="$WM_PROJECT_VERSION"
   local wm_fork="$WM_FORK"
   if [[ -n "$wm_project_version" ]] &&  [[ -z "$wm_fork" ]] ; then
-    p9kPrepareSegment "$0" "" $1 "$2" $3 "yellow" "$DEFAULT_COLOR" "OF: $(basename "$wm_project_version")"
+    p9kPrepareSegment "$0" "" $1 "$2" $3 "OF: $(basename "$wm_project_version")"
   elif [[ -n "$wm_project_version" ]] && [[ -n "$wm_fork" ]] ; then
-    p9kPrepareSegment "$0" "" $1 "$2" $3 "yellow" "$DEFAULT_COLOR" "F-X: $(basename "$wm_project_version")"
+    p9kPrepareSegment "$0" "" $1 "$2" $3 "F-X: $(basename "$wm_project_version")"
   fi
 }
