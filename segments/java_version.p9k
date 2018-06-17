@@ -4,17 +4,13 @@
 # @title powerlevel9k Segment - Java Version
 # @source https://github.com/bhilburn/powerlevel9k
 ##
-# @authors
-#   Ben Hilburn (bhilburn)
-#   Dominik Ritter (dritter)
-##
 
 ################################################################
-# Register segment icon
+# Register segment
 # Parameters:
-#   name_of_icon  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
-#                                      ☕         ☕          
-registerIcon "JAVA_ICON"  'Java'  ''  $'\u2615'  $'\u2615'  $'\uE256'
+#   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
+#                                                           ☕         ☕         
+registerSegment "JAVA_VERSION" "" "red" "white" 'Java'  ''  $'\u2615'  $'\u2615'  $'\uE256'
 
 ################################################################
 # @description
@@ -29,6 +25,6 @@ prompt_java_version() {
   local java_version
   java_version=$(java -fullversion 2>&1 | cut -d '"' -f 2)
   if [[ -n "$java_version" ]]; then
-    p9kPrepareSegment "$0" "" $1 "$2" $3 "red" "white" "${java_version}" 'JAVA_ICON'
+    p9kPrepareSegment "$0" "" $1 "$2" $3  "${java_version}"
   fi
 }
