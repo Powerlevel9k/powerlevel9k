@@ -4,18 +4,13 @@
 # @title powerlevel9k Segment - Symfony2 Version
 # @source https://github.com/bhilburn/powerlevel9k
 ##
-# @authors
-#   Ben Hilburn (bhilburn)
-#   Dominik Ritter (dritter)
-##
 
 ################################################################
-# Register segment icon
+# Register segment
 # Parameters:
-#   name_of_icon  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
-# Register icons
+#   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
 #                                                     
-registerIcon "SYMFONY_ICON"  'SF'  'SF'  'SF'  'SF'  $'\uE757'
+registerSegment "SYMFONY2_VERSION" "" "grey35" "${DEFAULT_COLOR}"  'SF'  'SF'  'SF'  'SF'  $'\uE757'
 
 ################################################################
 # @description
@@ -30,6 +25,6 @@ prompt_symfony2_version() {
   if [[ -f app/bootstrap.php.cache ]]; then
     local symfony2_version
     symfony2_version=$(grep " VERSION " app/bootstrap.php.cache | sed -e 's/[^.0-9]*//g')
-    p9kPrepareSegment "$0" "" $1 "$2" $3 "grey35" "$DEFAULT_COLOR" "$symfony2_version" 'SYMFONY_ICON'
+    p9kPrepareSegment "$0" "" $1 "$2" $3 "$symfony2_version"
   fi
 }
