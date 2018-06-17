@@ -4,21 +4,17 @@
 # @title powerlevel9k Segment - User
 # @source https://github.com/bhilburn/powerlevel9k
 ##
-# @authors
-#   Ben Hilburn (bhilburn)
-#   Dominik Ritter (dritter)
-##
 
 ################################################################
-# Register segment icon
+# Register segment
 # Parameters:
-#   name_of_icon  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
-#                          ⚡                                                           
-registerIcon "ROOT_ICON"  $'\u26A1'  $'\uE801'  $'\uF201'  '\u'$CODEPOINT_OF_OCTICONS_ZAP  $'\uE614 '
-#                                                                                        
-registerIcon "SUDO_ICON"  $'\uE0A2'  $'\uF09C'  $'\uF09C'  '\u'$CODEPOINT_OF_AWESOME_UNLOCK  $'\uF09C'
-#                                                      
-registerIcon "USER_ICON"  ''  ''  $'\uF2C0'  $'\uF2C0'  $'\uF2C0'
+#   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
+#                                                                                         
+registerSegment "USER" "DEFAULT" "yellow" "${DEFAULT_COLOR}"  ''  ''  $'\uF2C0'  $'\uF2C0'  $'\uF2C0'
+#                                                             ⚡                                                           
+registerSegment "USER" "ROOT"    "yellow" "${DEFAULT_COLOR}"  $'\u26A1'  $'\uE801'  $'\uF201'  '\u'$CODEPOINT_OF_OCTICONS_ZAP  $'\uE614 '
+#                                                                                                                           
+registerSegment "USER" "SUDO"    "yellow" "${DEFAULT_COLOR}"  $'\uE0A2'  $'\uF09C'  $'\uF09C'  '\u'$CODEPOINT_OF_AWESOME_UNLOCK  $'\uF09C'
 
 setDefault P9K_USER_TEMPLATE "%n"
 ################################################################
@@ -37,30 +33,14 @@ prompt_user() {
   typeset -AH user_state
   if [[ "$P9K_ALWAYS_SHOW_USER" == true ]] || [[ "$(whoami)" != "$DEFAULT_USER" ]]; then
     if [[ $(print -P "%#") == '#' ]]; then
-      user_state=(
-        "STATE"               "ROOT"
-        "CONTENT"             "${P9K_USER_TEMPLATE}"
-        "BACKGROUND_COLOR"    "${DEFAULT_COLOR}"
-        "FOREGROUND_COLOR"    "yellow"
-        "VISUAL_IDENTIFIER"   "ROOT_ICON"
-      )
+      current_state="ROOT"
+      segment_content="${P9K_USER_TEMPLATE}"
     elif sudo -n true 2>/dev/null; then
-      user_state=(
-        "STATE"               "SUDO"
-        "CONTENT"             "${P9K_USER_TEMPLATE}"
-        "BACKGROUND_COLOR"    "${DEFAULT_COLOR}"
-        "FOREGROUND_COLOR"    "yellow"
-        "VISUAL_IDENTIFIER"   "SUDO_ICON"
-      )
+      current_state="SUDO"
+      segment_content="${P9K_USER_TEMPLATE}"
     else
-      user_state=(
-        "STATE"               "DEFAULT"
-        "CONTENT"             "$(whoami)"
-        "BACKGROUND_COLOR"    "${DEFAULT_COLOR}"
-        "FOREGROUND_COLOR"    "yellow"
-        "VISUAL_IDENTIFIER"   "USER_ICON"
-      )
+      segment_content="$(whoami)"
     fi
-    p9kPrepareSegment "$0" ${(U)user_state[STATE]} $1 "$2" $3 "${user_state[BACKGROUND_COLOR]}" "${user_state[FOREGROUND_COLOR]}" "${user_state[CONTENT]}" "${user_state[VISUAL_IDENTIFIER]}"
+    p9kPrepareSegment "$0" ${current_state} $1 "$2" $3 "${segment_content}"
   fi
 }
