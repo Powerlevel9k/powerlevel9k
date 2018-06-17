@@ -4,17 +4,13 @@
 # @title powerlevel9k Segment - Anaconda
 # @source https://github.com/bhilburn/powerlevel9k
 ##
-# @authors
-#   Ben Hilburn (bhilburn)
-#   Dominik Ritter (dritter)
-##
 
 ################################################################
-# Register segment icon
+# Register segment
 # Parameters:
-#   name_of_icon  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
-#                                                   🐍          
-registerIcon "PYTHON_ICON"  ''  $'\ue63c'  $'\ue63c'  $'\U1F40D'  $'\UE73C '
+#   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
+#                                                                                           🐍          
+registerSegment "ANACONDA" "" "blue" "$DEFAULT_COLOR" "PYTHON_ICON"  ''  $'\ue63c'  $'\ue63c'  $'\U1F40D'  $'\UE73C '
 
 ################################################################
 # Register segment default values
@@ -35,6 +31,6 @@ prompt_anaconda() {
   # variant works even if both are set.
   _path=$CONDA_ENV_PATH$CONDA_PREFIX
   if ! [ -z "$_path" ]; then
-    p9kPrepareSegment "$0" "" $1 "$2" $3 "blue" "$DEFAULT_COLOR" "$P9K_ANACONDA_LEFT_DELIMITER$(basename $_path)$P9K_ANACONDA_RIGHT_DELIMITER" 'PYTHON_ICON'
+    p9kPrepareSegment "$0" "" $1 "$2" $3 "$P9K_ANACONDA_LEFT_DELIMITER$(basename $_path)$P9K_ANACONDA_RIGHT_DELIMITER"
   fi
 }
