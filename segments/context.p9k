@@ -4,10 +4,17 @@
 # @title powerlevel9k Segment - Context
 # @source https://github.com/bhilburn/powerlevel9k
 ##
-# @authors
-#   Ben Hilburn (bhilburn)
-#   Dominik Ritter (dritter)
-##
+
+################################################################
+# Register segment
+# Parameters:
+#   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
+#
+registerSegment 'CONTEXT' 'ROOT'        "${DEFAULT_COLOR}" "yellow" ""  ""  ""  ""  ""  ""
+registerSegment 'CONTEXT' 'SUDO'        "${DEFAULT_COLOR}" "yellow" ""  ""  ""  ""  ""  ""
+registerSegment 'CONTEXT' 'DEFAULT'     "${DEFAULT_COLOR}" "yellow" ""  ""  ""  ""  ""  ""
+registerSegment 'CONTEXT' 'REMOTE'      "${DEFAULT_COLOR}" "yellow" ""  ""  ""  ""  ""  ""
+registerSegment 'CONTEXT' 'REMOTE_SUDO' "${DEFAULT_COLOR}" "yellow" ""  ""  ""  ""  ""  ""
 
 setDefault P9K_ALWAYS_SHOW_CONTEXT false
 setDefault P9K_ALWAYS_SHOW_USER false
@@ -26,15 +33,6 @@ setDefault P9K_CONTEXT_TEMPLATE "%n@%m"
 ##
 prompt_context() {
   local current_state="DEFAULT"
-  typeset -AH context_states
-  context_states=(
-    "ROOT"        "yellow"
-    "SUDO"        "yellow"
-    "DEFAULT"     "yellow"
-    "REMOTE"      "yellow"
-    "REMOTE_SUDO" "yellow"
-  )
-
   local content=""
 
   if [[ "$P9K_ALWAYS_SHOW_CONTEXT" == true ]] || [[ "$(whoami)" != "$DEFAULT_USER" ]] || [[ -n "$SSH_CLIENT" || -n "$SSH_TTY" ]]; then
@@ -57,5 +55,5 @@ prompt_context() {
     current_state="SUDO"
   fi
 
-  p9kPrepareSegment "$0" "${(U)current_state}" $1 "$2" $3 "$DEFAULT_COLOR" "${context_states[$current_state]}" "${content}"
+  p9kPrepareSegment "$0" "${(U)current_state}" $1 "$2" $3 "${content}"
 }
