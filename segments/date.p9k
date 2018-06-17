@@ -4,17 +4,13 @@
 # @title powerlevel9k Segment - Date
 # @source https://github.com/bhilburn/powerlevel9k
 ##
-# @authors
-#   Ben Hilburn (bhilburn)
-#   Dominik Ritter (dritter)
-##
 
 ################################################################
-# Register segment icon
+# Register segment
 # Parameters:
-#   name_of_icon  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
-#                                                             
-registerIcon "DATE_ICON"  ''  $'\uE184'  $'\uF073 '  $'\uF073 '  $'\uF073 '
+#   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
+#                                                                                                       
+registerSegment 'DATE' '' "$DEFAULT_COLOR_INVERTED" "$DEFAULT_COLOR" ''  $'\uE184'  $'\uF073 '  $'\uF073 '  $'\uF073 '
 
 ################################################################
 # @description
@@ -28,5 +24,5 @@ registerIcon "DATE_ICON"  ''  $'\uE184'  $'\uF073 '  $'\uF073 '  $'\uF073 '
 prompt_date() {
   setDefault P9K_DATE_FORMAT "%D{%d.%m.%y}"
 
-  p9kPrepareSegment "$0" "" $1 "$2" $3 "$DEFAULT_COLOR_INVERTED" "$DEFAULT_COLOR" "$P9K_DATE_FORMAT" "DATE_ICON"
+  p9kPrepareSegment "$0" "" $1 "$2" $3 "$P9K_DATE_FORMAT"
 }
