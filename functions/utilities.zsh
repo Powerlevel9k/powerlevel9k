@@ -285,6 +285,58 @@ printDeprecationWarning() {
 
 ###############################################################
 # @description
+#   This function determines if older variable namess have been
+#   previously defined and changes them to newer variable names.
+##
+# @args
+#   $1 string Old variable name
+#   $2 string New variable name
+##
+# @returns
+#   0 if variable was renamed
+#   1 if variable could not be renamed
+##
+function updateVarName() {
+  # check if old variable is defined
+  if defined $1 && [[ -n "$2" ]]; then
+    # check for multiple Variables
+    local newVars=("${(@s:,:)2}")
+    for key in ${newVars}; do
+      # set new variable name
+      typeset -g "$key"="${(P)1}"
+      print -P "%F{yellow}Warning!%f The '$1' variable is deprecated. This has been updated to '%F{cyan}${key}%f' for you. For more informations, have a look at the CHANGELOG.md."
+    done
+    unset $1
+    return 0
+  else
+    return 1
+  fi
+}
+
+###############################################################
+# @description
+#   Print a deprecation warning if an old variable is in use.
+# @args
+#   $1 associative-array An associative array that contains
+#   the deprecated variables as keys, and the new variable
+#   names as values.
+##
+printDeprecationVarWarning() {
+  typeset -AH raw_deprecated_variables
+  raw_deprecated_variables=(${(kvP@)1})
+
+  for key in ${(@k)raw_deprecated_variables}; do
+    if defined $key; then
+      # segment is deprecated
+      if ! updateVarName $key $raw_deprecated_variables[$key]; then
+        print -P "%F{yellow}Warning!%f The '$key' variable is deprecated. This could not be updated to '%F{cyan}${raw_deprecated_variables[$key]}%f' for you. For more informations, have a look at the CHANGELOG.md."
+      fi
+    fi
+  done
+}
+
+###############################################################
+# @description
 #   A helper function to determine if a segment should be
 #   joined or promoted to a full one.
 ##
