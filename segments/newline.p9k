@@ -4,10 +4,6 @@
 # @title powerlevel9k Segment - Newline
 # @source https://github.com/bhilburn/powerlevel9k
 ##
-# @authors
-#   Ben Hilburn (bhilburn)
-#   Dominik Ritter (dritter)
-##
 
 ################################################################
 # @description
@@ -17,6 +13,9 @@
 #   $1 string Alignment - left | right
 #   $2 integer Segment index
 #   $3 boolean Whether the segment should be joined
+##
+# @notes
+#   This is not an actual prompt segment, it is just a workaround to allow more newlines in your prompt.
 ##
 prompt_newline() {
   local lws newline
