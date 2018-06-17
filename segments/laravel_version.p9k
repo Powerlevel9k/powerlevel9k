@@ -10,11 +10,11 @@
 ##
 
 ################################################################
-# Register segment icon
+# Register segment
 # Parameters:
-#   name_of_icon  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
-#                                                   
-registerIcon "LARAVEL_ICON"  'Laravel'  ''  ''  ''  $'\ue73f'
+#   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
+#                                                                            
+registerSegment "LARAVEL_VERSION" "" "maroon" "white" 'Laravel'  ''  ''  ''  $'\ue73f'
 
 ################################################################
 # @description
@@ -31,6 +31,6 @@ prompt_laravel_version() {
     # Remove unrelevant infos
     laravel_version="${laravel_version//Laravel Framework version /}"
 
-    p9kPrepareSegment "${0}" "" "${1}" "${2}" "${3}" "maroon" "white" "${laravel_version}" 'LARAVEL_ICON'
+    p9kPrepareSegment "${0}" "" "${1}" "${2}" "${3}" "${laravel_version}"
   fi
 }
