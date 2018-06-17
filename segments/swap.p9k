@@ -4,17 +4,13 @@
 # @title powerlevel9k Segment - Swap
 # @source https://github.com/bhilburn/powerlevel9k
 ##
-# @authors
-#   Ben Hilburn (bhilburn)
-#   Dominik Ritter (dritter)
-##
 
 ################################################################
-# Register segment icon
+# Register segment
 # Parameters:
-#   name_of_icon  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
-#                                                                                        
-registerIcon "SWAP_ICON"  'SWP'  $'\uE87D'  $'\uF0E4'  '\u'$CODEPOINT_OF_AWESOME_DASHBOARD  $'\uF464'
+#   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
+#                                                                                                                  
+registerSegment "SWAP" "" "yellow" "$DEFAULT_COLOR"  'SWP'  $'\uE87D'  $'\uF0E4'  '\u'$CODEPOINT_OF_AWESOME_DASHBOARD  $'\uF464'
 
 ################################################################
 # @description
@@ -46,5 +42,5 @@ prompt_swap() {
     base='K'
   fi
 
-  p9kPrepareSegment "$0" "" $1 "$2" $3 "yellow" "$DEFAULT_COLOR" "$(printSizeHumanReadable "$swap_used" $base)" 'SWAP_ICON'
+  p9kPrepareSegment "$0" "" $1 "$2" $3 "$(printSizeHumanReadable "$swap_used" $base)"
 }
