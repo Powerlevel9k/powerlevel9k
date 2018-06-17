@@ -4,17 +4,13 @@
 # @title powerlevel9k Segment - SSH
 # @source https://github.com/bhilburn/powerlevel9k
 ##
-# @authors
-#   Ben Hilburn (bhilburn)
-#   Dominik Ritter (dritter)
-##
 
 ################################################################
-# Register segment icon
+# Register segment
 # Parameters:
-#   name_of_icon  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
-#                                                             
-registerIcon "SSH_ICON"  '(ssh)'  '(ssh)'  '(ssh)'  '(ssh)'  $'\uF489'
+#   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
+#                                                                                         
+registerSegment "SSH" "" "${DEFAULT_COLOR}" "yellow"  '(ssh)'  '(ssh)'  '(ssh)'  '(ssh)'  $'\uF489'
 
 ################################################################
 # @description
@@ -27,6 +23,6 @@ registerIcon "SSH_ICON"  '(ssh)'  '(ssh)'  '(ssh)'  '(ssh)'  $'\uF489'
 ##
 prompt_ssh() {
   if [[ -n "$SSH_CLIENT" ]] || [[ -n "$SSH_TTY" ]]; then
-    p9kPrepareSegment "$0" "" $1 "$2" $3 "$DEFAULT_COLOR" "yellow" "" 'SSH_ICON'
+    p9kPrepareSegment "$0" "" $1 "$2" $3 "" "true"
   fi
 }
