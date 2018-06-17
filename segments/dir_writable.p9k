@@ -4,17 +4,13 @@
 # @title powerlevel9k Segment - Dir Writable
 # @source https://github.com/bhilburn/powerlevel9k
 ##
-# @authors
-#   Ben Hilburn (bhilburn)
-#   Dominik Ritter (dritter)
-##
 
 ################################################################
-# Register segment icon
+# Register segment
 # Parameters:
-#   name_of_icon  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
-#                                                                                        
-registerIcon "LOCK_ICON"  $'\UE0A2'  $'\UE138'  $'\UF023'  '\u'$CODEPOINT_OF_AWESOME_LOCK  $'\UF023'
+#   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
+#                                                                                                                       
+registerSegment 'DIR_WRITABLE' 'FORBIDDEN' "red" "yellow1" $'\uE0A2'  $'\uE138'  $'\uF023'  '\u'$CODEPOINT_OF_AWESOME_LOCK  $'\uF023'
 
 ################################################################
 # @description
@@ -27,6 +23,6 @@ registerIcon "LOCK_ICON"  $'\UE0A2'  $'\UE138'  $'\UF023'  '\u'$CODEPOINT_OF_AWE
 ##
 prompt_dir_writable() {
   if [[ ! -w "$PWD" ]]; then
-    p9kPrepareSegment "$0" "FORBIDDEN" $1 "$2" $3 "red" "yellow1" "" 'LOCK_ICON'
+    p9kPrepareSegment "$0" "FORBIDDEN" $1 "$2" $3 "" "true"
   fi
 }
