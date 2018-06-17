@@ -4,17 +4,13 @@
 # @title powerlevel9k Segment - RVM
 # @source https://github.com/bhilburn/powerlevel9k
 ##
-# @authors
-#   Ben Hilburn (bhilburn)
-#   Dominik Ritter (dritter)
-##
 
 ################################################################
-# Register segment icon
+# Register segment
 # Parameters:
-#   name_of_icon  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
-#                                                                                     
-registerIcon "RUBY_ICON"  ''  $'\uE847 '  $'\uF219 '  '\u'$CODEPOINT_OF_OCTICONS_RUBY' '  $'\uF219 '
+#   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
+#                                                                                                            
+registerSegment "RVM" "" "grey35" "${DEFAULT_COLOR}"  ''  $'\uE847 '  $'\uF219 '  '\u'$CODEPOINT_OF_OCTICONS_RUBY' '  $'\uF219 '
 
 ################################################################
 # @description
@@ -29,6 +25,6 @@ prompt_rvm() {
   local version_and_gemset=${rvm_env_string/ruby-}
 
   if [[ -n "$version_and_gemset" ]]; then
-    p9kPrepareSegment "$0" "" $1 "$2" $3 "grey35" "$DEFAULT_COLOR" "$version_and_gemset" 'RUBY_ICON'
+    p9kPrepareSegment "$0" "" $1 "$2" $3 "$version_and_gemset"
   fi
 }
