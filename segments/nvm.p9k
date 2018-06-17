@@ -4,17 +4,13 @@
 # @title powerlevel9k Segment - NVM
 # @source https://github.com/bhilburn/powerlevel9k
 ##
-# @authors
-#   Ben Hilburn (bhilburn)
-#   Dominik Ritter (dritter)
-##
 
 ################################################################
 # Register segment icon
 # Parameters:
-#   name_of_icon  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
-#                          ⬢         ⬢          ⬢          ⬢          
-registerIcon "NODE_ICON"  $'\u2B22'  $'\u2B22'  $'\u2B22'  $'\u2B22'  $'\uE617 '
+#   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
+#                                           ⬢         ⬢          ⬢          ⬢          
+registerSegment "NVM" "" "magenta" "black"  $'\u2B22'  $'\u2B22'  $'\u2B22'  $'\u2B22'  $'\uE617 '
 
 ################################################################
 # @description
@@ -38,5 +34,5 @@ prompt_nvm() {
   nvm_default=$(nvm_version default)
   [[ "$node_version" =~ "$nvm_default" ]] && return
 
-  p9kPrepareSegment "$0" "" $1 "$2" $3 "magenta" "black" "${node_version:1}" 'NODE_ICON'
+  p9kPrepareSegment "$0" "" $1 "$2" $3 "${node_version:1}"
 }
