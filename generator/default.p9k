@@ -477,14 +477,6 @@ prompt_powerlevel9k_setup() {
     P9K_PROMPT_ELEMENTS=("${P9K_LEFT_PROMPT_ELEMENTS[@]}" "${P9K_RIGHT_PROMPT_ELEMENTS[@]}")
   fi
 
-  # Display a warning if deprecated segments are in use.
-  typeset -AH deprecated_segments
-  # old => new
-  deprecated_segments=(
-    'longstatus'      'status'
-  )
-  printDeprecationWarning deprecated_segments
-
   # initialize colors
   autoload -U colors && colors
 
