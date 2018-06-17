@@ -4,17 +4,15 @@
 # @title powerlevel9k Segment - Load
 # @source https://github.com/bhilburn/powerlevel9k
 ##
-# @authors
-#   Ben Hilburn (bhilburn)
-#   Dominik Ritter (dritter)
-##
 
 ################################################################
-# Register segment icon
+# Register segment
 # Parameters:
-#   name_of_icon  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
-#                                                                                           
-registerIcon "LOAD_ICON"  'L'  $'\uE190 '  $'\uF080 '  '\u'$CODEPOINT_OF_AWESOME_BAR_CHART' '  $'\uF080 '
+#   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
+#                                                                                                                               
+registerSegment "LOAD" "NORMAL"   "green"  "${DEFAULT_COLOR}"  'L'  $'\uE190 '  $'\uF080 '  '\u'$CODEPOINT_OF_AWESOME_BAR_CHART' '  $'\uF080 '
+registerSegment "LOAD" "WARNING"  "yellow" "${DEFAULT_COLOR}"  'L'  $'\uE190 '  $'\uF080 '  '\u'$CODEPOINT_OF_AWESOME_BAR_CHART' '  $'\uF080 '
+registerSegment "LOAD" "CRITICAL" "red"    "${DEFAULT_COLOR}"  'L'  $'\uE190 '  $'\uF080 '  '\u'$CODEPOINT_OF_AWESOME_BAR_CHART' '  $'\uF080 '
 
 setDefault P9K_LOAD_WHICH 5
 ################################################################
@@ -32,13 +30,6 @@ prompt_load() {
   local load_select=2
   local load_avg
   local cores
-
-  typeset -AH load_states
-  load_states=(
-    'critical'      'red'
-    'warning'       'yellow'
-    'normal'        'green'
-  )
 
   case "$P9K_LOAD_WHICH" in
     1)
@@ -77,5 +68,5 @@ prompt_load() {
     current_state="normal"
   fi
 
-  p9kPrepareSegment "$0" "${current_state}" $1 "$2" $3 "${load_states[$current_state]}" "$DEFAULT_COLOR" "$load_avg" 'LOAD_ICON'
+  p9kPrepareSegment "$0" "${current_state}" $1 "$2" $3 "$load_avg"
 }
