@@ -4,14 +4,15 @@
 # @title powerlevel9k Segment - VI Mode
 # @source https://github.com/bhilburn/powerlevel9k
 ##
-# @authors
-#   Ben Hilburn (bhilburn)
-#   Dominik Ritter (dritter)
-##
 
-setDefault "P9K_VI_INSERT_MODE_STRING" "INSERT"
-setDefault "P9K_VI_COMMAND_MODE_STRING" "NORMAL"
-setDefault "P9K_VI_VISUAL_MODE_STRING" "VISUAL"
+################################################################
+# Register segment
+# Parameters:
+#   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
+registerSegment  "VI_MODE" "NORMAL" "${DEFAULT_COLOR}" "${DEFAULT_COLOR_INVERTED}"  ''  ''  ''  ''  ''
+registerSegment  "VI_MODE" "INSERT" "${DEFAULT_COLOR}" "blue"                       ''  ''  ''  ''  ''
+registerSegment  "VI_MODE" "VISUAL" "${DEFAULT_COLOR}" "orange"                     ''  ''  ''  ''  ''
+
 ###############################################################
 # Vi Mode: show editing mode (NORMAL|INSERT)
 # Parameters:
@@ -37,27 +38,19 @@ prompt_vi_mode() {
   local vi_mode
   local current_state
   typeset -gAH vi_states
-  vi_states=(
-    'NORMAL'      "${DEFAULT_COLOR_INVERTED}"
-    'INSERT'      'blue'
-    'VISUAL'      'orange'
-  )
   case "${KEYMAP}" in
     vicmd)
       current_state="NORMAL"
-      vi_mode="${P9K_VI_COMMAND_MODE_STRING}"
     ;;
     vivis)
       current_state="VISUAL"
-      vi_mode="${P9K_VI_VISUAL_MODE_STRING}"
     ;;
     main|viins|*)
-      if [[ -z $P9K_VI_INSERT_MODE_STRING ]]; then return; fi
+      if [[ -z p9k_icons[$P9K_VI_MODE_INSERT_ICON] ]]; then return; fi
       current_state="INSERT"
-      vi_mode="${P9K_VI_INSERT_MODE_STRING}"
     ;;
   esac
-  p9kPrepareSegment "$0" "${current_state}" $1 "$2" $3 "${DEFAULT_COLOR}" "${vi_states[$current_state]}" "${vi_mode}" ''
+  p9kPrepareSegment "$0" "${current_state}" $1 "$2" $3 "" "[[ true ]]"
 }
 
 ###############################################################
