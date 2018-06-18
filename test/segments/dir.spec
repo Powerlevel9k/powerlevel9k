@@ -327,41 +327,41 @@ function testTruncateWithPackageNameIfRepoIsSymlinkedInsideGitDir() {
 }
 
 function testHomeFolderDetectionWorks() {
-  P9K_HOME_ICON='home-icon'
+  P9K_DIR_HOME_ICON='*home-icon'
 
   cd ~
-  assertEquals "%K{blue} %F{black%}home-icon %f%F{black}~ %k%F{blue}%f " "$(buildLeftPrompt)"
+  assertEquals "%K{blue} %F{black}*home-icon %f%F{black}~ %k%F{blue}%f " "$(buildLeftPrompt)"
 
   cd -
-  unset P9K_HOME_ICON
+  unset P9K_DIR_HOME_ICON
 }
 
 function testHomeSubfolderDetectionWorks() {
-  P9K_HOME_SUB_ICON='sub-icon'
+  P9K_DIR_HOME_SUBFOLDER_ICON='*sub-icon'
 
   FOLDER=~/powerlevel9k-test
   mkdir $FOLDER
   cd $FOLDER
-  assertEquals "%K{blue} %F{black%}sub-icon %f%F{black}~/powerlevel9k-test %k%F{blue}%f " "$(buildLeftPrompt)"
+  assertEquals "%K{blue} %F{black}*sub-icon %f%F{black}~/powerlevel9k-test %k%F{blue}%f " "$(buildLeftPrompt)"
 
   cd -
   rm -fr $FOLDER
   unset FOLDER
-  unset P9K_HOME_SUB_ICON
+  unset P9K_DIR_HOME_SUBFOLDER_ICON
 }
 
 function testOtherFolderDetectionWorks() {
-  P9K_FOLDER_ICON='folder-icon'
+  P9K_DIR_DEFAULT_ICON='*folder-icon'
 
   FOLDER=/tmp/powerlevel9k-test
   mkdir $FOLDER
   cd $FOLDER
-  assertEquals "%K{blue} %F{black%}folder-icon %f%F{black}/tmp/powerlevel9k-test %k%F{blue}%f " "$(buildLeftPrompt)"
+  assertEquals "%K{blue} %F{black}*folder-icon %f%F{black}/tmp/powerlevel9k-test %k%F{blue}%f " "$(buildLeftPrompt)"
 
   cd -
   rm -fr $FOLDER
   unset FOLDER
-  unset P9K_FOLDER_ICON
+  unset P9K_DIR_DEFAULT_ICON
 }
 
 function testChangingDirPathSeparator() {
@@ -405,28 +405,28 @@ function testHomeFolderAbbreviation() {
 
 function testOmittingFirstCharacterWorks() {
   P9K_DIR_OMIT_FIRST_CHARACTER=true
-  P9K_FOLDER_ICON='folder-icon'
+  P9K_DIR_DEFAULT_ICON='*folder-icon'
   cd /tmp
 
-  assertEquals "%K{blue} %F{black%}folder-icon %f%F{black}tmp %k%F{blue}%f " "$(buildLeftPrompt)"
+  assertEquals "%K{blue} %F{black}*folder-icon %f%F{black}tmp %k%F{blue}%f " "$(buildLeftPrompt)"
 
   cd -
-  unset P9K_FOLDER_ICON
+  unset P9K_DIR_DEFAULT_ICON
   unset P9K_DIR_OMIT_FIRST_CHARACTER
 }
 
 function testOmittingFirstCharacterWorksWithChangingPathSeparator() {
   P9K_DIR_OMIT_FIRST_CHARACTER=true
   P9K_DIR_PATH_SEPARATOR='xXx'
-  P9K_FOLDER_ICON='folder-icon'
+  P9K_DIR_DEFAULT_ICON='*folder-icon'
   mkdir -p /tmp/powerlevel9k-test/1/2
   cd /tmp/powerlevel9k-test/1/2
 
-  assertEquals "%K{blue} %F{black%}folder-icon %f%F{black}tmpxXxpowerlevel9k-testxXx1xXx2 %k%F{blue}%f " "$(buildLeftPrompt)"
+  assertEquals "%K{blue} %F{black}*folder-icon %f%F{black}tmpxXxpowerlevel9k-testxXx1xXx2 %k%F{blue}%f " "$(buildLeftPrompt)"
 
   cd -
   rm -fr /tmp/powerlevel9k-test
-  unset P9K_FOLDER_ICON
+  unset P9K_DIR_DEFAULT_ICON
   unset P9K_DIR_PATH_SEPARATOR
   unset P9K_DIR_OMIT_FIRST_CHARACTER
 }
