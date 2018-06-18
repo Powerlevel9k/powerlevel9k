@@ -176,16 +176,16 @@ case $P9K_MODE in
 	'flat')
 		# Set the right locale to protect special characters
 		local LC_ALL="" LC_CTYPE="en_US.UTF-8"
-		icons[LEFT_SEGMENT_SEPARATOR]=''
-		icons[RIGHT_SEGMENT_SEPARATOR]=''
-		icons[LEFT_SUBSEGMENT_SEPARATOR]='|'
-		icons[RIGHT_SUBSEGMENT_SEPARATOR]='|'
+		p9k_icons[LEFT_SEGMENT_SEPARATOR]=''
+		p9k_icons[RIGHT_SEGMENT_SEPARATOR]=''
+		p9k_icons[LEFT_SUBSEGMENT_SEPARATOR]='|'
+		p9k_icons[RIGHT_SUBSEGMENT_SEPARATOR]='|'
 	;;
 	'compatible')
 		# Set the right locale to protect special characters
 		local LC_ALL="" LC_CTYPE="en_US.UTF-8"
-		icons[LEFT_SEGMENT_SEPARATOR]=$'\u2B80'                 # ⮀
-		icons[RIGHT_SEGMENT_SEPARATOR]=$'\u2B82'                # ⮂
+		p9k_icons[LEFT_SEGMENT_SEPARATOR]=$'\u2B80'                 # ⮀
+		p9k_icons[RIGHT_SEGMENT_SEPARATOR]=$'\u2B82'                # ⮂
 	;;
 esac
 
