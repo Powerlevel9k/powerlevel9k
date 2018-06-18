@@ -23,7 +23,7 @@ function testJoinedSegments() {
   P9K_LEFT_PROMPT_ELEMENTS=(dir dir_joined)
   cd /tmp
 
-  assertEquals "%K{blue} %F{black}/tmp %K{blue}%F{black}%F{black}/tmp %k%F{blue}%f " "$(buildLeftPrompt)"
+  assertEquals "%K{blue} %F{black}/tmp %F{black}/tmp %k%F{blue}%f " "$(buildLeftPrompt)"
 
   unset P9K_LEFT_PROMPT_ELEMENTS
   cd -
@@ -33,7 +33,7 @@ function testTransitiveJoinedSegments() {
   P9K_LEFT_PROMPT_ELEMENTS=(dir root_indicator_joined dir_joined)
   cd /tmp
 
-  assertEquals "%K{blue} %F{black}/tmp %K{blue}%F{black}%F{black}/tmp %k%F{blue}%f " "$(buildLeftPrompt)"
+  assertEquals "%K{blue} %F{black}/tmp %F{black}/tmp %k%F{blue}%f " "$(buildLeftPrompt)"
 
   unset P9K_LEFT_PROMPT_ELEMENTS
   cd -
@@ -43,7 +43,7 @@ function testJoiningWithConditionalSegment() {
   P9K_LEFT_PROMPT_ELEMENTS=(dir background_jobs dir_joined)
   cd /tmp
 
-  assertEquals "%K{blue} %F{black}/tmp %K{blue}%F{black} %F{black}/tmp %k%F{blue}%f " "$(buildLeftPrompt)"
+  assertEquals "%K{blue} %F{black}/tmp  %F{black}/tmp %k%F{blue}%f " "$(buildLeftPrompt)"
 
   unset P9K_LEFT_PROMPT_ELEMENTS
   cd -
@@ -63,25 +63,25 @@ function testDynamicColoringOfSegmentsWork() {
 
 function testDynamicColoringOfVisualIdentifiersWork() {
   P9K_LEFT_PROMPT_ELEMENTS=(dir)
-  P9K_DIR_DEFAULT_VISUAL_IDENTIFIER_COLOR='green'
-  P9K_FOLDER_ICON="icon-here"
+  P9K_DIR_DEFAULT_ICON="*icon-here"
+  P9K_DIR_DEFAULT_ICON_COLOR='green'
 
   cd /tmp
 
-  assertEquals "%K{blue} %F{green%}icon-here %f%F{black}/tmp %k%F{blue}%f " "$(buildLeftPrompt)"
+  assertEquals "%K{blue} %F{green}*icon-here %f%F{black}/tmp %k%F{blue}%f " "$(buildLeftPrompt)"
 
   unset P9K_LEFT_PROMPT_ELEMENTS
-  unset P9K_DIR_DEFAULT_VISUAL_IDENTIFIER_COLOR
-  unset P9K_FOLDER_ICON
+  unset P9K_DIR_DEFAULT_ICON
+  unset P9K_DIR_DEFAULT_ICON_COLOR
   cd -
 }
 
 function testColoringOfVisualIdentifiersDoesNotOverwriteColoringOfSegment() {
   P9K_LEFT_PROMPT_ELEMENTS=(dir)
-  P9K_DIR_DEFAULT_VISUAL_IDENTIFIER_COLOR='green'
   P9K_DIR_DEFAULT_FOREGROUND='red'
   P9K_DIR_DEFAULT_BACKGROUND='yellow'
-  P9K_FOLDER_ICON="icon-here"
+  P9K_DIR_DEFAULT_ICON="*icon-here"
+  P9K_DIR_DEFAULT_ICON_COLOR='green'
 
   # Re-Source the icons, as the P9K_MODE is directly
   # evaluated there.
@@ -89,19 +89,19 @@ function testColoringOfVisualIdentifiersDoesNotOverwriteColoringOfSegment() {
 
   cd /tmp
 
-  assertEquals "%K{yellow} %F{green%}icon-here %f%F{red}/tmp %k%F{yellow}%f " "$(buildLeftPrompt)"
+  assertEquals "%K{yellow} %F{green}*icon-here %f%F{red}/tmp %k%F{yellow}%f " "$(buildLeftPrompt)"
 
   unset P9K_LEFT_PROMPT_ELEMENTS
-  unset P9K_DIR_DEFAULT_VISUAL_IDENTIFIER_COLOR
   unset P9K_DIR_DEFAULT_FOREGROUND
   unset P9K_DIR_DEFAULT_BACKGROUND
-  unset P9K_FOLDER_ICON
+  unset P9K_DIR_DEFAULT_ICON
+  unset P9K_DIR_DEFAULT_ICON_COLOR
   cd -
 }
 
 function testOverwritingIconsWork() {
   P9K_LEFT_PROMPT_ELEMENTS=(dir)
-  P9K_FOLDER_ICON='icon-here'
+  P9K_DIR_DEFAULT_ICON='*icon-here'
   #local testFolder=$(mktemp -d -p p9k)
   # Move testFolder under home folder
   #mv testFolder ~
@@ -109,7 +109,7 @@ function testOverwritingIconsWork() {
   #cd ~/$testFolder
 
   cd /tmp
-  assertEquals "%K{blue} %F{black%}icon-here %f%F{black}/tmp %k%F{blue}%f " "$(buildLeftPrompt)"
+  assertEquals "%K{blue} %F{black}*icon-here %f%F{black}/tmp %k%F{blue}%f " "$(buildLeftPrompt)"
 
   unset P9K_LEFT_PROMPT_ELEMENTS
   unset P9K_DIR_FOLDER_ICON
