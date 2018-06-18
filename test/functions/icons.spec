@@ -85,13 +85,13 @@ function testAllIconsAreDefinedLikeInDefaultMode() {
   # We later check via (r) "subscript" flag that our key
   # is in the values of our flat array.
   typeset -ah _ICONS_UNDER_TEST
-  _ICONS_UNDER_TEST=(${(k)icons[@]})
+  _ICONS_UNDER_TEST=(${(k)p9k_icons[@]})
 
   # Switch to "awesome-patched" mode
   P9K_MODE="awesome-patched"
   source functions/icons.zsh
   typeset -ah current_icons
-  current_icons=(${(k)icons[@]})
+  current_icons=(${(k)p9k_icons[@]})
   for key in ${_ICONS_UNDER_TEST}; do
     # Iterate over all keys found in the _ICONS_UNDER_TEST
     # array and compare it with the icons array of the
@@ -110,7 +110,7 @@ function testAllIconsAreDefinedLikeInDefaultMode() {
   P9K_MODE="awesome-fontconfig"
   source functions/icons.zsh
   typeset -ah current_icons
-  current_icons=(${(k)icons[@]})
+  current_icons=(${(k)p9k_icons[@]})
   for key in ${_ICONS_UNDER_TEST}; do
     assertTrue "The key ${key} does exist in ${_P9K_TEST_MODE} mode, but not in ${P9K_MODE}!" "(( ${+current_icons[(r)$key]} ))"
   done
@@ -119,7 +119,7 @@ function testAllIconsAreDefinedLikeInDefaultMode() {
   P9K_MODE="nerdfont-fontconfig"
   source functions/icons.zsh
   typeset -ah current_icons
-  current_icons=(${(k)icons[@]})
+  current_icons=(${(k)p9k_icons[@]})
   for key in ${_ICONS_UNDER_TEST}; do
     assertTrue "The key ${key} does exist in ${_P9K_TEST_MODE} mode, but not in ${P9K_MODE}!" "(( ${+current_icons[(r)$key]} ))"
   done
@@ -128,7 +128,7 @@ function testAllIconsAreDefinedLikeInDefaultMode() {
   P9K_MODE="flat"
   source functions/icons.zsh
   typeset -ah current_icons
-  current_icons=(${(k)icons[@]})
+  current_icons=(${(k)p9k_icons[@]})
   for key in ${_ICONS_UNDER_TEST}; do
     assertTrue "The key ${key} does exist in ${_P9K_TEST_MODE} mode, but not in ${P9K_MODE}!" "(( ${+current_icons[(r)$key]} ))"
   done
@@ -137,7 +137,7 @@ function testAllIconsAreDefinedLikeInDefaultMode() {
   P9K_MODE="compatible"
   source functions/icons.zsh
   typeset -ah current_icons
-  current_icons=(${(k)icons[@]})
+  current_icons=(${(k)p9k_icons[@]})
   for key in ${_ICONS_UNDER_TEST}; do
     assertTrue "The key ${key} does exist in ${_P9K_TEST_MODE} mode, but not in ${P9K_MODE}!" "(( ${+current_icons[(r)$key]} ))"
   done
@@ -157,13 +157,13 @@ function testAllIconsAreDefinedLikeInAwesomePatchedMode() {
   # We later check via (r) "subscript" flag that our key
   # is in the values of our flat array.
   typeset -ah _ICONS_UNDER_TEST
-  _ICONS_UNDER_TEST=(${(k)icons[@]})
+  _ICONS_UNDER_TEST=(${(k)p9k_icons[@]})
 
   # Switch to "default" mode
   P9K_MODE="default"
   source functions/icons.zsh
   typeset -ah current_icons
-  current_icons=(${(k)icons[@]})
+  current_icons=(${(k)p9k_icons[@]})
   for key in ${_ICONS_UNDER_TEST}; do
     # Iterate over all keys found in the _ICONS_UNDER_TEST
     # array and compare it with the icons array of the
@@ -182,7 +182,7 @@ function testAllIconsAreDefinedLikeInAwesomePatchedMode() {
   P9K_MODE="awesome-fontconfig"
   source functions/icons.zsh
   typeset -ah current_icons
-  current_icons=(${(k)icons[@]})
+  current_icons=(${(k)p9k_icons[@]})
   for key in ${_ICONS_UNDER_TEST}; do
     assertTrue "The key ${key} does exist in ${_P9K_TEST_MODE} mode, but not in ${P9K_MODE}!" "(( ${+current_icons[(r)$key]} ))"
   done
@@ -191,7 +191,7 @@ function testAllIconsAreDefinedLikeInAwesomePatchedMode() {
   P9K_MODE="nerdfont-fontconfig"
   source functions/icons.zsh
   typeset -ah current_icons
-  current_icons=(${(k)icons[@]})
+  current_icons=(${(k)p9k_icons[@]})
   for key in ${_ICONS_UNDER_TEST}; do
     assertTrue "The key ${key} does exist in ${_P9K_TEST_MODE} mode, but not in ${P9K_MODE}!" "(( ${+current_icons[(r)$key]} ))"
   done
@@ -200,7 +200,7 @@ function testAllIconsAreDefinedLikeInAwesomePatchedMode() {
   P9K_MODE="flat"
   source functions/icons.zsh
   typeset -ah current_icons
-  current_icons=(${(k)icons[@]})
+  current_icons=(${(k)p9k_icons[@]})
   for key in ${_ICONS_UNDER_TEST}; do
     assertTrue "The key ${key} does exist in ${_P9K_TEST_MODE} mode, but not in ${P9K_MODE}!" "(( ${+current_icons[(r)$key]} ))"
   done
@@ -209,7 +209,7 @@ function testAllIconsAreDefinedLikeInAwesomePatchedMode() {
   P9K_MODE="compatible"
   source functions/icons.zsh
   typeset -ah current_icons
-  current_icons=(${(k)icons[@]})
+  current_icons=(${(k)p9k_icons[@]})
   for key in ${_ICONS_UNDER_TEST}; do
     assertTrue "The key ${key} does exist in ${_P9K_TEST_MODE} mode, but not in ${P9K_MODE}!" "(( ${+current_icons[(r)$key]} ))"
   done
@@ -229,13 +229,13 @@ function testAllIconsAreDefinedLikeInAwesomeFontconfigMode() {
   # We later check via (r) "subscript" flag that our key
   # is in the values of our flat array.
   typeset -ah _ICONS_UNDER_TEST
-  _ICONS_UNDER_TEST=(${(k)icons[@]})
+  _ICONS_UNDER_TEST=(${(k)p9k_icons[@]})
 
   # Switch to "default" mode
   P9K_MODE="default"
   source functions/icons.zsh
   typeset -ah current_icons
-  current_icons=(${(k)icons[@]})
+  current_icons=(${(k)p9k_icons[@]})
   for key in ${_ICONS_UNDER_TEST}; do
     # Iterate over all keys found in the _ICONS_UNDER_TEST
     # array and compare it with the icons array of the
@@ -254,7 +254,7 @@ function testAllIconsAreDefinedLikeInAwesomeFontconfigMode() {
   P9K_MODE="awesome-patched"
   source functions/icons.zsh
   typeset -ah current_icons
-  current_icons=(${(k)icons[@]})
+  current_icons=(${(k)p9k_icons[@]})
   for key in ${_ICONS_UNDER_TEST}; do
     assertTrue "The key ${key} does exist in ${_P9K_TEST_MODE} mode, but not in ${P9K_MODE}!" "(( ${+current_icons[(r)$key]} ))"
   done
@@ -263,7 +263,7 @@ function testAllIconsAreDefinedLikeInAwesomeFontconfigMode() {
   P9K_MODE="nerdfont-fontconfig"
   source functions/icons.zsh
   typeset -ah current_icons
-  current_icons=(${(k)icons[@]})
+  current_icons=(${(k)p9k_icons[@]})
   for key in ${_ICONS_UNDER_TEST}; do
     assertTrue "The key ${key} does exist in ${_P9K_TEST_MODE} mode, but not in ${P9K_MODE}!" "(( ${+current_icons[(r)$key]} ))"
   done
@@ -272,7 +272,7 @@ function testAllIconsAreDefinedLikeInAwesomeFontconfigMode() {
   P9K_MODE="flat"
   source functions/icons.zsh
   typeset -ah current_icons
-  current_icons=(${(k)icons[@]})
+  current_icons=(${(k)p9k_icons[@]})
   for key in ${_ICONS_UNDER_TEST}; do
     assertTrue "The key ${key} does exist in ${_P9K_TEST_MODE} mode, but not in ${P9K_MODE}!" "(( ${+current_icons[(r)$key]} ))"
   done
@@ -281,7 +281,7 @@ function testAllIconsAreDefinedLikeInAwesomeFontconfigMode() {
   P9K_MODE="compatible"
   source functions/icons.zsh
   typeset -ah current_icons
-  current_icons=(${(k)icons[@]})
+  current_icons=(${(k)p9k_icons[@]})
   for key in ${_ICONS_UNDER_TEST}; do
     assertTrue "The key ${key} does exist in ${_P9K_TEST_MODE} mode, but not in ${P9K_MODE}!" "(( ${+current_icons[(r)$key]} ))"
   done
@@ -301,13 +301,13 @@ function testAllIconsAreDefinedLikeInNerdfontFontconfigMode() {
   # We later check via (r) "subscript" flag that our key
   # is in the values of our flat array.
   typeset -ah _ICONS_UNDER_TEST
-  _ICONS_UNDER_TEST=(${(k)icons[@]})
+  _ICONS_UNDER_TEST=(${(k)p9k_icons[@]})
 
   # Switch to "default" mode
   P9K_MODE="default"
   source functions/icons.zsh
   typeset -ah current_icons
-  current_icons=(${(k)icons[@]})
+  current_icons=(${(k)p9k_icons[@]})
   for key in ${_ICONS_UNDER_TEST}; do
     # Iterate over all keys found in the _ICONS_UNDER_TEST
     # array and compare it with the icons array of the
@@ -326,7 +326,7 @@ function testAllIconsAreDefinedLikeInNerdfontFontconfigMode() {
   P9K_MODE="awesome-patched"
   source functions/icons.zsh
   typeset -ah current_icons
-  current_icons=(${(k)icons[@]})
+  current_icons=(${(k)p9k_icons[@]})
   for key in ${_ICONS_UNDER_TEST}; do
     assertTrue "The key ${key} does exist in ${_P9K_TEST_MODE} mode, but not in ${P9K_MODE}!" "(( ${+current_icons[(r)$key]} ))"
   done
@@ -335,7 +335,7 @@ function testAllIconsAreDefinedLikeInNerdfontFontconfigMode() {
   P9K_MODE="awesome-fontconfig"
   source functions/icons.zsh
   typeset -ah current_icons
-  current_icons=(${(k)icons[@]})
+  current_icons=(${(k)p9k_icons[@]})
   for key in ${_ICONS_UNDER_TEST}; do
     assertTrue "The key ${key} does exist in ${_P9K_TEST_MODE} mode, but not in ${P9K_MODE}!" "(( ${+current_icons[(r)$key]} ))"
   done
@@ -344,7 +344,7 @@ function testAllIconsAreDefinedLikeInNerdfontFontconfigMode() {
   P9K_MODE="flat"
   source functions/icons.zsh
   typeset -ah current_icons
-  current_icons=(${(k)icons[@]})
+  current_icons=(${(k)p9k_icons[@]})
   for key in ${_ICONS_UNDER_TEST}; do
     assertTrue "The key ${key} does exist in ${_P9K_TEST_MODE} mode, but not in ${P9K_MODE}!" "(( ${+current_icons[(r)$key]} ))"
   done
@@ -353,7 +353,7 @@ function testAllIconsAreDefinedLikeInNerdfontFontconfigMode() {
   P9K_MODE="compatible"
   source functions/icons.zsh
   typeset -ah current_icons
-  current_icons=(${(k)icons[@]})
+  current_icons=(${(k)p9k_icons[@]})
   for key in ${_ICONS_UNDER_TEST}; do
     assertTrue "The key ${key} does exist in ${_P9K_TEST_MODE} mode, but not in ${P9K_MODE}!" "(( ${+current_icons[(r)$key]} ))"
   done
