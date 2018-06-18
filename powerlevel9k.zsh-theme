@@ -134,10 +134,6 @@ deprecated_variables=(
   'P9K_USER_ICON'               'P9K_USER_DEFAULT_ICON'
   'P9K_ROOT_ICON'               'P9K_USER_ROOT_ICON'
   'P9K_SUDO_ICON'               'P9K_USER_SUDO_ICON'
-  # vi_mode segment
-  'P9K_VI_INSERT_MODE_STRING'   'P9K_VI_MODE_INSERT_ICON'
-  'P9K_VI_NORMAL_MODE_STRING'   'P9K_VI_MODE_NORMAL_ICON'
-  'P9K_VI_VISUAL_MODE_STRING'   'P9K_VI_MODE_VISUAL_ICON'
 )
 printDeprecationVarWarning deprecated_variables
 
