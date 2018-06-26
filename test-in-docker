@@ -40,8 +40,8 @@ err()
 resolve_framework() {
   local f=$1 found
   found=${frameworks[(In:-1:)$f*]}
-  if (( found <= $#frameworks )); then
-    echo "${frameworks[$found]}"
+  if (( found <= ${#frameworks} )); then
+    echo "${1}"
   fi
 }
 
@@ -162,7 +162,7 @@ while (( $# > 0 )); do
       if [[ -z "$use_framework" ]]; then
         local f="$(resolve_framework "$1")"
         if [[ -n "$f" ]]; then
-          use_framework=$f
+          use_framework="${f}"
         else
           err "No such framework '${1}'"
         fi
