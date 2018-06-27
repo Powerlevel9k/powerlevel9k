@@ -169,4 +169,5 @@ done
 #unset p9kDirectory
 
 # Launch the generator
+
 prompt_powerlevel9k_setup "$@"

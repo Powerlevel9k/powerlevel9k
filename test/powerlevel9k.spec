@@ -134,6 +134,7 @@ function testNewlineOnRpromptCanBeDisabled() {
   unset P9K_RIGHT_PROMPT_ELEMENTS
   unset P9K_CUSTOM_WORLD
   unset P9K_CUSTOM_RWORLD
+
 }
 
 source shunit2/source/2.1/src/shunit2
