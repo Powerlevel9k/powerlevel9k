@@ -35,14 +35,15 @@ function mockGoEmptyGopath() {
 
 function testGo() {
   alias go=mockGo
-  P9K_GO_ICON=""
+  P9K_GO_VERSION_ICON=""
+  source functions/icons.zsh
   P9K_LEFT_PROMPT_ELEMENTS=(go_version)
 
   PWD="$HOME/go/src/github.com/bhilburn/powerlevel9k"
 
-  assertEquals "%K{green} %F{grey93%} %f%F{grey93}go1.5.3 %k%F{green}%f " "$(buildLeftPrompt)"
+  assertEquals "%K{green} %F{255} %f%F{255}go1.5.3 %k%F{green}%f " "$(buildLeftPrompt)"
 
-  unset P9K_GO_ICON
+  unset P9K_GO_VERSION_ICON
   unset PWD
   unset P9K_LEFT_PROMPT_ELEMENTS
   unalias go
@@ -51,6 +52,7 @@ function testGo() {
 function testGoSegmentPrintsNothingIfEmptyGopath() {
   alias go=mockGoEmptyGopath
   P9K_CUSTOM_WORLD='echo world'
+  registerSegment "WORLD"
   P9K_LEFT_PROMPT_ELEMENTS=(custom_world go_version)
 
   assertEquals "%K{white} %F{black}world %k%F{white}%f " "$(buildLeftPrompt)"
@@ -63,6 +65,7 @@ function testGoSegmentPrintsNothingIfEmptyGopath() {
 function testGoSegmentPrintsNothingIfNotInGopath() {
   alias go=mockGo
   P9K_CUSTOM_WORLD='echo world'
+  registerSegment "WORLD"
   P9K_LEFT_PROMPT_ELEMENTS=(custom_world go_version)
 
   assertEquals "%K{white} %F{black}world %k%F{white}%f " "$(buildLeftPrompt)"
@@ -74,6 +77,7 @@ function testGoSegmentPrintsNothingIfNotInGopath() {
 function testGoSegmentPrintsNothingIfGoIsNotAvailable() {
   alias go=noGo
   P9K_CUSTOM_WORLD='echo world'
+  registerSegment "WORLD"
   P9K_LEFT_PROMPT_ELEMENTS=(custom_world go_version)
 
   assertEquals "%K{white} %F{black}world %k%F{white}%f " "$(buildLeftPrompt)"
