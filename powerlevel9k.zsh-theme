@@ -479,6 +479,36 @@ prompt_battery() {
     [[ -n $tstring ]] && local remain=" ($tstring)"
   fi
 
+  if [[ "$OS" == 'Windows' ]]; then
+    # https://docs.microsoft.com/ru-ru/windows/desktop/CIMWin32Prov/win32-battery
+
+    # skip empty lines AND empty values, leave only meaningful key=value pairs
+    local raw_data="$(wmic Path Win32_Battery Get /format:list | tr -d '\r' | sed -n '/=./p')"
+
+    # type bat_percent: percent as int in range 0..100
+    local bat_percent="$(echo "$raw_data" | grep "EstimatedChargeRemaining" | cut -d = -f 2)"
+
+    local minutes_remaining="$(echo "$raw_data" | grep "EstimatedRunTime" | cut -d = -f 2)"
+    local tstring="..."
+    if [[ "$minutes_remaining" =~ "[[:digit:]]+" ]]; then
+      local hours=$(( minutes_remaining / 60 ))
+      local minutes=$(( minutes_remaining % 60 ))
+      tstring="$hours:$minutes"
+    fi
+    local remain=" ($tstring)"
+
+    local current_state=''
+    local battery_status="$(echo "$raw_data" | grep "BatteryStatus" | cut -d = -f 2)"
+    case "$battery_status" in
+      1) current_state='disconnected';;
+      2) current_state='charging';;  # Unknown status, stats still may be available
+      3) current_state='charged';;
+      4 | 5) current_state='low';;
+      6 | 7 | 8 | 9 | 11) current_state='charging';;
+      10 | *) return;;
+    esac
+  fi
+
   local message
   # Default behavior: Be verbose!
   set_default POWERLEVEL9K_BATTERY_VERBOSE true
