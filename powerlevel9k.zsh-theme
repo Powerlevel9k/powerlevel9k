@@ -637,14 +637,14 @@ prompt_user() {
         "FOREGROUND_COLOR"    "yellow"
         "VISUAL_IDENTIFIER"   "ROOT_ICON"
       )
-    elif sudo -n true 2>/dev/null; then 
-      user_state=( 
-        "STATE"               "SUDO" 
-        "CONTENT"             "${POWERLEVEL9K_USER_TEMPLATE}" 
-        "BACKGROUND_COLOR"    "${DEFAULT_COLOR}" 
-        "FOREGROUND_COLOR"    "yellow" 
-        "VISUAL_IDENTIFIER"   "SUDO_ICON" 
-      ) 
+    elif sudo -n true 2>/dev/null; then
+      user_state=(
+        "STATE"               "SUDO"
+        "CONTENT"             "${POWERLEVEL9K_USER_TEMPLATE}"
+        "BACKGROUND_COLOR"    "${DEFAULT_COLOR}"
+        "FOREGROUND_COLOR"    "yellow"
+        "VISUAL_IDENTIFIER"   "SUDO_ICON"
+      )
     else
       user_state=(
         "STATE"               "DEFAULT"
@@ -766,6 +766,10 @@ prompt_dir() {
       truncate_from_right)
         # truncate characters from the right of the path
         current_path=$(truncatePath "$current_path" $POWERLEVEL9K_SHORTEN_DIR_LENGTH $POWERLEVEL9K_SHORTEN_DELIMITER)
+      ;;
+      truncate_from_left)
+        # truncate characters from the left of the path
+        current_path=$(truncatePath "$current_path" $P9K_SHORTEN_DIR_LENGTH $P9K_SHORTEN_DELIMITER "left")
       ;;
       truncate_absolute)
         # truncate all characters except the last POWERLEVEL9K_SHORTEN_DIR_LENGTH characters
