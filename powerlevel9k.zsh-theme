@@ -156,12 +156,18 @@ esac
 
 # load only the segments that are being used!
 local segmentName
-typeset -gU loadedSegments
 for segment in $p9kDirectory/segments/*.p9k; do
   segmentName=${${segment##*/}%.p9k}
   if segmentInUse "$segmentName"; then
     source "${segment}" 2>&1
-    loadedSegments+=("${segmentName}")
+  fi
+done
+
+# load custom segments
+for segment in ~/.config/powerlevel9k/segments/*.p9k; do
+  segmentName=${${segment##*/}%.p9k}
+  if segmentInUse "$segmentName"; then
+    source "${segment}" 2>&1
   fi
 done
 
