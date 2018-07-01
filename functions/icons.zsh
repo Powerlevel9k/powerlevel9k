@@ -165,11 +165,11 @@ registerIcon "LEFT_SUBSEGMENT_SEPARATOR"        $'\uE0B1'           $'\uE0B1'   
 #                                                                                                                           
 registerIcon "RIGHT_SUBSEGMENT_SEPARATOR"       $'\uE0B3'           $'\uE0B3'           $'\uE0B3'           $'\uE0B3'           $'\uE0B3'
 #                                               ╭─                  ╭─                 ╭─                  ╭─                 ╭─
-registerIcon "MULTILINE_FIRST_PROMPT_PREFIX"    $'\u256D'$'\U2500'  $'\u256D'$'\U2500'  $'\u256D'$'\U2500'  $'\u256D'$'\U2500'  $'\u256D'$'\U2500'
+registerIcon "MULTILINE_FIRST_PROMPT_PREFIX"    $'\u256D'$'\u2500'  $'\u256D'$'\u2500'  $'\u256D'$'\u2500'  $'\u256D'$'\u2500'  $'\u256D'$'\u2500'
 #                                               ├─                 ├─                  ├─                 ├─                  ├─
-registerIcon "MULTILINE_NEWLINE_PROMPT_PREFIX"  $'\u251C'$'\U2500'  $'\u251C'$'\U2500'  $'\u251C'$'\U2500'  $'\u251C'$'\U2500'  $'\u251C'$'\U2500'
+registerIcon "MULTILINE_NEWLINE_PROMPT_PREFIX"  $'\u251C'$'\u2500'  $'\u251C'$'\u2500'  $'\u251C'$'\u2500'  $'\u251C'$'\u2500'  $'\u251C'$'\u2500'
 #                                               ╰─                 ╰─                  ╰─                 ╰─                  ╰─
-registerIcon "MULTILINE_LAST_PROMPT_PREFIX"     $'\u2570'$'\U2500 ' $'\u2570'$'\U2500 ' $'\u2570'$'\U2500 ' $'\u2570'$'\U2500 ' $'\u2570'$'\U2500 '
+registerIcon "MULTILINE_LAST_PROMPT_PREFIX"     $'\u2570'$'\u2500 ' $'\u2570'$'\u2500 ' $'\u2570'$'\u2500 ' $'\u2570'$'\u2500 ' $'\u2570'$'\u2500 '
 
 # Override the above icon settings with any user-defined variables.
 case $P9K_MODE in
