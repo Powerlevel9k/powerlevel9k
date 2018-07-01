@@ -637,14 +637,14 @@ prompt_user() {
         "FOREGROUND_COLOR"    "yellow"
         "VISUAL_IDENTIFIER"   "ROOT_ICON"
       )
-    elif sudo -n true 2>/dev/null; then 
-      user_state=( 
-        "STATE"               "SUDO" 
-        "CONTENT"             "${POWERLEVEL9K_USER_TEMPLATE}" 
-        "BACKGROUND_COLOR"    "${DEFAULT_COLOR}" 
-        "FOREGROUND_COLOR"    "yellow" 
-        "VISUAL_IDENTIFIER"   "SUDO_ICON" 
-      ) 
+    elif sudo -n true 2>/dev/null; then
+      user_state=(
+        "STATE"               "SUDO"
+        "CONTENT"             "${POWERLEVEL9K_USER_TEMPLATE}"
+        "BACKGROUND_COLOR"    "${DEFAULT_COLOR}"
+        "FOREGROUND_COLOR"    "yellow"
+        "VISUAL_IDENTIFIER"   "SUDO_ICON"
+      )
     else
       user_state=(
         "STATE"               "DEFAULT"
@@ -741,6 +741,12 @@ set_default POWERLEVEL9K_DIR_PATH_HIGHLIGHT_BOLD false
 prompt_dir() {
   # using $PWD instead of "$(print -P '%~')" to allow use of POWERLEVEL9K_DIR_PATH_ABSOLUTE
   local current_path=$PWD # WAS: local current_path="$(print -P '%~')"
+
+  # add hyperlink support
+  local hyper_on hyper_off
+  hyper_on="\e]8;;file://${current_path}\a"
+  hyper_off="\e]8;;\a"
+
   # check if the user wants to use absolute paths or "~" paths
   [[ ${(L)POWERLEVEL9K_DIR_PATH_ABSOLUTE} != "true" ]] && current_path=${current_path//$HOME/"~"}
   # declare all local variables
@@ -987,6 +993,10 @@ prompt_dir() {
   if [[ "${POWERLEVEL9K_HOME_FOLDER_ABBREVIATION}" != "~" && ! "${(L)POWERLEVEL9K_DIR_OMIT_FIRST_CHARACTER}" == "true" ]]; then
     # use :s to only replace the first occurance
     current_path=${current_path:s/~/$POWERLEVEL9K_HOME_FOLDER_ABBREVIATION}
+  fi
+
+  if [[ "${(L)POWERLEVEL9K_DIR_HYPERLINK}" == "true" ]]; then
+    current_path=$(echo -e "${hyper_on}${current_path}${hyper_off}")
   fi
 
   "$1_prompt_segment" "$0_${current_state}" "$2" "blue" "$DEFAULT_COLOR" "${current_path}" "${dir_states[$current_state]}"
