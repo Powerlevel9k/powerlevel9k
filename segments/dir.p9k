@@ -23,6 +23,7 @@ registerSegment "DIR" 'ETC'             "blue" "$DEFAULT_COLOR"   $'\uE818'  $'\
 setDefault P9K_DIR_PATH_SEPARATOR "/"
 setDefault P9K_HOME_FOLDER_ABBREVIATION "~"
 setDefault P9K_DIR_PATH_HIGHLIGHT_BOLD false
+setDefault P9K_DIR_PATH_ABSOLUTE false
 setDefault P9K_SHORTEN_DELIMITER "\u2026"
 setDefault P9K_SHORTEN_FOLDER_MARKER ".shorten_folder_marker"
 ################################################################
