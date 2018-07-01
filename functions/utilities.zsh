@@ -477,8 +477,6 @@ function truncatePath() {
       middle)
         # we need double the length for start and end truncation + delimiter length
         threshhold=$(( $2 * 2 ))
-        # create a variable for the start of the end truncation
-        last_pos
         # loop through the paths
         for (( i=1; i<${#paths}; i++ )); do
           # get the current directory value
