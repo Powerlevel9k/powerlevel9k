@@ -164,12 +164,14 @@ for segment in $p9kDirectory/segments/*.p9k; do
 done
 
 # load custom segments
-for segment in ~/.config/powerlevel9k/segments/*.p9k; do
-  segmentName=${${segment##*/}%.p9k}
-  if segmentInUse "$segmentName"; then
-    source "${segment}" 2>&1
-  fi
-done
+if [[ -d ~/.config/powerlevel9k/segments ]]; then
+  for segment in ~/.config/powerlevel9k/segments/*.p9k; do
+    segmentName=${${segment##*/}%.p9k}
+    if segmentInUse "$segmentName"; then
+      source "${segment}" 2>&1
+    fi
+  done
+fi
 
 # cleanup temporary variable - not done because it is used for autoloading segments
 #unset p9kDirectory
