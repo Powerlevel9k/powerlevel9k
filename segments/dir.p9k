@@ -57,6 +57,10 @@ prompt_dir() {
         # truncate characters from the right of the path
         current_path=$(truncatePath "$current_path" $P9K_SHORTEN_DIR_LENGTH $P9K_SHORTEN_DELIMITER)
       ;;
+      truncate_from_left)
+        # truncate characters from the right of the path
+        current_path=$(truncatePath "$current_path" $P9K_SHORTEN_DIR_LENGTH $P9K_SHORTEN_DELIMITER "left")
+      ;;
       truncate_absolute|truncate_absolute_chars)
         # truncate all characters except the last P9K_SHORTEN_DIR_LENGTH characters
         if [ ${#current_path} -gt $(( $P9K_SHORTEN_DIR_LENGTH + ${#P9K_SHORTEN_DELIMITER} )) ]; then
