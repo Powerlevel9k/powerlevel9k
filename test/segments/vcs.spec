@@ -12,9 +12,9 @@ function setUp() {
 }
 
 function testColorOverridingForCleanStateWorks() {
-  P9K_LEFT_PROMPT_ELEMENTS=(vcs)
-  P9K_VCS_CLEAN_FOREGROUND='cyan'
-  P9K_VCS_CLEAN_BACKGROUND='white'
+  local P9K_LEFT_PROMPT_ELEMENTS=(vcs)
+  local P9K_VCS_CLEAN_FOREGROUND='cyan'
+  local P9K_VCS_CLEAN_BACKGROUND='white'
 
   FOLDER=/tmp/powerlevel9k-test/vcs-test
   mkdir -p $FOLDER
@@ -25,16 +25,12 @@ function testColorOverridingForCleanStateWorks() {
 
   cd -
   rm -fr /tmp/powerlevel9k-test
-
-  unset P9K_LEFT_PROMPT_ELEMENTS
-  unset P9K_VCS_CLEAN_FOREGROUND
-  unset P9K_VCS_CLEAN_BACKGROUND
 }
 
 function testColorOverridingForModifiedStateWorks() {
-  P9K_LEFT_PROMPT_ELEMENTS=(vcs)
-  P9K_VCS_MODIFIED_FOREGROUND='red'
-  P9K_VCS_MODIFIED_BACKGROUND='yellow'
+  local P9K_LEFT_PROMPT_ELEMENTS=(vcs)
+  local P9K_VCS_MODIFIED_FOREGROUND='red'
+  local P9K_VCS_MODIFIED_BACKGROUND='yellow'
 
   FOLDER=/tmp/powerlevel9k-test/vcs-test
   mkdir -p $FOLDER
@@ -51,18 +47,14 @@ function testColorOverridingForModifiedStateWorks() {
 
   cd -
   rm -fr /tmp/powerlevel9k-test
-
-  unset P9K_LEFT_PROMPT_ELEMENTS
-  unset P9K_VCS_MODIFIED_FOREGROUND
-  unset P9K_VCS_MODIFIED_BACKGROUND
 }
 
 function testColorOverridingForUntrackedStateWorks() {
-  P9K_LEFT_PROMPT_ELEMENTS=(vcs)
-  P9K_VCS_UNTRACKED_FOREGROUND='cyan'
-  P9K_VCS_UNTRACKED_BACKGROUND='yellow'
+  local P9K_LEFT_PROMPT_ELEMENTS=(vcs)
+  local P9K_VCS_UNTRACKED_FOREGROUND='cyan'
+  local P9K_VCS_UNTRACKED_BACKGROUND='yellow'
 
-  FOLDER=/tmp/powerlevel9k-test/vcs-test
+  local FOLDER=/tmp/powerlevel9k-test/vcs-test
   mkdir -p $FOLDER
   cd $FOLDER
   git init 1>/dev/null
@@ -72,19 +64,15 @@ function testColorOverridingForUntrackedStateWorks() {
 
   cd -
   rm -fr /tmp/powerlevel9k-test
-
-  unset P9K_LEFT_PROMPT_ELEMENTS
-  unset P9K_VCS_UNTRACKED_FOREGROUND
-  unset P9K_VCS_UNTRACKED_BACKGROUND
 }
 
 function testBranchNameTruncatingShortenLength() {
-  P9K_LEFT_PROMPT_ELEMENTS=(vcs)
-  P9K_VCS_SHORTEN_LENGTH=6
-  P9K_VCS_SHORTEN_MIN_LENGTH=3
-  P9K_VCS_SHORTEN_STRATEGY="truncate_from_right"
+  local P9K_LEFT_PROMPT_ELEMENTS=(vcs)
+  local P9K_VCS_SHORTEN_LENGTH=6
+  local P9K_VCS_SHORTEN_MIN_LENGTH=3
+  local P9K_VCS_SHORTEN_STRATEGY="truncate_from_right"
 
-  FOLDER=/tmp/powerlevel9k-test/vcs-test
+  local FOLDER=/tmp/powerlevel9k-test/vcs-test
   mkdir -p $FOLDER
   cd $FOLDER
   git init 1>/dev/null
@@ -97,20 +85,15 @@ function testBranchNameTruncatingShortenLength() {
 
   cd -
   rm -fr /tmp/powerlevel9k-test
-
-  unset P9K_LEFT_PROMPT_ELEMENTS
-  unset P9K_VCS_SHORTEN_LENGTH
-  unset P9K_VCS_SHORTEN_MIN_LENGTH
-  unset P9K_VCS_SHORTEN_STRATEGY
 }
 
 function testBranchNameTruncatingMinLength() {
-  P9K_LEFT_PROMPT_ELEMENTS=(vcs)
-  P9K_VCS_SHORTEN_LENGTH=3
-  P9K_VCS_SHORTEN_MIN_LENGTH=6
-  P9K_VCS_SHORTEN_STRATEGY="truncate_from_right"
+  local P9K_LEFT_PROMPT_ELEMENTS=(vcs)
+  local P9K_VCS_SHORTEN_LENGTH=3
+  local P9K_VCS_SHORTEN_MIN_LENGTH=6
+  local P9K_VCS_SHORTEN_STRATEGY="truncate_from_right"
 
-  FOLDER=/tmp/powerlevel9k-test/vcs-test
+  local FOLDER=/tmp/powerlevel9k-test/vcs-test
   mkdir -p $FOLDER
   cd $FOLDER
   git init 1>/dev/null
@@ -124,20 +107,15 @@ function testBranchNameTruncatingMinLength() {
 
   cd -
   rm -fr /tmp/powerlevel9k-test
-
-  unset P9K_LEFT_PROMPT_ELEMENTS
-  unset P9K_VCS_SHORTEN_LENGTH
-  unset P9K_VCS_SHORTEN_MIN_LENGTH
-  unset P9K_VCS_SHORTEN_STRATEGY
 }
 
 function testBranchNameTruncatingShortenStrategy() {
-  P9K_LEFT_PROMPT_ELEMENTS=(vcs)
-  P9K_VCS_SHORTEN_LENGTH=3
-  P9K_VCS_SHORTEN_MIN_LENGTH=3
-  P9K_VCS_SHORTEN_STRATEGY="truncate_from_right"
+  local P9K_LEFT_PROMPT_ELEMENTS=(vcs)
+  local P9K_VCS_SHORTEN_LENGTH=3
+  local P9K_VCS_SHORTEN_MIN_LENGTH=3
+  local P9K_VCS_SHORTEN_STRATEGY="truncate_from_right"
 
-  FOLDER=/tmp/powerlevel9k-test/vcs-test
+  local FOLDER=/tmp/powerlevel9k-test/vcs-test
   mkdir -p $FOLDER
   cd $FOLDER
   git init 1>/dev/null
@@ -151,20 +129,15 @@ function testBranchNameTruncatingShortenStrategy() {
 
   cd -
   rm -fr /tmp/powerlevel9k-test
-
-  unset P9K_LEFT_PROMPT_ELEMENTS
-  unset P9K_VCS_SHORTEN_LENGTH
-  unset P9K_VCS_SHORTEN_MIN_LENGTH
-  unset P9K_VCS_SHORTEN_STRATEGY
 }
 
 function testBranchNameTruncatingShortenLength() {
-  P9K_LEFT_PROMPT_ELEMENTS=(vcs)
-  P9K_VCS_SHORTEN_LENGTH=6
-  P9K_VCS_SHORTEN_MIN_LENGTH=3
-  P9K_VCS_SHORTEN_STRATEGY="truncate_from_right"
+  local P9K_LEFT_PROMPT_ELEMENTS=(vcs)
+  local P9K_VCS_SHORTEN_LENGTH=6
+  local P9K_VCS_SHORTEN_MIN_LENGTH=3
+  local P9K_VCS_SHORTEN_STRATEGY="truncate_from_right"
 
-  FOLDER=/tmp/powerlevel9k-test/vcs-test
+  local FOLDER=/tmp/powerlevel9k-test/vcs-test
   mkdir -p $FOLDER
   cd $FOLDER
   git init 1>/dev/null
@@ -177,20 +150,15 @@ function testBranchNameTruncatingShortenLength() {
 
   cd -
   rm -fr /tmp/powerlevel9k-test
-
-  unset P9K_LEFT_PROMPT_ELEMENTS
-  unset P9K_VCS_SHORTEN_LENGTH
-  unset P9K_VCS_SHORTEN_MIN_LENGTH
-  unset P9K_VCS_SHORTEN_STRATEGY
 }
 
 function testBranchNameTruncatingMinLength() {
-  P9K_LEFT_PROMPT_ELEMENTS=(vcs)
-  P9K_VCS_SHORTEN_LENGTH=3
-  P9K_VCS_SHORTEN_MIN_LENGTH=6
-  P9K_VCS_SHORTEN_STRATEGY="truncate_from_right"
+  local P9K_LEFT_PROMPT_ELEMENTS=(vcs)
+  local P9K_VCS_SHORTEN_LENGTH=3
+  local P9K_VCS_SHORTEN_MIN_LENGTH=6
+  local P9K_VCS_SHORTEN_STRATEGY="truncate_from_right"
 
-  FOLDER=/tmp/powerlevel9k-test/vcs-test
+  local FOLDER=/tmp/powerlevel9k-test/vcs-test
   mkdir -p $FOLDER
   cd $FOLDER
   git init 1>/dev/null
@@ -204,20 +172,15 @@ function testBranchNameTruncatingMinLength() {
 
   cd -
   rm -fr /tmp/powerlevel9k-test
-
-  unset P9K_LEFT_PROMPT_ELEMENTS
-  unset P9K_VCS_SHORTEN_LENGTH
-  unset P9K_VCS_SHORTEN_MIN_LENGTH
-  unset P9K_VCS_SHORTEN_STRATEGY
 }
 
 function testBranchNameTruncatingShortenStrategy() {
-  P9K_LEFT_PROMPT_ELEMENTS=(vcs)
-  P9K_VCS_SHORTEN_LENGTH=3
-  P9K_VCS_SHORTEN_MIN_LENGTH=3
-  P9K_VCS_SHORTEN_STRATEGY="truncate_from_right"
+  local P9K_LEFT_PROMPT_ELEMENTS=(vcs)
+  local P9K_VCS_SHORTEN_LENGTH=3
+  local P9K_VCS_SHORTEN_MIN_LENGTH=3
+  local P9K_VCS_SHORTEN_STRATEGY="truncate_from_right"
 
-  FOLDER=/tmp/powerlevel9k-test/vcs-test
+  local FOLDER=/tmp/powerlevel9k-test/vcs-test
   mkdir -p $FOLDER
   cd $FOLDER
   git init 1>/dev/null
@@ -231,11 +194,6 @@ function testBranchNameTruncatingShortenStrategy() {
 
   cd -
   rm -fr /tmp/powerlevel9k-test
-
-  unset P9K_LEFT_PROMPT_ELEMENTS
-  unset P9K_VCS_SHORTEN_LENGTH
-  unset P9K_VCS_SHORTEN_MIN_LENGTH
-  unset P9K_VCS_SHORTEN_STRATEGY
 }
 
 source shunit2/source/2.1/src/shunit2

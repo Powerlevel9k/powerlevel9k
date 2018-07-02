@@ -20,20 +20,19 @@ function tearDown() {
 }
 
 function testDirPathAbsoluteWorks() {
-  P9K_DIR_PATH_ABSOLUTE=true
+  local P9K_DIR_PATH_ABSOLUTE=true
 
   cd ~
   assertEquals "%K{blue} %F{black}/home/travis %k%F{blue}%f " "$(buildLeftPrompt)"
 
   cd -
-  unset P9K_DIR_PATH_ABSOLUTE
 }
 
 function testTruncateFoldersWorks() {
-  P9K_SHORTEN_DIR_LENGTH=2
-  P9K_SHORTEN_STRATEGY='truncate_folders'
+  local P9K_SHORTEN_DIR_LENGTH=2
+  local P9K_SHORTEN_STRATEGY='truncate_folders'
 
-  FOLDER=/tmp/powerlevel9k-test/1/12/123/1234/12345/123456/1234567/12345678/123456789
+  local FOLDER=/tmp/powerlevel9k-test/1/12/123/1234/12345/123456/1234567/12345678/123456789
   mkdir -p $FOLDER
   cd $FOLDER
 
@@ -41,18 +40,14 @@ function testTruncateFoldersWorks() {
 
   cd -
   rm -fr /tmp/powerlevel9k-test
-
-  unset FOLDER
-  unset P9K_SHORTEN_DIR_LENGTH
-  unset P9K_SHORTEN_STRATEGY
 }
 
 function testTruncateFolderWithHomeDirWorks() {
-  P9K_SHORTEN_DIR_LENGTH=1
-  CURRENT_DIR=$(pwd)
+  local P9K_SHORTEN_DIR_LENGTH=1
+  local CURRENT_DIR=$(pwd)
 
   cd ~
-  FOLDER="powerlevel9k-test-${RANDOM}"
+  local FOLDER="powerlevel9k-test-${RANDOM}"
   mkdir -p $FOLDER
   cd $FOLDER
   # Switch back to home folder as this causes the problem.
@@ -62,17 +57,13 @@ function testTruncateFolderWithHomeDirWorks() {
 
   rmdir $FOLDER
   cd ${CURRENT_DIR}
-
-  unset CURRENT_DIR
-  unset FOLDER
-  unset P9K_SHORTEN_DIR_LENGTH
 }
 
 function testTruncateMiddleWorks() {
-  P9K_SHORTEN_DIR_LENGTH=2
-  P9K_SHORTEN_STRATEGY='truncate_middle'
+  local P9K_SHORTEN_DIR_LENGTH=2
+  local P9K_SHORTEN_STRATEGY='truncate_middle'
 
-  FOLDER=/tmp/powerlevel9k-test/1/12/123/1234/12345/123456/1234567/12345678/123456789
+  local FOLDER=/tmp/powerlevel9k-test/1/12/123/1234/12345/123456/1234567/12345678/123456789
   mkdir -p $FOLDER
   cd $FOLDER
 
@@ -80,17 +71,13 @@ function testTruncateMiddleWorks() {
 
   cd -
   rm -fr /tmp/powerlevel9k-test
-
-  unset FOLDER
-  unset P9K_LEFT_PROMPT_ELEMENTS
-  unset P9K_SHORTEN_STRATEGY
 }
 
 function testTruncationFromRightWorks() {
-  P9K_SHORTEN_DIR_LENGTH=2
-  P9K_SHORTEN_STRATEGY='truncate_from_right'
+  local P9K_SHORTEN_DIR_LENGTH=2
+  local P9K_SHORTEN_STRATEGY='truncate_from_right'
 
-  FOLDER=/tmp/powerlevel9k-test/1/12/123/1234/12345/123456/1234567/12345678/123456789
+  local FOLDER=/tmp/powerlevel9k-test/1/12/123/1234/12345/123456/1234567/12345678/123456789
   mkdir -p $FOLDER
   cd $FOLDER
 
@@ -98,17 +85,13 @@ function testTruncationFromRightWorks() {
 
   cd -
   rm -fr /tmp/powerlevel9k-test
-
-  unset FOLDER
-  unset P9K_SHORTEN_DIR_LENGTH
-  unset P9K_SHORTEN_STRATEGY
 }
 
 function testTruncateToLastWorks() {
-  P9K_SHORTEN_DIR_LENGTH=2
-  P9K_SHORTEN_STRATEGY="truncate_to_last"
+  local P9K_SHORTEN_DIR_LENGTH=2
+  local P9K_SHORTEN_STRATEGY="truncate_to_last"
 
-  FOLDER=/tmp/powerlevel9k-test/1/12/123/1234/12345/123456/1234567/12345678/123456789
+  local FOLDER=/tmp/powerlevel9k-test/1/12/123/1234/12345/123456/1234567/12345678/123456789
   mkdir -p $FOLDER
   cd $FOLDER
 
@@ -116,17 +99,13 @@ function testTruncateToLastWorks() {
 
   cd -
   rm -fr /tmp/powerlevel9k-test
-
-  unset FOLDER
-  unset P9K_SHORTEN_DIR_LENGTH
-  unset P9K_SHORTEN_STRATEGY
 }
 
 function testTruncateToFirstAndLastWorks() {
-  P9K_SHORTEN_DIR_LENGTH=2
-  P9K_SHORTEN_STRATEGY="truncate_to_first_and_last"
+  local P9K_SHORTEN_DIR_LENGTH=2
+  local P9K_SHORTEN_STRATEGY="truncate_to_first_and_last"
 
-  FOLDER=/tmp/powerlevel9k-test/1/12/123/1234/12345/123456/1234567/12345678/123456789
+  local FOLDER=/tmp/powerlevel9k-test/1/12/123/1234/12345/123456/1234567/12345678/123456789
   mkdir -p $FOLDER
   cd $FOLDER
 
@@ -134,17 +113,13 @@ function testTruncateToFirstAndLastWorks() {
 
   cd -
   rm -fr /tmp/powerlevel9k-test
-
-  unset FOLDER
-  unset P9K_SHORTEN_DIR_LENGTH
-  unset P9K_SHORTEN_STRATEGY
 }
 
 function testTruncateAbsoluteWorks() {
-  P9K_SHORTEN_DIR_LENGTH=2
-  P9K_SHORTEN_STRATEGY="truncate_absolute"
+  local P9K_SHORTEN_DIR_LENGTH=2
+  local P9K_SHORTEN_STRATEGY="truncate_absolute"
 
-  FOLDER=/tmp/powerlevel9k-test/1/12/123/1234/12345/123456/1234567/12345678/123456789
+  local FOLDER=/tmp/powerlevel9k-test/1/12/123/1234/12345/123456/1234567/12345678/123456789
   mkdir -p $FOLDER
   cd $FOLDER
 
@@ -152,18 +127,14 @@ function testTruncateAbsoluteWorks() {
 
   cd -
   rm -fr /tmp/powerlevel9k-test
-
-  unset FOLDER
-  unset P9K_SHORTEN_DIR_LENGTH
-  unset P9K_SHORTEN_STRATEGY
 }
 
 function testTruncationFromRightWithEmptyDelimiter() {
-  P9K_SHORTEN_DIR_LENGTH=2
-  P9K_SHORTEN_DELIMITER=""
-  P9K_SHORTEN_STRATEGY='truncate_from_right'
+  local P9K_SHORTEN_DIR_LENGTH=2
+  local P9K_SHORTEN_DELIMITER=""
+  local P9K_SHORTEN_STRATEGY='truncate_from_right'
 
-  FOLDER=/tmp/powerlevel9k-test/1/12/123/1234/12345/123456/1234567/12345678/123456789
+  local FOLDER=/tmp/powerlevel9k-test/1/12/123/1234/12345/123456/1234567/12345678/123456789
   mkdir -p $FOLDER
   cd $FOLDER
 
@@ -171,16 +142,11 @@ function testTruncationFromRightWithEmptyDelimiter() {
 
   cd -
   rm -fr /tmp/powerlevel9k-test
-
-  unset FOLDER
-  unset P9K_SHORTEN_DIR_LENGTH
-  unset P9K_SHORTEN_DELIMITER
-  unset P9K_SHORTEN_STRATEGY
 }
 
 function testTruncateWithFolderMarkerWorks() {
-  P9K_LEFT_PROMPT_ELEMENTS=(dir)
-  P9K_SHORTEN_STRATEGY="truncate_with_folder_marker"
+  local P9K_LEFT_PROMPT_ELEMENTS=(dir)
+  local P9K_SHORTEN_STRATEGY="truncate_with_folder_marker"
 
   local BASEFOLDER=/tmp/powerlevel9k-test
   local FOLDER=$BASEFOLDER/1/12/123/1234/12345/123456/1234567
@@ -192,16 +158,12 @@ function testTruncateWithFolderMarkerWorks() {
 
   cd -
   rm -fr $BASEFOLDER
-  unset BASEFOLDER
-  unset FOLDER
-  unset P9K_SHORTEN_STRATEGY
-  unset P9K_LEFT_PROMPT_ELEMENTS
 }
 
 function testTruncateWithFolderMarkerWithChangedFolderMarker() {
-  P9K_LEFT_PROMPT_ELEMENTS=(dir)
-  P9K_SHORTEN_STRATEGY="truncate_with_folder_marker"
-  P9K_SHORTEN_FOLDER_MARKER='.xxx'
+  local P9K_LEFT_PROMPT_ELEMENTS=(dir)
+  local P9K_SHORTEN_STRATEGY="truncate_with_folder_marker"
+  local P9K_SHORTEN_FOLDER_MARKER='.xxx'
 
   local BASEFOLDER=/tmp/powerlevel9k-test
   local FOLDER=$BASEFOLDER/1/12/123/1234/12345/123456/1234567
@@ -213,11 +175,6 @@ function testTruncateWithFolderMarkerWithChangedFolderMarker() {
 
   cd -
   rm -fr $BASEFOLDER
-  unset BASEFOLDER
-  unset FOLDER
-  unset P9K_SHORTEN_FOLDER_MARKER
-  unset P9K_SHORTEN_STRATEGY
-  unset P9K_LEFT_PROMPT_ELEMENTS
 }
 
 function testTruncateWithPackageNameWorks() {
@@ -238,18 +195,15 @@ function testTruncateWithPackageNameWorks() {
   # Go back to deeper folder
   cd "${FOLDER}"
 
-  P9K_LEFT_PROMPT_ELEMENTS=(dir)
-  P9K_SHORTEN_DIR_LENGTH=2
-  P9K_SHORTEN_STRATEGY='truncate_with_package_name'
+  local P9K_LEFT_PROMPT_ELEMENTS=(dir)
+  local P9K_SHORTEN_DIR_LENGTH=2
+  local P9K_SHORTEN_STRATEGY='truncate_with_package_name'
 
   assertEquals "%K{blue} %F{black}My_Package/1/12/123/12…/12…/12…/12…/12…/123456789 %k%F{blue}%f " "$(buildLeftPrompt)"
 
   # Go back
   cd $p9kFolder
   rm -fr $BASEFOLDER
-  unset P9K_LEFT_PROMPT_ELEMENTS
-  unset P9K_SHORTEN_STRATEGY
-  unset P9K_SHORTEN_DIR_LENGTH
 }
 
 function testTruncateWithPackageNameIfRepoIsSymlinkedInsideDeepFolder() {

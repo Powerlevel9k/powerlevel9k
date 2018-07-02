@@ -30,22 +30,17 @@ function mockRust() {
 
 function testRust() {
   mockRust
-  P9K_LEFT_PROMPT_ELEMENTS=(rust_version)
+  local P9K_LEFT_PROMPT_ELEMENTS=(rust_version)
 
   assertEquals "%K{208} %F{black}Rust %f%F{black}0.4.1a-alpha %k%F{208}%f " "$(buildLeftPrompt)"
-
-  unset P9K_LEFT_PROMPT_ELEMENTS
 }
 
 function testRustPrintsNothingIfRustIsNotAvailable() {
-  P9K_CUSTOM_WORLD='echo world'
+  local P9K_CUSTOM_WORLD='echo world'
   registerSegment "WORLD"
-  P9K_LEFT_PROMPT_ELEMENTS=(custom_world rust_version)
+  local P9K_LEFT_PROMPT_ELEMENTS=(custom_world rust_version)
 
   assertEquals "%K{white} %F{black}world %k%F{white}%f " "$(buildLeftPrompt)"
-
-  unset P9K_LEFT_PROMPT_ELEMENTS
-  unset P9K_CUSTOM_WORLD
 }
 
 source shunit2/source/2.1/src/shunit2
