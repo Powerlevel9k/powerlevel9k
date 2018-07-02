@@ -466,7 +466,7 @@ function truncatePath() {
           test_dir_length=${#test_dir}
           # only truncate if the resulting truncation will be shorter than
           # the truncation + delimiter length and at least 3 characters
-          if (( $test_dir_length > $threshhold )) && (( $test_dir_length >= 3 )); then
+          if (( $test_dir_length > $threshhold )) && (( $test_dir_length > 3 )); then
             # use the first $2 characters and the delimiter
             trunc_path+="${test_dir:0:$2}${delim}/"
           else
@@ -505,7 +505,7 @@ function truncatePath() {
           test_dir_length=${#test_dir}
           # only truncate if the resulting truncation will be shorter than
           # the truncation + delimiter length and at least 3 characters
-          if (( $test_dir_length > $threshhold )) && (( $test_dir_length >= 3 )); then
+          if (( $test_dir_length > $threshhold )) && (( $test_dir_length > 3 )); then
             # use the delimiter and the last $2 characters
             last_pos=$(( $test_dir_length - $2 ))
             trunc_path+="${delim}${test_dir:$last_pos:$test_dir_length}/"
