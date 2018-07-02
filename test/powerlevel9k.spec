@@ -117,16 +117,28 @@ function testOverwritingIconsWork() {
   # rm -fr ~/$testFolder
 }
 
+# ANSI escape sequences
+# %b - [0m  - bold off
+# %F - [3_m - set foreground color
+# %f - [39m - default foreground color
+# %K - [4_m - set background color
+# %k - [49m - default background color
+#      [_A  - cursor up
+#      [_B  - cursor down
+
 function testNewlineOnRpromptCanBeDisabled() {
   P9K_PROMPT_ON_NEWLINE=true
   P9K_RPROMPT_ON_NEWLINE=false
   P9K_CUSTOM_WORLD='echo world'
+  registerSegment "WORLD"
   P9K_CUSTOM_RWORLD='echo rworld'
+  registerSegment "RWORLD"
   P9K_LEFT_PROMPT_ELEMENTS=(custom_world)
   P9K_RIGHT_PROMPT_ELEMENTS=(custom_rworld)
 
   p9kPreparePrompts
-  assertEquals '$(printIcon MULTILINE_FIRST_PROMPT_PREFIX)[39m[0m[49m[47m [30mworld [49m[37m[39m  $(printIcon MULTILINE_LAST_PROMPT_PREFIX)[1A[39m[0m[49m[37m[39m[47m[30m rworld [39m[00m[1B' "$(print -P ${PROMPT}${RPROMPT})"
+  #╭─\C-[[39m\C-[[0m\C-[[49m\C-[[47m \C-[[30mworld \C-[[49m\C-[[37m\C-[[39m  ╰─ \C-[[1A\C-[[39m\C-[[0m\C-[[49m\C-[[37m\C-[[47m\C-[[30m rworld\C-[[30m \C-[[00m\C-[[1B>
+  assertEquals '╭─[39m[0m[49m[47m [30mworld [49m[37m[39m  ╰─ [1A[39m[0m[49m[37m[47m[30m rworld[30m [00m[1B' "$(print -P ${PROMPT}${RPROMPT})"
 
   unset P9K_PROMPT_ON_NEWLINE
   unset P9K_RPROMPT_ON_NEWLINE
