@@ -32,7 +32,7 @@ getUniqueHomeFolder() {
     local cur_path='/'
     # the first time we run the script, the working directory *should* be the home folder
     [[ -z $HOME ]] && HOME=${PWD}
-    local paths=(${(s:/:)${HOME}})
+    local paths=(${(s:/:)HOME})
     for directory in ${paths[@]}; do
       test_dir=''
       for (( i=0; i < ${#directory}; i++ )); do
