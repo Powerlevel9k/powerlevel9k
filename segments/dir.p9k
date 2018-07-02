@@ -46,21 +46,18 @@ prompt_dir() {
   (( ${#current_path} > 1 )) && paths=(${(s:/:)${current_path//"~\/"/}}) || paths=()
   # only run the code if SHORTEN_DIR_LENGTH is set, or we are using the two strategies that don't rely on it.
   if [[ -n "$P9K_SHORTEN_DIR_LENGTH" || "$P9K_SHORTEN_STRATEGY" == "truncate_with_folder_marker" || "$P9K_SHORTEN_STRATEGY" == "truncate_to_last" ]]; then
-    # convert delimiter from unicode to literal character, so that we can get the correct length later
-    local delim=$(echo -n $P9K_SHORTEN_DELIMITER)
-
     case "$P9K_SHORTEN_STRATEGY" in
-      truncate_middle)
-        # truncate characters from the middle of the path
-        current_path=$(truncatePath $current_path $P9K_SHORTEN_DIR_LENGTH $P9K_SHORTEN_DELIMITER "middle")
-      ;;
       truncate_from_right)
         # truncate characters from the right of the path
-        current_path=$(truncatePath "$current_path" $P9K_SHORTEN_DIR_LENGTH $P9K_SHORTEN_DELIMITER)
+        current_path=$(truncatePath "$current_path" $P9K_SHORTEN_DIR_LENGTH "$P9K_SHORTEN_DELIMITER")
+      ;;
+      truncate_middle)
+        # truncate characters from the middle of the path
+        current_path=$(truncatePath "$current_path" $P9K_SHORTEN_DIR_LENGTH "$P9K_SHORTEN_DELIMITER" "middle")
       ;;
       truncate_from_left)
         # truncate characters from the right of the path
-        current_path=$(truncatePath "$current_path" $P9K_SHORTEN_DIR_LENGTH $P9K_SHORTEN_DELIMITER "left")
+        current_path=$(truncatePath "$current_path" $P9K_SHORTEN_DIR_LENGTH "$P9K_SHORTEN_DELIMITER" "left")
       ;;
       truncate_absolute|truncate_absolute_chars)
         # truncate all characters except the last P9K_SHORTEN_DIR_LENGTH characters
@@ -189,7 +186,7 @@ prompt_dir() {
         fi
       ;;
       *)
-        current_path="$(print -P "%$((P9K_SHORTEN_DIR_LENGTH+1))(c:$P9K_SHORTEN_DELIMITER/:)%${P9K_SHORTEN_DIR_LENGTH}c")"
+        current_path="$(print -P "%$(($P9K_SHORTEN_DIR_LENGTH+1))(c:$P9K_SHORTEN_DELIMITER/:)%${P9K_SHORTEN_DIR_LENGTH}c")"
       ;;
     esac
   fi
