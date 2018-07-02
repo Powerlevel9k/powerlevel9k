@@ -17,9 +17,6 @@ function setUp() {
   # Unset mode, so that user settings
   # do not interfere with tests
   unset P9K_MODE
-
-  # Load all segments that need to be tested so that they can be sourced
-  P9K_LEFT_PROMPT_ELEMENTS=(dir root_indicator background_jobs)
 }
 
 function testJoinedSegments() {
