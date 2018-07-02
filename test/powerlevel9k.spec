@@ -137,7 +137,7 @@ function testNewlineOnRpromptCanBeDisabled() {
   P9K_RIGHT_PROMPT_ELEMENTS=(custom_rworld)
 
   p9kPreparePrompts
-  #╭─\C-[[39m\C-[[0m\C-[[49m\C-[[47m \C-[[30mworld \C-[[49m\C-[[37m\C-[[39m  ╰─ \C-[[1A\C-[[39m\C-[[0m\C-[[49m\C-[[37m\C-[[47m\C-[[30m rworld\C-[[30m \C-[[00m\C-[[1B>
+  #╭─\^[[39m^[[0m^[[49m^[[47m ^[[30mworld ^[[49m^[[37m^[[39m  ╰─ ^[[1A^[[39m^[[0m^[[49m^[[37m^[[47m^[[30m rworld^[[30m ^[[00m^[[1B>
   assertEquals '╭─[39m[0m[49m[47m [30mworld [49m[37m[39m  ╰─ [1A[39m[0m[49m[37m[47m[30m rworld[30m [00m[1B' "$(print -P ${PROMPT}${RPROMPT})"
 
   unset P9K_PROMPT_ON_NEWLINE
