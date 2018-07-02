@@ -10,6 +10,7 @@ function setUp() {
   # Load Powerlevel9k
   source powerlevel9k.zsh-theme
   source functions/*
+  source segments/dir.p9k
 
   # Unset mode, so that user settings
   # do not interfere with tests
@@ -49,6 +50,7 @@ function testJoiningWithConditionalSegment() {
 function testDynamicColoringOfSegmentsWork() {
   local P9K_LEFT_PROMPT_ELEMENTS=(dir)
   local P9K_DIR_DEFAULT_BACKGROUND='red'
+  source segments/dir.p9k
   cd /tmp
 
   assertEquals "%K{red} %F{black}/tmp %k%F{red}%f " "$(buildLeftPrompt)"
@@ -60,6 +62,7 @@ function testDynamicColoringOfVisualIdentifiersWork() {
   local P9K_LEFT_PROMPT_ELEMENTS=(dir)
   local P9K_DIR_DEFAULT_ICON="*icon-here"
   local P9K_DIR_DEFAULT_ICON_COLOR='green'
+  source segments/dir.p9k
 
   cd /tmp
 
@@ -75,9 +78,8 @@ function testColoringOfVisualIdentifiersDoesNotOverwriteColoringOfSegment() {
   local P9K_DIR_DEFAULT_ICON="*icon-here"
   local P9K_DIR_DEFAULT_ICON_COLOR='green'
 
-  # Re-Source the icons, as the P9K_MODE is directly
-  # evaluated there.
-  source functions/icons.zsh
+  # Re-Source the dir segment
+  source segments/dir.p9k
 
   cd /tmp
 
@@ -94,6 +96,9 @@ function testOverwritingIconsWork() {
   #mv testFolder ~
   # Go into testFolder
   #cd ~/$testFolder
+
+  # Re-Source the dir segment
+  source segments/dir.p9k
 
   cd /tmp
   assertEquals "%K{blue} %F{black}*icon-here %f%F{black}/tmp %k%F{blue}%f " "$(buildLeftPrompt)"

@@ -10,6 +10,7 @@ function setUp() {
   # Load Powerlevel9k
   source powerlevel9k.zsh-theme
   source functions/*
+  source segments/dir.p9k
 
   # Every test should at least use the dir segment
   P9K_LEFT_PROMPT_ELEMENTS=(dir)
@@ -283,6 +284,9 @@ function testTruncateWithPackageNameIfRepoIsSymlinkedInsideGitDir() {
 function testHomeFolderDetectionWorks() {
   P9K_DIR_HOME_ICON='*home-icon'
 
+  # Re-Source the dir segment
+  source segments/dir.p9k
+
   cd ~
   assertEquals "%K{blue} %F{black}*home-icon %f%F{black}~ %k%F{blue}%f " "$(buildLeftPrompt)"
 
@@ -292,6 +296,9 @@ function testHomeFolderDetectionWorks() {
 
 function testHomeSubfolderDetectionWorks() {
   P9K_DIR_HOME_SUBFOLDER_ICON='*sub-icon'
+
+  # Re-Source the dir segment
+  source segments/dir.p9k
 
   FOLDER=~/powerlevel9k-test
   mkdir $FOLDER
@@ -306,6 +313,9 @@ function testHomeSubfolderDetectionWorks() {
 
 function testOtherFolderDetectionWorks() {
   P9K_DIR_DEFAULT_ICON='*folder-icon'
+
+  # Re-Source the dir segment
+  source segments/dir.p9k
 
   FOLDER=/tmp/powerlevel9k-test
   mkdir $FOLDER
@@ -360,6 +370,10 @@ function testHomeFolderAbbreviation() {
 function testOmittingFirstCharacterWorks() {
   P9K_DIR_OMIT_FIRST_CHARACTER=true
   P9K_DIR_DEFAULT_ICON='*folder-icon'
+
+  # Re-Source the dir segment
+  source segments/dir.p9k
+
   cd /tmp
 
   assertEquals "%K{blue} %F{black}*folder-icon %f%F{black}tmp %k%F{blue}%f " "$(buildLeftPrompt)"
@@ -373,6 +387,10 @@ function testOmittingFirstCharacterWorksWithChangingPathSeparator() {
   P9K_DIR_OMIT_FIRST_CHARACTER=true
   P9K_DIR_PATH_SEPARATOR='xXx'
   P9K_DIR_DEFAULT_ICON='*folder-icon'
+
+  # Re-Source the dir segment
+  source segments/dir.p9k
+
   mkdir -p /tmp/powerlevel9k-test/1/2
   cd /tmp/powerlevel9k-test/1/2
 

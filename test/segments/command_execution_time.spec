@@ -9,10 +9,11 @@ function setUp() {
   export TERM="xterm-256color"
   # Load Powerlevel9k
   source powerlevel9k.zsh-theme
+  source segments/command_execution_time.p9k
 }
 
 function testCommandExecutionTimeIsNotShownIfTimeIsBelowThreshold() {
-  local P9K_LEFT_PROMPT_ELEMENTS=(custom_world command_execution_time)
+  P9K_LEFT_PROMPT_ELEMENTS=(custom_world command_execution_time)
   local P9K_CUSTOM_WORLD='echo world'
   registerSegment "WORLD"
   local _P9K_COMMAND_DURATION=2
@@ -21,7 +22,7 @@ function testCommandExecutionTimeIsNotShownIfTimeIsBelowThreshold() {
 }
 
 function testCommandExecutionTimeThresholdCouldBeChanged() {
-  local P9K_LEFT_PROMPT_ELEMENTS=(command_execution_time)
+  P9K_LEFT_PROMPT_ELEMENTS=(command_execution_time)
   local P9K_COMMAND_EXECUTION_TIME_THRESHOLD=1
   local _P9K_COMMAND_DURATION=2.03
 
@@ -29,7 +30,7 @@ function testCommandExecutionTimeThresholdCouldBeChanged() {
 }
 
 function testCommandExecutionTimeThresholdCouldBeSetToZero() {
-  local P9K_LEFT_PROMPT_ELEMENTS=(command_execution_time)
+  P9K_LEFT_PROMPT_ELEMENTS=(command_execution_time)
   local P9K_COMMAND_EXECUTION_TIME_THRESHOLD=0
   local _P9K_COMMAND_DURATION=0.03
 
@@ -37,7 +38,7 @@ function testCommandExecutionTimeThresholdCouldBeSetToZero() {
 }
 
 function testCommandExecutionTimePrecisionCouldBeChanged() {
-  local P9K_LEFT_PROMPT_ELEMENTS=(command_execution_time)
+  P9K_LEFT_PROMPT_ELEMENTS=(command_execution_time)
   local P9K_COMMAND_EXECUTION_TIME_THRESHOLD=0
   local P9K_COMMAND_EXECUTION_TIME_PRECISION=4
   local _P9K_COMMAND_DURATION=0.0001
@@ -46,7 +47,7 @@ function testCommandExecutionTimePrecisionCouldBeChanged() {
 }
 
 function testCommandExecutionTimePrecisionCouldBeSetToZero() {
-  local P9K_LEFT_PROMPT_ELEMENTS=(command_execution_time)
+  P9K_LEFT_PROMPT_ELEMENTS=(command_execution_time)
   local P9K_COMMAND_EXECUTION_TIME_PRECISION=0
   local _P9K_COMMAND_DURATION=23.5001
 
@@ -54,14 +55,14 @@ function testCommandExecutionTimePrecisionCouldBeSetToZero() {
 }
 
 function testCommandExecutionTimeIsFormattedHumandReadbleForMinuteLongCommand() {
-  local P9K_LEFT_PROMPT_ELEMENTS=(command_execution_time)
+  P9K_LEFT_PROMPT_ELEMENTS=(command_execution_time)
   local _P9K_COMMAND_DURATION=180
 
   assertEquals "%K{red} %F{yellow1}Dur %f%F{yellow1}03:00 %k%F{red}%f " "$(buildLeftPrompt)"
 }
 
 function testCommandExecutionTimeIsFormattedHumandReadbleForHourLongCommand() {
-  local P9K_LEFT_PROMPT_ELEMENTS=(command_execution_time)
+  P9K_LEFT_PROMPT_ELEMENTS=(command_execution_time)
   local _P9K_COMMAND_DURATION=7200
 
   assertEquals "%K{red} %F{yellow1}Dur %f%F{yellow1}02:00:00 %k%F{red}%f " "$(buildLeftPrompt)"

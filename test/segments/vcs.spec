@@ -9,12 +9,14 @@ function setUp() {
   export TERM="xterm-256color"
   # Load Powerlevel9k
   source powerlevel9k.zsh-theme
+  source segments/vcs.p9k
 }
 
 function testColorOverridingForCleanStateWorks() {
   local P9K_LEFT_PROMPT_ELEMENTS=(vcs)
   local P9K_VCS_CLEAN_FOREGROUND='cyan'
   local P9K_VCS_CLEAN_BACKGROUND='white'
+  source segments/vcs.p9k
 
   FOLDER=/tmp/powerlevel9k-test/vcs-test
   mkdir -p $FOLDER
@@ -31,6 +33,7 @@ function testColorOverridingForModifiedStateWorks() {
   local P9K_LEFT_PROMPT_ELEMENTS=(vcs)
   local P9K_VCS_MODIFIED_FOREGROUND='red'
   local P9K_VCS_MODIFIED_BACKGROUND='yellow'
+  source segments/vcs.p9k
 
   FOLDER=/tmp/powerlevel9k-test/vcs-test
   mkdir -p $FOLDER
@@ -53,6 +56,7 @@ function testColorOverridingForUntrackedStateWorks() {
   local P9K_LEFT_PROMPT_ELEMENTS=(vcs)
   local P9K_VCS_UNTRACKED_FOREGROUND='cyan'
   local P9K_VCS_UNTRACKED_BACKGROUND='yellow'
+  source segments/vcs.p9k
 
   local FOLDER=/tmp/powerlevel9k-test/vcs-test
   mkdir -p $FOLDER

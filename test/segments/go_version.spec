@@ -9,6 +9,7 @@ function setUp() {
   export TERM="xterm-256color"
   # Load Powerlevel9k
   source powerlevel9k.zsh-theme
+  source segments/go_version.p9k
 }
 
 function mockGo() {
@@ -36,8 +37,8 @@ function mockGoEmptyGopath() {
 function testGo() {
   alias go=mockGo
   local P9K_GO_VERSION_ICON=""
-  source functions/icons.zsh
   local P9K_LEFT_PROMPT_ELEMENTS=(go_version)
+  source segments/go_version.p9k
 
   local PWD="$HOME/go/src/github.com/bhilburn/powerlevel9k"
 

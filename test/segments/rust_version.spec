@@ -16,6 +16,7 @@ function setUp() {
   export TERM="xterm-256color"
   # Load Powerlevel9k
   source powerlevel9k.zsh-theme
+  source segments/rust_version.p9k
 }
 
 function tearDown() {
