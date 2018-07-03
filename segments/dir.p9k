@@ -66,7 +66,7 @@ setDefault P9K_SHORTEN_FOLDER_MARKER ".shorten_folder_marker"
 #   $3 boolean Whether the segment should be joined
 ##
 prompt_dir() {
-  local matching trunc_path home_path directory test_dir test_dir_length
+  local matching trunc_path directory test_dir test_dir_length paths
   # using $PWD instead of "$(print -P '%~')" to allow use of P9K_DIR_PATH_ABSOLUTE
   local current_path=$PWD # WAS: local current_path="$(print -P '%~')"
   # check if the user wants to use absolute paths or "~" paths
