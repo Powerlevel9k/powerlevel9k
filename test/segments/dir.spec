@@ -232,18 +232,15 @@ function testTruncateWithPackageNameIfRepoIsSymlinkedInsideDeepFolder() {
   # Go to deep folder inside linked repo
   cd linked-repo/asdfasdf/qwerqwer
 
-  P9K_LEFT_PROMPT_ELEMENTS=(dir)
-  P9K_SHORTEN_DIR_LENGTH=2
-  P9K_SHORTEN_STRATEGY='truncate_with_package_name'
+  local P9K_LEFT_PROMPT_ELEMENTS=(dir)
+  local P9K_SHORTEN_DIR_LENGTH=2
+  local P9K_SHORTEN_STRATEGY='truncate_with_package_name'
 
   assertEquals "%K{blue} %F{black}My_Package/as…/qwerqwer %k%F{blue}%f " "$(buildLeftPrompt)"
 
   # Go back
   cd $p9kFolder
   rm -fr $BASEFOLDER
-  unset P9K_LEFT_PROMPT_ELEMENTS
-  unset P9K_SHORTEN_STRATEGY
-  unset P9K_SHORTEN_DIR_LENGTH
 }
 
 function testTruncateWithPackageNameIfRepoIsSymlinkedInsideGitDir() {
@@ -267,22 +264,19 @@ function testTruncateWithPackageNameIfRepoIsSymlinkedInsideGitDir() {
 
   cd linked-repo/.git/refs/heads
 
-  P9K_LEFT_PROMPT_ELEMENTS=(dir)
-  P9K_SHORTEN_DIR_LENGTH=2
-  P9K_SHORTEN_STRATEGY='truncate_with_package_name'
+  local P9K_LEFT_PROMPT_ELEMENTS=(dir)
+  local P9K_SHORTEN_DIR_LENGTH=2
+  local P9K_SHORTEN_STRATEGY='truncate_with_package_name'
 
   assertEquals "%K{blue} %F{black}My_Package/.g…/re…/heads %k%F{blue}%f " "$(buildLeftPrompt)"
 
   # Go back
   cd $p9kFolder
   rm -fr $BASEFOLDER
-  unset P9K_LEFT_PROMPT_ELEMENTS
-  unset P9K_SHORTEN_STRATEGY
-  unset P9K_SHORTEN_DIR_LENGTH
 }
 
 function testHomeFolderDetectionWorks() {
-  P9K_DIR_HOME_ICON='*home-icon'
+  local P9K_DIR_HOME_ICON='*home-icon'
 
   # Re-Source the dir segment
   source segments/dir.p9k
@@ -291,45 +285,40 @@ function testHomeFolderDetectionWorks() {
   assertEquals "%K{blue} %F{black}*home-icon %f%F{black}~ %k%F{blue}%f " "$(buildLeftPrompt)"
 
   cd -
-  unset P9K_DIR_HOME_ICON
 }
 
 function testHomeSubfolderDetectionWorks() {
-  P9K_DIR_HOME_SUBFOLDER_ICON='*sub-icon'
+  local P9K_DIR_HOME_SUBFOLDER_ICON='*sub-icon'
 
   # Re-Source the dir segment
   source segments/dir.p9k
 
-  FOLDER=~/powerlevel9k-test
+  local FOLDER=~/powerlevel9k-test
   mkdir $FOLDER
   cd $FOLDER
   assertEquals "%K{blue} %F{black}*sub-icon %f%F{black}~/powerlevel9k-test %k%F{blue}%f " "$(buildLeftPrompt)"
 
   cd -
   rm -fr $FOLDER
-  unset FOLDER
-  unset P9K_DIR_HOME_SUBFOLDER_ICON
 }
 
 function testOtherFolderDetectionWorks() {
-  P9K_DIR_DEFAULT_ICON='*folder-icon'
+  local P9K_DIR_DEFAULT_ICON='*folder-icon'
 
   # Re-Source the dir segment
   source segments/dir.p9k
 
-  FOLDER=/tmp/powerlevel9k-test
+  local FOLDER=/tmp/powerlevel9k-test
   mkdir $FOLDER
   cd $FOLDER
   assertEquals "%K{blue} %F{black}*folder-icon %f%F{black}/tmp/powerlevel9k-test %k%F{blue}%f " "$(buildLeftPrompt)"
 
   cd -
   rm -fr $FOLDER
-  unset FOLDER
-  unset P9K_DIR_DEFAULT_ICON
 }
 
 function testChangingDirPathSeparator() {
-  P9K_DIR_PATH_SEPARATOR='xXx'
+  local P9K_DIR_PATH_SEPARATOR='xXx'
   local FOLDER="/tmp/powerlevel9k-test/1/2"
   mkdir -p $FOLDER
   cd $FOLDER
@@ -337,9 +326,7 @@ function testChangingDirPathSeparator() {
   assertEquals "%K{blue} %F{black}xXxtmpxXxpowerlevel9k-testxXx1xXx2 %k%F{blue}%f " "$(buildLeftPrompt)"
 
   cd -
-  unset FOLDER
   rm -fr /tmp/powerlevel9k-test
-  unset P9K_DIR_PATH_SEPARATOR
 }
 
 function testHomeFolderAbbreviation() {
@@ -368,8 +355,8 @@ function testHomeFolderAbbreviation() {
 }
 
 function testOmittingFirstCharacterWorks() {
-  P9K_DIR_OMIT_FIRST_CHARACTER=true
-  P9K_DIR_DEFAULT_ICON='*folder-icon'
+  local P9K_DIR_OMIT_FIRST_CHARACTER=true
+  local P9K_DIR_DEFAULT_ICON='*folder-icon'
 
   # Re-Source the dir segment
   source segments/dir.p9k
@@ -379,14 +366,12 @@ function testOmittingFirstCharacterWorks() {
   assertEquals "%K{blue} %F{black}*folder-icon %f%F{black}tmp %k%F{blue}%f " "$(buildLeftPrompt)"
 
   cd -
-  unset P9K_DIR_DEFAULT_ICON
-  unset P9K_DIR_OMIT_FIRST_CHARACTER
 }
 
 function testOmittingFirstCharacterWorksWithChangingPathSeparator() {
-  P9K_DIR_OMIT_FIRST_CHARACTER=true
-  P9K_DIR_PATH_SEPARATOR='xXx'
-  P9K_DIR_DEFAULT_ICON='*folder-icon'
+  local P9K_DIR_OMIT_FIRST_CHARACTER=true
+  local P9K_DIR_PATH_SEPARATOR='xXx'
+  local P9K_DIR_DEFAULT_ICON='*folder-icon'
 
   # Re-Source the dir segment
   source segments/dir.p9k
@@ -398,9 +383,6 @@ function testOmittingFirstCharacterWorksWithChangingPathSeparator() {
 
   cd -
   rm -fr /tmp/powerlevel9k-test
-  unset P9K_DIR_DEFAULT_ICON
-  unset P9K_DIR_PATH_SEPARATOR
-  unset P9K_DIR_OMIT_FIRST_CHARACTER
 }
 
 # This test makes it obvious that combining a truncation strategy
@@ -411,10 +393,10 @@ function testOmittingFirstCharacterWorksWithChangingPathSeparator() {
 # But it does more sense in combination with other truncation
 # strategies.
 function testOmittingFirstCharacterWorksWithChangingPathSeparatorAndDefaultTruncation() {
-  P9K_DIR_OMIT_FIRST_CHARACTER=true
-  P9K_DIR_PATH_SEPARATOR='xXx'
-  P9K_SHORTEN_DIR_LENGTH=2
-  P9K_SHORTEN_STRATEGY='truncate_folders'
+  local P9K_DIR_OMIT_FIRST_CHARACTER=true
+  local P9K_DIR_PATH_SEPARATOR='xXx'
+  local P9K_SHORTEN_DIR_LENGTH=2
+  local P9K_SHORTEN_STRATEGY='truncate_folders'
   mkdir -p /tmp/powerlevel9k-test/1/2
   cd /tmp/powerlevel9k-test/1/2
 
@@ -422,17 +404,13 @@ function testOmittingFirstCharacterWorksWithChangingPathSeparatorAndDefaultTrunc
 
   cd -
   rm -fr /tmp/powerlevel9k-test
-  unset P9K_DIR_PATH_SEPARATOR
-  unset P9K_DIR_OMIT_FIRST_CHARACTER
-  unset P9K_SHORTEN_DIR_LENGTH
-  unset P9K_SHORTEN_STRATEGY
 }
 
 function testOmittingFirstCharacterWorksWithChangingPathSeparatorAndMiddleTruncation() {
-  P9K_DIR_OMIT_FIRST_CHARACTER=true
-  P9K_DIR_PATH_SEPARATOR='xXx'
-  P9K_SHORTEN_DIR_LENGTH=2
-  P9K_SHORTEN_STRATEGY='truncate_middle'
+  local P9K_DIR_OMIT_FIRST_CHARACTER=true
+  local P9K_DIR_PATH_SEPARATOR='xXx'
+  local P9K_SHORTEN_DIR_LENGTH=2
+  local P9K_SHORTEN_STRATEGY='truncate_middle'
   mkdir -p /tmp/powerlevel9k-test/1/2
   cd /tmp/powerlevel9k-test/1/2
 
@@ -440,17 +418,13 @@ function testOmittingFirstCharacterWorksWithChangingPathSeparatorAndMiddleTrunca
 
   cd -
   rm -fr /tmp/powerlevel9k-test
-  unset P9K_DIR_PATH_SEPARATOR
-  unset P9K_DIR_OMIT_FIRST_CHARACTER
-  unset P9K_SHORTEN_DIR_LENGTH
-  unset P9K_SHORTEN_STRATEGY
 }
 
 function testOmittingFirstCharacterWorksWithChangingPathSeparatorAndRightTruncation() {
-  P9K_DIR_OMIT_FIRST_CHARACTER=true
-  P9K_DIR_PATH_SEPARATOR='xXx'
-  P9K_SHORTEN_DIR_LENGTH=2
-  P9K_SHORTEN_STRATEGY='truncate_from_right'
+  local P9K_DIR_OMIT_FIRST_CHARACTER=true
+  local P9K_DIR_PATH_SEPARATOR='xXx'
+  local P9K_SHORTEN_DIR_LENGTH=2
+  local P9K_SHORTEN_STRATEGY='truncate_from_right'
   mkdir -p /tmp/powerlevel9k-test/1/2
   cd /tmp/powerlevel9k-test/1/2
 
@@ -458,17 +432,13 @@ function testOmittingFirstCharacterWorksWithChangingPathSeparatorAndRightTruncat
 
   cd -
   rm -fr /tmp/powerlevel9k-test
-  unset P9K_DIR_PATH_SEPARATOR
-  unset P9K_DIR_OMIT_FIRST_CHARACTER
-  unset P9K_SHORTEN_DIR_LENGTH
-  unset P9K_SHORTEN_STRATEGY
 }
 
 function testTruncateToUniqueWorks() {
-  P9K_DIR_OMIT_FIRST_CHARACTER=true
-  P9K_DIR_PATH_SEPARATOR='xXx'
-  P9K_SHORTEN_DIR_LENGTH=2
-  P9K_SHORTEN_STRATEGY='truncate_to_unique'
+  local P9K_DIR_OMIT_FIRST_CHARACTER=true
+  local P9K_DIR_PATH_SEPARATOR='xXx'
+  local P9K_SHORTEN_DIR_LENGTH=2
+  local P9K_SHORTEN_STRATEGY='truncate_to_unique'
   mkdir -p /tmp/powerlevel9k-test/adam/devl
   mkdir -p /tmp/powerlevel9k-test/alice/devl
   mkdir -p /tmp/powerlevel9k-test/alice/docs
@@ -479,24 +449,19 @@ function testTruncateToUniqueWorks() {
 
   cd -
   rm -fr /tmp/powerlevel9k-test
-  unset P9K_DIR_PATH_SEPARATOR
-  unset P9K_DIR_OMIT_FIRST_CHARACTER
-  unset P9K_SHORTEN_DIR_LENGTH
-  unset P9K_SHORTEN_STRATEGY
 }
 
 function testBoldHomeDirWorks() {
-  P9K_DIR_PATH_HIGHLIGHT_BOLD=true
+  local P9K_DIR_PATH_HIGHLIGHT_BOLD=true
   cd ~
 
   assertEquals "%K{blue} %F{black}%B~%b %k%F{blue}%f " "$(buildLeftPrompt)"
 
   cd -
-  unset P9K_DIR_PATH_HIGHLIGHT_BOLD
 }
 
 function testBoldHomeSubdirWorks() {
-  P9K_DIR_PATH_HIGHLIGHT_BOLD=true
+  local P9K_DIR_PATH_HIGHLIGHT_BOLD=true
   mkdir -p ~/powerlevel9k-test
   cd ~/powerlevel9k-test
 
@@ -504,31 +469,28 @@ function testBoldHomeSubdirWorks() {
 
   cd -
   rm -fr ~/powerlevel9k-test
-  unset P9K_DIR_PATH_HIGHLIGHT_BOLD
 }
 
 function testBoldRootDirWorks() {
-  P9K_DIR_PATH_HIGHLIGHT_BOLD=true
+  local P9K_DIR_PATH_HIGHLIGHT_BOLD=true
   cd /
 
   assertEquals "%K{blue} %F{black}%B/%b %k%F{blue}%f " "$(buildLeftPrompt)"
 
   cd -
-  unset P9K_DIR_PATH_HIGHLIGHT_BOLD
 }
 
 function testBoldRootSubdirWorks() {
-  P9K_DIR_PATH_HIGHLIGHT_BOLD=true
+  local P9K_DIR_PATH_HIGHLIGHT_BOLD=true
   cd /tmp
 
   assertEquals "%K{blue} %F{black}/%Btmp%b %k%F{blue}%f " "$(buildLeftPrompt)"
 
   cd -
-  unset P9K_DIR_PATH_HIGHLIGHT_BOLD
 }
 
 function testBoldRootSubSubdirWorks() {
-  P9K_DIR_PATH_HIGHLIGHT_BOLD=true
+  local P9K_DIR_PATH_HIGHLIGHT_BOLD=true
   mkdir -p /tmp/powerlevel9k-test
   cd /tmp/powerlevel9k-test
 
@@ -536,21 +498,19 @@ function testBoldRootSubSubdirWorks() {
 
   cd -
   rm -fr /tmp/powerlevel9k-test
-  unset P9K_DIR_PATH_HIGHLIGHT_BOLD
 }
 
 function testHighlightHomeWorks() {
-  P9K_DIR_PATH_HIGHLIGHT_FOREGROUND='red'
+  local P9K_DIR_PATH_HIGHLIGHT_FOREGROUND='red'
   cd ~
 
   assertEquals "%K{blue} %F{black}%F{red}~ %k%F{blue}%f " "$(buildLeftPrompt)"
 
   cd -
-  unset P9K_DIR_PATH_HIGHLIGHT_FOREGROUND
 }
 
 function testHighlightHomeSubdirWorks() {
-  P9K_DIR_PATH_HIGHLIGHT_FOREGROUND='red'
+  local P9K_DIR_PATH_HIGHLIGHT_FOREGROUND='red'
   mkdir -p ~/powerlevel9k-test
   cd ~/powerlevel9k-test
 
@@ -558,31 +518,28 @@ function testHighlightHomeSubdirWorks() {
 
   cd -
   rm -fr ~/powerlevel9k-test
-  unset P9K_DIR_PATH_HIGHLIGHT_FOREGROUND
 }
 
 function testHighlightRootWorks() {
-  P9K_DIR_PATH_HIGHLIGHT_FOREGROUND='red'
+  local P9K_DIR_PATH_HIGHLIGHT_FOREGROUND='red'
   cd /
 
   assertEquals "%K{blue} %F{black}%F{red}/ %k%F{blue}%f " "$(buildLeftPrompt)"
 
   cd -
-  unset P9K_DIR_PATH_HIGHLIGHT_FOREGROUND
 }
 
 function testHighlightRootSubdirWorks() {
-  P9K_DIR_PATH_HIGHLIGHT_FOREGROUND='red'
+  local P9K_DIR_PATH_HIGHLIGHT_FOREGROUND='red'
   cd /tmp
 
   assertEquals "%K{blue} %F{black}/%F{red}tmp %k%F{blue}%f " "$(buildLeftPrompt)"
 
   cd -
-  unset P9K_DIR_PATH_HIGHLIGHT_FOREGROUND
 }
 
 function testHighlightRootSubSubdirWorks() {
-  P9K_DIR_PATH_HIGHLIGHT_FOREGROUND='red'
+  local P9K_DIR_PATH_HIGHLIGHT_FOREGROUND='red'
   mkdir /tmp/powerlevel9k-test
   cd /tmp/powerlevel9k-test
 
@@ -590,11 +547,10 @@ function testHighlightRootSubSubdirWorks() {
 
   cd -
   rm -fr /tmp/powerlevel9k-test
-  unset P9K_DIR_PATH_HIGHLIGHT_FOREGROUND
 }
 
 function testDirSeparatorColorHomeSubdirWorks() {
-  P9K_DIR_PATH_SEPARATOR_FOREGROUND='red'
+  local P9K_DIR_PATH_SEPARATOR_FOREGROUND='red'
   mkdir -p ~/powerlevel9k-test
   cd ~/powerlevel9k-test
 
@@ -602,11 +558,10 @@ function testDirSeparatorColorHomeSubdirWorks() {
 
   cd -
   rm -fr ~/powerlevel9k-test
-  unset P9K_DIR_PATH_SEPARATOR_FOREGROUND
 }
 
 function testDirSeparatorColorRootSubSubdirWorks() {
-  P9K_DIR_PATH_SEPARATOR_FOREGROUND='red'
+  local P9K_DIR_PATH_SEPARATOR_FOREGROUND='red'
   mkdir -p /tmp/powerlevel9k-test
   cd /tmp/powerlevel9k-test
 
@@ -614,7 +569,6 @@ function testDirSeparatorColorRootSubSubdirWorks() {
 
   cd -
   rm -fr /tmp/powerlevel9k-test
-  unset P9K_DIR_PATH_SEPARATOR_FOREGROUND
 }
 
 source shunit2/source/2.1/src/shunit2
