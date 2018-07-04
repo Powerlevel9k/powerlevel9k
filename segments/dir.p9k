@@ -28,7 +28,8 @@ registerSegment "DIR" 'ETC'             "blue" "$DEFAULT_COLOR"   $'\uE818'  $'\
 local home_path=""
 getUniqueHomeFolder() {
   if [[ "$home_path" == "" ]]; then
-    local matching trunc_path directory test_dir test_dir_length paths
+    local matching trunc_path directory test_dir test_dir_length
+    local -a paths
     local cur_path='/'
     # the first time we run the script, the working directory *should* be the home folder
     [[ -z $HOME ]] && paths=${PWD} || paths=$HOME
@@ -66,7 +67,8 @@ setDefault P9K_SHORTEN_FOLDER_MARKER ".shorten_folder_marker"
 #   $3 boolean Whether the segment should be joined
 ##
 prompt_dir() {
-  local matching trunc_path directory test_dir test_dir_length paths
+  local matching trunc_path directory test_dir test_dir_length
+  local -a paths
   # using $PWD instead of "$(print -P '%~')" to allow use of P9K_DIR_PATH_ABSOLUTE
   local current_path=$PWD # WAS: local current_path="$(print -P '%~')"
   # check if the user wants to use absolute paths or "~" paths
