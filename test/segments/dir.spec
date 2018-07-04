@@ -146,7 +146,7 @@ function testTruncationFromRightWithEmptyDelimiter() {
 }
 
 function testTruncateWithFolderMarkerWorks() {
-  local P9K_LEFT_PROMPT_ELEMENTS=(dir)
+  local -a P9K_LEFT_PROMPT_ELEMENTS; P9K_LEFT_PROMPT_ELEMENTS=(dir)
   local P9K_SHORTEN_STRATEGY="truncate_with_folder_marker"
 
   local BASEFOLDER=/tmp/powerlevel9k-test
@@ -162,7 +162,7 @@ function testTruncateWithFolderMarkerWorks() {
 }
 
 function testTruncateWithFolderMarkerWithChangedFolderMarker() {
-  local P9K_LEFT_PROMPT_ELEMENTS=(dir)
+  local -a P9K_LEFT_PROMPT_ELEMENTS; P9K_LEFT_PROMPT_ELEMENTS=(dir)
   local P9K_SHORTEN_STRATEGY="truncate_with_folder_marker"
   local P9K_SHORTEN_FOLDER_MARKER='.xxx'
 
@@ -196,7 +196,7 @@ function testTruncateWithPackageNameWorks() {
   # Go back to deeper folder
   cd "${FOLDER}"
 
-  local P9K_LEFT_PROMPT_ELEMENTS=(dir)
+  local -a P9K_LEFT_PROMPT_ELEMENTS; P9K_LEFT_PROMPT_ELEMENTS=(dir)
   local P9K_SHORTEN_DIR_LENGTH=2
   local P9K_SHORTEN_STRATEGY='truncate_with_package_name'
 
@@ -232,7 +232,7 @@ function testTruncateWithPackageNameIfRepoIsSymlinkedInsideDeepFolder() {
   # Go to deep folder inside linked repo
   cd linked-repo/asdfasdf/qwerqwer
 
-  local P9K_LEFT_PROMPT_ELEMENTS=(dir)
+  local -a P9K_LEFT_PROMPT_ELEMENTS; P9K_LEFT_PROMPT_ELEMENTS=(dir)
   local P9K_SHORTEN_DIR_LENGTH=2
   local P9K_SHORTEN_STRATEGY='truncate_with_package_name'
 
@@ -264,7 +264,7 @@ function testTruncateWithPackageNameIfRepoIsSymlinkedInsideGitDir() {
 
   cd linked-repo/.git/refs/heads
 
-  local P9K_LEFT_PROMPT_ELEMENTS=(dir)
+  local -a P9K_LEFT_PROMPT_ELEMENTS; P9K_LEFT_PROMPT_ELEMENTS=(dir)
   local P9K_SHORTEN_DIR_LENGTH=2
   local P9K_SHORTEN_STRATEGY='truncate_with_package_name'
 

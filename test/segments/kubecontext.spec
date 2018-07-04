@@ -68,7 +68,7 @@ function mockKubectlOtherNamespace() {
 
 function testKubeContext() {
   alias kubectl=mockKubectl
-  local P9K_LEFT_PROMPT_ELEMENTS=(kubecontext)
+  local -a P9K_LEFT_PROMPT_ELEMENTS; P9K_LEFT_PROMPT_ELEMENTS=(kubecontext)
 
   assertEquals "%K{magenta} %F{white}⎈ %f%F{white}minikube/default %k%F{magenta}%f " "$(buildLeftPrompt)"
 
@@ -76,7 +76,7 @@ function testKubeContext() {
 }
 function testKubeContextOtherNamespace() {
   alias kubectl=mockKubectlOtherNamespace
-  local P9K_LEFT_PROMPT_ELEMENTS=(kubecontext)
+  local -a P9K_LEFT_PROMPT_ELEMENTS; P9K_LEFT_PROMPT_ELEMENTS=(kubecontext)
 
   assertEquals "%K{magenta} %F{white}⎈ %f%F{white}minikube/kube-system %k%F{magenta}%f " "$(buildLeftPrompt)"
 
@@ -86,7 +86,7 @@ function testKubeContextPrintsNothingIfKubectlNotAvailable() {
   alias kubectl=noKubectl
   local P9K_CUSTOM_WORLD='echo world'
   registerSegment "WORLD"
-  local P9K_LEFT_PROMPT_ELEMENTS=(custom_world kubecontext)
+  local -a P9K_LEFT_PROMPT_ELEMENTS; P9K_LEFT_PROMPT_ELEMENTS=(custom_world kubecontext)
 
   assertEquals "%K{white} %F{black}world %k%F{white}%f " "$(buildLeftPrompt)"
 

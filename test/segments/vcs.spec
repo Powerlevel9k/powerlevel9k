@@ -13,7 +13,7 @@ function setUp() {
 }
 
 function testColorOverridingForCleanStateWorks() {
-  local P9K_LEFT_PROMPT_ELEMENTS=(vcs)
+  local -a P9K_LEFT_PROMPT_ELEMENTS; P9K_LEFT_PROMPT_ELEMENTS=(vcs)
   local P9K_VCS_CLEAN_FOREGROUND='cyan'
   local P9K_VCS_CLEAN_BACKGROUND='white'
   source segments/vcs.p9k
@@ -30,7 +30,7 @@ function testColorOverridingForCleanStateWorks() {
 }
 
 function testColorOverridingForModifiedStateWorks() {
-  local P9K_LEFT_PROMPT_ELEMENTS=(vcs)
+  local -a P9K_LEFT_PROMPT_ELEMENTS; P9K_LEFT_PROMPT_ELEMENTS=(vcs)
   local P9K_VCS_MODIFIED_FOREGROUND='red'
   local P9K_VCS_MODIFIED_BACKGROUND='yellow'
   source segments/vcs.p9k
@@ -53,7 +53,7 @@ function testColorOverridingForModifiedStateWorks() {
 }
 
 function testColorOverridingForUntrackedStateWorks() {
-  local P9K_LEFT_PROMPT_ELEMENTS=(vcs)
+  local -a P9K_LEFT_PROMPT_ELEMENTS; P9K_LEFT_PROMPT_ELEMENTS=(vcs)
   local P9K_VCS_UNTRACKED_FOREGROUND='cyan'
   local P9K_VCS_UNTRACKED_BACKGROUND='yellow'
   source segments/vcs.p9k
@@ -71,7 +71,7 @@ function testColorOverridingForUntrackedStateWorks() {
 }
 
 function testBranchNameTruncatingShortenLength() {
-  local P9K_LEFT_PROMPT_ELEMENTS=(vcs)
+  local -a P9K_LEFT_PROMPT_ELEMENTS; P9K_LEFT_PROMPT_ELEMENTS=(vcs)
   local P9K_VCS_SHORTEN_LENGTH=6
   local P9K_VCS_SHORTEN_MIN_LENGTH=3
   local P9K_VCS_SHORTEN_STRATEGY="truncate_from_right"
@@ -92,7 +92,7 @@ function testBranchNameTruncatingShortenLength() {
 }
 
 function testBranchNameTruncatingMinLength() {
-  local P9K_LEFT_PROMPT_ELEMENTS=(vcs)
+  local -a P9K_LEFT_PROMPT_ELEMENTS; P9K_LEFT_PROMPT_ELEMENTS=(vcs)
   local P9K_VCS_SHORTEN_LENGTH=3
   local P9K_VCS_SHORTEN_MIN_LENGTH=6
   local P9K_VCS_SHORTEN_STRATEGY="truncate_from_right"
@@ -114,7 +114,7 @@ function testBranchNameTruncatingMinLength() {
 }
 
 function testBranchNameTruncatingShortenStrategy() {
-  local P9K_LEFT_PROMPT_ELEMENTS=(vcs)
+  local -a P9K_LEFT_PROMPT_ELEMENTS; P9K_LEFT_PROMPT_ELEMENTS=(vcs)
   local P9K_VCS_SHORTEN_LENGTH=3
   local P9K_VCS_SHORTEN_MIN_LENGTH=3
   local P9K_VCS_SHORTEN_STRATEGY="truncate_from_right"
@@ -136,7 +136,7 @@ function testBranchNameTruncatingShortenStrategy() {
 }
 
 function testBranchNameTruncatingShortenLength() {
-  local P9K_LEFT_PROMPT_ELEMENTS=(vcs)
+  local -a P9K_LEFT_PROMPT_ELEMENTS; P9K_LEFT_PROMPT_ELEMENTS=(vcs)
   local P9K_VCS_SHORTEN_LENGTH=6
   local P9K_VCS_SHORTEN_MIN_LENGTH=3
   local P9K_VCS_SHORTEN_STRATEGY="truncate_from_right"
@@ -157,7 +157,7 @@ function testBranchNameTruncatingShortenLength() {
 }
 
 function testBranchNameTruncatingMinLength() {
-  local P9K_LEFT_PROMPT_ELEMENTS=(vcs)
+  local -a P9K_LEFT_PROMPT_ELEMENTS; P9K_LEFT_PROMPT_ELEMENTS=(vcs)
   local P9K_VCS_SHORTEN_LENGTH=3
   local P9K_VCS_SHORTEN_MIN_LENGTH=6
   local P9K_VCS_SHORTEN_STRATEGY="truncate_from_right"
@@ -179,7 +179,7 @@ function testBranchNameTruncatingMinLength() {
 }
 
 function testBranchNameTruncatingShortenStrategy() {
-  local P9K_LEFT_PROMPT_ELEMENTS=(vcs)
+  local -a P9K_LEFT_PROMPT_ELEMENTS; P9K_LEFT_PROMPT_ELEMENTS=(vcs)
   local P9K_VCS_SHORTEN_LENGTH=3
   local P9K_VCS_SHORTEN_MIN_LENGTH=3
   local P9K_VCS_SHORTEN_STRATEGY="truncate_from_right"

@@ -11,8 +11,8 @@ function setUp() {
   source powerlevel9k.zsh-theme
   source functions/*
   source segments/background_jobs.p9k
-  source segments/dir.p9k
   source segments/root_indicator.p9k
+  source segments/dir.p9k
 
   # Unset mode, so that user settings
   # do not interfere with tests
@@ -20,7 +20,7 @@ function setUp() {
 }
 
 function testJoinedSegments() {
-  local P9K_LEFT_PROMPT_ELEMENTS=(dir dir_joined)
+  local -a P9K_LEFT_PROMPT_ELEMENTS; P9K_LEFT_PROMPT_ELEMENTS=(dir dir_joined)
   cd /tmp
 
   assertEquals "%K{blue} %F{black}/tmp %F{black}/tmp %k%F{blue}%f " "$(buildLeftPrompt)"
@@ -29,7 +29,7 @@ function testJoinedSegments() {
 }
 
 function testTransitiveJoinedSegments() {
-  local P9K_LEFT_PROMPT_ELEMENTS=(dir root_indicator_joined dir_joined)
+  local -a P9K_LEFT_PROMPT_ELEMENTS; P9K_LEFT_PROMPT_ELEMENTS=(dir root_indicator_joined dir_joined)
   cd /tmp
 
   assertEquals "%K{blue} %F{black}/tmp %F{black}/tmp %k%F{blue}%f " "$(buildLeftPrompt)"
@@ -38,7 +38,7 @@ function testTransitiveJoinedSegments() {
 }
 
 function testJoiningWithConditionalSegment() {
-  local P9K_LEFT_PROMPT_ELEMENTS=(dir background_jobs dir_joined)
+  local -a P9K_LEFT_PROMPT_ELEMENTS; P9K_LEFT_PROMPT_ELEMENTS=(dir background_jobs dir_joined)
   cd /tmp
 
   assertEquals "%K{blue} %F{black}/tmp  %F{black}/tmp %k%F{blue}%f " "$(buildLeftPrompt)"
@@ -47,7 +47,7 @@ function testJoiningWithConditionalSegment() {
 }
 
 function testDynamicColoringOfSegmentsWork() {
-  local P9K_LEFT_PROMPT_ELEMENTS=(dir)
+  local -a P9K_LEFT_PROMPT_ELEMENTS; P9K_LEFT_PROMPT_ELEMENTS=(dir)
   local P9K_DIR_DEFAULT_BACKGROUND='red'
   source segments/dir.p9k
   cd /tmp
@@ -58,7 +58,7 @@ function testDynamicColoringOfSegmentsWork() {
 }
 
 function testDynamicColoringOfVisualIdentifiersWork() {
-  local P9K_LEFT_PROMPT_ELEMENTS=(dir)
+  local -a P9K_LEFT_PROMPT_ELEMENTS; P9K_LEFT_PROMPT_ELEMENTS=(dir)
   local P9K_DIR_DEFAULT_ICON="*icon-here"
   local P9K_DIR_DEFAULT_ICON_COLOR='green'
   source segments/dir.p9k
@@ -71,7 +71,7 @@ function testDynamicColoringOfVisualIdentifiersWork() {
 }
 
 function testColoringOfVisualIdentifiersDoesNotOverwriteColoringOfSegment() {
-  local P9K_LEFT_PROMPT_ELEMENTS=(dir)
+  local -a P9K_LEFT_PROMPT_ELEMENTS; P9K_LEFT_PROMPT_ELEMENTS=(dir)
   local P9K_DIR_DEFAULT_FOREGROUND='red'
   local P9K_DIR_DEFAULT_BACKGROUND='yellow'
   local P9K_DIR_DEFAULT_ICON="*icon-here"
@@ -88,7 +88,7 @@ function testColoringOfVisualIdentifiersDoesNotOverwriteColoringOfSegment() {
 }
 
 function testOverwritingIconsWork() {
-  local P9K_LEFT_PROMPT_ELEMENTS=(dir)
+  local -a P9K_LEFT_PROMPT_ELEMENTS; P9K_LEFT_PROMPT_ELEMENTS=(dir)
   local P9K_DIR_DEFAULT_ICON='*icon-here'
   #local testFolder=$(mktemp -d -p p9k)
   # Move testFolder under home folder
@@ -122,7 +122,7 @@ function testNewlineOnRpromptCanBeDisabled() {
   registerSegment "WORLD"
   local P9K_CUSTOM_RWORLD='echo rworld'
   registerSegment "RWORLD"
-  local P9K_LEFT_PROMPT_ELEMENTS=(custom_world)
+  local -a P9K_LEFT_PROMPT_ELEMENTS; P9K_LEFT_PROMPT_ELEMENTS=(custom_world)
   local P9K_RIGHT_PROMPT_ELEMENTS=(custom_rworld)
 
   p9kPreparePrompts

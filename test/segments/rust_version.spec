@@ -31,7 +31,7 @@ function mockRust() {
 
 function testRust() {
   mockRust
-  local P9K_LEFT_PROMPT_ELEMENTS=(rust_version)
+  local -a P9K_LEFT_PROMPT_ELEMENTS; P9K_LEFT_PROMPT_ELEMENTS=(rust_version)
 
   assertEquals "%K{208} %F{black}Rust %f%F{black}0.4.1a-alpha %k%F{208}%f " "$(buildLeftPrompt)"
 }
@@ -39,7 +39,7 @@ function testRust() {
 function testRustPrintsNothingIfRustIsNotAvailable() {
   local P9K_CUSTOM_WORLD='echo world'
   registerSegment "WORLD"
-  local P9K_LEFT_PROMPT_ELEMENTS=(custom_world rust_version)
+  local -a P9K_LEFT_PROMPT_ELEMENTS; P9K_LEFT_PROMPT_ELEMENTS=(custom_world rust_version)
 
   assertEquals "%K{white} %F{black}world %k%F{white}%f " "$(buildLeftPrompt)"
 }
