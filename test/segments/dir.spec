@@ -439,6 +439,7 @@ function testTruncateToUniqueWorks() {
   local P9K_DIR_PATH_SEPARATOR='xXx'
   local P9K_SHORTEN_DIR_LENGTH=2
   local P9K_SHORTEN_STRATEGY='truncate_to_unique'
+  local P9K_DIR_PATH_ABSOLUTE=true
   mkdir -p /tmp/powerlevel9k-test/adam/devl
   mkdir -p /tmp/powerlevel9k-test/alice/devl
   mkdir -p /tmp/powerlevel9k-test/alice/docs
