@@ -140,7 +140,7 @@ prompt_dir() {
             cur_path+="$directory/"
           done
           # cheating here to retain ~ as home folder
-          [[ $current_path == "~"* ]] && trunc_path="~${trunc_path//${home_path}/}"
+          [[ $current_path == "~"* ]] && trunc_path="~${trunc_path//${home_path}/}" || trunc_path="/${trunc_path}"
           current_path="${trunc_path: : -1}"
         fi
       ;;
