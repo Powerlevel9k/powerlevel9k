@@ -1,3 +1,7 @@
+## Next:
+
+- Add `vagrant` segment, that shows if you are in a directory where a VM is running.
+
 ## v0.6.5
 
 - Multiple PRs: General fixes to README, improved documentation.

@@ -155,6 +155,7 @@ The segments that are currently available are:
 * `detect_virt` - Virtualization detection with systemd
 * `newline` - Continues the prompt on a new line.
 * `openfoam` - Shows the currently sourced [OpenFOAM](https://openfoam.org/) environment.
+* `vagrant` - Detects if you are in a folder with a running VM.
 
 ---------------------------------------------------------------------------------
 

@@ -1507,6 +1507,38 @@ prompt_todo() {
 }
 
 ################################################################
+# Shows the status of the vagrant VM (Up or Down)
+prompt_vagrant() {
+  typeset -AH vm_states
+  vm_states=(
+    "UP"         "green"
+    "DOWN"       "red"
+  )
+  local current_state="NOT_FOUND"
+  for vagrantFolder in $(upsearch ".vagrant"); do
+    if [[ ! -d "${vagrantFolder}" ]]; then
+      continue
+    fi
+
+    # Set NULL_GLOB option on file glob to silence error message,
+    # if file does not exist.
+    # for match in ${vagrantFolder}/machines/**/id(N); do
+    for match in ${vagrantFolder}/machines/*/*/id; do
+      local vmId=$(cat ${match})
+      if [[ $(VBoxManage list runningvms | grep -c ${vmId}) -gt 0 ]]; then
+        current_state="UP"
+      elif [[ "${current_state}" != "UP" ]]; then
+        current_state="DOWN"
+      fi
+    done
+  done
+
+  if [[ "${current_state}" != "NOT_FOUND" ]]; then
+    "$1_prompt_segment" "$0" "$2" "${vm_states[${current_state}]}" "$DEFAULT_COLOR" "${current_state}" 'VAGRANT_ICON'
+  fi
+}
+
+################################################################
 # VCS segment: shows the state of your repository, if you are in a folder under
 # version control
 set_default POWERLEVEL9K_VCS_ACTIONFORMAT_FOREGROUND "red"

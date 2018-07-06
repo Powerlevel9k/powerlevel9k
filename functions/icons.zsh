@@ -112,6 +112,7 @@ case $POWERLEVEL9K_MODE in
       TIME_ICON                      $'\uE12E'              # 
       JAVA_ICON                      $'\U2615'              # ☕︎
       LARAVEL_ICON                   ''
+      VAGRANT_ICON                   'V'
     )
   ;;
   'awesome-fontconfig')
@@ -208,6 +209,7 @@ case $POWERLEVEL9K_MODE in
       TIME_ICON                      $'\uF017 '             # 
       JAVA_ICON                      $'\U2615'              # ☕︎
       LARAVEL_ICON                   ''
+      VAGRANT_ICON                   'V'
     )
   ;;
   'awesome-mapped-fontconfig')
@@ -309,6 +311,7 @@ case $POWERLEVEL9K_MODE in
       TIME_ICON                      $'\uF017 '                                     # 
       JAVA_ICON                      $'\U2615'              # ☕︎
       LARAVEL_ICON                   ''
+      VAGRANT_ICON                   'V'
     )
   ;;
   'nerdfont-complete'|'nerdfont-fontconfig')
@@ -406,6 +409,7 @@ case $POWERLEVEL9K_MODE in
       TIME_ICON                      $'\uF017 '             # 
       JAVA_ICON                      $'\U2615'              # ☕︎
       LARAVEL_ICON                   $'\ue73f '             # 
+      VAGRANT_ICON                   'V'
     )
   ;;
   *)
@@ -502,6 +506,7 @@ case $POWERLEVEL9K_MODE in
       TIME_ICON                      ''
       JAVA_ICON                      $'\U2615'              # ☕︎
       LARAVEL_ICON                   ''
+      VAGRANT_ICON                   'V'
     )
   ;;
 esac
