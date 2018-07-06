@@ -811,7 +811,7 @@ prompt_dir() {
         # for each parent path component find the shortest unique beginning
         # characters sequence. Source: https://stackoverflow.com/a/45336078
         if (( ${#current_path} > 1 )); then # root and home are exceptions and won't have paths
-          local matching
+          local -a matching
           local cur_path='/'
           [[ $current_path != "~"* ]] && trunc_path='/' || trunc_path=''
           for directory in ${paths[@]}; do
