@@ -27,216 +27,124 @@
 # Prompt Segment Constructors
 ################################################################
 
-P9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS=" "
+setDefault P9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS " "
 ###############################################################
 # @description
-#   Spawn a subshell to convert the data into a left prompt segment
+#   Print a left prompt segment
 ##
 # @args
 #   $1 string Name - The stateful name of the function that was originally invoked (mandatory).
 #   $2 integer Index - Segment array index
-#   $3 string Background - Segment background color
-#   $4 string Foreground - Segment foreground color
-#   $5 boolean Bold - Whether the segment should be bold
-#   $6 string Content - Segment content
-#   $7 string Visual Identifier - Segment icon
+#   $3 boolean Joined - If user wants segment to be joined with previous one
+#   $4 string Content - Segment content
+#   $5 string Visual Identifier - Segment icon
+#   $6 string Background - Background of previous segment
 ##
 leftPromptSegment() {
-  # Name the parameters and add %K and %F to color variables
-  local STATEFUL_NAME="${1}" INDEX="${2}" BG="%K{${3}}" FG="%F{${4}}" BOLD="${5}" CONTENT="${6}" VISUAL_IDENTIFIER="${7}"
-  # Check if it should be bold
-  [[ ${BOLD} == "true" ]] && local BD="%B" || local BD=""
-  # Set the colors
-  local SEGMENT="${BG}${FG}"
-  # Add the visual identifier if it exists
-  [[ -n ${VISUAL_IDENTIFIER} ]] && SEGMENT+="${VISUAL_IDENTIFIER}"
-  # Add the content
-  if [[ -n ${CONTENT} ]]; then
-    [[ -n ${VISUAL_IDENTIFIER} ]] && SEGMENT+="${P9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS}"
-    [[ -n "${BD}" ]] && SEGMENT+="${BD}${CONTENT}%b" || SEGMENT+="${CONTENT}"
+  local STATEFUL_NAME="${1}"
+  local current_index="${2}"
+  local joined="${3}"
+  local content
+  [[ $p9k_data[${STATEFUL_NAME}_BD] == true ]] && content="%B${4}%b" || content="${4}"
+  local visualIdentifier="${5}"
+  local BACKGROUND_OF_LAST_SEGMENT="${6}"
+
+  local bg=$p9k_data[${STATEFUL_NAME}_BG]
+  local fg=$p9k_data[${STATEFUL_NAME}_FG]
+
+  if [[ "${BACKGROUND_OF_LAST_SEGMENT}" != 'NONE' ]]; then
+    if [[ "${bg}" != "${BACKGROUND_OF_LAST_SEGMENT}" ]]; then # background colors are different
+      echo -n "$bg%F${BACKGROUND_OF_LAST_SEGMENT#%K}"
+      [[ $joined == false ]] && echo -n "${p9k_icons[LEFT_SEGMENT_SEPARATOR]}$P9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS"
+    else # background colors are the same
+      # Middle segment with same color as previous segment
+      # We take the current foreground color as color for our
+      # subsegment. This should have enough contrast.
+      [[ $joined == false ]] && echo -n "${p9k_icons[LEFT_SUBSEGMENT_SEPARATOR]}$P9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS"
+    fi
+  else # First segment
+    echo -n "${bg}$P9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS"
   fi
-  # Return the result to the main process, delimited by "·|·"
-  echo "${INDEX}·|·${SEGMENT}"
+
+  # Print the visual identifier
+  [[ $visualIdentifier != "" ]] && echo -n "$p9k_data[${STATEFUL_NAME}_VI]${visualIdentifier}${P9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS}%f${fg}" || echo -n "${fg}"
+  # Print the content of the segment
+  [[ -n "${content}" ]] && echo -n "${content}${P9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS}"
+
+  #BACKGROUND_OF_LAST_SEGMENT="${bg}"
 }
 
-P9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS=" "
+# End the left prompt, closes the final segment.
+#   * $1: Last segments background color
+left_prompt_end() {
+  local BACKGROUND_OF_LAST_SEGMENT="${1}"
+  if [[ -n "${BACKGROUND_OF_LAST_SEGMENT}" ]]; then
+    echo -n "%k%F${BACKGROUND_OF_LAST_SEGMENT#%K}${p9k_icons[LEFT_SEGMENT_SEPARATOR]}"
+  else
+    echo -n "%k"
+  fi
+  echo -n "%f${p9k_icons[LEFT_SEGMENT_END_SEPARATOR]}"
+}
+
+setDefault P9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS " "
 ###############################################################
 # @description
-#   Spawn a subshell to convert the data into a right prompt segment
+#   Print a right prompt segment
+#   No ending for the right prompt segment is needed (unlike the left prompt, above).
 ##
 # @args
-#   $1 string Name - The stateful name of the function that was originally invoked (mandatory).
-#   $2 integer Index - Segment array index
-#   $3 string Background - Segment background color
-#   $4 string Foreground - Segment foreground color
-#   $5 boolean Bold - Whether the segment should be bold
-#   $6 string Content - Segment content
-#   $7 string Visual Identifier - Segment icon
-##
+#   $1 string - Name of the function that was originally invoked (mandatory).
+#         Necessary, to make the dynamic color-overwrite mechanism work.
+#   $2 integer - The array index of the current segment
+#   $3 boolean - If the segment should be joined or not
+#   $4 string - The segment content
+#   $5 string - An identifying icon (must be a key of the icons array)
+#   $6 string - Previous segments background color
 rightPromptSegment() {
-  # Name the parameters and add %K and %F to color variables
-  local STATEFUL_NAME="${1}" INDEX="${2}" BG="%K{${3}}" FG="%F{${4}}" CONTENT="${6}" VISUAL_IDENTIFIER="${7}"
-  # Check if it should be bold
-  [[ ${BOLD} == "true" ]] && local BD="%B" || local BD=""
-  # Set the colors
-  local SEGMENT="${BG}${FG}"
-  if [[ ${(L)P9K_RPROMPT_ICON_LEFT} == "true" ]]; then # Visual identifier before content
-    # Add the visual identifier if it exists
-    [[ -n ${VISUAL_IDENTIFIER} ]] && SEGMENT+="${VISUAL_IDENTIFIER}${P9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS}"
-    # Add the content
-    [[ -n "${BD}" ]] && SEGMENT+="${BD}${CONTENT}%b" || SEGMENT+="${CONTENT}"
-  else # Content before visual identifier
-    # Add the content
-    SEGMENT+="${P9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS}"
-      [[ -n "${BD}" ]] && SEGMENT+="${BD}${CONTENT}%b${BG}${FG}" || SEGMENT+="${CONTENT}"
-    # Add the visual identifier if it exists
-    [[ -n ${VISUAL_IDENTIFIER} ]] && SEGMENT+="${VISUAL_IDENTIFIER}${P9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS}"
+  local STATEFUL_NAME="${1}"
+  local current_index="${2}"
+  local joined="${3}"
+  local content
+  [[ $p9k_data[${STATEFUL_NAME}_BD] == true ]] && content="%B${4}%b" || content="${4}"
+  local visualIdentifier="${5}"
+  local BACKGROUND_OF_LAST_SEGMENT="${6}"
+
+  local bg=$p9k_data[${STATEFUL_NAME}_BG]
+  local fg=$p9k_data[${STATEFUL_NAME}_FG]
+
+  # If BACKGROUND_OF_LAST_SEGMENT is "NONE", we are the first right segment.
+  if ! ${joined} || [[ "${BACKGROUND_OF_LAST_SEGMENT}" == "NONE" ]]; then
+    if [[ "${bg}" != "${BACKGROUND_OF_LAST_SEGMENT}" ]]; then
+      # Use the new BG color for the foreground with separator
+      echo -n "%F${bg#%K}$p9k_icons[RIGHT_SEGMENT_SEPARATOR]"
+    else
+      # Middle segment with same color as previous segment
+      # We take the current foreground color as color for our
+      # subsegment. This should have enough contrast.
+      echo -n "${fg}$p9k_icons[RIGHT_SUBSEGMENT_SEPARATOR]"
+    fi
   fi
-  # Return the result to the main process, delimited by "·|·"
-  echo "${INDEX}·|·${SEGMENT}"
-}
 
-###############################################################
-# @description
-#   This function determines the background of the previous VISIBLE segment in the left prompt.
-##
-# @args
-#   $1 integer Index - Left prompt source segment index
-##
-lastLeftBg() {
-  # Name the parameters
-  local CURRENT_INDEX="${1}" LAST_BG=0
-  # Start at the segment before the current segment and work to the left
-  for (( i = ${CURRENT_INDEX} - 1; i >= 0; i-- )); do
-    # If the segment is not empty, we have our color
-    if [[ ${P9K_LP_CONTENT[$i]} != "" ]]; then
-      local LAST_BG="${P9K_LP_BACKGROUND[$i]}"
-      break
-    fi
-  done
-  echo "$LAST_BG"
-}
+  echo -n "${bg}${fg}"
 
-###############################################################
-# @description
-#   This function determines the background of the previous VISIBLE segment in the right prompt.
-##
-# @args
-#   $1 integer Index - Right prompt source segment index
-##
-lastRightBg() {
-  # Name the parameters
-  local CURRENT_INDEX="${1}" LAST_BG=0
-  # Start at the segment before the current segment and work to the left
-  for (( i = ${CURRENT_INDEX} - 1; i >= 0; i-- )); do
-    # If the segment is not empty, we have our color
-    if [[ ${P9K_RP_CONTENT[$i]} != "" ]]; then
-      local LAST_BG="${P9K_RP_BACKGROUND[$i]}"
-      break
-    fi
-  done
-  echo "$LAST_BG"
-}
+  # Print whitespace only if segment is not joined or first right segment
+  [[ ${joined} == false ]] || [[ "${BACKGROUND_OF_LAST_SEGMENT}" == "NONE" ]] && echo -n "${P9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS}"
 
-###############################################################
-# @description
-#   This function walks through the Left Prompt segment array and rebuilds
-#   the left prompt every time a subshell returns.
-##
-# @noargs
-##
-updateLeftPrompt() {
-  local LBG LAST_LBG LEFT_PROMPT LSEGMENTS
-  # Determine how many segments are visible in the left prompt
-  LSEGMENTS=${#P9K_LP_CONTENT}
-  # Build the left prompt string
-  LEFT_PROMPT=""
-  for (( i = 1; i <= ${LSEGMENTS}; i++ )); do
-    if [[ "${P9K_LP_CONTENT[$i]}" != "" ]]; then
-      LBG=${P9K_LP_BACKGROUND[$i]}
-      LFG=${P9K_LP_FOREGROUND[$i]}
-      if [[ $i != 1 ]]; then # If it is not the first segment...
-        # Find previous left segment background
-        LAST_LBG=$(lastLeftBg $i)
-        if [[ $P9K_LP_JOINED[$i] == "false" ]]; then # If the segment are not joined...
-          if [[ "${LBG}" == "${LAST_LBG}" ]]; then # Are the backgrounds the same...
-            # We take the current foreground color as color for our subsegment, and
-            # add a left sub segment separator. This should have enough contrast.
-            LEFT_PROMPT+="%K{${LBG}}%F{${LFG}}${_P9K_LEFT_SUBSEGMENT_SEPARATOR} "
-          else
-            # Add a left segment separator
-            LEFT_PROMPT+="%K{${LBG}}%F{${LAST_LBG}}${_P9K_LEFT_SEGMENT_SEPARATOR} "
-          fi
-        fi
-      else # ...otherwise it is the first segment and there is no previous background
-        [[ "${P9K_FANCY_EDGE}" == "true" ]] && LEFT_PROMPT+="%F{${LBG}}${_P9K_RIGHT_SEGMENT_SEPARATOR}"
-        LEFT_PROMPT+="%K{${LBG}} "
-      fi
-      # Add the segment to the left prompt string
-      LEFT_PROMPT+="${P9K_LP_CONTENT[$i]} "
-    fi
-  done
-  # Prompt is complete, so find the background of the last segment
-  local LBI=$((${#P9K_LP_CONTENT} + 1))
-  LBG=$(lastLeftBg ${LBI})
-  # Add the last left segment separator and the suffix
-  LEFT_PROMPT+="%F{${LBG}}%k${_P9K_LEFT_SEGMENT_SEPARATOR}%f%b "
-  # Set the left prompt
-  PROMPT=${LPROMPT_PREFIX}${LEFT_PROMPT}${LPROMPT_SUFFIX}
-  # About .reset-prompt see:
-  # https://github.com/sorin-ionescu/prezto/issues/1026
-  # https://github.com/zsh-users/zsh-autosuggestions/issues/107#issuecomment-183824034
-  zle .reset-prompt
-}
+  if [[ ${(L)P9K_RPROMPT_ICON_LEFT} == "true" ]]; then # Visual identifier before content
+    # Print the visual identifier
+    echo -n "$p9k_data[${STATEFUL_NAME}_VI]${visualIdentifier}${P9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS}"
+    # Print segment content if there is any
+    [[ -n "${content}" ]] && echo -n "${content}${P9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS}"
+  else
+    # Print whitespace only if segment is not joined or first right segment
+    [[ $joined == false ]] || [[ "$CURRENT_RIGHT_BG" == "NONE" ]] && echo -n "${P9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS}"
+    # Print segment content if there is any
+    [[ -n "${content}" ]] && echo -n "${content}${P9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS}"
+    # Print the visual identifier
+    echo -n "$p9k_data[${STATEFUL_NAME}_VI]${visualIdentifier}${P9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS}"
+  fi
 
-###############################################################
-# @description
-#   This function walks through the Right Prompt segment array and rebuilds
-#   the right prompt every time a subshell returns.
-##
-# @noargs
-##
-updateRightPrompt() {
-  local RBG LAST_RBG RIGHT_PROMPT RSEGMENTS firstSegment=false
-  # Determine how many segments are visible in the right prompt
-  RSEGMENTS=${#P9K_RP_CONTENT}
-  # Build the left prompt string
-  RIGHT_PROMPT=""
-  for (( i = 1; i <= ${RSEGMENTS}; i++ )); do
-    if [[ "${P9K_RP_CONTENT[$i]}" != "" ]]; then
-      RBG=${P9K_RP_BACKGROUND[$i]}
-      RFG=${P9K_RP_FOREGROUND[$i]}
-      # Find previous right segment background
-      LAST_RBG=$(lastRightBg $i)
-      # Should the segment not be joined?
-      if [[ $P9K_RP_JOINED[$i] == "false" ]]; then
-        # Are the backgrounds the same...
-        if [[ "${RBG}" == "${LAST_RBG}" ]]; then
-          # We take the current foreground color as color for our subsegment,
-          # and add a sub segment separator. This should have enough contrast.
-          RIGHT_PROMPT+="%K{${RBG}}%F{${RFG}}${_P9K_RIGHT_SUBSEGMENT_SEPARATOR}"
-          firstSegment=true
-        else
-          # ...otherwise add a right segment separator
-          if [[ $firstSegment == true ]]; then
-            RIGHT_PROMPT+="%K{${LAST_RBG}}%F{${RBG}}${_P9K_RIGHT_SEGMENT_SEPARATOR}"
-          else
-            # don't set the background color on the first segment
-            RIGHT_PROMPT+="%F{${RBG}}${_P9K_RIGHT_SEGMENT_SEPARATOR}"
-          fi
-        fi
-      fi
-      # Add the segment to the right prompt string
-      RIGHT_PROMPT+="${P9K_RP_CONTENT[$i]} "
-    fi
-  done
-  [[ "${P9K_FANCY_EDGE}" == "true" ]] && RIGHT_PROMPT+="%k%F{$RBG}${_P9K_LEFT_SEGMENT_SEPARATOR}%f"
-  # Set the right prompt
-  RPROMPT=${RPROMPT_PREFIX}${RIGHT_PROMPT}${RPROMPT_SUFFIX}
-  # About .reset-prompt see:
-  # https://github.com/sorin-ionescu/prezto/issues/1026
-  # https://github.com/zsh-users/zsh-autosuggestions/issues/107#issuecomment-183824034
-  zle .reset-prompt
+  #BACKGROUND_OF_LAST_SEGMENT="${bg}"
 }
 
 ################################################################
@@ -257,88 +165,116 @@ updateRightPrompt() {
 #   $5 string Err - Resulting (stderr) output from the job
 ##
 p9kAsyncCallback() {
-  # Name the parameters (CODE, EXEC_TIME and ERR are not currently used, but are included for possible future use)
-  local JOB="${1}" CODE="${2}" OUTPUT="${3}" EXEC_TIME="${4}" ERR="${5}"
+  local JOB="${1}" CODE="${2}" RAW_SEGMENT_DATA="${3}" EXEC_TIME="${4}" ERR="${5}"
 
-  # Determine which function returned output...
-  case $JOB in
-    p9kSerializeSegment) # Segment code was converted into data
-      # Make sure we received the data
-      if [[ -n $OUTPUT ]]; then
-        # split $OUTPUT into an array - see https://unix.stackexchange.com/a/28873
-        #local ar=("${(@f)OUTPUT}") # split on newline (@f)
-        local ar=("${(@s:·|·:)OUTPUT}") # split on delimiter "·|·" (@s:<delim>:)
-        # Name the parameters
-        local STATEFUL_NAME=${ar[1]} ALIGNMENT=${(L)ar[2]} INDEX=${ar[3]} JOINED=${ar[4]} BACKGROUND=${ar[5]} FOREGROUND=${ar[6]} BOLD=${ar[7]} CONTENT=${ar[8]} VISUAL_IDENTIFIER=${ar[9]} CONDITION=${ar[10]}
+  # Exit early, if $RAW_SEGMENT_DATA is empty
+  if [[ -z "${RAW_SEGMENT_DATA}" ]]; then
+    return
+  fi
 
-        # If $INDEX is not a number, then don't process the output
-        # See: https://www.zsh.org/mla/users/2007/msg00086.html
-        [[ ${INDEX} != <-> ]] && break
+  # Resets
+  local LAST_LEFT_BACKGROUND='NONE'
+  local LAST_RIGHT_BACKGROUND='NONE'
+  PROMPT=''
+  RPROMPT=''
 
-        # Conditions have three layers:
-        # 1. No segment should print if they provide no content (default condition).
-        # 2. Segments can define a default condition on their own, overriding the previous one.
-        # 3. Users can set a condition for each segment. This is the trump card, and has highest precedence.
-        local SEGMENT_CONDITION="P9K_${STATEFUL_NAME}_CONDITION"
-        if defined "${SEGMENT_CONDITION}"; then
-          CONDITION="${(P)SEGMENT_CONDITION}"
-        elif [[ -n "${CONDITION}" && "$CONDITION[0,1]" == "[" ]]; then
-          CONDITION="${CONDITION}"
-        else
-          CONDITION='[[ -n "${CONTENT}" ]]'
+  # split $RAW_SEGMENT_DATA into an array - see https://unix.stackexchange.com/a/28873
+  local finishedSegment=("${(@s:·|·:)RAW_SEGMENT_DATA}") # split on delimiter "·|·" (@s:<delim>:)
+
+  local finishedSegmentAlignment="${(L)finishedSegment[2]}"
+  local finishedSegmentIndex="${finishedSegment[3]}"
+  local finishedSegmentPaddedIndex="${(l:3::0:)finishedSegmentIndex}"
+
+  # Add raw segment data to a global array to store all segment information
+  _p9k_last_segments["${finishedSegmentAlignment}_${finishedSegmentPaddedIndex}"]="${RAW_SEGMENT_DATA}"
+
+  typeset -Ah _p9k_last_segments_print_states
+  _p9k_last_segments_print_states=()
+  typeset -Ah _p9k_last_segments_join_states
+  _p9k_last_segments_join_states=()
+
+  # Iterate over all already known segments in
+  # order of increasing keys. The keys follow
+  # the scheme ALIGNMENT_INDEX. That way we
+  # preserve the correct order of segments.
+  for key in "${(@ko)_p9k_last_segments}"; do
+    local rawSegment="${_p9k_last_segments[${key}]}"
+    # We need the double quotes around the variable here,
+    # to also copy the empty array elements (see https://www.zsh.org/mla/users/2008/msg01192.html).
+    local segment=("${(@s:·|·:)rawSegment}")
+
+    local STATEFUL_NAME="${segment[1]}"
+    local ALIGNMENT="${(L)segment[2]}"
+    local INDEX="${segment[3]}"
+    local JOINED="${segment[4]}"
+    local CONTENT="${segment[5]}"
+    local VISUAL_IDENTIFIER="${segment[6]}"
+
+    # Padded index of segment. Index 1 becomes 001.
+    local paddedIndex="${(l:3::0:)INDEX}"
+
+    # Default: Segment should NOT be joined.
+    local should_join_segment=false
+
+    # If the current segment wants to be joined, we need
+    # to have a close look at our predecessors.
+    if ${JOINED}; then
+      # If we want to know if the current segment should be joined or
+      # not, we need to consider the previous segments join state and
+      # whether they were printed or not.
+      # Beginning from our current position and moving to the left (as
+      # this is the joining direction; segments can always be joined
+      # with their predecessor, a.k.a. previous left segment). As soon
+      # as we find a segment that was not joined and not printed, we
+      # promote the segment to a full one.
+      should_join_segment=true
+      for ((n=${INDEX}; n > 0; n=${n}-1)); do
+        # Little magic trick: We start from current index, although we
+        # just want to examine our ancestors because the current
+        # segment is not yet in the array. So we just skip one step
+        # implicitly.
+        local currentPaddedIndex="${(l:3::0:)n}"
+        local print_state=$_p9k_last_segments_print_states["${ALIGNMENT}_${currentPaddedIndex}"]
+        local join_state=$_p9k_last_segments_join_states["${ALIGNMENT}_${currentPaddedIndex}"]
+
+        if ! ${join_state} && ! ${print_state}; then
+          should_join_segment=false
+          # Break the loop as early as possible. If we know that our segment should
+          # be promoted, we got the relevant information we wanted.
+          break
+        elif ${join_state} && ${print_state}; then
+          # If previous segment was joined and printed, we can break here
+          # because this previous segment should handle its join state.
+          break
+        elif ! ${join_state}; then
+          break
         fi
-        # Compile the condition to determine if we should process this segment or not.
-        eval "${CONDITION}" && CONDITION=true || CONDITION=false
+      done
+    fi
 
-        if [[ ${CONDITION} == true ]]; then # If the segments condition to print was met, add it...
-          if [[ "${ALIGNMENT}" == "left" ]]; then # If it is a left prompt segment...
-            # Store the background, foreground and joined states in separate arrays
-            P9K_LP_BACKGROUND[$INDEX]="${BACKGROUND}"
-            P9K_LP_FOREGROUND[$INDEX]="${FOREGROUND}"
-            P9K_LP_JOINED[$INDEX]="${JOINED}"
-            # Send the data to a subshell to be converted into a left prompt segment
-            async_job "p9k" leftPromptSegment "${STATEFUL_NAME}" "${INDEX}" "${BACKGROUND}" "${FOREGROUND}" "${BOLD}" "${CONTENT}" "${VISUAL_IDENTIFIER}"
-          else # ...it is a right prompt segment
-            # Store the background, foreground and joined states in separate arrays
-            P9K_RP_BACKGROUND[$INDEX]="${BACKGROUND}"
-            P9K_RP_FOREGROUND[$INDEX]="${FOREGROUND}"
-            P9K_RP_JOINED[$INDEX]="${JOINED}"
-            # Send the data to a subshell to be converted into a left prompt segment
-            async_job "p9k" rightPromptSegment "${STATEFUL_NAME}" "${INDEX}" "${BACKGROUND}" "${FOREGROUND}" "${BOLD}" "${CONTENT}" "${VISUAL_IDENTIFIER}"
-          fi
-        else # ...otherwise set the prompt content array to "·" (no segemnt)
-          [[ "${ALIGNMENT}" == "left" ]] && P9K_LP_CONTENT[${INDEX}]="" || P9K_RP_CONTENT[${INDEX}]=""
-        fi
-      fi
-    ;;
-    leftPromptSegment) # Data was converted into a left prompt segment
-      # Make sure we received the segment data
-      if [[ -n $OUTPUT ]]; then
-        # Split $OUTPUT into an array - see https://unix.stackexchange.com/a/28873
-        local ar=("${(@s:·|·:)OUTPUT}") # split on delimiter "·|·"
+    _p9k_last_segments_join_states["${ALIGNMENT}_${paddedIndex}"]="${JOINED}"
+    _p9k_last_segments_print_states["${ALIGNMENT}_${paddedIndex}"]="${CONDITION}"
 
-        # If $ar[1] (the index) is a number, then store the segment in the left prompt contents array
-        # See: https://www.zsh.org/mla/users/2007/msg00086.html
-        [[ ${ar[1]} == <-> ]] && P9K_LP_CONTENT[${ar[1]}]="${ar[2]}"
-        # Update the left prompt
-        updateLeftPrompt
-      fi
-    ;;
-    rightPromptSegment) # Data was converted into a right prompt segment
-      # Make sure we received the segment data
-      if [[ -n $OUTPUT ]]; then
-        # Split $OUTPUT into an array - see https://unix.stackexchange.com/a/28873
-        #local ar=("${(@f)output}") # split on newline
-        local ar=("${(@s:·|·:)OUTPUT}") # split on delimiter "·|·"
+    if [[ "${ALIGNMENT}" == "left" ]]; then
+      PROMPT+=$("${ALIGNMENT}PromptSegment" "${STATEFUL_NAME}" "${INDEX}" "${should_join_segment}" "${CONTENT}" "${VISUAL_IDENTIFIER}" "${LAST_LEFT_BACKGROUND}")
+      LAST_LEFT_BACKGROUND="$p9k_data[${STATEFUL_NAME}_BG]"
+    elif [[ "${ALIGNMENT}" == "right" ]]; then
+      RPROMPT+=$("${ALIGNMENT}PromptSegment" "${STATEFUL_NAME}" "${INDEX}" "${should_join_segment}" "${CONTENT}" "${VISUAL_IDENTIFIER}" "${LAST_RIGHT_BACKGROUND}")
+      LAST_RIGHT_BACKGROUND="$p9k_data[${STATEFUL_NAME}_BG]"
+    fi
+  done
+  PROMPT+="$(left_prompt_end ${LAST_LEFT_BACKGROUND})"
+  PROMPT+="${PROMPT_SUFFIX}"
+  RPROMPT+="${RPROMPT_SUFFIX}"
 
-        # If $ar[1] (the index) is a number, then store the segment in the right prompt contents array
-        # See: https://www.zsh.org/mla/users/2007/msg00086.html
-        [[ ${ar[1]} == <-> ]] && P9K_RP_CONTENT[${ar[1]}]="${ar[2]}"
-        # Update the right prompt
-        updateRightPrompt
-      fi
-    ;;
-  esac
+  NEWLINE='
+'
+  [[ "${P9K_PROMPT_ADD_NEWLINE}" == "true" ]] && PROMPT="${NEWLINE}${PROMPT}"
+
+  # About .reset-promt see:
+  # https://github.com/sorin-ionescu/prezto/issues/1026
+  # https://github.com/zsh-users/zsh-autosuggestions/issues/107#issuecomment-183824034
+  zle .reset-prompt
 }
 
 ################################################################
@@ -351,19 +287,24 @@ p9kAsyncCallback() {
 #   When done, the resulting data is sent to `p9kAsyncCallback`.
 ##
 # @args
-#   $1 string Name - Segment name
-#   $2 string State - Segment state
-#   $3 string Alignment - left|right
-#   $4 integer Index - Segment array index
-#   $5 boolean Joined - If the segment should be joined
-#   $6 string Background - Segment background color
-#   $7 string Foreground - Segment foreground color
-#   $8 string Content - Segment content
-#   $9 string Visual identifier - Segment icon
-#   $10 string Condition - The condition, if the segment should be printed (gets evaluated)
+#   $1 string Name of the function that was originally invoked (mandatory)
+#   $2 string State of the segment
+#   $3 string Alignment (left|right)
+#   $4 integer Index of the segment
+#   $5 bool Whether the segment should be joined
+#   $6 string Content of the segment
+#   $7 string The condition - if the segment should be shown (gets evaluated)
+#   $8 string Visual identifier override
 ##
-p9kSerializeSegment() {
-  local NAME="${(U)1}" STATE="${(U)2}" ALIGNMENT="${3}" INDEX="${4}" JOINED="${5}" CONTENT="${8}" CONDITION="${10}"
+p9kPrepareSegment() {
+  local NAME="${(U)1}"
+  local STATE="${(U)2}"
+  local ALIGNMENT="${3}"
+  local INDEX="${4}"
+  local JOINED="${5}"
+  local CONTENT="${6}"
+  local USER_CONDITION="${7}"
+  local CONDITION
 
   ################################################################
   # Methodology behind user-defined variables overwriting colors:
@@ -380,57 +321,21 @@ p9kSerializeSegment() {
   local STATEFUL_NAME="${NAME#PROMPT_}"
   [[ -n "${STATE}" ]] && STATEFUL_NAME="${STATEFUL_NAME}_${STATE}"
 
-  # Overwrite given background-color by user defined variable for this segment.
-  local BACKGROUND_USER_VARIABLE="P9K_${STATEFUL_NAME}_BACKGROUND"
-  local BACKGROUND="${(P)BACKGROUND_USER_VARIABLE}"
-  [[ -z "${BACKGROUND}" ]] && BACKGROUND="${6}"
+  # Pre-Compile condition
+  segmentShouldBePrinted "${STATEFUL_NAME}" "${USER_CONDITION}" "${CONTENT}" && CONDITION=true || CONDITION=false
 
-  # Overwrite given foreground-color by user defined variable for this segment.
-  local FOREGROUND_USER_VARIABLE="P9K_${STATEFUL_NAME}_FOREGROUND"
-  local FOREGROUND="${(P)FOREGROUND_USER_VARIABLE}"
-  [[ -z "${FOREGROUND}" ]] && FOREGROUND="${7}"
-
-  # Overwrite given bold directive by user defined variable for this segment.
-  local BOLD_USER_VARIABLE="P9K_${STATEFUL_NAME}_BOLD"
-  local BOLD="${(P)BOLD_USER_VARIABLE}"
-  [[ -z "${BOLD}" ]] && BOLD="false" || BOLD="true"
-
-  # Precompile the Visual Identifier with color and spacing
-  local VISUAL_IDENTIFIER
-  if [[ -n "${9}" ]]; then
-    VISUAL_IDENTIFIER="$(printIcon ${9})"
-    if [[ -n "${VISUAL_IDENTIFIER}" ]]; then
-      # Add an whitespace if we print more than just the visual identifier.
-      # To avoid cutting off the visual identifier in some terminal emulators (e.g., Konsole, st),
-      # we need to color both the visual identifier and the whitespace.
-      if [[ -n "${CONTENT}" ]]; then
-        [[ "${ALIGNMENT}" == "left" ]] && VISUAL_IDENTIFIER="${VISUAL_IDENTIFIER} "
-        [[ "${ALIGNMENT}" == "right" ]] && VISUAL_IDENTIFIER=" ${VISUAL_IDENTIFIER}"
-      fi
-      # Allow users to overwrite the color for the visual identifier only.
-      local visual_identifier_color_variable="P9K_${STATEFUL_NAME}_VISUAL_IDENTIFIER_COLOR"
-      local visual_identifier_color="${(P)visual_identifier_color_variable}"
-      # only add color to icon if override color is set and not equal to foreground
-      if [[ -n "${visual_identifier_color}" && "${visual_identifier_color}" != "${FOREGROUND}" ]]; then
-        VISUAL_IDENTIFIER="%F{${visual_identifier_color}}${VISUAL_IDENTIFIER}%F{${FOREGROUND}}"
-      fi
+  if [[ $CONDITION == true ]]; then
+    local VISUAL_IDENTIFIER
+    if [[ -z "${8}" ]]; then
+      VISUAL_IDENTIFIER=$p9k_icons[$STATEFUL_NAME]
+    else
+      # test if the VISUAL_IDENTIFIER string is a ICON NAME otherwise treat it as a curston string
+      [[ "${(U)8[1]}" =~ '[A-Z]' ]] && VISUAL_IDENTIFIER="$(printIcon ${8})" || VISUAL_IDENTIFIER="$(echo -n ${8})"
     fi
-  fi
-  # Return the data to the main process, delimited with "·|·"
-  echo "$STATEFUL_NAME·|·$ALIGNMENT·|·$INDEX·|·$JOINED·|·$BACKGROUND·|·$FOREGROUND·|·$BOLD·|·$CONTENT·|·$VISUAL_IDENTIFIER·|·$CONDITION"
-}
 
-###############################################################
-# @description
-#   This function is a wrapper function that starts off the async
-#   process and passes the parameters from the segment code to the
-#   subshells.
-##
-# @args
-#   $@ misc The parameters passed from the segment code
-##
-p9kPrepareSegment() {
-  (async_job "p9k" "p9kSerializeSegment" "${@}")
+    # Return the data to the main process, delimited with "·|·"
+    echo "${STATEFUL_NAME}·|·${ALIGNMENT}·|·${INDEX}·|·${JOINED}·|·${CONTENT}·|·${VISUAL_IDENTIFIER}"
+  fi
 }
 
 ################################################################
@@ -452,7 +357,7 @@ prompt_custom() {
   local segment_content="$(eval ${(P)command})"
 
   if [[ -n $segment_content ]]; then
-    p9kPrepareSegment "${4:u}" "" "$1" $2 $3 $DEFAULT_COLOR_INVERTED $DEFAULT_COLOR "$segment_content"
+    serializeSegment "${4:u}" "" "${1}" "${2}" "${3}" "${DEFAULT_COLOR_INVERTED}" "${DEFAULT_COLOR}" "${segment_content}"
   fi
 }
 
@@ -476,26 +381,12 @@ buildLeftPrompt() {
     # Check if it is a custom command, otherwise interpet it as
     # a prompt.
     if [[ $element[0,7] =~ "custom_" ]]; then
-      # if [[ -z "${loadedSegments[(r)$element]}" ]]; then
-      #   if [[ -n "$P9K_${(U)element}" ]]; then # check if custom segment is a definition
-      #     loadedSegments+=("$element")
-      #   elif [[ -f "${p9kDirectory}/segments/custom/${element}.p9k" ]]; then # check if custom segment file exists
-      #     source "${p9kDirectory}/segments/custom/${element}.p9k" 2>&1
-      #     loadedSegments+=("$element")
-      #   fi
-      # fi
-      "prompt_custom" "left" "${index}" "${joined}" "${element[8,-1]}"
+      async_job "p9k" "prompt_custom" "left" "${index}" "${joined}" "${element[8,-1]}"
     else
-      # if [[ -z "${loadedSegments[(r)$element]}" ]]; then
-      #   if [[ -f "${p9kDirectory}/segments/${element}.p9k" ]]; then # check if segment file exists
-      #     source "${p9kDirectory}/segments/${element}.p9k" 2>&1
-      #     loadedSegments+=("$element")
-      #   fi
-      # fi
       # Could we display placeholders?
       # -> At most it could be static ones, but
       # e.g. states are the result of calculation..
-      "prompt_$element" "left" "${index}" "${joined}"
+      async_job "p9k" "prompt_${element}" "left" "${index}" "${joined}"
     fi
     index=$((index + 1))
   done
@@ -521,23 +412,9 @@ buildRightPrompt() {
     # Check if it is a custom command, otherwise interpet it as
     # a prompt.
     if [[ $element[0,7] =~ "custom_" ]]; then
-     # if [[ -z "${loadedSegments[(r)$element]}" ]]; then
-     #    if [[ -n "$P9K_${(U)element}" ]]; then # check if custom segment is a definition
-     #      loadedSegments+=("$element")
-     #    elif [[ -f "${p9kDirectory}/segments/custom/${element}.p9k" ]]; then # check if custom segment file exists
-     #      source "${p9kDirectory}/segments/custom/${element}.p9k" 2>&1
-     #      loadedSegments+=("$element")
-     #    fi
-     #  fi
-      "prompt_custom" "right" "$index" $joined "${element[8,-1]}" &!
+      async_job "p9k" "prompt_custom" "right" "${index}" "${joined}" "${element[8,-1]}"
     else
-      # if [[ -z "${loadedSegments[(r)$element]}" ]]; then
-      #   if [[ -f "${p9kDirectory}/segments/${element}.p9k" ]]; then # check if segment file exists
-      #     source "${p9kDirectory}/segments/${element}.p9k" 2>&1
-      #     loadedSegments+=("$element")
-      #   fi
-      # fi
-      "prompt_$element" "right" "$index" "${joined}" &!
+      async_job "p9k" "prompt_${element}" "right" "${index}" "${joined}"
     fi
     index=$((index + 1))
   done
@@ -607,6 +484,10 @@ p9kPreparePrompts() {
   RPROMPT_PREFIX=""
   RPROMPT_SUFFIX=""
 
+  # Reset instance variables
+  typeset -gAh _p9k_last_segments
+  _p9k_last_segments=()
+
   # The prompt function will set these prompt_* options after the setup function
   # returns. We need prompt_subst so we can safely run commands in the prompt
   # without them being double expanded and we need prompt_percent to expand the
@@ -621,7 +502,7 @@ p9kPreparePrompts() {
 
   # Preset multiline prompt
   if [[ "${P9K_PROMPT_ON_NEWLINE}" == true ]]; then
-    LPROMPT_PREFIX="$(printIcon 'MULTILINE_FIRST_PROMPT_PREFIX')%f%b%k${PROMPT}"
+    LPROMPT_PREFIX="p9k_icons[MULTILINE_FIRST_PROMPT_PREFIX]%f%b%k${PROMPT}"
     LPROMPT_SUFFIX="
 $(printIcon 'MULTILINE_LAST_PROMPT_PREFIX')"
     if [[ "${P9K_RPROMPT_ON_NEWLINE}" != true ]]; then
@@ -640,13 +521,6 @@ $(printIcon 'MULTILINE_LAST_PROMPT_PREFIX')"
     RPROMPT_PREFIX=''
     RPROMPT_SUFFIX=''
   fi
-
-  # Precompile the Segment Separators here!
-  _P9K_LEFT_SEGMENT_SEPARATOR="$(printIcon 'LEFT_SEGMENT_SEPARATOR')"
-  _P9K_LEFT_SUBSEGMENT_SEPARATOR="$(printIcon 'LEFT_SUBSEGMENT_SEPARATOR')"
-  _P9K_LEFT_SEGMENT_END_SEPARATOR="$(printIcon 'LEFT_SEGMENT_END_SEPARATOR')"
-  _P9K_RIGHT_SEGMENT_SEPARATOR="$(printIcon 'RIGHT_SEGMENT_SEPARATOR')"
-  _P9K_RIGHT_SUBSEGMENT_SEPARATOR="$(printIcon 'RIGHT_SUBSEGMENT_SEPARATOR')"
 
   # Allow iTerm integration to work
   [[ $ITERM_SHELL_INTEGRATION_INSTALLED == "Yes" ]] && LPROMPT_PREFIX="%{$(iterm2_prompt_mark)%}$LPROMPT_PREFIX"
