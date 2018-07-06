@@ -40,22 +40,21 @@ setDefault P9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS " "
 #   Construct a left prompt segment
 ##
 # @args
-#   $1 string Name of the function that was originally invoked (mandatory).
-#   $2 string Current state of segment
-#   $3 integer Index of the segment
-#   $4 boolean Whether the segment should be joined
-#   $5 string Content of the segment
-#   $6 string Visual identifier (must be a key of the icons array)
+#   $1 string Stateful name of the function that was originally invoked (mandatory).
+#   $2 integer Index of the segment
+#   $3 boolean Whether the segment should be joined
+#   $4 string Content of the segment
+#   $5 string Visual identifier (must be a key of the icons array)
 ##
 leftPromptSegment() {
-  local STATEFUL_NAME=${(U)1#PROMPT_}
-  # add state if required
-  [[ -n $2 ]] && STATEFUL_NAME=${STATEFUL_NAME}_${(U)2}
-  local current_index=$3
+  local STATEFUL_NAME="${1}"
+  local current_index="${2}"
   # Check if the segment should be joined with the previous one
   local joined=false
-  [[ "$4" == "true" ]] && segmentShouldBeJoined $current_index $last_left_element_index "$P9K_LEFT_PROMPT_ELEMENTS" && joined=true
-  local visual_identifier="$6"
+  [[ "${3}" == "true" ]] && segmentShouldBeJoined $current_index $last_left_element_index "$P9K_LEFT_PROMPT_ELEMENTS" && joined=true
+  # Support for bold segment
+  [[ $p9k_data[${STATEFUL_NAME}_BD] == true ]] && content="%B${4}%b" || content="${4}"
+  local visual_identifier="${5}"
 
   local bg=$p9k_data[${STATEFUL_NAME}_BG]
   local fg=$p9k_data[${STATEFUL_NAME}_FG]
@@ -74,19 +73,10 @@ leftPromptSegment() {
     echo -n "${bg}$P9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS"
   fi
 
-  # Support for bold segment
-  local bld_on=""
-  local bld_off=""
-  if [[ $p9k_data[${STATEFUL_NAME}_BD] == true ]]; then
-    bld_on="%B"
-    bld_off="%b"
-  fi
-
   # Print the visual identifier
   [[ $visual_identifier != "" ]] && echo -n "$p9k_data[${STATEFUL_NAME}_VI]${visual_identifier}${P9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS}%f${fg}" || echo -n "${fg}"
   # Print the content of the segment, if there is any
-  [[ -n "$5" ]] && echo -n "${bld_on}${5}${bld_off}"
-  echo -n "${P9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS}"
+  [[ -n "${content}" ]] && echo -n "${content}${P9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS}"
 
   CURRENT_BG=$bg
   last_left_element_index=$current_index
@@ -117,25 +107,25 @@ setDefault P9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS " "
 #   Construct a right prompt segment
 ##
 # @args
-#   $1 string Name of the function that was originally invoked (mandatory).
-#   $2 string Current state of the segment
-#   $3 integer Index of the segment
-#   $4 boolean Whether the segment should be joined
-#   $5 string Content of the segment
-#   $6 string Visual identifier (must be a key of the icons array)
+#   $1 string Stateful name of the function that was originally invoked (mandatory).
+#   $2 integer Index of the segment
+#   $3 boolean Whether the segment should be joined
+#   $4 string Content of the segment
+#   $5 string Visual identifier (must be a key of the icons array)
 ##
 # @notes
 #   No ending for the right prompt segment is needed (unlike the left prompt, above).
 ##
 rightPromptSegment() {
-  local STATEFUL_NAME=${(U)1#PROMPT_}
-  # add state if required
-  [[ -n $2 ]] && STATEFUL_NAME=${STATEFUL_NAME}_${(U)2}
-  local current_index=$3
+  local STATEFUL_NAME="${1}"
+  local current_index="${2}"
   # Check if the segment should be joined with the previous one
   local joined=false
-  [[ "$4" == "true" ]] && segmentShouldBeJoined $current_index $last_right_element_index "$P9K_RIGHT_PROMPT_ELEMENTS" && joined=true
-  local visual_identifier="$6"
+  [[ "${3}" == "true" ]] && segmentShouldBeJoined $current_index $last_right_element_index "$P9K_RIGHT_PROMPT_ELEMENTS" && joined=true
+  local content
+  # Support for bold segment
+  [[ $p9k_data[${STATEFUL_NAME}_BD] == true ]] && content="%B${4}%b" || content="${4}"
+  local visual_identifier="${5}"
 
   local bg=$p9k_data[${STATEFUL_NAME}_BG]
   local fg=$p9k_data[${STATEFUL_NAME}_FG]
@@ -155,24 +145,16 @@ rightPromptSegment() {
 
   echo -n "${bg}${fg}"
 
-  # Support for bold segment
-  local bld_on=""
-  local bld_off=""
-  if [[ $p9k_data[${STATEFUL_NAME}_BD] == true ]]; then
-    bld_on="%B"
-    bld_off="%b"
-  fi
-
   if [[ ${(L)P9K_RPROMPT_ICON_LEFT} == "true" ]]; then # Visual identifier before content
     # Print the visual identifier
     echo -n "${P9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS}$p9k_data[${STATEFUL_NAME}_VI]${visual_identifier}${P9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS}"
     # Print segment content if there is any
-    [[ -n "$5" ]] && echo -n "${bld_on}${5}${bld_off}${P9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS}"
+    [[ -n "${content}" ]] && echo -n "${content}${P9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS}"
   else
     # Print whitespace only if segment is not joined or first right segment
     [[ $joined == false ]] || [[ "$CURRENT_RIGHT_BG" == "NONE" ]] && echo -n "${P9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS}"
     # Print segment content if there is any
-    [[ -n "$5" ]] && echo -n "${bld_on}${5}${bld_off}"
+    [[ -n "${content}" ]] && echo -n "${content}${P9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS}"
     # Print the visual identifier
     echo -n "$p9k_data[${STATEFUL_NAME}_VI]${visual_identifier}${P9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS}"
   fi
@@ -198,8 +180,9 @@ rightPromptSegment() {
 ##
 p9kPrepareSegment() {
   local NAME="${(U)1}" STATE="${(U)2}" ALIGNMENT="${3}" INDEX="${4}" JOINED="${5}" CONTENT="${6}" USER_CONDITION="${7}"
+  local CONDITION
 
-  local STATEFUL_NAME="${(U)NAME#PROMPT_}"
+  local STATEFUL_NAME="${NAME#PROMPT_}"
   [[ -n "${STATE}" ]] && STATEFUL_NAME="${STATEFUL_NAME}_${STATE}"
 
   # Precompile condition.
@@ -213,7 +196,7 @@ p9kPrepareSegment() {
       # test if the VISUAL_IDENTIFIER string is a ICON NAME otherwise treat it as a curston string
       [[ "${(U)8[1]}" =~ '[A-Z]' ]] && VISUAL_IDENTIFIER="$(printIcon ${8})" || VISUAL_IDENTIFIER="$(echo -n ${8})"
     fi
-    "${ALIGNMENT}PromptSegment" "${NAME}" "${STATE}" "${INDEX}" "${JOINED}" "${CONTENT}" "${VISUAL_IDENTIFIER}"
+    "${ALIGNMENT}PromptSegment" "${STATEFUL_NAME}" "${INDEX}" "${JOINED}" "${CONTENT}" "${VISUAL_IDENTIFIER}"
   fi
 }
 
