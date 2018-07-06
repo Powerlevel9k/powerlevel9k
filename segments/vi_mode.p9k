@@ -56,35 +56,31 @@ prompt_vi_mode() {
 ###############################################################
 function rebuild_vi_mode {
   case "${P9K_GENERATOR}" in
-    # async)
-    #   if (( ${+terminfo[smkx]} )); then
-    #     printf '%s' ${terminfo[smkx]}
-    #   fi
-    #   for index in $(get_indices_of_segment "vi_mode" "${P9K_LEFT_PROMPT_ELEMENTS}"); do
-    #      prompt_vi_mode "left" "${index}" "${1}" &!
-    #   done
-    #   for index in $(get_indices_of_segment "vi_mode" "${P9K_RIGHT_PROMPT_ELEMENTS}"); do
-    #      prompt_vi_mode "right" "${index}" "${1}" &!
-    #   done
-    # ;;
     zsh-async)
       if (( ${+terminfo[smkx]} )); then
         printf '%s' ${terminfo[smkx]}
       fi
+      local current_state
+      case "${KEYMAP}" in
+        vicmd)        current_state="NORMAL" ;;
+        vivis)        current_state="VISUAL" ;;
+        main|viins|*) current_state="INSERT" ;;
+      esac
       local element joined=false
-      for (( i = 1; i <= ${#P9K_LEFT_PROMPT_ELEMENTS}; i++ )); do
+      local vi_mode="P9K_VI_${current_state}_MODE_STRING"
+      for (( i = 0; i <= ${#P9K_LEFT_PROMPT_ELEMENTS}; i++ )); do
         element="${(L)P9K_LEFT_PROMPT_ELEMENTS[$i]}"
         if [[ "${element}" =~ "vi_mode" ]]; then
           [[ "${element[-7,-1]}" == '_joined' ]] && joined=true
-          prompt_vi_mode "left" "${i}" "$joined"
+          p9kAsyncCallback "" "0" "VI_MODE_${current_state}·|·left·|·${i}·|·${joined}·|·${(P)vi_mode}·|·$p9k_icons[VI_MODE_${current_state}]" "0" "0"
           break
         fi
       done
-      for (( i = 1; i <= ${#P9K_RIGHT_PROMPT_ELEMENTS}; i++ )); do
+      for (( i = 0; i <= ${#P9K_RIGHT_PROMPT_ELEMENTS}; i++ )); do
         element="${(L)P9K_RIGHT_PROMPT_ELEMENTS[$i]}"
         if [[ "${element}" =~ "vi_mode" ]]; then
           [[ "${element[-7,-1]}" == '_joined' ]] && joined=true
-          prompt_vi_mode "left" "${i}" "$joined"
+          p9kAsyncCallback "" "0" "VI_MODE_${current_state}·|·right·|·${i}·|·${joined}·|·${(P)vi_mode}·|·$p9k_icons[VI_MODE_${current_state}]" "0" "0"
           break
         fi
       done
