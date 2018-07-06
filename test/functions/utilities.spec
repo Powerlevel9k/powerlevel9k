@@ -106,4 +106,70 @@ function testSegmentShouldNotBeJoinedIfPredecessingSegmentIsNotJoinedButConditio
   unset segments
 }
 
+function testUpsearchWithFiles() {
+  local OLDPWD="${PWD}"
+  local TESTDIR=/tmp/p9k-test/1/12/123/1234/12345/123456/1234567/12345678/123456789/gap\ dir/test
+
+  mkdir -p "${TESTDIR}"
+  cd "${TESTDIR}"
+  touch ../.needle
+  touch ../../../.needle
+  touch ../../../../.needle-noMatch
+  touch ../../../../../../.needle
+  touch ../../../../../../../../.needle
+
+  local -a result
+  # Modify internal field separator to newline, for easier
+  # handling of paths with whitespaces.
+  local OLDIFS="${IFS}"
+  IFS=$'\n'
+  result=($(upsearch ".needle"))
+  IFS="${OLDIFS}"
+
+  # Count array values
+  assertEquals "4" "${#result}"
+
+  # The Paths should be sorted by length. The innermost (longest) path should be returned first.
+  assertEquals "/tmp/p9k-test/1/12/123/1234/12345/123456/1234567/12345678/123456789/gap dir/.needle" "${result[1]}"
+  assertEquals "/tmp/p9k-test/1/12/123/1234/12345/123456/1234567/12345678/.needle" "${result[2]}"
+  assertEquals "/tmp/p9k-test/1/12/123/1234/12345/.needle" "${result[3]}"
+  assertEquals "/tmp/p9k-test/1/12/123/.needle" "${result[4]}"
+
+  cd "${OLDPWD}"
+  rm -fr "/tmp/p9k-test"
+}
+
+function testUpsearchWithDirectories() {
+  local OLDPWD="${PWD}"
+  local TESTDIR=/tmp/p9k-test/1/12/123/1234/12345/123456/1234567/12345678/123456789/gap\ dir/test
+
+  mkdir -p "${TESTDIR}"
+  cd "${TESTDIR}"
+  mkdir ../.needle
+  mkdir ../../../.needle
+  mkdir ../../../.needle-noMatch
+  mkdir ../../../../../../.needle
+  mkdir ../../../../../../../../.needle
+
+  local -a result
+  # Modify internal field separator to newline, for easier
+  # handling of paths with whitespaces.
+  local OLDIFS="${IFS}"
+  IFS=$'\n'
+  result=($(upsearch ".needle"))
+  IFS="${OLDIFS}"
+
+  # Count array values
+  assertEquals "4" "${#result}"
+
+  # The Paths should be sorted by length. The innermost (longest) path should be returned first.
+  assertEquals "/tmp/p9k-test/1/12/123/1234/12345/123456/1234567/12345678/123456789/gap dir/.needle" "${result[1]}"
+  assertEquals "/tmp/p9k-test/1/12/123/1234/12345/123456/1234567/12345678/.needle" "${result[2]}"
+  assertEquals "/tmp/p9k-test/1/12/123/1234/12345/.needle" "${result[3]}"
+  assertEquals "/tmp/p9k-test/1/12/123/.needle" "${result[4]}"
+
+  cd "${OLDPWD}"
+  rm -fr "/tmp/p9k-test"
+}
+
 source shunit2/source/2.1/src/shunit2

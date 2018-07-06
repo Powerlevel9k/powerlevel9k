@@ -838,24 +838,23 @@ prompt_dir() {
           # Search for the folder marker in the parent directories and
           # buildup a pattern that is removed from the current path
           # later on.
-          for marked_folder in $(upsearch $POWERLEVEL9K_SHORTEN_FOLDER_MARKER); do
-            if [[ "$marked_folder" == "/" ]]; then
-              # If we reached root folder, stop upsearch.
-              trunc_path="/"
-            elif [[ "$marked_folder" == "$HOME" ]]; then
-              # If we reached home folder, stop upsearch.
-              trunc_path="~"
-            elif [[ "${marked_folder%/*}" == $last_marked_folder ]]; then
-              trunc_path="${trunc_path%/}/${marked_folder##*/}"
-            else
-              trunc_path="${trunc_path%/}/$POWERLEVEL9K_SHORTEN_DELIMITER/${marked_folder##*/}"
-            fi
-            last_marked_folder=$marked_folder
-          done
-
-          # Replace the shortest possible match of the marked folder from
-          # the current path.
-          current_path=$trunc_path${current_path#${last_marked_folder}*}
+          local -a markedFolders
+          local OLDIFS="${IFS}"
+          IFS=$'\n'
+          markedFolders=($(upsearch $POWERLEVEL9K_SHORTEN_FOLDER_MARKER))
+          IFS="${OLDIFS}"
+          if (( ${#markedFolders} > 0 )); then
+            # Take the first match. This is the longest one.
+            local markedFolder="${markedFolders[1]}"
+            # Remove the last path segment from the match. The last path segment
+            # is the matched marker.
+            markedFolder="${markedFolder%/*}"
+            # Remove one directory more. If the match was in /tmp/1/12, then we want
+            # to show .../12/some/deep/folder. That is why we have to go to the
+            # "parent" folder..
+            markedFolder="${markedFolder%/*}"
+            current_path="${POWERLEVEL9K_SHORTEN_DELIMITER}${PWD#${markedFolder}*}"
+          fi
         fi
       ;;
       truncate_with_package_name)
