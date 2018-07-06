@@ -758,7 +758,7 @@ prompt_dir() {
   # check if the user wants to use absolute paths or "~" paths
   [[ ${(L)POWERLEVEL9K_DIR_PATH_ABSOLUTE} != "true" ]] && current_path=${current_path//$HOME/"~"}
   # declare all local variables
-  local paths directory test_dir test_dir_length trunc_path threshhold
+  local paths directory test_dir test_dir_length trunc_path threshold
   # if we are not in "~" or "/", split the paths into an array and exclude "~"
   (( ${#current_path} > 1 )) && paths=(${(s:/:)${current_path//"~\/"/}}) || paths=()
   # only run the code if SHORTEN_DIR_LENGTH is set, or we are using the two strategies that don't rely on it.
@@ -793,10 +793,10 @@ prompt_dir() {
       ;;
       truncate_to_first_and_last)
         if (( ${#current_path} > 1 )) && (( ${POWERLEVEL9K_SHORTEN_DIR_LENGTH} > 0 )); then
-          threshhold=$(( ${POWERLEVEL9K_SHORTEN_DIR_LENGTH} * 2))
+          threshold=$(( ${POWERLEVEL9K_SHORTEN_DIR_LENGTH} * 2))
           # if we are in "~", add it back into the paths array
           [[ $current_path == '~'* ]] && paths=("~" "${paths[@]}")
-          if (( ${#paths} > $threshhold )); then
+          if (( ${#paths} > $threshold )); then
             local num=$(( ${#paths} - ${POWERLEVEL9K_SHORTEN_DIR_LENGTH} ))
             # repace the middle elements
             for (( i=$POWERLEVEL9K_SHORTEN_DIR_LENGTH; i<$num; i++ )); do
