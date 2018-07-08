@@ -385,8 +385,8 @@ buildLeftPrompt() {
     else
       # Could we display placeholders?
       # -> At most it could be static ones, but
-      # e.g. states are the result of calculation..
-      async_job "p9k" "prompt_${element}" "left" "${index}" "${joined}"
+      # e.g. states are the result of calculation.
+      async_job "p9k" "prompt_${element}" "left" "${index}" "${joined}" "$PWD"
     fi
     index=$((index + 1))
   done
@@ -414,7 +414,7 @@ buildRightPrompt() {
     if [[ $element[0,7] =~ "custom_" ]]; then
       async_job "p9k" "prompt_custom" "right" "${index}" "${joined}" "${element[8,-1]}"
     else
-      async_job "p9k" "prompt_${element}" "right" "${index}" "${joined}"
+      async_job "p9k" "prompt_${element}" "right" "${index}" "${joined}" "$PWD"
     fi
     index=$((index + 1))
   done

@@ -68,6 +68,7 @@ setDefault P9K_SHORTEN_FOLDER_MARKER ".shorten_folder_marker"
 #   $3 boolean Whether the segment should be joined
 ##
 prompt_dir() {
+  [[ $P9K_GENERATOR == "zsh-async" && -n $4 ]] && cd $4
   local trunc_path directory test_dir test_dir_length
   local -a matching
   local -a paths
