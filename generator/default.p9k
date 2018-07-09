@@ -169,6 +169,11 @@ rightPromptSegment() {
   [[ -n "$4" ]] && fg="$(foregroundColor $4)" || fg="$(foregroundColor)"
 
   # If CURRENT_RIGHT_BG is "NONE", we are the first right segment.
+  if [[ "$CURRENT_RIGHT_BG" != "NONE" ]]; then
+    # This is the closing whitespace for the previous segment
+    echo -n "${P9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS}%f"
+  fi
+
   if [[ $joined == false ]] || [[ "$CURRENT_RIGHT_BG" == "NONE" ]]; then
     if isSameColor "$CURRENT_RIGHT_BG" "$3"; then
       # Middle segment with same color as previous segment
@@ -209,7 +214,7 @@ rightPromptSegment() {
     # Print segment content if there is any
     [[ -n "$6" ]] && echo -n "${bld_on}${6}${bld_off}"
     # Print the visual identifier
-    echo -n "${visual_identifier}${P9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS}%f"
+    echo -n "${visual_identifier}"
   fi
 
   CURRENT_RIGHT_BG=$3
@@ -426,6 +431,9 @@ buildRightPrompt() {
 
     index=$((index + 1))
   done
+
+  # Clear to the end of the line
+  echo -n "%E"
 }
 
 ###############################################################

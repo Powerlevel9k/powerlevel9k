@@ -21,8 +21,8 @@ registerIcon "HOME_SUB_ICON"  ''  $'\uE18D'  $'\uF07C'  '\u'$CODEPOINT_OF_AWESOM
 registerIcon "FOLDER_ICON"  ''  $'\uE818'  $'\uF115'  '\u'$CODEPOINT_OF_AWESOME_FOLDER_O  $'\uF115'
 #                                                                                        
 registerIcon "LOCK_ICON"  $'\UE0A2'  $'\UE138'  $'\UF023'  '\u'$CODEPOINT_OF_AWESOME_LOCK  $'\UF023'
-#                                                                 
-registerIcon "ETC_ICON"   $'\uE818'  $'\uF013'  $'\uF013'  $'\uF013'  $'\uF013'
+#                          ⚙                                       
+registerIcon "ETC_ICON"   $'\u2699'  $'\uE82F'  $'\uF013 '  '\u'$CODEPOINT_OF_AWESOME_COG' '  $'\uF013'
 
 setDefault P9K_DIR_PATH_SEPARATOR "/"
 setDefault P9K_HOME_FOLDER_ABBREVIATION "~"

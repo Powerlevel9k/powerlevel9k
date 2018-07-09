@@ -18,7 +18,7 @@
 #   Determine the OS and version (if applicable).
 case $(uname) in
   Darwin) OS='OSX' ;;
-  CYGWIN_NT-*) OS='Windows' ;;
+  CYGWIN_NT-* | MSYS_NT-*) OS='Windows' ;;
   FreeBSD|OpenBSD|DragonFly) OS='BSD' ;;
   Linux)
     OS='Linux'

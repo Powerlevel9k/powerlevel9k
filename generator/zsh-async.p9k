@@ -231,8 +231,8 @@ updateRightPrompt() {
     fi
   done
   [[ "${P9K_FANCY_EDGE}" == "true" ]] && RIGHT_PROMPT+="%k%F{$RBG}${_P9K_LEFT_SEGMENT_SEPARATOR}%f"
-  # Set the right prompt
-  RPROMPT=${RPROMPT_PREFIX}${RIGHT_PROMPT}${RPROMPT_SUFFIX}
+  # Set the right prompt and clean to the end of the line
+  RPROMPT="${RPROMPT_PREFIX}${RIGHT_PROMPT}%E${RPROMPT_SUFFIX}"
   # About .reset-prompt see:
   # https://github.com/sorin-ionescu/prezto/issues/1026
   # https://github.com/zsh-users/zsh-autosuggestions/issues/107#issuecomment-183824034
