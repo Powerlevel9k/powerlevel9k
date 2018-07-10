@@ -383,7 +383,7 @@ you could set `P9K_DIR_OMIT_FIRST_CHARACTER=true`.
 You can also customize the leading tilde character when you are in `$HOME` using:
 ```zsh
 # Double quotes are important here!
-P9K_HOME_FOLDER_ABBREVIATION="%F{red} $(printIcon 'HOME_ICON') %F{black}"
+P9K_HOME_FOLDER_ABBREVIATION="%F{red} $(printIcon 'P9K_DIR_HOME_ICON') %F{black}"
 ```
 You can also configure the `dir` segment to show when you are in a directory without write permissions, using the variable below.
 
