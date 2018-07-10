@@ -82,10 +82,10 @@ function getColor() {
 #   An empty paramenter resets (stops) background color.
 ##
 function backgroundColor() {
-  if [[ -z $1 ]]; then
-    echo -n "%k"
-  else
+  if [[ -n $1 ]]; then
     echo -n "%K{$(getColor $1)}"
+  else
+    echo -n "%k"
   fi
 }
 
@@ -103,10 +103,10 @@ function backgroundColor() {
 #   An empty paramenter resets (stops) foreground color.
 ##
 function foregroundColor() {
-  if [[ -z $1 ]]; then
-    echo -n "%f"
-  else
+  if [[ -n $1 ]]; then
     echo -n "%F{$(getColor $1)}"
+  else
+    echo -n "%f"
   fi
 }
 
