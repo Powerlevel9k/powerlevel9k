@@ -127,7 +127,7 @@ function testNewlineOnRpromptCanBeDisabled() {
 
   p9kPreparePrompts
   #╭─\^[[39m^[[0m^[[49m^[[47m ^[[30mworld ^[[49m^[[37m^[[39m  ╰─ ^[[1A^[[39m^[[0m^[[49m^[[37m^[[47m^[[30m rworld^[[30m ^[[00m^[[1B>
-  assertEquals '╭─[39m[0m[49m[47m [30mworld [49m[37m[39m  ╰─ [1A[39m[0m[49m[37m[47m[30m rworld[30m [00m[1B' "$(print -P ${PROMPT}${RPROMPT})"
+  assertEquals '╭─[39m[0m[49m[47m [30mworld [49m[37m[39m  ╰─ [1A[39m[0m[49m[37m[47m[30m rworld [30m [00m[1B' "$(print -P ${PROMPT}${RPROMPT})"
 }
 
 source shunit2/source/2.1/src/shunit2
