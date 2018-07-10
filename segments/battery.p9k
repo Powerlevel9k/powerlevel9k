@@ -106,7 +106,7 @@ prompt_battery() {
     message="$bat_percent%%"
   fi
 
-  local NEW_ICON="" segment
+  local overideIcon="" overideBg="" segment
   declare -i offset
   if [[ -n "$P9K_BATTERY_STAGES" ]] && [[ -n "$P9K_BATTERY_LEVEL_BACKGROUND" ]]; then
     # override default icon if we are using battery stages
@@ -115,7 +115,7 @@ prompt_battery() {
       if [[ $segment > 1 ]]; then
         offset=$(( ($bat_percent / $segment) + 1 ))
         # check if the stages are in an array or a string
-        [[ "${(t)P9K_BATTERY_STAGES}" =~ "array" ]] && NEW_ICON="$P9K_BATTERY_STAGES[$offset]" || NEW_ICON="${P9K_BATTERY_STAGES:$offset:1}"
+        [[ "${(t)P9K_BATTERY_STAGES}" =~ "array" ]] && overideIcon="$P9K_BATTERY_STAGES[$offset]" || overideIcon="${P9K_BATTERY_STAGES:$offset:1}"
       fi
     fi
 
@@ -123,10 +123,10 @@ prompt_battery() {
     if [[ -n "$P9K_BATTERY_LEVEL_BACKGROUND" ]] && [[ "${(t)P9K_BATTERY_LEVEL_BACKGROUND}" =~ "array" ]]; then
       segment=$(( 100.0 / (${#P9K_BATTERY_LEVEL_BACKGROUND} - 1 ) ))
       offset=$(( ($bat_percent / $segment) + 1 ))
-      p9k_data[BATTERY_${(U)current_state}_BG]="$(backgroundColor ${P9K_BATTERY_LEVEL_BACKGROUND[$offset]})"
+      overideBg="$(backgroundColor ${P9K_BATTERY_LEVEL_BACKGROUND[$offset]})"
     fi
   fi
   unset offset
   # Draw the prompt_segment
-  p9kPrepareSegment "$0" "${(U)current_state}" $1 "$2" $3 "${message}" "" "$NEW_ICON"
+  p9kPrepareSegment "$0" "${(U)current_state}" $1 "$2" $3 "${message}" "" "${overideIcon}" "${overideBg}"
 }

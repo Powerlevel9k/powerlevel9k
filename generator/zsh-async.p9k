@@ -210,6 +210,9 @@ p9kAsyncCallback() {
     local CONTENT="${segment[5]}"
     local VISUAL_IDENTIFIER="${segment[6]}"
 
+    [[ -n "${segment[7]}" ]] && p9k_data[${STATEFUL_NAME}_BG]="${segment[7]}"
+    [[ -n "${segment[8]}" ]] && p9k_data[${STATEFUL_NAME}_FG]="${segment[8]}"
+
     # Padded index of segment. Index 1 becomes 001.
     local paddedIndex="${(l:3::0:)INDEX}"
 
@@ -294,37 +297,17 @@ p9kAsyncCallback() {
 #   $5 bool Whether the segment should be joined
 #   $6 string Content of the segment
 #   $7 string The condition - if the segment should be shown (gets evaluated)
-#   $8 string Visual identifier override
+#   $8 string Visual identifier overide
+#   $9 string Background overide
+#   $10 string Foreground overide
 ##
 p9kPrepareSegment() {
-  local NAME="${(U)1}"
-  local STATE="${(U)2}"
-  local ALIGNMENT="${3}"
-  local INDEX="${4}"
-  local JOINED="${5}"
-  local CONTENT="${6}"
-  local USER_CONDITION="${7}"
-  local CONDITION
-
-  ################################################################
-  # Methodology behind user-defined variables overwriting colors:
-  #
-  # The first parameter to the segment constructors is the calling function's
-  # name. From this function name, we strip the "prompt_"-prefix and
-  # uppercase it. This is then prefixed with "P9K_" and suffixed
-  # with either "_BACKGROUND" or "_FOREGROUND", thus giving us the variable
-  # name. So each new segment is user-overwritten by a variable following
-  # this naming convention.
-  ##
-
   # Determine the stateful name of the segment
-  local STATEFUL_NAME="${NAME#PROMPT_}"
-  [[ -n "${STATE}" ]] && STATEFUL_NAME="${STATEFUL_NAME}_${STATE}"
+  local STATEFUL_NAME="${${(U)1}#PROMPT_}"
+  [[ -n "${2}" ]] && STATEFUL_NAME="${STATEFUL_NAME}_${(U)2}"
 
   # Pre-Compile condition
-  segmentShouldBePrinted "${STATEFUL_NAME}" "${USER_CONDITION}" "${CONTENT}" && CONDITION=true || CONDITION=false
-
-  if [[ $CONDITION == true ]]; then
+  if segmentShouldBePrinted "${STATEFUL_NAME}" "${7}" "${6}"; then
     local VISUAL_IDENTIFIER
     if [[ -z "${8}" ]]; then
       VISUAL_IDENTIFIER=$p9k_icons[$STATEFUL_NAME]
@@ -334,7 +317,7 @@ p9kPrepareSegment() {
     fi
 
     # Return the data to the main process, delimited with "·|·"
-    echo "${STATEFUL_NAME}·|·${ALIGNMENT}·|·${INDEX}·|·${JOINED}·|·${CONTENT}·|·${VISUAL_IDENTIFIER}"
+    echo "${STATEFUL_NAME}·|·${3}·|·${4}·|·${5}·|·${6}·|·${VISUAL_IDENTIFIER}·|·${9}·|·${10}"
   fi
 }
 

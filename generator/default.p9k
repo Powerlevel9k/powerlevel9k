@@ -176,19 +176,16 @@ rightPromptSegment() {
 #   $5 bool Whether the segment should be joined
 #   $6 string Content of the segment
 #   $7 string The condition - if the segment should be shown (gets evaluated)
-#   $8 string Visual identifier override
+#   $8 string Visual identifier overide
+#   $9 string Background overide
+#   $10 string Foreground overide
 ##
 p9kPrepareSegment() {
-  local NAME="${(U)1}" STATE="${(U)2}" ALIGNMENT="${3}" INDEX="${4}" JOINED="${5}" CONTENT="${6}" USER_CONDITION="${7}"
-  local CONDITION
-
-  local STATEFUL_NAME="${NAME#PROMPT_}"
-  [[ -n "${STATE}" ]] && STATEFUL_NAME="${STATEFUL_NAME}_${STATE}"
+  local STATEFUL_NAME="${${(U)1}#PROMPT_}"
+  [[ -n "${2}" ]] && STATEFUL_NAME="${STATEFUL_NAME}_${(U)2}"
 
   # Precompile condition.
-  segmentShouldBePrinted "${STATEFUL_NAME}" "${USER_CONDITION}" "${CONTENT}" && CONDITION=true || CONDITION=false
-
-  if [[ $CONDITION == true ]]; then
+  if segmentShouldBePrinted "${STATEFUL_NAME}" "${7}" "${6}"; then
     local VISUAL_IDENTIFIER
     if [[ -z "${8}" ]]; then
       VISUAL_IDENTIFIER=$p9k_icons[$STATEFUL_NAME]
@@ -196,7 +193,14 @@ p9kPrepareSegment() {
       # test if the VISUAL_IDENTIFIER string is a ICON NAME otherwise treat it as a curston string
       [[ "${(U)8[1]}" =~ '[A-Z]' ]] && VISUAL_IDENTIFIER="$(printIcon ${8})" || VISUAL_IDENTIFIER="$(echo -n ${8})"
     fi
-    "${ALIGNMENT}PromptSegment" "${STATEFUL_NAME}" "${INDEX}" "${JOINED}" "${CONTENT}" "${VISUAL_IDENTIFIER}"
+
+    # Background overide
+    [[ -n "${9}" ]] && p9k_data[${STATEFUL_NAME}_BG]="${9}"
+
+    # Foreground overide
+    [[ -n "${10}" ]] && p9k_data[${STATEFUL_NAME}_FG]="${10}"
+
+    "${3}PromptSegment" "${STATEFUL_NAME}" "${4}" "${5}" "${6}" "${VISUAL_IDENTIFIER}"
   fi
 }
 
