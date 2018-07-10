@@ -154,7 +154,7 @@ p9k_vcs_init() {
 
   VCS_CHANGESET_PREFIX=''
   if [[ "$P9K_SHOW_CHANGESET" == true ]]; then
-    VCS_CHANGESET_PREFIX="$(printIcon 'VCS_COMMIT_ICON')%0.$P9K_VCS_INTERNAL_HASH_LENGTH""i "
+    VCS_CHANGESET_PREFIX="$p9k_icons[VCS_COMMIT_ICON]%0.$P9K_VCS_INTERNAL_HASH_LENGTH""i "
   fi
 
   # Load supported version control backends
@@ -171,10 +171,10 @@ p9k_vcs_init() {
   zstyle ':vcs_info:*' actionformats "%b %F{${P9K_VCS_ACTIONFORMAT_FOREGROUND}}| %a%f"
 
   # This string will be used in the %c escape if there are staged changes in the repository.
-  zstyle ':vcs_info:*' stagedstr " $(printIcon 'VCS_STAGED_ICON')"
+  zstyle ':vcs_info:*' stagedstr " $p9k_icons[VCS_STAGED_ICON]"
 
   # This string will be used in the %u escape if there are unstaged changes in the repository.
-  zstyle ':vcs_info:*' unstagedstr " $(printIcon 'VCS_UNSTAGED_ICON')"
+  zstyle ':vcs_info:*' unstagedstr " $p9k_icons[VCS_UNSTAGED_ICON]"
 
   # Hooks are places in vcs_info where you can run your own code. That code can communicate with the code that called it and through that, change the system’s behaviour.
   # For configuration, hooks change the style context:
@@ -187,7 +187,7 @@ p9k_vcs_init() {
   zstyle ':vcs_info:svn*+set-message:*' hooks $P9K_VCS_SVN_HOOKS
 
   # For Hg, only show the branch name
-  zstyle ':vcs_info:hg*:*' branchformat "$(printIcon 'VCS_BRANCH_ICON')%b"
+  zstyle ':vcs_info:hg*:*' branchformat "$p9k_icons[VCS_BRANCH_ICON]%b"
 
   # The `get-revision` function must be turned on for dirty-check to work for Hg
   # The revision of a repository’s work tree (currently for the git and hg backends, where this kind of information is not always vital). For git, the hash value of the currently checked out commit is available via the %i expansion. With hg, the local revision number and the corresponding global hash are available via %i.
@@ -219,6 +219,7 @@ p9k_vcs_init() {
 #   $3 boolean Whether the segment should be joined
 ##
 prompt_vcs() {
+  [[ $P9K_GENERATOR == "zsh-async" && -n $4 ]] && cd $4
   VCS_WORKDIR_DIRTY=false
   VCS_WORKDIR_HALF_DIRTY=false
   local current_state=""
@@ -241,7 +242,6 @@ prompt_vcs() {
     fi
     p9kPrepareSegment $0 ${current_state} $1 "$2" $3 "$vcs_prompt" "" "$vcs_visual_identifier"
   fi
-#  p9kPrepareSegment $0 ${(U)current_state} $1 "$2" $3 "$vcs_prompt" "[[ -n '$vcs_info_msg_0_' ]]"
 }
 
 p9k_vcs_init
