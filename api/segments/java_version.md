@@ -6,12 +6,6 @@
 [https://github.com/bhilburn/powerlevel9k](#https://github.com/bhilburn/powerlevel9k)
 
 
-### Author(s)
-
-- Ben Hilburn (bhilburn)
-- Dominik Ritter (dritter)
-
-
 ## Table of Contents
 
 - [prompt_java_version](#prompt_java_version)

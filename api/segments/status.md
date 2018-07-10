@@ -6,15 +6,18 @@
 [https://github.com/bhilburn/powerlevel9k](#https://github.com/bhilburn/powerlevel9k)
 
 
-### Author(s)
-
-- Ben Hilburn (bhilburn)
-- Dominik Ritter (dritter)
-
-
 ## Table of Contents
 
+- [exit_code_or_status](#exit_code_or_status)
 - [prompt_status](#prompt_status)
+
+## exit_code_or_status
+*Returns an exit code or status text. *
+
+#### Arguments
+
+- **$1** (integer) Exit code
+
 
 ## prompt_status
 *Display an ok icon when no error occur, or hide the segment if option is set to false. When an error occurs, return the error code, or a cross icon if option is set. *
