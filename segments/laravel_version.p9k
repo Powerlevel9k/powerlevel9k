@@ -1,7 +1,7 @@
 #!/usr/bin/env zsh
 # vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
 ################################################################
-# @title powerlevel9k Segment - Java Version
+# @title powerlevel9k Segment - Laravel Version
 # @source https://github.com/bhilburn/powerlevel9k
 ##
 # @authors
