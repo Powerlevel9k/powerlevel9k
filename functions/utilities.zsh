@@ -136,9 +136,7 @@ updateEnvironmentVars
 #   0 if the variable has been defined.
 ##
 function defined() {
-  local varname="$1"
-
-  typeset -p "$varname" > /dev/null 2>&1
+  typeset -p "$1" > /dev/null 2>&1
 }
 
 ###############################################################
