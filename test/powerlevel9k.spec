@@ -123,7 +123,7 @@ function testNewlineOnRpromptCanBeDisabled() {
   local P9K_CUSTOM_RWORLD='echo rworld'
   registerSegment "RWORLD"
   local -a P9K_LEFT_PROMPT_ELEMENTS; P9K_LEFT_PROMPT_ELEMENTS=(custom_world)
-  local P9K_RIGHT_PROMPT_ELEMENTS=(custom_rworld)
+  local -a P9K_RIGHT_PROMPT_ELEMENTS; P9K_RIGHT_PROMPT_ELEMENTS=(custom_rworld)
 
   p9kPreparePrompts
   #╭─\^[[39m^[[0m^[[49m^[[47m ^[[30mworld ^[[49m^[[37m^[[39m  ╰─ ^[[1A^[[39m^[[0m^[[49m^[[37m^[[47m^[[30m rworld^[[30m ^[[00m^[[1B>
