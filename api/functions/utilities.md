@@ -6,12 +6,6 @@
 [https://github.com/bhilburn/powerlevel9k](#https://github.com/bhilburn/powerlevel9k)
 
 
-### Author(s)
-
-- Ben Hilburn (bhilburn)
-- Dominik Ritter (dritter)
-
-
 ### File Description
 
 *This file contains some utility-functions for the powerlevel9k ZSH theme. *

@@ -4,9 +4,9 @@
 # @title powerlevel9k Support File - Test Statistics
 # @source https://github.com/bhilburn/powerlevel9k
 ##
-# @authors
-#   Ben Hilburn (bhilburn)
-#   Dominik Ritter (dritter)
+# @info
+#   This file contains supplemental Test Statistics functions
+#   for the rspec_stats.p9k and symfony_tests segments.
 ##
 
 ################################################################

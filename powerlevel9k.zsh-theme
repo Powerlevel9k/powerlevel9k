@@ -5,8 +5,9 @@
 # @source https://github.com/bhilburn/powerlevel9k
 ##
 # @authors
-#   Ben Hilburn
-#   Dominik Ritter
+#   Ben Hilburn - [@bhilburn](https://github.com/bhilburn)
+#   Dominik Ritter - [@dritter](https://github.com/dritter)
+#   Christo Kotze - [@onaforeignshore](https://github.com/onaforeignshore)
 ##
 # @info
 #   This theme was inspired by [agnoster's Theme](https://gist.github.com/3712874)

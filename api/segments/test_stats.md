@@ -6,11 +6,9 @@
 [https://github.com/bhilburn/powerlevel9k](#https://github.com/bhilburn/powerlevel9k)
 
 
-### Author(s)
+### File Description
 
-- Ben Hilburn (bhilburn)
-- Dominik Ritter (dritter)
-
+*This file contains supplemental Test Statistics functions for the rspec_stats.p9k and symfony_tests segments. *
 
 ## Table of Contents
 

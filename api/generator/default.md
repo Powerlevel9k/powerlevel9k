@@ -8,8 +8,9 @@
 
 ### Author(s)
 
-- Ben Hilburn (bhilburn)
-- Dominik Ritter (dritter)
+- Ben Hilburn - [@bhilburn](https://github.com/bhilburn)
+- Dominik Ritter - [@dritter](https://github.com/dritter)
+- Christo Kotze - [@onaforeignshore](https://github.com/onaforeignshore)
 
 
 ### File Description

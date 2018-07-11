@@ -4,10 +4,6 @@
 # @title powerlevel9k Segment - Laravel Version
 # @source https://github.com/bhilburn/powerlevel9k
 ##
-# @authors
-#   Ben Hilburn (bhilburn)
-#   Dominik Ritter (dritter)
-##
 
 ################################################################
 # Register segment

@@ -4,10 +4,6 @@
 # @title powerlevel9k Icon Functions
 # @source https://github.com/bhilburn/powerlevel9k
 ##
-# @authors
-#   Ben Hilburn (bhilburn)
-#   Dominik Ritter (dritter)
-##
 # @info
 #   This file contains the core icon definitions and icon-functions.
 #

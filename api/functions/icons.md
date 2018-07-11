@@ -6,12 +6,6 @@
 [https://github.com/bhilburn/powerlevel9k](#https://github.com/bhilburn/powerlevel9k)
 
 
-### Author(s)
-
-- Ben Hilburn (bhilburn)
-- Dominik Ritter (dritter)
-
-
 ### File Description
 
 *This file contains the core icon definitions and icon-functions. *

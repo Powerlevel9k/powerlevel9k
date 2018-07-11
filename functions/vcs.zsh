@@ -1,19 +1,13 @@
 #!/usr/bin/env zsh
 # vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
 ################################################################
-# powerlevel9k Theme
-# https://github.com/bhilburn/powerlevel9k
-#
-# This theme was inspired by agnoster's Theme:
-# https://gist.github.com/3712874
-################################################################
-
-################################################################
-# vcs
-# This file holds supplemental VCS functions
-# for the powerlevel9k-ZSH-theme
-# https://github.com/bhilburn/powerlevel9k
-################################################################
+# @title powerlevel9k Utility Functions
+# @source https://github.com/bhilburn/powerlevel9k
+##
+# @info
+#   This file contains supplemental VCS functions
+#   for the vcs.p9k segment
+##
 
 setDefault P9K_VCS_SHOW_SUBMODULE_DIRTY true
 function +vi-git-untracked() {

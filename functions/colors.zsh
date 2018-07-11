@@ -4,10 +4,6 @@
 # @title powerlevel9k Color Functions
 # @source https://github.com/bhilburn/powerlevel9k
 ##
-# @authors
-#   Ben Hilburn (bhilburn)
-#   Dominik Ritter (dritter)
-##
 # @info
 #   This file contains some color-functions for powerlevel9k.
 ##

@@ -4,10 +4,6 @@
 # @title powerlevel9k Utility Functions
 # @source https://github.com/bhilburn/powerlevel9k
 ##
-# @authors
-#   Ben Hilburn (bhilburn)
-#   Dominik Ritter (dritter)
-##
 # @info
 #   This file contains some utility-functions for
 #   the powerlevel9k ZSH theme.

@@ -8,9 +8,9 @@
 
 ### Author(s)
 
-- Ben Hilburn (bhilburn)
-- Dominik Ritter (dritter)
-- Christo Kotze (onaforeignshore)
+- Ben Hilburn - [@bhilburn](https://github.com/bhilburn)
+- Dominik Ritter - [@dritter](https://github.com/dritter)
+- Christo Kotze - [@onaforeignshore](https://github.com/onaforeignshore)
 
 
 ### Dependencies
