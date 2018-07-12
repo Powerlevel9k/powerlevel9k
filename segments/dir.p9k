@@ -149,6 +149,8 @@ prompt_dir() {
         if (( ${#paths} > 0 )); then # root and home are exceptions and won't have paths, so skip this
           local last_marked_folder marked_folder
 
+          # we need to use absolute paths for this strategy to work correctly
+          current_path=${PWD}
           # Search for the folder marker in the parent directories and
           # buildup a pattern that is removed from the current path
           # later on.
