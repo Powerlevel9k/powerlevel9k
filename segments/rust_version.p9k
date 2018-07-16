@@ -9,7 +9,7 @@
 # Register segment
 # Parameters:
 #   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
-#                                                                                           
+#                                                                                               
 registerSegment "RUST_VERSION" "" "darkorange" "$DEFAULT_COLOR"  'Rust'  ''  $'\uE6A8'  $'\uE6A8'  $'\uE7A8 '
 
 ################################################################

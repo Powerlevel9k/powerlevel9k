@@ -9,7 +9,7 @@
 # Register segment
 # Parameters:
 #   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
-#                                                                                                            
+#                                                                                                                
 registerSegment "RVM" "" "grey35" "${DEFAULT_COLOR}"  ''  $'\uE847 '  $'\uF219 '  '\u'$CODEPOINT_OF_OCTICONS_RUBY' '  $'\uF219 '
 
 ################################################################

@@ -9,7 +9,7 @@
 # Register segment
 # Parameters:
 #   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
-#                          ☑          ☑          ☑                                                   
+#                                                      ☑          ☑          ☑                                                   
 registerSegment "TODO" "" "grey50" "${DEFAULT_COLOR}"  $'\u2611'  $'\u2611'  $'\u2611'  '\u'$CODEPOINT_OF_AWESOME_CHECK_SQUARE_O  $'\uF133'
 
 ################################################################

@@ -9,10 +9,10 @@
 # Register segment
 # Parameters:
 #   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
-#                                                                                                
-registerSegment "HOST" "REMOTE" "yellow"           "${DEFAULT_COLOR}"  '(ssh)'  '(ssh)'  '(ssh)'  '(ssh)'  $'\uF489'
-#                                                                                                
-registerSegment "HOST" "LOCAL"  "${DEFAULT_COLOR}" "yellow"            ''  ''  $'\uF67C'  $'\uF67C' $'\uF67C'
+#                                                                                                             
+registerSegment "HOST" "REMOTE" "yellow"           "${DEFAULT_COLOR}"  '(ssh)'  '(ssh)'  '(ssh)'    '(ssh)'   $'\uF489'
+#                                                                                                          
+registerSegment "HOST" "LOCAL"  "${DEFAULT_COLOR}" "yellow"            ''       ''       $'\uF67C'  $'\uF67C' $'\uF67C'
 
 setDefault P9K_HOST_TEMPLATE "%m"
 ################################################################

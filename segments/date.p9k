@@ -9,8 +9,8 @@
 # Register segment
 # Parameters:
 #   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
-#                                                                                                       
-registerSegment 'DATE' '' "$DEFAULT_COLOR_INVERTED" "$DEFAULT_COLOR" ''  $'\uE184'  $'\uF073 '  $'\uF073 '  $'\uF073 '
+#                                                                                                                                  
+registerSegment 'DATE' '' "$DEFAULT_COLOR_INVERTED" "$DEFAULT_COLOR" ''  $'\uE184'  $'\uF073 '  '\u'$CODEPOINT_OF_AWESOME_CALENDAR' '  $'\uF073 '
 
 ################################################################
 # @description

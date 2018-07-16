@@ -15,7 +15,7 @@ case "$OS" in
   #                                                                                                                      
   "Windows")  registerSegment "OS_ICON" "" "black" "white" 'WIN'  $'\uE26F'    $'\uF17A'    $'\uF17A'                        $'\uF17A' ;;
   #                                                               😈           😈           😈                                
-  "BSD")      registerSegment "OS_ICON" "" "black" "white" 'BSD'  $'\U1F608 '  $'\U1F608 '  $'\U1F608 '                      $'\UF30E ' ;;
+  "BSD")      registerSegment "OS_ICON" "" "black" "white" 'BSD'  $'\U1F608 '  $'\U1F608 '  $'\U1F608 '                      $'\uF30E ' ;;
 #  OpenBSD) ;;
 #  DragonFly) ;;
   "Linux")

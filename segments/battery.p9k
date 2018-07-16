@@ -10,10 +10,10 @@
 # Parameters:
 #   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
 #                                                                                         🔋                    🔋                                                 
-registerSegment "BATTERY" "LOW"           "${DEFAULT_COLOR}" "red"                        $'\U1F50B'  $'\uE894'  $'\U1F50B'  '\U'$CODEPOINT_OF_AWESOME_BATTERY_FULL  $'\UF240 '
-registerSegment "BATTERY" "CHARGING"      "${DEFAULT_COLOR}" "yellow"                     $'\U1F50B'  $'\uE894'  $'\U1F50B'  '\U'$CODEPOINT_OF_AWESOME_BATTERY_FULL  $'\UF240 '
-registerSegment "BATTERY" "CHARGED"       "${DEFAULT_COLOR}" "green"                      $'\U1F50B'  $'\uE894'  $'\U1F50B'  '\U'$CODEPOINT_OF_AWESOME_BATTERY_FULL  $'\UF240 '
-registerSegment "BATTERY" "DISCONNECTED"  "${DEFAULT_COLOR}" "${DEFAULT_COLOR_INVERTED}"  $'\U1F50B'  $'\uE894'  $'\U1F50B'  '\U'$CODEPOINT_OF_AWESOME_BATTERY_FULL  $'\UF240 '
+registerSegment "BATTERY" "LOW"           "${DEFAULT_COLOR}" "red"                        $'\U1F50B'  $'\uE894'  $'\U1F50B'  '\u'$CODEPOINT_OF_AWESOME_BATTERY_FULL  $'\uF240 '
+registerSegment "BATTERY" "CHARGING"      "${DEFAULT_COLOR}" "yellow"                     $'\U1F50B'  $'\uE894'  $'\U1F50B'  '\u'$CODEPOINT_OF_AWESOME_BATTERY_FULL  $'\uF240 '
+registerSegment "BATTERY" "CHARGED"       "${DEFAULT_COLOR}" "green"                      $'\U1F50B'  $'\uE894'  $'\U1F50B'  '\u'$CODEPOINT_OF_AWESOME_BATTERY_FULL  $'\uF240 '
+registerSegment "BATTERY" "DISCONNECTED"  "${DEFAULT_COLOR}" "${DEFAULT_COLOR_INVERTED}"  $'\U1F50B'  $'\uE894'  $'\U1F50B'  '\u'$CODEPOINT_OF_AWESOME_BATTERY_FULL  $'\uF240 '
 
 ################################################################
 # @description

@@ -9,8 +9,8 @@
 # Register segment
 # Parameters:
 #   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
-#                                           🌱           🌱           🌱            🌱           
-registerSegment "AWS_EB_ENV" "" black green $'\U1F331 '  $'\U1F331 '  $'\U1F331 '  $'\U1F331 '  $'\UF1BD '
+#                                           🌱           🌱           🌱                                                    
+registerSegment "AWS_EB_ENV" "" black green $'\U1F331 '  $'\U1F331 '  $'\U1F331 '  '\u'$CODEPOINT_OF_AWESOME_DEVIANTART' '  $'\uF1BD '
 
 ################################################################
 # @description

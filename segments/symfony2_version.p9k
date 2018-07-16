@@ -9,7 +9,7 @@
 # Register segment
 # Parameters:
 #   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
-#                                                     
+#                                                                                          
 registerSegment "SYMFONY2_VERSION" "" "grey35" "${DEFAULT_COLOR}"  'SF'  'SF'  'SF'  'SF'  $'\uE757'
 
 ################################################################

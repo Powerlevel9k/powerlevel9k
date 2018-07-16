@@ -9,12 +9,14 @@
 # Register segment
 # Parameters:
 #   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
-#                                                                                         
-registerSegment "USER" "DEFAULT" "yellow" "${DEFAULT_COLOR}"  ''  ''  $'\uF2C0'  $'\uF2C0'  $'\uF2C0'
-#                                                             ⚡                                                           
-registerSegment "USER" "ROOT"    "yellow" "${DEFAULT_COLOR}"  $'\u26A1'  $'\uE801'  $'\uF201'  '\u'$CODEPOINT_OF_OCTICONS_ZAP  $'\uE614 '
+#                                                                                                                              
+registerSegment "USER" "DEFAULT" "yellow" "${DEFAULT_COLOR}"  ''         ''         $'\uF2C0'  '\u'$CODEPOINT_OF_AWESOME_USER_O  $'\uF2C0'
+#                                                             ⚡                                                             
+registerSegment "USER" "ROOT"    "yellow" "${DEFAULT_COLOR}"  $'\u26A1'  $'\uE801'  $'\uF201'  '\u'$CODEPOINT_OF_OCTICONS_ZAP    $'\uE614 '
 #                                                                                                                           
 registerSegment "USER" "SUDO"    "yellow" "${DEFAULT_COLOR}"  $'\uE0A2'  $'\uF09C'  $'\uF09C'  '\u'$CODEPOINT_OF_AWESOME_UNLOCK  $'\uF09C'
+#                                                                                                                           
+registerSegment "USER" "SUDOER"  "yellow" "${DEFAULT_COLOR}"  $'\uE0A2'  $'\uF023'  $'\uF023'  '\u'$CODEPOINT_OF_AWESOME_LOCK    $'\uF023'
 
 setDefault P9K_USER_TEMPLATE "%n"
 ################################################################
@@ -35,11 +37,26 @@ prompt_user() {
     if [[ $(print -P "%#") == '#' ]]; then
       current_state="ROOT"
       segment_content="${P9K_USER_TEMPLATE}"
-    elif sudo -n true 2>/dev/null; then
-      current_state="SUDO"
-      segment_content="${P9K_USER_TEMPLATE}"
     else
-      segment_content="$(whoami)"
+      local sudoStatus
+      sudoStatus=$(sudo -nv 2>&1)
+
+      if (( $? == 0 )); then
+        #"has_sudo__pass_set"
+        current_state="SUDO"
+        segment_content="${P9K_USER_TEMPLATE}"
+      elif echo $sudoStatus | grep -q '^sudo:'; then
+        if sudo -n true 2>/dev/null; then
+          #"has_sudo__no_pass_needed"
+          current_state="SUDOER"
+          segment_content="${P9K_USER_TEMPLATE}"
+        #else
+          #"has_sudo__needs_pass"
+        fi
+      else
+        #"no_sudo"
+        segment_content="$(whoami)"
+      fi
     fi
     p9kPrepareSegment "$0" ${current_state} $1 "$2" $3 "${segment_content}"
   fi

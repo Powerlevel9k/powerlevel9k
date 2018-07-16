@@ -10,7 +10,12 @@
 # Parameters:
 #   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
 #                                                                                                                      
-registerSegment "PUBLIC_IP" "" "$DEFAULT_COLOR" "$DEFAULT_COLOR_INVERTED"  ''  ''  ''  '\u'$CODEPOINT_OF_AWESOME_GLOBE  $'\UF0AC'
+registerSegment "PUBLIC_IP" "" "$DEFAULT_COLOR" "$DEFAULT_COLOR_INVERTED"  ''  ''  ''  '\u'$CODEPOINT_OF_AWESOME_GLOBE  $'\uF0AC'
+
+################################################################
+# Register segment icon
+# Parameters:
+#   name_of_icon  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
 #                                                                                   
 registerIcon "VPN_ICON"  '(vpn)'  '(vpn)'  $'\uF023'  '\u'$CODEPOINT_OF_AWESOME_LOCK  $'\uF023'
 

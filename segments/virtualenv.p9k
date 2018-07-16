@@ -9,8 +9,8 @@
 # Register segment
 # Parameters:
 #   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
-#                                                                             🐍          
-registerSegment "VIRTUALENV" "" "blue" "${DEFAULT_COLOR}"  ''  $'\ue63c'  $'\ue63c'  $'\U1F40D'  $'\UE73C '
+#                                                                                 🐍          
+registerSegment "VIRTUALENV" "" "blue" "${DEFAULT_COLOR}"  ''  $'\uE63C'  $'\uE63C'  $'\U1F40D'  $'\uE73C '
 
 ################################################################
 # @description

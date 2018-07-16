@@ -10,7 +10,7 @@
 # Parameters:
 #   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
 #                                                                            
-registerSegment "LARAVEL_VERSION" "" "maroon" "white" 'Laravel'  ''  ''  ''  $'\ue73f'
+registerSegment "LARAVEL_VERSION" "" "maroon" "white" 'Laravel'  ''  ''  ''  $'\uE73F'
 
 ################################################################
 # @description

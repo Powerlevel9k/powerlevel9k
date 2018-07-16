@@ -10,7 +10,7 @@
 # Parameters:
 #   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
 #                                                                                                                             
-registerSegment 'COMMAND_EXECUTION_TIME' '' "red" "yellow1" 'Dur'  $'\UE89C'  $'\uF253'  '\u'$CODEPOINT_OF_AWESOME_HOURGLASS_END  $'\uF252'
+registerSegment 'COMMAND_EXECUTION_TIME' '' "red" "yellow1" 'Dur'  $'\uE89C'  $'\uF253'  '\u'$CODEPOINT_OF_AWESOME_HOURGLASS_END  $'\uF252'
 
 ################################################################
 # @description

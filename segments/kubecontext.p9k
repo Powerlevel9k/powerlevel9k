@@ -10,7 +10,7 @@
 # Parameters:
 #   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
 #                                                  ⎈         ⎈         ⎈         ⎈         ⎈
-registerSegment "KUBECONTEXT" "" "magenta" "white" $'\U2388'  $'\U2388'  $'\U2388'  $'\U2388'  $'\U2388'
+registerSegment "KUBECONTEXT" "" "magenta" "white" $'\u2388'  $'\u2388'  $'\u2388'  $'\u2388'  $'\u2388'
 
 ################################################################
 # @description

@@ -9,8 +9,8 @@
 # Register segment
 # Parameters:
 #   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
-#                                                                                             
-registerSegment "DROPBOX" '' 'white' 'blue' 'Dropbox'  $'\UF16B'  $'\UF16B'  '\u'$CODEPOINT_OF_AWESOME_DROPBOX  $'\UF16B'
+#                                                                                                           
+registerSegment "DROPBOX" '' 'white' 'blue' 'Dropbox'  $'\uF16B'  $'\uF16B'  '\u'$CODEPOINT_OF_AWESOME_DROPBOX  $'\uF16B'
 
 ################################################################
 # @description
