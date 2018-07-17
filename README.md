@@ -144,7 +144,7 @@ The available segments are:
     * `symfony2_version` - Show the current Symfony2 version, if you are in a Symfony2-Project dir.
 * **Python Segments:**
     * [`anaconda`](#anaconda) - Your active [Anaconda](https://www.continuum.io/why-anaconda) environment.
-    * `pyenv` - Your active python version as reported by the first word of [`pyenv version`](https://github.com/yyuu/pyenv). Note that the segment is not displayed if that word is _system_ i.e. the segment is inactive if you are using system python.
+    * [`pyenv`](#pyenv) - Your active python version as reported by the first word of [`pyenv version`](https://github.com/yyuu/pyenv). Note that the segment is not displayed if that word is _system_ i.e. the segment is inactive if you are using system python.
     * `virtualenv` - Your Python [VirtualEnv](https://virtualenv.pypa.io/en/latest/).
 * **Ruby Segments:**
     * [`chruby`](#chruby) - Ruby environment information using `chruby` (if one is active).
@@ -302,6 +302,17 @@ end of the hostname.
 |`P9K_ALWAYS_SHOW_CONTEXT`|false|Always show this segment, including $USER and hostname.|
 |`P9K_ALWAYS_SHOW_USER`|false|Always show the username, but conditionalize the hostname.|
 |`P9K_CONTEXT_TEMPLATE`|%n@%m|Default context prompt (username@machine). Refer to the [ZSH Documentation](http://zsh.sourceforge.net/Doc/Release/Prompt-Expansion.html) for all possible expansions, including deeper host depths.|
+
+This segment can have different states. They might help you to visualize your
+different privileges. Read more about styling with states [here](https://github.com/bhilburn/powerlevel9k/wiki/Stylizing-Your-Prompt#special-segment-colors).
+
+| State         | Meaning                                                  |
+|---------------|----------------------------------------------------------|
+| `DEFAULT`     | You are a normal user                                    |
+| `ROOT`        | You are the root user                                    |
+| `SUDO`        | You are using elevated rights                            |
+| `REMOTE_SUDO` | You are SSH'ed into the machine and have elevated rights |
+| `REMOTE`      | You are SSH'ed into the machine                          |
 
 ##### date
 
@@ -673,6 +684,22 @@ Additionally the following segment specific parameters can be used to customize
 it: `P9K_PYTHON_ICON`, `P9K_ANACONDA_BACKGROUND`, and
 `P9K_ANACONDA_FOREGROUND`.
 
+##### pyenv
+
+This segment shows the version of Python being used when using `pyenv` to change your current Python stack.
+
+The `PYENV_VERSION` environment variable will be used if specified. Otherwise it figures out the version being used by taking the output of the `pyenv version-name` command.
+
+* If `pyenv` is not in $PATH, nothing will be shown.
+* If the current Python version is the same as the global Python version, nothing will be shown.
+
+| Variable | Default Value | Description |
+|----------|---------------|-------------|
+|`P9K_PYENV_PROMPT_ALWAYS_SHOW`|`false`|Set to true if you wish to show the pyenv segment even if the current Python version is the same as the global Python version|
+
+##### rspec_stats
+
+See [Unit Test Ratios](#unit-test-ratios), below.
 ##### Ruby Segments
 
 ###### chruby

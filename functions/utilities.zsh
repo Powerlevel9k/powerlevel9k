@@ -129,10 +129,10 @@ updateEnvironmentVars
 #   $1 string The name of the variable that should be checked.
 ##
 # @returns
-#   0 if the variable has been defined.
+#   0 if the variable has been defined (even when empty).
 ##
 function defined() {
-  typeset -p "$1" > /dev/null 2>&1
+  [[ ! -z "${(tP)1}" ]]
 }
 
 ###############################################################

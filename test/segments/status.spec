@@ -34,6 +34,7 @@ function testStatusWorksAsExpectedIfReturnCodeIsZeroAndVerboseIsSet() {
     local -a P9K_LEFT_PROMPT_ELEMENTS; P9K_LEFT_PROMPT_ELEMENTS=(status)
 
     assertEquals "%K{black} %F{green}✔ %f%F{green}%k%F{black}%f " "$(buildLeftPrompt)"
+
 }
 
 function testStatusInGeneralErrorCase() {
