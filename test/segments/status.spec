@@ -39,7 +39,7 @@ function testStatusWorksAsExpectedIfReturnCodeIsZeroAndVerboseIsSet() {
 
 function testStatusInGeneralErrorCase() {
     local RETVAL=1
-    local -a P9K_LEFT_PROMPT_ELEMENTS; local P9K_LEFT_PROMPT_ELEMENTS=(status)
+    local -a P9K_LEFT_PROMPT_ELEMENTS; P9K_LEFT_PROMPT_ELEMENTS=(status)
     local P9K_STATUS_VERBOSE=true
     local P9K_STATUS_SHOW_PIPESTATUS=false
 
@@ -47,8 +47,7 @@ function testStatusInGeneralErrorCase() {
 }
 
 function testPipestatusInErrorCase() {
-    local -a RETVALS
-    RETVALS=(0 0 1 0)
+    local -a RETVALS; RETVALS=(0 0 1 0)
     local -a P9K_LEFT_PROMPT_ELEMENTS; P9K_LEFT_PROMPT_ELEMENTS=(status)
     local P9K_STATUS_VERBOSE=true
     local P9K_STATUS_SHOW_PIPESTATUS=true
