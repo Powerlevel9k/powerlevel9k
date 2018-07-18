@@ -22,10 +22,10 @@ registerSegment "LARAVEL_VERSION" "" "maroon" "white" 'Laravel'  ''  ''  ''  $'\
 #   $3 boolean Whether the segment should be joined
 ##
 prompt_laravel_version() {
-  local laravel_version="$(php artisan --version 2>/dev/null)"
-  if [[ -n "${laravel_version}" ]]; then
+  local laravel_version="$(php artisan --version 2> /dev/null)"
+  if [[ -n "${laravel_version}" && "${laravel_version}" =~ "Laravel Framework" ]]; then
     # Remove unrelevant infos
-    laravel_version="${laravel_version//Laravel Framework version /}"
+    laravel_version="${laravel_version//Laravel Framework /}"
 
     p9kPrepareSegment "${0}" "" "${1}" "${2}" "${3}" "${laravel_version}"
   fi
