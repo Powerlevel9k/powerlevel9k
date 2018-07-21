@@ -428,9 +428,15 @@ p9k_preexec() {
 # @noargs
 ##
 p9kPreparePrompts() {
-  local RETVAL RETVALS RPROMPT_PREFIX RPROMPT_SUFFIX
+  # Return values. These need to be global, because
+  # they are used in prompt_status. Also, we need
+  # to get the return value of the last command at
+  # very first in this function. Do not move the
+  # lines down, otherwise the last command is not
+  # what you expected it to be.
   RETVAL=$?
   RETVALS=( "$pipestatus[@]" )
+  local RPROMPT_PREFIX RPROMPT_SUFFIX
 
   setopt localoptions noshwordsplit
 
@@ -631,8 +637,10 @@ prompt_powerlevel9k_setup() {
 # @noargs
 ##
 prompt_p9k_teardown() {
-  add-zsh-hook -D precmd p9k_\*
-  add-zsh-hook -D preexec p9k_\*
+  add-zsh-hook -D precmd p9k\*
+  add-zsh-hook -D preexec p9k\*
+  # unhook from chpwd
+  chpwd_functions=( "${chpwd_functions[@]//p9kChPwd/}" )
   PROMPT='%m%# '
   RPROMPT=
 }
