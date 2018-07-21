@@ -1517,6 +1517,22 @@ prompt_todo() {
   fi
 }
 
+# taskwarrior: show data from taskwarrior
+prompt_tw() {
+  if $(hash task 2>&-); then
+    today=$(task status:pending +DUETODAY count)
+    over=$(task status:pending +OVERDUE count)
+    pending=$(task status:pending count)
+    if [[ "$pending" = <-> ]]; then
+      "$1_prompt_segment" "$0" "$2" "244" "$DEFAULT_COLOR" "Overdue:$over Today:$today Pending:
+$pending" 'TODO_ICON'
+    else
+      "$1_prompt_segment" "$0" "$2" "244" "$DEFAULT_COLOR" "No pending tasks!" 'TODO_ICON'
+    fi
+  fi
+}
+
+
 ################################################################
 # VCS segment: shows the state of your repository, if you are in a folder under
 # version control

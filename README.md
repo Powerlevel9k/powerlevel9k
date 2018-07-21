@@ -152,6 +152,7 @@ The segments that are currently available are:
   output of an arbitrary command.
 * [`command_execution_time`](#command_execution_time) - Display the time the current command took to execute.
 * [`todo`](http://todotxt.com/) - Shows the number of tasks in your todo.txt tasks file.
+* [`tw`](#tw) - Display count of pending tasks using data from TaskWarrior.
 * `detect_virt` - Virtualization detection with systemd
 * `newline` - Continues the prompt on a new line.
 * `openfoam` - Shows the currently sourced [OpenFOAM](https://openfoam.org/) environment.
@@ -627,6 +628,14 @@ segment, as well:
 # Output time, date, and a symbol from the "Awesome Powerline Font" set
 POWERLEVEL9K_TIME_FORMAT="%D{%H:%M:%S \uE868  %d.%m.%y}"
 ```
+
+##### tw
+
+This segment add information about pending tasks from TaskWarrior. Data is separated in three
+different classes: overdue, due today and pending.
+
+More information about TaskWarrior can be found [`here`](https://taskwarrior.org/).
+
 ##### user
 
 The `user` segment will print the username.
