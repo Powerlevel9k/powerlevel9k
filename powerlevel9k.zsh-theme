@@ -165,8 +165,8 @@ for segment in $p9kDirectory/segments/*.p9k; do
 done
 
 # load custom segments
-if [[ -d ~/.config/powerlevel9k/segments ]]; then
-  for segment in ~/.config/powerlevel9k/segments/*.p9k; do
+if [[ -d $HOME/.config/powerlevel9k/segments ]]; then
+  for segment in $HOME/.config/powerlevel9k/segments/*.p9k; do
     segmentName=${${segment##*/}%.p9k}
     if segmentInUse "$segmentName"; then
       source "${segment}" 2>&1
