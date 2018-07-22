@@ -108,7 +108,10 @@ function testSegmentShouldNotBeJoinedIfPredecessingSegmentIsNotJoinedButConditio
 
 function testUpsearchWithFiles() {
   local OLDPWD="${PWD}"
-  local TESTDIR=/tmp/p9k-test/1/12/123/1234/12345/123456/1234567/12345678/123456789/gap\ dir/test
+  # On Mac /tmp is a symlink to /private/tmp, so we want
+  # to dereference the symlink here to make the test work.
+  local TMP="$(print -l /tmp(:A))"
+  local TESTDIR=${TMP}/p9k-test/1/12/123/1234/12345/123456/1234567/12345678/123456789/gap\ dir/test
 
   mkdir -p "${TESTDIR}"
   cd "${TESTDIR}"
@@ -130,18 +133,21 @@ function testUpsearchWithFiles() {
   assertEquals "4" "${#result}"
 
   # The Paths should be sorted by length. The innermost (longest) path should be returned first.
-  assertEquals "/tmp/p9k-test/1/12/123/1234/12345/123456/1234567/12345678/123456789/gap dir/.needle" "${result[1]}"
-  assertEquals "/tmp/p9k-test/1/12/123/1234/12345/123456/1234567/12345678/.needle" "${result[2]}"
-  assertEquals "/tmp/p9k-test/1/12/123/1234/12345/.needle" "${result[3]}"
-  assertEquals "/tmp/p9k-test/1/12/123/.needle" "${result[4]}"
+  assertEquals "${TMP}/p9k-test/1/12/123/1234/12345/123456/1234567/12345678/123456789/gap dir/.needle" "${result[1]}"
+  assertEquals "${TMP}/p9k-test/1/12/123/1234/12345/123456/1234567/12345678/.needle" "${result[2]}"
+  assertEquals "${TMP}/p9k-test/1/12/123/1234/12345/.needle" "${result[3]}"
+  assertEquals "${TMP}/p9k-test/1/12/123/.needle" "${result[4]}"
 
   cd "${OLDPWD}"
-  rm -fr "/tmp/p9k-test"
+  rm -fr "${TMP}/p9k-test"
 }
 
 function testUpsearchWithDirectories() {
   local OLDPWD="${PWD}"
-  local TESTDIR=/tmp/p9k-test/1/12/123/1234/12345/123456/1234567/12345678/123456789/gap\ dir/test
+  # On Mac /tmp is a symlink to /private/tmp, so we want
+  # to dereference the symlink here to make the test work.
+  local TMP="$(print -l /tmp(:A))"
+  local TESTDIR=${TMP}/p9k-test/1/12/123/1234/12345/123456/1234567/12345678/123456789/gap\ dir/test
 
   mkdir -p "${TESTDIR}"
   cd "${TESTDIR}"
@@ -163,13 +169,13 @@ function testUpsearchWithDirectories() {
   assertEquals "4" "${#result}"
 
   # The Paths should be sorted by length. The innermost (longest) path should be returned first.
-  assertEquals "/tmp/p9k-test/1/12/123/1234/12345/123456/1234567/12345678/123456789/gap dir/.needle" "${result[1]}"
-  assertEquals "/tmp/p9k-test/1/12/123/1234/12345/123456/1234567/12345678/.needle" "${result[2]}"
-  assertEquals "/tmp/p9k-test/1/12/123/1234/12345/.needle" "${result[3]}"
-  assertEquals "/tmp/p9k-test/1/12/123/.needle" "${result[4]}"
+  assertEquals "${TMP}/p9k-test/1/12/123/1234/12345/123456/1234567/12345678/123456789/gap dir/.needle" "${result[1]}"
+  assertEquals "${TMP}/p9k-test/1/12/123/1234/12345/123456/1234567/12345678/.needle" "${result[2]}"
+  assertEquals "${TMP}/p9k-test/1/12/123/1234/12345/.needle" "${result[3]}"
+  assertEquals "${TMP}/p9k-test/1/12/123/.needle" "${result[4]}"
 
   cd "${OLDPWD}"
-  rm -fr "/tmp/p9k-test"
+  rm -fr "${TMP}/p9k-test"
 }
 
 source shunit2/source/2.1/src/shunit2

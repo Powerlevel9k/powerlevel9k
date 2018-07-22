@@ -363,20 +363,14 @@ function truncatePathFromRight() {
 # Parameters:
 #   * $1 Name: string - Name of file or directory
 function upsearch() {
-  local currentPath="${PWD}"
-  local -a paths
-  paths=()
+  # The upsearch pattern needs extended globbing
+  setopt extended_glob
 
-  while [[ -n "${currentPath}" ]]; do
-    # Remove the last dir part (delete after last slash)
-    currentPath="${currentPath%/*}"
-    # Add to paths array
-    paths+=("${currentPath}")
+  local -a results
+  # Search upwards (See https://unix.stackexchange.com/a/64164)
+  results=( ${(f)"$( print -rl (../)#$1(:a) )"} )
+  # Print all found paths in reverse order
+  for i in "${(Oa)results[@]}"; do
+    echo $i
   done
-
-  # Search in all Paths for file. The paths are escaped
-  # automatically by ZSH. We just need to pass every value
-  # from the array ((@) modifier).
-  # command find "${(@)paths}" -maxdepth 1 -name "${1}"
-  command find "${(@)paths}" -maxdepth 1 -name "${1}" 2>/dev/null
 }
