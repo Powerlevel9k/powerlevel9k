@@ -38,32 +38,32 @@ function mockNoStackVersion() {
 #   unalias stack
 # }
 
-function testStackProjectSegmentIfStackIsNotAvailable() {
-  alias stack=mockNoStackVersion
-  POWERLEVEL9K_CUSTOM_WORLD='echo world'
-  POWERLEVEL9K_HASKELL_ICON='x'
-  POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(custom_world stack_project)
+# function testStackProjectSegmentIfStackIsNotAvailable() {
+#   alias stack=mockNoStackVersion
+#   POWERLEVEL9K_CUSTOM_WORLD='echo world'
+#   POWERLEVEL9K_HASKELL_ICON='x'
+#   POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(custom_world stack_project)
 
-  assertEquals "%K{white} %F{black}world %k%F{white}%f " "$(build_left_prompt)"
+#   assertEquals "%K{white} %F{black}world %k%F{white}%f " "$(build_left_prompt)"
 
-  unset POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
-  unset POWERLEVEL9K_HASKELL_ICON
-  unset POWERLEVEL9K_CUSTOM_WORLD
-  unalias stack
-}
+#   unset POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
+#   unset POWERLEVEL9K_HASKELL_ICON
+#   unset POWERLEVEL9K_CUSTOM_WORLD
+#   unalias stack
+# }
 
-function testStackProjectSegmentPrintsNothingIfStackIsNotAvailable() {
-  alias stack=noStack
-  POWERLEVEL9K_CUSTOM_WORLD='echo world'
-  POWERLEVEL9K_HASKELL_ICON='x'
-  POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(custom_world stack_project)
+# function testStackProjectSegmentPrintsNothingIfStackIsNotAvailable() {
+#   alias stack=noStack
+#   POWERLEVEL9K_CUSTOM_WORLD='echo world'
+#   POWERLEVEL9K_HASKELL_ICON='x'
+#   POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(custom_world stack_project)
 
-  assertEquals "%K{white} %F{black}world %k%F{white}%f " "$(build_left_prompt)"
+#   assertEquals "%K{white} %F{black}world %k%F{white}%f " "$(build_left_prompt)"
 
-  unset POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
-  unset POWERLEVEL9K_HASKELL_ICON
-  unset POWERLEVEL9K_CUSTOM_WORLD
-  unalias stack
-}
+#   unset POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
+#   unset POWERLEVEL9K_HASKELL_ICON
+#   unset POWERLEVEL9K_CUSTOM_WORLD
+#   unalias stack
+# }
 
 source shunit2/source/2.1/src/shunit2
