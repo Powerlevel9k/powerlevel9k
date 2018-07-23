@@ -31,7 +31,7 @@ function testStackProjectSegment() {
   POWERLEVEL9K_HASKELL_ICON='x'
   POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(stack_project)
 
-  assertEquals "%K{001} %F{white%}x %f%F{white}Stack 1.7.1 %k%F{purple3}%f " "$(build_left_prompt)"
+  assertEquals "%K{001} %F{white%}x %f%F{white}Stack 1.7.1 %k%F{purple3}%f " "$(build_left_prompt)"
 
   unset POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
   unset POWERLEVEL9K_HASKELL_ICON
@@ -44,7 +44,7 @@ function testStackProjectSegmentIfStackIsNotAvailable() {
   POWERLEVEL9K_HASKELL_ICON='x'
   POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(custom_world stack_project)
 
-  assertEquals "%K{white} %F{black}world %k%F{white}%f " "$(build_left_prompt)"
+  assertEquals "%K{white} %F{black}world %k%F{white}%f " "$(build_left_prompt)"
 
   unset POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
   unset POWERLEVEL9K_HASKELL_ICON
@@ -58,7 +58,7 @@ function testStackProjectSegmentPrintsNothingIfStackIsNotAvailable() {
   POWERLEVEL9K_HASKELL_ICON='x'
   POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(custom_world stack_project)
 
-  assertEquals "%K{white} %F{black}world %k%F{white}%f " "$(build_left_prompt)"
+  assertEquals "%K{white} %F{black}world %k%F{white}%f " "$(build_left_prompt)"
 
   unset POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
   unset POWERLEVEL9K_HASKELL_ICON
