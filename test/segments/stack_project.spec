@@ -11,14 +11,14 @@ function setUp() {
   source powerlevel9k.zsh-theme
 }
 
-function mockStackVersion() {
-  case "$1" in
-    "--version")
-      echo "Version 1.7.1, Git revision 681c800873816c022739ca7ed14755e85a579565 (5807 commits) x86_64 hpack-0.28.2"
-      ;;
-    default)
-  esac
-}
+# function mockStackVersion() {
+#   case "$1" in
+#     "--version")
+#       echo "Version 1.7.1, Git revision 681c800873816c022739ca7ed14755e85a579565 (5807 commits) x86_64 hpack-0.28.2"
+#       ;;
+#     default)
+#   esac
+# }
 
 function mockNoStackVersion() {
   # This should output some error
@@ -31,7 +31,7 @@ function mockNoStackVersion() {
 #   POWERLEVEL9K_HASKELL_ICON='x'
 #   POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(stack_project)
 
-#   assertEquals "%K{purple} %F{white}x %f%F{white}Stack %k%F{purple}%f " "$(build_left_prompt)"
+#   assertEquals "%K{purple} %F{white%}x %f%F{white}Stack %k%F{purple}%f " "$(build_left_prompt)"
 
 #   unset POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
 #   unset POWERLEVEL9K_HASKELL_ICON
