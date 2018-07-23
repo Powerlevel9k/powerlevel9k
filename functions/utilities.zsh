@@ -368,9 +368,8 @@ function upsearch() {
 
   local -a results
   # Search upwards (See https://unix.stackexchange.com/a/64164)
-  results=( ${(f)"$( print -rl (../)#$1(:a) )"} )
-  # Print all found paths in reverse order
-  for i in "${(Oa)results[@]}"; do
-    echo $i
-  done
+  results=((../)#$1(:a))
+
+  # Print in lexical order
+  print -l ${(@o)results}
 }
