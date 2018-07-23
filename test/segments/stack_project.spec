@@ -26,17 +26,17 @@ function mockNoStackVersion() {
   return 1
 }
 
-function testStackProjectSegment() {
-  alias stack=mockStackVersion
-  POWERLEVEL9K_HASKELL_ICON='x'
-  POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(stack_project)
+# function testStackProjectSegment() {
+#   alias stack=mockStackVersion
+#   POWERLEVEL9K_HASKELL_ICON='x'
+#   POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(stack_project)
 
-  assertEquals "%K{purple} %F{white}x %f%F{white}Stack %k%F{purple}%f " "$(build_left_prompt)"
+#   assertEquals "%K{purple} %F{white}x %f%F{white}Stack %k%F{purple}%f " "$(build_left_prompt)"
 
-  unset POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
-  unset POWERLEVEL9K_HASKELL_ICON
-  unalias stack
-}
+#   unset POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
+#   unset POWERLEVEL9K_HASKELL_ICON
+#   unalias stack
+# }
 
 function testStackProjectSegmentIfStackIsNotAvailable() {
   alias stack=mockNoStackVersion
