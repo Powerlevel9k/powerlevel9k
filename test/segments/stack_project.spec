@@ -20,11 +20,11 @@ function setUp() {
 #   esac
 # }
 
-function mockNoStackVersion() {
-  # This should output some error
-  >&2 echo "Stack does not seem to be present"
-  return 1
-}
+# function mockNoStackVersion() {
+#   # This should output some error
+#   >&2 echo "Stack does not seem to be present"
+#   return 1
+# }
 
 # function testStackProjectSegment() {
 #   alias stack=mockStackVersion
