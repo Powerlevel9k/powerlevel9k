@@ -2,7 +2,7 @@
 # vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
 ################################################################
 # @title powerlevel9k Segment - Dir Writable
-# @source https://github.com/bhilburn/powerlevel9k
+# @source [powerlevel9k](https://github.com/bhilburn/powerlevel9k)
 ##
 
 ################################################################
@@ -62,14 +62,13 @@ setDefault P9K_SHORTEN_FOLDER_MARKER ".shorten_folder_marker"
 ##
 prompt_dir() {
   [[ $P9K_GENERATOR == "zsh-async" && -n $4 ]] && cd $4
-  local trunc_path directory test_dir test_dir_length
   local -a paths
   # using $PWD instead of "$(print -P '%~')" to allow use of P9K_DIR_PATH_ABSOLUTE
   local current_path=$PWD # WAS: local current_path="$(print -P '%~')"
   # check if the user wants to use absolute paths or "~" paths
   [[ ${(L)P9K_DIR_PATH_ABSOLUTE} != "true" ]] && current_path=${current_path//$HOME/"~"}
   # declare all local variables
-  local threshhold
+  local directory test_dir test_dir_length trunc_path threshold
   # if we are not in "~" or "/", split the paths into an array and exclude "~"
   (( ${#current_path} > 1 )) && paths=(${(s:/:)${current_path//"~\/"/}}) || paths=()
   # only run the code if SHORTEN_DIR_LENGTH is set, or we are using the two strategies that don't rely on it.
@@ -99,10 +98,10 @@ prompt_dir() {
       ;;
       truncate_to_first_and_last)
         if (( ${#current_path} > 1 )) && (( ${P9K_SHORTEN_DIR_LENGTH} > 0 )); then
-          threshhold=$(( ${P9K_SHORTEN_DIR_LENGTH} * 2))
+          threshold=$(( ${P9K_SHORTEN_DIR_LENGTH} * 2))
           # if we are in "~", add it back into the paths array
           [[ $current_path == '~'* ]] && paths=("~" "${paths[@]}")
-          if (( ${#paths} > $threshhold )); then
+          if (( ${#paths} > $threshold )); then
             local num=$(( ${#paths} - ${P9K_SHORTEN_DIR_LENGTH} ))
             # repace the middle elements
             for (( i=$P9K_SHORTEN_DIR_LENGTH; i<$num; i++ )); do
@@ -132,24 +131,23 @@ prompt_dir() {
           # Search for the folder marker in the parent directories and
           # buildup a pattern that is removed from the current path
           # later on.
-          for marked_folder in $(upsearch $P9K_SHORTEN_FOLDER_MARKER); do
-            if [[ "$marked_folder" == "/" ]]; then
-              # If we reached root folder, stop upsearch.
-              trunc_path="/"
-            elif [[ "$marked_folder" == "$HOME" ]]; then
-              # If we reached home folder, stop upsearch.
-              trunc_path="~"
-            elif [[ "${marked_folder%/*}" == $last_marked_folder ]]; then
-              trunc_path="${trunc_path%/}/${marked_folder##*/}"
-            else
-              trunc_path="${trunc_path%/}/$P9K_SHORTEN_DELIMITER/${marked_folder##*/}"
-            fi
-            last_marked_folder=$marked_folder
-          done
-
-          # Replace the shortest possible match of the marked folder from
-          # the current path.
-          current_path=$trunc_path${current_path#${last_marked_folder}*}
+          local -a markedFolders
+          local OLDIFS="${IFS}"
+          IFS=$'\n'
+          markedFolders=($(upsearch $POWERLEVEL9K_SHORTEN_FOLDER_MARKER $current_path))
+          IFS="${OLDIFS}"
+          if (( ${#markedFolders} > 0 )); then
+            # Take the first match. This is the longest one.
+            local markedFolder="${markedFolders[1]}"
+            # Remove the last path segment from the match. The last path segment
+            # is the matched marker.
+            markedFolder="${markedFolder%/*}"
+            # Remove one directory more. If the match was in /tmp/1/12, then we want
+            # to show .../12/some/deep/folder. That is why we have to go to the
+            # "parent" folder..
+            markedFolder="${markedFolder%/*}"
+            current_path="${POWERLEVEL9K_SHORTEN_DELIMITER}${current_path#${markedFolder}*}"
+          fi
         fi
       ;;
       truncate_with_package_name)
