@@ -2,12 +2,25 @@
 # vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
 ################################################################
 # @title powerlevel9k Utility Functions
-# @source https://github.com/bhilburn/powerlevel9k
+# @source [powerlevel9k](https://github.com/bhilburn/powerlevel9k)
 ##
 # @info
 #   This file contains some utility-functions for
 #   the powerlevel9k ZSH theme.
 ##
+
+################################################################
+# Source autoload functions
+################################################################
+local autoload_path="$p9kDirectory/functions/autoload"
+# test if we already autoloaded the functions
+if [[ ${fpath[(ie)$autoload_path]} -gt ${#fpath} ]]; then
+  fpath=( $autoload_path "${fpath[@]}" )
+  autoload -Uz segmentShouldBeJoined
+  autoload -Uz segmentShouldBePrinted
+  autoload -Uz truncatePath
+  autoload -Uz upsearch
+fi
 
 ###############################################################
 # description
@@ -326,232 +339,4 @@ printDeprecationVarWarning() {
       fi
     fi
   done
-}
-
-###############################################################
-# @description
-#   A helper function to determine if a segment should be
-#   joined or promoted to a full one.
-##
-# args
-#   $1 integer The array index of the current segment.
-#   $2 integer The array index of the last printed segment.
-#   $3 array The array of segments of the left or right prompt.
-##
-function segmentShouldBeJoined() {
-  local current_index=$1
-  local last_segment_index=$2
-  # Explicitly split the elements by whitespace.
-  local -a elements
-  elements=(${=3})
-
-  local current_segment=${elements[$current_index]}
-  local joined=false
-  if [[ ${current_segment[-7,-1]} == '_joined' ]]; then
-    joined=true
-    # promote segment to a full one, if the predecessing full segment
-    # was conditional. So this can only be the case for segments that
-    # are not our direct predecessor.
-    if (( $(($current_index - $last_segment_index)) > 1)); then
-      # Now we have to examine every previous segment, until we reach
-      # the last printed one (found by its index). This is relevant if
-      # all previous segments are joined. Then we want to join our
-      # segment as well.
-      local examined_index=$((current_index - 1))
-      while (( $examined_index > $last_segment_index )); do
-        local previous_segment=${elements[$examined_index]}
-        # If one of the examined segments is not joined, then we know
-        # that the current segment should not be joined, as the target
-        # segment is the wrong one.
-        if [[ ${previous_segment[-7,-1]} != '_joined' ]]; then
-          joined=false
-          break
-        fi
-        examined_index=$((examined_index - 1))
-      done
-    fi
-  fi
-
-  # Return 1 means error; return 0 means no error. So we have
-  # to invert $joined
-  if [[ "$joined" == "true" ]]; then
-    return 0
-  else
-    return 1
-  fi
-}
-
-###############################################################
-# @description
-#   A helper function to determine if a segment should be
-#   printed or not.
-#
-#   Conditions have three layers:
-#     1. No segment should print if they provide no
-#        content (default condition).
-#     2. Segments can define a default condition on
-#        their own, overriding the previous one.
-#     3. Users can set a condition for each segment.
-#        This is the trump card, and has highest
-#        precedence.
-##
-# @args
-#   $1 string The stateful name of the segment
-#   $2 string The user condition that gets evaluated
-#   $3 string Content of the segment (for default condition)
-##
-segmentShouldBePrinted() {
-  local STATEFUL_NAME="${1}"
-  local USER_CONDITION="${2}"
-  local CONTENT="${3}"
-
-  local CONDITION
-  local SEGMENT_CONDITION="P9K_${STATEFUL_NAME}_CONDITION"
-  if defined "${SEGMENT_CONDITION}"; then
-    CONDITION="${(P)SEGMENT_CONDITION}"
-  elif [[ -n "${USER_CONDITION}" && "${USER_CONDITION[0,1]}" == "[" ]]; then
-    CONDITION="${USER_CONDITION}"
-  else
-    CONDITION='[[ -n "${CONTENT}" ]]'
-  fi
-  # Precompile condition.
-  eval "${CONDITION}"
-  return $?
-}
-
-################################################################
-# @description
-#   Given a directory path, truncate it according to the settings.
-##
-# @args
-#   $1 string The directory path to be truncated.
-#   $2 integer Length to truncate to.
-#   $3 string Delimiter to use.
-#   $4 string Where to truncate from - "right" | "middle" | "left". If omited, assumes right.
-##
-function truncatePath() {
-  # if the current path is not 1 character long (e.g. "/" or "~")
-  if (( ${#1} > 1 )); then
-    # convert $2 from string to integer
-    2=$(( $2 ))
-    # set $3 to "" if not defined
-    [[ -z $3 ]] && local delim="" || local delim=$(echo -n $3)
-    # set $4 to "right" if not defined
-    [[ -z $4 ]] && 4="right"
-    # create a variable for the truncated path.
-    local trunc_path
-    local delim_len=${#delim}
-    # if the path is in the home folder, add "~/" to the start otherwise "/"
-    [[ $1 == "~"* ]] && trunc_path='~/' || trunc_path='/'
-    # split the path into an array using "/" as the delimiter
-    local paths=$1
-    paths=(${(s:/:)${paths//"~\/"/}})
-    # declare locals for the directory being tested and its length
-    local test_dir test_dir_length threshhold last_pos
-    # do the needed truncation
-    case $4 in
-      right)
-        # include the delimiter length in the threshhold
-        threshhold=$(( $2 + $delim_len ))
-        # loop through the paths
-        for (( i=1; i<${#paths}; i++ )); do
-          # get the current directory value
-          test_dir=$paths[$i]
-          test_dir_length=${#test_dir}
-          # only truncate if the resulting truncation will be shorter than
-          # the truncation + delimiter length and at least 3 characters
-          if (( $test_dir_length > $threshhold )) && (( $test_dir_length > 3 )); then
-            # use the first $2 characters and the delimiter
-            trunc_path+="${test_dir:0:$2}${delim}/"
-          else
-            # use the full path
-            trunc_path+="${test_dir}/"
-          fi
-        done
-      ;;
-      middle)
-        # we need double the length for start and end truncation + delimiter length
-        threshhold=$(( $2 * 2 ))
-        # loop through the paths
-        for (( i=1; i<${#paths}; i++ )); do
-          # get the current directory value
-          test_dir=$paths[$i]
-          test_dir_length=${#test_dir}
-          # only truncate if the resulting truncation will be shorter than
-          # the truncation + delimiter length
-          if (( $test_dir_length > $threshhold )); then
-            # use the first $2 characters, the delimiter and the last $2 characters
-            last_pos=$(( $test_dir_length - $2 ))
-            trunc_path+="${test_dir:0:$2}${delim}${test_dir:$last_pos:$test_dir_length}/"
-          else
-            # use the full path
-            trunc_path+="${test_dir}/"
-          fi
-        done
-      ;;
-      left)
-        # include the delimiter length in the threshhold
-        threshhold=$(( $2 + $delim_len ))
-        # loop through the paths
-        for (( i=1; i<${#paths}; i++ )); do
-          # get the current directory value
-          test_dir=$paths[$i]
-          test_dir_length=${#test_dir}
-          # only truncate if the resulting truncation will be shorter than
-          # the truncation + delimiter length and at least 3 characters
-          if (( $test_dir_length > $threshhold )) && (( $test_dir_length > 3 )); then
-            # use the delimiter and the last $2 characters
-            last_pos=$(( $test_dir_length - $2 ))
-            trunc_path+="${delim}${test_dir:$last_pos:$test_dir_length}/"
-          else
-            # use the full path
-            trunc_path+="${test_dir}/"
-          fi
-        done
-      ;;
-  esac
-    # return the truncated path + the current directory
-    echo $trunc_path${1:t}
-  else # current path is 1 character long (e.g. "/" or "~")
-    echo $1
-  fi
-}
-
-###############################################################
-# @description
-#   Given a directory path, truncate it according to the settings for
-#   `truncate_from_right`.
-##
-# @args
-#   $1 string Directory path.
-##
-# @note
-#   Deprecated. Use `truncatePath` instead.
-##
-function truncatePathFromRight() {
-  local delim_len=${#P9K_SHORTEN_DELIMITER:-1}
-  echo $1 | sed $SED_EXTENDED_REGEX_PARAMETER \
- "s@(([^/]{$((P9K_SHORTEN_DIR_LENGTH))})([^/]{$delim_len}))[^/]+/@\2$P9K_SHORTEN_DELIMITER/@g"
-}
-
-###############################################################
-# @description
-#   Search recursively in parent folders for given file.
-##
-# @args
-#   $1 string Filename to search for.
-##
-function upsearch() {
-  if [[ "$PWD" == "$HOME" || "$PWD" == "/" ]]; then
-    echo "$PWD"
-  elif test -e "$1"; then
-    pushd .. > /dev/null
-    upsearch "$1"
-    popd > /dev/null
-    echo "$PWD"
-  else
-    pushd .. > /dev/null
-    upsearch "$1"
-    popd > /dev/null
-  fi
 }

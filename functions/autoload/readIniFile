@@ -1,0 +1,67 @@
+# vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
+################################################################
+# @title powerlevel9k Autoload Function - readIniFile
+# @sources
+#   [powerlevel9k](https://github.com/bhilburn/powerlevel9k)
+#   [read-ini-file](https://github.com/zdharma/Zsh-100-Commits-Club/blob/master/Zsh-Native-Scripting-Handbook.adoc)
+##
+# @info
+#   This file contains the readIniFile autoload function for
+#   the powerlevel9k ZSH theme. It is a modified (and extended)
+#   version of Sebastian Gniazdowski's read-ini-file.
+##
+# @authors
+#   Sebastian Gniazdowski - [@zdharma](https://github.com/zdharma)
+#   Christo Kotze - [@onaforeignshore](https://github.com/onaforeignshore)
+##
+
+# The code should be placed in the $fpath, and `autoload -Uz readIniFile` should be invoked.
+
+# Some sections are Copyright (c) 2018 Sebastian Gniazdowski
+
+################################################################
+# @description
+#   Parses an INI file to shell variables in the following way:
+#   prefix_section_field
+##
+# @args
+#   $1 string Path to the ini file to parse
+#   $2 string Prefix for variables
+##
+# @usage
+#   readIniFile ./powerlevel9k.ini POWERLEVEL9K
+#   readIniFile ./powerlevel9k.ini P9K
+##
+# @function readIniFile() {}
+setopt localoptions extendedglob
+
+local __ini_file="$1" __out_hash="$2"
+local IFS='' __line __cur_section="void" __access_string __value_string
+local -a match mbegin mend
+
+[[ ! -r "$__ini_file" ]] && { builtin print -r "read-ini-file: an ini file is unreadable ($__ini_file)"; return 1; }
+
+while read -r -t 1 __line; do
+    if [[ "$__line" = [[:blank:]]#\;* || "$__line" = [[:blank::]]#\#* ]]; then # line starts with comment (; or #)
+        continue
+    # Match "[Section]" line
+    elif [[ "$__line" = (#b)[[:blank:]]#\[([^\]]##)\][[:blank:]]# ]]; then
+        __cur_section="${match[1]}"
+    # Match "string = string" line
+    elif [[ "$__line" = (#b)[[:blank:]]#([^[:blank:]=]##)[[:blank:]]#[=][[:blank:]]#(*) ]]; then
+        __value_string="${match[2]%% [\;\#]*}" # remove comments
+        __value_string="${__value_string%"${__value_string##*[! $'\t']}"}" # severe trick - remove trailing whitespace
+        [[ $__cur_section == "GLOBAL" ]] && __access_string="${__out_hash}_${match[1]}" || __access_string="${__out_hash}_${__cur_section}_${match[1]}"
+        if [[ "${__value_string[1]}" == "(" ]]; then # array variable
+            __value_string="${${${__value_string//\(/}//\)/}//  / }" # remove brackets and multiple spaces
+            __value_string="${__value_string#"${__value_string%%[! $'\t']*}"}" # severe trick - remove leading whitespace
+            : ${(PA)__access_string::=${(s: :)__value_string}} # array assignment with values split on space
+        else # direct variable
+            : ${(P)__access_string::=${${__value_string//\"/}//\'/}} # remove quotes
+        fi
+    fi
+done < "$__ini_file"
+
+return 0
+
+# vim:ft=zsh:et
