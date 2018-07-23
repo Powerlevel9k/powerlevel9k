@@ -2,7 +2,7 @@
 # vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
 ################################################################
 # @title powerlevel9k Icon Functions
-# @source https://github.com/bhilburn/powerlevel9k
+# @source [powerlevel9k](https://github.com/bhilburn/powerlevel9k)
 ##
 # @info
 #   This file contains the core icon definitions and icon-functions.
