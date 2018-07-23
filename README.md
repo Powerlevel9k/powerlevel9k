@@ -138,6 +138,8 @@ The segments that are currently available are:
     * `swift_version` - Show the version number of the installed Swift.
 * **Java Segments:**
     * `java_version` - Show the current Java version.
+* **Haskell Segments:**
+    * `stack_project` - Show the current Stack version if you are in a Stack project directory.
 
 **Cloud Segments:**
 * **AWS Segments:**
