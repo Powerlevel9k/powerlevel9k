@@ -36,6 +36,12 @@ function mockStackVersion() {
   esac
 }
 
+function mockFile(){
+  if [ -n "${STACK_YAML:-}" ]; then
+    assertEquals "${STACK_YAML}" "stack.yaml"  # Mock file for testing.
+  fi
+}
+
 function mockNoStackVersion() {
   # This should output some error
   >&2 echo "Stack does not seem to be present"
