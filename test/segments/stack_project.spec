@@ -13,7 +13,7 @@ function setUp() {
 
 function mockStackVersion() {
   case "$1" in
-    "artisan")
+    "--version")
       echo "Version 1.7.1, Git revision 681c800873816c022739ca7ed14755e85a579565 (5807 commits) x86_64 hpack-0.28.2"
       ;;
     default)
@@ -31,7 +31,7 @@ function testStackProjectSegment() {
   POWERLEVEL9K_HASKELL_ICON='x'
   POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(stack_project)
 
-  assertEquals "%K{001} %F{white%}x %f%F{white}Stack 1.7.1 %k%F{purple3}%f " "$(build_left_prompt)"
+  assertEquals "%K{001} %F{white%}x %f%F{white}Stack 1.7.1 %k%F{purple}%f " "$(build_left_prompt)"
 
   unset POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
   unset POWERLEVEL9K_HASKELL_ICON
