@@ -40,6 +40,7 @@ function testStackProjectSegment() {
 # For advanced use and comprehensive documentation of the format, please see:
 # https://docs.haskellstack.org/en/stable/yaml_configuration/
 EOF
+
   POWERLEVEL9K_HASKELL_ICON='x'
   POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(stack_project)
 
