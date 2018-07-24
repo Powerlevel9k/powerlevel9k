@@ -1520,14 +1520,13 @@ prompt_todo() {
 # taskwarrior: show data from taskwarrior
 prompt_tw() {
   if $(hash task 2>&-); then
-    today=$(task status:pending +DUETODAY count)
-    over=$(task status:pending +OVERDUE count)
-    pending=$(task status:pending count)
-    if [[ "$pending" = <-> ]]; then
-      "$1_prompt_segment" "$0" "$2" "244" "$DEFAULT_COLOR" "Overdue:$over Today:$today Pending:
-$pending" 'TODO_ICON'
-    else
+    local today=$(task +DUETODAY count)
+    local over=$(task +OVERDUE count)
+    local pending=$(task +PENDING count)
+    if [[ "$pending" = "0" ]]; then
       "$1_prompt_segment" "$0" "$2" "244" "$DEFAULT_COLOR" "No pending tasks!" 'TODO_ICON'
+    else
+      "$1_prompt_segment" "$0" "$2" "244" "$DEFAULT_COLOR" "Overdue:$over Today:$today Pending:$pending" 'TODO_ICON'
     fi
   fi
 }
