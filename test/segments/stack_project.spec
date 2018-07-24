@@ -42,6 +42,24 @@ function mockStackVersion() {
 #   fi
 # }
 
+function mockUpsearchStackYaml() {
+  case "$1" in
+    "stack.yaml")
+      echo "/home /home/MockProject"
+      ;;
+    default)
+  esac
+}
+
+function mockUpsearchNoStackYaml() {
+  case "$1" in
+    "stack.yaml")
+      echo "/"
+      ;;
+    default)
+  esac
+}
+
 function mockNoStackVersion() {
   # This should output some error
   >&2 echo "Stack does not seem to be present"
@@ -50,7 +68,7 @@ function mockNoStackVersion() {
 
 function testStackProjectSegment() {
   alias stack=mockStackVersion
-  alias stackyamlfile=echo "/MockProject"
+  alias upsearch=mockUpsearchStackYaml
 
   POWERLEVEL9K_HASKELL_ICON='x'
   POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(stack_project)
@@ -60,7 +78,24 @@ function testStackProjectSegment() {
   unset POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
   unset POWERLEVEL9K_HASKELL_ICON
   unalias stack
-  unalias stackyamlfile
+  unalias upsearch
+}
+
+function testStackProjectSegmentNoStackYaml() {
+  alias stack=mockStackVersion
+  alias upsearch=mockUpsearchNoStackYaml
+
+  POWERLEVEL9K_CUSTOM_WORLD='echo world'
+  POWERLEVEL9K_HASKELL_ICON='x'
+  POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(custom_world stack_project)
+
+  assertEquals "%K{white} %F{black}world %k%F{white}%f " "$(build_left_prompt)"
+
+  unset POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
+  unset POWERLEVEL9K_HASKELL_ICON
+  unset POWERLEVEL9K_CUSTOM_WORLD
+  unalias stack
+  unalias upsearch
 }
 
 function testStackProjectSegmentIfStackIsNotAvailable() {
