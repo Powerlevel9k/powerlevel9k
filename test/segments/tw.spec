@@ -40,20 +40,27 @@ function mockTask() {
 }
 
 function mockHash() {
+    exit 0
+}
+
+function mockHashError() {
     exit 1
 }
 
 function testBasic() {
     alias task=mockTask
+    alias hash=mockHash
     OVERDUE=0
     DUETODAY=1
     PENDING=2
     assertEquals "%K{244} %F{black%}☑ %f%F{black}Overdue:0 Today:1 Pending:2 %k%F{244}%f " "$(build_left_prompt)"
     unalias task
+    unalias hash
 }
 
 function testChangeIcon() {
     alias task=mockTask
+    alias hash=mockHash
     POWERLEVEL9K_TODO_ICON=""
     OVERDUE=3
     DUETODAY=2
@@ -61,19 +68,22 @@ function testChangeIcon() {
     assertEquals "%K{244} %F{black%} %f%F{black}Overdue:3 Today:2 Pending:5 %k%F{244}%f " "$(build_left_prompt)"
     unset POWERLEVEL9K_TODO_ICON
     unalias task
+    unalias hash
 }
 
 function testNoPendingTasks() {
     alias task=mockTask
+    alias hash=mockHash
     OVERDUE=0
     DUETODAY=0
     PENDING=0
     assertEquals "%K{244} %F{black%}☑ %f%F{black}No pending tasks! %k%F{244}%f " "$(build_left_prompt)"
     unalias task
+    unalias hash
 }
 
 function testTWNotAvailable() {
-    alias hash=mockHash
+    alias hash=mockHashError
     assertEquals "%k%F{NONE}%f " "$(build_left_prompt)"
     unalias hash
 }
@@ -81,28 +91,32 @@ function testTWNotAvailable() {
 function testBasicRight() {
     POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(tw)
     alias task=mockTask
+    alias hash=mockHash
     OVERDUE=9
     DUETODAY=8
     PENDING=17
     assertEquals "%F{244}%f%K{244}%F{black} Overdue:9 Today:8 Pending:17%F{black%} ☑%f%E" "$(build_right_prompt)"
     unalias task
+    unalias hash
     unset POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS
 }
 
 function testNoPendingTasksRight() {
     POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(tw)
     alias task=mockTask
+    alias hash=mockHash
     OVERDUE=0
     DUETODAY=0
     PENDING=0
     assertEquals "%F{244}%f%K{244}%F{black} No pending tasks!%F{black%} ☑%f%E" "$(build_right_prompt)"
     unalias task
+    unalias hash
     unset POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS
 }
 
 function testTWNotAvailableRight() {
     POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(tw)
-    alias hash=mockHash
+    alias hash=mockHashError
     assertEquals "%E" "$(build_right_prompt)"
     unalias hash
     unset POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS
