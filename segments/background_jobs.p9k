@@ -13,7 +13,7 @@
 registerSegment 'BACKGROUND_JOBS' '' "$DEFAULT_COLOR" "cyan" $'\u2699'  $'\uE82F '  $'\uF013 '  '\u'$CODEPOINT_OF_AWESOME_COG' '  $'\uF013 '
 
 setDefault P9K_BACKGROUND_JOBS_VERBOSE true
-setDefault P9K_BACKGROUND_JOBS_VERBOSE_ALWAYS false
+setDefault P9K_BACKGROUND_JOBS_ALWAYS_VERBOSE false
 ################################################################
 # @description
 #   Displays the number of background jobs with an icon.
@@ -31,7 +31,7 @@ prompt_background_jobs() {
   fi
   if [[ background_jobs_number -gt 0 ]]; then
     local background_jobs_number_print=""
-    if [[ "$P9K_BACKGROUND_JOBS_VERBOSE" == "true" ]] && ([[ "$background_jobs_number" -gt 1 ]] || [[ "$P9K_BACKGROUND_JOBS_VERBOSE_ALWAYS" == "true" ]]); then
+    if [[ "$P9K_BACKGROUND_JOBS_VERBOSE" == "true" ]] && ([[ "$background_jobs_number" -gt 1 ]] || [[ "$P9K_BACKGROUND_JOBS_ALWAYS_VERBOSE" == "true" ]]); then
       background_jobs_number_print="$background_jobs_number"
     fi
     p9kPrepareSegment "$0" "" $1 "$2" $3 "$background_jobs_number_print"

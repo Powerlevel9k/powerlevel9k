@@ -22,7 +22,7 @@ registerSegment 'AWS' '' red white 'AWS:'  $'\uE895'  $'\uF270'  '\u'$CODEPOINT_
 #   $3 boolean Whether the segment should be joined
 ##
 prompt_aws() {
-  local aws_profile="${AWS_PROFILE:-$AWS_DEFAULT_PROFILE}"
+  local aws_profile="${AWS_PROFILE:-$P9K_AWS_DEFAULT_PROFILE}"
 
   if [[ -n "$aws_profile" ]]; then
     p9kPrepareSegment "$0" "" $1 "$2" $3 "$aws_profile"

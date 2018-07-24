@@ -51,7 +51,7 @@ while read -r -t 1 __line; do
     elif [[ "$__line" = (#b)[[:blank:]]#([^[:blank:]=]##)[[:blank:]]#[=][[:blank:]]#(*) ]]; then
         __value_string="${match[2]%% [\;\#]*}" # remove comments
         __value_string="${__value_string%"${__value_string##*[! $'\t']}"}" # severe trick - remove trailing whitespace
-        [[ $__cur_section == "GLOBAL" ]] && __access_string="${__out_hash}_${match[1]}" || __access_string="${__out_hash}_${__cur_section}_${match[1]}"
+        [[ $__cur_section == "GLOBAL" ]] && __access_string="${(U)__out_hash}_${(U)match[1]}" || __access_string="${(U)__out_hash}_${(U)__cur_section}_${(U)match[1]}"
         if [[ "${__value_string[1]}" == "(" ]]; then # array variable
             __value_string="${${${__value_string//\(/}//\)/}//  / }" # remove brackets and multiple spaces
             __value_string="${__value_string#"${__value_string%%[! $'\t']*}"}" # severe trick - remove leading whitespace

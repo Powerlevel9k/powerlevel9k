@@ -34,9 +34,9 @@ registerSegment  "VI_MODE" "VISUAL" "${DEFAULT_COLOR}" "orange"                 
 # @requires
 #   [zsh-vimode-visual](https://github.com/b4b4r07/zsh-vimode-visual)
 ##
-setDefault P9K_VI_NORMAL_MODE_STRING 'NORMAL'
-setDefault P9K_VI_INSERT_MODE_STRING 'INSERT'
-setDefault P9K_VI_VISUAL_MODE_STRING 'VISUAL'
+setDefault P9K_VI_MODE_NORMAL_STRING 'NORMAL'
+setDefault P9K_VI_MODE_INSERT_STRING 'INSERT'
+setDefault P9K_VI_MODE_VISUAL_STRING 'VISUAL'
 prompt_vi_mode() {
   local vi_mode
   local current_state

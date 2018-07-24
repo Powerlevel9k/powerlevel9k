@@ -46,11 +46,11 @@ function getUniqueFolder() {
 }
 
 setDefault P9K_DIR_PATH_SEPARATOR "/"
-setDefault P9K_HOME_FOLDER_ABBREVIATION "~"
+setDefault P9K_DIR_HOME_FOLDER_ABBREVIATION "~"
 setDefault P9K_DIR_PATH_HIGHLIGHT_BOLD false
 setDefault P9K_DIR_PATH_ABSOLUTE false
-setDefault P9K_SHORTEN_DELIMITER "\u2026"
-setDefault P9K_SHORTEN_FOLDER_MARKER ".shorten_folder_marker"
+setDefault P9K_DIR_SHORTEN_DELIMITER "\u2026"
+setDefault P9K_DIR_SHORTEN_FOLDER_MARKER ".shorten_folder_marker"
 ################################################################
 # @description
 #   Display information about the current working directory.
@@ -72,24 +72,24 @@ prompt_dir() {
   # if we are not in "~" or "/", split the paths into an array and exclude "~"
   (( ${#current_path} > 1 )) && paths=(${(s:/:)${current_path//"~\/"/}}) || paths=()
   # only run the code if SHORTEN_DIR_LENGTH is set, or we are using the two strategies that don't rely on it.
-  if (( ${#current_path} > 1 )) && [[ -n "$P9K_SHORTEN_DIR_LENGTH" || "$P9K_SHORTEN_STRATEGY" == "truncate_with_folder_marker" || "$P9K_SHORTEN_STRATEGY" == "truncate_to_last" ]]; then
-    case "$P9K_SHORTEN_STRATEGY" in
+  if (( ${#current_path} > 1 )) && [[ -n "$P9K_DIR_SHORTEN_LENGTH" || "$P9K_DIR_SHORTEN_STRATEGY" == "truncate_with_folder_marker" || "$P9K_DIR_SHORTEN_STRATEGY" == "truncate_to_last" ]]; then
+    case "$P9K_DIR_SHORTEN_STRATEGY" in
       truncate_from_right)
         # truncate characters from the right of the path
-        current_path=$(truncatePath "$current_path" $P9K_SHORTEN_DIR_LENGTH "$P9K_SHORTEN_DELIMITER")
+        current_path=$(truncatePath "$current_path" $P9K_DIR_SHORTEN_LENGTH "$P9K_DIR_SHORTEN_DELIMITER")
       ;;
       truncate_middle)
         # truncate characters from the middle of the path
-        current_path=$(truncatePath "$current_path" $P9K_SHORTEN_DIR_LENGTH "$P9K_SHORTEN_DELIMITER" "middle")
+        current_path=$(truncatePath "$current_path" $P9K_DIR_SHORTEN_LENGTH "$P9K_DIR_SHORTEN_DELIMITER" "middle")
       ;;
       truncate_from_left)
         # truncate characters from the right of the path
-        current_path=$(truncatePath "$current_path" $P9K_SHORTEN_DIR_LENGTH "$P9K_SHORTEN_DELIMITER" "left")
+        current_path=$(truncatePath "$current_path" $P9K_DIR_SHORTEN_LENGTH "$P9K_DIR_SHORTEN_DELIMITER" "left")
       ;;
       truncate_absolute|truncate_absolute_chars)
-        # truncate all characters except the last P9K_SHORTEN_DIR_LENGTH characters
-        if [ ${#current_path} -gt $(( $P9K_SHORTEN_DIR_LENGTH + ${#P9K_SHORTEN_DELIMITER} )) ]; then
-          current_path=$P9K_SHORTEN_DELIMITER${current_path:(-P9K_SHORTEN_DIR_LENGTH)}
+        # truncate all characters except the last P9K_DIR_SHORTEN_LENGTH characters
+        if [ ${#current_path} -gt $(( $P9K_DIR_SHORTEN_LENGTH + ${#P9K_DIR_SHORTEN_DELIMITER} )) ]; then
+          current_path=$P9K_DIR_SHORTEN_DELIMITER${current_path:(-P9K_DIR_SHORTEN_LENGTH)}
         fi
       ;;
       truncate_to_last)
@@ -97,15 +97,15 @@ prompt_dir() {
         current_path=${current_path##*/}
       ;;
       truncate_to_first_and_last)
-        if (( ${#current_path} > 1 )) && (( ${P9K_SHORTEN_DIR_LENGTH} > 0 )); then
-          threshold=$(( ${P9K_SHORTEN_DIR_LENGTH} * 2))
+        if (( ${#current_path} > 1 )) && (( ${P9K_DIR_SHORTEN_LENGTH} > 0 )); then
+          threshold=$(( ${P9K_DIR_SHORTEN_LENGTH} * 2))
           # if we are in "~", add it back into the paths array
           [[ $current_path == '~'* ]] && paths=("~" "${paths[@]}")
           if (( ${#paths} > $threshold )); then
-            local num=$(( ${#paths} - ${P9K_SHORTEN_DIR_LENGTH} ))
+            local num=$(( ${#paths} - ${P9K_DIR_SHORTEN_LENGTH} ))
             # repace the middle elements
-            for (( i=$P9K_SHORTEN_DIR_LENGTH; i<$num; i++ )); do
-              paths[$i+1]=$P9K_SHORTEN_DELIMITER
+            for (( i=$P9K_DIR_SHORTEN_LENGTH; i<$num; i++ )); do
+              paths[$i+1]=$P9K_DIR_SHORTEN_DELIMITER
             done
             [[ $current_path != '~'* ]] && current_path="/" || current_path=""
             current_path+="${(j:/:)paths}"
@@ -177,7 +177,7 @@ prompt_dir() {
         # Then, find the length of the package_path string, and save the
         # subdirectory path as a substring of the current directory's path from 0
         # to the length of the package path's string
-        subdirectory_path=$(truncatePath "${trunc_path:${#${(S%%)package_path//$~zero/}}}" $P9K_SHORTEN_DIR_LENGTH $P9K_SHORTEN_DELIMITER)
+        subdirectory_path=$(truncatePath "${trunc_path:${#${(S%%)package_path//$~zero/}}}" $P9K_DIR_SHORTEN_LENGTH $P9K_DIR_SHORTEN_DELIMITER)
         # Parse the 'name' from the package.json; if there are any problems, just
         # print the file path
         defined P9K_DIR_PACKAGE_FILES || P9K_DIR_PACKAGE_FILES=(package.json composer.json)
@@ -201,7 +201,7 @@ prompt_dir() {
         fi
       ;;
       *)
-        current_path="$(print -P "%$(($P9K_SHORTEN_DIR_LENGTH+1))(c:$P9K_SHORTEN_DELIMITER/:)%${P9K_SHORTEN_DIR_LENGTH}c")"
+        current_path="$(print -P "%$(($P9K_DIR_SHORTEN_LENGTH+1))(c:$P9K_DIR_SHORTEN_DELIMITER/:)%${P9K_DIR_SHORTEN_LENGTH}c")"
       ;;
     esac
   fi
@@ -283,9 +283,9 @@ prompt_dir() {
     current_path=${current_path//\//$P9K_DIR_PATH_SEPARATOR}
   fi
 
-  if [[ "${P9K_HOME_FOLDER_ABBREVIATION}" != "~" && ! "${(L)P9K_DIR_OMIT_FIRST_CHARACTER}" == "true" ]]; then
+  if [[ "${P9K_DIR_HOME_FOLDER_ABBREVIATION}" != "~" && ! "${(L)P9K_DIR_OMIT_FIRST_CHARACTER}" == "true" ]]; then
     # use :s to only replace the first occurance
-    current_path=${current_path:s/~/$P9K_HOME_FOLDER_ABBREVIATION}
+    current_path=${current_path:s/~/$P9K_DIR_HOME_FOLDER_ABBREVIATION}
   fi
 
   p9kPrepareSegment "$0" "${(U)current_state}" $1 "$2" $3 "${current_path}"

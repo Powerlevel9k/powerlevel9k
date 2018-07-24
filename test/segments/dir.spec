@@ -30,8 +30,8 @@ function testDirPathAbsoluteWorks() {
 }
 
 function testTruncateFoldersWorks() {
-  local P9K_SHORTEN_DIR_LENGTH=2
-  local P9K_SHORTEN_STRATEGY='truncate_folders'
+  local P9K_DIR_SHORTEN_LENGTH=2
+  local P9K_DIR_SHORTEN_STRATEGY='truncate_folders'
 
   local FOLDER=/tmp/powerlevel9k-test/1/12/123/1234/12345/123456/1234567/12345678/123456789
   mkdir -p $FOLDER
@@ -44,7 +44,7 @@ function testTruncateFoldersWorks() {
 }
 
 function testTruncateFolderWithHomeDirWorks() {
-  local P9K_SHORTEN_DIR_LENGTH=1
+  local P9K_DIR_SHORTEN_LENGTH=1
   local CURRENT_DIR=$(pwd)
 
   cd ~
@@ -61,8 +61,8 @@ function testTruncateFolderWithHomeDirWorks() {
 }
 
 function testTruncateMiddleWorks() {
-  local P9K_SHORTEN_DIR_LENGTH=2
-  local P9K_SHORTEN_STRATEGY='truncate_middle'
+  local P9K_DIR_SHORTEN_LENGTH=2
+  local P9K_DIR_SHORTEN_STRATEGY='truncate_middle'
 
   local FOLDER=/tmp/powerlevel9k-test/1/12/123/1234/12345/123456/1234567/12345678/123456789
   mkdir -p $FOLDER
@@ -75,8 +75,8 @@ function testTruncateMiddleWorks() {
 }
 
 function testTruncationFromRightWorks() {
-  local P9K_SHORTEN_DIR_LENGTH=2
-  local P9K_SHORTEN_STRATEGY='truncate_from_right'
+  local P9K_DIR_SHORTEN_LENGTH=2
+  local P9K_DIR_SHORTEN_STRATEGY='truncate_from_right'
 
   local FOLDER=/tmp/powerlevel9k-test/1/12/123/1234/12345/123456/1234567/12345678/123456789
   mkdir -p $FOLDER
@@ -89,8 +89,8 @@ function testTruncationFromRightWorks() {
 }
 
 function testTruncateToLastWorks() {
-  local P9K_SHORTEN_DIR_LENGTH=2
-  local P9K_SHORTEN_STRATEGY="truncate_to_last"
+  local P9K_DIR_SHORTEN_LENGTH=2
+  local P9K_DIR_SHORTEN_STRATEGY="truncate_to_last"
 
   local FOLDER=/tmp/powerlevel9k-test/1/12/123/1234/12345/123456/1234567/12345678/123456789
   mkdir -p $FOLDER
@@ -103,8 +103,8 @@ function testTruncateToLastWorks() {
 }
 
 function testTruncateToFirstAndLastWorks() {
-  local P9K_SHORTEN_DIR_LENGTH=2
-  local P9K_SHORTEN_STRATEGY="truncate_to_first_and_last"
+  local P9K_DIR_SHORTEN_LENGTH=2
+  local P9K_DIR_SHORTEN_STRATEGY="truncate_to_first_and_last"
 
   local FOLDER=/tmp/powerlevel9k-test/1/12/123/1234/12345/123456/1234567/12345678/123456789
   mkdir -p $FOLDER
@@ -117,8 +117,8 @@ function testTruncateToFirstAndLastWorks() {
 }
 
 function testTruncateAbsoluteWorks() {
-  local P9K_SHORTEN_DIR_LENGTH=2
-  local P9K_SHORTEN_STRATEGY="truncate_absolute"
+  local P9K_DIR_SHORTEN_LENGTH=2
+  local P9K_DIR_SHORTEN_STRATEGY="truncate_absolute"
 
   local FOLDER=/tmp/powerlevel9k-test/1/12/123/1234/12345/123456/1234567/12345678/123456789
   mkdir -p $FOLDER
@@ -131,9 +131,9 @@ function testTruncateAbsoluteWorks() {
 }
 
 function testTruncationFromRightWithEmptyDelimiter() {
-  local P9K_SHORTEN_DIR_LENGTH=2
-  local P9K_SHORTEN_DELIMITER=""
-  local P9K_SHORTEN_STRATEGY='truncate_from_right'
+  local P9K_DIR_SHORTEN_LENGTH=2
+  local P9K_DIR_SHORTEN_DELIMITER=""
+  local P9K_DIR_SHORTEN_STRATEGY='truncate_from_right'
 
   local FOLDER=/tmp/powerlevel9k-test/1/12/123/1234/12345/123456/1234567/12345678/123456789
   mkdir -p $FOLDER
@@ -147,7 +147,7 @@ function testTruncationFromRightWithEmptyDelimiter() {
 
 function testTruncateWithFolderMarkerWorks() {
   local -a P9K_LEFT_PROMPT_ELEMENTS; P9K_LEFT_PROMPT_ELEMENTS=(dir)
-  local P9K_SHORTEN_STRATEGY="truncate_with_folder_marker"
+  local P9K_DIR_SHORTEN_STRATEGY="truncate_with_folder_marker"
 
   local BASEFOLDER=/tmp/powerlevel9k-test
   local FOLDER=$BASEFOLDER/1/12/123/1234/12345/123456/1234567
@@ -163,8 +163,8 @@ function testTruncateWithFolderMarkerWorks() {
 
 function testTruncateWithFolderMarkerWithChangedFolderMarker() {
   local -a P9K_LEFT_PROMPT_ELEMENTS; P9K_LEFT_PROMPT_ELEMENTS=(dir)
-  local P9K_SHORTEN_STRATEGY="truncate_with_folder_marker"
-  local P9K_SHORTEN_FOLDER_MARKER='.xxx'
+  local P9K_DIR_SHORTEN_STRATEGY="truncate_with_folder_marker"
+  local P9K_DIR_SHORTEN_FOLDER_MARKER='.xxx'
 
   local BASEFOLDER=/tmp/powerlevel9k-test
   local FOLDER=$BASEFOLDER/1/12/123/1234/12345/123456/1234567
@@ -197,8 +197,8 @@ function testTruncateWithPackageNameWorks() {
   cd "${FOLDER}"
 
   local -a P9K_LEFT_PROMPT_ELEMENTS; P9K_LEFT_PROMPT_ELEMENTS=(dir)
-  local P9K_SHORTEN_DIR_LENGTH=2
-  local P9K_SHORTEN_STRATEGY='truncate_with_package_name'
+  local P9K_DIR_SHORTEN_LENGTH=2
+  local P9K_DIR_SHORTEN_STRATEGY='truncate_with_package_name'
 
   assertEquals "%K{blue} %F{black}My_Package/1/12/123/12…/12…/12…/12…/12…/123456789 %k%F{blue}%f " "$(buildLeftPrompt)"
 
@@ -233,8 +233,8 @@ function testTruncateWithPackageNameIfRepoIsSymlinkedInsideDeepFolder() {
   cd linked-repo/asdfasdf/qwerqwer
 
   local -a P9K_LEFT_PROMPT_ELEMENTS; P9K_LEFT_PROMPT_ELEMENTS=(dir)
-  local P9K_SHORTEN_DIR_LENGTH=2
-  local P9K_SHORTEN_STRATEGY='truncate_with_package_name'
+  local P9K_DIR_SHORTEN_LENGTH=2
+  local P9K_DIR_SHORTEN_STRATEGY='truncate_with_package_name'
 
   assertEquals "%K{blue} %F{black}My_Package/as…/qwerqwer %k%F{blue}%f " "$(buildLeftPrompt)"
 
@@ -265,8 +265,8 @@ function testTruncateWithPackageNameIfRepoIsSymlinkedInsideGitDir() {
   cd linked-repo/.git/refs/heads
 
   local -a P9K_LEFT_PROMPT_ELEMENTS; P9K_LEFT_PROMPT_ELEMENTS=(dir)
-  local P9K_SHORTEN_DIR_LENGTH=2
-  local P9K_SHORTEN_STRATEGY='truncate_with_package_name'
+  local P9K_DIR_SHORTEN_LENGTH=2
+  local P9K_DIR_SHORTEN_STRATEGY='truncate_with_package_name'
 
   assertEquals "%K{blue} %F{black}My_Package/.g…/re…/heads %k%F{blue}%f " "$(buildLeftPrompt)"
 
@@ -330,25 +330,25 @@ function testChangingDirPathSeparator() {
 }
 
 function testHomeFolderAbbreviation() {
-  local P9K_HOME_FOLDER_ABBREVIATION
+  local P9K_DIR_HOME_FOLDER_ABBREVIATION
   local dir=$PWD
 
   cd ~/
   # default
-  P9K_HOME_FOLDER_ABBREVIATION='~'
+  P9K_DIR_HOME_FOLDER_ABBREVIATION='~'
   assertEquals "%K{blue} %F{black}~ %k%F{blue}%f " "$(buildLeftPrompt)"
 
   # substituted
-  P9K_HOME_FOLDER_ABBREVIATION='qQq'
+  P9K_DIR_HOME_FOLDER_ABBREVIATION='qQq'
   assertEquals "%K{blue} %F{black}qQq %k%F{blue}%f " "$(buildLeftPrompt)"
 
   cd /tmp
   # default
-  P9K_HOME_FOLDER_ABBREVIATION='~'
+  P9K_DIR_HOME_FOLDER_ABBREVIATION='~'
   assertEquals "%K{blue} %F{black}/tmp %k%F{blue}%f " "$(buildLeftPrompt)"
 
   # substituted
-  P9K_HOME_FOLDER_ABBREVIATION='qQq'
+  P9K_DIR_HOME_FOLDER_ABBREVIATION='qQq'
   assertEquals "%K{blue} %F{black}/tmp %k%F{blue}%f " "$(buildLeftPrompt)"
 
   cd "$dir"
@@ -395,8 +395,8 @@ function testOmittingFirstCharacterWorksWithChangingPathSeparator() {
 function testOmittingFirstCharacterWorksWithChangingPathSeparatorAndDefaultTruncation() {
   local P9K_DIR_OMIT_FIRST_CHARACTER=true
   local P9K_DIR_PATH_SEPARATOR='xXx'
-  local P9K_SHORTEN_DIR_LENGTH=2
-  local P9K_SHORTEN_STRATEGY='truncate_folders'
+  local P9K_DIR_SHORTEN_LENGTH=2
+  local P9K_DIR_SHORTEN_STRATEGY='truncate_folders'
   mkdir -p /tmp/powerlevel9k-test/1/2
   cd /tmp/powerlevel9k-test/1/2
 
@@ -409,8 +409,8 @@ function testOmittingFirstCharacterWorksWithChangingPathSeparatorAndDefaultTrunc
 function testOmittingFirstCharacterWorksWithChangingPathSeparatorAndMiddleTruncation() {
   local P9K_DIR_OMIT_FIRST_CHARACTER=true
   local P9K_DIR_PATH_SEPARATOR='xXx'
-  local P9K_SHORTEN_DIR_LENGTH=2
-  local P9K_SHORTEN_STRATEGY='truncate_middle'
+  local P9K_DIR_SHORTEN_LENGTH=2
+  local P9K_DIR_SHORTEN_STRATEGY='truncate_middle'
   mkdir -p /tmp/powerlevel9k-test/1/2
   cd /tmp/powerlevel9k-test/1/2
 
@@ -423,8 +423,8 @@ function testOmittingFirstCharacterWorksWithChangingPathSeparatorAndMiddleTrunca
 function testOmittingFirstCharacterWorksWithChangingPathSeparatorAndRightTruncation() {
   local P9K_DIR_OMIT_FIRST_CHARACTER=true
   local P9K_DIR_PATH_SEPARATOR='xXx'
-  local P9K_SHORTEN_DIR_LENGTH=2
-  local P9K_SHORTEN_STRATEGY='truncate_from_right'
+  local P9K_DIR_SHORTEN_LENGTH=2
+  local P9K_DIR_SHORTEN_STRATEGY='truncate_from_right'
   mkdir -p /tmp/powerlevel9k-test/1/2
   cd /tmp/powerlevel9k-test/1/2
 
@@ -437,8 +437,8 @@ function testOmittingFirstCharacterWorksWithChangingPathSeparatorAndRightTruncat
 function testTruncateToUniqueWorks() {
   local P9K_DIR_OMIT_FIRST_CHARACTER=true
   local P9K_DIR_PATH_SEPARATOR='xXx'
-  local P9K_SHORTEN_DIR_LENGTH=2
-  local P9K_SHORTEN_STRATEGY='truncate_to_unique'
+  local P9K_DIR_SHORTEN_LENGTH=2
+  local P9K_DIR_SHORTEN_STRATEGY='truncate_to_unique'
   local P9K_DIR_PATH_ABSOLUTE=true
   mkdir -p /tmp/powerlevel9k-test/adam/devl
   mkdir -p /tmp/powerlevel9k-test/alice/devl

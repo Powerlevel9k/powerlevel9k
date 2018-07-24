@@ -33,7 +33,7 @@ setDefault P9K_USER_TEMPLATE "%n"
 prompt_user() {
   local current_state="DEFAULT"
   typeset -AH user_state
-  if [[ "$P9K_ALWAYS_SHOW_USER" == true ]] || [[ "$(whoami)" != "$DEFAULT_USER" ]]; then
+  if [[ "$P9K_CONTEXT_ALWAYS_SHOW_USER" == true ]] || [[ "$(whoami)" != "$DEFAULT_USER" ]]; then
     if [[ $(print -P "%#") == '#' ]]; then
       current_state="ROOT"
       segment_content="${P9K_USER_TEMPLATE}"
