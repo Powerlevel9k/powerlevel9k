@@ -1754,7 +1754,7 @@ prompt_stack_project() {
   local stackyamlfilesearch=$(upsearch "${stackyamlfile}")
 
   if [[ -n "${haskellstack_version}" ]]; then
-    if [[ -n "${stackyamlfilesearch}" != $HOME && -n "${stackyamlfilesearch}" != "/" ]]; then
+    if [[ "${stackyamlfilesearch}" != $HOME && "${stackyamlfilesearch}" != "/" ]]; then
       "$1_prompt_segment" "$0" "$2" "purple3" "white" "Stack" "HASKELL_ICON"
     fi
   fi
