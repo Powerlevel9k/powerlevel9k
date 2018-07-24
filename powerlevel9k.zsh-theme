@@ -1750,10 +1750,11 @@ prompt_java_version() {
 # Segment for Haskell Stack projects
 prompt_stack_project() {
   local haskellstack_version=$(stack --version 2>/dev/null | grep -oE '[0-9.]+' | head -n1)
-  local stackyamlfile=$(upsearch "stack.yaml")
+  local stackyamlfile="stack.yaml"
+  local stackyamlfilesearch=$(upsearch $stackyamlfile)
 
   if [[ -n "${haskellstack_version}" ]]; then
-    if [[ $stackyamlfile != $HOME && $stackyamlfile != "/" ]]; then
+    if [[ "$stackyamlfilesearch" != $HOME && "$stackyamlfilesearch" != "/" ]]; then
       "$1_prompt_segment" "$0" "$2" "purple3" "white" "Stack" "HASKELL_ICON"
     fi
   fi
