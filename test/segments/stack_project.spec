@@ -36,11 +36,11 @@ function mockStackVersion() {
   esac
 }
 
-function mockFile(){
-  if [ -n "${STACK_YAML:-}" ]; then
-    assertEquals "${STACK_YAML}" "stack.yaml"  # Mock file for testing.
-  fi
-}
+# function mockFile(){
+#   if [ -n "${STACK_YAML:-}" ]; then
+#     assertEquals "${STACK_YAML}" "stack.yaml"  # Mock file for testing.
+#   fi
+# }
 
 function mockNoStackVersion() {
   # This should output some error
@@ -54,7 +54,7 @@ function testStackProjectSegment() {
   POWERLEVEL9K_HASKELL_ICON='x'
   POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(stack_project)
 
-  assertEquals "%K{purple} %F{white%}x %f%F{white}Stack %k%F{purple}%f " "$(build_left_prompt)"
+  assertEquals "%K{purple3} %F{white%}x %f%F{white}Stack %k%F{purple3}%f " "$(build_left_prompt)"
 
   unset POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
   unset POWERLEVEL9K_HASKELL_ICON

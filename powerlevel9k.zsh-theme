@@ -1750,8 +1750,9 @@ prompt_java_version() {
 # Segment for Haskell Stack projects
 prompt_stack_project() {
   local haskellstack_version=$(stack --version 2>/dev/null | grep -oE '[0-9.]+' | head -n1)
-  if [[ -s "stack.yaml" && -n "${haskellstack_version}" ]]; then
-    "$1_prompt_segment" "$0" "$2" "purple" "white" "Stack" "HASKELL_ICON"
+
+  if [[ -n "${haskellstack_version}" ]]; then # add condition: -s "stack.yaml" &&
+    "$1_prompt_segment" "$0" "$2" "purple3" "white" "Stack" "HASKELL_ICON"
   fi
 }
 
