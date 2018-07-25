@@ -1520,14 +1520,43 @@ prompt_todo() {
 # taskwarrior: show data from taskwarrior
 prompt_tw() {
   if $(hash task 2>&-); then
+    typeset -gAH tw_colors
+    tw_colors=(
+      'finished'         "green"
+      'finishedtoday'    "green"
+      'workingpending'   "$DEFAULT_COLOR_INVERTED"
+      'working'          "$DEFAULT_COLOR_INVERTED"
+      'late'             "yellow"
+    )
+    local current_state=""
     local today=$(task +DUETODAY count)
     local over=$(task +OVERDUE count)
     local pending=$(task +PENDING count)
-    if [[ "$pending" = "0" ]]; then
-      "$1_prompt_segment" "$0" "$2" "244" "$DEFAULT_COLOR" "No pending tasks!" 'TODO_ICON'
+    typeset -gAH tw_messages
+    tw_messages=(
+      'finished'         "No pending tasks!"
+      'finishedtoday'    "$pending tasks coming up"
+      'workingpending'   "$today tasks for today and $(( $pending-$today )) coming up"
+      'working'          "$today tasks for today"
+      'late'             "$over tasks late"
+    )
+
+    if [[  $today -gt 0  ]]; then
+      if [[  $pending-$today -gt 0  ]]; then
+        current_state="workingpending"
+      else
+        current_state="working"
+      fi
     else
-      "$1_prompt_segment" "$0" "$2" "244" "$DEFAULT_COLOR" "Overdue:$over Today:$today Pending:$pending" 'TODO_ICON'
+      current_state="finishedtoday"
     fi
+    if [[  $over -gt 0 ]]; then
+      current_state="late"
+    fi
+    if [[ $pending -eq 0 ]]; then
+      current_state="finished"
+    fi
+    "$1_prompt_segment" "$0" "$2" "${tw_colors[$current_state]}" "$DEFAULT_COLOR" "${tw_messages[$current_state]}" 'TODO_ICON'
   fi
 }
 
