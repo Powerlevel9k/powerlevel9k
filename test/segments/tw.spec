@@ -82,6 +82,35 @@ function testNoPendingTasks() {
     unalias hash
 }
 
+function testOverdue() {
+    # state: late
+    alias task=mockTask
+    alias hash=mockHash
+    OVERDUE=2
+    DUETODAY=0
+    PENDING=2
+    assertEquals "%K{yellow} %F{black%}☑ %f%F{black}2 tasks late %k%F{yellow}%f " "$(build_left_prompt)"
+
+    OVERDUE=4
+    DUETODAY=2
+    PENDING=6
+    assertEquals "%K{yellow} %F{black%}☑ %f%F{black}4 tasks late %k%F{yellow}%f " "$(build_left_prompt)"
+    unalias task
+    unalias hash
+}
+
+function testWorking() {
+    # state: working
+    alias task=mockTask
+    alias hash=mockHash
+    OVERDUE=0
+    DUETODAY=2
+    PENDING=2
+    assertEquals "%K{white} %F{black%}☑ %f%F{black}2 tasks for today %k%F{white}%f " "$(build_left_prompt)"
+    unalias task
+    unalias hash
+}
+
 function testTWNotAvailable() {
     alias hash=mockHashError
     assertEquals "%k%F{NONE}%f " "$(build_left_prompt)"
