@@ -53,7 +53,7 @@ function testBasic() {
     OVERDUE=0
     DUETODAY=1
     PENDING=2
-    assertEquals "%K{244} %F{black%}☑ %f%F{black}Overdue:0 Today:1 Pending:2 %k%F{244}%f " "$(build_left_prompt)"
+    assertEquals "%K{white} %F{black%}☑ %f%F{black}1 tasks for today and 1 coming up %k%F{white}%f " "$(build_left_prompt)"
     unalias task
     unalias hash
 }
@@ -65,7 +65,7 @@ function testChangeIcon() {
     OVERDUE=3
     DUETODAY=2
     PENDING=5
-    assertEquals "%K{244} %F{black%} %f%F{black}Overdue:3 Today:2 Pending:5 %k%F{244}%f " "$(build_left_prompt)"
+    assertEquals "%K{yellow} %F{black%} %f%F{black}3 tasks late %k%F{yellow}%f " "$(build_left_prompt)"
     unset POWERLEVEL9K_TODO_ICON
     unalias task
     unalias hash
@@ -77,7 +77,7 @@ function testNoPendingTasks() {
     OVERDUE=0
     DUETODAY=0
     PENDING=0
-    assertEquals "%K{244} %F{black%}☑ %f%F{black}No pending tasks! %k%F{244}%f " "$(build_left_prompt)"
+    assertEquals "%K{green} %F{black%}☑ %f%F{black}No pending tasks! %k%F{green}%f " "$(build_left_prompt)"
     unalias task
     unalias hash
 }
@@ -95,7 +95,7 @@ function testBasicRight() {
     OVERDUE=9
     DUETODAY=8
     PENDING=17
-    assertEquals "%F{244}%f%K{244}%F{black} Overdue:9 Today:8 Pending:17%F{black%} ☑%f%E" "$(build_right_prompt)"
+    assertEquals "%F{yellow}%f%K{yellow}%F{black} 9 tasks late%F{black%} ☑%f%E" "$(build_right_prompt)"
     unalias task
     unalias hash
     unset POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS
@@ -108,7 +108,7 @@ function testNoPendingTasksRight() {
     OVERDUE=0
     DUETODAY=0
     PENDING=0
-    assertEquals "%F{244}%f%K{244}%F{black} No pending tasks!%F{black%} ☑%f%E" "$(build_right_prompt)"
+    assertEquals "%F{green}%f%K{green}%F{black} No pending tasks!%F{black%} ☑%f%E" "$(build_right_prompt)"
     unalias task
     unalias hash
     unset POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS
