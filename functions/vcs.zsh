@@ -108,7 +108,11 @@ function +vi-git-stash() {
 
   if [[ -s $(command git rev-parse --git-dir)/refs/stash ]] ; then
     stashes=$(command git stash list 2>/dev/null | wc -l)
-    hook_com[misc]+=" $(print_icon 'VCS_STASH_ICON')${stashes// /}"
+    if [ -n "${KONSOLE_PROFILE_NAME}" ] ; then
+      hook_com[misc]+=" $(print_icon 'VCS_STASH_ICON')${stashes// /} "
+    else
+      hook_com[misc]+=" $(print_icon 'VCS_STASH_ICON')${stashes// /}"
+    fi
   fi
 }
 
