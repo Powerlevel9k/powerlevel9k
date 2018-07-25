@@ -111,6 +111,18 @@ function testWorking() {
     unalias hash
 }
 
+function testWorkingPending() {
+    # state: workingpending
+    alias task=mockTask
+    alias hash=mockHash
+    OVERDUE=0
+    DUETODAY=2
+    PENDING=6
+    assertEquals "%K{white} %F{black%}☑ %f%F{black}2 tasks for today and 4 coming up %k%F{white}%f " "$(build_left_prompt)"
+    unalias task
+    unalias hash
+}
+
 function testTWNotAvailable() {
     alias hash=mockHashError
     assertEquals "%k%F{NONE}%f " "$(build_left_prompt)"
