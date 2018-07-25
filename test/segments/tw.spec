@@ -83,6 +83,18 @@ function testFinished() {
     unalias hash
 }
 
+function testFinishedToday() {
+    # state: finishedtoday
+    alias task=mockTask
+    alias hash=mockHash
+    OVERDUE=0
+    DUETODAY=0
+    PENDING=8
+    assertEquals "%K{green} %F{black%}☑ %f%F{black}8 tasks coming up %k%F{green}%f " "$(build_left_prompt)"
+    unalias task
+    unalias hash
+}
+
 function testOverdue() {
     # state: late
     alias task=mockTask
