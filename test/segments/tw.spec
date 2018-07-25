@@ -71,7 +71,8 @@ function testChangeIcon() {
     unalias hash
 }
 
-function testNoPendingTasks() {
+function testFinished() {
+    # state: finished
     alias task=mockTask
     alias hash=mockHash
     OVERDUE=0
