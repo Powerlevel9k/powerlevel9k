@@ -18,6 +18,7 @@ if [[ ${fpath[(ie)$autoload_path]} -gt ${#fpath} ]]; then
   fpath=( $autoload_path "${fpath[@]}" )
   autoload -Uz segmentShouldBeJoined
   autoload -Uz segmentShouldBePrinted
+  autoload -Uz subStrCount
   autoload -Uz truncatePath
   autoload -Uz upsearch
 fi
@@ -98,36 +99,39 @@ fi
 # @noargs
 ##
 updateEnvironmentVars() {
-  local envVar var varName origVar newVar newVal
+  local envVar varType varName origVar newVar newVal var
   local oldVarsFound=false
   for envVar in $(declare); do
     if [[ $envVar =~ "POWERLEVEL9K_" ]]; then
       oldVarsFound=true
-      var=$(declare -p ${envVar})
-      varName=${${var##*POWERLEVEL9K_}%=*}
+      varType=( "$(declare -p ${envVar})" )
+      varName=${${envVar##POWERLEVEL9K_}%=*}
       origVar="POWERLEVEL9K_${varName}"
       newVar="P9K_${varName}"
-      if [[ ${var[13]} == "a" ]]; then # array variable
-        newVal=${${var##*\(}%\)*}
+      if [[ "${varType[1]:9:1}" == "a" || "${varType[1]:12:1}" == "a" ]]; then # array variable
         case ${(U)varName} in
-          BATTERY_LEVEL_BACKGROUND) typeset -g -a P9K_BATTERY_LEVEL_BACKGROUND=(${(s: :)newVal});;
-          BATTERY_STAGES)
-            local newVal=${${(P)origVar}//\'/}
-            typeset -g -a P9K_BATTERY_STAGES=( ${(s: :)newVal} )
+          BATTERY_STAGES|BATTERY_LEVEL_BACKGROUND|LEFT_PROMPT_ELEMENTS|RIGHT_PROMPT_ELEMENTS)
+            [[ "${varType[2]}" == "" ]] && var=${varType[1]} || var=${varType[2]} # older ZSH installs have 2 lines for declare
+            newVal="${${${var##*\(}%\)*}//  / }" # remove brackets and extra spaces
+            newVal="${newVal%"${newVal##*[! $'\t']}"}" # severe trick - remove trailing whitespace
+            newVal="${newVal#"${newVal%%[! $'\t']*}"}" # severe trick - remove leading whitespace
           ;;
-          LEFT_PROMPT_ELEMENTS)     typeset -g -a P9K_LEFT_PROMPT_ELEMENTS=(${(s: :)newVal});;
-          RIGHT_PROMPT_ELEMENTS)    typeset -g -a P9K_RIGHT_PROMPT_ELEMENTS=(${(s: :)newVal});;
+          BATTERY_STAGES)
+            newVal=${${newVal}//\'/}
+          ;;
         esac
+        typeset -g -a $newVar
+        : ${(PA)newVar::=${(s: :)newVal}} # array assignment with values split on space
       else
         newVal=${(P)origVar}
-        typeset -g $newVar=$newVal
+        : ${(P)newVar::=$newVal}
       fi
       unset $origVar
     fi
   done
   [[ $P9K_IGNORE_VAR_WARNING == true ]] && oldVarsFound=false # disable warning if user sets P9K_IGNORE_VAR_WARNING to true.
   [[ $oldVarsFound == true ]] && print -P "%F{yellow}Information!%f As of this update, the %F{cyan}POWERLEVEL9K_*%f variables have been replaced by %F{cyan}P9K_*%f.
-  Variables have been converted automatically, but there may still be some errors. For more informations, have a look at the CHANGELOG.md.
+  Variables have been converted automatically, but there may still be some errors. For more information, have a look at the CHANGELOG.md.
   To disable this warning, please modify your configuration file to use the new style variables, or add %F{green}P9K_IGNORE_VAR_WARNING=true%f to your config."
 }
 
@@ -284,7 +288,7 @@ printDeprecationWarning() {
   for key in ${(@k)raw_deprecated_segments}; do
     if segmentInUse $key; then
       # segment is deprecated
-      print -P "%F{yellow}Warning!%f The '$key' segment is deprecated. Use '%F{blue}${raw_deprecated_segments[$key]}%f' instead. For more informations, have a look at the CHANGELOG.md."
+      print -P "%F{yellow}Warning!%f The '$key' segment is deprecated. Use '%F{blue}${raw_deprecated_segments[$key]}%f' instead. For more information, have a look at the CHANGELOG.md."
     fi
   done
 }
@@ -310,7 +314,7 @@ function updateVarName() {
     for key in ${newVars}; do
       # set new variable name
       typeset -g "$key"="${(P)1}"
-      print -P "%F{yellow}Warning!%f The '$1' variable is deprecated. This has been updated to '%F{cyan}${key}%f' for you. For more informations, have a look at the CHANGELOG.md."
+      print -P "%F{yellow}Warning!%f The '$1' variable is deprecated. This has been updated to '%F{cyan}${key}%f' for you. For more information, have a look at the CHANGELOG.md."
     done
     unset $1
     return 0
@@ -335,7 +339,7 @@ printDeprecationVarWarning() {
     if defined $key; then
       # segment is deprecated
       if ! updateVarName $key $raw_deprecated_variables[$key]; then
-        print -P "%F{yellow}Warning!%f The '$key' variable is deprecated. This could not be updated to '%F{cyan}${raw_deprecated_variables[$key]}%f' for you. For more informations, have a look at the CHANGELOG.md."
+        print -P "%F{yellow}Warning!%f The '$key' variable is deprecated. This could not be updated to '%F{cyan}${raw_deprecated_variables[$key]}%f' for you. For more information, have a look at the CHANGELOG.md."
       fi
     fi
   done
