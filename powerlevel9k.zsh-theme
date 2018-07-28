@@ -317,23 +317,28 @@ prompt_aws_eb_env() {
   fi
 }
 
+p9kBackgroundJobs() {
+  # See https://unix.stackexchange.com/questions/68571/show-jobs-count-only-if-it-is-more-than-0
+  jobs_running=${(M)#${jobstates%%:*}:#running}
+  jobs_suspended=${(M)#${jobstates%%:*}:#suspended}
+}
+
+add-zsh-hook precmd p9kBackgroundJobs
+
+prompt_background_jobs() {
+
 ################################################################
 # Segment to indicate background jobs with an icon.
 set_default POWERLEVEL9K_BACKGROUND_JOBS_VERBOSE true
 set_default POWERLEVEL9K_BACKGROUND_JOBS_VERBOSE_ALWAYS false
 prompt_background_jobs() {
-  local background_jobs_number=${$(jobs -l | wc -l)// /}
-  local wrong_lines=`jobs -l | awk '/pwd now/{ count++ } END {print count}'`
-  if [[ wrong_lines -gt 0 ]]; then
-     background_jobs_number=$(( $background_jobs_number - $wrong_lines ))
-  fi
-  if [[ background_jobs_number -gt 0 ]]; then
-    local background_jobs_number_print=""
-    if [[ "$POWERLEVEL9K_BACKGROUND_JOBS_VERBOSE" == "true" ]] && ([[ "$background_jobs_number" -gt 1 ]] || [[ "$POWERLEVEL9K_BACKGROUND_JOBS_VERBOSE_ALWAYS" == "true" ]]); then
-      background_jobs_number_print="$background_jobs_number"
-    fi
-    "$1_prompt_segment" "$0" "$2" "$DEFAULT_COLOR" "cyan" "$background_jobs_number_print" 'BACKGROUND_JOBS_ICON'
-  fi
+  local jobs_print="None"
+
+  (( $jobs_running > 0 )) && jobs_print="R:$jobs_running"
+  [[ (( $jobs_running > 0 )) && (( $jobs_suspended > 0 )) ]] && jobs_print+=" "
+  (( $jobs_suspended > 0 )) && jobs_print+="S:$jobs_suspended"
+
+  [[ $POWERLEVEL9K_BACKGROUND_JOBS_VERBOSE ]] && [[ $jobs_print != "None" || $POWERLEVEL9K_BACKGROUND_JOBS_VERBOSE_ALWAYS ]] && "$1_prompt_segment" "$0" "$2" "$DEFAULT_COLOR" "cyan" "$jobs_print" 'BACKGROUND_JOBS_ICON'
 }
 
 ################################################################
