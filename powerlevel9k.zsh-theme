@@ -338,7 +338,7 @@ prompt_background_jobs() {
   [[ (( $jobs_running > 0 )) && (( $jobs_suspended > 0 )) ]] && jobs_print+=" "
   (( $jobs_suspended > 0 )) && jobs_print+="S:$jobs_suspended"
 
-  [[ $POWERLEVEL9K_BACKGROUND_JOBS_VERBOSE ]] && [[ $jobs_print != "None" || $POWERLEVEL9K_BACKGROUND_JOBS_VERBOSE_ALWAYS ]] && "$1_prompt_segment" "$0" "$2" "$DEFAULT_COLOR" "cyan" "$jobs_print" 'BACKGROUND_JOBS_ICON'
+  [[ $POWERLEVEL9K_BACKGROUND_JOBS_VERBOSE ]] && [[ $jobs_print != "None" || ${(L)POWERLEVEL9K_BACKGROUND_JOBS_VERBOSE_ALWAYS} == "true" ]] && "$1_prompt_segment" "$0" "$2" "$DEFAULT_COLOR" "cyan" "$jobs_print" 'BACKGROUND_JOBS_ICON'
 }
 
 ################################################################
