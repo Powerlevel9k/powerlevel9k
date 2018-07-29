@@ -14,53 +14,55 @@ function setUp() {
 function mockLaravelVersion() {
   case "$1" in
     "artisan")
-      # artisan --version follows the format Laravel Framework <version>
-      echo "Laravel Framework 5.4.23"
+      echo "Laravel Framework version 5.4.23"
       ;;
     default)
   esac
 }
 
 function mockNoLaravelVersion() {
-  # When php can't find a file it will output a message
-  echo "Could not open input file: artisan"
-  return 0
+  # This should output some error
+  >&2 echo "Artisan not available"
+  return 1
 }
 
 function testLaravelVersionSegment() {
   alias php=mockLaravelVersion
-  local P9K_LARAVEL_VERSION_ICON='*x'
-  local -a P9K_LEFT_PROMPT_ELEMENTS; P9K_LEFT_PROMPT_ELEMENTS=(laravel_version)
-  source segments/laravel_version.p9k
+  POWERLEVEL9K_LARAVEL_ICON='x'
+  POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(laravel_version)
 
-  assertEquals "%K{001} %F{white}*x %f%F{white}5.4.23 %k%F{001}%f " "$(buildLeftPrompt)"
+  assertEquals "%K{001} %F{white%}x %f%F{white}5.4.23 %k%F{maroon}%f " "$(build_left_prompt)"
 
+  unset POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
+  unset POWERLEVEL9K_LARAVEL_ICON
   unalias php
 }
 
 function testLaravelVersionSegmentIfArtisanIsNotAvailable() {
   alias php=mockNoLaravelVersion
-  local P9K_CUSTOM_WORLD='echo world'
-  registerSegment "WORLD"
-  local P9K_LARAVEL_VERSION_ICON='*x'
-  local -a P9K_LEFT_PROMPT_ELEMENTS; P9K_LEFT_PROMPT_ELEMENTS=(custom_world laravel_version)
-  source segments/laravel_version.p9k
+  POWERLEVEL9K_CUSTOM_WORLD='echo world'
+  POWERLEVEL9K_LARAVEL_ICON='x'
+  POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(custom_world laravel_version)
 
-  assertEquals "%K{white} %F{black}world %k%F{white}%f " "$(buildLeftPrompt)"
+  assertEquals "%K{white} %F{black}world %k%F{white}%f " "$(build_left_prompt)"
 
+  unset POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
+  unset POWERLEVEL9K_LARAVEL_ICON
+  unset POWERLEVEL9K_CUSTOM_WORLD
   unalias php
 }
 
 function testLaravelVersionSegmentPrintsNothingIfPhpIsNotAvailable() {
   alias php=noPhp
-  local P9K_CUSTOM_WORLD='echo world'
-  registerSegment "WORLD"
-  local P9K_LARAVEL_VERSION_ICON='*x'
-  local -a P9K_LEFT_PROMPT_ELEMENTS; P9K_LEFT_PROMPT_ELEMENTS=(custom_world laravel_version)
-  source segments/laravel_version.p9k
+  POWERLEVEL9K_CUSTOM_WORLD='echo world'
+  POWERLEVEL9K_LARAVEL_ICON='x'
+  POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(custom_world laravel_version)
 
-  assertEquals "%K{white} %F{black}world %k%F{white}%f " "$(buildLeftPrompt)"
+  assertEquals "%K{white} %F{black}world %k%F{white}%f " "$(build_left_prompt)"
 
+  unset POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
+  unset POWERLEVEL9K_LARAVEL_ICON
+  unset POWERLEVEL9K_CUSTOM_WORLD
   unalias php
 }
 
