@@ -317,14 +317,6 @@ prompt_aws_eb_env() {
   fi
 }
 
-p9kBackgroundJobs() {
-  # See https://unix.stackexchange.com/questions/68571/show-jobs-count-only-if-it-is-more-than-0
-  jobs_running=${(M)#${jobstates%%:*}:#running}
-  jobs_suspended=${(M)#${jobstates%%:*}:#suspended}
-}
-
-add-zsh-hook precmd p9kBackgroundJobs
-
 prompt_background_jobs() {
 
 ################################################################
@@ -1848,6 +1840,12 @@ local NEWLINE='
   [[ $ITERM_SHELL_INTEGRATION_INSTALLED == "Yes" ]] && PROMPT="%{$(iterm2_prompt_mark)%}$PROMPT"
 }
 
+powerlevel9k_background_jobs() {
+  # See https://unix.stackexchange.com/questions/68571/show-jobs-count-only-if-it-is-more-than-0
+  jobs_running=${(M)#${jobstates%%:*}:#running}
+  jobs_suspended=${(M)#${jobstates%%:*}:#suspended}
+}
+
 zle-keymap-select () {
 	zle reset-prompt
 	zle -R
@@ -1918,6 +1916,7 @@ prompt_powerlevel9k_setup() {
 
   # prepare prompts
   add-zsh-hook precmd powerlevel9k_prepare_prompts
+  add-zsh-hook precmd powerlevel9k_background_jobs
   add-zsh-hook preexec powerlevel9k_preexec
 
   zle -N zle-keymap-select
