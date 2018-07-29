@@ -334,16 +334,14 @@ set_default POWERLEVEL9K_BACKGROUND_JOBS_ALWAYS_SHOW false
 prompt_background_jobs() {
   local jobs_print
 
-  [[ "${POWERLEVEL9K_BACKGROUND_JOBS_ALWAYS_SHOW}" == "true" ]] && jobs_print=0 || jobs_print=""
-
   if [[ "${(L)POWERLEVEL9K_BACKGROUND_JOBS_VERBOSE}" == "true" ]]; then
-    (( ${jobs_running} > 0 )) && jobs_print="R:${jobs_running}"
-    [[ (( ${jobs_running} > 0 )) && (( $jobs_suspended > 0 )) ]] && jobs_print+=" "
-    (( ${jobs_suspended} > 0 )) && jobs_print+="S:${jobs_suspended}"
+    jobs_print="${jobs_running}r ${jobs_suspended}s"
   else
     local total=$(( ${jobs_running} + ${jobs_suspended} ))
     (( ${total} > 0 )) && jobs_print="${total}"
   fi
+
+  [[ "${POWERLEVEL9K_BACKGROUND_JOBS_ALWAYS_SHOW}" == "true" && "${jobs_print}" == "" ]] && jobs_print=0
 
   [[ ${jobs_print} != "" ]] && p9kPrepareSegment "$0" "" $1 "$2" $3 "${jobs_print}" "[[ true ]]"
 }
