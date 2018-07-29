@@ -317,8 +317,6 @@ prompt_aws_eb_env() {
   fi
 }
 
-prompt_background_jobs() {
-
 ################################################################
 # Segment to indicate background jobs with an icon.
 set_default POWERLEVEL9K_BACKGROUND_JOBS_VERBOSE true
