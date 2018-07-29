@@ -10,124 +10,127 @@ function setUp() {
   # Load Powerlevel9k
   source powerlevel9k.zsh-theme
   source functions/*
-  source segments/background_jobs.p9k
-  source segments/root_indicator.p9k
-  source segments/dir.p9k
 
   # Unset mode, so that user settings
   # do not interfere with tests
-  unset P9K_MODE
+  unset POWERLEVEL9K_MODE
 }
 
 function testJoinedSegments() {
-  local -a P9K_LEFT_PROMPT_ELEMENTS; P9K_LEFT_PROMPT_ELEMENTS=(dir dir_joined)
+  POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(dir dir_joined)
   cd /tmp
 
-  assertEquals "%K{blue} %F{black}/tmp %F{black}/tmp %k%F{blue}%f " "$(buildLeftPrompt)"
+  assertEquals "%K{blue} %F{black}/tmp %K{blue}%F{black}%F{black}/tmp %k%F{blue}%f " "$(build_left_prompt)"
 
+  unset POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
   cd -
 }
 
 function testTransitiveJoinedSegments() {
-  local -a P9K_LEFT_PROMPT_ELEMENTS; P9K_LEFT_PROMPT_ELEMENTS=(dir root_indicator_joined dir_joined)
+  POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(dir root_indicator_joined dir_joined)
   cd /tmp
 
-  assertEquals "%K{blue} %F{black}/tmp %F{black}/tmp %k%F{blue}%f " "$(buildLeftPrompt)"
+  assertEquals "%K{blue} %F{black}/tmp %K{blue}%F{black}%F{black}/tmp %k%F{blue}%f " "$(build_left_prompt)"
 
+  unset POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
   cd -
 }
 
 function testJoiningWithConditionalSegment() {
-  local -a P9K_LEFT_PROMPT_ELEMENTS; P9K_LEFT_PROMPT_ELEMENTS=(dir background_jobs dir_joined)
+  POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(dir background_jobs dir_joined)
   cd /tmp
 
-  assertEquals "%K{blue} %F{black}/tmp  %F{black}/tmp %k%F{blue}%f " "$(buildLeftPrompt)"
+  assertEquals "%K{blue} %F{black}/tmp %K{blue}%F{black} %F{black}/tmp %k%F{blue}%f " "$(build_left_prompt)"
 
+  unset POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
   cd -
 }
 
 function testDynamicColoringOfSegmentsWork() {
-  local -a P9K_LEFT_PROMPT_ELEMENTS; P9K_LEFT_PROMPT_ELEMENTS=(dir)
-  local P9K_DIR_DEFAULT_BACKGROUND='red'
-  source segments/dir.p9k
+  POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(dir)
+  POWERLEVEL9K_DIR_DEFAULT_BACKGROUND='red'
   cd /tmp
 
-  assertEquals "%K{red} %F{black}/tmp %k%F{red}%f " "$(buildLeftPrompt)"
+  assertEquals "%K{red} %F{black}/tmp %k%F{red}%f " "$(build_left_prompt)"
 
+  unset POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
+  unset POWERLEVEL9K_DIR_DEFAULT_BACKGROUND
   cd -
 }
 
 function testDynamicColoringOfVisualIdentifiersWork() {
-  local -a P9K_LEFT_PROMPT_ELEMENTS; P9K_LEFT_PROMPT_ELEMENTS=(dir)
-  local P9K_DIR_DEFAULT_ICON="*icon-here"
-  local P9K_DIR_DEFAULT_ICON_COLOR='green'
-  source segments/dir.p9k
+  POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(dir)
+  POWERLEVEL9K_DIR_DEFAULT_VISUAL_IDENTIFIER_COLOR='green'
+  POWERLEVEL9K_FOLDER_ICON="icon-here"
 
   cd /tmp
 
-  assertEquals "%K{blue} %F{green}*icon-here %f%F{black}/tmp %k%F{blue}%f " "$(buildLeftPrompt)"
+  assertEquals "%K{blue} %F{green%}icon-here %f%F{black}/tmp %k%F{blue}%f " "$(build_left_prompt)"
 
+  unset POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
+  unset POWERLEVEL9K_DIR_DEFAULT_VISUAL_IDENTIFIER_COLOR
+  unset POWERLEVEL9K_FOLDER_ICON
   cd -
 }
 
 function testColoringOfVisualIdentifiersDoesNotOverwriteColoringOfSegment() {
-  local -a P9K_LEFT_PROMPT_ELEMENTS; P9K_LEFT_PROMPT_ELEMENTS=(dir)
-  local P9K_DIR_DEFAULT_FOREGROUND='red'
-  local P9K_DIR_DEFAULT_BACKGROUND='yellow'
-  local P9K_DIR_DEFAULT_ICON="*icon-here"
-  local P9K_DIR_DEFAULT_ICON_COLOR='green'
+  POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(dir)
+  POWERLEVEL9K_DIR_DEFAULT_VISUAL_IDENTIFIER_COLOR='green'
+  POWERLEVEL9K_DIR_DEFAULT_FOREGROUND='red'
+  POWERLEVEL9K_DIR_DEFAULT_BACKGROUND='yellow'
+  POWERLEVEL9K_FOLDER_ICON="icon-here"
 
-  # Re-Source the dir segment
-  source segments/dir.p9k
+  # Re-Source the icons, as the POWERLEVEL9K_MODE is directly
+  # evaluated there.
+  source functions/icons.zsh
 
   cd /tmp
 
-  assertEquals "%K{yellow} %F{green}*icon-here %f%F{red}/tmp %k%F{yellow}%f " "$(buildLeftPrompt)"
+  assertEquals "%K{yellow} %F{green%}icon-here %f%F{red}/tmp %k%F{yellow}%f " "$(build_left_prompt)"
 
+  unset POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
+  unset POWERLEVEL9K_DIR_DEFAULT_VISUAL_IDENTIFIER_COLOR
+  unset POWERLEVEL9K_DIR_DEFAULT_FOREGROUND
+  unset POWERLEVEL9K_DIR_DEFAULT_BACKGROUND
+  unset POWERLEVEL9K_FOLDER_ICON
   cd -
 }
 
 function testOverwritingIconsWork() {
-  local -a P9K_LEFT_PROMPT_ELEMENTS; P9K_LEFT_PROMPT_ELEMENTS=(dir)
-  local P9K_DIR_DEFAULT_ICON='*icon-here'
+  POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(dir)
+  POWERLEVEL9K_FOLDER_ICON='icon-here'
   #local testFolder=$(mktemp -d -p p9k)
   # Move testFolder under home folder
   #mv testFolder ~
   # Go into testFolder
   #cd ~/$testFolder
 
-  # Re-Source the dir segment
-  source segments/dir.p9k
-
   cd /tmp
-  assertEquals "%K{blue} %F{black}*icon-here %f%F{black}/tmp %k%F{blue}%f " "$(buildLeftPrompt)"
+  assertEquals "%K{blue} %F{black%}icon-here %f%F{black}/tmp %k%F{blue}%f " "$(build_left_prompt)"
 
+  unset POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
+  unset POWERLEVEL9K_DIR_FOLDER_ICON
   cd -
   # rm -fr ~/$testFolder
 }
 
-# ANSI escape sequences
-# %b - [0m  - bold off
-# %F - [3_m - set foreground color
-# %f - [39m - default foreground color
-# %K - [4_m - set background color
-# %k - [49m - default background color
-#      [_A  - cursor up
-#      [_B  - cursor down
-
 function testNewlineOnRpromptCanBeDisabled() {
-  local P9K_PROMPT_ON_NEWLINE=true
-  local P9K_RPROMPT_ON_NEWLINE=false
-  local P9K_CUSTOM_WORLD='echo world'
-  registerSegment "WORLD"
-  local P9K_CUSTOM_RWORLD='echo rworld'
-  registerSegment "RWORLD"
-  local -a P9K_LEFT_PROMPT_ELEMENTS; P9K_LEFT_PROMPT_ELEMENTS=(custom_world)
-  local -a P9K_RIGHT_PROMPT_ELEMENTS; P9K_RIGHT_PROMPT_ELEMENTS=(custom_rworld)
+  POWERLEVEL9K_PROMPT_ON_NEWLINE=true
+  POWERLEVEL9K_RPROMPT_ON_NEWLINE=false
+  POWERLEVEL9K_CUSTOM_WORLD='echo world'
+  POWERLEVEL9K_CUSTOM_RWORLD='echo rworld'
+  POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(custom_world)
+  POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(custom_rworld)
 
-  p9kPreparePrompts
-  #╭─\^[[39m^[[0m^[[49m^[[47m ^[[30mworld ^[[49m^[[37m^[[39m  ╰─ ^[[1A^[[39m^[[0m^[[49m^[[37m^[[47m^[[30m rworld^[[30m ^[[00m^[[1B>
-  assertEquals '╭─[39m[0m[49m[47m [30mworld [49m[37m[39m  ╰─ [1A[39m[0m[49m[37m[47m[30m rworld [30m [00m[1B' "$(print -P ${PROMPT}${RPROMPT})"
+  powerlevel9k_prepare_prompts
+  assertEquals '$(print_icon MULTILINE_FIRST_PROMPT_PREFIX)[39m[0m[49m[47m [30mworld [49m[37m[39m  $(print_icon MULTILINE_LAST_PROMPT_PREFIX)[1A[39m[0m[49m[37m[39m[47m[30m rworld[K[00m[1B' "$(print -P ${PROMPT}${RPROMPT})"
+
+  unset POWERLEVEL9K_PROMPT_ON_NEWLINE
+  unset POWERLEVEL9K_RPROMPT_ON_NEWLINE
+  unset POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
+  unset POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS
+  unset POWERLEVEL9K_CUSTOM_WORLD
+  unset POWERLEVEL9K_CUSTOM_RWORLD
 }
 
 source shunit2/source/2.1/src/shunit2
