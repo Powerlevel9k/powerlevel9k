@@ -330,15 +330,22 @@ prompt_background_jobs() {
 ################################################################
 # Segment to indicate background jobs with an icon.
 set_default POWERLEVEL9K_BACKGROUND_JOBS_VERBOSE true
-set_default POWERLEVEL9K_BACKGROUND_JOBS_VERBOSE_ALWAYS false
+set_default POWERLEVEL9K_BACKGROUND_JOBS_ALWAYS_SHOW false
 prompt_background_jobs() {
-  local jobs_print=""
+  local jobs_print
 
-  (( $jobs_running > 0 )) && jobs_print="R:$jobs_running"
-  [[ (( $jobs_running > 0 )) && (( $jobs_suspended > 0 )) ]] && jobs_print+=" "
-  (( $jobs_suspended > 0 )) && jobs_print+="S:$jobs_suspended"
+  [[ "${POWERLEVEL9K_BACKGROUND_JOBS_ALWAYS_SHOW}" == "true" ]] && jobs_print=0 || jobs_print=""
 
-  [[ $POWERLEVEL9K_BACKGROUND_JOBS_VERBOSE ]] && [[ $jobs_print != "" || ${(L)POWERLEVEL9K_BACKGROUND_JOBS_VERBOSE_ALWAYS} == "true" ]] && "$1_prompt_segment" "$0" "$2" "$DEFAULT_COLOR" "cyan" "$jobs_print" 'BACKGROUND_JOBS_ICON'
+  if [[ "${(L)POWERLEVEL9K_BACKGROUND_JOBS_VERBOSE}" == "true" ]]; then
+    (( ${jobs_running} > 0 )) && jobs_print="R:${jobs_running}"
+    [[ (( ${jobs_running} > 0 )) && (( $jobs_suspended > 0 )) ]] && jobs_print+=" "
+    (( ${jobs_suspended} > 0 )) && jobs_print+="S:${jobs_suspended}"
+  else
+    local total=$(( ${jobs_running} + ${jobs_suspended} ))
+    (( ${total} > 0 )) && jobs_print="${total}"
+  fi
+
+  [[ ${jobs_print} != "" ]] && p9kPrepareSegment "$0" "" $1 "$2" $3 "${jobs_print}" "[[ true ]]"
 }
 
 ################################################################
