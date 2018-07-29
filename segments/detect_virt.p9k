@@ -22,18 +22,9 @@ registerSegment 'DETECT_VERT' '' "$DEFAULT_COLOR" "yellow" "" "" "" "" "" ""
 #   $3 boolean Whether the segment should be joined
 ##
 prompt_detect_virt() {
-  if ! command -v systemd-detect-virt > /dev/null; then
-    return
-  fi
-  local virt=$(systemd-detect-virt)
+  local virt=$(systemd-detect-virt 2> /dev/null)
   if [[ "$virt" == "none" ]]; then
-    if [[ "$(ls -di / | grep -o 2)" != "2" ]]; then
-      virt="chroot"
-      p9kPrepareSegment "$0" "" $1 "$2" $3 "$virt"
-    else
-      ;
-    fi
-  else
-    p9kPrepareSegment "$0" "" $1 "$2" $3 "$virt"
+    [[ "$(ls -di / | grep -o 2)" != "2" ]] && virt="chroot"
   fi
+  [[ -n "${virt}" ]] && p9kPrepareSegment "$0" "" $1 "$2" $3 "$virt"
 }
