@@ -12,8 +12,16 @@
 #                                                            ⚙                                                               
 registerSegment 'BACKGROUND_JOBS' '' "$DEFAULT_COLOR" "cyan" $'\u2699'  $'\uE82F '  $'\uF013 '  '\u'$CODEPOINT_OF_AWESOME_COG' '  $'\uF013 '
 
-setDefault P9K_BACKGROUND_JOBS_VERBOSE true
-setDefault P9K_BACKGROUND_JOBS_ALWAYS_VERBOSE false
+p9kBackgroundJobs() {
+  # See https://unix.stackexchange.com/questions/68571/show-jobs-count-only-if-it-is-more-than-0
+  jobs_running=${(M)#${jobstates%%:*}:#running}
+  jobs_suspended=${(M)#${jobstates%%:*}:#suspended}
+}
+
+add-zsh-hook precmd p9kBackgroundJobs
+
+setDefault P9K_BACKGROUND_JOBS_VERBOSE false
+setDefault P9K_BACKGROUND_JOBS_ALWAYS_SHOW false
 ################################################################
 # @description
 #   Displays the number of background jobs with an icon.
@@ -24,16 +32,16 @@ setDefault P9K_BACKGROUND_JOBS_ALWAYS_VERBOSE false
 #   $3 boolean Whether the segment should be joined
 ##
 prompt_background_jobs() {
-  local background_jobs_number=${$(jobs -l | wc -l)// /}
-  local wrong_lines=`jobs -l | awk '/pwd now/{ count++ } END {print count}'`
-  if [[ wrong_lines -gt 0 ]]; then
-     background_jobs_number=$(( $background_jobs_number - $wrong_lines ))
+  local jobs_print
+
+  if [[ "${(L)P9K_BACKGROUND_JOBS_VERBOSE}" == "true" ]]; then
+    jobs_print="${jobs_running}r ${jobs_suspended}s"
+  else
+    local total=$(( ${jobs_running} + ${jobs_suspended} ))
+    (( ${total} > 0 )) && jobs_print="${total}"
   fi
-  if [[ background_jobs_number -gt 0 ]]; then
-    local background_jobs_number_print=""
-    if [[ "$P9K_BACKGROUND_JOBS_VERBOSE" == "true" ]] && ([[ "$background_jobs_number" -gt 1 ]] || [[ "$P9K_BACKGROUND_JOBS_ALWAYS_VERBOSE" == "true" ]]); then
-      background_jobs_number_print="$background_jobs_number"
-    fi
-    p9kPrepareSegment "$0" "" $1 "$2" $3 "$background_jobs_number_print"
-  fi
+
+  [[ "${P9K_BACKGROUND_JOBS_ALWAYS_SHOW}" == "true" && "${jobs_print}" == "" ]] && jobs_print=0
+
+  [[ ${jobs_print} != "" ]] && p9kPrepareSegment "$0" "" $1 "$2" $3 "${jobs_print}" "[[ true ]]"
 }
