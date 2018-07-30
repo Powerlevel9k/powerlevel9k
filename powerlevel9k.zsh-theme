@@ -1536,7 +1536,7 @@ prompt_tw() {
       'todayonly'          "$DEFAULT_COLOR_INVERTED"
       'late'               "yellow"
     )
-    local current_state=""; local today=0; local over=0; local pending=0
+    local current_state=""; local today=0; local over=0; local pending=0;
     local data=$(task +PENDING export | tw_regex '{.*\"description\":\"([^,]*)\",\"due\":\"([^,]*)\"(,[^,]*)*,\"project\":\"([^,]*)\"(,[^,]*)*,\"status\":\"([^,]*)\",.*},?' )
 
     # split string to array of strings
