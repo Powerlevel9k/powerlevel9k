@@ -1,7 +1,7 @@
 #!/usr/bin/env zsh
 #vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
 
-local failed=false break_on_fail=false show_summary=false
+local failed=false break_on_fail=false show_summary=false pass
 local P9K_IGNORE_VAR_WARNING=true
 typeset -AH results
 
@@ -30,4 +30,4 @@ if [[ ${show_summary} == true ]]; then
     done
 fi
 
-[[ "${failed}" == true ]] && exit 1
+[[ ${failed} == true ]] && exit 1
