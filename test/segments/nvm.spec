@@ -16,6 +16,9 @@ function setUp() {
   OLD_PATH=$PATH
   PATH=${FOLDER}/bin:$PATH
   cd $FOLDER
+  # Load Powerlevel9k
+  source ${P9K_HOME}/powerlevel9k.zsh-theme
+  source ${P9K_HOME}/segments/nvm.p9k
 }
 
 function tearDown() {
@@ -33,9 +36,7 @@ function testNvmSegmentPrintsNothingIfNvmIsNotAvailable() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(nvm custom_world)
   local P9K_CUSTOM_WORLD='echo world'
-
-  # Load Powerlevel9k
-  source ${P9K_HOME}/powerlevel9k.zsh-theme
+  registerSegment "WORLD"
 
   assertEquals "%K{white} %F{black}world %k%F{white}%f " "$(buildLeftPrompt)"
 }
@@ -44,23 +45,18 @@ function testNvmSegmentWorksWithoutHavingADefaultAlias() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(nvm)
 
-  # Load Powerlevel9k
-  source ${P9K_HOME}/powerlevel9k.zsh-theme
-
   function nvm_version() {
     [[ ${1} == 'current' ]] && echo 'v4.6.0' || echo 'v1.4.0'
   }
 
-  assertEquals "%K{magenta} %F{black%}⬢ %f%F{black}4.6.0 %k%F{magenta}%f " "$(buildLeftPrompt)"
+  assertEquals "%K{magenta} %F{black}⬢ %f%F{black}4.6.0 %k%F{magenta}%f " "$(buildLeftPrompt)"
 }
 
 function testNvmSegmentPrintsNothingWhenOnDefaultVersion() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(nvm custom_world)
   local P9K_CUSTOM_WORLD='echo world'
-
-  # Load Powerlevel9k
-  source ${P9K_HOME}/powerlevel9k.zsh-theme
+  registerSegment "WORLD"
 
   function nvm_version() {
     [[ ${1} == 'current' ]] && echo 'v4.6.0' || echo 'v4.6.0'

@@ -17,6 +17,10 @@ function setUp() {
   OLD_PATH=$PATH
   PATH=${FOLDER}/bin:$PATH
   cd $FOLDER
+
+  # Load Powerlevel9k
+  source ${P9K_HOME}/powerlevel9k.zsh-theme
+  source ${P9K_HOME}/segments/todo.p9k
 }
 
 function tearDown() {
@@ -31,28 +35,26 @@ function tearDown() {
 }
 
 function testTodoSegmentPrintsNothingIfTodoShIsNotInstalled() {
-    local -a P9K_LEFT_PROMPT_ELEMENTS
-    P9K_LEFT_PROMPT_ELEMENTS=(todo custom_world)
-    local P9K_CUSTOM_WORLD='echo world'
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(todo custom_world)
+  local P9K_CUSTOM_WORLD='echo world'
+  registerSegment "WORLD"
+  alias todo.sh="echo"
 
-    # Load Powerlevel9k
-    source ${P9K_HOME}/powerlevel9k.zsh-theme
+  assertEquals "%K{white} %F{black}world %k%F{white}%f " "$(buildLeftPrompt)"
 
-    assertEquals "%K{white} %F{black}world %k%F{white}%f " "$(buildLeftPrompt)"
+  unalias todo.sh
 }
 
 function testTodoSegmentWorksAsExpected() {
-    # TODO: Skript in den PATH legen!
-    local -a P9K_LEFT_PROMPT_ELEMENTS
-    P9K_LEFT_PROMPT_ELEMENTS=(todo)
-    echo '#!/bin/sh' > ${FOLDER}/bin/todo.sh
-    echo 'echo "TODO: 34 of 100 tasks shown";' >> ${FOLDER}/bin/todo.sh
-    chmod +x ${FOLDER}/bin/todo.sh
+  # TODO: Skript in den PATH legen!
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(todo)
+  echo '#!/bin/sh' > ${FOLDER}/bin/todo.sh
+  echo 'echo "TODO: 34 of 100 tasks shown";' >> ${FOLDER}/bin/todo.sh
+  chmod +x ${FOLDER}/bin/todo.sh
 
-    # Load Powerlevel9k
-    source ${P9K_HOME}/powerlevel9k.zsh-theme
-
-    assertEquals "%K{244} %F{black%}☑ %f%F{black}100 %k%F{grey50}%f " "$(buildLeftPrompt)"
+  assertEquals "%K{244} %F{black}☑ %f%F{black}100 %k%F{244}%f " "$(buildLeftPrompt)"
 }
 
 source shunit2/source/2.1/src/shunit2

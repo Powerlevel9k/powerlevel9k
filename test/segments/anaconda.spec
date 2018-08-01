@@ -12,6 +12,7 @@ function setUp() {
 
 function testAnacondaSegmentPrintsNothingIfNoAnacondaPathIsSet() {
     local P9K_CUSTOM_WORLD='echo world'
+  registerSegment "WORLD"
     registerSegment "WORLD"
     local -a P9K_LEFT_PROMPT_ELEMENTS
     P9K_LEFT_PROMPT_ELEMENTS=(anaconda custom_world)

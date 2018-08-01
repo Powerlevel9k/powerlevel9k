@@ -40,7 +40,7 @@ function testDiskUsageSegmentWhenDiskIsAlmostFull() {
   # Load Powerlevel9k
   source ${P9K_HOME}/powerlevel9k.zsh-theme
 
-  assertEquals "%K{red} %F{white%}hdd  %f%F{white}97%% %k%F{red}%f " "$(buildLeftPrompt)"
+  assertEquals "%K{red} %F{white}hdd  %f%F{white}97%% %k%F{red}%f " "$(buildLeftPrompt)"
 
   unfunction df
 }
@@ -56,7 +56,7 @@ function testDiskUsageSegmentWhenDiskIsVeryFull() {
   # Load Powerlevel9k
   source ${P9K_HOME}/powerlevel9k.zsh-theme
 
-  assertEquals "%K{yellow} %F{black%}hdd  %f%F{black}94%% %k%F{yellow}%f " "$(buildLeftPrompt)"
+  assertEquals "%K{yellow} %F{black}hdd  %f%F{black}94%% %k%F{yellow}%f " "$(buildLeftPrompt)"
 
   unfunction df
 }
@@ -72,7 +72,7 @@ function testDiskUsageSegmentWhenDiskIsQuiteEmpty() {
   # Load Powerlevel9k
   source ${P9K_HOME}/powerlevel9k.zsh-theme
 
-  assertEquals "%K{black} %F{yellow%}hdd  %f%F{yellow}4%% %k%F{black}%f " "$(buildLeftPrompt)"
+  assertEquals "%K{black} %F{green1}hdd  %f%F{green1}4%% %k%F{black}%f " "$(buildLeftPrompt)"
 
   unfunction df
 }
@@ -87,6 +87,8 @@ function testDiskUsageSegmentPrintsNothingIfDiskIsQuiteEmptyAndOnlyWarningsShoul
 
   local P9K_DISK_USAGE_ONLY_WARNING=true
   local P9K_CUSTOM_WORLD='echo world'
+  registerSegment "WORLD"
+  registerSegment "WORLD"
 
   assertEquals "%K{white} %F{black}world %k%F{white}%f " "$(buildLeftPrompt)"
 
@@ -105,7 +107,7 @@ function testDiskUsageSegmentWarningLevelCouldBeAdjusted() {
   # Load Powerlevel9k
   source ${P9K_HOME}/powerlevel9k.zsh-theme
 
-  assertEquals "%K{yellow} %F{black%}hdd  %f%F{black}11%% %k%F{yellow}%f " "$(buildLeftPrompt)"
+  assertEquals "%K{yellow} %F{black}hdd  %f%F{black}11%% %k%F{yellow}%f " "$(buildLeftPrompt)"
 
   unfunction df
 }
@@ -123,7 +125,7 @@ function testDiskUsageSegmentCriticalLevelCouldBeAdjusted() {
   # Load Powerlevel9k
   source ${P9K_HOME}/powerlevel9k.zsh-theme
 
-  assertEquals "%K{red} %F{white%}hdd  %f%F{white}11%% %k%F{red}%f " "$(buildLeftPrompt)"
+  assertEquals "%K{red} %F{white}hdd  %f%F{white}11%% %k%F{red}%f " "$(buildLeftPrompt)"
 
   unfunction df
 }

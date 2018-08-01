@@ -105,7 +105,6 @@ deprecated_variables=(
   'P9K_EXECUTION_TIME_ICON'       'P9K_COMMAND_EXECUTION_TIME_ICON'
   # context segment
   'P9K_ALWAYS_SHOW_CONTEXT'       'P9K_CONTEXT_ALWAYS_SHOW'
-  'DEFAULT_USER'                  'P9K_CONTEXT_DEFAULT_USER'
   'P9K_ALWAYS_SHOW_USER'          'P9K_CONTEXT_ALWAYS_SHOW_USER'
   # dir segment
   'P9K_HOME_ICON'                 'P9K_DIR_HOME_ICON'

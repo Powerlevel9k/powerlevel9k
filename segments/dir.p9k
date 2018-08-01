@@ -20,31 +20,6 @@ registerSegment "DIR" 'NOT_WRITABLE'    "blue" "$DEFAULT_COLOR"   $'\uE0A2'  $'\
 #                                                                                                                                   
 registerSegment "DIR" 'ETC'             "blue" "$DEFAULT_COLOR"   $'\uE818'  $'\uF013'  $'\uF013'  '\u'$CODEPOINT_OF_AWESOME_COG          $'\uF013'
 
-################################################################
-# Determine the unique path - this is needed for the
-# truncate_to_unique strategy.
-#
-function getUniqueFolder() {
-  local trunc_path directory test_dir test_dir_length
-  local -a matching
-  local -a paths
-  local cur_path='/'
-  paths=(${(s:/:)1})
-  for directory in ${paths[@]}; do
-    test_dir=''
-    for (( i=0; i < ${#directory}; i++ )); do
-      test_dir+="${directory:$i:1}"
-      matching=("$cur_path"/"$test_dir"*/)
-      if [[ ${#matching[@]} -eq 1 ]]; then
-        break
-      fi
-    done
-    trunc_path+="$test_dir/"
-    cur_path+="$directory/"
-  done
-  echo "${trunc_path: : -1}"
-}
-
 setDefault P9K_DIR_PATH_SEPARATOR "/"
 setDefault P9K_DIR_HOME_FOLDER_ABBREVIATION "~"
 setDefault P9K_DIR_PATH_HIGHLIGHT_BOLD false
@@ -117,8 +92,8 @@ prompt_dir() {
         # characters sequence. Source: https://stackoverflow.com/a/45336078
         if (( ${#current_path} > 1 )); then # root and home are exceptions and won't have paths
           # cheating here to retain ~ as home folder
-          local home_path="$(getUniqueFolder $HOME)"
-          trunc_path="$(getUniqueFolder $PWD)"
+          local home_path="$(getUniquePath $HOME:A)"
+          trunc_path="$(getUniquePath $PWD:A)"
           [[ $current_path == "~"* ]] && current_path="~${trunc_path//${home_path}/}" || current_path="/${trunc_path}"
         fi
       ;;
@@ -126,16 +101,13 @@ prompt_dir() {
         if (( ${#paths} > 0 )); then # root and home are exceptions and won't have paths, so skip this
           local last_marked_folder marked_folder
 
-          # we need to use absolute paths for this strategy to work correctly
-          current_path=${PWD}
+          # we need to use absolute paths for this strategy to work correctly. We also need to resolve symlinks (:A)
+          current_path=${PWD:A}
           # Search for the folder marker in the parent directories and
           # buildup a pattern that is removed from the current path
           # later on.
           local -a markedFolders
-          local OLDIFS="${IFS}"
-          IFS=$'\n'
-          markedFolders=($(upsearch $POWERLEVEL9K_SHORTEN_FOLDER_MARKER $current_path))
-          IFS="${OLDIFS}"
+          markedFolders=($(upsearch $P9K_DIR_SHORTEN_FOLDER_MARKER $current_path))
           if (( ${#markedFolders} > 0 )); then
             # Take the first match. This is the longest one.
             local markedFolder="${markedFolders[1]}"
@@ -146,7 +118,7 @@ prompt_dir() {
             # to show .../12/some/deep/folder. That is why we have to go to the
             # "parent" folder..
             markedFolder="${markedFolder%/*}"
-            current_path="${POWERLEVEL9K_SHORTEN_DELIMITER}${current_path#${markedFolder}*}"
+            current_path="/${P9K_DIR_SHORTEN_DELIMITER}${current_path#${markedFolder}*}"
           fi
         fi
       ;;

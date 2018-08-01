@@ -139,7 +139,7 @@ setDefault P9K_VCS_INTERNAL_HASH_LENGTH "8"
 # @note
 #   This function is only called once.
 ##
-p9k_vcs_init() {
+p9kVcsInit() {
   if [[ -n "$P9K_VCS_CHANGESET_HASH_LENGTH" ]]; then
     P9K_VCS_INTERNAL_HASH_LENGTH="$P9K_VCS_CHANGESET_HASH_LENGTH"
   fi
@@ -152,7 +152,7 @@ p9k_vcs_init() {
 
   VCS_CHANGESET_PREFIX=''
   if [[ "$P9K_VCS_SHOW_CHANGESET" == true ]]; then
-    VCS_CHANGESET_PREFIX="$p9k_icons[VCS_COMMIT_ICON]%0.$P9K_VCS_INTERNAL_HASH_LENGTH""i "
+    VCS_CHANGESET_PREFIX="$p9k_icons[VCS_COMMIT_ICON]%0.${P9K_VCS_INTERNAL_HASH_LENGTH}i "
   fi
 
   # Load supported version control backends
@@ -242,4 +242,4 @@ prompt_vcs() {
   fi
 }
 
-p9k_vcs_init
+p9kVcsInit

@@ -14,6 +14,7 @@ function setUp() {
 
 function testOverwritingIconsWork() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
+  local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(custom_world1)
   local P9K_CUSTOM_WORLD1='echo world1'
   local P9K_WORLD1_ICON='*icon-here'
@@ -23,6 +24,7 @@ function testOverwritingIconsWork() {
 }
 
 function testVisualIdentifierAppearsBeforeSegmentContentOnLeftSegments() {
+  local -a P9K_LEFT_PROMPT_ELEMENTS
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(custom_world1)
   local P9K_CUSTOM_WORLD1='echo world1'
@@ -34,6 +36,7 @@ function testVisualIdentifierAppearsBeforeSegmentContentOnLeftSegments() {
 
 function testVisualIdentifierAppearsAfterSegmentContentOnRightSegments() {
   local -a P9K_RIGHT_PROMPT_ELEMENTS
+  local -a P9K_RIGHT_PROMPT_ELEMENTS
   P9K_RIGHT_PROMPT_ELEMENTS=(custom_world1)
   local P9K_CUSTOM_WORLD1='echo world1'
   local P9K_WORLD1_ICON='*icon-here'
@@ -43,6 +46,7 @@ function testVisualIdentifierAppearsAfterSegmentContentOnRightSegments() {
 }
 
 function testVisualIdentifierPrintsNothingIfNotAvailable() {
+  local -a P9K_LEFT_PROMPT_ELEMENTS
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(custom_world1)
   local P9K_CUSTOM_WORLD1='echo world1'

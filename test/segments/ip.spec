@@ -7,6 +7,9 @@ SHUNIT_PARENT=$0
 
 function setUp() {
   export TERM="xterm-256color"
+  # Load Powerlevel9k
+  source powerlevel9k.zsh-theme
+  source segments/ip.p9k
 }
 
 function testIpSegmentPrintsNothingOnOsxIfNotConnected() {
@@ -14,9 +17,8 @@ function testIpSegmentPrintsNothingOnOsxIfNotConnected() {
   P9K_LEFT_PROMPT_ELEMENTS=(ip custom_world)
   alias networksetup='echo "not connected"'
   local P9K_CUSTOM_WORLD='echo world'
+  registerSegment "WORLD"
 
-  # Load Powerlevel9k
-  source powerlevel9k.zsh-theme
   local OS="OSX" # Fake OSX
 
   assertEquals "%K{white} %F{black}world %k%F{white}%f " "$(buildLeftPrompt)"
@@ -29,9 +31,8 @@ function testIpSegmentPrintsNothingOnLinuxIfNotConnected() {
   P9K_LEFT_PROMPT_ELEMENTS=(ip custom_world)
   alias ip='echo "not connected"'
   local P9K_CUSTOM_WORLD='echo world'
+  registerSegment "WORLD"
 
-  # Load Powerlevel9k
-  source powerlevel9k.zsh-theme
   local OS="Linux" # Fake Linux
 
   assertEquals "%K{white} %F{black}world %k%F{white}%f " "$(buildLeftPrompt)"
@@ -64,11 +65,9 @@ function testIpSegmentWorksOnOsxWithNoInterfaceSpecified() {
 
   alias ipconfig="_(){ echo '1.2.3.4'; };_"
 
-  # Load Powerlevel9k
-  source powerlevel9k.zsh-theme
   local OS='OSX' # Fake OSX
 
-  assertEquals "%K{cyan} %F{black%}IP %f%F{black}1.2.3.4 %k%F{cyan}%f " "$(buildLeftPrompt)"
+  assertEquals "%K{cyan} %F{black}IP %f%F{black}1.2.3.4 %k%F{cyan}%f " "$(buildLeftPrompt)"
 
   unalias ipconfig
   unalias networksetup
@@ -119,11 +118,9 @@ function testIpSegmentWorksOnOsxWithMultipleInterfacesSpecified() {
       }
   }
 
-  # Load Powerlevel9k
-  source powerlevel9k.zsh-theme
   local OS='OSX' # Fake OSX
 
-  assertEquals "%K{cyan} %F{black%}IP %f%F{black}1.2.3.4 %k%F{cyan}%f " "$(buildLeftPrompt)"
+  assertEquals "%K{cyan} %F{black}IP %f%F{black}1.2.3.4 %k%F{cyan}%f " "$(buildLeftPrompt)"
 
   unfunction ipconfig
   unalias networksetup
@@ -135,11 +132,9 @@ function testIpSegmentWorksOnOsxWithInterfaceSpecified() {
   local P9K_IP_INTERFACE='xxx'
   alias ipconfig="_(){ echo '1.2.3.4'; };_"
 
-  # Load Powerlevel9k
-  source powerlevel9k.zsh-theme
   local OS='OSX' # Fake OSX
 
-  assertEquals "%K{cyan} %F{black%}IP %f%F{black}1.2.3.4 %k%F{cyan}%f " "$(buildLeftPrompt)"
+  assertEquals "%K{cyan} %F{black}IP %f%F{black}1.2.3.4 %k%F{cyan}%f " "$(buildLeftPrompt)"
 
   unalias ipconfig
 }
@@ -165,11 +160,9 @@ function testIpSegmentWorksOnLinuxWithNoInterfaceSpecified() {
       fi
     }
 
-    # Load Powerlevel9k
-    source powerlevel9k.zsh-theme
     local OS='Linux' # Fake Linux
 
-    assertEquals "%K{cyan} %F{black%}IP %f%F{black}10.0.2.15 %k%F{cyan}%f " "$(buildLeftPrompt)"
+    assertEquals "%K{cyan} %F{black}IP %f%F{black}10.0.2.15 %k%F{cyan}%f " "$(buildLeftPrompt)"
 
     unfunction ip
 }
@@ -200,11 +193,9 @@ function testIpSegmentWorksOnLinuxWithMultipleInterfacesSpecified() {
       fi
     }
 
-    # Load Powerlevel9k
-    source powerlevel9k.zsh-theme
     local OS='Linux' # Fake Linux
 
-    assertEquals "%K{cyan} %F{black%}IP %f%F{black}10.0.2.15 %k%F{cyan}%f " "$(buildLeftPrompt)"
+    assertEquals "%K{cyan} %F{black}IP %f%F{black}10.0.2.15 %k%F{cyan}%f " "$(buildLeftPrompt)"
 
     unfunction ip
 }
@@ -219,11 +210,9 @@ inet 10.0.2.15/24 brd 10.0.2.255 scope global eth0
     valid_lft forever preferred_lft forever';
   }
 
-  # Load Powerlevel9k
-  source powerlevel9k.zsh-theme
   local OS='Linux' # Fake Linux
 
-  assertEquals "%K{cyan} %F{black%}IP %f%F{black}10.0.2.15 %k%F{cyan}%f " "$(buildLeftPrompt)"
+  assertEquals "%K{cyan} %F{black}IP %f%F{black}10.0.2.15 %k%F{cyan}%f " "$(buildLeftPrompt)"
 
   unfunction ip
 }

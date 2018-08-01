@@ -46,11 +46,11 @@ prompt_vi_mode() {
     vivis)        current_state="VISUAL" ;;
     main|viins|*) current_state="INSERT" ;;
   esac
-  vi_mode="P9K_VI_${current_state}_MODE_STRING"
+  vi_mode="P9K_VI_MODE_${current_state}_STRING"
   # NOTE: The display test at the end of the next line ensures that the segment_state is displayed if an icon is defined
   #       even if the string is set to an empty string. This allows you to define and use icons for this segment instead
   #       of the default text string and also bypasses the ugly icon as content string. As a bonus, you can set both!
-  p9kPrepareSegment "$0" "${current_state}" $1 "$2" $3 "${(P)vi_mode}" "[[ '$p9k_icons[VI_MODE_${current_state}]' != '' ]]"
+  p9kPrepareSegment "$0" "${current_state}" $1 "$2" $3 "${(P)vi_mode}" "[[ '$p9k_icons[VI_MODE_${current_state}]' != '' || '${(P)vi_mode}' != '' ]]"
 }
 
 ###############################################################

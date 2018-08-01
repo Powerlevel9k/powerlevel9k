@@ -9,6 +9,9 @@ function setUp() {
   export TERM="xterm-256color"
 
   P9K_HOME=$(pwd)
+  # Load Powerlevel9k
+  source ${P9K_HOME}/powerlevel9k.zsh-theme
+  source ${P9K_HOME}/segments/load.p9k
   ### Test specific
   # Create default folder and git init it.
   FOLDER=/tmp/powerlevel9k-test/load-test
@@ -38,11 +41,9 @@ function testLoadSegmentWorksOnOsx() {
 
     local P9K_LOAD_WHICH=1
 
-    # Load Powerlevel9k
-    source ${P9K_HOME}/powerlevel9k.zsh-theme
     local OS="OSX" # Fake OSX
 
-    assertEquals "%K{green} %F{black%}L %f%F{black}1.38 " "$(prompt_load left 1 false ${FOLDER})"
+    assertEquals "%K{green} %F{black}L %f%F{black}1.38 " "$(prompt_load left 1 false ${FOLDER})"
 
     unfunction sysctl
 }
@@ -59,12 +60,10 @@ function testLoadSegmentWorksOnBsd() {
     }
 
     local P9K_LOAD_WHICH=1
-    
-    # Load Powerlevel9k
-    source ${P9K_HOME}/powerlevel9k.zsh-theme
+
     local OS="BSD" # Fake BSD
 
-    assertEquals "%K{green} %F{black%}L %f%F{black}1.38 " "$(prompt_load left 1 false ${FOLDER})"
+    assertEquals "%K{green} %F{black}L %f%F{black}1.38 " "$(prompt_load left 1 false ${FOLDER})"
 
     unfunction sysctl
 }
@@ -77,11 +76,9 @@ function testLoadSegmentWorksOnLinux() {
     alias nproc="echo 4"
     local P9K_LOAD_WHICH=1
 
-    # Load Powerlevel9k
-    source ${P9K_HOME}/powerlevel9k.zsh-theme
     local OS="Linux" # Fake Linux
 
-    assertEquals "%K{green} %F{black%}L %f%F{black}1.38 " "$(prompt_load left 1 false ${FOLDER})"
+    assertEquals "%K{green} %F{black}L %f%F{black}1.38 " "$(prompt_load left 1 false ${FOLDER})"
 
     unalias nproc
 }
@@ -97,11 +94,9 @@ function testLoadSegmentNormalState() {
     alias nproc="echo 4"
     local P9K_LOAD_WHICH=1
 
-    # Load Powerlevel9k
-    source ${P9K_HOME}/powerlevel9k.zsh-theme
     local OS="Linux" # Fake Linux
 
-    assertEquals "%K{green} %F{black%}L %f%F{black}1.00 " "$(prompt_load left 1 false ${FOLDER})"
+    assertEquals "%K{green} %F{black}L %f%F{black}1.00 " "$(prompt_load left 1 false ${FOLDER})"
 
     unalias nproc
 }
@@ -117,11 +112,9 @@ function testLoadSegmentWarningState() {
     alias nproc="echo 4"
     local P9K_LOAD_WHICH=1
 
-    # Load Powerlevel9k
-    source ${P9K_HOME}/powerlevel9k.zsh-theme
     local OS="Linux" # Fake Linux
 
-    assertEquals "%K{yellow} %F{black%}L %f%F{black}2.01 " "$(prompt_load left 1 false ${FOLDER})"
+    assertEquals "%K{yellow} %F{black}L %f%F{black}2.01 " "$(prompt_load left 1 false ${FOLDER})"
 
     unalias nproc
 }
@@ -137,11 +130,9 @@ function testLoadSegmentCriticalState() {
     alias nproc="echo 4"
     local P9K_LOAD_WHICH=1
 
-    # Load Powerlevel9k
-    source ${P9K_HOME}/powerlevel9k.zsh-theme
     local OS="Linux" # Fake Linux
 
-    assertEquals "%K{red} %F{black%}L %f%F{black}2.81 " "$(prompt_load left 1 false ${FOLDER})"
+    assertEquals "%K{red} %F{black}L %f%F{black}2.81 " "$(prompt_load left 1 false ${FOLDER})"
 
     unalias nproc
 }

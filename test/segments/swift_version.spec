@@ -14,6 +14,10 @@ function setUp() {
   FOLDER=/tmp/powerlevel9k-test
   mkdir -p "${FOLDER}"
   cd $FOLDER
+
+  # Load Powerlevel9k
+  source ${P9K_HOME}/powerlevel9k.zsh-theme
+  source ${P9K_HOME}/segments/swift_version.p9k
 }
 
 function tearDown() {
@@ -26,32 +30,27 @@ function tearDown() {
 }
 
 function testSwiftSegmentPrintsNothingIfSwiftIsNotAvailable() {
-    local -a P9K_LEFT_PROMPT_ELEMENTS
-    P9K_LEFT_PROMPT_ELEMENTS=(swift_version custom_world)
-    local P9K_CUSTOM_WORLD='echo world'
-    alias swift="noswift"
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(swift_version custom_world)
+  local P9K_CUSTOM_WORLD='echo world'
+  registerSegment "WORLD"
+  alias swift="noswift"
 
-    # Load Powerlevel9k
-    source ${P9K_HOME}/powerlevel9k.zsh-theme
+  assertEquals "%K{white} %F{black}world %k%F{white}%f " "$(buildLeftPrompt)"
 
-    assertEquals "%K{white} %F{black}world %k%F{white}%f " "$(buildLeftPrompt)"
-
-    unalias swift
+  unalias swift
 }
 
 function testSwiftSegmentWorks() {
-    local -a P9K_LEFT_PROMPT_ELEMENTS
-    P9K_LEFT_PROMPT_ELEMENTS=(swift_version)
-    function swift() {
-        echo "Apple Swift version 3.0.1 (swiftlang-800.0.58.6 clang-800.0.42.1)\nTarget: x86_64-apple-macosx10.9"
-    }
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(swift_version)
+  function swift() {
+    echo "Apple Swift version 3.0.1 (swiftlang-800.0.58.6 clang-800.0.42.1)\nTarget: x86_64-apple-macosx10.9"
+  }
 
-    # Load Powerlevel9k
-    source ${P9K_HOME}/powerlevel9k.zsh-theme
+  assertEquals "%K{magenta} %F{white}Swift %f%F{white}3.0.1 %k%F{magenta}%f " "$(buildLeftPrompt)"
 
-    assertEquals "%K{magenta} %F{white%}Swift %f%F{white}3.0.1 %k%F{magenta}%f " "$(buildLeftPrompt)"
-
-    unfunction swift
+  unfunction swift
 }
 
 source shunit2/source/2.1/src/shunit2

@@ -1,8 +1,10 @@
 language: sh
+
 os:
   - linux
   - osx
- addons:
+
+addons:
   apt:
     packages:
       - build-essential
@@ -15,9 +17,11 @@ os:
       - ruby
       - python
       - python-virtualenv
- before_install:
+
+before_install:
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update; fi
- env:
+
+env:
   global:
     - ZSH_DIST=$HOME/.zshdist
   matrix:
@@ -31,10 +35,12 @@ os:
     - _ZSH_VERSION=5.3
     - _ZSH_VERSION=5.2
     - _ZSH_VERSION=5.1.1
- cache:
+
+cache:
   directories:
     - $ZSH_DIST
- before_script:
+
+before_script:
   - >
     setup_zsh() {
       dest="$ZSH_DIST/$1"
@@ -64,4 +70,6 @@ os:
   - "hg --version"
   # Show the zsh version being used to test.
   - "zsh --version"
+
+script:
   - test/suite.spec

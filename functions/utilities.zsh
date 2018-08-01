@@ -16,6 +16,7 @@ local autoload_path="$p9kDirectory/functions/autoload"
 # test if we already autoloaded the functions
 if [[ ${fpath[(ie)$autoload_path]} -gt ${#fpath} ]]; then
   fpath=( $autoload_path "${fpath[@]}" )
+  autoload -Uz getUniquePath
   autoload -Uz segmentShouldBeJoined
   autoload -Uz segmentShouldBePrinted
   autoload -Uz subStrCount
@@ -28,8 +29,8 @@ fi
 #   Determine the OS and version (if applicable).
 case $(uname) in
   Darwin) OS='OSX' ;;
-  CYGWIN_NT-*) OS='Windows' ;;
-  FreeBSD|OpenBSD|DragonFly) OS='BSD' ;;
+  CYGWIN_NT-* | MSYS_NT-*) OS='Windows' ;;
+  FreeBSD | OpenBSD | DragonFly) OS='BSD' ;;
   Linux)
     OS='Linux'
     OS_ID="$(grep -E '^ID=([a-zA-Z]*)' /etc/os-release | cut -d '=' -f 2)"

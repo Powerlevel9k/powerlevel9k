@@ -12,69 +12,55 @@ function setUp() {
 
 function testBackgroundJobsSegmentPrintsNothingWithoutBackgroundJobs() {
     local P9K_CUSTOM_WORLD='echo world'
+  registerSegment "WORLD"
     registerSegment "WORLD"
     local -a P9K_LEFT_PROMPT_ELEMENTS
     P9K_LEFT_PROMPT_ELEMENTS=(background_jobs custom_world)
-    alias jobs="nojobs 2>/dev/null"
+    local jobs_running=0
+    local jobs_suspended=0
 
     # Load Powerlevel9k
     source segments/background_jobs.p9k
 
     assertEquals "%K{white} %F{black}world %k%F{white}%f " "$(buildLeftPrompt)"
-
-    unalias jobs
 }
 
 function testBackgroundJobsSegmentWorksWithOneBackgroundJob() {
     unset P9K_BACKGROUND_JOBS_VERBOSE
     local -a P9K_LEFT_PROMPT_ELEMENTS
     P9K_LEFT_PROMPT_ELEMENTS=(background_jobs)
-    jobs() {
-        echo '[1]  + 30444 suspended  nvim xx'
-    }
+    local jobs_running=0
+    local jobs_suspended=1
 
     # Load Powerlevel9k
     source segments/background_jobs.p9k
-
-    assertEquals "%K{black} %F{cyan%}⚙%f %k%F{black}%f " "$(buildLeftPrompt)"
-
-    unfunction jobs
+    assertEquals "%K{black} %F{cyan}⚙ %f%F{cyan}1 %k%F{black}%f " "$(buildLeftPrompt)"
 }
 
 function testBackgroundJobsSegmentWorksWithMultipleBackgroundJobs() {
     local P9K_BACKGROUND_JOBS_VERBOSE=false
     local -a P9K_LEFT_PROMPT_ELEMENTS
     P9K_LEFT_PROMPT_ELEMENTS=(background_jobs)
-    jobs() {
-        echo "[1]    31190 suspended  nvim xx"
-        echo "[2]  - 31194 suspended  nvim xx2"
-        echo "[3]  + 31206 suspended  nvim xx3"
-    }
+    local jobs_running=0
+    local jobs_suspended=3
 
     # Load Powerlevel9k
     source segments/background_jobs.p9k
 
-    assertEquals "%K{black} %F{cyan%}⚙%f %k%F{black}%f " "$(buildLeftPrompt)"
-
-    unfunction jobs
+    assertEquals "%K{black} %F{cyan}⚙ %f%F{cyan}3 %k%F{black}%f " "$(buildLeftPrompt)"
 }
 
 function testBackgroundJobsSegmentWithVerboseMode() {
     local P9K_BACKGROUND_JOBS_VERBOSE=true
     local -a P9K_LEFT_PROMPT_ELEMENTS
     P9K_LEFT_PROMPT_ELEMENTS=(background_jobs)
-    jobs() {
-        echo "[1]    31190 suspended  nvim xx"
-        echo "[2]  - 31194 suspended  nvim xx2"
-        echo "[3]  + 31206 suspended  nvim xx3"
-    }
+    local jobs_running=1
+    local jobs_suspended=2
 
     # Load Powerlevel9k
     source segments/background_jobs.p9k
 
-    assertEquals "%K{black} %F{cyan}⚙ %f%F{cyan}3 %k%F{black}%f " "$(buildLeftPrompt)"
-
-    unfunction jobs
+    assertEquals "%K{black} %F{cyan}⚙ %f%F{cyan}1r 2s %k%F{black}%f " "$(buildLeftPrompt)"
 }
 
 source shunit2/source/2.1/src/shunit2

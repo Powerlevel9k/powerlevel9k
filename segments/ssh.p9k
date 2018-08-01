@@ -23,6 +23,6 @@ registerSegment "SSH" "" "${DEFAULT_COLOR}" "yellow"  '(ssh)'  '(ssh)'  '(ssh)' 
 ##
 prompt_ssh() {
   if [[ -n "$SSH_CLIENT" ]] || [[ -n "$SSH_TTY" ]]; then
-    p9kPrepareSegment "$0" "" $1 "$2" $3 "" "true"
+    p9kPrepareSegment "$0" "" $1 "$2" $3 "" "[[ true ]]"
   fi
 }

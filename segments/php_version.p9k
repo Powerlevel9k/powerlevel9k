@@ -23,8 +23,8 @@ registerSegment "PHP_VERSION" "" "fuchsia" "grey93"  'PHP'  $'\uF457'  $'\uF457'
 ##
 prompt_php_version() {
   local php_version
-  php_version=$(php -v 2>&1 | grep -oe "^PHP\s*[0-9.]*")
-
+  #php_version=$(php -v 2>&1 | grep -oe "^PHP\s*[0-9.]*")
+  php_version="${${${(SMX)${"$( php -v 2>&1 )"}#PHP * }#PHP }: :-1}"
   if [[ -n "$php_version" ]]; then
     p9kPrepareSegment "$0" "" $1 "$2" $3 "${php_version}"
   fi

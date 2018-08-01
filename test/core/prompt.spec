@@ -24,6 +24,7 @@ function testSegmentOnRightSide() {
     p9kPreparePrompts
 
     local reset_attributes=$'\e[00m'
+    #             %f%b%k%F{white}%K{white}%F{black} world1 %F{black} %F{black}%K{white}%F{black} world2 %F{black} %{%}
     assertEquals "%f%b%k%F{white}%K{white}%F{black} world1 %F{black} %F{black}%K{white}%F{black} world2 %F{black} %{${reset_attributes}%}" "${(e)RPROMPT}"
 }
 
@@ -76,7 +77,7 @@ function testRightPromptOnSameLine() {
     startSkipping
 
     p9kPreparePrompts
-    assertEquals "%{\e[1A%}%F{white}%K{white}%F{black} world1 %f%{\e[1B%}" "${(e)RPROMPT}"
+    assertEquals "%{\e[1A}%F{white}%K{white}%F{black} world1 %f%{\e[1B}" "${(e)RPROMPT}"
 }
 
 function testPrefixingFirstLineOnLeftPrompt() {
