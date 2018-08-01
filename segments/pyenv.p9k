@@ -16,6 +16,7 @@
 #                                                   🐍          
 registerIcon "PYTHON_ICON"  ''  $'\ue63c'  $'\ue63c'  $'\U1F40D'  $'\UE73C '
 
+set_default P9K_PYENV_PROMPT_ALWAYS_SHOW false
 ################################################################
 # @description
 #   Display the current active python version (with restrictions).
@@ -31,5 +32,15 @@ registerIcon "PYTHON_ICON"  ''  $'\ue63c'  $'\ue63c'  $'\U1F40D'  $'\UE73C '
 prompt_pyenv() {
   if [[ -n "$PYENV_VERSION" ]]; then
     p9kPrepareSegment "$0" "" $1 "$2" $3 "blue" "$DEFAULT_COLOR" "$PYENV_VERSION" 'PYTHON_ICON'
+  elif [ $commands[pyenv] ]; then
+    local pyenv_version_name="$(pyenv version-name)"
+    local pyenv_global="system"
+    local pyenv_root="$(pyenv root)"
+    if [[ -f "${pyenv_root}/version" ]]; then
+      pyenv_global="$(pyenv version-file-read ${pyenv_root}/version)"
+    fi
+    if [[ "${pyenv_version_name}" != "${pyenv_global}" || "${P9K_PYENV_PROMPT_ALWAYS_SHOW}" == "true" ]]; then
+      p9kPrepareSegment "$0" "" $1 "$2" $3 "blue" "$DEFAULT_COLOR" "$pyenv_version_name" 'PYTHON_ICON'
+    fi
   fi
 }

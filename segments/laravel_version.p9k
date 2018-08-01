@@ -26,11 +26,10 @@ registerIcon "LARAVEL_ICON"  'Laravel'  ''  ''  ''  $'\ue73f'
 #   $3 boolean Whether the segment should be joined
 ##
 prompt_laravel_version() {
-  local laravel_version="$(php artisan --version 2>/dev/null)"
-  if [[ -n "${laravel_version}" ]]; then
-    # Remove unrelevant infos
-    laravel_version="${laravel_version//Laravel Framework version /}"
-
+  local laravel_version="$(php artisan --version 2> /dev/null)"
+  if [[ -n "${laravel_version}" && "${laravel_version}" =~ "Laravel Framework" ]]; then
+    # Strip out everything but the version
+    laravel_version="${laravel_version//Laravel Framework /}"
     p9kPrepareSegment "${0}" "" "${1}" "${2}" "${3}" "maroon" "white" "${laravel_version}" 'LARAVEL_ICON'
   fi
 }
