@@ -17,8 +17,8 @@ local autoload_path="$p9kDirectory/functions/autoload"
 if [[ ${fpath[(ie)$autoload_path]} -gt ${#fpath} ]]; then
   fpath=( $autoload_path "${fpath[@]}" )
   autoload -Uz __p9k_get_unique_path
-  autoload -Uz __p9k_segment_should_be_Joined
-  autoload -Uz __p9k_segment_should_be_Printed
+  autoload -Uz __p9k_segment_should_be_joined
+  autoload -Uz __p9k_segment_should_be_printed
   autoload -Uz subStrCount
   autoload -Uz __p9k_truncate_path
   autoload -Uz __p9k_upsearch

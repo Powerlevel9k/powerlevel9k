@@ -307,7 +307,7 @@ p9k::prepare_segment() {
   [[ -n "${2}" ]] && STATEFUL_NAME="${STATEFUL_NAME}_${(U)2}"
 
   # Pre-Compile condition
-  if __p9k_segment_should_be_Printed "${STATEFUL_NAME}" "${7}" "${6}"; then
+  if __p9k_segment_should_be_printed "${STATEFUL_NAME}" "${7}" "${6}"; then
     local VISUAL_IDENTIFIER
     if [[ -z "${8}" ]]; then
       VISUAL_IDENTIFIER=$p9k_icons[$STATEFUL_NAME]

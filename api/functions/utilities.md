@@ -21,8 +21,8 @@
 - [__p9k_print_deprecation_warning](#__p9k_print_deprecation_warning)
 - [__p9k_update_var_name](#__p9k_update_var_name)
 - [__p9k_print_deprecation_var_warning](#__p9k_print_deprecation_var_warning)
-- [__p9k_segment_should_be_Joined](#__p9k_segment_should_be_Joined)
-- [__p9k_segment_should_be_Printed](#__p9k_segment_should_be_Printed)
+- [__p9k_segment_should_be_joined](#__p9k_segment_should_be_joined)
+- [__p9k_segment_should_be_printed](#__p9k_segment_should_be_printed)
 - [__p9k_truncate_path](#__p9k_truncate_path)
 - [__p9k_truncate_pathFromRight](#__p9k_truncate_pathFromRight)
 - [__p9k_upsearch](#__p9k_upsearch)
@@ -134,10 +134,10 @@
 - names as values.
 
 
-## __p9k_segment_should_be_Joined
+## __p9k_segment_should_be_joined
 *A helper function to determine if a segment should be joined or promoted to a full one. *
 
-## __p9k_segment_should_be_Printed
+## __p9k_segment_should_be_printed
 *A helper function to determine if a segment should be printed or not. *
 
 *Conditions have three layers: 1. No segment should print if they provide no content (default condition). 2. Segments can define a default condition on their own, overriding the previous one. 3. Users can set a condition for each segment. This is the trump card, and has highest precedence. *

@@ -52,7 +52,7 @@ __p9k_left_prompt_segment() {
   local current_index="${2}"
   # Check if the segment should be joined with the previous one
   local joined=false
-  [[ "${3}" == "true" ]] && __p9k_segment_should_be_Joined $current_index $last_left_element_index "$P9K_LEFT_PROMPT_ELEMENTS" && joined=true
+  [[ "${3}" == "true" ]] && __p9k_segment_should_be_joined $current_index $last_left_element_index "$P9K_LEFT_PROMPT_ELEMENTS" && joined=true
   # Support for bold segment
   [[ $p9k_data[${STATEFUL_NAME}_BD] == true ]] && content="%B${4}%b" || content="${4}"
   local visual_identifier="${5}"
@@ -122,7 +122,7 @@ __p9k_right_prompt_segment() {
   local current_index="${2}"
   # Check if the segment should be joined with the previous one
   local joined=false
-  [[ "${3}" == "true" ]] && __p9k_segment_should_be_Joined $current_index $last_right_element_index "$P9K_RIGHT_PROMPT_ELEMENTS" && joined=true
+  [[ "${3}" == "true" ]] && __p9k_segment_should_be_joined $current_index $last_right_element_index "$P9K_RIGHT_PROMPT_ELEMENTS" && joined=true
   local content
   # Support for bold segment
   [[ $p9k_data[${STATEFUL_NAME}_BD] == true ]] && content="%B${4}%b" || content="${4}"
@@ -186,7 +186,7 @@ p9k::prepare_segment() {
   [[ -n "${2}" ]] && STATEFUL_NAME="${STATEFUL_NAME}_${(U)2}"
 
   # Precompile condition.
-  if __p9k_segment_should_be_Printed "${STATEFUL_NAME}" "${7}" "${6}"; then
+  if __p9k_segment_should_be_printed "${STATEFUL_NAME}" "${7}" "${6}"; then
     local VISUAL_IDENTIFIER
     if [[ -z "${8}" ]]; then
       VISUAL_IDENTIFIER=$p9k_icons[$STATEFUL_NAME]
