@@ -10,9 +10,9 @@
 # Parameters:
 #   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
 #                                                                                                                  
-registerSegment "VPN_IP" "" "cyan" "${DEFAULT_COLOR}"  '(vpn)'  '(vpn)'  $'\uF023'  '\u'$CODEPOINT_OF_AWESOME_LOCK  $'\uF023'
+p9k::register_segment "VPN_IP" "" "cyan" "${DEFAULT_COLOR}"  '(vpn)'  '(vpn)'  $'\uF023'  '\u'$CODEPOINT_OF_AWESOME_LOCK  $'\uF023'
 
-setDefault P9K_VPN_IP_INTERFACE "tun"
+p9k::set_default P9K_VPN_IP_INTERFACE "tun"
 ################################################################
 # @description
 #   Segment to display if the VPN is active.
@@ -26,6 +26,6 @@ prompt_vpn_ip() {
   for vpn_iface in $(/sbin/ifconfig | grep -e ^"$P9K_VPN_IP_INTERFACE" | cut -d":" -f1)
   do
     ip=$(/sbin/ifconfig "$vpn_iface" | grep -o "inet\s.*" | cut -d' ' -f2)
-    p9kPrepareSegment "$0" "" $1 "$2" $3 "$ip"
+    p9k::prepare_segment "$0" "" $1 "$2" $3 "$ip"
   done
 }

@@ -10,7 +10,7 @@
 # Parameters:
 #   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
 #                                                                         🐍          
-registerSegment "PYENV" "" "blue" "$DEFAULT_COLOR" ''  $'\uE63C'  $'\uE63C'  $'\U1F40D'  $'\uE73C '
+p9k::register_segment "PYENV" "" "blue" "$DEFAULT_COLOR" ''  $'\uE63C'  $'\uE63C'  $'\U1F40D'  $'\uE73C '
 
 ################################################################
 # @description
@@ -26,6 +26,6 @@ registerSegment "PYENV" "" "blue" "$DEFAULT_COLOR" ''  $'\uE63C'  $'\uE63C'  $'\
 ##
 prompt_pyenv() {
   if [[ -n "$PYENV_VERSION" ]]; then
-    p9kPrepareSegment "$0" "" $1 "$2" $3 "$PYENV_VERSION"
+    p9k::prepare_segment "$0" "" $1 "$2" $3 "$PYENV_VERSION"
   fi
 }

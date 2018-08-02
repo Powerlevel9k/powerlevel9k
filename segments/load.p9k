@@ -10,11 +10,11 @@
 # Parameters:
 #   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
 #                                                                                                                               
-registerSegment "LOAD" "NORMAL"   "green"  "${DEFAULT_COLOR}"  'L'  $'\uE190 '  $'\uF080 '  '\u'$CODEPOINT_OF_AWESOME_BAR_CHART' '  $'\uF080 '
-registerSegment "LOAD" "WARNING"  "yellow" "${DEFAULT_COLOR}"  'L'  $'\uE190 '  $'\uF080 '  '\u'$CODEPOINT_OF_AWESOME_BAR_CHART' '  $'\uF080 '
-registerSegment "LOAD" "CRITICAL" "red"    "${DEFAULT_COLOR}"  'L'  $'\uE190 '  $'\uF080 '  '\u'$CODEPOINT_OF_AWESOME_BAR_CHART' '  $'\uF080 '
+p9k::register_segment "LOAD" "NORMAL"   "green"  "${DEFAULT_COLOR}"  'L'  $'\uE190 '  $'\uF080 '  '\u'$CODEPOINT_OF_AWESOME_BAR_CHART' '  $'\uF080 '
+p9k::register_segment "LOAD" "WARNING"  "yellow" "${DEFAULT_COLOR}"  'L'  $'\uE190 '  $'\uF080 '  '\u'$CODEPOINT_OF_AWESOME_BAR_CHART' '  $'\uF080 '
+p9k::register_segment "LOAD" "CRITICAL" "red"    "${DEFAULT_COLOR}"  'L'  $'\uE190 '  $'\uF080 '  '\u'$CODEPOINT_OF_AWESOME_BAR_CHART' '  $'\uF080 '
 
-setDefault P9K_LOAD_WHICH 5
+p9k::set_default P9K_LOAD_WHICH 5
 ################################################################
 # @description
 #   Display the current load.
@@ -69,5 +69,5 @@ prompt_load() {
     current_state="normal"
   fi
 
-  p9kPrepareSegment "$0" "${current_state}" $1 "$2" $3 "$load_avg"
+  p9k::prepare_segment "$0" "${current_state}" $1 "$2" $3 "$load_avg"
 }

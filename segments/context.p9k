@@ -10,15 +10,15 @@
 # Parameters:
 #   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
 #
-registerSegment 'CONTEXT' 'ROOT'        "${DEFAULT_COLOR}" "yellow" ""  ""  ""  ""  ""  ""
-registerSegment 'CONTEXT' 'SUDO'        "${DEFAULT_COLOR}" "yellow" ""  ""  ""  ""  ""  ""
-registerSegment 'CONTEXT' 'DEFAULT'     "${DEFAULT_COLOR}" "yellow" ""  ""  ""  ""  ""  ""
-registerSegment 'CONTEXT' 'REMOTE'      "${DEFAULT_COLOR}" "yellow" ""  ""  ""  ""  ""  ""
-registerSegment 'CONTEXT' 'REMOTE_SUDO' "${DEFAULT_COLOR}" "yellow" ""  ""  ""  ""  ""  ""
+p9k::register_segment 'CONTEXT' 'ROOT'        "${DEFAULT_COLOR}" "yellow" ""  ""  ""  ""  ""  ""
+p9k::register_segment 'CONTEXT' 'SUDO'        "${DEFAULT_COLOR}" "yellow" ""  ""  ""  ""  ""  ""
+p9k::register_segment 'CONTEXT' 'DEFAULT'     "${DEFAULT_COLOR}" "yellow" ""  ""  ""  ""  ""  ""
+p9k::register_segment 'CONTEXT' 'REMOTE'      "${DEFAULT_COLOR}" "yellow" ""  ""  ""  ""  ""  ""
+p9k::register_segment 'CONTEXT' 'REMOTE_SUDO' "${DEFAULT_COLOR}" "yellow" ""  ""  ""  ""  ""  ""
 
-setDefault P9K_CONTEXT_ALWAYS_SHOW false
-setDefault P9K_CONTEXT_ALWAYS_SHOW_USER false
-setDefault P9K_CONTEXT_TEMPLATE "%n@%m"
+p9k::set_default P9K_CONTEXT_ALWAYS_SHOW false
+p9k::set_default P9K_CONTEXT_ALWAYS_SHOW_USER false
+p9k::set_default P9K_CONTEXT_TEMPLATE "%n@%m"
 ################################################################
 # @description
 #   Displays the context - user@hostname (who am I and where am I).
@@ -55,5 +55,5 @@ prompt_context() {
     current_state="SUDO"
   fi
 
-  p9kPrepareSegment "$0" "${(U)current_state}" $1 "$2" $3 "${content}"
+  p9k::prepare_segment "$0" "${(U)current_state}" $1 "$2" $3 "${content}"
 }

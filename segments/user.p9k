@@ -10,19 +10,19 @@
 # Parameters:
 #   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
 #                                                                                                                              
-registerSegment "USER" "DEFAULT"     "yellow" "${DEFAULT_COLOR}"  ''         ''         $'\uF2C0'  '\u'$CODEPOINT_OF_AWESOME_USER_O  $'\uF2C0'
+p9k::register_segment "USER" "DEFAULT"     "yellow" "${DEFAULT_COLOR}"  ''         ''         $'\uF2C0'  '\u'$CODEPOINT_OF_AWESOME_USER_O  $'\uF2C0'
 #                                                             ⚡                                                             
-registerSegment "USER" "ROOT"        "yellow" "${DEFAULT_COLOR}"  $'\u26A1'  $'\uE801'  $'\uF201'  '\u'$CODEPOINT_OF_OCTICONS_ZAP    $'\uE614 '
+p9k::register_segment "USER" "ROOT"        "yellow" "${DEFAULT_COLOR}"  $'\u26A1'  $'\uE801'  $'\uF201'  '\u'$CODEPOINT_OF_OCTICONS_ZAP    $'\uE614 '
 #                                                                                                                           
-registerSegment "USER" "SUDO"        "yellow" "${DEFAULT_COLOR}"  $'\uE0A2'  $'\uF09C'  $'\uF09C'  '\u'$CODEPOINT_OF_AWESOME_UNLOCK  $'\uF09C'
+p9k::register_segment "USER" "SUDO"        "yellow" "${DEFAULT_COLOR}"  $'\uE0A2'  $'\uF09C'  $'\uF09C'  '\u'$CODEPOINT_OF_AWESOME_UNLOCK  $'\uF09C'
 #                                                                                                                              
-registerSegment "USER" "REMOTE"      "yellow" "${DEFAULT_COLOR}"  ''         ''         $'\uF2C0'  '\u'$CODEPOINT_OF_AWESOME_USER_O  $'\uF2C0'
+p9k::register_segment "USER" "REMOTE"      "yellow" "${DEFAULT_COLOR}"  ''         ''         $'\uF2C0'  '\u'$CODEPOINT_OF_AWESOME_USER_O  $'\uF2C0'
 #                                                                                                                           
-registerSegment "USER" "REMOTE_SUDO" "yellow" "${DEFAULT_COLOR}"  $'\uE0A2'  $'\uF09C'  $'\uF09C'  '\u'$CODEPOINT_OF_AWESOME_UNLOCK  $'\uF09C'
+p9k::register_segment "USER" "REMOTE_SUDO" "yellow" "${DEFAULT_COLOR}"  $'\uE0A2'  $'\uF09C'  $'\uF09C'  '\u'$CODEPOINT_OF_AWESOME_UNLOCK  $'\uF09C'
 
-setDefault P9K_USER_ALWAYS_SHOW false
-setDefault P9K_USER_ALWAYS_SHOW_USER false
-setDefault P9K_USER_TEMPLATE "%n"
+p9k::set_default P9K_USER_ALWAYS_SHOW false
+p9k::set_default P9K_USER_ALWAYS_SHOW_USER false
+p9k::set_default P9K_USER_TEMPLATE "%n"
 ################################################################
 # @description
 #   Display information about the user (Who am I).
@@ -58,5 +58,5 @@ prompt_user() {
     current_state="SUDO"
   fi
 
-  p9kPrepareSegment "$0" ${current_state} $1 "$2" $3 "${content}"
+  p9k::prepare_segment "$0" ${current_state} $1 "$2" $3 "${content}"
 }

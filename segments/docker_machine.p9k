@@ -10,7 +10,7 @@
 # Parameters:
 #   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
 #                                                                                                                       
-registerSegment "DOCKER_MACHINE" '' "magenta" "$DEFAULT_COLOR"  ''  $'\uE895'  $'\uF233'  '\u'$CODEPOINT_OF_AWESOME_SERVER  $'\uF0AE'
+p9k::register_segment "DOCKER_MACHINE" '' "magenta" "$DEFAULT_COLOR"  ''  $'\uE895'  $'\uF233'  '\u'$CODEPOINT_OF_AWESOME_SERVER  $'\uF0AE'
 
 ################################################################
 # @description
@@ -25,6 +25,6 @@ prompt_docker_machine() {
   local docker_machine="$DOCKER_MACHINE_NAME"
 
   if [[ -n "$docker_machine" ]]; then
-    p9kPrepareSegment "$0" "" $1 "$2" $3 "$docker_machine"
+    p9k::prepare_segment "$0" "" $1 "$2" $3 "$docker_machine"
   fi
 }

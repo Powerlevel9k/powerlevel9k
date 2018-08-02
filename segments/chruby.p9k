@@ -10,7 +10,7 @@
 # Parameters:
 #   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
 #                                                                                                             
-registerSegment 'CHRUBY' '' "red" "$DEFAULT_COLOR" ''  $'\uE847 '  $'\uF219 '  '\u'$CODEPOINT_OF_OCTICONS_RUBY' '  $'\uF43B '
+p9k::register_segment 'CHRUBY' '' "red" "$DEFAULT_COLOR" ''  $'\uE847 '  $'\uF219 '  '\u'$CODEPOINT_OF_OCTICONS_RUBY' '  $'\uF43B '
 
 ################################################################
 # Segment to display
@@ -25,8 +25,8 @@ registerSegment 'CHRUBY' '' "red" "$DEFAULT_COLOR" ''  $'\uE847 '  $'\uF219 '  '
 # @see
 #   [chruby_auto issue with ZSH](https://github.com/postmodern/chruby/issues/245).
 ##
-setDefault P9K_CHRUBY_SHOW_VERSION true
-setDefault P9K_CHRUBY_SHOW_ENGINE true
+p9k::set_default P9K_CHRUBY_SHOW_VERSION true
+p9k::set_default P9K_CHRUBY_SHOW_ENGINE true
 prompt_chruby() {
   # Uses $RUBY_VERSION and $RUBY_ENGINE set by chruby
   local chruby_label=""
@@ -43,6 +43,6 @@ prompt_chruby() {
 
   # Don't show anything if the chruby did not change the default ruby
   if [[ "$RUBY_ENGINE" != "" ]]; then
-    p9kPrepareSegment "$0" "" $1 "$2" $3 "${chruby_label}"
+    p9k::prepare_segment "$0" "" $1 "$2" $3 "${chruby_label}"
   fi
 }

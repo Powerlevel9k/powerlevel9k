@@ -33,10 +33,10 @@ function testSymfonyVersionSegmentPrintsNothingIfPhpIsNotAvailable() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(symfony2_version custom_world)
   local P9K_CUSTOM_WORLD='echo world'
-  registerSegment "WORLD"
+  p9k::register_segment "WORLD"
   alias php="nophp"
 
-  assertEquals "%K{white} %F{black}world %k%F{white}%f " "$(buildLeftPrompt)"
+  assertEquals "%K{white} %F{black}world %k%F{white}%f " "$(__p9k_build_left_prompt)"
 
   unalias php
 }
@@ -48,16 +48,16 @@ function testSymfonyVersionSegmentPrintsNothingIfSymfonyIsNotAvailable() {
   # To sucessfully execute this test, we just need to
   # navigate into a folder that does not contain symfony.
   local P9K_CUSTOM_WORLD='echo world'
-  registerSegment "WORLD"
+  p9k::register_segment "WORLD"
 
-  assertEquals "%K{white} %F{black}world %k%F{white}%f " "$(buildLeftPrompt)"
+  assertEquals "%K{white} %F{black}world %k%F{white}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testSymfonyVersionPrintsNothingIfPhpThrowsAnError() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(symfony2_version custom_world)
   local P9K_CUSTOM_WORLD='echo world'
-  registerSegment "WORLD"
+  p9k::register_segment "WORLD"
   mkdir app
   touch app/AppKernel.php
   function php() {
@@ -66,7 +66,7 @@ function testSymfonyVersionPrintsNothingIfPhpThrowsAnError() {
     Parse error: parse error, expecting `;´ or `{´ in /Users/dr/Privat/vendor/ocramius/proxy-manager/src/ProxyManager/Configuration.php on line 97"
   }
 
-  assertEquals "%K{white} %F{black}world %k%F{white}%f " "$(buildLeftPrompt)"
+  assertEquals "%K{white} %F{black}world %k%F{white}%f " "$(__p9k_build_left_prompt)"
 
   unfunction php
 }
@@ -82,7 +82,7 @@ function testSymfonyVersionSegmentWorks() {
     echo "Symfony version 3.1.4 - app/dev/debug"
   }
 
-  assertEquals "%K{240} %F{black}SF %f%F{black}3.1.4 %k%F{240}%f " "$(buildLeftPrompt)"
+  assertEquals "%K{240} %F{black}SF %f%F{black}3.1.4 %k%F{240}%f " "$(__p9k_build_left_prompt)"
 
   unfunction php
 }
@@ -101,7 +101,7 @@ function testSymfonyVersionSegmentWorksInNestedFolder() {
   mkdir -p src/P9K/AppBundle
   cd src/P9K/AppBundle
 
-  assertEquals "%K{240} %F{black}SF %f%F{black}3.1.4 %k%F{240}%f " "$(buildLeftPrompt)"
+  assertEquals "%K{240} %F{black}SF %f%F{black}3.1.4 %k%F{240}%f " "$(__p9k_build_left_prompt)"
 
   unfunction php
 }

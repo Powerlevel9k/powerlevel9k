@@ -10,7 +10,7 @@
 # Parameters:
 #   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
 #                                                                                         
-registerSegment "SSH" "" "${DEFAULT_COLOR}" "yellow"  '(ssh)'  '(ssh)'  '(ssh)'  '(ssh)'  $'\uF489'
+p9k::register_segment "SSH" "" "${DEFAULT_COLOR}" "yellow"  '(ssh)'  '(ssh)'  '(ssh)'  '(ssh)'  $'\uF489'
 
 ################################################################
 # @description
@@ -23,6 +23,6 @@ registerSegment "SSH" "" "${DEFAULT_COLOR}" "yellow"  '(ssh)'  '(ssh)'  '(ssh)' 
 ##
 prompt_ssh() {
   if [[ -n "$SSH_CLIENT" ]] || [[ -n "$SSH_TTY" ]]; then
-    p9kPrepareSegment "$0" "" $1 "$2" $3 "" "[[ true ]]"
+    p9k::prepare_segment "$0" "" $1 "$2" $3 "" "[[ true ]]"
   fi
 }

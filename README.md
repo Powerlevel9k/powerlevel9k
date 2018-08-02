@@ -386,7 +386,7 @@ The path shown would be `my-cool-project`.  If you navigate to `$HOME/projects/m
 If you want to customize the directory separator, you could set:
 ```zsh
 # Double quotes are important here!
-P9K_DIR_PATH_SEPARATOR="%F{red} $(printIcon 'LEFT_SUBSEGMENT_SEPARATOR') %F{black}"
+P9K_DIR_PATH_SEPARATOR="%F{red} $(p9k::print_icon 'LEFT_SUBSEGMENT_SEPARATOR') %F{black}"
 ```
 To omit the first character (usually a slash that gets replaced if you set `P9K_DIR_PATH_SEPARATOR`),
 you could set `P9K_DIR_OMIT_FIRST_CHARACTER=true`.
@@ -394,7 +394,7 @@ you could set `P9K_DIR_OMIT_FIRST_CHARACTER=true`.
 You can also customize the leading tilde character when you are in `$HOME` using:
 ```zsh
 # Double quotes are important here!
-P9K_DIR_HOME_FOLDER_ABBREVIATION="%F{red} $(printIcon 'P9K_DIR_HOME_ICON') %F{black}"
+P9K_DIR_HOME_FOLDER_ABBREVIATION="%F{red} $(p9k::print_icon 'P9K_DIR_HOME_ICON') %F{black}"
 ```
 You can also configure the `dir` segment to show when you are in a directory without write permissions, using the variable below.
 

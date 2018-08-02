@@ -25,12 +25,12 @@ function tearDown() {
 function testContextSegmentDoesNotGetRenderedWithDefaultUser() {
     local DEFAULT_USER=$(whoami)
     local P9K_CUSTOM_WORLD='echo world'
-  registerSegment "WORLD"
-    registerSegment "WORLD"
+  p9k::register_segment "WORLD"
+    p9k::register_segment "WORLD"
     local -a P9K_LEFT_PROMPT_ELEMENTS
     P9K_LEFT_PROMPT_ELEMENTS=(context custom_world)
 
-    assertEquals "%K{white} %F{black}world %k%F{white}%f " "$(buildLeftPrompt)"
+    assertEquals "%K{white} %F{black}world %k%F{white}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testContextSegmentDoesGetRenderedWhenSshConnectionIsOpen() {
@@ -38,14 +38,14 @@ function testContextSegmentDoesGetRenderedWhenSshConnectionIsOpen() {
     local -a P9K_LEFT_PROMPT_ELEMENTS
     P9K_LEFT_PROMPT_ELEMENTS=(context)
 
-    assertEquals "%K{black} %F{yellow}%n@%m %k%F{black}%f " "$(buildLeftPrompt)"
+    assertEquals "%K{black} %F{yellow}%n@%m %k%F{black}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testContextSegmentWithForeignUser() {
     local -a P9K_LEFT_PROMPT_ELEMENTS
     P9K_LEFT_PROMPT_ELEMENTS=(context)
 
-    assertEquals "%K{black} %F{yellow}%n@%m %k%F{black}%f " "$(buildLeftPrompt)"
+    assertEquals "%K{black} %F{yellow}%n@%m %k%F{black}%f " "$(__p9k_build_left_prompt)"
 }
 
 # TODO: How to test root?
@@ -54,7 +54,7 @@ function testContextSegmentWithRootUser() {
     local -a P9K_LEFT_PROMPT_ELEMENTS
     P9K_LEFT_PROMPT_ELEMENTS=(context)
 
-    assertEquals "%K{black} %F{yellow}%n@%m %k%F{black}%f " "$(buildLeftPrompt)"
+    assertEquals "%K{black} %F{yellow}%n@%m %k%F{black}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testOverridingContextTemplate() {
@@ -62,7 +62,7 @@ function testOverridingContextTemplate() {
     P9K_LEFT_PROMPT_ELEMENTS=(context)
     local P9K_CONTEXT_TEMPLATE=xx
 
-    assertEquals "%K{black} %F{yellow}xx %k%F{black}%f " "$(buildLeftPrompt)"
+    assertEquals "%K{black} %F{yellow}xx %k%F{black}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testContextSegmentIsShownIfDefaultUserIsSetWhenForced() {
@@ -71,7 +71,7 @@ function testContextSegmentIsShownIfDefaultUserIsSetWhenForced() {
     local P9K_CONTEXT_ALWAYS_SHOW=true
     local DEFAULT_USER=$(whoami)
 
-    assertEquals "%K{black} %F{yellow}%n@%m %k%F{black}%f " "$(buildLeftPrompt)"
+    assertEquals "%K{black} %F{yellow}%n@%m %k%F{black}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testContextSegmentIsShownIfForced() {
@@ -80,7 +80,7 @@ function testContextSegmentIsShownIfForced() {
     local P9K_CONTEXT_ALWAYS_SHOW_USER=true
     local DEFAULT_USER=$(whoami)
 
-    assertEquals "%K{black} %F{yellow}$(whoami) %k%F{black}%f " "$(buildLeftPrompt)"
+    assertEquals "%K{black} %F{yellow}$(whoami) %k%F{black}%f " "$(__p9k_build_left_prompt)"
 }
 
 source shunit2/source/2.1/src/shunit2

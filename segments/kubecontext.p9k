@@ -10,7 +10,7 @@
 # Parameters:
 #   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
 #                                                  ⎈         ⎈         ⎈         ⎈         ⎈
-registerSegment "KUBECONTEXT" "" "magenta" "white" $'\u2388'  $'\u2388'  $'\u2388'  $'\u2388'  $'\u2388'
+p9k::register_segment "KUBECONTEXT" "" "magenta" "white" $'\u2388'  $'\u2388'  $'\u2388'  $'\u2388'  $'\u2388'
 
 ################################################################
 # @description
@@ -42,6 +42,6 @@ prompt_kubecontext() {
       k8s_final_text="$cur_ctx/$cur_namespace"
     fi
 
-    p9kPrepareSegment "$0" "" $1 "$2" $3 "$k8s_final_text"
+    p9k::prepare_segment "$0" "" $1 "$2" $3 "$k8s_final_text"
   fi
 }

@@ -10,7 +10,7 @@
 # Parameters:
 #   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
 #                                                      ☑          ☑          ☑                                                   
-registerSegment "TODO" "" "grey50" "${DEFAULT_COLOR}"  $'\u2611'  $'\u2611'  $'\u2611'  '\u'$CODEPOINT_OF_AWESOME_CHECK_SQUARE_O  $'\uF046'
+p9k::register_segment "TODO" "" "grey50" "${DEFAULT_COLOR}"  $'\u2611'  $'\u2611'  $'\u2611'  '\u'$CODEPOINT_OF_AWESOME_CHECK_SQUARE_O  $'\uF046'
 
 ################################################################
 # @description
@@ -25,7 +25,7 @@ prompt_todo() {
   if $(hash todo.sh 2>&-); then
     count=$(todo.sh ls | egrep "TODO: [0-9]+ of ([0-9]+) tasks shown" | awk '{ print $4 }')
     if [[ "$count" = <-> ]]; then
-      p9kPrepareSegment "$0" "" $1 "$2" $3 "$count"
+      p9k::prepare_segment "$0" "" $1 "$2" $3 "$count"
     fi
   fi
 }

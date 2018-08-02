@@ -36,9 +36,9 @@ function testNvmSegmentPrintsNothingIfNvmIsNotAvailable() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(nvm custom_world)
   local P9K_CUSTOM_WORLD='echo world'
-  registerSegment "WORLD"
+  p9k::register_segment "WORLD"
 
-  assertEquals "%K{white} %F{black}world %k%F{white}%f " "$(buildLeftPrompt)"
+  assertEquals "%K{white} %F{black}world %k%F{white}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testNvmSegmentWorksWithoutHavingADefaultAlias() {
@@ -49,20 +49,20 @@ function testNvmSegmentWorksWithoutHavingADefaultAlias() {
     [[ ${1} == 'current' ]] && echo 'v4.6.0' || echo 'v1.4.0'
   }
 
-  assertEquals "%K{magenta} %F{black}⬢ %f%F{black}4.6.0 %k%F{magenta}%f " "$(buildLeftPrompt)"
+  assertEquals "%K{magenta} %F{black}⬢ %f%F{black}4.6.0 %k%F{magenta}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testNvmSegmentPrintsNothingWhenOnDefaultVersion() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(nvm custom_world)
   local P9K_CUSTOM_WORLD='echo world'
-  registerSegment "WORLD"
+  p9k::register_segment "WORLD"
 
   function nvm_version() {
     [[ ${1} == 'current' ]] && echo 'v4.6.0' || echo 'v4.6.0'
   }
 
-  assertEquals "%K{white} %F{black}world %k%F{white}%f " "$(buildLeftPrompt)"
+  assertEquals "%K{white} %F{black}world %k%F{white}%f " "$(__p9k_build_left_prompt)"
 }
 
 source shunit2/source/2.1/src/shunit2

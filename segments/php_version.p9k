@@ -10,7 +10,7 @@
 # Parameters:
 #   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
 #                                                                                       
-registerSegment "PHP_VERSION" "" "fuchsia" "grey93"  'PHP'  $'\uF457'  $'\uF457'  $'\uF457'  $'\uE73D'
+p9k::register_segment "PHP_VERSION" "" "fuchsia" "grey93"  'PHP'  $'\uF457'  $'\uF457'  $'\uF457'  $'\uE73D'
 
 ################################################################
 # @description
@@ -26,6 +26,6 @@ prompt_php_version() {
   #php_version=$(php -v 2>&1 | grep -oe "^PHP\s*[0-9.]*")
   php_version="${${${(SMX)${"$( php -v 2>&1 )"}#PHP * }#PHP }: :-1}"
   if [[ -n "$php_version" ]]; then
-    p9kPrepareSegment "$0" "" $1 "$2" $3 "${php_version}"
+    p9k::prepare_segment "$0" "" $1 "$2" $3 "${php_version}"
   fi
 }

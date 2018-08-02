@@ -52,15 +52,15 @@ fi
 #   You can specify a string, unicode string or codepoint string (for Mapped fonts only).
 ##
 # @usage
-#   registerIcon "name_of_icon" 'Gen' $'\uXXX' $'\uXXX' '\u'$CODEPOINT_OF_AWESOME_xxx '\uXXX'
+#   p9k::register_icon "name_of_icon" 'Gen' $'\uXXX' $'\uXXX' '\u'$CODEPOINT_OF_AWESOME_xxx '\uXXX'
 ##
 # @example
-#   registerIcon "LOCK_ICON"  $'\uE0A2'  $'\uE138'  $'\uF023'  '\u'$CODEPOINT_OF_AWESOME_LOCK  $'\uF023'
+#   p9k::register_icon "LOCK_ICON"  $'\uE0A2'  $'\uE138'  $'\uF023'  '\u'$CODEPOINT_OF_AWESOME_LOCK  $'\uF023'
 ##
-function registerIcon() {
+p9k::register_icon() {
   local map
 	local ICON_USER_VARIABLE="P9K_${1}"
-	if defined "$ICON_USER_VARIABLE"; then # check for icon override first
+	if p9k::defined "$ICON_USER_VARIABLE"; then # check for icon override first
 		map="${(P)ICON_USER_VARIABLE}"
 	else # use the icons that are registered by the segment
     case $P9K_MODE in
@@ -96,12 +96,12 @@ function registerIcon() {
 #   You can specify a string, unicode string or codepoint string (for Mapped fonts only).
 ##
 # @usage
-#   registerSegment "segmentName" "stateNameOrEmpty" "backgroundColor" "foregroundColor" 'Gen' $'\uXXX' $'\uXXX' '\u'$CODEPOINT_OF_AWESOME_xxx '\uXXX'
+#   p9k::register_segment "segmentName" "stateNameOrEmpty" "p9k::background_color" "p9k::foreground_color" 'Gen' $'\uXXX' $'\uXXX' '\u'$CODEPOINT_OF_AWESOME_xxx '\uXXX'
 ##
 # @example
-#   registerSegment "DIR_WRITABLE" "" "red" "yellow1"  $'\uE0A2'  $'\uE138'  $'\uF023'  '\u'$CODEPOINT_OF_AWESOME_LOCK  $'\uF023'
+#   p9k::register_segment "DIR_WRITABLE" "" "red" "yellow1"  $'\uE0A2'  $'\uE138'  $'\uF023'  '\u'$CODEPOINT_OF_AWESOME_LOCK  $'\uF023'
 ##
-function registerSegment() {
+p9k::register_segment() {
   local STATEFUL_NAME=${(U)1#PROMPT_}
   # add state if required
   [[ -n $2 ]] && STATEFUL_NAME=${STATEFUL_NAME}_${(U)2}
@@ -109,22 +109,22 @@ function registerSegment() {
   [[ -z $4 ]] && 4=${DEFAULT_COLOR}
 
   local BG_USER_VARIABLE="P9K_${STATEFUL_NAME}_BACKGROUND"
-  if defined "$BG_USER_VARIABLE"; then # check for background override first
-    p9k_data[${STATEFUL_NAME}_BG]="$(backgroundColor ${(P)BG_USER_VARIABLE})"
+  if p9k::defined "$BG_USER_VARIABLE"; then # check for background override first
+    p9k_data[${STATEFUL_NAME}_BG]="$(p9k::background_color ${(P)BG_USER_VARIABLE})"
   else
-    p9k_data[${STATEFUL_NAME}_BG]="$(backgroundColor $3)"
+    p9k_data[${STATEFUL_NAME}_BG]="$(p9k::background_color $3)"
   fi
 
   local FG_USER_VARIABLE="P9K_${STATEFUL_NAME}_FOREGROUND"
-  if defined "$FG_USER_VARIABLE"; then # check for foreground override first
-    p9k_data[${STATEFUL_NAME}_FG]="$(foregroundColor ${(P)FG_USER_VARIABLE})"
+  if p9k::defined "$FG_USER_VARIABLE"; then # check for foreground override first
+    p9k_data[${STATEFUL_NAME}_FG]="$(p9k::foreground_color ${(P)FG_USER_VARIABLE})"
   else
-    p9k_data[${STATEFUL_NAME}_FG]="$(foregroundColor $4)"
+    p9k_data[${STATEFUL_NAME}_FG]="$(p9k::foreground_color $4)"
   fi
 
   local map
 	local ICON_USER_VARIABLE="P9K_${STATEFUL_NAME}_ICON"
-	if defined "$ICON_USER_VARIABLE"; then # check for icon override first
+	if p9k::defined "$ICON_USER_VARIABLE"; then # check for icon override first
 		map="${(P)ICON_USER_VARIABLE}"
 	else # use the icons that are registered by the segment
     case $P9K_MODE in
@@ -138,8 +138,8 @@ function registerSegment() {
 	p9k_icons[${STATEFUL_NAME}]=${map}
 
   local ICON_COLOR_VARIABLE="P9K_${STATEFUL_NAME}_ICON_COLOR"
-  if defined "$ICON_COLOR_VARIABLE"; then
-    p9k_data[${STATEFUL_NAME}_VI]="$(foregroundColor ${(P)ICON_COLOR_VARIABLE})"
+  if p9k::defined "$ICON_COLOR_VARIABLE"; then
+    p9k_data[${STATEFUL_NAME}_VI]="$(p9k::foreground_color ${(P)ICON_COLOR_VARIABLE})"
   else
     p9k_data[${STATEFUL_NAME}_VI]=$p9k_data[${STATEFUL_NAME}_FG]
   fi
@@ -150,22 +150,22 @@ function registerSegment() {
   [[ -z "${BOLD}" ]] || p9k_data[${STATEFUL_NAME}_BD]=true
 }
 
-#                                                                                                                           
-registerIcon "LEFT_SEGMENT_SEPARATOR"           $'\uE0B0'           $'\uE0B0'           $'\uE0B0'           $'\uE0B0'           $'\uE0B0'
-#                                                                                                                           
-registerIcon "RIGHT_SEGMENT_SEPARATOR"          $'\uE0B2'           $'\uE0B2'           $'\uE0B2'           $'\uE0B2'           $'\uE0B2'
-#                                               Whitespace          Whitespace          Whitespace          Whitespace          Whitespace
-registerIcon "LEFT_SEGMENT_END_SEPARATOR"       ' '                 ' '                 ' '                 ' '                 ' '
-#                                                                                                                           
-registerIcon "LEFT_SUBSEGMENT_SEPARATOR"        $'\uE0B1'           $'\uE0B1'           $'\uE0B1'           $'\uE0B1'           $'\uE0B1'
-#                                                                                                                           
-registerIcon "RIGHT_SUBSEGMENT_SEPARATOR"       $'\uE0B3'           $'\uE0B3'           $'\uE0B3'           $'\uE0B3'           $'\uE0B3'
-#                                               ╭─                  ╭─                 ╭─                  ╭─                 ╭─
-registerIcon "MULTILINE_FIRST_PROMPT_PREFIX"    $'\u256D'$'\u2500'  $'\u256D'$'\u2500'  $'\u256D'$'\u2500'  $'\u256D'$'\u2500'  $'\u256D'$'\u2500'
-#                                               ├─                 ├─                  ├─                 ├─                  ├─
-registerIcon "MULTILINE_NEWLINE_PROMPT_PREFIX"  $'\u251C'$'\u2500'  $'\u251C'$'\u2500'  $'\u251C'$'\u2500'  $'\u251C'$'\u2500'  $'\u251C'$'\u2500'
-#                                               ╰─                 ╰─                  ╰─                 ╰─                  ╰─
-registerIcon "MULTILINE_LAST_PROMPT_PREFIX"     $'\u2570'$'\u2500 ' $'\u2570'$'\u2500 ' $'\u2570'$'\u2500 ' $'\u2570'$'\u2500 ' $'\u2570'$'\u2500 '
+#                                                                                                                                
+p9k::register_icon "LEFT_SEGMENT_SEPARATOR"           $'\uE0B0'           $'\uE0B0'           $'\uE0B0'           $'\uE0B0'           $'\uE0B0'
+#                                                                                                                                
+p9k::register_icon "RIGHT_SEGMENT_SEPARATOR"          $'\uE0B2'           $'\uE0B2'           $'\uE0B2'           $'\uE0B2'           $'\uE0B2'
+#                                                    Whitespace          Whitespace          Whitespace          Whitespace          Whitespace
+p9k::register_icon "LEFT_SEGMENT_END_SEPARATOR"       ' '                 ' '                 ' '                 ' '                 ' '
+#                                                                                                                                
+p9k::register_icon "LEFT_SUBSEGMENT_SEPARATOR"        $'\uE0B1'           $'\uE0B1'           $'\uE0B1'           $'\uE0B1'           $'\uE0B1'
+#                                                                                                                                
+p9k::register_icon "RIGHT_SUBSEGMENT_SEPARATOR"       $'\uE0B3'           $'\uE0B3'           $'\uE0B3'           $'\uE0B3'           $'\uE0B3'
+#                                                    ╭─                  ╭─                 ╭─                  ╭─                 ╭─
+p9k::register_icon "MULTILINE_FIRST_PROMPT_PREFIX"    $'\u256D'$'\u2500'  $'\u256D'$'\u2500'  $'\u256D'$'\u2500'  $'\u256D'$'\u2500'  $'\u256D'$'\u2500'
+#                                                    ├─                 ├─                  ├─                 ├─                  ├─
+p9k::register_icon "MULTILINE_NEWLINE_PROMPT_PREFIX"  $'\u251C'$'\u2500'  $'\u251C'$'\u2500'  $'\u251C'$'\u2500'  $'\u251C'$'\u2500'  $'\u251C'$'\u2500'
+#                                                    ╰─                 ╰─                  ╰─                 ╰─                  ╰─
+p9k::register_icon "MULTILINE_LAST_PROMPT_PREFIX"     $'\u2570'$'\u2500 ' $'\u2570'$'\u2500 ' $'\u2570'$'\u2500 ' $'\u2570'$'\u2500 ' $'\u2570'$'\u2500 '
 
 # Override the above icon settings with any user-defined variables.
 case $P9K_MODE in
@@ -192,7 +192,7 @@ esac
 # @args
 #   $1 string Name of icon
 ##
-function printIcon() {
+p9k::print_icon() {
 	echo -n "${p9k_icons[$1]}"
 }
 
@@ -202,7 +202,7 @@ function printIcon() {
 ##
 # @noargs
 ##
-showDefinedIcons() {
+show_defined_icons() {
   # changed (kv) to (k) in case there are empty keys, which causes the printing to be done wrong
   for k in ${(k)p9k_icons}; do; echo "$k -> '$p9k_icons[$k]'"; done | sort
 }

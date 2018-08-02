@@ -1,6 +1,6 @@
 # vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
 ################################################################
-# @title powerlevel9k Autoload Function - subStrCount
+# @title powerlevel9k Autoload Function - __p9k_sub_str_count
 # @sources
 #   [powerlevel9k](https://github.com/bhilburn/powerlevel9k)
 ##
@@ -23,7 +23,7 @@ setopt localoptions extendedglob
 # @returns
 #   The number of substrings found in the string
 ##
-# @function subStrCount() {}
+# @function __p9k_sub_str_count() {}
 [[ -z $2 ]] && return
 integer int=0
 : ${1//(#m)$2/$(( ++int ))} # count the number of times the substring appears.

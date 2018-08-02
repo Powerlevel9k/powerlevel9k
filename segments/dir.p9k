@@ -10,22 +10,22 @@
 # Parameters:
 #   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
 #                                                                                                                                     
-registerSegment "DIR" 'DEFAULT'         "blue" "$DEFAULT_COLOR"   ''         $'\uE818'  $'\uF115'  '\u'$CODEPOINT_OF_AWESOME_FOLDER_O     $'\uF115'
+p9k::register_segment "DIR" 'DEFAULT'         "blue" "$DEFAULT_COLOR"   ''         $'\uE818'  $'\uF115'  '\u'$CODEPOINT_OF_AWESOME_FOLDER_O     $'\uF115'
 #                                                                                                                                     
-registerSegment "DIR" 'HOME'            "blue" "$DEFAULT_COLOR"   ''         $'\uE12C'  $'\uF015'  '\u'$CODEPOINT_OF_AWESOME_HOME         $'\uF015'
+p9k::register_segment "DIR" 'HOME'            "blue" "$DEFAULT_COLOR"   ''         $'\uE12C'  $'\uF015'  '\u'$CODEPOINT_OF_AWESOME_HOME         $'\uF015'
 #                                                                                                                                     
-registerSegment "DIR" 'HOME_SUBFOLDER'  "blue" "$DEFAULT_COLOR"   ''         $'\uE18D'  $'\uF07C'  '\u'$CODEPOINT_OF_AWESOME_FOLDER_OPEN  $'\uF07C'
+p9k::register_segment "DIR" 'HOME_SUBFOLDER'  "blue" "$DEFAULT_COLOR"   ''         $'\uE18D'  $'\uF07C'  '\u'$CODEPOINT_OF_AWESOME_FOLDER_OPEN  $'\uF07C'
 #                                                                                                                                     
-registerSegment "DIR" 'NOT_WRITABLE'    "blue" "$DEFAULT_COLOR"   $'\uE0A2'  $'\uE138'  $'\uF023'  '\u'$CODEPOINT_OF_AWESOME_LOCK         $'\uF023'
+p9k::register_segment "DIR" 'NOT_WRITABLE'    "blue" "$DEFAULT_COLOR"   $'\uE0A2'  $'\uE138'  $'\uF023'  '\u'$CODEPOINT_OF_AWESOME_LOCK         $'\uF023'
 #                                                                                                                                   
-registerSegment "DIR" 'ETC'             "blue" "$DEFAULT_COLOR"   $'\uE818'  $'\uF013'  $'\uF013'  '\u'$CODEPOINT_OF_AWESOME_COG          $'\uF013'
+p9k::register_segment "DIR" 'ETC'             "blue" "$DEFAULT_COLOR"   $'\uE818'  $'\uF013'  $'\uF013'  '\u'$CODEPOINT_OF_AWESOME_COG          $'\uF013'
 
-setDefault P9K_DIR_PATH_SEPARATOR "/"
-setDefault P9K_DIR_HOME_FOLDER_ABBREVIATION "~"
-setDefault P9K_DIR_PATH_HIGHLIGHT_BOLD false
-setDefault P9K_DIR_PATH_ABSOLUTE false
-setDefault P9K_DIR_SHORTEN_DELIMITER "\u2026"
-setDefault P9K_DIR_SHORTEN_FOLDER_MARKER ".shorten_folder_marker"
+p9k::set_default P9K_DIR_PATH_SEPARATOR "/"
+p9k::set_default P9K_DIR_HOME_FOLDER_ABBREVIATION "~"
+p9k::set_default P9K_DIR_PATH_HIGHLIGHT_BOLD false
+p9k::set_default P9K_DIR_PATH_ABSOLUTE false
+p9k::set_default P9K_DIR_SHORTEN_DELIMITER "\u2026"
+p9k::set_default P9K_DIR_SHORTEN_FOLDER_MARKER ".shorten_folder_marker"
 ################################################################
 # @description
 #   Display information about the current working directory.
@@ -51,15 +51,15 @@ prompt_dir() {
     case "$P9K_DIR_SHORTEN_STRATEGY" in
       truncate_from_right)
         # truncate characters from the right of the path
-        current_path=$(truncatePath "$current_path" $P9K_DIR_SHORTEN_LENGTH "$P9K_DIR_SHORTEN_DELIMITER")
+        current_path=$(__p9k_truncate_path "$current_path" $P9K_DIR_SHORTEN_LENGTH "$P9K_DIR_SHORTEN_DELIMITER")
       ;;
       truncate_middle)
         # truncate characters from the middle of the path
-        current_path=$(truncatePath "$current_path" $P9K_DIR_SHORTEN_LENGTH "$P9K_DIR_SHORTEN_DELIMITER" "middle")
+        current_path=$(__p9k_truncate_path "$current_path" $P9K_DIR_SHORTEN_LENGTH "$P9K_DIR_SHORTEN_DELIMITER" "middle")
       ;;
       truncate_from_left)
         # truncate characters from the right of the path
-        current_path=$(truncatePath "$current_path" $P9K_DIR_SHORTEN_LENGTH "$P9K_DIR_SHORTEN_DELIMITER" "left")
+        current_path=$(__p9k_truncate_path "$current_path" $P9K_DIR_SHORTEN_LENGTH "$P9K_DIR_SHORTEN_DELIMITER" "left")
       ;;
       truncate_absolute|truncate_absolute_chars)
         # truncate all characters except the last P9K_DIR_SHORTEN_LENGTH characters
@@ -92,8 +92,8 @@ prompt_dir() {
         # characters sequence. Source: https://stackoverflow.com/a/45336078
         if (( ${#current_path} > 1 )); then # root and home are exceptions and won't have paths
           # cheating here to retain ~ as home folder
-          local home_path="$(getUniquePath $HOME:A)"
-          trunc_path="$(getUniquePath $PWD:A)"
+          local home_path="$(__p9k_get_unique_path $HOME:A)"
+          trunc_path="$(__p9k_get_unique_path $PWD:A)"
           [[ $current_path == "~"* ]] && current_path="~${trunc_path//${home_path}/}" || current_path="/${trunc_path}"
         fi
       ;;
@@ -107,7 +107,7 @@ prompt_dir() {
           # buildup a pattern that is removed from the current path
           # later on.
           local -a markedFolders
-          markedFolders=($(upsearch $P9K_DIR_SHORTEN_FOLDER_MARKER $current_path))
+          markedFolders=($(__p9k_upsearch $P9K_DIR_SHORTEN_FOLDER_MARKER $current_path))
           if (( ${#markedFolders} > 0 )); then
             # Take the first match. This is the longest one.
             local markedFolder="${markedFolders[1]}"
@@ -149,7 +149,7 @@ prompt_dir() {
         # Then, find the length of the package_path string, and save the
         # subdirectory path as a substring of the current directory's path from 0
         # to the length of the package path's string
-        subdirectory_path=$(truncatePath "${trunc_path:${#${(S%%)package_path//$~zero/}}}" $P9K_DIR_SHORTEN_LENGTH $P9K_DIR_SHORTEN_DELIMITER)
+        subdirectory_path=$(__p9k_truncate_path "${trunc_path:${#${(S%%)package_path//$~zero/}}}" $P9K_DIR_SHORTEN_LENGTH $P9K_DIR_SHORTEN_DELIMITER)
         # Parse the 'name' from the package.json; if there are any problems, just
         # print the file path
         defined P9K_DIR_PACKAGE_FILES || P9K_DIR_PACKAGE_FILES=(package.json composer.json)
@@ -260,5 +260,5 @@ prompt_dir() {
     current_path=${current_path:s/~/$P9K_DIR_HOME_FOLDER_ABBREVIATION}
   fi
 
-  p9kPrepareSegment "$0" "${(U)current_state}" $1 "$2" $3 "${current_path}"
+  p9k::prepare_segment "$0" "${(U)current_state}" $1 "$2" $3 "${current_path}"
 }

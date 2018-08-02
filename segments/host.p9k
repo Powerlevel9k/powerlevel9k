@@ -10,11 +10,11 @@
 # Parameters:
 #   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
 #                                                                                                             
-registerSegment "HOST" "REMOTE" "yellow"           "${DEFAULT_COLOR}"  '(ssh)'  '(ssh)'  '(ssh)'    '(ssh)'   $'\uF489'
+p9k::register_segment "HOST" "REMOTE" "yellow"           "${DEFAULT_COLOR}"  '(ssh)'  '(ssh)'  '(ssh)'    '(ssh)'   $'\uF489'
 #                                                                                                          
-registerSegment "HOST" "LOCAL"  "${DEFAULT_COLOR}" "yellow"            ''       ''       $'\uF67C'  $'\uF67C' $'\uF67C'
+p9k::register_segment "HOST" "LOCAL"  "${DEFAULT_COLOR}" "yellow"            ''       ''       $'\uF67C'  $'\uF67C' $'\uF67C'
 
-setDefault P9K_HOST_TEMPLATE "%m"
+p9k::set_default P9K_HOST_TEMPLATE "%m"
 ################################################################
 # @description
 #   Display information about the Host - machine (where am I).
@@ -29,5 +29,5 @@ prompt_host() {
   if [[ -n "$SSH_CLIENT" ]] || [[ -n "$SSH_TTY" ]]; then
     current_state="REMOTE"
   fi
-  p9kPrepareSegment "$0" "${current_state}" $1 "$2" $3 "${P9K_HOST_TEMPLATE}"
+  p9k::prepare_segment "$0" "${current_state}" $1 "$2" $3 "${P9K_HOST_TEMPLATE}"
 }

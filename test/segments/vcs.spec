@@ -24,7 +24,7 @@ function testColorOverridingForCleanStateWorks() {
   cd $FOLDER
   git init 1>/dev/null
 
-  assertEquals "%K{white} %F{cyan} master %k%F{white}%f " "$(buildLeftPrompt)"
+  assertEquals "%K{white} %F{cyan} master %k%F{white}%f " "$(__p9k_build_left_prompt)"
 
   cd -
   rm -fr /tmp/powerlevel9k-test
@@ -48,7 +48,7 @@ function testColorOverridingForModifiedStateWorks() {
   git commit -m "test" 1>/dev/null
   echo "test" > testfile
 
-  assertEquals "%K{yellow} %F{red} master ● %k%F{yellow}%f " "$(buildLeftPrompt)"
+  assertEquals "%K{yellow} %F{red} master ● %k%F{yellow}%f " "$(__p9k_build_left_prompt)"
 
   cd -
   rm -fr /tmp/powerlevel9k-test
@@ -67,7 +67,7 @@ function testColorOverridingForUntrackedStateWorks() {
   git init 1>/dev/null
   touch testfile
 
-  assertEquals "%K{yellow} %F{cyan} master ? %k%F{yellow}%f " "$(buildLeftPrompt)"
+  assertEquals "%K{yellow} %F{cyan} master ? %k%F{yellow}%f " "$(__p9k_build_left_prompt)"
 
   cd -
   rm -fr /tmp/powerlevel9k-test
@@ -87,10 +87,10 @@ function testBranchNameTruncatingShortenLength() {
   git init 1>/dev/null
   touch testfile
 
-  assertEquals "%K{green} %F{black} master ? %k%F{green}%f " "$(buildLeftPrompt)"
+  assertEquals "%K{green} %F{black} master ? %k%F{green}%f " "$(__p9k_build_left_prompt)"
 
   local P9K_VCS_SHORTEN_LENGTH=3
-  assertEquals "%K{green} %F{black} mas… ? %k%F{green}%f " "$(buildLeftPrompt)"
+  assertEquals "%K{green} %F{black} mas… ? %k%F{green}%f " "$(__p9k_build_left_prompt)"
 
   cd -
   rm -fr /tmp/powerlevel9k-test
@@ -110,11 +110,11 @@ function testBranchNameTruncatingMinLength() {
   git init 1>/dev/null
   touch testfile
 
-  assertEquals "%K{green} %F{black} master ? %k%F{green}%f " "$(buildLeftPrompt)"
+  assertEquals "%K{green} %F{black} master ? %k%F{green}%f " "$(__p9k_build_left_prompt)"
 
   local P9K_VCS_SHORTEN_MIN_LENGTH=7
 
-  assertEquals "%K{green} %F{black} master ? %k%F{green}%f " "$(buildLeftPrompt)"
+  assertEquals "%K{green} %F{black} master ? %k%F{green}%f " "$(__p9k_build_left_prompt)"
 
   cd -
   rm -fr /tmp/powerlevel9k-test
@@ -134,11 +134,11 @@ function testBranchNameTruncatingShortenStrategy() {
   git init 1>/dev/null
   touch testfile
 
-  assertEquals "%K{green} %F{black} mas… ? %k%F{green}%f " "$(buildLeftPrompt)"
+  assertEquals "%K{green} %F{black} mas… ? %k%F{green}%f " "$(__p9k_build_left_prompt)"
 
   local P9K_VCS_SHORTEN_STRATEGY="truncate_middle"
 
-  assertEquals "%K{green} %F{black} mas…ter ? %k%F{green}%f " "$(buildLeftPrompt)"
+  assertEquals "%K{green} %F{black} mas…ter ? %k%F{green}%f " "$(__p9k_build_left_prompt)"
 
   cd -
   rm -fr /tmp/powerlevel9k-test

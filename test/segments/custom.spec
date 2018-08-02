@@ -16,10 +16,10 @@ function testCustomDirectOutputSegment() {
     local -a P9K_LEFT_PROMPT_ELEMENTS
     P9K_LEFT_PROMPT_ELEMENTS=(custom_world)
     local P9K_CUSTOM_WORLD="echo world"
-  registerSegment "WORLD"
-    registerSegment "WORLD"
+  p9k::register_segment "WORLD"
+    p9k::register_segment "WORLD"
 
-    assertEquals "%K{white} %F{black}world %k%F{white}%f " "$(buildLeftPrompt)"
+    assertEquals "%K{white} %F{black}world %k%F{white}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testCustomClosureSegment() {
@@ -29,55 +29,55 @@ function testCustomClosureSegment() {
         echo "world"
     }
     local P9K_CUSTOM_WORLD='p9k_hello_world'
-  registerSegment "WORLD"
-    registerSegment "WORLD"
+  p9k::register_segment "WORLD"
+    p9k::register_segment "WORLD"
 
-    assertEquals "%K{white} %F{black}world %k%F{white}%f " "$(buildLeftPrompt)"
+    assertEquals "%K{white} %F{black}world %k%F{white}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testSettingBackgroundForCustomSegment() {
     local -a P9K_LEFT_PROMPT_ELEMENTS
     P9K_LEFT_PROMPT_ELEMENTS=(custom_world)
     local P9K_CUSTOM_WORLD="echo world"
-  registerSegment "WORLD"
+  p9k::register_segment "WORLD"
     local P9K_WORLD_BACKGROUND="yellow"
-    registerSegment "WORLD"
+    p9k::register_segment "WORLD"
 
-    assertEquals "%K{yellow} %F{black}world %k%F{yellow}%f " "$(buildLeftPrompt)"
+    assertEquals "%K{yellow} %F{black}world %k%F{yellow}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testSettingForegroundForCustomSegment() {
     local -a P9K_LEFT_PROMPT_ELEMENTS
     P9K_LEFT_PROMPT_ELEMENTS=(custom_world)
     local P9K_CUSTOM_WORLD="echo world"
-  registerSegment "WORLD"
+  p9k::register_segment "WORLD"
     local P9K_WORLD_FOREGROUND="red"
-    registerSegment "WORLD"
+    p9k::register_segment "WORLD"
 
-    assertEquals "%K{white} %F{red}world %k%F{white}%f " "$(buildLeftPrompt)"
+    assertEquals "%K{white} %F{red}world %k%F{white}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testSettingVisualIdentifierForCustomSegment() {
     local -a P9K_LEFT_PROMPT_ELEMENTS
     P9K_LEFT_PROMPT_ELEMENTS=(custom_world)
     local P9K_CUSTOM_WORLD="echo world"
-  registerSegment "WORLD"
+  p9k::register_segment "WORLD"
     local P9K_WORLD_ICON="*hw"
-    registerSegment "WORLD"
+    p9k::register_segment "WORLD"
 
-    assertEquals "%K{white} %F{black}*hw %f%F{black}world %k%F{white}%f " "$(buildLeftPrompt)"
+    assertEquals "%K{white} %F{black}*hw %f%F{black}world %k%F{white}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testSettingVisualIdentifierForegroundColorForCustomSegment() {
     local -a P9K_LEFT_PROMPT_ELEMENTS
     P9K_LEFT_PROMPT_ELEMENTS=(custom_world)
     local P9K_CUSTOM_WORLD="echo world"
-  registerSegment "WORLD"
+  p9k::register_segment "WORLD"
     local P9K_WORLD_ICON="*hw"
     local P9K_WORLD_ICON_COLOR="red"
-    registerSegment "WORLD"
+    p9k::register_segment "WORLD"
 
-    assertEquals "%K{white} %F{red}*hw %f%F{black}world %k%F{white}%f " "$(buildLeftPrompt)"
+    assertEquals "%K{white} %F{red}*hw %f%F{black}world %k%F{white}%f " "$(__p9k_build_left_prompt)"
 }
 
 source shunit2/source/2.1/src/shunit2

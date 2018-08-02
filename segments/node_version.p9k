@@ -10,7 +10,7 @@
 # Parameters:
 #   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
 #                                                  ⬢         ⬢          ⬢          ⬢          
-registerSegment "NODE_VERSION" "" "green" "white"  $'\u2B22'  $'\u2B22'  $'\u2B22'  $'\u2B22'  $'\uE617 '
+p9k::register_segment "NODE_VERSION" "" "green" "white"  $'\u2B22'  $'\u2B22'  $'\u2B22'  $'\u2B22'  $'\uE617 '
 
 ################################################################
 # @description
@@ -25,5 +25,5 @@ prompt_node_version() {
   local node_version=$(node -v 2>/dev/null)
   [[ -z "${node_version}" ]] && return
 
-  p9kPrepareSegment "$0" "" $1 "$2" $3 "${node_version:1}"
+  p9k::prepare_segment "$0" "" $1 "$2" $3 "${node_version:1}"
 }

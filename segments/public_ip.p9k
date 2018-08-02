@@ -10,14 +10,14 @@
 # Parameters:
 #   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
 #                                                                                                                      
-registerSegment "PUBLIC_IP" "" "$DEFAULT_COLOR" "$DEFAULT_COLOR_INVERTED"  ''  ''  ''  '\u'$CODEPOINT_OF_AWESOME_GLOBE  $'\uF0AC'
+p9k::register_segment "PUBLIC_IP" "" "$DEFAULT_COLOR" "$DEFAULT_COLOR_INVERTED"  ''  ''  ''  '\u'$CODEPOINT_OF_AWESOME_GLOBE  $'\uF0AC'
 
 ################################################################
 # Register segment icon
 # Parameters:
 #   name_of_icon  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
 #                                                                                   
-registerIcon "VPN_ICON"  '(vpn)'  '(vpn)'  $'\uF023'  '\u'$CODEPOINT_OF_AWESOME_LOCK  $'\uF023'
+p9k::register_icon "VPN_ICON"  '(vpn)'  '(vpn)'  $'\uF023'  '\u'$CODEPOINT_OF_AWESOME_LOCK  $'\uF023'
 
 # On macOS, stat is in /usr/bin/stat. However, if gnu utils are installed, this won't work.
 [[ $(which stat) == "/usr/bin/stat" ]] && local stat_version="OSX"
@@ -29,10 +29,10 @@ registerIcon "VPN_ICON"  '(vpn)'  '(vpn)'  $'\uF023'  '\u'$CODEPOINT_OF_AWESOME_
 #   * $2 Index: integer
 #   * $3 Joined: bool - If the segment should be joined
 # set default values for segment
-setDefault P9K_PUBLIC_IP_TIMEOUT "00"
-setDefault P9K_PUBLIC_IP_NONE ""
-setDefault P9K_PUBLIC_IP_FILE "/tmp/p9k_public_ip"
-setDefault P9K_PUBLIC_IP_HOST "http://ident.me"
+p9k::set_default P9K_PUBLIC_IP_TIMEOUT "00"
+p9k::set_default P9K_PUBLIC_IP_NONE ""
+p9k::set_default P9K_PUBLIC_IP_FILE "/tmp/p9k_public_ip"
+p9k::set_default P9K_PUBLIC_IP_HOST "http://ident.me"
 defined P9K_PUBLIC_IP_METHODS || P9K_PUBLIC_IP_METHODS=(dig curl wget)
 prompt_public_ip() {
   # Do we need a fresh IP?
@@ -100,6 +100,6 @@ prompt_public_ip() {
         break
       done
     fi
-    p9kPrepareSegment "$0" "" $1 "$2" $3 "${public_ip}" "" "$icon"
+    p9k::prepare_segment "$0" "" $1 "$2" $3 "${public_ip}" "" "$icon"
   fi
 }

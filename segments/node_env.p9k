@@ -10,7 +10,7 @@
 # Parameters:
 #   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
 #                                             ⬢         ⬢          ⬢          ⬢          
-registerSegment "NODE_ENV" "" "black" "green" $'\u2B22'  $'\u2B22'  $'\u2B22'  $'\u2B22'  $'\uE617 '
+p9k::register_segment "NODE_ENV" "" "black" "green" $'\u2B22'  $'\u2B22'  $'\u2B22'  $'\u2B22'  $'\uE617 '
 
 ################################################################
 # @description
@@ -25,6 +25,6 @@ prompt_node_env() {
   local node_env_path="$NODE_VIRTUAL_ENV"
   if [[ -n "$node_env_path" && "$NODE_VIRTUAL_ENV_DISABLE_PROMPT" != true ]]; then
     local info="$(node -v)[$(basename "$node_env_path")]"
-    p9kPrepareSegment "$0" "" $1 "$2" $3 "$info"
+    p9k::prepare_segment "$0" "" $1 "$2" $3 "$info"
   fi
 }

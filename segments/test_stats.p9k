@@ -14,9 +14,9 @@
 # Parameters:
 #   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
 #                                                                                                                      
-registerSegment "TEST_STATS" "GOOD" "cyan"   "${DEFAULT_COLOR}"   ''  $'\uE891'  $'\uF291'  '\u'$CODEPOINT_OF_AWESOME_BUG  $'\uF188'
-registerSegment "TEST_STATS" "AVG"  "yellow" "${DEFAULT_COLOR}"   ''  $'\uE891'  $'\uF291'  '\u'$CODEPOINT_OF_AWESOME_BUG  $'\uF188'
-registerSegment "TEST_STATS" "BAD"  "red"    "${DEFAULT_COLOR}"   ''  $'\uE891'  $'\uF291'  '\u'$CODEPOINT_OF_AWESOME_BUG  $'\uF188'
+p9k::register_segment "TEST_STATS" "GOOD" "cyan"   "${DEFAULT_COLOR}"   ''  $'\uE891'  $'\uF291'  '\u'$CODEPOINT_OF_AWESOME_BUG  $'\uF188'
+p9k::register_segment "TEST_STATS" "AVG"  "yellow" "${DEFAULT_COLOR}"   ''  $'\uE891'  $'\uF291'  '\u'$CODEPOINT_OF_AWESOME_BUG  $'\uF188'
+p9k::register_segment "TEST_STATS" "BAD"  "red"    "${DEFAULT_COLOR}"   ''  $'\uE891'  $'\uF291'  '\u'$CODEPOINT_OF_AWESOME_BUG  $'\uF188'
 
 ################################################################
 # @description
@@ -48,5 +48,5 @@ build_test_stats() {
   (( ratio >= 50 && ratio < 75 )) && current_state="AVG"
   (( ratio < 50 )) && current_state="BAD"
 
-  p9kPrepareSegment "$1" "${current_state}" "$2" $3 $4 "$headline: $ratio%%"
+  p9k::prepare_segment "$1" "${current_state}" "$2" $3 $4 "$headline: $ratio%%"
 }

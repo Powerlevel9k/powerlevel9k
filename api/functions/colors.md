@@ -12,14 +12,14 @@
 
 ## Table of Contents
 
-- [termColors](#termColors)
-- [getColor](#getColor)
-- [backgroundColor](#backgroundColor)
-- [foregroundColor](#foregroundColor)
-- [getColorCode](#getColorCode)
-- [isSameColor](#isSameColor)
+- [__p9k_term_colors](#__p9k_term_colors)
+- [p9k::get_color](#p9k::get_color)
+- [p9k::background_color](#p9k::background_color)
+- [p9k::foreground_color](#p9k::foreground_color)
+- [p9k::get_colorCode](#p9k::get_colorCode)
+- [p9k::is_same_color](#p9k::is_same_color)
 
-## termColors
+## __p9k_term_colors
 *This function checks if the terminal supports 256 colors. If it doesn't, an error message is displayed. *
 
 #### Arguments
@@ -31,7 +31,7 @@
 
 *You can bypass this check by setting `P9K_IGNORE_TERM_COLORS=true`. *
 
-## getColor
+## p9k::get_color
 *This function gets the proper color code if it does not exist as a name. *
 
 #### Arguments
@@ -39,7 +39,7 @@
 - **$1** (misc) Color to check (as a number or string)
 
 
-## backgroundColor
+## p9k::background_color
 *Function to set the background color. *
 
 #### Arguments
@@ -56,7 +56,7 @@
 
 *An empty paramenter resets (stops) background color. *
 
-## foregroundColor
+## p9k::foreground_color
 *Function to set the foreground color. *
 
 #### Arguments
@@ -73,7 +73,7 @@
 
 *An empty paramenter resets (stops) foreground color. *
 
-## getColorCode
+## p9k::get_colorCode
 *Function to get numerical color codes. That way we translate ANSI codes into ZSH-Style color codes. *
 
 #### Arguments
@@ -81,7 +81,7 @@
 - **$1** (misc) Number or string of color.
 
 
-## isSameColor
+## p9k::is_same_color
 *Check if two colors are equal, even if one is specified as ANSI code. *
 
 #### Arguments

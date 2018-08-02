@@ -34,8 +34,8 @@
 # right-left but reads the opposite, this isn't necessary for the other side.
 CURRENT_BG='NONE'
 
-setDefault last_left_element_index 1
-setDefault P9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS " "
+p9k::set_default last_left_element_index 1
+p9k::set_default P9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS " "
 ################################################################
 # @description
 #   Construct a left prompt segment
@@ -47,12 +47,12 @@ setDefault P9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS " "
 #   $4 string Content of the segment
 #   $5 string Visual identifier (must be a key of the icons array)
 ##
-leftPromptSegment() {
+__p9k_left_prompt_segment() {
   local STATEFUL_NAME="${1}"
   local current_index="${2}"
   # Check if the segment should be joined with the previous one
   local joined=false
-  [[ "${3}" == "true" ]] && segmentShouldBeJoined $current_index $last_left_element_index "$P9K_LEFT_PROMPT_ELEMENTS" && joined=true
+  [[ "${3}" == "true" ]] && __p9k_segment_should_be_Joined $current_index $last_left_element_index "$P9K_LEFT_PROMPT_ELEMENTS" && joined=true
   # Support for bold segment
   [[ $p9k_data[${STATEFUL_NAME}_BD] == true ]] && content="%B${4}%b" || content="${4}"
   local visual_identifier="${5}"
@@ -89,7 +89,7 @@ leftPromptSegment() {
 ##
 # @noargs
 ##
-leftPromptEnd() {
+__p9k_left_prompt_end() {
   if [[ -n $CURRENT_BG ]]; then
     echo -n "%k%F${CURRENT_BG#%K}${p9k_icons[LEFT_SEGMENT_SEPARATOR]}"
   else
@@ -101,8 +101,8 @@ leftPromptEnd() {
 
 CURRENT_RIGHT_BG='NONE'
 
-setDefault last_right_element_index 1
-setDefault P9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS " "
+p9k::set_default last_right_element_index 1
+p9k::set_default P9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS " "
 ################################################################
 # @description
 #   Construct a right prompt segment
@@ -117,12 +117,12 @@ setDefault P9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS " "
 # @notes
 #   No ending for the right prompt segment is needed (unlike the left prompt, above).
 ##
-rightPromptSegment() {
+__p9k_right_prompt_segment() {
   local STATEFUL_NAME="${1}"
   local current_index="${2}"
   # Check if the segment should be joined with the previous one
   local joined=false
-  [[ "${3}" == "true" ]] && segmentShouldBeJoined $current_index $last_right_element_index "$P9K_RIGHT_PROMPT_ELEMENTS" && joined=true
+  [[ "${3}" == "true" ]] && __p9k_segment_should_be_Joined $current_index $last_right_element_index "$P9K_RIGHT_PROMPT_ELEMENTS" && joined=true
   local content
   # Support for bold segment
   [[ $p9k_data[${STATEFUL_NAME}_BD] == true ]] && content="%B${4}%b" || content="${4}"
@@ -166,7 +166,7 @@ rightPromptSegment() {
 
 ################################################################
 # @description
-#   This function wraps `leftPromptSegment` and `rightPromptSegment`
+#   This function wraps `__p9k_left_prompt_segment` and `__p9k_right_prompt_segment`
 #   (for compatibility with the async generator).
 ##
 # @args
@@ -181,18 +181,18 @@ rightPromptSegment() {
 #   $9 string Background overide
 #   $10 string Foreground overide
 ##
-p9kPrepareSegment() {
+p9k::prepare_segment() {
   local STATEFUL_NAME="${${(U)1}#PROMPT_}"
   [[ -n "${2}" ]] && STATEFUL_NAME="${STATEFUL_NAME}_${(U)2}"
 
   # Precompile condition.
-  if segmentShouldBePrinted "${STATEFUL_NAME}" "${7}" "${6}"; then
+  if __p9k_segment_should_be_Printed "${STATEFUL_NAME}" "${7}" "${6}"; then
     local VISUAL_IDENTIFIER
     if [[ -z "${8}" ]]; then
       VISUAL_IDENTIFIER=$p9k_icons[$STATEFUL_NAME]
     else
       # test if the VISUAL_IDENTIFIER string is a ICON NAME otherwise treat it as a curston string
-      [[ "${(U)8[1]}" =~ '[A-Z]' ]] && VISUAL_IDENTIFIER="$(printIcon ${8})" || VISUAL_IDENTIFIER="$(echo -n ${8})"
+      [[ "${(U)8[1]}" =~ '[A-Z]' ]] && VISUAL_IDENTIFIER="$(p9k::print_icon ${8})" || VISUAL_IDENTIFIER="$(echo -n ${8})"
     fi
 
     # Background overide
@@ -201,7 +201,7 @@ p9kPrepareSegment() {
     # Foreground overide
     [[ -n "${10}" ]] && p9k_data[${STATEFUL_NAME}_FG]="${10}"
 
-    "${3}PromptSegment" "${STATEFUL_NAME}" "${4}" "${5}" "${6}" "${VISUAL_IDENTIFIER}"
+    "__p9k_${3}_prompt_segment" "${STATEFUL_NAME}" "${4}" "${5}" "${6}" "${VISUAL_IDENTIFIER}"
   fi
 }
 
@@ -226,12 +226,12 @@ CURRENT_BG='NONE'
 #   $3 boolean Whether the segment should be joined
 #   $4 string Custom segment name
 ##
-prompt_custom() {
+__p9k_prompt_custom() {
   local command=P9K_CUSTOM_$4:u
   local segment_content="$(eval ${(P)command})"
 
   if [[ -n $segment_content ]]; then
-    p9kPrepareSegment "${4:u}" "" "$1" $2 $3 "$segment_content"
+    p9k::prepare_segment "${4:u}" "" "$1" $2 $3 "$segment_content"
   fi
 }
 
@@ -246,7 +246,7 @@ prompt_custom() {
 ##
 # @noargs
 ##
-buildLeftPrompt() {
+__p9k_build_left_prompt() {
   local index=1
   local element joined
   for element in "${P9K_LEFT_PROMPT_ELEMENTS[@]}"; do
@@ -259,7 +259,7 @@ buildLeftPrompt() {
     # Check if it is a custom command, otherwise interpet it as
     # a prompt.
     if [[ $element[0,7] =~ "custom_" ]]; then
-      "prompt_custom" "left" "$index" $joined $element[8,-1]
+      "__p9k_prompt_custom" "left" "$index" $joined $element[8,-1]
     else
       "prompt_$element" "left" "$index" $joined
     fi
@@ -267,7 +267,7 @@ buildLeftPrompt() {
     index=$((index + 1))
   done
 
-  leftPromptEnd
+  __p9k_left_prompt_end
 }
 
 ###############################################################
@@ -277,7 +277,7 @@ buildLeftPrompt() {
 ##
 # @noargs
 ##
-buildRightPrompt() {
+__p9k_build_right_prompt() {
   local index=1
   local element joined
   for element in "${P9K_RIGHT_PROMPT_ELEMENTS[@]}"; do
@@ -290,7 +290,7 @@ buildRightPrompt() {
     # Check if it is a custom command, otherwise interpet it as
     # a prompt.
     if [[ $element[0,7] =~ "custom_" ]]; then
-      "prompt_custom" "right" "$index" $joined $element[8,-1]
+      "__p9k_prompt_custom" "right" "$index" $joined $element[8,-1]
     else
       "prompt_$element" "right" "$index" $joined
     fi
@@ -306,16 +306,16 @@ buildRightPrompt() {
 ##
 # @noargs
 ##
-p9k_preexec() {
+__p9k_preexec() {
   # The Timer is started here, but the end
-  # is taken in p9kPreparePrompts, as this
+  # is taken in __p9k_prepare_prompts, as this
   # method is a precmd hook and runs right
   # before the prompt gets rendered. So we
   # can calculate the duration there.
   _P9K_TIMER_START=${EPOCHREALTIME}
 }
 
-setDefault P9K_PROMPT_ADD_NEWLINE false
+p9k::set_default P9K_PROMPT_ADD_NEWLINE false
 ###############################################################
 # @description
 #   This function is a hook that is run before the prompts are created.
@@ -324,7 +324,7 @@ setDefault P9K_PROMPT_ADD_NEWLINE false
 ##
 # @noargs
 ##
-p9kPreparePrompts() {
+__p9k_prepare_prompts() {
   # Return values. These need to be global, because
   # they are used in prompt_status. Also, we need
   # to get the return value of the last command at
@@ -343,7 +343,7 @@ p9kPreparePrompts() {
   local LC_ALL="" LC_CTYPE="en_US.UTF-8" # Set the right locale to protect special characters
 
   if [[ "$P9K_PROMPT_ON_NEWLINE" == true ]]; then
-    PROMPT='${p9k_icons[MULTILINE_FIRST_PROMPT_PREFIX]}%f%b%k$(buildLeftPrompt)
+    PROMPT='${p9k_icons[MULTILINE_FIRST_PROMPT_PREFIX]}%f%b%k$(__p9k_build_left_prompt)
 ${p9k_icons[MULTILINE_LAST_PROMPT_PREFIX]}'
     if [[ "$P9K_RPROMPT_ON_NEWLINE" != true ]]; then
       # The right prompt should be on the same line as the first line of the left
@@ -358,13 +358,13 @@ ${p9k_icons[MULTILINE_LAST_PROMPT_PREFIX]}'
       RPROMPT_SUFFIX=''
     fi
   else
-    PROMPT='%f%b%k$(buildLeftPrompt)'
+    PROMPT='%f%b%k$(__p9k_build_left_prompt)'
     RPROMPT_PREFIX=''
     RPROMPT_SUFFIX=''
   fi
 
   if [[ "$P9K_DISABLE_RPROMPT" != true ]]; then
-    RPROMPT="$RPROMPT_PREFIX"'%f%b%k$(buildRightPrompt)%{$reset_color%}'"$RPROMPT_SUFFIX"
+    RPROMPT="$RPROMPT_PREFIX"'%f%b%k$(__p9k_build_right_prompt)%{$reset_color%}'"$RPROMPT_SUFFIX"
   fi
 
 local NEWLINE='
@@ -380,8 +380,8 @@ local NEWLINE='
   [[ $ITERM_SHELL_INTEGRATION_INSTALLED == "Yes" ]] && PROMPT="%{$(iterm2_prompt_mark)%}$PROMPT"
 }
 
-setDefault P9K_IGNORE_TERM_COLORS false
-setDefault P9K_IGNORE_TERM_LANG false
+p9k::set_default P9K_IGNORE_TERM_COLORS false
+p9k::set_default P9K_IGNORE_TERM_LANG false
 
 ###############################################################
 # @description
@@ -389,9 +389,9 @@ setDefault P9K_IGNORE_TERM_LANG false
 ##
 # @noargs
 ##
-p9kChPwd() {
-  p9kPreparePrompts
-  p9k_preexec
+__p9k_ch_pwd() {
+  __p9k_prepare_prompts
+  __p9k_preexec
 }
 
 ###############################################################
@@ -420,7 +420,7 @@ prompt_powerlevel9k_setup() {
   setopt noprompt{bang,cr,percent,sp,subst} "prompt${^prompt_opts[@]}"
 
   # Display a warning if the terminal does not support 256 colors
-  termColors
+  __p9k_term_colors
 
   # If the terminal `LANG` is set to `C`, this theme will not work at all.
   if [[ $P9K_IGNORE_TERM_LANG == false ]]; then
@@ -434,11 +434,11 @@ prompt_powerlevel9k_setup() {
       fi
   fi
 
-  if ! defined P9K_LEFT_PROMPT_ELEMENTS; then
+  if ! p9k::defined P9K_LEFT_PROMPT_ELEMENTS; then
     P9K_LEFT_PROMPT_ELEMENTS=(context dir rbenv vcs)
     P9K_PROMPT_ELEMENTS=("${P9K_LEFT_PROMPT_ELEMENTS[@]}" "${P9K_RIGHT_PROMPT_ELEMENTS[@]}")
   fi
-  if ! defined P9K_RIGHT_PROMPT_ELEMENTS; then
+  if ! p9k::defined P9K_RIGHT_PROMPT_ELEMENTS; then
     P9K_RIGHT_PROMPT_ELEMENTS=(status root_indicator background_jobs history time)
     P9K_PROMPT_ELEMENTS=("${P9K_LEFT_PROMPT_ELEMENTS[@]}" "${P9K_RIGHT_PROMPT_ELEMENTS[@]}")
   fi
@@ -456,11 +456,11 @@ prompt_powerlevel9k_setup() {
   autoload -Uz add-zsh-hook
 
   # prepare prompts
-  add-zsh-hook precmd p9kPreparePrompts
-  add-zsh-hook preexec p9k_preexec
+  add-zsh-hook precmd __p9k_prepare_prompts
+  add-zsh-hook preexec __p9k_preexec
 
   # hook into chpwd for bindkey support
-  chpwd_functions=(${chpwd_functions[@]} "p9kChPwd")
+  chpwd_functions=(${chpwd_functions[@]} "__p9k_ch_pwd")
 }
 
 ###############################################################
@@ -470,10 +470,10 @@ prompt_powerlevel9k_setup() {
 # @noargs
 ##
 prompt_powerlevel9k_teardown() {
-  add-zsh-hook -D precmd p9k\*
-  add-zsh-hook -D preexec p9k\*
+  add-zsh-hook -D precmd __p9k\*
+  add-zsh-hook -D preexec __p9k\*
   # unhook from chpwd
-  chpwd_functions=( "${chpwd_functions[@]//p9kChPwd/}" )
+  chpwd_functions=( "${chpwd_functions[@]//__p9k_ch_pwd/}" )
   PROMPT='%m%# '
   RPROMPT=
 }

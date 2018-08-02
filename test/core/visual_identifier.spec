@@ -18,9 +18,9 @@ function testOverwritingIconsWork() {
   P9K_LEFT_PROMPT_ELEMENTS=(custom_world1)
   local P9K_CUSTOM_WORLD1='echo world1'
   local P9K_WORLD1_ICON='*icon-here'
-  registerSegment "WORLD1"
+  p9k::register_segment "WORLD1"
 
-  assertEquals "%K{white} %F{black}*icon-here %f%F{black}world1 %k%F{white}%f " "$(buildLeftPrompt)"
+  assertEquals "%K{white} %F{black}*icon-here %f%F{black}world1 %k%F{white}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testVisualIdentifierAppearsBeforeSegmentContentOnLeftSegments() {
@@ -29,9 +29,9 @@ function testVisualIdentifierAppearsBeforeSegmentContentOnLeftSegments() {
   P9K_LEFT_PROMPT_ELEMENTS=(custom_world1)
   local P9K_CUSTOM_WORLD1='echo world1'
   local P9K_WORLD1_ICON='*icon-here'
-  registerSegment "WORLD1"
+  p9k::register_segment "WORLD1"
 
-  assertEquals "%K{white} %F{black}*icon-here %f%F{black}world1 %k%F{white}%f " "$(buildLeftPrompt)"
+  assertEquals "%K{white} %F{black}*icon-here %f%F{black}world1 %k%F{white}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testVisualIdentifierAppearsAfterSegmentContentOnRightSegments() {
@@ -40,9 +40,9 @@ function testVisualIdentifierAppearsAfterSegmentContentOnRightSegments() {
   P9K_RIGHT_PROMPT_ELEMENTS=(custom_world1)
   local P9K_CUSTOM_WORLD1='echo world1'
   local P9K_WORLD1_ICON='*icon-here'
-  registerSegment "WORLD1"
+  p9k::register_segment "WORLD1"
 
-  assertEquals "%F{white}%K{white}%F{black} world1 %F{black}*icon-here " "$(buildRightPrompt)"
+  assertEquals "%F{white}%K{white}%F{black} world1 %F{black}*icon-here " "$(__p9k_build_right_prompt)"
 }
 
 function testVisualIdentifierPrintsNothingIfNotAvailable() {
@@ -51,7 +51,7 @@ function testVisualIdentifierPrintsNothingIfNotAvailable() {
   P9K_LEFT_PROMPT_ELEMENTS=(custom_world1)
   local P9K_CUSTOM_WORLD1='echo world1'
 
-  assertEquals "%K{white} %F{black}*icon-here %f%F{black}world1 %k%F{white}%f " "$(buildLeftPrompt)"
+  assertEquals "%K{white} %F{black}*icon-here %f%F{black}world1 %k%F{white}%f " "$(__p9k_build_left_prompt)"
 }
 
 source shunit2/source/2.1/src/shunit2

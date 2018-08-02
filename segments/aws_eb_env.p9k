@@ -10,7 +10,7 @@
 # Parameters:
 #   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
 #                                           🌱           🌱           🌱                                                    
-registerSegment "AWS_EB_ENV" "" black green $'\U1F331 '  $'\U1F331 '  $'\U1F331 '  '\u'$CODEPOINT_OF_AWESOME_DEVIANTART' '  $'\uF1BD '
+p9k::register_segment "AWS_EB_ENV" "" black green $'\U1F331 '  $'\U1F331 '  $'\U1F331 '  '\u'$CODEPOINT_OF_AWESOME_DEVIANTART' '  $'\uF1BD '
 
 ################################################################
 # @description
@@ -25,6 +25,6 @@ prompt_aws_eb_env() {
   local eb_env=$(grep environment .elasticbeanstalk/config.yml 2> /dev/null | awk '{print $2}')
 
   if [[ -n "$eb_env" ]]; then
-    p9kPrepareSegment "$0" "" $1 "$2" $3 "$eb_env"
+    p9k::prepare_segment "$0" "" $1 "$2" $3 "$eb_env"
   fi
 }

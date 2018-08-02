@@ -10,7 +10,7 @@
 # Parameters:
 #   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
 #                                                                                                                                  
-registerSegment 'DATE' '' "$DEFAULT_COLOR_INVERTED" "$DEFAULT_COLOR" ''  $'\uE184'  $'\uF073 '  '\u'$CODEPOINT_OF_AWESOME_CALENDAR' '  $'\uF073 '
+p9k::register_segment 'DATE' '' "$DEFAULT_COLOR_INVERTED" "$DEFAULT_COLOR" ''  $'\uE184'  $'\uF073 '  '\u'$CODEPOINT_OF_AWESOME_CALENDAR' '  $'\uF073 '
 
 ################################################################
 # @description
@@ -22,7 +22,7 @@ registerSegment 'DATE' '' "$DEFAULT_COLOR_INVERTED" "$DEFAULT_COLOR" ''  $'\uE18
 #   $3 boolean Whether the segment should be joined
 ##
 prompt_date() {
-  setDefault P9K_DATE_FORMAT "%D{%d.%m.%y}"
+  p9k::set_default P9K_DATE_FORMAT "%D{%d.%m.%y}"
 
-  p9kPrepareSegment "$0" "" $1 "$2" $3 "$P9K_DATE_FORMAT"
+  p9k::prepare_segment "$0" "" $1 "$2" $3 "$P9K_DATE_FORMAT"
 }

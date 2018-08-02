@@ -17,11 +17,11 @@ function testIpSegmentPrintsNothingOnOsxIfNotConnected() {
   P9K_LEFT_PROMPT_ELEMENTS=(ip custom_world)
   alias networksetup='echo "not connected"'
   local P9K_CUSTOM_WORLD='echo world'
-  registerSegment "WORLD"
+  p9k::register_segment "WORLD"
 
   local OS="OSX" # Fake OSX
 
-  assertEquals "%K{white} %F{black}world %k%F{white}%f " "$(buildLeftPrompt)"
+  assertEquals "%K{white} %F{black}world %k%F{white}%f " "$(__p9k_build_left_prompt)"
 
   unalias networksetup
 }
@@ -31,11 +31,11 @@ function testIpSegmentPrintsNothingOnLinuxIfNotConnected() {
   P9K_LEFT_PROMPT_ELEMENTS=(ip custom_world)
   alias ip='echo "not connected"'
   local P9K_CUSTOM_WORLD='echo world'
-  registerSegment "WORLD"
+  p9k::register_segment "WORLD"
 
   local OS="Linux" # Fake Linux
 
-  assertEquals "%K{white} %F{black}world %k%F{white}%f " "$(buildLeftPrompt)"
+  assertEquals "%K{white} %F{black}world %k%F{white}%f " "$(__p9k_build_left_prompt)"
 
   unalias ip
 }
@@ -67,7 +67,7 @@ function testIpSegmentWorksOnOsxWithNoInterfaceSpecified() {
 
   local OS='OSX' # Fake OSX
 
-  assertEquals "%K{cyan} %F{black}IP %f%F{black}1.2.3.4 %k%F{cyan}%f " "$(buildLeftPrompt)"
+  assertEquals "%K{cyan} %F{black}IP %f%F{black}1.2.3.4 %k%F{cyan}%f " "$(__p9k_build_left_prompt)"
 
   unalias ipconfig
   unalias networksetup
@@ -120,7 +120,7 @@ function testIpSegmentWorksOnOsxWithMultipleInterfacesSpecified() {
 
   local OS='OSX' # Fake OSX
 
-  assertEquals "%K{cyan} %F{black}IP %f%F{black}1.2.3.4 %k%F{cyan}%f " "$(buildLeftPrompt)"
+  assertEquals "%K{cyan} %F{black}IP %f%F{black}1.2.3.4 %k%F{cyan}%f " "$(__p9k_build_left_prompt)"
 
   unfunction ipconfig
   unalias networksetup
@@ -134,7 +134,7 @@ function testIpSegmentWorksOnOsxWithInterfaceSpecified() {
 
   local OS='OSX' # Fake OSX
 
-  assertEquals "%K{cyan} %F{black}IP %f%F{black}1.2.3.4 %k%F{cyan}%f " "$(buildLeftPrompt)"
+  assertEquals "%K{cyan} %F{black}IP %f%F{black}1.2.3.4 %k%F{cyan}%f " "$(__p9k_build_left_prompt)"
 
   unalias ipconfig
 }
@@ -162,7 +162,7 @@ function testIpSegmentWorksOnLinuxWithNoInterfaceSpecified() {
 
     local OS='Linux' # Fake Linux
 
-    assertEquals "%K{cyan} %F{black}IP %f%F{black}10.0.2.15 %k%F{cyan}%f " "$(buildLeftPrompt)"
+    assertEquals "%K{cyan} %F{black}IP %f%F{black}10.0.2.15 %k%F{cyan}%f " "$(__p9k_build_left_prompt)"
 
     unfunction ip
 }
@@ -195,7 +195,7 @@ function testIpSegmentWorksOnLinuxWithMultipleInterfacesSpecified() {
 
     local OS='Linux' # Fake Linux
 
-    assertEquals "%K{cyan} %F{black}IP %f%F{black}10.0.2.15 %k%F{cyan}%f " "$(buildLeftPrompt)"
+    assertEquals "%K{cyan} %F{black}IP %f%F{black}10.0.2.15 %k%F{cyan}%f " "$(__p9k_build_left_prompt)"
 
     unfunction ip
 }
@@ -212,7 +212,7 @@ inet 10.0.2.15/24 brd 10.0.2.255 scope global eth0
 
   local OS='Linux' # Fake Linux
 
-  assertEquals "%K{cyan} %F{black}IP %f%F{black}10.0.2.15 %k%F{cyan}%f " "$(buildLeftPrompt)"
+  assertEquals "%K{cyan} %F{black}IP %f%F{black}10.0.2.15 %k%F{cyan}%f " "$(__p9k_build_left_prompt)"
 
   unfunction ip
 }

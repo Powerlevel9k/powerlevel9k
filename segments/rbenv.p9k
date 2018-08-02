@@ -10,9 +10,9 @@
 # Parameters:
 #   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
 #                                                                                                               
-registerSegment "RBENV" "" "red" "${DEFAULT_COLOR}"  ''  $'\uE847 '  $'\uF219 '  '\u'$CODEPOINT_OF_OCTICONS_RUBY' '  $'\uF219 '
+p9k::register_segment "RBENV" "" "red" "${DEFAULT_COLOR}"  ''  $'\uE847 '  $'\uF219 '  '\u'$CODEPOINT_OF_OCTICONS_RUBY' '  $'\uF219 '
 
-setDefault P9K_RBENV_ALWAYS false
+p9k::set_default P9K_RBENV_ALWAYS false
 ################################################################
 # @description
 #   Display the current rbenv information.
@@ -30,7 +30,7 @@ prompt_rbenv() {
     # Don't show anything if the current Ruby is the same as the global Ruby
     # unless `P9K_RBENV_ALWAYS` is set.
     if [[ $P9K_RBENV_ALWAYS == true || $rbenv_version_name != $rbenv_global ]]; then
-      p9kPrepareSegment "$0" "" $1 "$2" $3 "$rbenv_version_name"
+      p9k::prepare_segment "$0" "" $1 "$2" $3 "$rbenv_version_name"
     fi
   fi
 }

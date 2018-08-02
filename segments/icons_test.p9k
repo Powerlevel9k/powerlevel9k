@@ -10,7 +10,7 @@
 # Parameters:
 #   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
 #
-registerSegment "ICONS_TEST" "" "${DEFAULT_COLOR_INVERTED}" "${DEFAULT_COLOR}"  "" "" "" "" ""
+p9k::register_segment "ICONS_TEST" "" "${DEFAULT_COLOR_INVERTED}" "${DEFAULT_COLOR}"  "" "" "" "" ""
 
 ################################################################
 # @description
@@ -26,5 +26,5 @@ prompt_icons_test() {
   for key in ${(@k)p9k_icons}; do
     icon_string+="$p9k_icons[$key] "
   done
-  p9kPrepareSegment "$0" "" $1 "$2" $3 "$icon_string"
+  p9k::prepare_segment "$0" "" $1 "$2" $3 "$icon_string"
 }

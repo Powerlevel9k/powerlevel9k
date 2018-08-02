@@ -10,7 +10,7 @@
 # Parameters:
 #   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
 #                                                                                                                  
-registerSegment "SWAP" "" "yellow" "$DEFAULT_COLOR"  'SWP'  $'\uE87D'  $'\uF0E4'  '\u'$CODEPOINT_OF_AWESOME_DASHBOARD  $'\uF464'
+p9k::register_segment "SWAP" "" "yellow" "$DEFAULT_COLOR"  'SWP'  $'\uE87D'  $'\uF0E4'  '\u'$CODEPOINT_OF_AWESOME_DASHBOARD  $'\uF464'
 
 ################################################################
 # @description
@@ -43,5 +43,5 @@ prompt_swap() {
     base='K'
   fi
 
-  p9kPrepareSegment "$0" "" $1 "$2" $3 "$(printSizeHumanReadable "$swap_used" $base)"
+  p9k::prepare_segment "$0" "" $1 "$2" $3 "$(p9k::print_size_human_readable "$swap_used" $base)"
 }

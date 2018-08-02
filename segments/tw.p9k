@@ -10,13 +10,13 @@
 # Parameters:
 #   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
 #                                                                                     ☑          ☑          ☑                                                   
-registerSegment "TW" "FINISHEDALL"    "green"                     "${DEFAULT_COLOR}"  $'\u2611'  $'\u2611'  $'\u2611'  '\u'$CODEPOINT_OF_AWESOME_CHECK_SQUARE_O  $'\uF046'
-registerSegment "TW" "FINISHEDTODAY"  "green"                     "${DEFAULT_COLOR}"  $'\u2611'  $'\u2611'  $'\u2611'  '\u'$CODEPOINT_OF_AWESOME_CHECK_SQUARE_O  $'\uF046'
-registerSegment "TW" "TODAYPENDING"   "${DEFAULT_COLOR_INVERTED}" "${DEFAULT_COLOR}"  $'\u2611'  $'\u2611'  $'\u2611'  '\u'$CODEPOINT_OF_AWESOME_CHECK_SQUARE_O  $'\uF046'
-registerSegment "TW" "TODAYONLY"      "${DEFAULT_COLOR_INVERTED}" "${DEFAULT_COLOR}"  $'\u2611'  $'\u2611'  $'\u2611'  '\u'$CODEPOINT_OF_AWESOME_CHECK_SQUARE_O  $'\uF046'
-registerSegment "TW" "LATE"           "yellow"                    "${DEFAULT_COLOR}"  $'\u2611'  $'\u2611'  $'\u2611'  '\u'$CODEPOINT_OF_AWESOME_CHECK_SQUARE_O  $'\uF046'
+p9k::register_segment "TW" "FINISHEDALL"    "green"                     "${DEFAULT_COLOR}"  $'\u2611'  $'\u2611'  $'\u2611'  '\u'$CODEPOINT_OF_AWESOME_CHECK_SQUARE_O  $'\uF046'
+p9k::register_segment "TW" "FINISHEDTODAY"  "green"                     "${DEFAULT_COLOR}"  $'\u2611'  $'\u2611'  $'\u2611'  '\u'$CODEPOINT_OF_AWESOME_CHECK_SQUARE_O  $'\uF046'
+p9k::register_segment "TW" "TODAYPENDING"   "${DEFAULT_COLOR_INVERTED}" "${DEFAULT_COLOR}"  $'\u2611'  $'\u2611'  $'\u2611'  '\u'$CODEPOINT_OF_AWESOME_CHECK_SQUARE_O  $'\uF046'
+p9k::register_segment "TW" "TODAYONLY"      "${DEFAULT_COLOR_INVERTED}" "${DEFAULT_COLOR}"  $'\u2611'  $'\u2611'  $'\u2611'  '\u'$CODEPOINT_OF_AWESOME_CHECK_SQUARE_O  $'\uF046'
+p9k::register_segment "TW" "LATE"           "yellow"                    "${DEFAULT_COLOR}"  $'\u2611'  $'\u2611'  $'\u2611'  '\u'$CODEPOINT_OF_AWESOME_CHECK_SQUARE_O  $'\uF046'
 
-setDefault P9K_TW_COMPACT false
+p9k::set_default P9K_TW_COMPACT false
 ################################################################
 # @description
 #   Displays data from TaskWarrior.
@@ -65,6 +65,6 @@ prompt_tw() {
       current_state="finishedall"
     fi
     [[ "${(L)P9K_TW_COMPACT}" == "true" ]] && message="$(( ${pending}-${today}-${over} ))p ${today}t ${over}o" || message="${tw_messages[${current_state}]}"
-    p9kPrepareSegment "$0" "${current_state}" "$1" "$2" "$3" "${message}"
+    p9k::prepare_segment "$0" "${current_state}" "$1" "$2" "$3" "${message}"
   fi
 }

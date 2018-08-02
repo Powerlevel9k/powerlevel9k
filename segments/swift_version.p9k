@@ -10,7 +10,7 @@
 # Parameters:
 #   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
 #                                                                                
-registerSegment "SWIFT_VERSION" "" "magenta" "white"  'Swift'  ''  ''  $'\uE655'  $'\uE755'
+p9k::register_segment "SWIFT_VERSION" "" "magenta" "white"  'Swift'  ''  ''  $'\uE655'  $'\uE755'
 
 ################################################################
 # @description
@@ -26,7 +26,7 @@ prompt_swift_version() {
   local swift_version=$(swift --version 2>/dev/null | grep -o -E "[0-9.]+" | head -n 1)
   [[ -z "${swift_version}" ]] && return
 
-  p9kPrepareSegment "$0" "" $1 "$2" $3 "${swift_version}"
+  p9k::prepare_segment "$0" "" $1 "$2" $3 "${swift_version}"
 }
 
 #

@@ -16,11 +16,11 @@ function setUp() {
   # test if we already autoloaded the functions
   if [[ ${fpath[(ie)$autoload_path]} -gt ${#fpath} ]]; then
     fpath=( $autoload_path "${fpath[@]}" )
-    autoload -Uz segmentShouldBeJoined
-    autoload -Uz segmentShouldBePrinted
+    autoload -Uz __p9k_segment_should_be_Joined
+    autoload -Uz __p9k_segment_should_be_Printed
     autoload -Uz subStrCount
-    autoload -Uz truncatePath
-    autoload -Uz upsearch
+    autoload -Uz __p9k_truncate_path
+    autoload -Uz __p9k_upsearch
   fi
 }
 
@@ -36,7 +36,7 @@ function testDefinedDoesNotFindUndefinedVariable() {
 }
 
 function testSetDefaultSetsVariable() {
-  setDefault 'my_var' 'x'
+  p9k::set_default 'my_var' 'x'
 
   assertEquals 'x' "$my_var"
   unset my_var
@@ -44,11 +44,11 @@ function testSetDefaultSetsVariable() {
 
 function testPrintSizeHumanReadableWithBigNumber() {
   # Interesting: Currently we can't support numbers bigger than that.
-  assertEquals '0.87E' "$(printSizeHumanReadable 1000000000000000000)"
+  assertEquals '0.87E' "$(p9k::print_size_human_readable 1000000000000000000)"
 }
 
 function testPrintSizeHumanReadableWithExabytesAsBase() {
-  assertEquals '9.77Z' "$(printSizeHumanReadable 10000 'E')"
+  assertEquals '9.77Z' "$(p9k::print_size_human_readable 10000 'E')"
 }
 
 function testGetRelevantItem() {
@@ -56,7 +56,7 @@ function testGetRelevantItem() {
   list=(a b c)
   local callback='[[ "$item" == "b" ]] && echo "found"'
 
-  local result=$(getRelevantItem "$list" "$callback")
+  local result=$(p9k::get_relevant_item "$list" "$callback")
   assertEquals 'found' "$result"
 
   unset list
@@ -67,7 +67,7 @@ function testGetRelevantItemDoesNotReturnNotFoundItems() {
   list=(a b c)
   local callback='[[ "$item" == "d" ]] && echo "found"'
 
-  local result=$(getRelevantItem "$list" "$callback")
+  local result=$(p9k::get_relevant_item "$list" "$callback")
   assertEquals '' ''
 
   unset list
@@ -81,7 +81,7 @@ function testSegmentShouldBeJoinedIfDirectPredecessingSegmentIsJoined() {
   local last_element_index=2
 
   local joined
-  segmentShouldBeJoined $current_index $last_element_index "$segments" && joined=true || joined=false
+  __p9k_segment_should_be_Joined $current_index $last_element_index "$segments" && joined=true || joined=false
   assertTrue "$joined"
 
   unset segments
@@ -97,7 +97,7 @@ function testSegmentShouldBeJoinedIfPredecessingSegmentIsJoinedTransitivley() {
   local last_element_index=1
 
   local joined
-  segmentShouldBeJoined $current_index $last_element_index "$segments" && joined=true || joined=false
+  __p9k_segment_should_be_Joined $current_index $last_element_index "$segments" && joined=true || joined=false
   assertTrue "$joined"
 
   unset segments
@@ -113,7 +113,7 @@ function testSegmentShouldNotBeJoinedIfPredecessingSegmentIsNotJoinedButConditio
   local last_element_index=1
 
   local joined
-  segmentShouldBeJoined $current_index $last_element_index "$segments" && joined=true || joined=false
+  __p9k_segment_should_be_Joined $current_index $last_element_index "$segments" && joined=true || joined=false
   assertFalse "$joined"
 
   unset segments

@@ -10,7 +10,7 @@
 # Parameters:
 #   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
 #                                                           ☕         ☕         
-registerSegment "JAVA_VERSION" "" "red" "white" 'Java'  ''  $'\u2615'  $'\u2615'  $'\uE256'
+p9k::register_segment "JAVA_VERSION" "" "red" "white" 'Java'  ''  $'\u2615'  $'\u2615'  $'\uE256'
 
 ################################################################
 # @description
@@ -30,6 +30,6 @@ prompt_java_version() {
   # redirect the stderr to stdout to make the pipe work).
   java_version=$(java -version 2>/dev/null && java -fullversion 2>&1 | cut -d '"' -f 2)
   if [[ -n "$java_version" ]]; then
-    p9kPrepareSegment "$0" "" $1 "$2" $3  "${java_version}"
+    p9k::prepare_segment "$0" "" $1 "$2" $3  "${java_version}"
   fi
 }

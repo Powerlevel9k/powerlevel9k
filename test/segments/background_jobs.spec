@@ -12,7 +12,7 @@ function setUp() {
 
 function testBackgroundJobsSegmentPrintsNothingWithoutBackgroundJobs() {
   local P9K_CUSTOM_WORLD='echo world'
-  registerSegment "WORLD"
+  p9k::register_segment "WORLD"
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(background_jobs custom_world)
   local jobs_running=0
@@ -21,7 +21,7 @@ function testBackgroundJobsSegmentPrintsNothingWithoutBackgroundJobs() {
   # Load Powerlevel9k
   source segments/background_jobs.p9k
 
-  assertEquals "%K{white} %F{black}world %k%F{white}%f " "$(buildLeftPrompt)"
+  assertEquals "%K{white} %F{black}world %k%F{white}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testBackgroundJobsSegmentVerboseAlwaysPrintsZeroWithoutBackgroundJobs() {
@@ -34,11 +34,11 @@ function testBackgroundJobsSegmentVerboseAlwaysPrintsZeroWithoutBackgroundJobs()
   # Load Powerlevel9k
   source segments/background_jobs.p9k
 
-  assertEquals "%K{black} %F{cyan}⚙ %f%F{cyan}0 %k%F{black}%f " "$(buildLeftPrompt)"
+  assertEquals "%K{black} %F{cyan}⚙ %f%F{cyan}0 %k%F{black}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testBackgroundJobsSegmentWorksWithOneBackgroundJob() {
-  unset P9K_BACKGROUND_JOBS_VERBOSE
+  local P9K_BACKGROUND_JOBS_VERBOSE=false
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(background_jobs)
   local jobs_running=0
@@ -46,7 +46,7 @@ function testBackgroundJobsSegmentWorksWithOneBackgroundJob() {
 
   # Load Powerlevel9k
   source segments/background_jobs.p9k
-  assertEquals "%K{black} %F{cyan}⚙ %f%F{cyan}%k%F{black}%f " "$(buildLeftPrompt)"
+  assertEquals "%K{black} %F{cyan}⚙ %f%F{cyan}%k%F{black}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testBackgroundJobsSegmentWorksWithMultipleBackgroundJobs() {
@@ -59,7 +59,7 @@ function testBackgroundJobsSegmentWorksWithMultipleBackgroundJobs() {
   # Load Powerlevel9k
   source segments/background_jobs.p9k
 
-  assertEquals "%K{black} %F{cyan}⚙ %f%F{cyan}3 %k%F{black}%f " "$(buildLeftPrompt)"
+  assertEquals "%K{black} %F{cyan}⚙ %f%F{cyan}3 %k%F{black}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testBackgroundJobsSegmentWorksWithExpandedMode() {
@@ -73,7 +73,7 @@ function testBackgroundJobsSegmentWorksWithExpandedMode() {
   # Load Powerlevel9k
   source segments/background_jobs.p9k
 
-  assertEquals "%K{black} %F{cyan}⚙ %f%F{cyan}1r 2s %k%F{black}%f " "$(buildLeftPrompt)"
+  assertEquals "%K{black} %F{cyan}⚙ %f%F{cyan}1r 2s %k%F{black}%f " "$(__p9k_build_left_prompt)"
 }
 
 source shunit2/source/2.1/src/shunit2

@@ -10,7 +10,7 @@
 # Parameters:
 #   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
 #                                                                                          
-registerSegment "SYMFONY2_VERSION" "" "grey35" "${DEFAULT_COLOR}"  'SF'  'SF'  'SF'  'SF'  $'\uE757'
+p9k::register_segment "SYMFONY2_VERSION" "" "grey35" "${DEFAULT_COLOR}"  'SF'  'SF'  'SF'  'SF'  $'\uE757'
 
 ################################################################
 # @description
@@ -25,6 +25,6 @@ prompt_symfony2_version() {
   if [[ -f app/bootstrap.php.cache ]]; then
     local symfony2_version
     symfony2_version=$(grep " VERSION " app/bootstrap.php.cache | sed -e 's/[^.0-9]*//g')
-    p9kPrepareSegment "$0" "" $1 "$2" $3 "$symfony2_version"
+    p9k::prepare_segment "$0" "" $1 "$2" $3 "$symfony2_version"
   fi
 }

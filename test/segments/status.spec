@@ -19,12 +19,12 @@ function setUp() {
 
 function testStatusPrintsNothingIfReturnCodeIsZeroAndVerboseIsUnset() {
     local P9K_CUSTOM_WORLD='echo world'
-  registerSegment "WORLD"
+  p9k::register_segment "WORLD"
     local P9K_LEFT_PROMPT_ELEMENTS=(status custom_world)
     local P9K_STATUS_VERBOSE=false
     local P9K_STATUS_SHOW_PIPESTATUS=false
 
-    assertEquals "%K{white} %F{black}world %k%F{white}%f " "$(buildLeftPrompt)"
+    assertEquals "%K{white} %F{black}world %k%F{white}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testStatusWorksAsExpectedIfReturnCodeIsZeroAndVerboseIsSet() {
@@ -33,7 +33,7 @@ function testStatusWorksAsExpectedIfReturnCodeIsZeroAndVerboseIsSet() {
     local P9K_STATUS_HIDE_SIGNAME=true
     local P9K_LEFT_PROMPT_ELEMENTS=(status)
 
-    assertEquals "%K{black} %F{green}✔ %f%F{green}%k%F{black}%f " "$(buildLeftPrompt)"
+    assertEquals "%K{black} %F{green}✔ %f%F{green}%k%F{black}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testStatusInGeneralErrorCase() {
@@ -42,7 +42,7 @@ function testStatusInGeneralErrorCase() {
     local P9K_STATUS_VERBOSE=true
     local P9K_STATUS_SHOW_PIPESTATUS=false
 
-    assertEquals "%K{red} %F{yellow1}↵ %f%F{yellow1}1 %k%F{red}%f " "$(buildLeftPrompt)"
+    assertEquals "%K{red} %F{yellow1}↵ %f%F{yellow1}1 %k%F{red}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testPipestatusInErrorCase() {
@@ -52,7 +52,7 @@ function testPipestatusInErrorCase() {
     local P9K_STATUS_VERBOSE=true
     local P9K_STATUS_SHOW_PIPESTATUS=true
 
-    assertEquals "%K{red} %F{yellow1}↵ %f%F{yellow1}0|0|1|0 %k%F{red}%f " "$(buildLeftPrompt)"
+    assertEquals "%K{red} %F{yellow1}↵ %f%F{yellow1}0|0|1|0 %k%F{red}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testStatusCrossWinsOverVerbose() {
@@ -62,7 +62,7 @@ function testStatusCrossWinsOverVerbose() {
     local P9K_STATUS_VERBOSE=true
     local P9K_STATUS_CROSS=true
 
-    assertEquals "%K{black} %F{red}✘ %f%F{red}%k%F{black}%f " "$(buildLeftPrompt)"
+    assertEquals "%K{black} %F{red}✘ %f%F{red}%k%F{black}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testStatusShowsSignalNameInErrorCase() {
@@ -72,14 +72,14 @@ function testStatusShowsSignalNameInErrorCase() {
     local P9K_STATUS_VERBOSE=true
     local P9K_STATUS_HIDE_SIGNAME=false
 
-    assertEquals "%K{red} %F{yellow1}↵ %f%F{yellow1}SIGILL(4) %k%F{red}%f " "$(buildLeftPrompt)"
+    assertEquals "%K{red} %F{yellow1}↵ %f%F{yellow1}SIGILL(4) %k%F{red}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testStatusSegmentIntegrated() {
     local P9K_LEFT_PROMPT_ELEMENTS=(status)
     local P9K_RIGHT_PROMPT_ELEMENTS=()
 
-    false; p9kPreparePrompts
+    false; __p9k_prepare_prompts
 
     assertEquals "%f%b%k%K{black} %F{red}✘ %f%F{red}%k%F{black}%f " "${(e)PROMPT}"
 }

@@ -18,17 +18,17 @@
 # @note
 #   You can bypass this check by setting `P9K_IGNORE_TERM_COLORS=true`.
 ##
-function termColors() {
+__p9k_term_colors() {
   [[ $P9K_IGNORE_TERM_COLORS == true ]] && return
 
-  local term_colors
+  local __p9k_term_colors
 
   if which tput &>/dev/null; then
-	term_colors=$(tput colors)
+	__p9k_term_colors=$(tput colors)
   else
-	term_colors=$(echotc Co)
+	__p9k_term_colors=$(echotc Co)
   fi
-  if (( ! $? && ${term_colors:-0} < 256 )); then
+  if (( ! $? && ${__p9k_term_colors:-0} < 256 )); then
     print -P "%F{red}WARNING!%f Your terminal appears to support fewer than 256 colors!"
     print -P "If your terminal supports 256 colors, please export the appropriate environment variable"
     print -P "_before_ loading this theme in your \~\/.zshrc. In most terminal emulators, putting"
@@ -43,7 +43,7 @@ function termColors() {
 # @args
 #   $1 misc Color to check (as a number or string)
 ##
-function getColor() {
+p9k::get_color() {
   # no need to check numerical values
   if [[ "$1" = <-> ]]; then
     if [[ "$1" = <8-15> ]]; then
@@ -58,7 +58,7 @@ function getColor() {
     local quoted=$(printf "%q" $(print -P "$named"))
     if [[ $quoted = "$'\033'\[49m" && $1 != "black" ]]; then
         # color not found, so try to get the code
-        1=$(getColorCode $1)
+        1=$(p9k::get_colorCode $1)
     fi
   fi
   echo -n "$1"
@@ -77,9 +77,9 @@ function getColor() {
 # @note
 #   An empty paramenter resets (stops) background color.
 ##
-function backgroundColor() {
+p9k::background_color() {
   if [[ -n $1 ]]; then
-    echo -n "%K{$(getColor $1)}"
+    echo -n "%K{$(p9k::get_color $1)}"
   else
     echo -n "%k"
   fi
@@ -98,9 +98,9 @@ function backgroundColor() {
 # @note
 #   An empty paramenter resets (stops) foreground color.
 ##
-function foregroundColor() {
+p9k::foreground_color() {
   if [[ -n $1 ]]; then
-    echo -n "%F{$(getColor $1)}"
+    echo -n "%F{$(p9k::get_color $1)}"
   else
     echo -n "%f"
   fi
@@ -114,7 +114,7 @@ function foregroundColor() {
 # @args
 #   $1 misc Number or string of color.
 ##
-function getColorCode() {
+p9k::get_colorCode() {
   # Check if given value is already numerical
   if [[ "$1" = <-> ]]; then
     # ANSI color codes distinguish between "foreground"
@@ -397,14 +397,14 @@ function getColorCode() {
 
     # for testing purposes in terminal
     if [[ "$1" == "foreground"  ]]; then
-        # call via `getColorCode foreground`
+        # call via `p9k::get_colorCode foreground`
         for i in "${(k@)codes}"; do
-            print -P "$(foregroundColor $i)$(getColor $i) - $i$(foregroundColor)"
+            print -P "$(p9k::foreground_color $i)$(p9k::get_color $i) - $i$(p9k::foreground_color)"
         done
     elif [[ "$1" == "background"  ]]; then
-        # call via `getColorCode background`
+        # call via `p9k::get_colorCode background`
         for i in "${(k@)codes}"; do
-            print -P "$(backgroundColor $i)$(getColor $i) - $i$(backgroundColor)"
+            print -P "$(p9k::background_color $i)$(p9k::get_color $i) - $i$(p9k::background_color)"
         done
     else
         #[[ -n "$1" ]] bg="%K{$1}" || bg="%k"
@@ -427,13 +427,13 @@ function getColorCode() {
 #   $1 misc First color (number or string)
 #   $2 misc Second color (number or string)
 ##
-function isSameColor() {
+p9k::is_same_color() {
   if [[ "$1" == "NONE" || "$2" == "NONE" ]]; then
     return 1
   fi
 
-  local color1=$(getColorCode "$1")
-  local color2=$(getColorCode "$2")
+  local color1=$(p9k::get_colorCode "$1")
+  local color2=$(p9k::get_colorCode "$2")
 
   return $(( color1 != color2 ))
 }

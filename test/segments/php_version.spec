@@ -16,10 +16,10 @@ function testPhpVersionSegmentPrintsNothingIfPhpIsNotAvailable() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(php_version custom_world)
   local P9K_CUSTOM_WORLD='echo world'
-  registerSegment "WORLD"
+  p9k::register_segment "WORLD"
   alias php="nophp"
 
-  assertEquals "%K{white} %F{black}world %k%F{white}%f " "$(buildLeftPrompt)"
+  assertEquals "%K{white} %F{black}world %k%F{white}%f " "$(__p9k_build_left_prompt)"
 
   unalias php
 }
@@ -32,7 +32,7 @@ Copyright (c) 1997-2016 The PHP Group
 Zend Engine v2.6.0, Copyright (c) 1998-2016 Zend Technologies
 '"
 
-  assertEquals "%K{013} %F{255}PHP %f%F{255}5.6.27 %k%F{013}%f " "$(buildLeftPrompt)"
+  assertEquals "%K{013} %F{255}PHP %f%F{255}5.6.27 %k%F{013}%f " "$(__p9k_build_left_prompt)"
 
   unalias php
 }

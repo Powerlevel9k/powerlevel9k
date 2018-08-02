@@ -16,11 +16,11 @@ function testDetectVirtSegmentPrintsNothingIfSystemdIsNotAvailable() {
     local -a P9K_LEFT_PROMPT_ELEMENTS
     P9K_LEFT_PROMPT_ELEMENTS=(detect_virt custom_world)
     local P9K_CUSTOM_WORLD='echo world'
-  registerSegment "WORLD"
-    registerSegment "WORLD"
+  p9k::register_segment "WORLD"
+    p9k::register_segment "WORLD"
     alias systemd-detect-virt="novirt"
 
-    assertEquals "%K{white} %F{black}world %k%F{white}%f " "$(buildLeftPrompt)"
+    assertEquals "%K{white} %F{black}world %k%F{white}%f " "$(__p9k_build_left_prompt)"
 
     unalias systemd-detect-virt
 }
@@ -30,7 +30,7 @@ function testDetectVirtSegmentIfSystemdReturnsPlainName() {
     P9K_LEFT_PROMPT_ELEMENTS=(detect_virt)
     alias systemd-detect-virt="echo 'xxx'"
 
-    assertEquals "%K{black} %F{yellow}xxx %k%F{black}%f " "$(buildLeftPrompt)"
+    assertEquals "%K{black} %F{yellow}xxx %k%F{black}%f " "$(__p9k_build_left_prompt)"
 
     unalias systemd-detect-virt
 }
@@ -47,7 +47,7 @@ function testDetectVirtSegmentIfRootFsIsOnExpectedInode() {
     # which translates to: Show the inode number of "/" and test if it is "2".
     alias ls="echo '2'"
 
-    assertEquals "%K{black} %F{yellow}none %k%F{black}%f " "$(buildLeftPrompt)"
+    assertEquals "%K{black} %F{yellow}none %k%F{black}%f " "$(__p9k_build_left_prompt)"
 
     unalias ls
     unalias systemd-detect-virt
@@ -65,7 +65,7 @@ function testDetectVirtSegmentIfRootFsIsNotOnExpectedInode() {
     # which translates to: Show the inode number of "/" and test if it is "2".
     alias ls="echo '3'"
 
-    assertEquals "%K{black} %F{yellow}chroot %k%F{black}%f " "$(buildLeftPrompt)"
+    assertEquals "%K{black} %F{yellow}chroot %k%F{black}%f " "$(__p9k_build_left_prompt)"
 
     unalias ls
     unalias systemd-detect-virt

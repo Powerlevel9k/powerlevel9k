@@ -10,7 +10,7 @@
 # Parameters:
 #   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
 #
-registerSegment 'DETECT_VIRT' '' "$DEFAULT_COLOR" "yellow" "" "" "" "" "" ""
+p9k::register_segment 'DETECT_VIRT' '' "$DEFAULT_COLOR" "yellow" "" "" "" "" "" ""
 
 ################################################################
 # @description
@@ -26,5 +26,5 @@ prompt_detect_virt() {
   if [[ "$virt" == "none" ]]; then
     [[ "$(ls -di / | grep -o 2)" != "2" ]] && virt="chroot"
   fi
-  [[ -n "${virt}" ]] && p9kPrepareSegment "$0" "" $1 "$2" $3 "$virt"
+  [[ -n "${virt}" ]] && p9k::prepare_segment "$0" "" $1 "$2" $3 "$virt"
 }

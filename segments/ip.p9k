@@ -10,7 +10,7 @@
 # Parameters:
 #   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
 #                                                                                                       
-registerSegment "IP" "" "cyan" "$DEFAULT_COLOR"  'IP'  $'\uE1AD'  $'\uF09E'  '\u'$CODEPOINT_OF_AWESOME_RSS  $'\uF1EB'
+p9k::register_segment "IP" "" "cyan" "$DEFAULT_COLOR"  'IP'  $'\uE1AD'  $'\uF09E'  '\u'$CODEPOINT_OF_AWESOME_RSS  $'\uF1EB'
 
 ################################################################
 # @description
@@ -23,7 +23,7 @@ registerSegment "IP" "" "cyan" "$DEFAULT_COLOR"  'IP'  $'\uE1AD'  $'\uF09E'  '\u
 ##
 prompt_ip() {
   if [[ "$OS" == "OSX" ]]; then
-    if defined P9K_IP_INTERFACE; then
+    if p9k::defined P9K_IP_INTERFACE; then
       # Get the IP address of the specified interface.
       ip=$(ipconfig getifaddr "$P9K_IP_INTERFACE")
     else
@@ -32,10 +32,10 @@ prompt_ip() {
       interfaces=$(networksetup -listnetworkserviceorder | grep -o "Device:\s*[a-z0-9]*" | grep -o -E '[a-z0-9]*$')
       callback='ipconfig getifaddr $item'
 
-      ip=$(getRelevantItem "$interfaces" "$callback")
+      ip=$(p9k::get_relevant_item "$interfaces" "$callback")
     fi
   else
-    if defined P9K_IP_INTERFACE; then
+    if p9k::defined P9K_IP_INTERFACE; then
       # Get the IP address of the specified interface.
       ip=$(ip -4 a show "$P9K_IP_INTERFACE" | grep -o "inet\s*[0-9.]*" | grep -o -E "[0-9.]+*")
     else
@@ -44,9 +44,9 @@ prompt_ip() {
       interfaces=$(ip link ls up | grep -o -E ":\s+[a-z0-9]+:" | grep -v "lo" | grep -o -E "[a-z0-9.]+")
       callback='ip -4 a show $item | grep -o "inet\s*[0-9.]*" | grep -o "[0-9.]*"'
 
-      ip=$(getRelevantItem "$interfaces" "$callback")
+      ip=$(p9k::get_relevant_item "$interfaces" "$callback")
     fi
   fi
 
-  p9kPrepareSegment "$0" "" $1 "$2" $3 "$ip"
+  p9k::prepare_segment "$0" "" $1 "$2" $3 "$ip"
 }

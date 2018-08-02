@@ -9,7 +9,7 @@
 #   for the vcs.p9k segment
 ##
 
-setDefault P9K_VCS_SHOW_SUBMODULE_DIRTY true
+p9k::set_default P9K_VCS_SHOW_SUBMODULE_DIRTY true
 function +vi-git-untracked() {
     # TODO: check git >= 1.7.2 - see function git_compare_version()
     local FLAGS
@@ -55,7 +55,7 @@ function +vi-git-remotebranch() {
     branch_name=$(command git symbolic-ref --short HEAD 2>/dev/null)
 
     if [[ -n "$P9K_VCS_SHORTEN_LENGTH" ]] && [[ -n "$P9K_VCS_SHORTEN_MIN_LENGTH" ]]; then
-      setDefault P9K_VCS_SHORTEN_DELIMITER $'\u2026'
+      p9k::set_default P9K_VCS_SHORTEN_DELIMITER $'\u2026'
 
        if [ ${#hook_com[branch]} -gt $P9K_VCS_SHORTEN_MIN_LENGTH ] && [ ${#hook_com[branch]} -gt $P9K_VCS_SHORTEN_LENGTH ]; then
         case "$P9K_VCS_SHORTEN_STRATEGY" in
@@ -78,7 +78,7 @@ function +vi-git-remotebranch() {
     fi
 }
 
-setDefault P9K_VCS_HIDE_TAGS false
+p9k::set_default P9K_VCS_HIDE_TAGS false
 function +vi-git-tagname() {
     if [[ "$P9K_VCS_HIDE_TAGS" == "false" ]]; then
         # If we are on a tag, append the tagname to the current branch string.

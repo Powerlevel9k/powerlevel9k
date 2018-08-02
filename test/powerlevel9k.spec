@@ -21,7 +21,7 @@ function testJoinedSegments() {
   local P9K_LEFT_PROMPT_ELEMENTS=(dir dir_joined)
   cd /tmp
 
-  assertEquals "%K{blue} %F{black}/tmp %F{black}/tmp %k%F{blue}%f " "$(buildLeftPrompt)"
+  assertEquals "%K{blue} %F{black}/tmp %F{black}/tmp %k%F{blue}%f " "$(__p9k_build_left_prompt)"
 
   cd -
 }
@@ -31,7 +31,7 @@ function testTransitiveJoinedSegments() {
   local P9K_LEFT_PROMPT_ELEMENTS=(dir root_indicator_joined dir_joined)
   cd /tmp
 
-  assertEquals "%K{blue} %F{black}/tmp %F{black}/tmp %k%F{blue}%f " "$(buildLeftPrompt)"
+  assertEquals "%K{blue} %F{black}/tmp %F{black}/tmp %k%F{blue}%f " "$(__p9k_build_left_prompt)"
 
   cd -
 }
@@ -45,7 +45,7 @@ function testJoiningWithConditionalSegment() {
 
   cd /tmp
 
-  assertEquals "%K{blue} %F{black}/tmp  %F{black}/tmp %k%F{blue}%f " "$(buildLeftPrompt)"
+  assertEquals "%K{blue} %F{black}/tmp  %F{black}/tmp %k%F{blue}%f " "$(__p9k_build_left_prompt)"
 
   cd -
 }
@@ -58,7 +58,7 @@ function testDynamicColoringOfSegmentsWork() {
 
   cd /tmp
 
-  assertEquals "%K{red} %F{black}/tmp %k%F{red}%f " "$(buildLeftPrompt)"
+  assertEquals "%K{red} %F{black}/tmp %k%F{red}%f " "$(__p9k_build_left_prompt)"
 
   cd -
 }
@@ -72,7 +72,7 @@ function testDynamicColoringOfVisualIdentifiersWork() {
 
   cd /tmp
 
-  assertEquals "%K{blue} %F{green}*icon-here %f%F{black}/tmp %k%F{blue}%f " "$(buildLeftPrompt)"
+  assertEquals "%K{blue} %F{green}*icon-here %f%F{black}/tmp %k%F{blue}%f " "$(__p9k_build_left_prompt)"
 
   cd -
 }
@@ -92,7 +92,7 @@ function testColoringOfVisualIdentifiersDoesNotOverwriteColoringOfSegment() {
 
   cd /tmp
 
-  assertEquals "%K{yellow} %F{green}*icon-here %f%F{red}/tmp %k%F{yellow}%f " "$(buildLeftPrompt)"
+  assertEquals "%K{yellow} %F{green}*icon-here %f%F{red}/tmp %k%F{yellow}%f " "$(__p9k_build_left_prompt)"
 
   cd -
 }
@@ -109,7 +109,7 @@ function testOverwritingIconsWork() {
   #cd ~/$testFolder
 
   cd /tmp
-  assertEquals "%K{blue} %F{black}icon-here %f%F{black}/tmp %k%F{blue}%f " "$(buildLeftPrompt)"
+  assertEquals "%K{blue} %F{black}icon-here %f%F{black}/tmp %k%F{blue}%f " "$(__p9k_build_left_prompt)"
 
   cd -
   # rm -fr ~/$testFolder
@@ -119,15 +119,15 @@ function testNewlineOnRpromptCanBeDisabled() {
   local P9K_PROMPT_ON_NEWLINE=true
   local P9K_RPROMPT_ON_NEWLINE=false
   local P9K_CUSTOM_WORLD='echo world'
-  registerSegment "WORLD"
+  p9k::register_segment "WORLD"
   local P9K_CUSTOM_RWORLD='echo rworld'
-  registerSegment "RWORLD"
+  p9k::register_segment "RWORLD"
   local -a P9K_LEFT_PROMPT_ELEMENTS
   local P9K_LEFT_PROMPT_ELEMENTS=(custom_world)
   local -a P9K_RIGHT_PROMPT_ELEMENTS
   local P9K_RIGHT_PROMPT_ELEMENTS=(custom_rworld)
 
-  p9kPreparePrompts
+  __p9k_prepare_prompts
   #              ╭─[39m[0m[49m[47m [30mworld [49m[37m[39m  ╰─ [1A[39m[0m[49m[37m[47m[30m rworld [30m [00m[1B>
   assertEquals '╭─[39m[0m[49m[47m [30mworld [49m[37m[39m  ╰─ [1A[39m[0m[49m[37m[47m[30m rworld [30m [00m[1B' "$(print -P ${PROMPT}${RPROMPT})"
 

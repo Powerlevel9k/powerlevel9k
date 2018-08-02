@@ -12,8 +12,8 @@ function setUp() {
 
 function testAnacondaSegmentPrintsNothingIfNoAnacondaPathIsSet() {
     local P9K_CUSTOM_WORLD='echo world'
-  registerSegment "WORLD"
-    registerSegment "WORLD"
+  p9k::register_segment "WORLD"
+    p9k::register_segment "WORLD"
     local -a P9K_LEFT_PROMPT_ELEMENTS
     P9K_LEFT_PROMPT_ELEMENTS=(anaconda custom_world)
 
@@ -24,7 +24,7 @@ function testAnacondaSegmentPrintsNothingIfNoAnacondaPathIsSet() {
     unset CONDA_ENV_PATH
     unset CONDA_PREFIX
 
-    assertEquals "%K{white} %F{black}world %k%F{white}%f " "$(buildLeftPrompt)"
+    assertEquals "%K{white} %F{black}world %k%F{white}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testAnacondaSegmentWorksIfOnlyAnacondaPathIsSet() {
@@ -38,7 +38,7 @@ function testAnacondaSegmentWorksIfOnlyAnacondaPathIsSet() {
     CONDA_ENV_PATH=/tmp
     unset CONDA_PREFIX
 
-    assertEquals "%K{blue} %F{black}*icon-here %f%F{black}(tmp) %k%F{blue}%f " "$(buildLeftPrompt)"
+    assertEquals "%K{blue} %F{black}*icon-here %f%F{black}(tmp) %k%F{blue}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testAnacondaSegmentWorksIfOnlyAnacondaPrefixIsSet() {
@@ -52,7 +52,7 @@ function testAnacondaSegmentWorksIfOnlyAnacondaPrefixIsSet() {
     unset CONDA_ENV_PATH
     local CONDA_PREFIX="test"
 
-    assertEquals "%K{blue} %F{black}*icon-here %f%F{black}(test) %k%F{blue}%f " "$(buildLeftPrompt)"
+    assertEquals "%K{blue} %F{black}*icon-here %f%F{black}(test) %k%F{blue}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testAnacondaSegmentWorks() {
@@ -66,7 +66,7 @@ function testAnacondaSegmentWorks() {
     local CONDA_ENV_PATH=/tmp
     local CONDA_PREFIX="test"
 
-    assertEquals "%K{blue} %F{black}*icon-here %f%F{black}(tmptest) %k%F{blue}%f " "$(buildLeftPrompt)"
+    assertEquals "%K{blue} %F{black}*icon-here %f%F{black}(tmptest) %k%F{blue}%f " "$(__p9k_build_left_prompt)"
 }
 
 source shunit2/source/2.1/src/shunit2

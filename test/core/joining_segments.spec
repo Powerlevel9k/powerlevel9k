@@ -16,19 +16,19 @@ function testLeftNormalSegmentsShouldNotBeJoined() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(custom_world1 custom_world2 custom_world3 custom_world4_joined custom_world5 custom_world6)
   local P9K_CUSTOM_WORLD1="echo world1"
-  registerSegment "WORLD1"
+  p9k::register_segment "WORLD1"
   local P9K_CUSTOM_WORLD2="echo world2"
-  registerSegment "WORLD2"
+  p9k::register_segment "WORLD2"
   local P9K_CUSTOM_WORLD3="echo " # Print nothing to simulate unmet conditions
-  registerSegment "WORLD3"
+  p9k::register_segment "WORLD3"
   local P9K_CUSTOM_WORLD4="echo world4"
-  registerSegment "WORLD4"
+  p9k::register_segment "WORLD4"
   local P9K_CUSTOM_WORLD5="echo " # Print nothing to simulate unmet conditions
-  registerSegment "WORLD5"
+  p9k::register_segment "WORLD5"
   local P9K_CUSTOM_WORLD6="echo world6"
-  registerSegment "WORLD6"
+  p9k::register_segment "WORLD6"
 
-  assertEquals "%K{white} %F{black}world1  %F{black}world2  %F{black}world4  %F{black}world6 %k%F{white}%f " "$(buildLeftPrompt)"
+  assertEquals "%K{white} %F{black}world1  %F{black}world2  %F{black}world4  %F{black}world6 %k%F{white}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testLeftJoinedSegments() {
@@ -36,11 +36,11 @@ function testLeftJoinedSegments() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(custom_world1 custom_world2_joined)
   local P9K_CUSTOM_WORLD1="echo world1"
-  registerSegment "WORLD1"
+  p9k::register_segment "WORLD1"
   local P9K_CUSTOM_WORLD2="echo world2"
-  registerSegment "WORLD2"
+  p9k::register_segment "WORLD2"
 
-  assertEquals "%K{white} %F{black}world1 %F{black}world2 %k%F{white}%f " "$(buildLeftPrompt)"
+  assertEquals "%K{white} %F{black}world1 %F{black}world2 %k%F{white}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testLeftTransitiveJoinedSegments() {
@@ -48,13 +48,13 @@ function testLeftTransitiveJoinedSegments() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(custom_world1 custom_world2_joined custom_world3_joined)
   local P9K_CUSTOM_WORLD1="echo world1"
-  registerSegment "WORLD1"
+  p9k::register_segment "WORLD1"
   local P9K_CUSTOM_WORLD2="echo world2"
-  registerSegment "WORLD2"
+  p9k::register_segment "WORLD2"
   local P9K_CUSTOM_WORLD3="echo world3"
-  registerSegment "WORLD3"
+  p9k::register_segment "WORLD3"
 
-  assertEquals "%K{white} %F{black}world1 %F{black}world2 %F{black}world3 %k%F{white}%f " "$(buildLeftPrompt)"
+  assertEquals "%K{white} %F{black}world1 %F{black}world2 %F{black}world3 %k%F{white}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testLeftTransitiveJoiningWithConditionalJoinedSegment() {
@@ -62,15 +62,15 @@ function testLeftTransitiveJoiningWithConditionalJoinedSegment() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(custom_world1 custom_world2_joined custom_world3_joined custom_world4_joined)
   local P9K_CUSTOM_WORLD1="echo world1"
-  registerSegment "WORLD1"
+  p9k::register_segment "WORLD1"
   local P9K_CUSTOM_WORLD2="echo world2"
-  registerSegment "WORLD2"
+  p9k::register_segment "WORLD2"
   local P9K_CUSTOM_WORLD3="echo " # Print nothing to simulate unmet conditions
-  registerSegment "WORLD3"
+  p9k::register_segment "WORLD3"
   local P9K_CUSTOM_WORLD4="echo world4"
-  registerSegment "WORLD4"
+  p9k::register_segment "WORLD4"
 
-  assertEquals "%K{white} %F{black}world1 %F{black}world2 %F{black}world4 %k%F{white}%f " "$(buildLeftPrompt)"
+  assertEquals "%K{white} %F{black}world1 %F{black}world2 %F{black}world4 %k%F{white}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testLeftPromotingSegmentWithConditionalPredecessor() {
@@ -78,13 +78,13 @@ function testLeftPromotingSegmentWithConditionalPredecessor() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(custom_world1 custom_world2 custom_world3_joined)
   local P9K_CUSTOM_WORLD1="echo world1"
-  registerSegment "WORLD1"
+  p9k::register_segment "WORLD1"
   local P9K_CUSTOM_WORLD2="echo " # Print nothing to simulate unmet conditions
-  registerSegment "WORLD2"
+  p9k::register_segment "WORLD2"
   local P9K_CUSTOM_WORLD3="echo world3"
-  registerSegment "WORLD3"
+  p9k::register_segment "WORLD3"
 
-  assertEquals "%K{white} %F{black}world1  %F{black}world3 %k%F{white}%f " "$(buildLeftPrompt)"
+  assertEquals "%K{white} %F{black}world1  %F{black}world3 %k%F{white}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testLeftPromotingSegmentWithJoinedConditionalPredecessor() {
@@ -92,15 +92,15 @@ function testLeftPromotingSegmentWithJoinedConditionalPredecessor() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(custom_world1 custom_world2 custom_world3_joined custom_world4_joined)
   local P9K_CUSTOM_WORLD1="echo world1"
-  registerSegment "WORLD1"
+  p9k::register_segment "WORLD1"
   local P9K_CUSTOM_WORLD2="echo " # Print nothing to simulate unmet conditions
-  registerSegment "WORLD2"
+  p9k::register_segment "WORLD2"
   local P9K_CUSTOM_WORLD3="echo " # Print nothing to simulate unmet conditions
-  registerSegment "WORLD3"
+  p9k::register_segment "WORLD3"
   local P9K_CUSTOM_WORLD4="echo world4"
-  registerSegment "WORLD4"
+  p9k::register_segment "WORLD4"
 
-  assertEquals "%K{white} %F{black}world1  %F{black}world4 %k%F{white}%f " "$(buildLeftPrompt)"
+  assertEquals "%K{white} %F{black}world1  %F{black}world4 %k%F{white}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testLeftPromotingSegmentWithDeepJoinedConditionalPredecessor() {
@@ -108,19 +108,19 @@ function testLeftPromotingSegmentWithDeepJoinedConditionalPredecessor() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(custom_world1 custom_world2 custom_world3_joined custom_world4_joined custom_world5_joined custom_world6_joined)
   local P9K_CUSTOM_WORLD1="echo world1"
-  registerSegment "WORLD1"
+  p9k::register_segment "WORLD1"
   local P9K_CUSTOM_WORLD2="echo " # Print nothing to simulate unmet conditions
-  registerSegment "WORLD2"
+  p9k::register_segment "WORLD2"
   local P9K_CUSTOM_WORLD3="echo " # Print nothing to simulate unmet conditions
-  registerSegment "WORLD3"
+  p9k::register_segment "WORLD3"
   local P9K_CUSTOM_WORLD4="echo world4"
-  registerSegment "WORLD4"
+  p9k::register_segment "WORLD4"
   local P9K_CUSTOM_WORLD5="echo " # Print nothing to simulate unmet conditions
-  registerSegment "WORLD5"
+  p9k::register_segment "WORLD5"
   local P9K_CUSTOM_WORLD6="echo world6"
-  registerSegment "WORLD6"
+  p9k::register_segment "WORLD6"
 
-  assertEquals "%K{white} %F{black}world1  %F{black}world4 %F{black}world6 %k%F{white}%f " "$(buildLeftPrompt)"
+  assertEquals "%K{white} %F{black}world1  %F{black}world4 %F{black}world6 %k%F{white}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testLeftJoiningBuiltinSegmentWorks() {
@@ -130,7 +130,7 @@ function testLeftJoiningBuiltinSegmentWorks() {
   alias php="echo PHP 1.2.3 "
   source segments/php_version.p9k
 
-  assertEquals "%K{013} %F{255}PHP %f%F{255}1.2.3 %F{255}PHP %f%F{255}1.2.3 %k%F{013}%f " "$(buildLeftPrompt)"
+  assertEquals "%K{013} %F{255}PHP %f%F{255}1.2.3 %F{255}PHP %f%F{255}1.2.3 %k%F{013}%f " "$(__p9k_build_left_prompt)"
 
   unalias php
 }
@@ -140,19 +140,19 @@ function testRightNormalSegmentsShouldNotBeJoined() {
   local -a P9K_RIGHT_PROMPT_ELEMENTS
   P9K_RIGHT_PROMPT_ELEMENTS=(custom_world1 custom_world2 custom_world3 custom_world4 custom_world5_joined custom_world6)
   local P9K_CUSTOM_WORLD1="echo world1"
-  registerSegment "WORLD1"
+  p9k::register_segment "WORLD1"
   local P9K_CUSTOM_WORLD2="echo world2"
-  registerSegment "WORLD2"
+  p9k::register_segment "WORLD2"
   local P9K_CUSTOM_WORLD3="echo " # Print nothing to simulate unmet conditions
-  registerSegment "WORLD3"
+  p9k::register_segment "WORLD3"
   local P9K_CUSTOM_WORLD4="echo world4"
-  registerSegment "WORLD4"
+  p9k::register_segment "WORLD4"
   local P9K_CUSTOM_WORLD5="echo " # Print nothing to simulate unmet conditions
-  registerSegment "WORLD5"
+  p9k::register_segment "WORLD5"
   local P9K_CUSTOM_WORLD6="echo world6"
-  registerSegment "WORLD6"
+  p9k::register_segment "WORLD6"
 
-  assertEquals "%F{white}%K{white}%F{black} world1 %F{black} %F{black}%K{white}%F{black} world2 %F{black} %F{black}%K{white}%F{black} world4 %F{black} %F{black}%K{white}%F{black} world6 %F{black} " "$(buildRightPrompt)"
+  assertEquals "%F{white}%K{white}%F{black} world1 %F{black} %F{black}%K{white}%F{black} world2 %F{black} %F{black}%K{white}%F{black} world4 %F{black} %F{black}%K{white}%F{black} world6 %F{black} " "$(__p9k_build_right_prompt)"
 }
 
 function testRightJoinedSegments() {
@@ -160,11 +160,11 @@ function testRightJoinedSegments() {
   local -a P9K_RIGHT_PROMPT_ELEMENTS
   P9K_RIGHT_PROMPT_ELEMENTS=(custom_world1 custom_world2_joined)
   local P9K_CUSTOM_WORLD1="echo world1"
-  registerSegment "WORLD1"
+  p9k::register_segment "WORLD1"
   local P9K_CUSTOM_WORLD2="echo world2"
-  registerSegment "WORLD2"
+  p9k::register_segment "WORLD2"
 
-  assertEquals "%F{white}%K{white}%F{black} world1 %F{black} %K{white}%F{black}world2 %F{black} " "$(buildRightPrompt)"
+  assertEquals "%F{white}%K{white}%F{black} world1 %F{black} %K{white}%F{black}world2 %F{black} " "$(__p9k_build_right_prompt)"
 }
 
 function testRightTransitiveJoinedSegments() {
@@ -172,13 +172,13 @@ function testRightTransitiveJoinedSegments() {
   local -a P9K_RIGHT_PROMPT_ELEMENTS
   P9K_RIGHT_PROMPT_ELEMENTS=(custom_world1 custom_world2_joined custom_world3_joined)
   local P9K_CUSTOM_WORLD1="echo world1"
-  registerSegment "WORLD1"
+  p9k::register_segment "WORLD1"
   local P9K_CUSTOM_WORLD2="echo world2"
-  registerSegment "WORLD2"
+  p9k::register_segment "WORLD2"
   local P9K_CUSTOM_WORLD3="echo world3"
-  registerSegment "WORLD3"
+  p9k::register_segment "WORLD3"
 
-  assertEquals "%F{white}%K{white}%F{black} world1 %F{black} %K{white}%F{black}world2 %F{black} %K{white}%F{black}world3 %F{black} " "$(buildRightPrompt)"
+  assertEquals "%F{white}%K{white}%F{black} world1 %F{black} %K{white}%F{black}world2 %F{black} %K{white}%F{black}world3 %F{black} " "$(__p9k_build_right_prompt)"
 }
 
 function testRightTransitiveJoiningWithConditionalJoinedSegment() {
@@ -186,15 +186,15 @@ function testRightTransitiveJoiningWithConditionalJoinedSegment() {
   local -a P9K_RIGHT_PROMPT_ELEMENTS
   P9K_RIGHT_PROMPT_ELEMENTS=(custom_world1 custom_world2_joined custom_world3_joined custom_world4_joined)
   local P9K_CUSTOM_WORLD1="echo world1"
-  registerSegment "WORLD1"
+  p9k::register_segment "WORLD1"
   local P9K_CUSTOM_WORLD2="echo world2"
-  registerSegment "WORLD2"
+  p9k::register_segment "WORLD2"
   local P9K_CUSTOM_WORLD3="echo " # Print nothing to simulate unmet conditions
-  registerSegment "WORLD3"
+  p9k::register_segment "WORLD3"
   local P9K_CUSTOM_WORLD4="echo world4"
-  registerSegment "WORLD4"
+  p9k::register_segment "WORLD4"
 
-  assertEquals "%F{white}%K{white}%F{black} world1 %F{black} %K{white}%F{black}world2 %F{black} %K{white}%F{black}world4 %F{black} " "$(buildRightPrompt)"
+  assertEquals "%F{white}%K{white}%F{black} world1 %F{black} %K{white}%F{black}world2 %F{black} %K{white}%F{black}world4 %F{black} " "$(__p9k_build_right_prompt)"
 }
 
 function testRightPromotingSegmentWithConditionalPredecessor() {
@@ -202,13 +202,13 @@ function testRightPromotingSegmentWithConditionalPredecessor() {
   local -a P9K_RIGHT_PROMPT_ELEMENTS
   P9K_RIGHT_PROMPT_ELEMENTS=(custom_world1 custom_world2 custom_world3_joined)
   local P9K_CUSTOM_WORLD1="echo world1"
-  registerSegment "WORLD1"
+  p9k::register_segment "WORLD1"
   local P9K_CUSTOM_WORLD2="echo " # Print nothing to simulate unmet conditions
-  registerSegment "WORLD2"
+  p9k::register_segment "WORLD2"
   local P9K_CUSTOM_WORLD3="echo world3"
-  registerSegment "WORLD3"
+  p9k::register_segment "WORLD3"
 
-  assertEquals "%F{white}%K{white}%F{black} world1 %F{black} %F{black}%K{white}%F{black} world3 %F{black} " "$(buildRightPrompt)"
+  assertEquals "%F{white}%K{white}%F{black} world1 %F{black} %F{black}%K{white}%F{black} world3 %F{black} " "$(__p9k_build_right_prompt)"
 }
 
 function testRightPromotingSegmentWithJoinedConditionalPredecessor() {
@@ -216,15 +216,15 @@ function testRightPromotingSegmentWithJoinedConditionalPredecessor() {
   local -a P9K_RIGHT_PROMPT_ELEMENTS
   P9K_RIGHT_PROMPT_ELEMENTS=(custom_world1 custom_world2 custom_world3_joined custom_world4_joined)
   local P9K_CUSTOM_WORLD1="echo world1"
-  registerSegment "WORLD1"
+  p9k::register_segment "WORLD1"
   local P9K_CUSTOM_WORLD2="echo " # Print nothing to simulate unmet conditions
-  registerSegment "WORLD2"
+  p9k::register_segment "WORLD2"
   local P9K_CUSTOM_WORLD3="echo " # Print nothing to simulate unmet conditions
-  registerSegment "WORLD3"
+  p9k::register_segment "WORLD3"
   local P9K_CUSTOM_WORLD4="echo world4"
-  registerSegment "WORLD4"
+  p9k::register_segment "WORLD4"
 
-  assertEquals "%F{white}%K{white}%F{black} world1 %F{black} %F{black}%K{white}%F{black} world4 %F{black} " "$(buildRightPrompt)"
+  assertEquals "%F{white}%K{white}%F{black} world1 %F{black} %F{black}%K{white}%F{black} world4 %F{black} " "$(__p9k_build_right_prompt)"
 }
 
 function testRightPromotingSegmentWithDeepJoinedConditionalPredecessor() {
@@ -232,19 +232,19 @@ function testRightPromotingSegmentWithDeepJoinedConditionalPredecessor() {
   local -a P9K_RIGHT_PROMPT_ELEMENTS
   P9K_RIGHT_PROMPT_ELEMENTS=(custom_world1 custom_world2 custom_world3_joined custom_world4_joined custom_world5_joined custom_world6_joined)
   local P9K_CUSTOM_WORLD1="echo world1"
-  registerSegment "WORLD1"
+  p9k::register_segment "WORLD1"
   local P9K_CUSTOM_WORLD2="echo " # Print nothing to simulate unmet conditions
-  registerSegment "WORLD2"
+  p9k::register_segment "WORLD2"
   local P9K_CUSTOM_WORLD3="echo " # Print nothing to simulate unmet conditions
-  registerSegment "WORLD3"
+  p9k::register_segment "WORLD3"
   local P9K_CUSTOM_WORLD4="echo world4"
-  registerSegment "WORLD4"
+  p9k::register_segment "WORLD4"
   local P9K_CUSTOM_WORLD5="echo " # Print nothing to simulate unmet conditions
-  registerSegment "WORLD5"
+  p9k::register_segment "WORLD5"
   local P9K_CUSTOM_WORLD6="echo world6"
-  registerSegment "WORLD6"
+  p9k::register_segment "WORLD6"
 
-  assertEquals "%F{white}%K{white}%F{black} world1 %F{black} %F{black}%K{white}%F{black} world4 %F{black} %K{white}%F{black}world6 %F{black} " "$(buildRightPrompt)"
+  assertEquals "%F{white}%K{white}%F{black} world1 %F{black} %F{black}%K{white}%F{black} world4 %F{black} %K{white}%F{black}world6 %F{black} " "$(__p9k_build_right_prompt)"
 }
 
 function testRightJoiningBuiltinSegmentWorks() {
@@ -254,8 +254,8 @@ function testRightJoiningBuiltinSegmentWorks() {
   alias php="echo PHP 1.2.3"
   source segments/php_version.p9k
 
-  #assertEquals "%F{013}%K{013}%F{255} PHP 1.2.3 %f%K{013}%F{255}PHP 1.2.3 %F{black} " "$(buildRightPrompt)"
-  assertEquals "%F{013}%K{013}%F{255} 1.2.3 %F{255}PHP %K{013}%F{255}1.2.3 %F{255}PHP " "$(buildRightPrompt)"
+  #assertEquals "%F{013}%K{013}%F{255} PHP 1.2.3 %f%K{013}%F{255}PHP 1.2.3 %F{black} " "$(__p9k_build_right_prompt)"
+  assertEquals "%F{013}%K{013}%F{255} 1.2.3 %F{255}PHP %K{013}%F{255}1.2.3 %F{255}PHP " "$(__p9k_build_right_prompt)"
 
   unalias php
 }

@@ -26,20 +26,20 @@
 
 ## Table of Contents
 
-- [leftPromptSegment](#leftPromptSegment)
-- [rightPromptSegment](#rightPromptSegment)
+- [__p9k_left_prompt_segment](#__p9k_left_prompt_segment)
+- [__p9k_right_prompt_segment](#__p9k_right_prompt_segment)
 - [p9kAsyncCallback](#p9kAsyncCallback)
-- [p9kPrepareSegment](#p9kPrepareSegment)
+- [p9k::prepare_segment](#p9k::prepare_segment)
 - [prompt_custom](#prompt_custom)
-- [buildLeftPrompt](#buildLeftPrompt)
-- [buildRightPrompt](#buildRightPrompt)
-- [p9k_preexec](#p9k_preexec)
-- [p9kPreparePrompts](#p9kPreparePrompts)
-- [p9kChPwd](#p9kChPwd)
+- [__p9k_build_left_prompt](#__p9k_build_left_prompt)
+- [__p9k_build_right_prompt](#__p9k_build_right_prompt)
+- [__p9k_preexec](#__p9k_preexec)
+- [__p9k_prepare_prompts](#__p9k_prepare_prompts)
+- [__p9k_ch_pwd](#__p9k_ch_pwd)
 - [prompt_powerlevel9k_setup](#prompt_powerlevel9k_setup)
 - [prompt_p9k_teardown](#prompt_p9k_teardown)
 
-## leftPromptSegment
+## __p9k_left_prompt_segment
 *Print a left prompt segment *
 
 #### Arguments
@@ -52,7 +52,7 @@
 - **$6** (string) Background - Background of previous segment
 
 
-## rightPromptSegment
+## __p9k_right_prompt_segment
 *Print a right prompt segment No ending for the right prompt segment is needed (unlike the left prompt, above). *
 
 #### Arguments
@@ -78,7 +78,7 @@
 - **$5** (string) Err - Resulting (stderr) output from the job
 
 
-## p9kPrepareSegment
+## p9k::prepare_segment
 *This function processes the segment code in a subshell. When done, the resulting data is sent to `p9kAsyncCallback`. *
 
 #### Arguments
@@ -106,7 +106,7 @@
 - **$4** (string) Custom segment name
 
 
-## buildLeftPrompt
+## __p9k_build_left_prompt
 *This function loops through the left prompt elements and calls the related segment functions. *
 
 #### Arguments
@@ -114,7 +114,7 @@
 - *Function has no arguments.*
 
 
-## buildRightPrompt
+## __p9k_build_right_prompt
 *This function loops through the right prompt elements and calls the related segment functions. *
 
 #### Arguments
@@ -122,7 +122,7 @@
 - *Function has no arguments.*
 
 
-## p9k_preexec
+## __p9k_preexec
 *This function is a hook that runs before the command runs. It sets the start timer. *
 
 #### Arguments
@@ -130,7 +130,7 @@
 - *Function has no arguments.*
 
 
-## p9kPreparePrompts
+## __p9k_prepare_prompts
 *This function is a hook that is run before the prompts are created. If sets all the required variables for the prompts and then calls the prompt segment building functions. *
 
 #### Arguments
@@ -138,7 +138,7 @@
 - *Function has no arguments.*
 
 
-## p9kChPwd
+## __p9k_ch_pwd
 *This function is a hook into chpwd to add bindkey support. *
 
 #### Arguments

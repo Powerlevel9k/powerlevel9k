@@ -10,15 +10,15 @@
 # Parameters:
 #   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
 #                                                                                         🔋                    🔋                                                 
-registerSegment "BATTERY" "LOW"           "${DEFAULT_COLOR}" "red"                        $'\U1F50B'  $'\uE894'  $'\U1F50B'  '\u'$CODEPOINT_OF_AWESOME_BATTERY_FULL  $'\uF240 '
-registerSegment "BATTERY" "CHARGING"      "${DEFAULT_COLOR}" "yellow"                     $'\U1F50B'  $'\uE894'  $'\U1F50B'  '\u'$CODEPOINT_OF_AWESOME_BATTERY_FULL  $'\uF240 '
-registerSegment "BATTERY" "CHARGED"       "${DEFAULT_COLOR}" "green"                      $'\U1F50B'  $'\uE894'  $'\U1F50B'  '\u'$CODEPOINT_OF_AWESOME_BATTERY_FULL  $'\uF240 '
-registerSegment "BATTERY" "DISCONNECTED"  "${DEFAULT_COLOR}" "${DEFAULT_COLOR_INVERTED}"  $'\U1F50B'  $'\uE894'  $'\U1F50B'  '\u'$CODEPOINT_OF_AWESOME_BATTERY_FULL  $'\uF240 '
+p9k::register_segment "BATTERY" "LOW"           "${DEFAULT_COLOR}" "red"                        $'\U1F50B'  $'\uE894'  $'\U1F50B'  '\u'$CODEPOINT_OF_AWESOME_BATTERY_FULL  $'\uF240 '
+p9k::register_segment "BATTERY" "CHARGING"      "${DEFAULT_COLOR}" "yellow"                     $'\U1F50B'  $'\uE894'  $'\U1F50B'  '\u'$CODEPOINT_OF_AWESOME_BATTERY_FULL  $'\uF240 '
+p9k::register_segment "BATTERY" "CHARGED"       "${DEFAULT_COLOR}" "green"                      $'\U1F50B'  $'\uE894'  $'\U1F50B'  '\u'$CODEPOINT_OF_AWESOME_BATTERY_FULL  $'\uF240 '
+p9k::register_segment "BATTERY" "DISCONNECTED"  "${DEFAULT_COLOR}" "${DEFAULT_COLOR_INVERTED}"  $'\U1F50B'  $'\uE894'  $'\U1F50B'  '\u'$CODEPOINT_OF_AWESOME_BATTERY_FULL  $'\uF240 '
 
 # Set default values if the user did not configure them
-setDefault P9K_BATTERY_LOW_THRESHOLD 10
+p9k::set_default P9K_BATTERY_LOW_THRESHOLD 10
 # Default behavior: Be verbose!
-setDefault P9K_BATTERY_VERBOSE true
+p9k::set_default P9K_BATTERY_VERBOSE true
 ################################################################
 # @description
 #   Displays the battery statys in levels and colors.
@@ -101,7 +101,7 @@ prompt_battery() {
   fi
 
   # return if P9K_BATTERY_HIDE_ABOVE_THRESHOLD is set and the battery percentage is greater or equal
-  if defined "P9K_BATTERY_HIDE_ABOVE_THRESHOLD" && [[ "${bat_percent}" -ge $P9K_BATTERY_HIDE_ABOVE_THRESHOLD ]]; then
+  if p9k::defined "P9K_BATTERY_HIDE_ABOVE_THRESHOLD" && [[ "${bat_percent}" -ge $P9K_BATTERY_HIDE_ABOVE_THRESHOLD ]]; then
     return
   fi
 
@@ -129,10 +129,10 @@ prompt_battery() {
     if [[ -n "$P9K_BATTERY_LEVEL_BACKGROUND" ]] && [[ "${(t)P9K_BATTERY_LEVEL_BACKGROUND}" =~ "array" ]]; then
       segment=$(( 100.0 / (${#P9K_BATTERY_LEVEL_BACKGROUND} - 1 ) ))
       offset=$(( ($bat_percent / $segment) + 1 ))
-      overideBg="$(backgroundColor ${P9K_BATTERY_LEVEL_BACKGROUND[$offset]})"
+      overideBg="$(p9k::background_color ${P9K_BATTERY_LEVEL_BACKGROUND[$offset]})"
     fi
   fi
   unset offset
   # Draw the prompt_segment
-  p9kPrepareSegment "$0" "${(U)current_state}" $1 "$2" $3 "${message}" "" "${overideIcon}" "${overideBg}"
+  p9k::prepare_segment "$0" "${(U)current_state}" $1 "$2" $3 "${message}" "" "${overideIcon}" "${overideBg}"
 }

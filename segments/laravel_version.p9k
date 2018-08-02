@@ -10,7 +10,7 @@
 # Parameters:
 #   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
 #                                                                            
-registerSegment "LARAVEL_VERSION" "" "maroon" "white" 'Laravel'  ''  ''  ''  $'\uE73F'
+p9k::register_segment "LARAVEL_VERSION" "" "maroon" "white" 'Laravel'  ''  ''  ''  $'\uE73F'
 
 ################################################################
 # @description
@@ -27,6 +27,6 @@ prompt_laravel_version() {
     # Strip out everything but the version
     laravel_version="${laravel_version//Laravel Framework /}"
 
-    p9kPrepareSegment "${0}" "" "${1}" "${2}" "${3}" "${laravel_version}"
+    p9k::prepare_segment "${0}" "" "${1}" "${2}" "${3}" "${laravel_version}"
   fi
 }

@@ -17,11 +17,11 @@ function testSegmentOnRightSide() {
     local -a P9K_RIGHT_PROMPT_ELEMENTS
     P9K_RIGHT_PROMPT_ELEMENTS=(custom_world1 custom_world2)
     local P9K_CUSTOM_WORLD1='echo world1'
-    registerSegment "WORLD1"
+    p9k::register_segment "WORLD1"
     local P9K_CUSTOM_WORLD2='echo world2'
-    registerSegment "WORLD2"
+    p9k::register_segment "WORLD2"
 
-    p9kPreparePrompts
+    __p9k_prepare_prompts
 
     local reset_attributes=$'\e[00m'
     #             %f%b%k%F{white}%K{white}%F{black} world1 %F{black} %F{black}%K{white}%F{black} world2 %F{black} %{%}
@@ -34,12 +34,12 @@ function testDisablingRightPrompt() {
     local -a P9K_RIGHT_PROMPT_ELEMENTS
     P9K_RIGHT_PROMPT_ELEMENTS=(custom_world1 custom_world2)
     local P9K_CUSTOM_WORLD1='echo world1'
-    registerSegment "WORLD1"
+    p9k::register_segment "WORLD1"
     local P9K_CUSTOM_WORLD2='echo world2'
-    registerSegment "WORLD2"
+    p9k::register_segment "WORLD2"
     local P9K_DISABLE_RPROMPT=true
 
-    p9kPreparePrompts
+    __p9k_prepare_prompts
 
     assertEquals "" "${(e)RPROMPT}"
 }
@@ -48,10 +48,10 @@ function testLeftMultilinePrompt() {
     local -a P9K_LEFT_PROMPT_ELEMENTS
     P9K_LEFT_PROMPT_ELEMENTS=(custom_world1)
     local P9K_CUSTOM_WORLD1='echo world1'
-    registerSegment "WORLD1"
+    p9k::register_segment "WORLD1"
     local P9K_PROMPT_ON_NEWLINE=true
 
-    p9kPreparePrompts
+    __p9k_prepare_prompts
 
     local nl=$'\n'
     assertEquals "╭─%f%b%k%K{white} %F{black}world1 %k%F{white}%f ${nl}╰─ " "${(e)PROMPT}"
@@ -63,7 +63,7 @@ function testRightPromptOnSameLine() {
     local -a P9K_RIGHT_PROMPT_ELEMENTS
     P9K_RIGHT_PROMPT_ELEMENTS=(custom_world1)
     local P9K_CUSTOM_WORLD1='echo world1'
-    registerSegment "WORLD1"
+    p9k::register_segment "WORLD1"
 
     local P9K_PROMPT_ON_NEWLINE=true
     local P9K_RPROMPT_ON_NEWLINE=false # We want the RPROMPT on the same line as our left prompt
@@ -76,7 +76,7 @@ function testRightPromptOnSameLine() {
     # it fails anyway. :(
     startSkipping
 
-    p9kPreparePrompts
+    __p9k_prepare_prompts
     assertEquals "%{\e[1A}%F{white}%K{white}%F{black} world1 %f%{\e[1B}" "${(e)RPROMPT}"
 }
 
@@ -84,13 +84,13 @@ function testPrefixingFirstLineOnLeftPrompt() {
     local -a P9K_LEFT_PROMPT_ELEMENTS
     P9K_LEFT_PROMPT_ELEMENTS=(custom_world1)
     local P9K_CUSTOM_WORLD1='echo world1'
-    registerSegment "WORLD1"
+    p9k::register_segment "WORLD1"
 
     local P9K_PROMPT_ON_NEWLINE=true
     local P9K_MULTILINE_FIRST_PROMPT_PREFIX='XXX'
     source functions/icons.zsh
 
-    p9kPreparePrompts
+    __p9k_prepare_prompts
 
     local nl=$'\n'
     assertEquals "XXX%f%b%k%K{white} %F{black}world1 %k%F{white}%f ${nl}╰─ " "${(e)PROMPT}"
@@ -100,13 +100,13 @@ function testPrefixingSecondLineOnLeftPrompt() {
     local -a P9K_LEFT_PROMPT_ELEMENTS
     P9K_LEFT_PROMPT_ELEMENTS=(custom_world1)
     local P9K_CUSTOM_WORLD1='echo world1'
-    registerSegment "WORLD1"
+    p9k::register_segment "WORLD1"
 
     local P9K_PROMPT_ON_NEWLINE=true
     local P9K_MULTILINE_LAST_PROMPT_PREFIX='XXX'
     source functions/icons.zsh
 
-    p9kPreparePrompts
+    __p9k_prepare_prompts
 
     local nl=$'\n'
     assertEquals "╭─%f%b%k%K{white} %F{black}world1 %k%F{white}%f ${nl}XXX" "${(e)PROMPT}"

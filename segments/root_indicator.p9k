@@ -10,7 +10,7 @@
 # Parameters:
 #   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
 #                                                                ⚡                                                           
-registerSegment "ROOT_INDICATOR" "" "${DEFAULT_COLOR}" "yellow"  $'\u26A1'  $'\uE801'  $'\uF201'  '\u'$CODEPOINT_OF_OCTICONS_ZAP  $'\uE614 '
+p9k::register_segment "ROOT_INDICATOR" "" "${DEFAULT_COLOR}" "yellow"  $'\u26A1'  $'\uE801'  $'\uF201'  '\u'$CODEPOINT_OF_OCTICONS_ZAP  $'\uE614 '
 
 ################################################################
 # @description
@@ -23,6 +23,6 @@ registerSegment "ROOT_INDICATOR" "" "${DEFAULT_COLOR}" "yellow"  $'\u26A1'  $'\u
 ##
 prompt_root_indicator() {
   if [[ "$UID" -eq 0 ]]; then
-    p9kPrepareSegment "$0" "" $1 "$2" $3 "" "true"
+    p9k::prepare_segment "$0" "" $1 "$2" $3 "" "true"
   fi
 }

@@ -10,19 +10,19 @@
 # Parameters:
 #   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
 #                                                               ✔         ✔          ✔                                         
-registerSegment "STATUS" "OK"       "$DEFAULT_COLOR" "green"    $'\u2714'  $'\u2714'  $'\u2714'  '\u'$CODEPOINT_OF_AWESOME_CHECK  $'\uF00C'
+p9k::register_segment "STATUS" "OK"       "$DEFAULT_COLOR" "green"    $'\u2714'  $'\u2714'  $'\u2714'  '\u'$CODEPOINT_OF_AWESOME_CHECK  $'\uF00C'
 #                                                               ✘          ✘         ✘                                          
-registerSegment "STATUS" "ERROR"    "$DEFAULT_COLOR" "red"      $'\u2718'  $'\u2718'  $'\u2718'  '\u'$CODEPOINT_OF_AWESOME_TIMES  $'\uF00D'
+p9k::register_segment "STATUS" "ERROR"    "$DEFAULT_COLOR" "red"      $'\u2718'  $'\u2718'  $'\u2718'  '\u'$CODEPOINT_OF_AWESOME_TIMES  $'\uF00D'
 #                                                               ↵         ↵         ↵         ↵                               ↵
-registerSegment "STATUS" "ERROR_CR" "red"            "yellow1"  $'\u21B5'  $'\u21B5'  $'\u21B5'  $'\u21B5'                        $'\u21B5'
+p9k::register_segment "STATUS" "ERROR_CR" "red"            "yellow1"  $'\u21B5'  $'\u21B5'  $'\u21B5'  $'\u21B5'                        $'\u21B5'
 
-setDefault P9K_STATUS_CROSS false
-setDefault P9K_STATUS_OK true
-setDefault P9K_STATUS_SHOW_PIPESTATUS true
-setDefault P9K_STATUS_HIDE_SIGNAME false
+p9k::set_default P9K_STATUS_CROSS false
+p9k::set_default P9K_STATUS_OK true
+p9k::set_default P9K_STATUS_SHOW_PIPESTATUS true
+p9k::set_default P9K_STATUS_HIDE_SIGNAME false
 # old options, retro compatibility
-setDefault P9K_STATUS_VERBOSE true
-setDefault P9K_STATUS_OK_IN_NON_VERBOSE false
+p9k::set_default P9K_STATUS_VERBOSE true
+p9k::set_default P9K_STATUS_OK_IN_NON_VERBOSE false
 
 ################################################################
 # @description
@@ -81,11 +81,11 @@ prompt_status() {
 
   if (( ec_sum > 0 )); then
     if [[ "$P9K_STATUS_CROSS" == false && "$P9K_STATUS_VERBOSE" == true ]]; then
-      p9kPrepareSegment "$0" "ERROR_CR" $1 "$2" $3 "$ec_text" "[[ true ]]"
+      p9k::prepare_segment "$0" "ERROR_CR" $1 "$2" $3 "$ec_text" "[[ true ]]"
     else
-      p9kPrepareSegment "$0" "ERROR" $1 "$2" $3 "" "[[ true ]]"
+      p9k::prepare_segment "$0" "ERROR" $1 "$2" $3 "" "[[ true ]]"
     fi
   elif [[ "$P9K_STATUS_OK" == true ]] && [[ "$P9K_STATUS_VERBOSE" == true || "$P9K_STATUS_OK_IN_NON_VERBOSE" == true ]]; then
-    p9kPrepareSegment "$0" "OK" $1 "$2" $3  "" "[[ true ]]"
+    p9k::prepare_segment "$0" "OK" $1 "$2" $3  "" "[[ true ]]"
   fi
 }

@@ -10,7 +10,7 @@
 # Parameters:
 #   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
 #                                                                                 🐍          
-registerSegment "VIRTUALENV" "" "blue" "${DEFAULT_COLOR}"  ''  $'\uE63C'  $'\uE63C'  $'\U1F40D'  $'\uE73C '
+p9k::register_segment "VIRTUALENV" "" "blue" "${DEFAULT_COLOR}"  ''  $'\uE63C'  $'\uE63C'  $'\U1F40D'  $'\uE73C '
 
 ################################################################
 # @description
@@ -27,6 +27,6 @@ registerSegment "VIRTUALENV" "" "blue" "${DEFAULT_COLOR}"  ''  $'\uE63C'  $'\uE6
 prompt_virtualenv() {
   local virtualenv_path="$VIRTUAL_ENV"
   if [[ -n "$virtualenv_path" && "$VIRTUAL_ENV_DISABLE_PROMPT" != true ]]; then
-    p9kPrepareSegment "$0" "" $1 "$2" $3 "$(basename "$virtualenv_path")"
+    p9k::prepare_segment "$0" "" $1 "$2" $3 "$(basename "$virtualenv_path")"
   fi
 }

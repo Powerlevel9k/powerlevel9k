@@ -12,22 +12,22 @@
 
 ## Table of Contents
 
-- [updateEnvironmentVars](#updateEnvironmentVars)
+- [__p9k_update_environment_vars](#__p9k_update_environment_vars)
 - [defined](#defined)
-- [setDefault](#setDefault)
-- [printSizeHumanReadable](#printSizeHumanReadable)
-- [getRelevantItem](#getRelevantItem)
-- [segmentInUse](#segmentInUse)
-- [printDeprecationWarning](#printDeprecationWarning)
-- [updateVarName](#updateVarName)
-- [printDeprecationVarWarning](#printDeprecationVarWarning)
-- [segmentShouldBeJoined](#segmentShouldBeJoined)
-- [segmentShouldBePrinted](#segmentShouldBePrinted)
-- [truncatePath](#truncatePath)
-- [truncatePathFromRight](#truncatePathFromRight)
-- [upsearch](#upsearch)
+- [p9k::set_default](#p9k::set_default)
+- [p9k::print_size_human_readable](#p9k::print_size_human_readable)
+- [p9k::get_relevant_item](#p9k::get_relevant_item)
+- [p9k::segment_in_use](#p9k::segment_in_use)
+- [__p9k_print_deprecation_warning](#__p9k_print_deprecation_warning)
+- [__p9k_update_var_name](#__p9k_update_var_name)
+- [__p9k_print_deprecation_var_warning](#__p9k_print_deprecation_var_warning)
+- [__p9k_segment_should_be_Joined](#__p9k_segment_should_be_Joined)
+- [__p9k_segment_should_be_Printed](#__p9k_segment_should_be_Printed)
+- [__p9k_truncate_path](#__p9k_truncate_path)
+- [__p9k_truncate_pathFromRight](#__p9k_truncate_pathFromRight)
+- [__p9k_upsearch](#__p9k_upsearch)
 
-## updateEnvironmentVars
+## __p9k_update_environment_vars
 *This function determines if POWERLEVEL9K_ variables have been previously defined and changes them to P9K_ variables. *
 
 #### Arguments
@@ -48,7 +48,7 @@
 - 0 if the variable has been defined.
 
 
-## setDefault
+## p9k::set_default
 *This function determine if a variable has been previously defined, and only sets the value to the specified default if it hasn't. *
 
 #### Arguments
@@ -66,7 +66,7 @@
 
 *Typeset cannot set the value for an array, so this will only work for scalar values. *
 
-## printSizeHumanReadable
+## p9k::print_size_human_readable
 *Converts large memory values into a human-readable unit (e.g., bytes --> GB) *
 
 #### Arguments
@@ -79,7 +79,7 @@
 
 *The base can be any of the following: B, K, M, G, T, P, E, Z, Y. *
 
-## getRelevantItem
+## p9k::get_relevant_item
 *Gets the first value out of a list of items that is not empty. The items are examined by a callback-function. *
 
 #### Arguments
@@ -92,7 +92,7 @@
 
 *The callback function has access to the inner variable $item. *
 
-## segmentInUse
+## p9k::segment_in_use
 *Determine if the passed segment is used in either the LEFT or RIGHT prompt arrays. *
 
 #### Arguments
@@ -100,7 +100,7 @@
 - **$1** (string) The segment to be tested.
 
 
-## printDeprecationWarning
+## __p9k_print_deprecation_warning
 *Print a deprecation warning if an old segment is in use. *
 
 #### Arguments
@@ -109,7 +109,7 @@
 - deprecated segments as keys, and the new segment names as values.
 
 
-## updateVarName
+## __p9k_update_var_name
 *This function determines if older variable namess have been previously defined and changes them to newer variable names. *
 
 #### Arguments
@@ -124,7 +124,7 @@
 - 1 if variable could not be renamed
 
 
-## printDeprecationVarWarning
+## __p9k_print_deprecation_var_warning
 *Print a deprecation warning if an old variable is in use. *
 
 #### Arguments
@@ -134,10 +134,10 @@
 - names as values.
 
 
-## segmentShouldBeJoined
+## __p9k_segment_should_be_Joined
 *A helper function to determine if a segment should be joined or promoted to a full one. *
 
-## segmentShouldBePrinted
+## __p9k_segment_should_be_Printed
 *A helper function to determine if a segment should be printed or not. *
 
 *Conditions have three layers: 1. No segment should print if they provide no content (default condition). 2. Segments can define a default condition on their own, overriding the previous one. 3. Users can set a condition for each segment. This is the trump card, and has highest precedence. *
@@ -149,7 +149,7 @@
 - **$3** (string) Content of the segment (for default condition)
 
 
-## truncatePath
+## __p9k_truncate_path
 *Given a directory path, truncate it according to the settings. *
 
 #### Arguments
@@ -160,7 +160,7 @@
 - **$4** (string) Where to truncate from - "right" | "middle" | "left". If omited, assumes right.
 
 
-## truncatePathFromRight
+## __p9k_truncate_pathFromRight
 *Given a directory path, truncate it according to the settings for `truncate_from_right`. *
 
 #### Arguments
@@ -170,9 +170,9 @@
 
 #### Notes
 
-*Deprecated. Use `truncatePath` instead. *
+*Deprecated. Use `__p9k_truncate_path` instead. *
 
-## upsearch
+## __p9k_upsearch
 *Search recursively in parent folders for given file. *
 
 #### Arguments

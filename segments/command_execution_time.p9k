@@ -10,7 +10,7 @@
 # Parameters:
 #   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
 #                                                                                                                             
-registerSegment 'COMMAND_EXECUTION_TIME' '' "red" "yellow1" 'Dur'  $'\uE89C'  $'\uF253'  '\u'$CODEPOINT_OF_AWESOME_HOURGLASS_END  $'\uF252'
+p9k::register_segment 'COMMAND_EXECUTION_TIME' '' "red" "yellow1" 'Dur'  $'\uE89C'  $'\uF253'  '\u'$CODEPOINT_OF_AWESOME_HOURGLASS_END  $'\uF252'
 
 ################################################################
 # @description
@@ -22,8 +22,8 @@ registerSegment 'COMMAND_EXECUTION_TIME' '' "red" "yellow1" 'Dur'  $'\uE89C'  $'
 #   $3 boolean Whether the segment should be joined
 ##
 prompt_command_execution_time() {
-  setDefault P9K_COMMAND_EXECUTION_TIME_THRESHOLD 3
-  setDefault P9K_COMMAND_EXECUTION_TIME_PRECISION 2
+  p9k::set_default P9K_COMMAND_EXECUTION_TIME_THRESHOLD 3
+  p9k::set_default P9K_COMMAND_EXECUTION_TIME_PRECISION 2
 
   # Print time in human readable format
   # For that use `strftime` and convert
@@ -49,6 +49,6 @@ prompt_command_execution_time() {
   fi
 
   if (( _P9K_COMMAND_DURATION >= P9K_COMMAND_EXECUTION_TIME_THRESHOLD )); then
-    p9kPrepareSegment "$0" "" $1 "$2" $3 "${humanReadableDuration}"
+    p9k::prepare_segment "$0" "" $1 "$2" $3 "${humanReadableDuration}"
   fi
 }

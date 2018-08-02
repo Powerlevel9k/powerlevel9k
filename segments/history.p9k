@@ -10,7 +10,7 @@
 # Parameters:
 #   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
 #                                                                                      
-registerSegment "HISTORY" '' "grey50" "${DEFAULT_COLOR}"  ''  ''  $'\uE29A '  $'\uE29A '  $'\uE29A '
+p9k::register_segment "HISTORY" '' "grey50" "${DEFAULT_COLOR}"  ''  ''  $'\uE29A '  $'\uE29A '  $'\uE29A '
 
 ################################################################
 # @description
@@ -22,5 +22,5 @@ registerSegment "HISTORY" '' "grey50" "${DEFAULT_COLOR}"  ''  ''  $'\uE29A '  $'
 #   $3 boolean Whether the segment should be joined
 ##
 prompt_history() {
-  p9kPrepareSegment "$0" "" $1 "$2" $3 '%h'
+  p9k::prepare_segment "$0" "" $1 "$2" $3 '%h'
 }

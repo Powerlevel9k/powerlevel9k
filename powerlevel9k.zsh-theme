@@ -87,7 +87,7 @@ typeset -AH deprecated_segments
 deprecated_segments=(
   'longstatus'      'status'
 )
-printDeprecationWarning deprecated_segments
+__p9k_print_deprecation_warning deprecated_segments
 
 # Display a warning if deprecated variables have been updated.
 typeset -AH deprecated_variables
@@ -154,7 +154,7 @@ deprecated_variables=(
   'P9K_VI_COMMAND_MODE_STRING'    'P9K_VI_MODE_COMMAND_STRING'
   'P9K_VI_VISUAL_MODE_STRING'     'P9K_VI_MODE_VISUAL_STRING'
 )
-printDeprecationVarWarning deprecated_variables
+__p9k_print_deprecation_var_warning deprecated_variables
 
 ################################################################
 # Choose the generator
@@ -177,7 +177,7 @@ esac
 local segmentName
 for segment in $p9kDirectory/segments/*.p9k; do
   segmentName=${${segment##*/}%.p9k}
-  if segmentInUse "$segmentName"; then
+  if p9k::segment_in_use "$segmentName"; then
     source "${segment}" 2>&1
   fi
 done
@@ -186,7 +186,7 @@ done
 if [[ -d $HOME/.config/powerlevel9k/segments ]]; then
   for segment in $HOME/.config/powerlevel9k/segments/*.p9k; do
     segmentName=${${segment##*/}%.p9k}
-    if segmentInUse "$segmentName"; then
+    if p9k::segment_in_use "$segmentName"; then
       source "${segment}" 2>&1
     fi
   done

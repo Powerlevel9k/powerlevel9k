@@ -38,10 +38,10 @@ function testTodoSegmentPrintsNothingIfTodoShIsNotInstalled() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(todo custom_world)
   local P9K_CUSTOM_WORLD='echo world'
-  registerSegment "WORLD"
+  p9k::register_segment "WORLD"
   alias todo.sh="echo"
 
-  assertEquals "%K{white} %F{black}world %k%F{white}%f " "$(buildLeftPrompt)"
+  assertEquals "%K{white} %F{black}world %k%F{white}%f " "$(__p9k_build_left_prompt)"
 
   unalias todo.sh
 }
@@ -54,7 +54,7 @@ function testTodoSegmentWorksAsExpected() {
   echo 'echo "TODO: 34 of 100 tasks shown";' >> ${FOLDER}/bin/todo.sh
   chmod +x ${FOLDER}/bin/todo.sh
 
-  assertEquals "%K{244} %F{black}☑ %f%F{black}100 %k%F{244}%f " "$(buildLeftPrompt)"
+  assertEquals "%K{244} %F{black}☑ %f%F{black}100 %k%F{244}%f " "$(__p9k_build_left_prompt)"
 }
 
 source shunit2/source/2.1/src/shunit2

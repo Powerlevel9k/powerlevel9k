@@ -10,7 +10,7 @@
 # Parameters:
 #   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
 #                                                                                                          
-registerSegment "GO_VERSION" '' 'green' 'grey93' 'Go'  ''  ''  '\u'$CODEPOINT_OF_DEVICONS_GIT_PULL_REQUEST  $'\uE626'
+p9k::register_segment "GO_VERSION" '' 'green' 'grey93' 'Go'  ''  ''  '\u'$CODEPOINT_OF_DEVICONS_GIT_PULL_REQUEST  $'\uE626'
 
 ################################################################
 # @description
@@ -28,6 +28,6 @@ prompt_go_version() {
   go_path=$(go env GOPATH 2>/dev/null)
 
   if [[ -n "$go_version" && "${PWD##$go_path}" != "$PWD" ]]; then
-    p9kPrepareSegment "$0" "" $1 "$2" $3 "$go_version"
+    p9k::prepare_segment "$0" "" $1 "$2" $3 "$go_version"
   fi
 }

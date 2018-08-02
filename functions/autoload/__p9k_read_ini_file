@@ -1,6 +1,6 @@
 # vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
 ################################################################
-# @title powerlevel9k Autoload Function - readIniFile
+# @title powerlevel9k Autoload Function - __p9k_read_ini_file
 # @sources
 #   [powerlevel9k](https://github.com/bhilburn/powerlevel9k)
 #   [read-ini-file](https://github.com/zdharma/Zsh-100-Commits-Club/blob/master/Zsh-Native-Scripting-Handbook.adoc)
@@ -32,7 +32,7 @@
 #   readIniFile ./powerlevel9k.ini POWERLEVEL9K
 #   readIniFile ./powerlevel9k.ini P9K
 ##
-# @function readIniFile() {}
+# @function __p9k_read_ini_file() {}
 setopt localoptions extendedglob
 
 local __ini_file="$1" __out_hash="$2"

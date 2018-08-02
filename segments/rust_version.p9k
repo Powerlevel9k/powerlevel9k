@@ -10,7 +10,7 @@
 # Parameters:
 #   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
 #                                                                                               
-registerSegment "RUST_VERSION" "" "darkorange" "$DEFAULT_COLOR"  'Rust'  ''  $'\uE6A8'  $'\uE6A8'  $'\uE7A8 '
+p9k::register_segment "RUST_VERSION" "" "darkorange" "$DEFAULT_COLOR"  'Rust'  ''  $'\uE6A8'  $'\uE6A8'  $'\uE7A8 '
 
 ################################################################
 # @description
@@ -30,6 +30,6 @@ prompt_rust_version() {
   rust_version=${${rust_version/rustc /}%% *}
 
   if [[ -n "$rust_version" ]]; then
-    p9kPrepareSegment "$0" "" $1 "$2" $3 "$rust_version"
+    p9k::prepare_segment "$0" "" $1 "$2" $3 "$rust_version"
   fi
 }

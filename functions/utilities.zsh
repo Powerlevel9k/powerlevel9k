@@ -16,12 +16,12 @@ local autoload_path="$p9kDirectory/functions/autoload"
 # test if we already autoloaded the functions
 if [[ ${fpath[(ie)$autoload_path]} -gt ${#fpath} ]]; then
   fpath=( $autoload_path "${fpath[@]}" )
-  autoload -Uz getUniquePath
-  autoload -Uz segmentShouldBeJoined
-  autoload -Uz segmentShouldBePrinted
+  autoload -Uz __p9k_get_unique_path
+  autoload -Uz __p9k_segment_should_be_Joined
+  autoload -Uz __p9k_segment_should_be_Printed
   autoload -Uz subStrCount
-  autoload -Uz truncatePath
-  autoload -Uz upsearch
+  autoload -Uz __p9k_truncate_path
+  autoload -Uz __p9k_upsearch
 fi
 
 ###############################################################
@@ -99,7 +99,7 @@ fi
 ##
 # @noargs
 ##
-updateEnvironmentVars() {
+__p9k_update_environment_vars() {
   local envVar varType varName origVar newVar newVal var
   local oldVarsFound=false
   for envVar in $(declare); do
@@ -136,7 +136,7 @@ updateEnvironmentVars() {
   To disable this warning, please modify your configuration file to use the new style variables, or add %F{green}P9K_IGNORE_VAR_WARNING=true%f to your config."
 }
 
-updateEnvironmentVars
+__p9k_update_environment_vars
 
 ###############################################################
 # @description
@@ -149,7 +149,7 @@ updateEnvironmentVars
 # @returns
 #   0 if the variable has been defined (even when empty).
 ##
-function defined() {
+p9k::defined() {
   [[ ! -z "${(tP)1}" ]]
 }
 
@@ -169,11 +169,11 @@ function defined() {
 #   Typeset cannot set the value for an array, so this will only work
 #   for scalar values.
 ##
-function setDefault() {
+p9k::set_default() {
   local varname="$1"
   local default_value="$2"
 
-  defined "$varname" || typeset -g "$varname"="$default_value"
+  p9k::defined "$varname" || typeset -g "$varname"="$default_value"
 }
 
 ###############################################################
@@ -187,7 +187,7 @@ function setDefault() {
 # @note
 #   The base can be any of the following: B, K, M, G, T, P, E, Z, Y.
 ##
-printSizeHumanReadable() {
+p9k::print_size_human_readable() {
   typeset -F 2 size
   size="$1"+0.00001
   local extension
@@ -225,7 +225,7 @@ printSizeHumanReadable() {
 # @notes
 #   The callback function has access to the inner variable $item.
 ##
-function getRelevantItem() {
+p9k::get_relevant_item() {
   local -a list
   local callback
   # Explicitly split the elements by whitespace.
@@ -271,7 +271,7 @@ P9K_PROMPT_ELEMENTS=("${P9K_LEFT_PROMPT_ELEMENTS[@]}" "${P9K_RIGHT_PROMPT_ELEMEN
 # @args
 #   $1 string The segment to be tested.
 ##
-segmentInUse() {
+p9k::segment_in_use() {
   [[ -n "${P9K_PROMPT_ELEMENTS[(r)$1]}" ]] && return 0 || return 1
 }
 
@@ -282,12 +282,12 @@ segmentInUse() {
 #   $1 associative-array An associative array that contains the
 #   deprecated segments as keys, and the new segment names as values.
 ##
-printDeprecationWarning() {
+__p9k_print_deprecation_warning() {
   typeset -AH raw_deprecated_segments
   raw_deprecated_segments=(${(kvP@)1})
 
   for key in ${(@k)raw_deprecated_segments}; do
-    if segmentInUse $key; then
+    if p9k::segment_in_use $key; then
       # segment is deprecated
       print -P "%F{yellow}Warning!%f The '$key' segment is deprecated. Use '%F{blue}${raw_deprecated_segments[$key]}%f' instead. For more information, have a look at the CHANGELOG.md."
     fi
@@ -307,9 +307,9 @@ printDeprecationWarning() {
 #   0 if variable was renamed
 #   1 if variable could not be renamed
 ##
-function updateVarName() {
+__p9k_update_var_name() {
   # check if old variable is defined
-  if defined $1 && [[ -n "$2" ]]; then
+  if p9k::defined $1 && [[ -n "$2" ]]; then
     # check for multiple Variables
     local newVars=("${(@s:,:)2}")
     for key in ${newVars}; do
@@ -332,14 +332,14 @@ function updateVarName() {
 #   the deprecated variables as keys, and the new variable
 #   names as values.
 ##
-printDeprecationVarWarning() {
+__p9k_print_deprecation_var_warning() {
   typeset -AH raw_deprecated_variables
   raw_deprecated_variables=(${(kvP@)1})
 
   for key in ${(@k)raw_deprecated_variables}; do
-    if defined $key; then
+    if p9k::defined $key; then
       # segment is deprecated
-      if ! updateVarName $key $raw_deprecated_variables[$key]; then
+      if ! __p9k_update_var_name $key $raw_deprecated_variables[$key]; then
         print -P "%F{yellow}Warning!%f The '$key' variable is deprecated. This could not be updated to '%F{cyan}${raw_deprecated_variables[$key]}%f' for you. For more information, have a look at the CHANGELOG.md."
       fi
     fi

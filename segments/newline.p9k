@@ -26,7 +26,7 @@ prompt_newline() {
     newline="${newline}$p9k_icons[MULTILINE_NEWLINE_PROMPT_PREFIX]"
   fi
   P9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS=
-  "$1PromptSegment" \
+  "$1__p9k__prompt_segment" \
     "$0" \
     "$2" \
     "NONE" "NONE" "${newline}"

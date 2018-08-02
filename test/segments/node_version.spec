@@ -16,10 +16,10 @@ function testNodeVersionSegmentPrintsNothingWithoutNode() {
     local -a P9K_LEFT_PROMPT_ELEMENTS
     P9K_LEFT_PROMPT_ELEMENTS=(node_version custom_world)
     local P9K_CUSTOM_WORLD='echo world'
-    registerSegment "WORLD"
+    p9k::register_segment "WORLD"
     alias node="nonode 2>/dev/null"
 
-    assertEquals "%K{white} %F{black}world %k%F{white}%f " "$(buildLeftPrompt)"
+    assertEquals "%K{white} %F{black}world %k%F{white}%f " "$(__p9k_build_left_prompt)"
 
     unalias node
 }
@@ -31,7 +31,7 @@ function testNodeVersionSegmentWorks() {
         echo "v1.2.3"
     }
 
-    assertEquals "%K{green} %F{white}⬢ %f%F{white}1.2.3 %k%F{green}%f " "$(buildLeftPrompt)"
+    assertEquals "%K{green} %F{white}⬢ %f%F{white}1.2.3 %k%F{green}%f " "$(__p9k_build_left_prompt)"
 
     unfunction node
 }

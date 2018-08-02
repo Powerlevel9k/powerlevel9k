@@ -10,7 +10,7 @@
 # Parameters:
 #   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
 #                                           ⬢         ⬢          ⬢          ⬢          
-registerSegment "NVM" "" "magenta" "black"  $'\u2B22'  $'\u2B22'  $'\u2B22'  $'\u2B22'  $'\uE617 '
+p9k::register_segment "NVM" "" "magenta" "black"  $'\u2B22'  $'\u2B22'  $'\u2B22'  $'\u2B22'  $'\uE617 '
 
 ################################################################
 # @description
@@ -34,5 +34,5 @@ prompt_nvm() {
   nvm_default=$(nvm_version default)
   [[ "$node_version" =~ "$nvm_default" ]] && return
 
-  p9kPrepareSegment "$0" "" $1 "$2" $3 "${node_version:1}"
+  p9k::prepare_segment "$0" "" $1 "$2" $3 "${node_version:1}"
 }
