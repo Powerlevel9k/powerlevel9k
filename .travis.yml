@@ -72,4 +72,5 @@ before_script:
   - "zsh --version"
 
 script:
-  - test/suite.spec -c -s
+  # Run the test suite with a summary at the end.
+  - test/suite.spec -s
