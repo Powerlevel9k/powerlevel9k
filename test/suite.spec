@@ -32,11 +32,11 @@ show_test_summary() {
     if [[ ${test_results[$k]} == true ]]; then
       [[ ${use_color} == true ]] \
           && echo " \x1b[38;5;28m pass\x1b[0m: ${k}" \
-          || echo "  pass: ${k}"
+          || echo "  + pass: ${k}"
     else
       [[ ${use_color} == true ]] \
           && echo " \x1b[38;5;124m fail\x1b[0m: ${k}" \
-          || echo "  fail: ${k}"
+          || echo "  - fail: ${k}"
     fi
   done
 }
