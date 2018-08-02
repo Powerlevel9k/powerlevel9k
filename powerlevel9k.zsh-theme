@@ -1516,6 +1516,76 @@ prompt_todo() {
   fi
 }
 
+function tw_regex {
+  gawk 'match($0,/'$1'/, ary) {print ary['${2:-'2'}']","ary['${2:-'4'}']","ary['${2:-'6'}']}';
+}
+
+function tw_dateconv() {
+    date --date=${1:0:4}-${1:4:2}-${1:6:2}T${1:9:2}:${1:11:2}:${1:13:2} +%s
+}
+
+# taskwarrior: show data from taskwarrior
+prompt_tw() {
+  if $(hash task 2>&-); then
+    typeset -gAH tw_colors
+    tw_colors=(
+      'finishedall'        "green"
+      'finishedtoday'      "green"
+      'todaypending'       "$DEFAULT_COLOR_INVERTED"
+      'todayonly'          "$DEFAULT_COLOR_INVERTED"
+      'late'               "yellow"
+    )
+    local current_state=""; local today=0; local over=0; local pending=0;
+    local data=$(task +PENDING export | tw_regex '{.*\"description\":\"([^,]*)\",\"due\":\"([^,]*)\"(,[^,]*)*,\"project\":\"([^,]*)\"(,[^,]*)*,\"status\":\"([^,]*)\",.*},?' )
+
+    # split string to array of strings
+    data=(${=data})
+    local currentdate_seconds=$(date +"%s")
+    for line in $data ; do
+      IFS=',' read -r duedate projectname currentstatus <<<"$line"
+      local duedate_seconds=$(tw_dateconv $duedate)
+      if [[ $(( $currentdate_seconds - $duedate_seconds )) -gt 0  ]]
+      then
+        over=$((over+1))
+      else
+        # FIXME: this checks if the date is in the next 24h period
+        if [[ $(( $duedate_seconds - $currentdate_seconds )) -lt 86400 ]]
+        then
+          today=$((today+1))
+        fi
+      fi
+      # every task is pending
+      pending=$((pending+1))
+    done
+
+    typeset -gAH tw_messages
+    tw_messages=(
+      'finishedall'      "No pending tasks!"
+      'finishedtoday'    "$pending tasks coming up"
+      'todaypending'     "$today tasks for today and $(( $pending-$today )) coming up"
+      'todayonly'        "$today tasks for today"
+      'late'             "$over tasks late"
+    )
+
+    if [[  $today -gt 0  ]]; then
+      if [[  $pending-$today -gt 0  ]]; then
+        current_state="todaypending"
+      else
+        current_state="todayonly"
+      fi
+    else
+      current_state="finishedtoday"
+    fi
+    if [[  $over -gt 0 ]]; then
+      current_state="late"
+    fi
+    if [[ $pending -eq 0 ]]; then
+      current_state="finishedall"
+    fi
+    "$1_prompt_segment" "$0" "$2" "${tw_colors[$current_state]}" "$DEFAULT_COLOR" "${tw_messages[$current_state]}" 'TODO_ICON'
+  fi
+}
+
 ################################################################
 # VCS segment: shows the state of your repository, if you are in a folder under
 # version control
