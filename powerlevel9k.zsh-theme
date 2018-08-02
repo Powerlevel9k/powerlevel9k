@@ -321,20 +321,24 @@ prompt_aws_eb_env() {
 # Segment to indicate background jobs with an icon.
 set_default POWERLEVEL9K_BACKGROUND_JOBS_VERBOSE true
 set_default POWERLEVEL9K_BACKGROUND_JOBS_ALWAYS_SHOW false
+set_default POWERLEVEL9K_BACKGROUND_JOBS_EXPANDED false
 prompt_background_jobs() {
-  local jobs_print
+  local jobs_print=""
 
-  if [[ "${(L)POWERLEVEL9K_BACKGROUND_JOBS_VERBOSE}" == "true" ]]; then
-    jobs_print="${jobs_running}r ${jobs_suspended}s"
-  else
+  if [[ "${(L)P9K_BACKGROUND_JOBS_VERBOSE}" == "true" ]]; then
     local total=$(( ${jobs_running} + ${jobs_suspended} ))
-    (( ${total} > 0 )) && jobs_print="${total}"
+    if (( ${total} > 0 )); then
+      if [[ "${(L)P9K_BACKGROUND_JOBS_EXPANDED}" == "true "]]; then
+        jobs_print="${jobs_running}r ${jobs_suspended}s"
+      else
+        jobs_print="${total}"
+      fi
+    else
+      jobs_print=0
+    fi
   fi
 
-  [[ "${POWERLEVEL9K_BACKGROUND_JOBS_ALWAYS_SHOW}" == "true" && "${jobs_print}" == "" ]] && jobs_print=0
-
-  [[ ${jobs_print} != "" ]] && p9kPrepareSegment "$0" "" $1 "$2" $3 "${jobs_print}" "[[ true ]]"
-}
+  p9kPrepareSegment "$0" "" $1 "$2" $3 "${jobs_print}" "[[ true ]]"}
 
 ################################################################
 # A newline in your prompt, so you can segments on multiple lines.
