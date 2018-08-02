@@ -325,15 +325,15 @@ set_default POWERLEVEL9K_BACKGROUND_JOBS_EXPANDED false
 prompt_background_jobs() {
   local jobs_print=""
 
-  if [[ "${(L)P9K_BACKGROUND_JOBS_VERBOSE}" == "true" ]]; then
+  if [[ "${(L)POWERLEVEL9K_BACKGROUND_JOBS_VERBOSE}" == "true" ]]; then
     local total=$(( ${jobs_running} + ${jobs_suspended} ))
     if (( ${total} > 0 )); then
-      if [[ "${(L)P9K_BACKGROUND_JOBS_EXPANDED}" == "true "]]; then
+      if [[ "${(L)POWERLEVEL9K_BACKGROUND_JOBS_EXPANDED}" == "true" ]]; then
         jobs_print="${jobs_running}r ${jobs_suspended}s"
       else
         jobs_print="${total}"
       fi
-    else
+    elif [[ "${(L)POWERLEVEL9K_BACKGROUND_ALWAYS_SHOW}" == "true" ]]
       jobs_print=0
     fi
   fi
