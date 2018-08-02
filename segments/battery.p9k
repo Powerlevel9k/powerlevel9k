@@ -15,6 +15,10 @@ registerSegment "BATTERY" "CHARGING"      "${DEFAULT_COLOR}" "yellow"           
 registerSegment "BATTERY" "CHARGED"       "${DEFAULT_COLOR}" "green"                      $'\U1F50B'  $'\uE894'  $'\U1F50B'  '\u'$CODEPOINT_OF_AWESOME_BATTERY_FULL  $'\uF240 '
 registerSegment "BATTERY" "DISCONNECTED"  "${DEFAULT_COLOR}" "${DEFAULT_COLOR_INVERTED}"  $'\U1F50B'  $'\uE894'  $'\U1F50B'  '\u'$CODEPOINT_OF_AWESOME_BATTERY_FULL  $'\uF240 '
 
+# Set default values if the user did not configure them
+setDefault P9K_BATTERY_LOW_THRESHOLD 10
+# Default behavior: Be verbose!
+setDefault P9K_BATTERY_VERBOSE true
 ################################################################
 # @description
 #   Displays the battery statys in levels and colors.
@@ -28,8 +32,6 @@ prompt_battery() {
   local ROOT_PREFIX="${4}"
   # The battery can have four different states - default to 'unknown'.
   local current_state='unknown'
-  # Set default values if the user did not configure them
-  setDefault P9K_BATTERY_LOW_THRESHOLD  10
 
   if [[ $OS =~ "OSX" && -f "${ROOT_PREFIX}"/usr/bin/pmset && -x "${ROOT_PREFIX}"/usr/bin/pmset ]]; then
     # obtain battery information from system
@@ -98,9 +100,12 @@ prompt_battery() {
     [[ -n $tstring ]] && local remain=" ($tstring)"
   fi
 
+  # return if P9K_BATTERY_HIDE_ABOVE_THRESHOLD is set and the battery percentage is greater or equal
+  if defined "P9K_BATTERY_HIDE_ABOVE_THRESHOLD" && [[ "${bat_percent}" -ge $P9K_BATTERY_HIDE_ABOVE_THRESHOLD ]]; then
+    return
+  fi
+
   local message
-  # Default behavior: Be verbose!
-  setDefault P9K_BATTERY_VERBOSE true
   if [[ "$P9K_BATTERY_VERBOSE" == true ]]; then
     message="$bat_percent%%$remain"
   else
