@@ -152,7 +152,7 @@ prompt_dir() {
         subdirectory_path=$(__p9k_truncate_path "${trunc_path:${#${(S%%)package_path//$~zero/}}}" $P9K_DIR_SHORTEN_LENGTH $P9K_DIR_SHORTEN_DELIMITER)
         # Parse the 'name' from the package.json; if there are any problems, just
         # print the file path
-        defined P9K_DIR_PACKAGE_FILES || P9K_DIR_PACKAGE_FILES=(package.json composer.json)
+        p9k::defined P9K_DIR_PACKAGE_FILES || P9K_DIR_PACKAGE_FILES=(package.json composer.json)
 
         local pkgFile="unknown"
         for file in "${P9K_DIR_PACKAGE_FILES[@]}"; do
