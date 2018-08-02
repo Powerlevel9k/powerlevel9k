@@ -210,7 +210,7 @@ without affecting the icon color.
 
 You can also change the battery icon automatically depending on the battery
 level. This will override the default battery icon. In order to do this, you
-need to define the `P9k_BATTERY_STAGES` variable.
+need to define the `P9K_BATTERY_STAGES` variable.
 
 
 | Variable                      | Default Value | Description                                                   |
