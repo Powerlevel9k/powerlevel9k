@@ -72,4 +72,4 @@ before_script:
   - "zsh --version"
 
 script:
-  - test/suite.spec
+  - test/suite.spec -c -s

@@ -18,7 +18,6 @@ function setUp() {
     fpath=( $autoload_path "${fpath[@]}" )
     autoload -Uz __p9k_segment_should_be_joined
     autoload -Uz __p9k_segment_should_be_printed
-    autoload -Uz subStrCount
     autoload -Uz __p9k_truncate_path
     autoload -Uz __p9k_upsearch
   fi
@@ -27,12 +26,12 @@ function setUp() {
 function testDefinedFindsDefinedVariable() {
   my_var='X'
 
-  assertTrue "defined 'my_var'"
+  assertTrue "p9k::defined 'my_var'"
   unset my_var
 }
 
-function testDefinedDoesNotFindUndefinedVariable() {
-  assertFalse "defined 'my_var'"
+function testDefinedDoesNotFindUnp9k::definedVariable() {
+  assertFalse "p9k::defined 'my_var'"
 }
 
 function testSetDefaultSetsVariable() {

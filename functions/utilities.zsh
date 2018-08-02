@@ -19,7 +19,7 @@ if [[ ${fpath[(ie)$autoload_path]} -gt ${#fpath} ]]; then
   autoload -Uz __p9k_get_unique_path
   autoload -Uz __p9k_segment_should_be_joined
   autoload -Uz __p9k_segment_should_be_printed
-  autoload -Uz subStrCount
+  autoload -Uz __p9k_sub_str_count
   autoload -Uz __p9k_truncate_path
   autoload -Uz __p9k_upsearch
 fi
