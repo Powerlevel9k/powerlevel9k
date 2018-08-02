@@ -46,7 +46,7 @@ function testBackgroundJobsSegmentWorksWithOneBackgroundJob() {
 
   # Load Powerlevel9k
   source segments/background_jobs.p9k
-  assertEquals "%K{black} %F{cyan}⚙ %f%F{cyan} %k%F{black}%f " "$(buildLeftPrompt)"
+  assertEquals "%K{black} %F{cyan}⚙ %f%F{cyan}%k%F{black}%f " "$(buildLeftPrompt)"
 }
 
 function testBackgroundJobsSegmentWorksWithMultipleBackgroundJobs() {
