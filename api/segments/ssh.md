@@ -1,0 +1,22 @@
+# powerlevel9k Segment - SSH
+
+
+### Source(s)
+
+[https://github.com/bhilburn/powerlevel9k](#https://github.com/bhilburn/powerlevel9k)
+
+
+## Table of Contents
+
+- [prompt_ssh](#prompt_ssh)
+
+## prompt_ssh
+*Displays an SSH icon when connected. *
+
+#### Arguments
+
+- **$1** (string) Alignment - left | right
+- **$2** (integer) Segment index
+- **$3** (boolean) Whether the segment should be joined
+
+

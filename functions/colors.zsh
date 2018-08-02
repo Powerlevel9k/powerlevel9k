@@ -1,24 +1,34 @@
+#!/usr/bin/env zsh
 # vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
 ################################################################
-# Color functions
-# This file holds some color-functions for
-# the powerlevel9k-ZSH-theme
-# https://github.com/bhilburn/powerlevel9k
+# @title powerlevel9k Color Functions
+# @source [powerlevel9k](https://github.com/bhilburn/powerlevel9k)
+##
+# @info
+#   This file contains some color-functions for powerlevel9k.
+##
+
 ################################################################
+# @description
+#   This function checks if the terminal supports 256 colors.
+#   If it doesn't, an error message is displayed.
+##
+# @noargs
+##
+# @note
+#   You can bypass this check by setting `P9K_IGNORE_TERM_COLORS=true`.
+##
+__p9k_term_colors() {
+  [[ $P9K_IGNORE_TERM_COLORS == true ]] && return
 
-function termColors() {
-  if [[ $POWERLEVEL9K_IGNORE_TERM_COLORS == true ]]; then
-    return
-  fi
-
-  local term_colors
+  local __p9k_term_colors
 
   if which tput &>/dev/null; then
-	term_colors=$(tput colors)
+	__p9k_term_colors=$(tput colors)
   else
-	term_colors=$(echotc Co)
+	__p9k_term_colors=$(echotc Co)
   fi
-  if (( ! $? && ${term_colors:-0} < 256 )); then
+  if (( ! $? && ${__p9k_term_colors:-0} < 256 )); then
     print -P "%F{red}WARNING!%f Your terminal appears to support fewer than 256 colors!"
     print -P "If your terminal supports 256 colors, please export the appropriate environment variable"
     print -P "_before_ loading this theme in your \~\/.zshrc. In most terminal emulators, putting"
@@ -26,8 +36,14 @@ function termColors() {
   fi
 }
 
-# get the proper color code if it does not exist as a name.
-function getColor() {
+################################################################
+# @description
+#   This function gets the proper color code if it does not exist as a name.
+##
+# @args
+#   $1 misc Color to check (as a number or string)
+##
+p9k::get_color() {
   # no need to check numerical values
   if [[ "$1" = <-> ]]; then
     if [[ "$1" = <8-15> ]]; then
@@ -42,80 +58,119 @@ function getColor() {
     local quoted=$(printf "%q" $(print -P "$named"))
     if [[ $quoted = "$'\033'\[49m" && $1 != "black" ]]; then
         # color not found, so try to get the code
-        1=$(getColorCode $1)
+        1=$(p9k::get_colorCode $1)
     fi
   fi
   echo -n "$1"
 }
 
-# empty paramenter resets (stops) background color
-function backgroundColor() {
-  if [[ -z $1 ]]; then
+################################################################
+# @description
+#   Function to set the background color.
+##
+# @args
+#   $1 misc The background color.
+##
+# @returns
+#   An escape code string for (re)setting the background color.
+##
+# @note
+#   An empty paramenter resets (stops) background color.
+##
+p9k::background_color() {
+  if [[ -n $1 ]]; then
+    echo -n "%K{$(p9k::get_color $1)}"
+  else
     echo -n "%k"
-  else
-    echo -n "%K{$(getColor $1)}"
   fi
 }
 
-# empty paramenter resets (stops) foreground color
-function foregroundColor() {
-  if [[ -z $1 ]]; then
+################################################################
+# @description
+#   Function to set the foreground color.
+##
+# @args
+#   $1 misc The foreground color.
+##
+# @returns
+#   An escape code string for (re)setting the foreground color.
+##
+# @note
+#   An empty paramenter resets (stops) foreground color.
+##
+p9k::foreground_color() {
+  if [[ -n $1 ]]; then
+    echo -n "%F{$(p9k::get_color $1)}"
+  else
     echo -n "%f"
-  else
-    echo -n "%F{$(getColor $1)}"
   fi
 }
 
-# Get numerical color codes. That way we translate ANSI codes
-# into ZSH-Style color codes.
-function getColorCode() {
+################################################################
+# @description
+#   Function to get numerical color codes. That way we translate
+#   ANSI codes into ZSH-Style color codes.
+##
+# @args
+#   $1 misc Number or string of color.
+##
+p9k::get_colorCode() {
   # Check if given value is already numerical
   if [[ "$1" = <-> ]]; then
     # ANSI color codes distinguish between "foreground"
     # and "background" colors. We don't need to do that,
     # as ZSH uses a 256 color space anyway.
-    if [[ "$1" = <8-15> ]]; then
-      echo -n $(($1 - 8))
-    else
+    # if [[ "$1" = <8-15> ]]; then
+    #   echo -n $(($1 - 8))
+    # else
       echo -n "$1"
-    fi
+    # fi
   else
     typeset -A codes
     # https://jonasjacek.github.io/colors/
     # use color names by default to allow dark/light themes to adjust colors based on names
     codes[black]=000
-    codes[maroon]=001
+    codes[red]=001
+    codes[maroon]=001 # alt name
     codes[green]=002
-    codes[olive]=003
-    codes[navy]=004
-    codes[purple]=005
-    codes[teal]=006
-    codes[silver]=007
-    codes[grey]=008
-    codes[red]=009
-    codes[lime]=010
-    codes[yellow]=011
-    codes[blue]=012
-    codes[fuchsia]=013
-    codes[aqua]=014
+    codes[yellow]=003
+    codes[olive]=003 # alt name
+    codes[blue]=004
+    codes[navy]=004 # alt name
+    codes[magenta]=005
+    codes[cyan]=006
+    codes[teal]=006 # alt name
+    codes[lightgrey]=007
+    codes[silver]=007 # alt name
+    codes[darkgrey]=008
+    codes[grey]=008 # alt name
+    codes[lightred]=009
+    codes[lightgreen]=010
+    codes[lime]=010 # alt name
+    codes[lightyellow]=011
+    codes[lightblue]=012
+    codes[lightmagenta]=013
+    codes[fuchsia]=013 # alt name
+    codes[lightcyan]=014
+    codes[aqua]=014 # alt name
     codes[white]=015
     codes[grey0]=016
     codes[navyblue]=017
     codes[darkblue]=018
     codes[blue3]=019
-    codes[blue3]=020
+    codes[blue3a]=020
     codes[blue1]=021
     codes[darkgreen]=022
     codes[deepskyblue4]=023
-    codes[deepskyblue4]=024
-    codes[deepskyblue4]=025
+    codes[deepskyblue4a]=024
+    codes[deepskyblue4b]=025
     codes[dodgerblue3]=026
     codes[dodgerblue2]=027
     codes[green4]=028
     codes[springgreen4]=029
     codes[turquoise4]=030
     codes[deepskyblue3]=031
-    codes[deepskyblue3]=032
+    codes[deepskyblue3a]=032
     codes[dodgerblue1]=033
     codes[green3]=034
     codes[springgreen3]=035
@@ -123,14 +178,14 @@ function getColorCode() {
     codes[lightseagreen]=037
     codes[deepskyblue2]=038
     codes[deepskyblue1]=039
-    codes[green3]=040
-    codes[springgreen3]=041
+    codes[green3a]=040
+    codes[springgreen3a]=041
     codes[springgreen2]=042
     codes[cyan3]=043
     codes[darkturquoise]=044
     codes[turquoise2]=045
     codes[green1]=046
-    codes[springgreen2]=047
+    codes[springgreen2a]=047
     codes[springgreen1]=048
     codes[mediumspringgreen]=049
     codes[cyan2]=050
@@ -138,14 +193,14 @@ function getColorCode() {
     codes[darkred]=052
     codes[deeppink4]=053
     codes[purple4]=054
-    codes[purple4]=055
+    codes[purple4a]=055
     codes[purple3]=056
     codes[blueviolet]=057
     codes[orange4]=058
     codes[grey37]=059
     codes[mediumpurple4]=060
     codes[slateblue3]=061
-    codes[slateblue3]=062
+    codes[slateblue3a]=062
     codes[royalblue1]=063
     codes[chartreuse4]=064
     codes[darkseagreen4]=065
@@ -154,34 +209,34 @@ function getColorCode() {
     codes[steelblue3]=068
     codes[cornflowerblue]=069
     codes[chartreuse3]=070
-    codes[darkseagreen4]=071
+    codes[darkseagreen4a]=071
     codes[cadetblue]=072
-    codes[cadetblue]=073
+    codes[cadetbluea]=073
     codes[skyblue3]=074
     codes[steelblue1]=075
-    codes[chartreuse3]=076
+    codes[chartreuse3a]=076
     codes[palegreen3]=077
     codes[seagreen3]=078
     codes[aquamarine3]=079
     codes[mediumturquoise]=080
-    codes[steelblue1]=081
-    codes[chartreuse2]=082
+    codes[steelblue1a]=081
+    codes[chartreuse2a]=082
     codes[seagreen2]=083
     codes[seagreen1]=084
-    codes[seagreen1]=085
+    codes[seagreen1a]=085
     codes[aquamarine1]=086
     codes[darkslategray2]=087
-    codes[darkred]=088
-    codes[deeppink4]=089
+    codes[darkreda]=088
+    codes[deeppink4a]=089
     codes[darkmagenta]=090
-    codes[darkmagenta]=091
+    codes[darkmagentaa]=091
     codes[darkviolet]=092
     codes[purple]=093
-    codes[orange4]=094
+    codes[orange4a]=094
     codes[lightpink4]=095
     codes[plum4]=096
     codes[mediumpurple3]=097
-    codes[mediumpurple3]=098
+    codes[mediumpurple3a]=098
     codes[slateblue1]=099
     codes[yellow4]=100
     codes[wheat4]=101
@@ -189,30 +244,30 @@ function getColorCode() {
     codes[lightslategrey]=103
     codes[mediumpurple]=104
     codes[lightslateblue]=105
-    codes[yellow4]=106
+    codes[yellow4a]=106
     codes[darkolivegreen3]=107
     codes[darkseagreen]=108
     codes[lightskyblue3]=109
-    codes[lightskyblue3]=110
+    codes[lightskyblue3a]=110
     codes[skyblue2]=111
     codes[chartreuse2]=112
-    codes[darkolivegreen3]=113
-    codes[palegreen3]=114
+    codes[darkolivegreen3a]=113
+    codes[palegreen3a]=114
     codes[darkseagreen3]=115
     codes[darkslategray3]=116
     codes[skyblue1]=117
     codes[chartreuse1]=118
-    codes[lightgreen]=119
-    codes[lightgreen]=120
+    codes[lightgreena]=119
+    codes[lightgreenb]=120
     codes[palegreen1]=121
-    codes[aquamarine1]=122
+    codes[aquamarine1a]=122
     codes[darkslategray1]=123
     codes[red3]=124
-    codes[deeppink4]=125
+    codes[deeppink4b]=125
     codes[mediumvioletred]=126
     codes[magenta3]=127
-    codes[darkviolet]=128
-    codes[purple]=129
+    codes[darkvioleta]=128
+    codes[purplea]=129
     codes[darkorange3]=130
     codes[indianred]=131
     codes[hotpink3]=132
@@ -223,7 +278,7 @@ function getColorCode() {
     codes[lightsalmon3]=137
     codes[rosybrown]=138
     codes[grey63]=139
-    codes[mediumpurple2]=140
+    codes[mediumpurple2a]=140
     codes[mediumpurple1]=141
     codes[gold3]=142
     codes[darkkhaki]=143
@@ -232,42 +287,42 @@ function getColorCode() {
     codes[lightsteelblue3]=146
     codes[lightsteelblue]=147
     codes[yellow3]=148
-    codes[darkolivegreen3]=149
-    codes[darkseagreen3]=150
+    codes[darkolivegreen3b]=149
+    codes[darkseagreen3a]=150
     codes[darkseagreen2]=151
     codes[lightcyan3]=152
     codes[lightskyblue1]=153
     codes[greenyellow]=154
     codes[darkolivegreen2]=155
-    codes[palegreen1]=156
-    codes[darkseagreen2]=157
+    codes[palegreen1a]=156
+    codes[darkseagreen2a]=157
     codes[darkseagreen1]=158
     codes[paleturquoise1]=159
-    codes[red3]=160
+    codes[red3a]=160
     codes[deeppink3]=161
-    codes[deeppink3]=162
-    codes[magenta3]=163
-    codes[magenta3]=164
+    codes[deeppink3a]=162
+    codes[magenta3a]=163
+    codes[magenta3b]=164
     codes[magenta2]=165
-    codes[darkorange3]=166
-    codes[indianred]=167
-    codes[hotpink3]=168
+    codes[darkorange3a]=166
+    codes[indianreda]=167
+    codes[hotpink3a]=168
     codes[hotpink2]=169
     codes[orchid]=170
     codes[mediumorchid1]=171
     codes[orange3]=172
-    codes[lightsalmon3]=173
+    codes[lightsalmon3a]=173
     codes[lightpink3]=174
     codes[pink3]=175
     codes[plum3]=176
     codes[violet]=177
-    codes[gold3]=178
+    codes[gold3a]=178
     codes[lightgoldenrod3]=179
     codes[tan]=180
     codes[mistyrose3]=181
     codes[thistle3]=182
     codes[plum2]=183
-    codes[yellow3]=184
+    codes[yellow3a]=184
     codes[khaki3]=185
     codes[lightgoldenrod2]=186
     codes[lightyellow3]=187
@@ -275,22 +330,22 @@ function getColorCode() {
     codes[lightsteelblue1]=189
     codes[yellow2]=190
     codes[darkolivegreen1]=191
-    codes[darkolivegreen1]=192
-    codes[darkseagreen1]=193
+    codes[darkolivegreen1a]=192
+    codes[darkseagreen1a]=193
     codes[honeydew2]=194
     codes[lightcyan1]=195
     codes[red1]=196
     codes[deeppink2]=197
     codes[deeppink1]=198
-    codes[deeppink1]=199
-    codes[magenta2]=200
+    codes[deeppink1a]=199
+    codes[magenta2a]=200
     codes[magenta1]=201
     codes[orangered1]=202
     codes[indianred1]=203
-    codes[indianred1]=204
+    codes[indianred1a]=204
     codes[hotpink]=205
-    codes[hotpink]=206
-    codes[mediumorchid1]=207
+    codes[hotpinka]=206
+    codes[mediumorchid1a]=207
     codes[darkorange]=208
     codes[salmon1]=209
     codes[lightcoral]=210
@@ -304,8 +359,8 @@ function getColorCode() {
     codes[pink1]=218
     codes[plum1]=219
     codes[gold1]=220
-    codes[lightgoldenrod2]=221
-    codes[lightgoldenrod2]=222
+    codes[lightgoldenrod2a]=221
+    codes[lightgoldenrod2b]=222
     codes[navajowhite1]=223
     codes[mistyrose1]=224
     codes[thistle1]=225
@@ -342,14 +397,14 @@ function getColorCode() {
 
     # for testing purposes in terminal
     if [[ "$1" == "foreground"  ]]; then
-        # call via `getColorCode foreground`
+        # call via `p9k::get_colorCode foreground`
         for i in "${(k@)codes}"; do
-            print -P "$(foregroundColor $i)$(getColor $i) - $i$(foregroundColor)"
+            print -P "$(p9k::foreground_color $i)$(p9k::get_color $i) - $i$(p9k::foreground_color)"
         done
     elif [[ "$1" == "background"  ]]; then
-        # call via `getColorCode background`
+        # call via `p9k::get_colorCode background`
         for i in "${(k@)codes}"; do
-            print -P "$(backgroundColor $i)$(getColor $i) - $i$(backgroundColor)"
+            print -P "$(p9k::background_color $i)$(p9k::get_color $i) - $i$(p9k::background_color)"
         done
     else
         #[[ -n "$1" ]] bg="%K{$1}" || bg="%k"
@@ -364,14 +419,21 @@ function getColorCode() {
   fi
 }
 
-# Check if two colors are equal, even if one is specified as ANSI code.
-function isSameColor() {
+################################################################
+# @description
+#   Check if two colors are equal, even if one is specified as ANSI code.
+##
+# @args
+#   $1 misc First color (number or string)
+#   $2 misc Second color (number or string)
+##
+p9k::is_same_color() {
   if [[ "$1" == "NONE" || "$2" == "NONE" ]]; then
     return 1
   fi
 
-  local color1=$(getColorCode "$1")
-  local color2=$(getColorCode "$2")
+  local color1=$(p9k::get_colorCode "$1")
+  local color2=$(p9k::get_colorCode "$2")
 
   return $(( color1 != color2 ))
 }

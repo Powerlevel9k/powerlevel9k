@@ -1,0 +1,52 @@
+#!/usr/bin/env zsh
+# vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
+################################################################
+# @title powerlevel9k Support File - Test Statistics
+# @source [powerlevel9k](https://github.com/bhilburn/powerlevel9k)
+##
+# @info
+#   This file contains supplemental Test Statistics functions
+#   for the rspec_stats.p9k and symfony_tests segments.
+##
+
+################################################################
+# Register segment
+# Parameters:
+#   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
+#                                                                                                                      
+p9k::register_segment "TEST_STATS" "GOOD" "cyan"   "${DEFAULT_COLOR}"   ''  $'\uE891'  $'\uF291'  '\u'$CODEPOINT_OF_AWESOME_BUG  $'\uF188'
+p9k::register_segment "TEST_STATS" "AVG"  "yellow" "${DEFAULT_COLOR}"   ''  $'\uE891'  $'\uF291'  '\u'$CODEPOINT_OF_AWESOME_BUG  $'\uF188'
+p9k::register_segment "TEST_STATS" "BAD"  "red"    "${DEFAULT_COLOR}"   ''  $'\uE891'  $'\uF291'  '\u'$CODEPOINT_OF_AWESOME_BUG  $'\uF188'
+
+################################################################
+# @description
+#   Show a ratio of tests vs code.
+##
+# @args
+#   $1 string of the calling segment
+#   $2 string Alignment - left | right
+#   $3 integer Index
+#   $4 bool Whether the segment should be joined
+#   $5 string Code Amount
+#   $6 string Tests Amount
+#   $7 string Headline
+#   $8 string Icon
+##
+# @note
+#   This function is called by prompt segments to display the information required.
+build_test_stats() {
+  local current_state="UNDEFINED"
+  local code_amount="$5"
+  local tests_amount="$6"+0.00001
+  local headline="$7"
+
+  # Set float precision to 2 digits:
+  typeset -F 2 ratio
+  local ratio=$(( (tests_amount/code_amount) * 100 ))
+
+  (( ratio >= 75 )) && current_state="GOOD"
+  (( ratio >= 50 && ratio < 75 )) && current_state="AVG"
+  (( ratio < 50 )) && current_state="BAD"
+
+  p9k::prepare_segment "$1" "${current_state}" "$2" $3 $4 "$headline: $ratio%%"
+}

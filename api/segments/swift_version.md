@@ -1,0 +1,22 @@
+# powerlevel9k Segment - Swift Version
+
+
+### Source(s)
+
+[https://github.com/bhilburn/powerlevel9k](#https://github.com/bhilburn/powerlevel9k)
+
+
+## Table of Contents
+
+- [prompt_swift_version](#prompt_swift_version)
+
+## prompt_swift_version
+*Display the current Swift version. *
+
+#### Arguments
+
+- **$1** (string) Alignment - left | right
+- **$2** (integer) Segment index
+- **$3** (boolean) Whether the segment should be joined
+
+

@@ -1,0 +1,70 @@
+#!/usr/bin/env zsh
+# vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
+################################################################
+# @title powerlevel9k Segment - TaskWarrior
+# @source [powerlevel9k](https://github.com/bhilburn/powerlevel9k)
+##
+
+################################################################
+# Register segment
+# Parameters:
+#   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
+#                                                                                     ☑          ☑          ☑                                                   
+p9k::register_segment "TW" "FINISHEDALL"    "green"                     "${DEFAULT_COLOR}"  $'\u2611'  $'\u2611'  $'\u2611'  '\u'$CODEPOINT_OF_AWESOME_CHECK_SQUARE_O  $'\uF046'
+p9k::register_segment "TW" "FINISHEDTODAY"  "green"                     "${DEFAULT_COLOR}"  $'\u2611'  $'\u2611'  $'\u2611'  '\u'$CODEPOINT_OF_AWESOME_CHECK_SQUARE_O  $'\uF046'
+p9k::register_segment "TW" "TODAYPENDING"   "${DEFAULT_COLOR_INVERTED}" "${DEFAULT_COLOR}"  $'\u2611'  $'\u2611'  $'\u2611'  '\u'$CODEPOINT_OF_AWESOME_CHECK_SQUARE_O  $'\uF046'
+p9k::register_segment "TW" "TODAYONLY"      "${DEFAULT_COLOR_INVERTED}" "${DEFAULT_COLOR}"  $'\u2611'  $'\u2611'  $'\u2611'  '\u'$CODEPOINT_OF_AWESOME_CHECK_SQUARE_O  $'\uF046'
+p9k::register_segment "TW" "LATE"           "yellow"                    "${DEFAULT_COLOR}"  $'\u2611'  $'\u2611'  $'\u2611'  '\u'$CODEPOINT_OF_AWESOME_CHECK_SQUARE_O  $'\uF046'
+
+p9k::set_default P9K_TW_COMPACT false
+################################################################
+# @description
+#   Displays data from TaskWarrior.
+##
+# @args
+#   $1 string Alignment - left | right
+#   $2 integer Segment index
+#   $3 boolean Whether the segment should be joined
+##
+prompt_tw() {
+  if $(hash task 2>&-); then
+    local current_state="" message=""
+    local -a tasks; tasks=( "${(@Qf)$( task +PENDING export 2> /dev/null )}" ) # put the JSON file from task into an array, removing quotes
+    local date=$( date +"%Y%m%d" 2> /dev/null )
+    local today=0 over=0 pending=$(( ${#tasks[@]} - 2 ))
+    local -a match
+    for line in "${(s:,:)tasks[@]}"; do # split the array into multiple lines on delimiter comma (,)
+      match=( ${(s.:.)line} ) # split line into keys and values
+      if [[ ${match[1]} == "due" ]]; then
+        [[ ${match[2]:0:8} == $date ]] && (( ++today )) # tasks due today
+        (( ${match[2]:0:8} < $date )) && (( ++over )) # overdue tasks
+      fi
+    done
+    typeset -gAH tw_messages
+    tw_messages=(
+      'finishedall'      "No pending tasks!"
+      'finishedtoday'    "${pending} tasks coming up"
+      'todaypending'     "${today} tasks due today and $(( ${pending}-${today} )) coming up"
+      'todayonly'        "${today} tasks due today"
+      'late'             "${over} late, ${today} due today and $(( ${pending}-${today}-${over} )) coming up"
+    )
+
+    if [[  ${today} -gt 0  ]]; then
+      if [[  ${pending}-${today} -gt 0  ]]; then
+        current_state="todaypending"
+      else
+        current_state="todayonly"
+      fi
+    else
+      current_state="finishedtoday"
+    fi
+    if [[  ${over} -gt 0 ]]; then
+      current_state="late"
+    fi
+    if [[ ${pending} -eq 0 ]]; then
+      current_state="finishedall"
+    fi
+    [[ "${(L)P9K_TW_COMPACT}" == "true" ]] && message="$(( ${pending}-${today}-${over} ))p ${today}t ${over}o" || message="${tw_messages[${current_state}]}"
+    p9k::prepare_segment "$0" "${current_state}" "$1" "$2" "$3" "${message}"
+  fi
+}

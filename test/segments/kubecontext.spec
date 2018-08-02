@@ -9,6 +9,7 @@ function setUp() {
   export TERM="xterm-256color"
   # Load Powerlevel9k
   source powerlevel9k.zsh-theme
+  source segments/kubecontext.p9k
 }
 
 function mockKubectl() {
@@ -67,31 +68,35 @@ function mockKubectlOtherNamespace() {
 
 function testKubeContext() {
   alias kubectl=mockKubectl
-  POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(kubecontext)
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(kubecontext)
 
-  assertEquals "%K{magenta} %F{white%}⎈ %f%F{white}minikube/default %k%F{magenta}%f " "$(build_left_prompt)"
+  assertEquals "%K{magenta} %F{white}⎈ %f%F{white}minikube/default %k%F{magenta}%f " "$(__p9k_build_left_prompt)"
 
-  unset POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
+  unset P9K_LEFT_PROMPT_ELEMENTS
   unalias kubectl
 }
 function testKubeContextOtherNamespace() {
   alias kubectl=mockKubectlOtherNamespace
-  POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(kubecontext)
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(kubecontext)
 
-  assertEquals "%K{magenta} %F{white%}⎈ %f%F{white}minikube/kube-system %k%F{magenta}%f " "$(build_left_prompt)"
+  assertEquals "%K{magenta} %F{white}⎈ %f%F{white}minikube/kube-system %k%F{magenta}%f " "$(__p9k_build_left_prompt)"
 
-  unset POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
+  unset P9K_LEFT_PROMPT_ELEMENTS
   unalias kubectl
 }
 function testKubeContextPrintsNothingIfKubectlNotAvailable() {
   alias kubectl=noKubectl
-  POWERLEVEL9K_CUSTOM_WORLD='echo world'
-  POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(custom_world kubecontext)
+  P9K_CUSTOM_WORLD='echo world'
+  p9k::register_segment "WORLD"
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(custom_world kubecontext)
 
-  assertEquals "%K{white} %F{black}world %k%F{white}%f " "$(build_left_prompt)"
+  assertEquals "%K{white} %F{black}world %k%F{white}%f " "$(__p9k_build_left_prompt)"
 
-  unset POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
-  unset POWERLEVEL9K_CUSTOM_WORLD
+  unset P9K_LEFT_PROMPT_ELEMENTS
+  unset P9K_CUSTOM_WORLD
   unalias kubectl
 }
 
