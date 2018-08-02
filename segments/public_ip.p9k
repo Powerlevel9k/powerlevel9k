@@ -33,7 +33,7 @@ p9k::set_default P9K_PUBLIC_IP_TIMEOUT "00"
 p9k::set_default P9K_PUBLIC_IP_NONE ""
 p9k::set_default P9K_PUBLIC_IP_FILE "/tmp/p9k_public_ip"
 p9k::set_default P9K_PUBLIC_IP_HOST "http://ident.me"
-defined P9K_PUBLIC_IP_METHODS || P9K_PUBLIC_IP_METHODS=(dig curl wget)
+p9k::defined P9K_PUBLIC_IP_METHODS || P9K_PUBLIC_IP_METHODS=(dig curl wget)
 prompt_public_ip() {
   # Do we need a fresh IP?
   local refresh_ip=false
