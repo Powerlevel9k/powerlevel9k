@@ -24,7 +24,7 @@ function testBackgroundJobsSegmentPrintsNothingWithoutBackgroundJobs() {
   assertEquals "%K{white} %F{black}world %k%F{white}%f " "$(buildLeftPrompt)"
 }
 
-function testBackgroundJobsSegmentVerboseAlwaysPrintsWithoutBackgroundJobs() {
+function testBackgroundJobsSegmentVerboseAlwaysPrintsZeroWithoutBackgroundJobs() {
   local P9K_BACKGROUND_JOBS_VERBOSE_ALWAYS=true
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(background_jobs)
@@ -46,7 +46,7 @@ function testBackgroundJobsSegmentWorksWithOneBackgroundJob() {
 
   # Load Powerlevel9k
   source segments/background_jobs.p9k
-  assertEquals "%K{black} %F{cyan}⚙ %f%F{cyan}1 %k%F{black}%f " "$(buildLeftPrompt)"
+  assertEquals "%K{black} %F{cyan}⚙ %f%F{cyan} %k%F{black}%f " "$(buildLeftPrompt)"
 }
 
 function testBackgroundJobsSegmentWorksWithMultipleBackgroundJobs() {
