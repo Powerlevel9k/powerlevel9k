@@ -1,0 +1,33 @@
+#!/usr/bin/env zsh
+# vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
+################################################################
+# @title powerlevel9k Segment - Node Version
+# @source https://github.com/bhilburn/powerlevel9k
+##
+# @authors
+#   Ben Hilburn (bhilburn)
+#   Dominik Ritter (dritter)
+##
+
+################################################################
+# Register segment icon
+# Parameters:
+#   name_of_icon  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
+#                          ⬢         ⬢          ⬢          ⬢          
+registerIcon "NODE_ICON"  $'\u2B22'  $'\u2B22'  $'\u2B22'  $'\u2B22'  $'\uE617 '
+
+################################################################
+# @description
+#   Display the current Node version.
+##
+# @args
+#   $1 string Alignment - left | right
+#   $2 integer Segment index
+#   $3 boolean Whether the segment should be joined
+##
+prompt_node_version() {
+  local node_version=$(node -v 2>/dev/null)
+  [[ -z "${node_version}" ]] && return
+
+  p9kPrepareSegment "$0" "" $1 "$2" $3 "green" "white" "${node_version:1}" 'NODE_ICON'
+}

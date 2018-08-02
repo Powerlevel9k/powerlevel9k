@@ -7,8 +7,8 @@ SHUNIT_PARENT=$0
 
 function setUp() {
   # Load Powerlevel9k
-  source functions/icons.zsh
   source functions/utilities.zsh
+  source functions/icons.zsh
 }
 
 function testDefinedFindsDefinedVariable() {
@@ -23,7 +23,7 @@ function testDefinedDoesNotFindUndefinedVariable() {
 }
 
 function testSetDefaultSetsVariable() {
-  set_default 'my_var' 'x'
+  setDefault 'my_var' 'x'
 
   assertEquals 'x' "$my_var"
   unset my_var

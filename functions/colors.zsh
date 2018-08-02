@@ -1,15 +1,29 @@
+#!/usr/bin/env zsh
 # vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
 ################################################################
-# Color functions
-# This file holds some color-functions for
-# the powerlevel9k-ZSH-theme
-# https://github.com/bhilburn/powerlevel9k
-################################################################
+# @title powerlevel9k Color Functions
+# @source https://github.com/bhilburn/powerlevel9k
+##
+# @authors
+#   Ben Hilburn (bhilburn)
+#   Dominik Ritter (dritter)
+##
+# @info
+#   This file contains some color-functions for powerlevel9k.
+##
 
+################################################################
+# @description
+#   This function checks if the terminal supports 256 colors.
+#   If it doesn't, an error message is displayed.
+##
+# @noargs
+##
+# @note
+#   You can bypass this check by setting `P9K_IGNORE_TERM_COLORS=true`.
+##
 function termColors() {
-  if [[ $POWERLEVEL9K_IGNORE_TERM_COLORS == true ]]; then
-    return
-  fi
+  [[ $P9K_IGNORE_TERM_COLORS == true ]] && return
 
   local term_colors
 
@@ -26,7 +40,13 @@ function termColors() {
   fi
 }
 
-# get the proper color code if it does not exist as a name.
+################################################################
+# @description
+#   This function gets the proper color code if it does not exist as a name.
+##
+# @args
+#   $1 misc Color to check (as a number or string)
+##
 function getColor() {
   # no need to check numerical values
   if [[ "$1" = <-> ]]; then
@@ -48,7 +68,19 @@ function getColor() {
   echo -n "$1"
 }
 
-# empty paramenter resets (stops) background color
+################################################################
+# @description
+#   Function to set the background color.
+##
+# @args
+#   $1 misc The background color.
+##
+# @returns
+#   An escape code string for (re)setting the background color.
+##
+# @note
+#   An empty paramenter resets (stops) background color.
+##
 function backgroundColor() {
   if [[ -z $1 ]]; then
     echo -n "%k"
@@ -57,7 +89,19 @@ function backgroundColor() {
   fi
 }
 
-# empty paramenter resets (stops) foreground color
+################################################################
+# @description
+#   Function to set the foreground color.
+##
+# @args
+#   $1 misc The foreground color.
+##
+# @returns
+#   An escape code string for (re)setting the foreground color.
+##
+# @note
+#   An empty paramenter resets (stops) foreground color.
+##
 function foregroundColor() {
   if [[ -z $1 ]]; then
     echo -n "%f"
@@ -66,8 +110,14 @@ function foregroundColor() {
   fi
 }
 
-# Get numerical color codes. That way we translate ANSI codes
-# into ZSH-Style color codes.
+################################################################
+# @description
+#   Function to get numerical color codes. That way we translate
+#   ANSI codes into ZSH-Style color codes.
+##
+# @args
+#   $1 misc Number or string of color.
+##
 function getColorCode() {
   # Check if given value is already numerical
   if [[ "$1" = <-> ]]; then
@@ -364,7 +414,14 @@ function getColorCode() {
   fi
 }
 
-# Check if two colors are equal, even if one is specified as ANSI code.
+################################################################
+# @description
+#   Check if two colors are equal, even if one is specified as ANSI code.
+##
+# @args
+#   $1 misc First color (number or string)
+#   $2 misc Second color (number or string)
+##
 function isSameColor() {
   if [[ "$1" == "NONE" || "$2" == "NONE" ]]; then
     return 1

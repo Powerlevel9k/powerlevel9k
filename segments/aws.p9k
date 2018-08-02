@@ -1,0 +1,34 @@
+#!/usr/bin/env zsh
+# vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
+################################################################
+# @title powerlevel9k Segment - AWS
+# @source https://github.com/bhilburn/powerlevel9k
+##
+# @authors
+#   Ben Hilburn (bhilburn)
+#   Dominik Ritter (dritter)
+##
+
+################################################################
+# Register segment icon
+# Parameters:
+#   name_of_icon  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
+#                                                                                     
+registerIcon "AWS_ICON"  'AWS:'  $'\uE895'  $'\uF270'  '\u'$CODEPOINT_OF_AWESOME_SERVER  $'\uF270'
+
+################################################################
+# @description
+#   Display the current AWS Profile.
+##
+# @args
+#   $1 string Alignment - left | right
+#   $2 integer Segment index
+#   $3 boolean Whether the segment should be joined
+##
+prompt_aws() {
+  local aws_profile="${AWS_PROFILE:-$AWS_DEFAULT_PROFILE}"
+
+  if [[ -n "$aws_profile" ]]; then
+    p9kPrepareSegment "$0" "" $1 "$2" $3 red white "$aws_profile" 'AWS_ICON'
+  fi
+}

@@ -1,0 +1,81 @@
+#!/usr/bin/env zsh
+# vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
+################################################################
+# @title powerlevel9k Segment - Load
+# @source https://github.com/bhilburn/powerlevel9k
+##
+# @authors
+#   Ben Hilburn (bhilburn)
+#   Dominik Ritter (dritter)
+##
+
+################################################################
+# Register segment icon
+# Parameters:
+#   name_of_icon  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
+#                                                                                           
+registerIcon "LOAD_ICON"  'L'  $'\uE190 '  $'\uF080 '  '\u'$CODEPOINT_OF_AWESOME_BAR_CHART' '  $'\uF080 '
+
+setDefault P9K_LOAD_WHICH 5
+################################################################
+# @description
+#   Display the current load.
+##
+# @args
+#   $1 string Alignment - left | right
+#   $2 integer Segment index
+#   $3 boolean Whether the segment should be joined
+##
+prompt_load() {
+  # The load segment can have three different states
+  local current_state="unknown"
+  local load_select=2
+  local load_avg
+  local cores
+
+  typeset -AH load_states
+  load_states=(
+    'critical'      'red'
+    'warning'       'yellow'
+    'normal'        'green'
+  )
+
+  case "$P9K_LOAD_WHICH" in
+    1)
+      load_select=1
+      ;;
+    5)
+      load_select=2
+      ;;
+    15)
+      load_select=3
+      ;;
+  esac
+
+  case "$OS" in
+    OSX|BSD)
+      load_avg=$(sysctl vm.loadavg | grep -o -E '[0-9]+(\.|,)[0-9]+' | sed -n ${load_select}p)
+      if [[ "$OS" == "OSX" ]]; then
+        cores=$(sysctl -n hw.logicalcpu)
+      else
+        cores=$(sysctl -n hw.ncpu)
+      fi
+      ;;
+    *)
+      load_avg=$(cut -d" " -f${load_select} /proc/loadavg)
+      cores=$(nproc)
+  esac
+
+  # Replace comma
+  load_avg=${load_avg//,/.}
+
+  if [[ "$load_avg" -gt $((${cores} * 0.7)) ]]; then
+    current_state="critical"
+  elif [[ "$load_avg" -gt $((${cores} * 0.5)) ]]; then
+    current_state="warning"
+  else
+    current_state="normal"
+  fi
+
+  p9kPrepareSegment "$0" "${current_state}" $1 "$2" $3 "${load_states[$current_state]}" "$DEFAULT_COLOR" "$load_avg" 'LOAD_ICON'
+}
