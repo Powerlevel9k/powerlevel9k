@@ -70,7 +70,7 @@ function +vi-git-remotebranch() {
     # Always show the remote
     #if [[ -n ${remote} ]] ; then
     # Only show the remote if it differs from the local
-    if [[ -n ${remote} ]] && [[ "${remote#*/}" != "${branch_name}" ]] ; then
+    if [[ -n ${remote} ]] && [[ "${remote#*/}" != "${branch_name#heads/}" ]] ; then
         hook_com[branch]+="$(print_icon 'VCS_REMOTE_BRANCH_ICON')${remote// /}"
     fi
 }
