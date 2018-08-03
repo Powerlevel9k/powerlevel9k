@@ -322,6 +322,8 @@ prompt_aws_eb_env() {
 set_default POWERLEVEL9K_BACKGROUND_JOBS_VERBOSE true
 set_default POWERLEVEL9K_BACKGROUND_JOBS_VERBOSE_ALWAYS false
 set_default POWERLEVEL9K_BACKGROUND_JOBS_EXPANDED false
+jobs_running=0
+jobs_suspended=0
 prompt_background_jobs() {
   local jobs_print=""
   local total_jobs=$(( ${jobs_running} + ${jobs_suspended} ))
@@ -338,8 +340,9 @@ prompt_background_jobs() {
     fi
   fi
 
-  ( [[ ${(L)P9K_BACKGROUND_JOBS_VERBOSE_ALWAYS} == true ]] || (( ${total_jobs} > 0 )) ) \
-      && "$1_prompt_segment" "$0" "$2" "$DEFAULT_COLOR" "cyan" "${jobs_print}" 'BACKGROUND_JOBS_ICON'
+  if [[ "${(L)POWERLEVEL9K_BACKGROUND_JOBS_VERBOSE_ALWAYS}" == "true" ]] || (( ${total_jobs} > 0 )); then
+    "$1_prompt_segment" "$0" "$2" "$DEFAULT_COLOR" "cyan" "${jobs_print}" 'BACKGROUND_JOBS_ICON'
+  fi
 }
 
 ################################################################
@@ -1845,8 +1848,6 @@ local NEWLINE='
 }
 
 powerlevel9k_background_jobs() {
-  jobs_running=0
-  jobs_suspended=0
   # See https://unix.stackexchange.com/questions/68571/show-jobs-count-only-if-it-is-more-than-0
   jobs_running=${(M)#${jobstates%%:*}:#running}
   jobs_suspended=${(M)#${jobstates%%:*}:#suspended}
