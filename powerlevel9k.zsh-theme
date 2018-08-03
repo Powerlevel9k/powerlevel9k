@@ -324,19 +324,21 @@ set_default POWERLEVEL9K_BACKGROUND_JOBS_VERBOSE_ALWAYS false
 set_default POWERLEVEL9K_BACKGROUND_JOBS_EXPANDED false
 prompt_background_jobs() {
   local jobs_print=""
-  local total=$(( ${jobs_running} + ${jobs_suspended} ))
-  [[ "${(L)POWERLEVEL9K_BACKGROUND_JOBS_VERBOSE_ALWAYS}" == "true" ]] && jobs_print=0
+  local total_jobs=$(( ${jobs_running} + ${jobs_suspended} ))
 
-  if [[ "${(L)POWERLEVEL9K_BACKGROUND_JOBS_VERBOSE}" == "true" || "${(L)POWERLEVEL9K_BACKGROUND_JOBS_VERBOSE_ALWAYS}" == "true" ]] \
-      && (( ${total} > 0 )); then
-    if [[ "${(L)POWERLEVEL9K_BACKGROUND_JOBS_EXPANDED}" == "true" ]]; then
-      jobs_print="${jobs_running}r ${jobs_suspended}s"
-    else
-      jobs_print="${total}"
+  if [[ "${(L)POWERLEVEL9K_BACKGROUND_JOBS_VERBOSE}" == "true" \
+      || "${(L)POWERLEVEL9K_BACKGROUND_JOBS_VERBOSE_ALWAYS}" == "true" ]]; then
+    jobs_print=0
+    if (( ${total_jobs} > 0 )); then
+      if [[ "${(L)POWERLEVEL9K_BACKGROUND_JOBS_EXPANDED}" == "true" ]]; then
+        jobs_print="${jobs_running}r ${jobs_suspended}s"
+      else
+        jobs_print="${total_jobs}"
+      fi
     fi
   fi
 
-  ( (( ${total} > 0 )) || [[ "${(L)POWERLEVEL9K_BACKGROUND_JOBS_VERBOSE_ALWAYS}" == "true" ]] ) \
+  ( [[ ${(L)P9K_BACKGROUND_JOBS_VERBOSE_ALWAYS} == true ]] || (( ${total_jobs} > 0 )) ) \
       && "$1_prompt_segment" "$0" "$2" "$DEFAULT_COLOR" "cyan" "${jobs_print}" 'BACKGROUND_JOBS_ICON'
 }
 
