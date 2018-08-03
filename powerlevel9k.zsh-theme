@@ -1845,6 +1845,8 @@ local NEWLINE='
 }
 
 powerlevel9k_background_jobs() {
+  jobs_running=0
+  jobs_suspended=0
   # See https://unix.stackexchange.com/questions/68571/show-jobs-count-only-if-it-is-more-than-0
   jobs_running=${(M)#${jobstates%%:*}:#running}
   jobs_suspended=${(M)#${jobstates%%:*}:#suspended}
