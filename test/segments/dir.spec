@@ -479,18 +479,19 @@ function testTruncateToUniqueWorks() {
   local P9K_DIR_SHORTEN_LENGTH=2
   local P9K_DIR_SHORTEN_STRATEGY='truncate_to_unique'
 
-  # get unique name for tmp folder - on macOS, this is /private/tmp
-  cd /tmp
-  local test_path=${$(__p9k_get_unique_path $PWD:A)//\//$P9K_DIR_PATH_SEPARATOR}
-  cd -
-
   mkdir -p /tmp/powerlevel9k-test/adam/devl
   mkdir -p /tmp/powerlevel9k-test/alice/devl
   mkdir -p /tmp/powerlevel9k-test/alice/docs
   mkdir -p /tmp/powerlevel9k-test/bob/docs
+
+  # get unique name for tmp folder - on macOS, this is /private/tmp
+  cd /tmp/powerlevel9k-test
+  local test_path=${$(__p9k_get_unique_path $PWD:A)//\//$P9K_DIR_PATH_SEPARATOR}
+  cd -
+
   cd /tmp/powerlevel9k-test/alice/devl
 
-  assertEquals "%K{blue} %F{black}${test_path}xXxpxXxalxXxde %k%F{blue}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{blue} %F{black}${test_path}xXxalxXxde %k%F{blue}%f " "$(__p9k_build_left_prompt)"
 
   cd -
   rm -fr /tmp/powerlevel9k-test
