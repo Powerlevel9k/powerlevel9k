@@ -80,4 +80,4 @@ function testCommandExecutionTimeIsFormattedHumandReadbleForHourLongCommand() {
   assertEquals "%K{red} %F{yellow1}Dur %f%F{yellow1}02:00:00 %k%F{red}%f " "$(__p9k_build_left_prompt)"
 }
 
-source shunit2/source/2.1/src/shunit2
+source shunit2/shunit2

@@ -144,4 +144,4 @@ function testBranchNameTruncatingShortenStrategy() {
   rm -fr /tmp/powerlevel9k-test
 }
 
-source shunit2/source/2.1/src/shunit2
+source shunit2/shunit2

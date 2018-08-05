@@ -76,4 +76,4 @@ function testBackgroundJobsSegmentWorksWithExpandedMode() {
   assertEquals "%K{black} %F{cyan}⚙ %f%F{cyan}1r 2s %k%F{black}%f " "$(__p9k_build_left_prompt)"
 }
 
-source shunit2/source/2.1/src/shunit2
+source shunit2/shunit2

@@ -54,4 +54,4 @@ function testVisualIdentifierPrintsNothingIfNotAvailable() {
   assertEquals "%K{white} %F{black}*icon-here %f%F{black}world1 %k%F{white}%f " "$(__p9k_build_left_prompt)"
 }
 
-source shunit2/source/2.1/src/shunit2
+source shunit2/shunit2
