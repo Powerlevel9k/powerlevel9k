@@ -31,3 +31,4 @@ script:
   - test/segments/kubecontext.spec
   - test/segments/laravel_version.spec
   - test/segments/status.spec
+  - test/segments/stack_project.spec
