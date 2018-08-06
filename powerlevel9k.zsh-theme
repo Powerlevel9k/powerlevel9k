@@ -1755,7 +1755,7 @@ prompt_stack_project() {
 
   if [[ -n "${haskellstack_version}" ]]; then
     if [[ "${stackyaml_file_search}" != $HOME && "${stackyaml_file_search}" != "/" ]]; then
-      "$1_prompt_segment" "$0" "$2" "purple3" "white" "Stack v$haskellstack_version" "HASKELL_ICON"
+      "$1_prompt_segment" "$0" "$2" "magenta" "white" "Stack v$haskellstack_version" "HASKELL_ICON"
     fi
   fi
 }
