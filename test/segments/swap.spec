@@ -26,33 +26,33 @@ function tearDown() {
 }
 
 function testSwapSegmentWorksOnOsx() {
-    local -a P9K_LEFT_PROMPT_ELEMENTS
-    P9K_LEFT_PROMPT_ELEMENTS=(swap)
-    sysctl() {
-        echo "vm.swapusage: total = 3072,00M  used = 1620,50M  free = 1451,50M  (encrypted)"
-    }
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(swap)
+  sysctl() {
+    echo "vm.swapusage: total = 3072,00M  used = 1620,50M  free = 1451,50M  (encrypted)"
+  }
 
-    # Load Powerlevel9k
-    source ${P9K_HOME}/powerlevel9k.zsh-theme
-    local OS="OSX" # Fake OSX
+  # Load Powerlevel9k
+  source ${P9K_HOME}/powerlevel9k.zsh-theme
+  local OS="OSX" # Fake OSX
 
-    assertEquals "%K{yellow} %F{black}SWP %f%F{black}1.58G " "$(prompt_swap left 1 false ${FOLDER})"
+  assertEquals "%K{yellow} %F{black}SWP %f%F{black}1.58G " "$(prompt_swap left 1 false ${FOLDER})"
 
-    unfunction sysctl
+  unfunction sysctl
 }
 
 function testSwapSegmentWorksOnLinux() {
-    local -a P9K_LEFT_PROMPT_ELEMENTS
-    P9K_LEFT_PROMPT_ELEMENTS=(swap)
-    mkdir proc
-    echo "SwapTotal: 1000000" > proc/meminfo
-    echo "SwapFree: 1000" >> proc/meminfo
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(swap)
+  mkdir proc
+  echo "SwapTotal: 1000000" > proc/meminfo
+  echo "SwapFree: 1000" >> proc/meminfo
 
-    # Load Powerlevel9k
-    source ${P9K_HOME}/powerlevel9k.zsh-theme
-    local OS="Linux" # Fake Linux
+  # Load Powerlevel9k
+  source ${P9K_HOME}/powerlevel9k.zsh-theme
+  local OS="Linux" # Fake Linux
 
-    assertEquals "%K{yellow} %F{black}SWP %f%F{black}0.95G " "$(prompt_swap left 1 false ${FOLDER})"
+  assertEquals "%K{yellow} %F{black}SWP %f%F{black}0.95G " "$(prompt_swap left 1 false ${FOLDER})"
 }
 
 source shunit2/shunit2

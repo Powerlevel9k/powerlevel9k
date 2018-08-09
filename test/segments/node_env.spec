@@ -19,73 +19,73 @@ function setUp() {
 }
 
 function testNodeenvSegmentPrintsNothingWithoutNode() {
-    local -a P9K_LEFT_PROMPT_ELEMENTS
-    P9K_LEFT_PROMPT_ELEMENTS=(node_env custom_world)
-    local P9K_CUSTOM_WORLD='echo world'
-    p9k::register_segment "WORLD"
-    alias node="nonode 2>/dev/null"
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(node_env custom_world)
+  local P9K_CUSTOM_WORLD='echo world'
+  p9k::register_segment "WORLD"
+  alias node="nonode 2>/dev/null"
 
-    assertEquals "%K{white} %F{black}world %k%F{white}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{white} %F{black}world %k%F{white}%f " "$(__p9k_build_left_prompt)"
 
-    unalias node
+  unalias node
 }
 
 function testNodeenvSegmentPrintsNothingIfNodeVirtualEnvIsNotSet() {
-    local -a P9K_LEFT_PROMPT_ELEMENTS
-    P9K_LEFT_PROMPT_ELEMENTS=(node_env custom_world)
-    local P9K_CUSTOM_WORLD='echo world'
-    p9k::register_segment "WORLD"
-    node() {
-        echo "v1.2.3"
-    }
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(node_env custom_world)
+  local P9K_CUSTOM_WORLD='echo world'
+  p9k::register_segment "WORLD"
+  node() {
+    echo "v1.2.3"
+  }
 
-    assertEquals "%K{white} %F{black}world %k%F{white}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{white} %F{black}world %k%F{white}%f " "$(__p9k_build_left_prompt)"
 
-    unfunction node
+  unfunction node
 }
 
 function testNodeenvSegmentPrintsNothingIfNodeVirtualEnvDisablePromptIsSet() {
-    local -a P9K_LEFT_PROMPT_ELEMENTS
-    P9K_LEFT_PROMPT_ELEMENTS=(node_env custom_world)
-    local P9K_CUSTOM_WORLD='echo world'
-    p9k::register_segment "WORLD"
-    node() {
-        echo "v1.2.3"
-    }
-    NODE_VIRTUAL_ENV="node-env"
-    NODE_VIRTUAL_ENV_DISABLE_PROMPT=true
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(node_env custom_world)
+  local P9K_CUSTOM_WORLD='echo world'
+  p9k::register_segment "WORLD"
+  node() {
+    echo "v1.2.3"
+  }
+  NODE_VIRTUAL_ENV="node-env"
+  NODE_VIRTUAL_ENV_DISABLE_PROMPT=true
 
-    assertEquals "%K{white} %F{black}world %k%F{white}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{white} %F{black}world %k%F{white}%f " "$(__p9k_build_left_prompt)"
 
-    unset NODE_VIRTUAL_ENV_DISABLE_PROMPT
-    unset NODE_VIRTUAL_ENV
-    unfunction node
+  unset NODE_VIRTUAL_ENV_DISABLE_PROMPT
+  unset NODE_VIRTUAL_ENV
+  unfunction node
 }
 
 function testNodeenvSegmentPrintsAtLeastNodeEnvWithoutNode() {
-    local -a P9K_LEFT_PROMPT_ELEMENTS
-    P9K_LEFT_PROMPT_ELEMENTS=(node_env)
-    alias node="nonode 2>/dev/null"
-    NODE_VIRTUAL_ENV="node-env"
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(node_env)
+  alias node="nonode 2>/dev/null"
+  NODE_VIRTUAL_ENV="node-env"
 
-    assertEquals "%K{black} %F{green}⬢ %f%F{green}[node-env] %k%F{black}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{black} %F{green}⬢ %f%F{green}[node-env] %k%F{black}%f " "$(__p9k_build_left_prompt)"
 
-    unset NODE_VIRTUAL_ENV
-    unalias node
+  unset NODE_VIRTUAL_ENV
+  unalias node
 }
 
 function testNodeenvSegmentWorks() {
-    local -a P9K_LEFT_PROMPT_ELEMENTS
-    P9K_LEFT_PROMPT_ELEMENTS=(node_env)
-    node() {
-        echo "v1.2.3"
-    }
-    NODE_VIRTUAL_ENV="node-env"
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(node_env)
+  node() {
+    echo "v1.2.3"
+  }
+  NODE_VIRTUAL_ENV="node-env"
 
-    assertEquals "%K{black} %F{green}⬢ %f%F{green}v1.2.3[node-env] %k%F{black}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{black} %F{green}⬢ %f%F{green}v1.2.3[node-env] %k%F{black}%f " "$(__p9k_build_left_prompt)"
 
-    unfunction node
-    unset NODE_VIRTUAL_ENV
+  unfunction node
+  unset NODE_VIRTUAL_ENV
 }
 
 source shunit2/shunit2

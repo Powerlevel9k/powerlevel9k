@@ -21,7 +21,6 @@ function testCommandExecutionTimeIsNotShownIfTimeIsBelowThreshold() {
   P9K_LEFT_PROMPT_ELEMENTS=(custom_world command_execution_time)
   P9K_CUSTOM_WORLD='echo world'
   p9k::register_segment "WORLD"
-  p9k::register_segment "WORLD"
   local _P9K_COMMAND_DURATION=2
 
   assertEquals "%K{white} %F{black}world %k%F{white}%f " "$(__p9k_build_left_prompt)"

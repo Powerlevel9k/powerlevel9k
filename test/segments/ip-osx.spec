@@ -102,20 +102,20 @@ function testIpSegmentWorksOnOsxWithMultipleInterfacesSpecified() {
 
   # Return a unique IP address for every interface
   ipconfig() {
-      case "${2}" {
-          en0)
-            echo 1.2.3.4
-          ;;
-          fw0)
-            echo 2.3.4.5
-          ;;
-          en1)
-            echo 3.4.5.6
-          ;;
-          en3)
-            echo 4.5.6.7
-          ;;
-      }
+    case "${2}" {
+      en0)
+        echo 1.2.3.4
+      ;;
+      fw0)
+        echo 2.3.4.5
+      ;;
+      en1)
+        echo 3.4.5.6
+      ;;
+      en3)
+        echo 4.5.6.7
+      ;;
+    }
   }
 
   local OS='OSX' # Fake OSX

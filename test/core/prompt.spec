@@ -11,6 +11,23 @@ function setUp() {
   source powerlevel9k.zsh-theme
 }
 
+stripEsc() {
+  local clean_string="" escape_found=false
+  for (( i = 0; i < ${#1}; i++ )); do
+    case ${1[i]}; in
+      "")  clean_string+="<Esc>"; escape_found=true ;; # escape character
+      "[")  if [[ $escape_found == true ]]; then
+              escape_found=false
+            else
+              clean_string+="${1[i]}"
+            fi
+            ;;
+      *)    clean_string+="${1[i]}" ;;
+    esac
+  done
+  echo "${clean_string}"
+}
+
 function testSegmentOnRightSide() {
     # Reset RPROMPT, so a running P9K does not interfere with the test
     local RPROMPT=
@@ -77,7 +94,10 @@ function testRightPromptOnSameLine() {
     startSkipping
 
     __p9k_prepare_prompts
-    assertEquals "%{\e[1A}%F{white}%K{white}%F{black} world1 %f%{\e[1B}" "${(e)RPROMPT}"
+
+    local _actual="$(stripEsc "${(e)RPROMPT}")"
+    local _expected="%{<Esc>1A%}%f%b%k%F{white}%K{white}%F{black} world1 %F{black} %{<Esc>00m%}%{<Esc>1B%"
+    assertEqualsEsc "${_expected}" "${_actual}"
 }
 
 function testPrefixingFirstLineOnLeftPrompt() {

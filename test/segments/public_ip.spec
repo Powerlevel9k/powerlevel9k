@@ -72,7 +72,7 @@ function testPublicIpSegmentWorksWithWget() {
   alias dig='nodig'
   alias curl='nocurl'
   wget() {
-      echo "wget 1.2.3.4"
+    echo "wget 1.2.3.4"
   }
 
   assertEquals "%K{black} %F{white}wget 1.2.3.4 %k%F{black}%f " "$(__p9k_build_left_prompt)"
@@ -88,7 +88,7 @@ function testPublicIpSegmentUsesCurlAsFallbackMethodIfWgetIsNotAvailable() {
   alias dig='nodig'
   alias wget='nowget'
   curl() {
-      echo "curl 1.2.3.4"
+    echo "curl 1.2.3.4"
   }
 
   assertEquals "%K{black} %F{white}curl 1.2.3.4 %k%F{black}%f " "$(__p9k_build_left_prompt)"
@@ -104,7 +104,7 @@ function testPublicIpSegmentUsesDigAsFallbackMethodIfWgetAndCurlAreNotAvailable(
   alias curl='nocurl'
   alias wget='nowget'
   dig() {
-      echo "dig 1.2.3.4"
+    echo "dig 1.2.3.4"
   }
 
   # Load Powerlevel9k
@@ -119,13 +119,13 @@ function testPublicIpSegmentCachesFile() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(public_ip)
   dig() {
-      echo "first"
+    echo "first"
   }
 
   assertEquals "%K{black} %F{white}first %k%F{black}%f " "$(__p9k_build_left_prompt)"
 
   dig() {
-      echo "second"
+    echo "second"
   }
 
   # Segment should not have changed!
@@ -139,14 +139,14 @@ function testPublicIpSegmentRefreshesCachesFileAfterTimeout() {
   P9K_LEFT_PROMPT_ELEMENTS=(public_ip)
   local P9K_PUBLIC_IP_TIMEOUT=2
   dig() {
-      echo "first"
+    echo "first"
   }
 
   assertEquals "%K{black} %F{white}first %k%F{black}%f " "$(__p9k_build_left_prompt)"
 
   sleep 3
   dig() {
-      echo "second"
+    echo "second"
   }
 
   # Segment should not have changed!
@@ -159,7 +159,7 @@ function testPublicIpSegmentRefreshesCachesFileIfEmpty() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(public_ip)
   dig() {
-      echo "first"
+    echo "first"
   }
 
   assertEquals "%K{black} %F{white}first %k%F{black}%f " "$(__p9k_build_left_prompt)"
@@ -168,7 +168,7 @@ function testPublicIpSegmentRefreshesCachesFileIfEmpty() {
   echo "" >! $P9K_PUBLIC_IP_FILE
 
   dig() {
-      echo "second"
+    echo "second"
   }
 
   # Segment should not have changed!
@@ -189,7 +189,7 @@ function testPublicIpSegmentWhenGoingOnline() {
   unalias dig
 
   dig() {
-      echo "second"
+    echo "second"
   }
 
   # Segment should not have changed!

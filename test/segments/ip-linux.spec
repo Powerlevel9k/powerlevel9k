@@ -13,64 +13,64 @@ function setUp() {
 }
 
 function testIpSegmentWorksOnLinuxWithNoInterfaceSpecified() {
-    setopt aliases
-    local P9K_LEFT_PROMPT_ELEMENTS=(ip)
-    # That command is harder to test, as it is used at first
-    # to get all relevant network interfaces and then for
-    # getting the configuration of that segment..
-    ip(){
-      if [[ "$*" == 'link ls up' ]]; then
-        echo "1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN mode DEFAULT group default
-    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+  setopt aliases
+  local P9K_LEFT_PROMPT_ELEMENTS=(ip)
+  # That command is harder to test, as it is used at first
+  # to get all relevant network interfaces and then for
+  # getting the configuration of that segment..
+  ip(){
+    if [[ "$*" == 'link ls up' ]]; then
+    echo "1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN mode DEFAULT group default
+  link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
 2: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP mode DEFAULT group default qlen 1000
-    link/ether 08:00:27:7e:84:45 brd ff:ff:ff:ff:ff:ff";
-      fi
+  link/ether 08:00:27:7e:84:45 brd ff:ff:ff:ff:ff:ff";
+    fi
 
-      if [[ "$*" == '-4 a show eth0' ]]; then
-        echo '2: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
-    inet 10.0.2.15/24 brd 10.0.2.255 scope global eth0
-       valid_lft forever preferred_lft forever';
-      fi
-    }
+    if [[ "$*" == '-4 a show eth0' ]]; then
+    echo '2: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
+  inet 10.0.2.15/24 brd 10.0.2.255 scope global eth0
+     valid_lft forever preferred_lft forever';
+    fi
+  }
 
-    local OS='Linux' # Fake Linux
+  local OS='Linux' # Fake Linux
 
-    assertEquals "%K{cyan} %F{black}IP %f%F{black}10.0.2.15 %k%F{cyan}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{cyan} %F{black}IP %f%F{black}10.0.2.15 %k%F{cyan}%f " "$(__p9k_build_left_prompt)"
 
-    unfunction ip
+  unfunction ip
 }
 
 function testIpSegmentWorksOnLinuxWithMultipleInterfacesSpecified() {
-    setopt aliases
-    local -a P9K_LEFT_PROMPT_ELEMENTS
-    P9K_LEFT_PROMPT_ELEMENTS=(ip)
-    # That command is harder to test, as it is used at first
-    # to get all relevant network interfaces and then for
-    # getting the configuration of that segment..
-    ip(){
-      if [[ "$*" == 'link ls up' ]]; then
-        echo "1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN mode DEFAULT group default
-    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+  setopt aliases
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(ip)
+  # That command is harder to test, as it is used at first
+  # to get all relevant network interfaces and then for
+  # getting the configuration of that segment..
+  ip(){
+    if [[ "$*" == 'link ls up' ]]; then
+    echo "1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN mode DEFAULT group default
+  link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
 2: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP mode DEFAULT group default qlen 1000
-    link/ether 08:00:27:7e:84:45 brd ff:ff:ff:ff:ff:ff
+  link/ether 08:00:27:7e:84:45 brd ff:ff:ff:ff:ff:ff
 3: eth1: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP mode DEFAULT group default qlen 1000
-    link/ether 08:00:27:7e:84:45 brd ff:ff:ff:ff:ff:ff
+  link/ether 08:00:27:7e:84:45 brd ff:ff:ff:ff:ff:ff
 4: wlan0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP mode DEFAULT group default qlen 1000
-    link/ether 08:00:27:7e:84:45 brd ff:ff:ff:ff:ff:ff";
-      fi
+  link/ether 08:00:27:7e:84:45 brd ff:ff:ff:ff:ff:ff";
+    fi
 
-      if [[ "$*" == '-4 a show eth1' ]]; then
-        echo '3: eth1: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
-    inet 10.0.2.15/24 brd 10.0.2.255 scope global eth0
-       valid_lft forever preferred_lft forever';
-      fi
-    }
+    if [[ "$*" == '-4 a show eth1' ]]; then
+    echo '3: eth1: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
+  inet 10.0.2.15/24 brd 10.0.2.255 scope global eth0
+     valid_lft forever preferred_lft forever';
+    fi
+  }
 
-    local OS='Linux' # Fake Linux
+  local OS='Linux' # Fake Linux
 
-    assertEquals "%K{cyan} %F{black}IP %f%F{black}10.0.2.15 %k%F{cyan}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{cyan} %F{black}IP %f%F{black}10.0.2.15 %k%F{cyan}%f " "$(__p9k_build_left_prompt)"
 
-    unfunction ip
+  unfunction ip
 }
 
 function testIpSegmentWorksOnLinuxWithInterfaceSpecified() {
@@ -78,9 +78,9 @@ function testIpSegmentWorksOnLinuxWithInterfaceSpecified() {
   P9K_LEFT_PROMPT_ELEMENTS=(ip)
   local P9K_IP_INTERFACE='xxx'
   ip(){
-    echo '2: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
+  echo '2: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
 inet 10.0.2.15/24 brd 10.0.2.255 scope global eth0
-    valid_lft forever preferred_lft forever';
+  valid_lft forever preferred_lft forever';
   }
 
   local OS='Linux' # Fake Linux

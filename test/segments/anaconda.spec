@@ -11,62 +11,61 @@ function setUp() {
 }
 
 function testAnacondaSegmentPrintsNothingIfNoAnacondaPathIsSet() {
-    local P9K_CUSTOM_WORLD='echo world'
+  local P9K_CUSTOM_WORLD='echo world'
   p9k::register_segment "WORLD"
-    p9k::register_segment "WORLD"
-    local -a P9K_LEFT_PROMPT_ELEMENTS
-    P9K_LEFT_PROMPT_ELEMENTS=(anaconda custom_world)
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(anaconda custom_world)
 
-    # Load Powerlevel9k
-    source segments/anaconda.p9k
+  # Load Powerlevel9k
+  source segments/anaconda.p9k
 
-    # Unset anacona variables
-    unset CONDA_ENV_PATH
-    unset CONDA_PREFIX
+  # Unset anacona variables
+  unset CONDA_ENV_PATH
+  unset CONDA_PREFIX
 
-    assertEquals "%K{white} %F{black}world %k%F{white}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{white} %F{black}world %k%F{white}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testAnacondaSegmentWorksIfOnlyAnacondaPathIsSet() {
-    local -a P9K_LEFT_PROMPT_ELEMENTS
-    P9K_LEFT_PROMPT_ELEMENTS=(anaconda)
-    local P9K_ANACONDA_ICON="*icon-here"
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(anaconda)
+  local P9K_ANACONDA_ICON="*icon-here"
 
-    # Load Powerlevel9k
-    source segments/anaconda.p9k
+  # Load Powerlevel9k
+  source segments/anaconda.p9k
 
-    CONDA_ENV_PATH=/tmp
-    unset CONDA_PREFIX
+  CONDA_ENV_PATH=/tmp
+  unset CONDA_PREFIX
 
-    assertEquals "%K{blue} %F{black}*icon-here %f%F{black}(tmp) %k%F{blue}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{blue} %F{black}*icon-here %f%F{black}(tmp) %k%F{blue}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testAnacondaSegmentWorksIfOnlyAnacondaPrefixIsSet() {
-    local -a P9K_LEFT_PROMPT_ELEMENTS
-    P9K_LEFT_PROMPT_ELEMENTS=(anaconda)
-    local P9K_ANACONDA_ICON="*icon-here"
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(anaconda)
+  local P9K_ANACONDA_ICON="*icon-here"
 
-    # Load Powerlevel9k
-    source segments/anaconda.p9k
+  # Load Powerlevel9k
+  source segments/anaconda.p9k
 
-    unset CONDA_ENV_PATH
-    local CONDA_PREFIX="test"
+  unset CONDA_ENV_PATH
+  local CONDA_PREFIX="test"
 
-    assertEquals "%K{blue} %F{black}*icon-here %f%F{black}(test) %k%F{blue}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{blue} %F{black}*icon-here %f%F{black}(test) %k%F{blue}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testAnacondaSegmentWorks() {
-    local -a P9K_LEFT_PROMPT_ELEMENTS
-    P9K_LEFT_PROMPT_ELEMENTS=(anaconda)
-    local P9K_ANACONDA_ICON="*icon-here"
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(anaconda)
+  local P9K_ANACONDA_ICON="*icon-here"
 
-    # Load Powerlevel9k
-    source segments/anaconda.p9k
+  # Load Powerlevel9k
+  source segments/anaconda.p9k
 
-    local CONDA_ENV_PATH=/tmp
-    local CONDA_PREFIX="test"
+  local CONDA_ENV_PATH=/tmp
+  local CONDA_PREFIX="test"
 
-    assertEquals "%K{blue} %F{black}*icon-here %f%F{black}(tmptest) %k%F{blue}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{blue} %F{black}*icon-here %f%F{black}(tmptest) %k%F{blue}%f " "$(__p9k_build_left_prompt)"
 }
 
 source shunit2/shunit2

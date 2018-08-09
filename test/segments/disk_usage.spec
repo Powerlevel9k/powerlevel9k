@@ -88,7 +88,6 @@ function testDiskUsageSegmentPrintsNothingIfDiskIsQuiteEmptyAndOnlyWarningsShoul
   local P9K_DISK_USAGE_ONLY_WARNING=true
   local P9K_CUSTOM_WORLD='echo world'
   p9k::register_segment "WORLD"
-  p9k::register_segment "WORLD"
 
   assertEquals "%K{white} %F{black}world %k%F{white}%f " "$(__p9k_build_left_prompt)"
 
