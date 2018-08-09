@@ -31,13 +31,13 @@ readonly __P9K_VERSION="0.7.0"
 
 # Try to set the installation path
 if [[ -n "$P9K_INSTALLATION_DIR" ]]; then
-  p9kDirectory=${P9K_INSTALLATION_DIR:A}
+  __P9K_DIRECTORY=${P9K_INSTALLATION_DIR:A}
 else
   if [[ "${(%):-%N}" == '(eval)' ]]; then
     if [[ "$0" == '-antigen-load' ]] && [[ -r "${PWD}/powerlevel9k.zsh-theme" ]]; then
       # Antigen uses eval to load things so it can change the plugin (!!)
       # https://github.com/zsh-users/antigen/issues/581
-      p9kDirectory=$PWD
+      __P9K_DIRECTORY=$PWD
     else
       print -P "%F{red}You must set P9K_INSTALLATION_DIR to work from within an (eval).%f"
       return 1
@@ -46,7 +46,7 @@ else
     # Get the path to file this code is executing in; then
     # get the absolute path and strip the filename.
     # See https://stackoverflow.com/a/28336473/108857
-    p9kDirectory=${${(%):-%x}:A:h}
+    __P9K_DIRECTORY=${${(%):-%x}:A:h}
   fi
 fi
 
@@ -54,19 +54,19 @@ fi
 # Source utility functions
 ################################################################
 
-source "${p9kDirectory}/functions/utilities.zsh"
+source "${__P9K_DIRECTORY}/functions/utilities.zsh"
 
 ################################################################
 # Source icon functions
 ################################################################
 
-source "${p9kDirectory}/functions/icons.zsh"
+source "${__P9K_DIRECTORY}/functions/icons.zsh"
 
 ################################################################
 # Source color functions
 ################################################################
 
-source "${p9kDirectory}/functions/colors.zsh"
+source "${__P9K_DIRECTORY}/functions/colors.zsh"
 
 ################################################################
 # Color Scheme
@@ -165,10 +165,10 @@ __p9k_print_deprecation_var_warning deprecated_variables
 
 case "${(L)P9K_GENERATOR}" in
   "zsh-async")
-    source "${p9kDirectory}/generator/zsh-async.p9k"
+    source "${__P9K_DIRECTORY}/generator/zsh-async.p9k"
   ;;
   *)
-    source "${p9kDirectory}/generator/default.p9k"
+    source "${__P9K_DIRECTORY}/generator/default.p9k"
   ;;
 esac
 
@@ -178,7 +178,7 @@ esac
 
 # load only the segments that are being used!
 local segmentName
-for segment in $p9kDirectory/segments/*.p9k; do
+for segment in $__P9K_DIRECTORY/segments/*.p9k; do
   segmentName=${${segment##*/}%.p9k}
   if p9k::segment_in_use "$segmentName"; then
     source "${segment}" 2>&1
@@ -196,7 +196,7 @@ if [[ -d $HOME/.config/powerlevel9k/segments ]]; then
 fi
 
 # cleanup temporary variable - not done because it is used for autoloading segments
-#unset p9kDirectory
+#unset __P9K_DIRECTORY
 
 # Launch the generator
 
