@@ -12,7 +12,7 @@
 ################################################################
 # Source autoload functions
 ################################################################
-local autoload_path="$p9kDirectory/functions/autoload"
+local autoload_path="$__P9K_DIRECTORY/functions/autoload"
 # test if we already autoloaded the functions
 if [[ ${fpath[(ie)$autoload_path]} -gt ${#fpath} ]]; then
   fpath=( $autoload_path "${fpath[@]}" )
