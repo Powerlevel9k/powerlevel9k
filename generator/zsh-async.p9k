@@ -45,12 +45,12 @@ __p9k_left_prompt_segment() {
   local current_index="${2}"
   local joined="${3}"
   local content
-  [[ $p9k_data[${STATEFUL_NAME}_BD] == true ]] && content="%B${4}%b" || content="${4}"
+  [[ $__P9K_DATA[${STATEFUL_NAME}_BD] == true ]] && content="%B${4}%b" || content="${4}"
   local visualIdentifier="${5}"
   local BACKGROUND_OF_LAST_SEGMENT="${6}"
 
-  local bg=$p9k_data[${STATEFUL_NAME}_BG]
-  local fg=$p9k_data[${STATEFUL_NAME}_FG]
+  local bg=$__P9K_DATA[${STATEFUL_NAME}_BG]
+  local fg=$__P9K_DATA[${STATEFUL_NAME}_FG]
 
   if [[ "${BACKGROUND_OF_LAST_SEGMENT}" != 'NONE' ]]; then
     if [[ "${bg}" != "${BACKGROUND_OF_LAST_SEGMENT}" ]]; then # background colors are different
@@ -67,7 +67,7 @@ __p9k_left_prompt_segment() {
   fi
 
   # Print the visual identifier
-  [[ $visualIdentifier != "" ]] && echo -n "$p9k_data[${STATEFUL_NAME}_VI]${visualIdentifier}${P9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS}%f${fg}" || echo -n "${fg}"
+  [[ $visualIdentifier != "" ]] && echo -n "$__P9K_DATA[${STATEFUL_NAME}_VI]${visualIdentifier}${P9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS}%f${fg}" || echo -n "${fg}"
   # Print the content of the segment
   [[ -n "${content}" ]] && echo -n "${content}${P9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS}"
 
@@ -105,12 +105,12 @@ __p9k_right_prompt_segment() {
   local current_index="${2}"
   local joined="${3}"
   local content
-  [[ $p9k_data[${STATEFUL_NAME}_BD] == true ]] && content="%B${4}%b" || content="${4}"
+  [[ $__P9K_DATA[${STATEFUL_NAME}_BD] == true ]] && content="%B${4}%b" || content="${4}"
   local visualIdentifier="${5}"
   local BACKGROUND_OF_LAST_SEGMENT="${6}"
 
-  local bg=$p9k_data[${STATEFUL_NAME}_BG]
-  local fg=$p9k_data[${STATEFUL_NAME}_FG]
+  local bg=$__P9K_DATA[${STATEFUL_NAME}_BG]
+  local fg=$__P9K_DATA[${STATEFUL_NAME}_FG]
 
   # If BACKGROUND_OF_LAST_SEGMENT is "NONE", we are the first right segment.
   if ! ${joined} || [[ "${BACKGROUND_OF_LAST_SEGMENT}" == "NONE" ]]; then
@@ -132,7 +132,7 @@ __p9k_right_prompt_segment() {
 
   if [[ ${(L)P9K_RPROMPT_ICON_LEFT} == "true" ]]; then # Visual identifier before content
     # Print the visual identifier
-    echo -n "$p9k_data[${STATEFUL_NAME}_VI]${visualIdentifier}${P9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS}"
+    echo -n "$__P9K_DATA[${STATEFUL_NAME}_VI]${visualIdentifier}${P9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS}"
     # Print segment content if there is any
     [[ -n "${content}" ]] && echo -n "${content}${P9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS}"
   else
@@ -141,7 +141,7 @@ __p9k_right_prompt_segment() {
     # Print segment content if there is any
     [[ -n "${content}" ]] && echo -n "${content}${P9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS}"
     # Print the visual identifier
-    echo -n "$p9k_data[${STATEFUL_NAME}_VI]${visualIdentifier}${P9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS}"
+    echo -n "$__P9K_DATA[${STATEFUL_NAME}_VI]${visualIdentifier}${P9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS}"
   fi
 
   #BACKGROUND_OF_LAST_SEGMENT="${bg}"
@@ -210,8 +210,8 @@ p9kAsyncCallback() {
     local CONTENT="${segment[5]}"
     local VISUAL_IDENTIFIER="${segment[6]}"
 
-    [[ -n "${segment[7]}" ]] && p9k_data[${STATEFUL_NAME}_BG]="${segment[7]}"
-    [[ -n "${segment[8]}" ]] && p9k_data[${STATEFUL_NAME}_FG]="${segment[8]}"
+    [[ -n "${segment[7]}" ]] && __P9K_DATA[${STATEFUL_NAME}_BG]="${segment[7]}"
+    [[ -n "${segment[8]}" ]] && __P9K_DATA[${STATEFUL_NAME}_FG]="${segment[8]}"
 
     # Padded index of segment. Index 1 becomes 001.
     local paddedIndex="${(l:3::0:)INDEX}"
@@ -260,10 +260,10 @@ p9kAsyncCallback() {
 
     if [[ "${ALIGNMENT}" == "left" ]]; then
       PROMPT+=$("${ALIGNMENT}__p9k__prompt_segment" "${STATEFUL_NAME}" "${INDEX}" "${should_join_segment}" "${CONTENT}" "${VISUAL_IDENTIFIER}" "${LAST_LEFT_BACKGROUND}")
-      LAST_LEFT_BACKGROUND="$p9k_data[${STATEFUL_NAME}_BG]"
+      LAST_LEFT_BACKGROUND="$__P9K_DATA[${STATEFUL_NAME}_BG]"
     elif [[ "${ALIGNMENT}" == "right" ]]; then
       RPROMPT+=$("${ALIGNMENT}__p9k__prompt_segment" "${STATEFUL_NAME}" "${INDEX}" "${should_join_segment}" "${CONTENT}" "${VISUAL_IDENTIFIER}" "${LAST_RIGHT_BACKGROUND}")
-      LAST_RIGHT_BACKGROUND="$p9k_data[${STATEFUL_NAME}_BG]"
+      LAST_RIGHT_BACKGROUND="$__P9K_DATA[${STATEFUL_NAME}_BG]"
     fi
   done
   PROMPT+="$(left_prompt_end ${LAST_LEFT_BACKGROUND})"
@@ -610,7 +610,7 @@ prompt_powerlevel9k_setup() {
 
   # initialize zsh async
   #autoload -Uz async && async
-  source $p9kDirectory/zsh-async/async.zsh
+  source $__P9K_DIRECTORY/zsh-async/async.zsh
 
   # initialize async worker
   (( !${p9k_async_init:-0} )) && {
