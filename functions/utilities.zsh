@@ -296,12 +296,12 @@ function truncatePath() {
     local paths=$1
     paths=(${(s:/:)${paths//"~\/"/}})
     # declare locals for the directory being tested and its length
-    local test_dir test_dir_length
+    local test_dir test_dir_length threshhold last_pos
     # do the needed truncation
     case $4 in
       right)
         # include the delimiter length in the threshhold
-        local threshhold=$(( $2 + ${#3} ))
+        threshhold=$(( $2 + ${#3} ))
         # loop through the paths
         for (( i=1; i<${#paths}; i++ )); do
           # get the current directory value
@@ -320,9 +320,9 @@ function truncatePath() {
       ;;
       middle)
         # we need double the length for start and end truncation + delimiter length
-        local threshhold=$(( $2 * 2 ))
+        threshhold=$(( $2 * 2 ))
         # create a variable for the start of the end truncation
-        local last_pos
+        last_pos
         # loop through the paths
         for (( i=1; i<${#paths}; i++ )); do
           # get the current directory value
@@ -334,6 +334,26 @@ function truncatePath() {
             # use the first $2 characters, the delimiter and the last $2 characters
             last_pos=$(( $test_dir_length - $2 ))
             trunc_path+="${test_dir:0:$2}$3${test_dir:$last_pos:$test_dir_length}/"
+          else
+            # use the full path
+            trunc_path+="${test_dir}/"
+          fi
+        done
+      ;;
+      left)
+        # include the delimiter length in the threshhold
+        threshhold=$(( $2 + ${#3} ))
+        # loop through the paths
+        for (( i=1; i<${#paths}; i++ )); do
+          # get the current directory value
+          test_dir=$paths[$i]
+          test_dir_length=${#test_dir}
+          # only truncate if the resulting truncation will be shorter than
+          # the truncation + delimiter length and at least 3 characters
+          if (( $test_dir_length > $threshhold )) && (( $test_dir_length > 3 )); then
+            # use the delimiter and the first $2 characters
+            last_pos=$(( $test_dir_length - $2 ))
+            trunc_path+="$3${test_dir:$last_pos:$test_dir_length}/"
           else
             # use the full path
             trunc_path+="${test_dir}/"
