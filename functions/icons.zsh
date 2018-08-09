@@ -23,7 +23,7 @@
 
 # Set the right locale to protect special characters
 local LC_ALL="" LC_CTYPE="en_US.UTF-8"
-typeset -gAH p9k_data
+typeset -gAH __P9K_DATA
 typeset -gAH p9k_icons
 
 if [[ P9K_MODE == "awesome-mapped-fontconfig" && -z "$AWESOME_GLYPHS_LOADED" ]]; then
@@ -110,16 +110,16 @@ p9k::register_segment() {
 
   local BG_USER_VARIABLE="P9K_${STATEFUL_NAME}_BACKGROUND"
   if p9k::defined "$BG_USER_VARIABLE"; then # check for background override first
-    p9k_data[${STATEFUL_NAME}_BG]="$(p9k::background_color ${(P)BG_USER_VARIABLE})"
+    __P9K_DATA[${STATEFUL_NAME}_BG]="$(p9k::background_color ${(P)BG_USER_VARIABLE})"
   else
-    p9k_data[${STATEFUL_NAME}_BG]="$(p9k::background_color $3)"
+    __P9K_DATA[${STATEFUL_NAME}_BG]="$(p9k::background_color $3)"
   fi
 
   local FG_USER_VARIABLE="P9K_${STATEFUL_NAME}_FOREGROUND"
   if p9k::defined "$FG_USER_VARIABLE"; then # check for foreground override first
-    p9k_data[${STATEFUL_NAME}_FG]="$(p9k::foreground_color ${(P)FG_USER_VARIABLE})"
+    __P9K_DATA[${STATEFUL_NAME}_FG]="$(p9k::foreground_color ${(P)FG_USER_VARIABLE})"
   else
-    p9k_data[${STATEFUL_NAME}_FG]="$(p9k::foreground_color $4)"
+    __P9K_DATA[${STATEFUL_NAME}_FG]="$(p9k::foreground_color $4)"
   fi
 
   local map
@@ -139,15 +139,15 @@ p9k::register_segment() {
 
   local ICON_COLOR_VARIABLE="P9K_${STATEFUL_NAME}_ICON_COLOR"
   if p9k::defined "$ICON_COLOR_VARIABLE"; then
-    p9k_data[${STATEFUL_NAME}_VI]="$(p9k::foreground_color ${(P)ICON_COLOR_VARIABLE})"
+    __P9K_DATA[${STATEFUL_NAME}_VI]="$(p9k::foreground_color ${(P)ICON_COLOR_VARIABLE})"
   else
-    p9k_data[${STATEFUL_NAME}_VI]=$p9k_data[${STATEFUL_NAME}_FG]
+    __P9K_DATA[${STATEFUL_NAME}_VI]=$__P9K_DATA[${STATEFUL_NAME}_FG]
   fi
 
   # Overwrite given bold directive by user defined variable for this segment.
   local BOLD_USER_VARIABLE="P9K_${STATEFUL_NAME}_BOLD"
   local BOLD="${(P)BOLD_USER_VARIABLE}"
-  [[ -z "${BOLD}" ]] || p9k_data[${STATEFUL_NAME}_BD]=true
+  [[ -z "${BOLD}" ]] || __P9K_DATA[${STATEFUL_NAME}_BD]=true
 }
 
 #                                                                                                                                
