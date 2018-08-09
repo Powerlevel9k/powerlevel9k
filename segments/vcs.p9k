@@ -122,7 +122,7 @@ p9k::register_icon "VCS_SVN_ICON"               ''          '(svn) '    '(svn) '
 # Source VCS_INFO hooks / helper functions
 ################################################################
 
-source "${p9kDirectory}/functions/vcs.zsh"
+source "${__P9K_DIRECTORY}/functions/vcs.zsh"
 
 ################################################################
 # VCS segment: shows the state of your repository, if you are in a folder under

@@ -6,7 +6,7 @@
 ##
 
 # Source test stats script & icons
-source $p9kDirectory/segments/test_stats.p9k
+source $__P9K_DIRECTORY/segments/test_stats.p9k
 
 ################################################################
 # @description
