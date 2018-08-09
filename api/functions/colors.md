@@ -16,7 +16,7 @@
 - [p9k::get_color](#p9k::get_color)
 - [p9k::background_color](#p9k::background_color)
 - [p9k::foreground_color](#p9k::foreground_color)
-- [p9k::get_colorCode](#p9k::get_colorCode)
+- [p9k::get_color_code](#p9k::get_color_code)
 - [p9k::is_same_color](#p9k::is_same_color)
 
 ## __p9k_term_colors
@@ -73,7 +73,7 @@
 
 *An empty paramenter resets (stops) foreground color. *
 
-## p9k::get_colorCode
+## p9k::get_color_code
 *Function to get numerical color codes. That way we translate ANSI codes into ZSH-Style color codes. *
 
 #### Arguments

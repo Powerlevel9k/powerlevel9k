@@ -11,15 +11,15 @@ function setUp() {
 }
 
 function testGetColorCodeWithAnsiForegroundColor() {
-  assertEquals '002' "$(p9k::get_colorCode 'green')"
+  assertEquals '002' "$(p9k::get_color_code 'green')"
 }
 
 function testGetColorCodeWithAnsiBackgroundColor() {
-  assertEquals '002' "$(p9k::get_colorCode 'bg-green')"
+  assertEquals '002' "$(p9k::get_color_code 'bg-green')"
 }
 
 function testGetColorCodeWithNumericalColor() {
-  assertEquals '002' "$(p9k::get_colorCode '002')"
+  assertEquals '002' "$(p9k::get_color_code '002')"
 }
 
 function testIsSameColorComparesAnsiForegroundAndNumericalColorCorrectly() {
