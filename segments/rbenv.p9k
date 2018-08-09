@@ -29,7 +29,7 @@ prompt_rbenv() {
 
     # Don't show anything if the current Ruby is the same as the global Ruby
     # unless `P9K_RBENV_ALWAYS` is set.
-    if [[ $P9K_RBENV_ALWAYS == true || $rbenv_version_name != $rbenv_global ]]; then
+    if [[ $P9K_RBENV_ALWAYS == true || ${rbenv_version_name} != ${rbenv_global} ]]; then
       p9k::prepare_segment "$0" "" $1 "$2" $3 "$rbenv_version_name"
     fi
   fi

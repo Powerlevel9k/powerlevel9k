@@ -21,7 +21,7 @@ function +vi-git-untracked() {
 
     if [[ $(command git rev-parse --is-inside-work-tree 2> /dev/null) == 'true' && \
             -n $(command git status ${FLAGS} | \grep -E '^\?\?' 2> /dev/null | tail -n1) ]]; then
-        hook_com[unstaged]+=" $p9k_icons[VCS_UNTRACKED_ICON]"
+        hook_com[unstaged]+=" ${__P9K_ICONS[VCS_UNTRACKED_ICON]}"
         VCS_WORKDIR_HALF_DIRTY=true
     else
         VCS_WORKDIR_HALF_DIRTY=false
@@ -37,12 +37,12 @@ function +vi-git-aheadbehind() {
     # for git prior to 1.7
     # ahead=$(command git rev-list origin/${branch_name}..HEAD | wc -l)
     ahead=$(command git rev-list "${branch_name}"@{upstream}..HEAD 2>/dev/null | wc -l)
-    (( ahead )) && gitstatus+=( " $p9k_icons[VCS_OUTGOING_CHANGES_ICON]${ahead// /}" )
+    (( ahead )) && gitstatus+=( " ${__P9K_ICONS[VCS_OUTGOING_CHANGES_ICON]}${ahead// /}" )
 
     # for git prior to 1.7
     # behind=$(command git rev-list HEAD..origin/${branch_name} | wc -l)
     behind=$(command git rev-list HEAD.."${branch_name}"@{upstream} 2>/dev/null | wc -l)
-    (( behind )) && gitstatus+=( " $p9k_icons[VCS_INCOMING_CHANGES_ICON]${behind// /}" )
+    (( behind )) && gitstatus+=( " ${__P9K_ICONS[VCS_INCOMING_CHANGES_ICON]}${behind// /}" )
 
     hook_com[misc]+=${(j::)gitstatus}
 }
@@ -69,12 +69,12 @@ function +vi-git-remotebranch() {
       fi
     fi
 
-    hook_com[branch]="$p9k_icons[VCS_BRANCH_ICON]${hook_com[branch]}"
+    hook_com[branch]="${__P9K_ICONS[VCS_BRANCH_ICON]}${hook_com[branch]}"
     # Always show the remote
     #if [[ -n ${remote} ]] ; then
     # Only show the remote if it differs from the local
     if [[ -n ${remote} ]] && [[ "${remote#*/}" != "${branch_name}" ]] ; then
-        hook_com[branch]+="$p9k_icons[VCS_REMOTE_BRANCH_ICON]${remote// /}"
+        hook_com[branch]+="${__P9K_ICONS[VCS_REMOTE_BRANCH_ICON]}${remote// /}"
     fi
 }
 
@@ -95,10 +95,10 @@ function +vi-git-tagname() {
                 # string.
                 local revision
                 revision=$(command git rev-list -n 1 --abbrev-commit --abbrev=${P9K_VCS_INTERNAL_HASH_LENGTH} HEAD)
-                hook_com[branch]="$p9k_icons[VCS_BRANCH_ICON]${revision} $p9k_icons[VCS_TAG_ICON]${tag}"
+                hook_com[branch]="${__P9K_ICONS[VCS_BRANCH_ICON]}${revision} ${__P9K_ICONS[VCS_TAG_ICON]}${tag}"
             else
                 # We are on both a tag and a branch; print both by appending the tag name.
-                hook_com[branch]+=" $p9k_icons[VCS_TAG_ICON]${tag}"
+                hook_com[branch]+=" ${__P9K_ICONS[VCS_TAG_ICON]}${tag}"
             fi
         fi
     fi
@@ -111,13 +111,13 @@ function +vi-git-stash() {
 
   if [[ -s $(command git rev-parse --git-dir)/refs/stash ]] ; then
     stashes=$(command git stash list 2>/dev/null | wc -l)
-    hook_com[misc]+=" $p9k_icons[VCS_STASH_ICON]${stashes// /}"
+    hook_com[misc]+=" ${__P9K_ICONS[VCS_STASH_ICON]}${stashes// /}"
   fi
 }
 
 function +vi-hg-bookmarks() {
   if [[ -n "${hgbmarks[@]}" ]]; then
-    hook_com[hg-bookmark-string]=" $p9k_icons[VCS_BOOKMARK_ICON]${hgbmarks[@]}"
+    hook_com[hg-bookmark-string]=" ${__P9K_ICONS[VCS_BOOKMARK_ICON]}${hgbmarks[@]}"
 
     # To signal that we want to use the sting we just generated, set the special
     # variable `ret' to something other than the default zero:
@@ -158,15 +158,15 @@ function +vi-vcs-detect-changes() {
 function +vi-svn-detect-changes() {
   local svn_status="$(svn status)"
   if [[ -n "$(echo "$svn_status" | \grep \^\?)" ]]; then
-    hook_com[unstaged]+=" $p9k_icons[VCS_UNTRACKED_ICON]"
+    hook_com[unstaged]+=" ${__P9K_ICONS[VCS_UNTRACKED_ICON]}"
     VCS_WORKDIR_HALF_DIRTY=true
   fi
   if [[ -n "$(echo "$svn_status" | \grep \^\M)" ]]; then
-    hook_com[unstaged]+=" $p9k_icons[VCS_UNSTAGED_ICON]"
+    hook_com[unstaged]+=" ${__P9K_ICONS[VCS_UNSTAGED_ICON]}"
     VCS_WORKDIR_DIRTY=true
   fi
   if [[ -n "$(echo "$svn_status" | \grep \^\A)" ]]; then
-    hook_com[staged]+=" $p9k_icons[VCS_STAGED_ICON]"
+    hook_com[staged]+=" ${__P9K_ICONS[VCS_STAGED_ICON]}"
     VCS_WORKDIR_DIRTY=true
   fi
 }

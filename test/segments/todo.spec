@@ -41,7 +41,7 @@ function testTodoSegmentPrintsNothingIfTodoShIsNotInstalled() {
   p9k::register_segment "WORLD"
   alias todo.sh="echo"
 
-  assertEquals "%K{white} %F{black}world %k%F{white}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{015} %F{000}world %k%F{015}%f " "$(__p9k_build_left_prompt)"
 
   unalias todo.sh
 }
@@ -54,7 +54,7 @@ function testTodoSegmentWorksAsExpected() {
   echo 'echo "TODO: 34 of 100 tasks shown";' >> ${FOLDER}/bin/todo.sh
   chmod +x ${FOLDER}/bin/todo.sh
 
-  assertEquals "%K{244} %F{black}☑ %f%F{black}100 %k%F{244}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{244} %F{000}☑ %f%F{000}100 %k%F{244}%f " "$(__p9k_build_left_prompt)"
 }
 
 source shunit2/shunit2

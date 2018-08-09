@@ -38,7 +38,7 @@ Pages inactive:                         1313411.
 
   local OS="OSX" # Fake OSX
 
-  assertEquals "%K{yellow} %F{black}RAM %f%F{black}6.15G " "$(prompt_ram left 1 false ${FOLDER})"
+  assertEquals "%K{003} %F{000}RAM %f%F{000}6.15G " "$(prompt_ram left 1 false ${FOLDER})"
 
   unalias vm_stat
 }
@@ -49,7 +49,7 @@ function testRamSegmentWorksOnBsd() {
 
   local OS="BSD" # Fake BSD
 
-  assertEquals "%K{yellow} %F{black}RAM %f%F{black}0.29M " "$(prompt_ram left 1 false ${FOLDER})"
+  assertEquals "%K{003} %F{000}RAM %f%F{000}0.29M " "$(prompt_ram left 1 false ${FOLDER})"
 }
 
 function testRamSegmentWorksOnLinux() {
@@ -58,7 +58,7 @@ function testRamSegmentWorksOnLinux() {
 
   local OS="Linux" # Fake Linux
 
-  assertEquals "%K{yellow} %F{black}RAM %f%F{black}0.29G " "$(prompt_ram left 1 false ${FOLDER})"
+  assertEquals "%K{003} %F{000}RAM %f%F{000}0.29G " "$(prompt_ram left 1 false ${FOLDER})"
 }
 
 source shunit2/shunit2

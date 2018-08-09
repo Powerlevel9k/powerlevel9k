@@ -43,7 +43,7 @@ function testColorOverridingForCleanStateWorks() {
   # Load Powerlevel9k
   source ${P9K_HOME}/segments/vcs.p9k
 
-  assertEquals "%K{white} %F{cyan} default %k%F{white}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{015} %F{006} default %k%F{015}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testColorOverridingForModifiedStateWorks() {
@@ -60,7 +60,7 @@ function testColorOverridingForModifiedStateWorks() {
   # Load Powerlevel9k
   source ${P9K_HOME}/segments/vcs.p9k
 
-  assertEquals "%K{yellow} %F{red} default ● %k%F{yellow}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{003} %F{001} default ● %k%F{003}%f " "$(__p9k_build_left_prompt)"
 }
 
 # There is no staging area in mercurial, therefore there are no "untracked"
@@ -77,7 +77,7 @@ function testAddedFilesIconWorks() {
   # Load Powerlevel9k
   source ${P9K_HOME}/segments/vcs.p9k
 
-  assertEquals "%K{yellow} %F{black} default ● %k%F{yellow}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{003} %F{000} default ● %k%F{003}%f " "$(__p9k_build_left_prompt)"
 }
 
 # We don't support tagging in mercurial right now..
@@ -95,7 +95,7 @@ function testTagIconWorks() {
   # Load Powerlevel9k
   source ${P9K_HOME}/segments/vcs.p9k
 
-  assertEquals "%K{green} %F{black} default *Tv0.0.1 %k%F{green}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{002} %F{000} default *Tv0.0.1 %k%F{002}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testTagIconInDetachedHeadState() {
@@ -117,7 +117,7 @@ function testTagIconInDetachedHeadState() {
   # Load Powerlevel9k
   source ${P9K_HOME}/segments/vcs.p9k
 
-  assertEquals "%K{green} %F{black} ${hash} *Tv0.0.1 %k%F{green}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{002} %F{000} ${hash} *Tv0.0.1 %k%F{002}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testActionHintWorks() {
@@ -140,7 +140,7 @@ function testActionHintWorks() {
   # Load Powerlevel9k
   source ${P9K_HOME}/segments/vcs.p9k
 
-  assertEquals "%K{yellow} %F{black} default %F{red}| merging%f %k%F{yellow}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{003} %F{000} default %F{001}| merging%f %k%F{003}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testShorteningCommitHashWorks() {
@@ -161,7 +161,7 @@ function testShorteningCommitHashWorks() {
   # the changeset is truncated.
   __p9k_vcs_init
 
-  assertEquals "%K{green} %F{black}${hash}  default %k%F{green}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{002} %F{000}${hash}  default %k%F{002}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testShorteningCommitHashIsNotShownIfShowChangesetIsFalse() {
@@ -181,7 +181,7 @@ function testShorteningCommitHashIsNotShownIfShowChangesetIsFalse() {
   # the changeset is truncated.
   __p9k_vcs_init
 
-  assertEquals "%K{green} %F{black} default %k%F{green}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{002} %F{000} default %k%F{002}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testMercurialIconWorks() {
@@ -192,7 +192,7 @@ function testMercurialIconWorks() {
   # Load Powerlevel9k
   source ${P9K_HOME}/segments/vcs.p9k
 
-  assertEquals "%K{green} %F{black}*HG-Icon %f%F{black} default %k%F{green}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{002} %F{000}*HG-Icon %f%F{000} default %k%F{002}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testBookmarkIconWorks() {
@@ -204,7 +204,7 @@ function testBookmarkIconWorks() {
   # Load Powerlevel9k
   source ${P9K_HOME}/segments/vcs.p9k
 
-  assertEquals "%K{green} %F{black} default *Binitial %k%F{green}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{002} %F{000} default *Binitial %k%F{002}%f " "$(__p9k_build_left_prompt)"
 }
 
 source shunit2/shunit2

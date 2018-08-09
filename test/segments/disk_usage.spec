@@ -40,7 +40,7 @@ function testDiskUsageSegmentWhenDiskIsAlmostFull() {
   # Load Powerlevel9k
   source ${P9K_HOME}/powerlevel9k.zsh-theme
 
-  assertEquals "%K{red} %F{white}hdd  %f%F{white}97%% %k%F{red}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{001} %F{015}hdd  %f%F{015}97%% %k%F{001}%f " "$(__p9k_build_left_prompt)"
 
   unfunction df
 }
@@ -56,7 +56,7 @@ function testDiskUsageSegmentWhenDiskIsVeryFull() {
   # Load Powerlevel9k
   source ${P9K_HOME}/powerlevel9k.zsh-theme
 
-  assertEquals "%K{yellow} %F{black}hdd  %f%F{black}94%% %k%F{yellow}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{003} %F{000}hdd  %f%F{000}94%% %k%F{003}%f " "$(__p9k_build_left_prompt)"
 
   unfunction df
 }
@@ -72,7 +72,7 @@ function testDiskUsageSegmentWhenDiskIsQuiteEmpty() {
   # Load Powerlevel9k
   source ${P9K_HOME}/powerlevel9k.zsh-theme
 
-  assertEquals "%K{black} %F{green1}hdd  %f%F{green1}4%% %k%F{black}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{000} %F{046}hdd  %f%F{046}4%% %k%F{000}%f " "$(__p9k_build_left_prompt)"
 
   unfunction df
 }
@@ -89,7 +89,7 @@ function testDiskUsageSegmentPrintsNothingIfDiskIsQuiteEmptyAndOnlyWarningsShoul
   local P9K_CUSTOM_WORLD='echo world'
   p9k::register_segment "WORLD"
 
-  assertEquals "%K{white} %F{black}world %k%F{white}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{015} %F{000}world %k%F{015}%f " "$(__p9k_build_left_prompt)"
 
   unfunction df
 }
@@ -106,7 +106,7 @@ function testDiskUsageSegmentWarningLevelCouldBeAdjusted() {
   # Load Powerlevel9k
   source ${P9K_HOME}/powerlevel9k.zsh-theme
 
-  assertEquals "%K{yellow} %F{black}hdd  %f%F{black}11%% %k%F{yellow}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{003} %F{000}hdd  %f%F{000}11%% %k%F{003}%f " "$(__p9k_build_left_prompt)"
 
   unfunction df
 }
@@ -124,7 +124,7 @@ function testDiskUsageSegmentCriticalLevelCouldBeAdjusted() {
   # Load Powerlevel9k
   source ${P9K_HOME}/powerlevel9k.zsh-theme
 
-  assertEquals "%K{red} %F{white}hdd  %f%F{white}11%% %k%F{red}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{001} %F{015}hdd  %f%F{015}11%% %k%F{001}%f " "$(__p9k_build_left_prompt)"
 
   unfunction df
 }

@@ -41,14 +41,14 @@
 #### Usage
 
 ```sh
-p9k::register_icon "name_of_icon" 'Gen' $'\uXXX' $'\uXXX' '\u'$CODEPOINT_OF_AWESOME_xxx '\uXXX'
+p9k::register_icon "name_of_icon" 'Gen' $'\uXXX' $'\uXXX' '\u'${CODEPOINT_OF_AWESOME_xxx} '\uXXX'
 
 ```
 
 #### Example
 
 ```sh
-p9k::register_icon "LOCK_ICON"  $'\uE0A2'  $'\uE138'  $'\uF023'  '\u'$CODEPOINT_OF_AWESOME_LOCK  $'\uF023'
+p9k::register_icon "LOCK_ICON"  $'\uE0A2'  $'\uE138'  $'\uF023'  '\u'${CODEPOINT_OF_AWESOME_LOCK}  $'\uF023'
 
 ```
 
@@ -75,14 +75,14 @@ p9k::register_icon "LOCK_ICON"  $'\uE0A2'  $'\uE138'  $'\uF023'  '\u'$CODEPOINT_
 #### Usage
 
 ```sh
-p9k::register_segment "segmentName" "stateNameOrEmpty" "p9k::background_color" "p9k::foreground_color" 'Gen' $'\uXXX' $'\uXXX' '\u'$CODEPOINT_OF_AWESOME_xxx '\uXXX'
+p9k::register_segment "segmentName" "stateNameOrEmpty" "p9k::background_color" "p9k::foreground_color" 'Gen' $'\uXXX' $'\uXXX' '\u'${CODEPOINT_OF_AWESOME_xxx} '\uXXX'
 
 ```
 
 #### Example
 
 ```sh
-p9k::register_segment "DIR_WRITABLE" "" "red" "yellow1"  $'\uE0A2'  $'\uE138'  $'\uF023'  '\u'$CODEPOINT_OF_AWESOME_LOCK  $'\uF023'
+p9k::register_segment "DIR_WRITABLE" "" "red" "yellow1"  $'\uE0A2'  $'\uE138'  $'\uF023'  '\u'${CODEPOINT_OF_AWESOME_LOCK}  $'\uF023'
 
 ```
 

@@ -19,7 +19,7 @@ function testNodeVersionSegmentPrintsNothingWithoutNode() {
   p9k::register_segment "WORLD"
   alias node="nonode 2>/dev/null"
 
-  assertEquals "%K{white} %F{black}world %k%F{white}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{015} %F{000}world %k%F{015}%f " "$(__p9k_build_left_prompt)"
 
   unalias node
 }
@@ -31,7 +31,7 @@ function testNodeVersionSegmentWorks() {
     echo "v1.2.3"
   }
 
-  assertEquals "%K{green} %F{white}⬢ %f%F{white}1.2.3 %k%F{green}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{002} %F{015}⬢ %f%F{015}1.2.3 %k%F{002}%f " "$(__p9k_build_left_prompt)"
 
   unfunction node
 }

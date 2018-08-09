@@ -116,7 +116,7 @@ p9k::funcBad() {
 }
 
 echo "global_var = $global_var"  # Function "func_bad" has not yet been called,
-                                 # so $global_var is not visible here.
+                                 # so ${global_var} is not visible here.
 
 func_bad
 echo "global_var = $global_var"  # global_var = 37
@@ -274,7 +274,7 @@ After a script or function terminates, a `$?` from the command line gives the ex
 my_bad_func() {
   for port in $(seq 32768 61000); do
     for i in $(netstat_used_local_ports); do
-      if [[ $used_port -eq $port ]]; then
+      if [[ ${used_port} -eq ${port} ]]; then
         continue
       else
         echo $port
@@ -289,7 +289,7 @@ my_bad_func() {
 p9k::myGoodFunc() {
   for port in $(seq 32768 61000); do
     for i in $(netstat_used_local_ports); do
-      if [[ $used_port -eq $port ]]; then
+      if [[ ${used_port} -eq ${port} ]]; then
         continue
       else
         echo $port

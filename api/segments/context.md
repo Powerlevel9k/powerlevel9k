@@ -22,5 +22,5 @@
 
 #### Notes
 
-*If $DEFAULT_USER is not set, this prompt segment will always print. *
+*If ${DEFAULT_USER} is not set, this prompt segment will always print. *
 

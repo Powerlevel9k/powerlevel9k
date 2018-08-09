@@ -50,7 +50,7 @@ prompt_vi_mode() {
   # NOTE: The display test at the end of the next line ensures that the segment_state is displayed if an icon is defined
   #       even if the string is set to an empty string. This allows you to define and use icons for this segment instead
   #       of the default text string and also bypasses the ugly icon as content string. As a bonus, you can set both!
-  p9k::prepare_segment "$0" "${current_state}" $1 "$2" $3 "${(P)vi_mode}" "[[ '$p9k_icons[VI_MODE_${current_state}]' != '' || '${(P)vi_mode}' != '' ]]"
+  p9k::prepare_segment "$0" "${current_state}" $1 "$2" $3 "${(P)vi_mode}" "[[ '$__P9K_ICONS[VI_MODE_${current_state}]' != '' || '${(P)vi_mode}' != '' ]]"
 }
 
 ###############################################################
@@ -72,7 +72,7 @@ function rebuild_vi_mode {
         element="${(L)P9K_LEFT_PROMPT_ELEMENTS[$i]}"
         if [[ "${element}" =~ "vi_mode" ]]; then
           [[ "${element[-7,-1]}" == '_joined' ]] && joined=true
-          p9kAsyncCallback "" "0" "VI_MODE_${current_state}·|·left·|·${i}·|·${joined}·|·${(P)vi_mode}·|·$p9k_icons[VI_MODE_${current_state}]" "0" "0"
+          p9kAsyncCallback "" "0" "VI_MODE_${current_state}·|·left·|·${i}·|·${joined}·|·${(P)vi_mode}·|·$__P9K_ICONS[VI_MODE_${current_state}]" "0" "0"
           break
         fi
       done
@@ -80,7 +80,7 @@ function rebuild_vi_mode {
         element="${(L)P9K_RIGHT_PROMPT_ELEMENTS[$i]}"
         if [[ "${element}" =~ "vi_mode" ]]; then
           [[ "${element[-7,-1]}" == '_joined' ]] && joined=true
-          p9kAsyncCallback "" "0" "VI_MODE_${current_state}·|·right·|·${i}·|·${joined}·|·${(P)vi_mode}·|·$p9k_icons[VI_MODE_${current_state}]" "0" "0"
+          p9kAsyncCallback "" "0" "VI_MODE_${current_state}·|·right·|·${i}·|·${joined}·|·${(P)vi_mode}·|·$__P9K_ICONS[VI_MODE_${current_state}]" "0" "0"
           break
         fi
       done
@@ -136,7 +136,7 @@ cursorShape() {
   )
   local cursor_shape_line=""
 
-  case $TERMINAL in
+  case ${TERMINAL} in
     konsole | iterm | yakuake)
       cursor_shape_line=$CS_konsole[prefix]$CS_konsole[$1]$CS_konsole[suffix]
     ;;
@@ -156,7 +156,7 @@ cursorShape() {
     ;;
   esac
 
-  [[ -n $cursor_shape_line ]] && echo -en "$cursor_shape_line"
+  [[ -n ${cursor_shape_line} ]] && echo -en "$cursor_shape_line"
 }
 
 ###############################################################
@@ -168,7 +168,7 @@ function zle-line-init {
   esac
   # change cursor shape
   if [[ $P9K_CURSOR_SHAPE ]]; then
-    case $KEYMAP in
+    case ${KEYMAP} in
       vicmd)      cursorShape ${P9K_CURSOR_SHAPE_NORMAL};;
       viins|main) cursorShape ${P9K_CURSOR_SHAPE_INSERT};;
       vivis)      cursorShape ${P9K_CURSOR_SHAPE_VISUAL};;
@@ -201,7 +201,7 @@ function zle-keymap-select {
   esac
   # change cursor shape
   if [[ $P9K_CURSOR_SHAPE ]]; then
-    case $KEYMAP in
+    case ${KEYMAP} in
       vicmd)      cursorShape ${P9K_CURSOR_SHAPE_NORMAL};;
       viins|main) cursorShape ${P9K_CURSOR_SHAPE_INSERT};;
       vivis)      cursorShape ${P9K_CURSOR_SHAPE_VISUAL};;

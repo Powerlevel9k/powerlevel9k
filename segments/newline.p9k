@@ -23,7 +23,7 @@ prompt_newline() {
   newline=$'\n'
   lws=$P9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS
   if [[ "$P9K_PROMPT_ON_NEWLINE" == true ]]; then
-    newline="${newline}$p9k_icons[MULTILINE_NEWLINE_PROMPT_PREFIX]"
+    newline="${newline}${__P9K_ICONS[MULTILINE_NEWLINE_PROMPT_PREFIX]}"
   fi
   P9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS=
   "$1__p9k__prompt_segment" \

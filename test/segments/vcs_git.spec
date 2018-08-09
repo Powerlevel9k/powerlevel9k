@@ -77,7 +77,7 @@ function testColorOverridingForCleanStateWorks() {
   local P9K_VCS_CLEAN_BACKGROUND='white'
   source ${P9K_HOME}/segments/vcs.p9k
 
-  assertEquals "%K{white} %F{cyan} master %k%F{white}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{015} %F{006} master %k%F{015}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testColorOverridingForModifiedStateWorks() {
@@ -92,7 +92,7 @@ function testColorOverridingForModifiedStateWorks() {
   git commit -m "test" 1>/dev/null
   echo "test" > testfile
 
-  assertEquals "%K{yellow} %F{red} master ● %k%F{yellow}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{003} %F{001} master ● %k%F{003}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testColorOverridingForUntrackedStateWorks() {
@@ -104,7 +104,7 @@ function testColorOverridingForUntrackedStateWorks() {
 
   touch testfile
 
-  assertEquals "%K{yellow} %F{cyan} master ? %k%F{yellow}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{003} %F{006} master ? %k%F{003}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testGitIconWorks() {
@@ -112,7 +112,7 @@ function testGitIconWorks() {
   local P9K_VCS_GIT_ICON='*Git-Icon'
   source ${P9K_HOME}/segments/vcs.p9k
 
-  assertEquals "%K{green} %F{black}*Git-Icon %f%F{black} master %k%F{green}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{002} %F{000}*Git-Icon %f%F{000} master %k%F{002}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testGitlabIconWorks() {
@@ -125,7 +125,7 @@ function testGitlabIconWorks() {
   # sufficient to show the GitLab-specific icon.
   git remote add origin https://gitlab.com/dritter/gitlab-test-project.git
 
-  assertEquals "%K{green} %F{black}*GL-Icon %f%F{black} master %k%F{green}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{002} %F{000}*GL-Icon %f%F{000} master %k%F{002}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testBitbucketIconWorks() {
@@ -138,7 +138,7 @@ function testBitbucketIconWorks() {
   # sufficient to show the BitBucket-specific icon.
   git remote add origin https://dritter@bitbucket.org/dritter/dr-test.git
 
-  assertEquals "%K{green} %F{black}*BB-Icon %f%F{black} master %k%F{green}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{002} %F{000}*BB-Icon %f%F{000} master %k%F{002}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testGitHubIconWorks() {
@@ -151,7 +151,7 @@ function testGitHubIconWorks() {
   # sufficient to show the GitHub-specific icon.
   git remote add origin https://github.com/dritter/test.git
 
-  assertEquals "%K{green} %F{black}*GH-Icon %f%F{black} master %k%F{green}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{002} %F{000}*GH-Icon %f%F{000} master %k%F{002}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testUntrackedFilesIconWorks() {
@@ -163,7 +163,7 @@ function testUntrackedFilesIconWorks() {
   # Create untracked file
   touch "i-am-untracked.txt"
 
-  assertEquals "%K{green} %F{black} master ? %k%F{green}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{002} %F{000} master ? %k%F{002}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testStagedFilesIconWorks() {
@@ -179,7 +179,7 @@ function testStagedFilesIconWorks() {
   echo "xx" >> i-am-added.txt
   git add i-am-added.txt &>/dev/null
 
-  assertEquals "%K{yellow} %F{black} master + %k%F{yellow}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{003} %F{000} master + %k%F{003}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testUnstagedFilesIconWorks() {
@@ -194,7 +194,7 @@ function testUnstagedFilesIconWorks() {
   git commit -m "Add File" 1>/dev/null
   echo "xx" > i-am-modified.txt
 
-  assertEquals "%K{yellow} %F{black} master *M %k%F{yellow}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{003} %F{000} master *M %k%F{003}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testStashIconWorks() {
@@ -210,7 +210,7 @@ function testStashIconWorks() {
   echo "xx" > i-am-modified.txt
   git stash 1>/dev/null
 
-  assertEquals "%K{green} %F{black} master *S1 %k%F{green}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{002} %F{000} master *S1 %k%F{002}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testTagIconWorks() {
@@ -224,7 +224,7 @@ function testTagIconWorks() {
   git commit -m "Add File" 1>/dev/null
   git tag "v0.0.1"
 
-  assertEquals "%K{green} %F{black} master *Tv0.0.1 %k%F{green}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{002} %F{000} master *Tv0.0.1 %k%F{002}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testTagIconInDetachedHeadState() {
@@ -243,7 +243,7 @@ function testTagIconInDetachedHeadState() {
   git checkout v0.0.1 &>/dev/null
   local hash=$(git rev-list -n 1 --abbrev-commit --abbrev=8 HEAD)
 
-  assertEquals "%K{green} %F{black} ${hash} *Tv0.0.1 %k%F{green}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{002} %F{000} ${hash} *Tv0.0.1 %k%F{002}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testActionHintWorks() {
@@ -264,7 +264,7 @@ function testActionHintWorks() {
   git commit -a -m "Provoke conflict" &>/dev/null
   git pull &>/dev/null
 
-  assertEquals "%K{yellow} %F{black} master %F{red}| merge%f %k%F{yellow}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{003} %F{000} master %F{001}| merge%f %k%F{003}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testIncomingHintWorks() {
@@ -284,7 +284,7 @@ function testIncomingHintWorks() {
   cd ../vcs-test2
   git fetch &>/dev/null
 
-  assertEquals "%K{green} %F{black} master *I1 %k%F{green}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{002} %F{000} master *I1 %k%F{002}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testOutgoingHintWorks() {
@@ -304,7 +304,7 @@ function testOutgoingHintWorks() {
   echo "xx" >> i-am-modified.txt
   git commit -a -m "Modified file" &>/dev/null
 
-  assertEquals "%K{green} %F{black} master *O1 %k%F{green}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{002} %F{000} master *O1 %k%F{002}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testShorteningCommitHashWorks() {
@@ -322,7 +322,7 @@ function testShorteningCommitHashWorks() {
   # This test needs to call __p9k_vcs_init, where
   # the changeset is truncated.
   __p9k_vcs_init
-  assertEquals "%K{green} %F{black}${hash}  master %k%F{green}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{002} %F{000}${hash}  master %k%F{002}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testShorteningCommitHashIsNotShownIfShowChangesetIsFalse() {
@@ -339,7 +339,7 @@ function testShorteningCommitHashIsNotShownIfShowChangesetIsFalse() {
   # This test needs to call __p9k_vcs_init, where
   # the changeset is truncated.
   __p9k_vcs_init
-  assertEquals "%K{green} %F{black} master %k%F{green}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{002} %F{000} master %k%F{002}%f " "$(__p9k_build_left_prompt)"
 }
 
 source shunit2/shunit2

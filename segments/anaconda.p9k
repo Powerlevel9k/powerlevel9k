@@ -10,7 +10,7 @@
 # Parameters:
 #   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
 #                                                                                                              
-p9k::register_segment "ANACONDA" "" "blue" "$DEFAULT_COLOR" ''  $'\ue63c'  $'\ue63c'  '\u'$CODEPOINT_OF_DEVICONS_PYTHON  $'\uE73C '
+p9k::register_segment "ANACONDA" "" "blue" "$DEFAULT_COLOR" ''  $'\ue63c'  $'\ue63c'  '\u'${CODEPOINT_OF_DEVICONS_PYTHON}  $'\uE73C '
 
 ################################################################
 # Register segment default values

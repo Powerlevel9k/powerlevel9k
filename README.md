@@ -104,7 +104,7 @@ The available segments are:
 #### System Status Segments
 * [`background_jobs`](#background_jobs) - Indicator for background jobs.
 * [`battery`](#battery) - Current battery status.
-* [`context`](#context) - Your username and host, conditionalized based on $USER and SSH status.
+* [`context`](#context) - Your username and host, conditionalized based on ${USER} and SSH status.
 * [`date`](#date) - System date.
 * [`dir`](#dir) - Your current working directory.
 * `dir_writable` - Displays a lock icon, if you do not have write permissions on the current folder.
@@ -299,7 +299,7 @@ end of the hostname.
 | Variable | Default Value | Description |
 |----------|---------------|-------------|
 |`DEFAULT_USER`|None|Username to consider a "default context" (you can also set `$USER`).|
-|`P9K_CONTEXT_ALWAYS_SHOW`|false|Always show this segment, including $USER and hostname.|
+|`P9K_CONTEXT_ALWAYS_SHOW`|false|Always show this segment, including ${USER} and hostname.|
 |`P9K_CONTEXT_ALWAYS_SHOW_USER`|false|Always show the username, but conditionalize the hostname.|
 |`P9K_CONTEXT_TEMPLATE`|%n@%m|Default context prompt (username@machine). Refer to the [ZSH Documentation](http://zsh.sourceforge.net/Doc/Release/Prompt-Expansion.html) for all possible expansions, including deeper host depths.|
 
@@ -360,7 +360,7 @@ Customizations available are:
 |`truncate_to_first_and_last|Truncate middle directories from the path. How many directories will be untouched is controlled by P9K_SHORTER_DIR_LENGTH. E.g. if you are in a folder named "~/Projects/powerlevel9k" and you have set `P9K_DIR_SHORTEN_LENGTH=1`, you will get "~/../powerlevel9k".||
 |`truncate_to_unique`|Parse all parent path components and truncate them to the shortest unique length. If you copy & paste the result to a shell, after hitting `TAB` it should expand to the original path unambiguously.|
 |`truncate_with_package_name`|Search for a `package.json` or `composer.json` and prints the `name` field to abbreviate the directory path. The precedence and/or files could be set by `P9K_DIR_PACKAGE_FILES=(package.json composer.json)`. If you have [jq](https://stedolan.github.io/jq/) installed, it will dramatically improve the speed of this strategy.|
-|`truncate_with_folder_marker`|Search for a file that is specified by `P9K_DIR_SHORTEN_FOLDER_MARKER` and truncate everything before that (if found, otherwise stop on $HOME and ROOT).|
+|`truncate_with_folder_marker`|Search for a file that is specified by `P9K_DIR_SHORTEN_FOLDER_MARKER` and truncate everything before that (if found, otherwise stop on ${HOME} and ROOT).|
 
 For example, if you wanted the truncation behavior similar to the `fish` shell, which
 truncates `/usr/share/plasma` to `/u/s/plasma`, you would use the following:
@@ -763,8 +763,8 @@ result as the above:
 zsh_wifi_signal(){
     local signal=$(nmcli device wifi | grep yes | awk '{print $8}')
     local color='%F{yellow}'
-    [[ $signal -gt 75 ]] && color='%F{green}'
-    [[ $signal -lt 50 ]] && color='%F{red}'
+    [[ ${signal} -gt 75 ]] && color='%F{green}'
+    [[ ${signal} -lt 50 ]] && color='%F{red}'
     echo -n "%{$color%}\uf230  $signal%{%f%}" # \uf230 is 
 }
 

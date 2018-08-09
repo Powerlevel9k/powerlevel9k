@@ -49,7 +49,7 @@ prompt_disk_usage() {
   local message="${disk_usage}%%"
 
   # Draw the prompt_segment
-  if [[ -n $disk_usage ]]; then
+  if [[ -n ${disk_usage} ]]; then
     p9k::prepare_segment "$0" "${current_state}" $1 "$2" $3 "$message"
   fi
 }

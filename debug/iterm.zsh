@@ -48,7 +48,7 @@ for idx in $(seq 0 "${profilesCount}"); do
         if [[ "$useDifferentFont" == "true" ]]; then
             nonAsciiFont=$(/usr/libexec/PlistBuddy -c "Print :New\ Bookmarks:${idx}:Non\ Ascii\ Font:" ~/Library/Preferences/com.googlecode.iterm2.plist)
             if [[ "$normalFont" != "$nonAsciiFont" ]]; then
-                normalFont="$normalFont (normal) / $nonAsciiFont (non-ascii)"
+                normalFont="${normalFont} (normal) / ${nonAsciiFont} (non-ascii)"
             fi
         fi
         break

@@ -17,7 +17,7 @@ function testDynamicColoringOfSegmentsWork() {
   local P9K_DATE_BACKGROUND='red'
   source segments/date.p9k
 
-  assertEquals "%K{red} %F{black}*date-icon %f%F{black}%D{%d.%m.%y} %k%F{red}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{001} %F{000}*date-icon %f%F{000}%D{%d.%m.%y} %k%F{001}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testDynamicColoringOfVisualIdentifiersWork() {
@@ -26,7 +26,7 @@ function testDynamicColoringOfVisualIdentifiersWork() {
   local P9K_DATE_ICON_COLOR='green'
   source segments/date.p9k
 
-  assertEquals "%K{white} %F{green}*date-icon %f%F{black}%D{%d.%m.%y} %k%F{white}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{015} %F{002}*date-icon %f%F{000}%D{%d.%m.%y} %k%F{015}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testColoringOfVisualIdentifiersDoesNotOverwriteColoringOfSegment() {
@@ -37,7 +37,7 @@ function testColoringOfVisualIdentifiersDoesNotOverwriteColoringOfSegment() {
   local P9K_DATE_BACKGROUND='yellow'
   source segments/date.p9k
 
-  assertEquals "%K{yellow} %F{green}*date-icon %f%F{red}%D{%d.%m.%y} %k%F{yellow}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{003} %F{002}*date-icon %f%F{001}%D{%d.%m.%y} %k%F{003}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testColorOverridingOfStatefulSegment() {
@@ -49,7 +49,7 @@ function testColorOverridingOfStatefulSegment() {
   local SSH_CLIENT="x"
   source segments/host.p9k
 
-  assertEquals "%K{red} %F{green}*ssh-icon %f%F{green}%m %k%F{red}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{001} %F{002}*ssh-icon %f%F{002}%m %k%F{001}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testColorOverridingOfCustomSegment() {
@@ -61,7 +61,7 @@ function testColorOverridingOfCustomSegment() {
   local P9K_WORLD_BACKGROUND='red'
   p9k::register_segment "WORLD"
 
-  assertEquals "%K{red} %F{green}*CW %f%F{red}world %k%F{red}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{001} %F{002}*CW %f%F{001}world %k%F{001}%f " "$(__p9k_build_left_prompt)"
 }
 
 source shunit2/shunit2

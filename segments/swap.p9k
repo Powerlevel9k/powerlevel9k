@@ -10,7 +10,7 @@
 # Parameters:
 #   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
 #                                                                                                                  
-p9k::register_segment "SWAP" "" "yellow" "$DEFAULT_COLOR"  'SWP'  $'\uE87D'  $'\uF0E4'  '\u'$CODEPOINT_OF_AWESOME_DASHBOARD  $'\uF464'
+p9k::register_segment "SWAP" "" "yellow" "$DEFAULT_COLOR"  'SWP'  $'\uE87D'  $'\uF0E4'  '\u'${CODEPOINT_OF_AWESOME_DASHBOARD}  $'\uF464'
 
 ################################################################
 # @description
@@ -31,7 +31,7 @@ prompt_swap() {
     raw_swap_used=$(sysctl vm.swapusage | grep -o "used\s*=\s*[0-9,.A-Z]*" | grep -o "[0-9,.A-Z]*$")
 
     typeset -F 2 swap_used
-    swap_used=${$(echo $raw_swap_used | grep -o "[0-9,.]*")//,/.}
+    swap_used=${$(echo ${raw_swap_used} | grep -o "[0-9,.]*")//,/.}
     # Replace comma
     swap_used=${swap_used//,/.}
 

@@ -19,7 +19,7 @@ function testPhpVersionSegmentPrintsNothingIfPhpIsNotAvailable() {
   p9k::register_segment "WORLD"
   alias php="nophp"
 
-  assertEquals "%K{white} %F{black}world %k%F{white}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{015} %F{000}world %k%F{015}%f " "$(__p9k_build_left_prompt)"
 
   unalias php
 }

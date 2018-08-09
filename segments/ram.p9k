@@ -10,7 +10,7 @@
 # Parameters:
 #   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
 #                                                                                                                  
-p9k::register_segment "RAM" "" "yellow" "$DEFAULT_COLOR"  'RAM'  $'\uE1E2 '  $'\uF0E4'  '\u'$CODEPOINT_OF_AWESOME_DASHBOARD  $'\uF0E4'
+p9k::register_segment "RAM" "" "yellow" "$DEFAULT_COLOR"  'RAM'  $'\uE1E2 '  $'\uF0E4'  '\u'${CODEPOINT_OF_AWESOME_DASHBOARD}  $'\uF0E4'
 
 ################################################################
 # @description

@@ -40,13 +40,13 @@ if [[ ${current_segment[-7,-1]} == '_joined' ]]; then
   # promote segment to a full one, if the predecessing full segment
   # was conditional. So this can only be the case for segments that
   # are not our direct predecessor.
-  if (( $(($current_index - $last_segment_index)) > 1)); then
+  if (( $((${current_index} - $last_segment_index)) > 1)); then
     # Now we have to examine every previous segment, until we reach
     # the last printed one (found by its index). This is relevant if
     # all previous segments are joined. Then we want to join our
     # segment as well.
     local examined_index=$((current_index - 1))
-    while (( $examined_index > $last_segment_index )); do
+    while (( ${examined_index} > ${last_segment_index} )); do
       local previous_segment=${elements[$examined_index]}
       # If one of the examined segments is not joined, then we know
       # that the current segment should not be joined, as the target

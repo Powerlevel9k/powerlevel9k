@@ -43,7 +43,7 @@ function testLoadSegmentWorksOnOsx() {
 
   local OS="OSX" # Fake OSX
 
-  assertEquals "%K{green} %F{black}L %f%F{black}1.38 " "$(prompt_load left 1 false ${FOLDER})"
+  assertEquals "%K{002} %F{000}L %f%F{000}1.38 " "$(prompt_load left 1 false ${FOLDER})"
 
   unfunction sysctl
 }
@@ -63,7 +63,7 @@ function testLoadSegmentWorksOnBsd() {
 
   local OS="BSD" # Fake BSD
 
-  assertEquals "%K{green} %F{black}L %f%F{black}1.38 " "$(prompt_load left 1 false ${FOLDER})"
+  assertEquals "%K{002} %F{000}L %f%F{000}1.38 " "$(prompt_load left 1 false ${FOLDER})"
 
   unfunction sysctl
 }
@@ -78,7 +78,7 @@ function testLoadSegmentWorksOnLinux() {
 
   local OS="Linux" # Fake Linux
 
-  assertEquals "%K{green} %F{black}L %f%F{black}1.38 " "$(prompt_load left 1 false ${FOLDER})"
+  assertEquals "%K{002} %F{000}L %f%F{000}1.38 " "$(prompt_load left 1 false ${FOLDER})"
 
   unalias nproc
 }
@@ -96,7 +96,7 @@ function testLoadSegmentNormalState() {
 
   local OS="Linux" # Fake Linux
 
-  assertEquals "%K{green} %F{black}L %f%F{black}1.00 " "$(prompt_load left 1 false ${FOLDER})"
+  assertEquals "%K{002} %F{000}L %f%F{000}1.00 " "$(prompt_load left 1 false ${FOLDER})"
 
   unalias nproc
 }
@@ -114,7 +114,7 @@ function testLoadSegmentWarningState() {
 
   local OS="Linux" # Fake Linux
 
-  assertEquals "%K{yellow} %F{black}L %f%F{black}2.01 " "$(prompt_load left 1 false ${FOLDER})"
+  assertEquals "%K{003} %F{000}L %f%F{000}2.01 " "$(prompt_load left 1 false ${FOLDER})"
 
   unalias nproc
 }
@@ -132,7 +132,7 @@ function testLoadSegmentCriticalState() {
 
   local OS="Linux" # Fake Linux
 
-  assertEquals "%K{red} %F{black}L %f%F{black}2.81 " "$(prompt_load left 1 false ${FOLDER})"
+  assertEquals "%K{001} %F{000}L %f%F{000}2.81 " "$(prompt_load left 1 false ${FOLDER})"
 
   unalias nproc
 }

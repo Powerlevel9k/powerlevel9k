@@ -15,7 +15,7 @@ function setUp() {
   local autoload_path="$PWD/functions/autoload"
   # test if we already autoloaded the functions
   if [[ ${fpath[(ie)$autoload_path]} -gt ${#fpath} ]]; then
-    fpath=( $autoload_path "${fpath[@]}" )
+    fpath=( ${autoload_path} "${fpath[@]}" )
     autoload -Uz __p9k_segment_should_be_joined
     autoload -Uz __p9k_segment_should_be_printed
     autoload -Uz __p9k_truncate_path
@@ -80,7 +80,7 @@ function testSegmentShouldBeJoinedIfDirectPredecessingSegmentIsJoined() {
   local last_element_index=2
 
   local joined
-  __p9k_segment_should_be_joined $current_index $last_element_index "$segments" && joined=true || joined=false
+  __p9k_segment_should_be_joined ${current_index} ${last_element_index} "$segments" && joined=true || joined=false
   assertTrue "$joined"
 
   unset segments
@@ -96,7 +96,7 @@ function testSegmentShouldBeJoinedIfPredecessingSegmentIsJoinedTransitivley() {
   local last_element_index=1
 
   local joined
-  __p9k_segment_should_be_joined $current_index $last_element_index "$segments" && joined=true || joined=false
+  __p9k_segment_should_be_joined ${current_index} ${last_element_index} "$segments" && joined=true || joined=false
   assertTrue "$joined"
 
   unset segments
@@ -112,7 +112,7 @@ function testSegmentShouldNotBeJoinedIfPredecessingSegmentIsNotJoinedButConditio
   local last_element_index=1
 
   local joined
-  __p9k_segment_should_be_joined $current_index $last_element_index "$segments" && joined=true || joined=false
+  __p9k_segment_should_be_joined ${current_index} ${last_element_index} "$segments" && joined=true || joined=false
   assertFalse "$joined"
 
   unset segments

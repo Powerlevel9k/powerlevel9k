@@ -21,7 +21,7 @@ function testBackgroundJobsSegmentPrintsNothingWithoutBackgroundJobs() {
   # Load Powerlevel9k
   source segments/background_jobs.p9k
 
-  assertEquals "%K{white} %F{black}world %k%F{white}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{015} %F{000}world %k%F{015}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testBackgroundJobsSegmentVerboseAlwaysPrintsZeroWithoutBackgroundJobs() {
@@ -34,7 +34,7 @@ function testBackgroundJobsSegmentVerboseAlwaysPrintsZeroWithoutBackgroundJobs()
   # Load Powerlevel9k
   source segments/background_jobs.p9k
 
-  assertEquals "%K{black} %F{cyan}⚙ %f%F{cyan}0 %k%F{black}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{000} %F{006}⚙ %f%F{006}0 %k%F{000}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testBackgroundJobsSegmentWorksWithOneBackgroundJob() {
@@ -46,7 +46,7 @@ function testBackgroundJobsSegmentWorksWithOneBackgroundJob() {
 
   # Load Powerlevel9k
   source segments/background_jobs.p9k
-  assertEquals "%K{black} %F{cyan}⚙ %f%F{cyan}%k%F{black}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{000} %F{006}⚙ %f%F{006}%k%F{000}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testBackgroundJobsSegmentWorksWithMultipleBackgroundJobs() {
@@ -59,7 +59,7 @@ function testBackgroundJobsSegmentWorksWithMultipleBackgroundJobs() {
   # Load Powerlevel9k
   source segments/background_jobs.p9k
 
-  assertEquals "%K{black} %F{cyan}⚙ %f%F{cyan}3 %k%F{black}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{000} %F{006}⚙ %f%F{006}3 %k%F{000}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testBackgroundJobsSegmentWorksWithExpandedMode() {
@@ -73,7 +73,7 @@ function testBackgroundJobsSegmentWorksWithExpandedMode() {
   # Load Powerlevel9k
   source segments/background_jobs.p9k
 
-  assertEquals "%K{black} %F{cyan}⚙ %f%F{cyan}1r 2s %k%F{black}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{000} %F{006}⚙ %f%F{006}1r 2s %k%F{000}%f " "$(__p9k_build_left_prompt)"
 }
 
 source shunit2/shunit2

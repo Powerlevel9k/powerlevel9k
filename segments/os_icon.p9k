@@ -11,7 +11,7 @@
 #   name_of_icon  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
 case "$OS" in
   #                                                                                                                      
-  "OSX")      p9k::register_segment "OS_ICON" "" "black" "white" 'OSX'  $'\uE26E'    $'\uF179'    '\u'$CODEPOINT_OF_AWESOME_APPLE  $'\uF179' ;;
+  "OSX")      p9k::register_segment "OS_ICON" "" "black" "white" 'OSX'  $'\uE26E'    $'\uF179'    '\u'${CODEPOINT_OF_AWESOME_APPLE}  $'\uF179' ;;
   #                                                                                                                      
   "Windows")  p9k::register_segment "OS_ICON" "" "black" "white" 'WIN'  $'\uE26F'    $'\uF17A'    $'\uF17A'                        $'\uF17A' ;;
   #                                                               😈           😈           😈                                
@@ -47,7 +47,7 @@ case "$OS" in
       #                                                                                                                                   
       "linuxmint")             p9k::register_segment "OS_ICON" "" "black" "white" 'LMi'  'LMi'      'LMi'      'LMi'                            $'\uF304' ;;
       #                                                                                                                               
-      *)                       p9k::register_segment "OS_ICON" "" "black" "white" 'Lx'   $'\uE271'  $'\uF17C'  '\u'$CODEPOINT_OF_AWESOME_LINUX  $'\uF17C' ;;
+      *)                       p9k::register_segment "OS_ICON" "" "black" "white" 'Lx'   $'\uE271'  $'\uF17C'  '\u'${CODEPOINT_OF_AWESOME_LINUX}  $'\uF17C' ;;
     esac
   ;;
   #                                                                                                                        

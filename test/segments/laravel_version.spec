@@ -33,7 +33,7 @@ function testLaravelVersionSegment() {
   P9K_LEFT_PROMPT_ELEMENTS=(laravel_version)
   source segments/laravel_version.p9k
 
-  assertEquals "%K{001} %F{white}*x %f%F{white}5.4.23 %k%F{001}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{001} %F{015}*x %f%F{015}5.4.23 %k%F{001}%f " "$(__p9k_build_left_prompt)"
   unalias php
 }
 
@@ -46,7 +46,7 @@ function testLaravelVersionSegmentIfArtisanIsNotAvailable() {
   P9K_LEFT_PROMPT_ELEMENTS=(custom_world laravel_version)
   source segments/laravel_version.p9k
 
-  assertEquals "%K{white} %F{black}world %k%F{white}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{015} %F{000}world %k%F{015}%f " "$(__p9k_build_left_prompt)"
 
   unalias php
 }
@@ -60,7 +60,7 @@ function testLaravelVersionSegmentPrintsNothingIfPhpIsNotAvailable() {
   P9K_LEFT_PROMPT_ELEMENTS=(custom_world laravel_version)
   source segments/laravel_version.p9k
 
-  assertEquals "%K{white} %F{black}world %k%F{white}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{015} %F{000}world %k%F{015}%f " "$(__p9k_build_left_prompt)"
 
   unalias php
 }

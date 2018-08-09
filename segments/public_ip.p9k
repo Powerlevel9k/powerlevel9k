@@ -10,14 +10,14 @@
 # Parameters:
 #   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
 #                                                                                                                      
-p9k::register_segment "PUBLIC_IP" "" "$DEFAULT_COLOR" "$DEFAULT_COLOR_INVERTED"  ''  ''  ''  '\u'$CODEPOINT_OF_AWESOME_GLOBE  $'\uF0AC'
+p9k::register_segment "PUBLIC_IP" "" "$DEFAULT_COLOR" "$DEFAULT_COLOR_INVERTED"  ''  ''  ''  '\u'${CODEPOINT_OF_AWESOME_GLOBE}  $'\uF0AC'
 
 ################################################################
 # Register segment icon
 # Parameters:
 #   name_of_icon  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
 #                                                                                   
-p9k::register_icon "VPN_ICON"  '(vpn)'  '(vpn)'  $'\uF023'  '\u'$CODEPOINT_OF_AWESOME_LOCK  $'\uF023'
+p9k::register_icon "VPN_ICON"  '(vpn)'  '(vpn)'  $'\uF023'  '\u'${CODEPOINT_OF_AWESOME_LOCK}  $'\uF023'
 
 # On macOS, stat is in /usr/bin/stat. However, if gnu utils are installed, this won't work.
 [[ $(which stat) == "/usr/bin/stat" ]] && local stat_version="OSX"
@@ -45,7 +45,7 @@ prompt_public_ip() {
     else
       timediff=$(($(date +%s) - $(date -r $P9K_PUBLIC_IP_FILE +%s)))
     fi
-    [[ $timediff -gt $P9K_PUBLIC_IP_TIMEOUT ]] && refresh_ip=true
+    [[ ${timediff} -gt $P9K_PUBLIC_IP_TIMEOUT ]] && refresh_ip=true
     # If tmp file is empty get a fresh IP
     [[ -z $(cat $P9K_PUBLIC_IP_FILE) ]] && refresh_ip=true
     [[ -n $P9K_PUBLIC_IP_NONE ]] && [[ $(cat $P9K_PUBLIC_IP_FILE) =~ "$P9K_PUBLIC_IP_NONE" ]] && refresh_ip=true
@@ -55,9 +55,9 @@ prompt_public_ip() {
 
   # grab a fresh IP if needed
   local fresh_ip
-  if [[ $refresh_ip =~ true && -w $P9K_PUBLIC_IP_FILE ]]; then
+  if [[ ${refresh_ip} =~ true && -w $P9K_PUBLIC_IP_FILE ]]; then
     for method in "${P9K_PUBLIC_IP_METHODS[@]}"; do
-      case $method in
+      case ${method} in
         'dig')
             fresh_ip="$(dig +time=1 +tries=1 +short myip.opendns.com @resolver1.opendns.com 2> /dev/null)"
             [[ "$fresh_ip" =~ ^\; ]] && unset fresh_ip
@@ -80,14 +80,14 @@ prompt_public_ip() {
     #   is truncated to zero length if it exists, even if CLOBBER is unset.
     # If the file already exists, and a simple `>` redirection and CLOBBER
     # unset, ZSH will produce an error.
-    [[ -n "${fresh_ip}" ]] && echo $fresh_ip >! $P9K_PUBLIC_IP_FILE || echo $P9K_PUBLIC_IP_NONE >! $P9K_PUBLIC_IP_FILE
+    [[ -n "${fresh_ip}" ]] && echo ${fresh_ip} >! $P9K_PUBLIC_IP_FILE || echo $P9K_PUBLIC_IP_NONE >! $P9K_PUBLIC_IP_FILE
   fi
 
   # read public IP saved to tmp file
   local public_ip="$(cat $P9K_PUBLIC_IP_FILE)"
 
   # Draw the prompt segment
-  if [[ -n $public_ip ]]; then
+  if [[ -n ${public_ip} ]]; then
     local icon=''
 
     # TODO: Where is this variable actually set?

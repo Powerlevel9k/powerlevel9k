@@ -15,7 +15,7 @@
 local autoload_path="$__P9K_DIRECTORY/functions/autoload"
 # test if we already autoloaded the functions
 if [[ ${fpath[(ie)$autoload_path]} -gt ${#fpath} ]]; then
-  fpath=( $autoload_path "${fpath[@]}" )
+  fpath=( ${autoload_path} "${fpath[@]}" )
   autoload -Uz __p9k_get_unique_path
   autoload -Uz __p9k_segment_should_be_joined
   autoload -Uz __p9k_segment_should_be_printed
@@ -57,14 +57,14 @@ else
   if [[ "$OS" == "OSX" ]]; then
     local termtest=$(ps -o 'command=' -p $(ps -o 'ppid=' -p $$) | tail -1 | awk '{print $NF}')
     # test if we are in a sudo su -
-    if [[ $termtest == "-" || $termtest == "root" ]]; then
+    if [[ ${termtest} == "-" || ${termtest} == "root" ]]; then
       termtest=($(ps -o 'command=' -p $(ps -o 'ppid=' -p $(ps -o 'ppid='$$))))
       termtest=$(basename $termtest[1])
     fi
   else
     local termtest=$(ps -o 'cmd=' -p $(ps -o 'ppid=' -p $$) | tail -1 | awk '{print $NF}')
     # test if we are in a sudo su -
-    if [[ $termtest == "-" || $termtest == "root" ]]; then
+    if [[ ${termtest} == "-" || ${termtest} == "root" ]]; then
       termtest=($(ps -o 'cmd=' -p $(ps -o 'ppid=' $(ps -o 'ppid='$$))))
       if [[ $termtest[1] == "zsh" ]]; then  # gnome terminal works differently than the rest... sigh
         termtest=$termtest[-1]
@@ -103,7 +103,7 @@ __p9k_update_environment_vars() {
   local envVar varType varName origVar newVar newVal var
   local oldVarsFound=false
   for envVar in $(declare); do
-    if [[ $envVar =~ "POWERLEVEL9K_" ]]; then
+    if [[ ${envVar} =~ "POWERLEVEL9K_" ]]; then
       oldVarsFound=true
       varType=( "$(declare -p ${envVar})" )
       varName=${${envVar##POWERLEVEL9K_}%=*}
@@ -131,7 +131,7 @@ __p9k_update_environment_vars() {
     fi
   done
   [[ $P9K_IGNORE_VAR_WARNING == true ]] && oldVarsFound=false # disable warning if user sets P9K_IGNORE_VAR_WARNING to true.
-  [[ $oldVarsFound == true ]] && print -P "%F{yellow}Information!%f As of this update, the %F{cyan}POWERLEVEL9K_*%f variables have been replaced by %F{cyan}P9K_*%f.
+  [[ ${oldVarsFound} == true ]] && print -P "%F{yellow}Information!%f As of this update, the %F{cyan}POWERLEVEL9K_*%f variables have been replaced by %F{cyan}P9K_*%f.
   Variables have been converted automatically, but there may still be some errors. For more information, have a look at the CHANGELOG.md.
   To disable this warning, please modify your configuration file to use the new style variables, or add %F{green}P9K_IGNORE_VAR_WARNING=true%f to your config."
 }
@@ -339,7 +339,7 @@ __p9k_print_deprecation_var_warning() {
   for key in ${(@k)raw_deprecated_variables}; do
     if p9k::defined $key; then
       # segment is deprecated
-      if ! __p9k_update_var_name $key $raw_deprecated_variables[$key]; then
+      if ! __p9k_update_var_name ${key} $raw_deprecated_variables[$key]; then
         print -P "%F{yellow}Warning!%f The '$key' variable is deprecated. This could not be updated to '%F{cyan}${raw_deprecated_variables[$key]}%f' for you. For more information, have a look at the CHANGELOG.md."
       fi
     fi

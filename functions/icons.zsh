@@ -24,7 +24,7 @@
 # Set the right locale to protect special characters
 local LC_ALL="" LC_CTYPE="en_US.UTF-8"
 typeset -gAH __P9K_DATA
-typeset -gAH p9k_icons
+typeset -gAH __P9K_ICONS
 
 if [[ P9K_MODE == "awesome-mapped-fontconfig" && -z "$AWESOME_GLYPHS_LOADED" ]]; then
     echo "Powerlevel9k warning: Awesome-Font mappings have not been loaded.
@@ -52,10 +52,10 @@ fi
 #   You can specify a string, unicode string or codepoint string (for Mapped fonts only).
 ##
 # @usage
-#   p9k::register_icon "name_of_icon" 'Gen' $'\uXXX' $'\uXXX' '\u'$CODEPOINT_OF_AWESOME_xxx '\uXXX'
+#   p9k::register_icon "name_of_icon" 'Gen' $'\uXXX' $'\uXXX' '\u'${CODEPOINT_OF_AWESOME_xxx} '\uXXX'
 ##
 # @example
-#   p9k::register_icon "LOCK_ICON"  $'\uE0A2'  $'\uE138'  $'\uF023'  '\u'$CODEPOINT_OF_AWESOME_LOCK  $'\uF023'
+#   p9k::register_icon "LOCK_ICON"  $'\uE0A2'  $'\uE138'  $'\uF023'  '\u'${CODEPOINT_OF_AWESOME_LOCK}  $'\uF023'
 ##
 p9k::register_icon() {
   local map
@@ -71,7 +71,7 @@ p9k::register_icon() {
     	*)                                          map=$2 ;;
     esac
   fi
-	p9k_icons[$1]=${map}
+	__P9K_ICONS[$1]=${map}
 }
 
 ################################################################
@@ -96,10 +96,10 @@ p9k::register_icon() {
 #   You can specify a string, unicode string or codepoint string (for Mapped fonts only).
 ##
 # @usage
-#   p9k::register_segment "segmentName" "stateNameOrEmpty" "p9k::background_color" "p9k::foreground_color" 'Gen' $'\uXXX' $'\uXXX' '\u'$CODEPOINT_OF_AWESOME_xxx '\uXXX'
+#   p9k::register_segment "segmentName" "stateNameOrEmpty" "p9k::background_color" "p9k::foreground_color" 'Gen' $'\uXXX' $'\uXXX' '\u'${CODEPOINT_OF_AWESOME_xxx} '\uXXX'
 ##
 # @example
-#   p9k::register_segment "DIR_WRITABLE" "" "red" "yellow1"  $'\uE0A2'  $'\uE138'  $'\uF023'  '\u'$CODEPOINT_OF_AWESOME_LOCK  $'\uF023'
+#   p9k::register_segment "DIR_WRITABLE" "" "red" "yellow1"  $'\uE0A2'  $'\uE138'  $'\uF023'  '\u'${CODEPOINT_OF_AWESOME_LOCK}  $'\uF023'
 ##
 p9k::register_segment() {
   local STATEFUL_NAME=${(U)1#PROMPT_}
@@ -135,7 +135,7 @@ p9k::register_segment() {
     	*)                                          map=$5 ;;
     esac
   fi
-	p9k_icons[${STATEFUL_NAME}]=${map}
+	__P9K_ICONS[${STATEFUL_NAME}]=${map}
 
   local ICON_COLOR_VARIABLE="P9K_${STATEFUL_NAME}_ICON_COLOR"
   if p9k::defined "$ICON_COLOR_VARIABLE"; then
@@ -172,16 +172,16 @@ case $P9K_MODE in
 	'flat')
 		# Set the right locale to protect special characters
 		local LC_ALL="" LC_CTYPE="en_US.UTF-8"
-		p9k_icons[LEFT_SEGMENT_SEPARATOR]=''
-		p9k_icons[RIGHT_SEGMENT_SEPARATOR]=''
-		p9k_icons[LEFT_SUBSEGMENT_SEPARATOR]='|'
-		p9k_icons[RIGHT_SUBSEGMENT_SEPARATOR]='|'
+		__P9K_ICONS[LEFT_SEGMENT_SEPARATOR]=''
+		__P9K_ICONS[RIGHT_SEGMENT_SEPARATOR]=''
+		__P9K_ICONS[LEFT_SUBSEGMENT_SEPARATOR]='|'
+		__P9K_ICONS[RIGHT_SUBSEGMENT_SEPARATOR]='|'
 	;;
 	'compatible')
 		# Set the right locale to protect special characters
 		local LC_ALL="" LC_CTYPE="en_US.UTF-8"
-		p9k_icons[LEFT_SEGMENT_SEPARATOR]=$'\u2B80'                 # ⮀
-		p9k_icons[RIGHT_SEGMENT_SEPARATOR]=$'\u2B82'                # ⮂
+		__P9K_ICONS[LEFT_SEGMENT_SEPARATOR]=$'\u2B80'                 # ⮀
+		__P9K_ICONS[RIGHT_SEGMENT_SEPARATOR]=$'\u2B82'                # ⮂
 	;;
 esac
 
@@ -193,7 +193,7 @@ esac
 #   $1 string Name of icon
 ##
 p9k::print_icon() {
-	echo -n "${p9k_icons[$1]}"
+	echo -n "${__P9K_ICONS[$1]}"
 }
 
 ################################################################
@@ -204,5 +204,5 @@ p9k::print_icon() {
 ##
 show_defined_icons() {
   # changed (kv) to (k) in case there are empty keys, which causes the printing to be done wrong
-  for k in ${(k)p9k_icons}; do; echo "$k -> '$p9k_icons[$k]'"; done | sort
+  for k in ${(k)__P9K_ICONS}; do; echo "${k} -> '${__P9K_ICONS[$k]}'"; done | sort
 }

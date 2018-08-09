@@ -113,7 +113,7 @@ Shows current `vpn` interface.
 
 - Fixed susceptibility to [pw3nage exploit](https://github.com/njhartwell/pw3nage).
 - Added support for Android
-- The abbreviation for $HOME is now configurable (doesn't have to be `~`).
+- The abbreviation for ${HOME} is now configurable (doesn't have to be `~`).
 - Fixed colorization of VCS segment in Subversion repos.
 - Improved handling of symlinks in installation paths.
 

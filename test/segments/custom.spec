@@ -18,7 +18,7 @@ function testCustomDirectOutputSegment() {
   local P9K_CUSTOM_WORLD="echo world"
   p9k::register_segment "WORLD"
 
-  assertEquals "%K{white} %F{black}world %k%F{white}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{015} %F{000}world %k%F{015}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testCustomClosureSegment() {
@@ -30,7 +30,7 @@ function testCustomClosureSegment() {
   local P9K_CUSTOM_WORLD='p9k_hello_world'
   p9k::register_segment "WORLD"
 
-  assertEquals "%K{white} %F{black}world %k%F{white}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{015} %F{000}world %k%F{015}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testSettingBackgroundForCustomSegment() {
@@ -40,7 +40,7 @@ function testSettingBackgroundForCustomSegment() {
   local P9K_WORLD_BACKGROUND="yellow"
   p9k::register_segment "WORLD"
 
-  assertEquals "%K{yellow} %F{black}world %k%F{yellow}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{003} %F{000}world %k%F{003}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testSettingForegroundForCustomSegment() {
@@ -50,7 +50,7 @@ function testSettingForegroundForCustomSegment() {
   local P9K_WORLD_FOREGROUND="red"
   p9k::register_segment "WORLD"
 
-  assertEquals "%K{white} %F{red}world %k%F{white}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{015} %F{001}world %k%F{015}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testSettingVisualIdentifierForCustomSegment() {
@@ -60,7 +60,7 @@ function testSettingVisualIdentifierForCustomSegment() {
   local P9K_WORLD_ICON="*hw"
   p9k::register_segment "WORLD"
 
-  assertEquals "%K{white} %F{black}*hw %f%F{black}world %k%F{white}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{015} %F{000}*hw %f%F{000}world %k%F{015}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testSettingVisualIdentifierForegroundColorForCustomSegment() {
@@ -71,7 +71,7 @@ function testSettingVisualIdentifierForegroundColorForCustomSegment() {
   local P9K_WORLD_ICON_COLOR="red"
   p9k::register_segment "WORLD"
 
-  assertEquals "%K{white} %F{red}*hw %f%F{black}world %k%F{white}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{015} %F{001}*hw %f%F{000}world %k%F{015}%f " "$(__p9k_build_left_prompt)"
 }
 
 source shunit2/shunit2

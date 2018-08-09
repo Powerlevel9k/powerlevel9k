@@ -10,11 +10,11 @@
 # Parameters:
 #   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
 #                                                                                     ☑          ☑          ☑                                                   
-p9k::register_segment "TW" "FINISHEDALL"    "green"                     "${DEFAULT_COLOR}"  $'\u2611'  $'\u2611'  $'\u2611'  '\u'$CODEPOINT_OF_AWESOME_CHECK_SQUARE_O  $'\uF046'
-p9k::register_segment "TW" "FINISHEDTODAY"  "green"                     "${DEFAULT_COLOR}"  $'\u2611'  $'\u2611'  $'\u2611'  '\u'$CODEPOINT_OF_AWESOME_CHECK_SQUARE_O  $'\uF046'
-p9k::register_segment "TW" "TODAYPENDING"   "${DEFAULT_COLOR_INVERTED}" "${DEFAULT_COLOR}"  $'\u2611'  $'\u2611'  $'\u2611'  '\u'$CODEPOINT_OF_AWESOME_CHECK_SQUARE_O  $'\uF046'
-p9k::register_segment "TW" "TODAYONLY"      "${DEFAULT_COLOR_INVERTED}" "${DEFAULT_COLOR}"  $'\u2611'  $'\u2611'  $'\u2611'  '\u'$CODEPOINT_OF_AWESOME_CHECK_SQUARE_O  $'\uF046'
-p9k::register_segment "TW" "LATE"           "yellow"                    "${DEFAULT_COLOR}"  $'\u2611'  $'\u2611'  $'\u2611'  '\u'$CODEPOINT_OF_AWESOME_CHECK_SQUARE_O  $'\uF046'
+p9k::register_segment "TW" "FINISHEDALL"    "green"                     "${DEFAULT_COLOR}"  $'\u2611'  $'\u2611'  $'\u2611'  '\u'${CODEPOINT_OF_AWESOME_CHECK_SQUARE_O}  $'\uF046'
+p9k::register_segment "TW" "FINISHEDTODAY"  "green"                     "${DEFAULT_COLOR}"  $'\u2611'  $'\u2611'  $'\u2611'  '\u'${CODEPOINT_OF_AWESOME_CHECK_SQUARE_O}  $'\uF046'
+p9k::register_segment "TW" "TODAYPENDING"   "${DEFAULT_COLOR_INVERTED}" "${DEFAULT_COLOR}"  $'\u2611'  $'\u2611'  $'\u2611'  '\u'${CODEPOINT_OF_AWESOME_CHECK_SQUARE_O}  $'\uF046'
+p9k::register_segment "TW" "TODAYONLY"      "${DEFAULT_COLOR_INVERTED}" "${DEFAULT_COLOR}"  $'\u2611'  $'\u2611'  $'\u2611'  '\u'${CODEPOINT_OF_AWESOME_CHECK_SQUARE_O}  $'\uF046'
+p9k::register_segment "TW" "LATE"           "yellow"                    "${DEFAULT_COLOR}"  $'\u2611'  $'\u2611'  $'\u2611'  '\u'${CODEPOINT_OF_AWESOME_CHECK_SQUARE_O}  $'\uF046'
 
 p9k::set_default P9K_TW_COMPACT false
 ################################################################
@@ -36,8 +36,8 @@ prompt_tw() {
     for line in "${(s:,:)tasks[@]}"; do # split the array into multiple lines on delimiter comma (,)
       match=( ${(s.:.)line} ) # split line into keys and values
       if [[ ${match[1]} == "due" ]]; then
-        [[ ${match[2]:0:8} == $date ]] && (( ++today )) # tasks due today
-        (( ${match[2]:0:8} < $date )) && (( ++over )) # overdue tasks
+        [[ ${match[2]:0:8} == ${date} ]] && (( ++today )) # tasks due today
+        (( ${match[2]:0:8} < ${date} )) && (( ++over )) # overdue tasks
       fi
     done
     typeset -gAH tw_messages

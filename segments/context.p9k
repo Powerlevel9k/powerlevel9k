@@ -29,7 +29,7 @@ p9k::set_default P9K_CONTEXT_TEMPLATE "%n@%m"
 #   $3 boolean Whether the segment should be joined
 ##
 # @note
-#    If $DEFAULT_USER is not set, this prompt segment will always print.
+#    If ${DEFAULT_USER} is not set, this prompt segment will always print.
 ##
 prompt_context() {
   local current_state="DEFAULT"

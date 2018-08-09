@@ -8,7 +8,7 @@
 #   This file contains some color-functions for powerlevel9k.
 ##
 
-typeset -A __P9K_COLORS
+typeset -gAh __P9K_COLORS
 # https://jonasjacek.github.io/colors/
 # use color names by default to allow dark/light themes to adjust colors based on names
 # http://plumbum.readthedocs.io/en/latest/colors.html
@@ -318,21 +318,8 @@ __p9k_term_colors() {
 ##
 p9k::get_color() {
   # no need to check numerical values
-  if [[ "$1" = <-> ]]; then
-    if [[ "$1" = <8-15> ]]; then
-      1=$(($1 - 8))
-    fi
-  else
-    # named color added to parameter expansion print -P to test if the name exists in terminal
-    local named="%K{$1}"
-    # https://misc.flogisoft.com/bash/tip_colors_and_formatting
-    local default="$'\033'\[49m"
-    # http://zsh.sourceforge.net/Doc/Release/Prompt-Expansion.html
-    local quoted=$(printf "%q" $(print -P "$named"))
-    if [[ $quoted = "$'\033'\[49m" && $1 != "black" ]]; then
-        # color not found, so try to get the code
-        1=$(p9k::get_color_code $1)
-    fi
+  if [[ "$1" != <-> ]]; then
+    1=$(p9k::get_color_code $1)
   fi
   echo -n "$1"
 }
@@ -388,19 +375,15 @@ p9k::foreground_color() {
 #   $1 misc Number or string of color.
 ##
 p9k::get_color_code() {
-  # Check if given value is already numerical
+  # Exit early: Check if given value is already numerical
   if [[ "$1" = <-> ]]; then
-    # ANSI color codes distinguish between "foreground"
-    # and "background" colors. We don't need to do that,
-    # as ZSH uses a 256 color space anyway.
-    # if [[ "$1" = <8-15> ]]; then
-    #   echo -n $(($1 - 8))
-    # else
-      echo -n "$1"
-    # fi
-    # Check if value is none with any case.
+    # Pad color with zeroes
+    echo -n "${(l:3::0:)1}"
+    return
+  # Check if value is none with any case.
   elif [[ "${(L)1}" == "none" ]]; then
     echo -n 'NONE'
+    return
   else
     # for testing purposes in terminal
     if [[ "$1" == "foreground"  ]]; then
@@ -414,14 +397,13 @@ p9k::get_color_code() {
         print -P "$(p9k::background_color $i)$(p9k::get_color $i) - $i$(p9k::background_color)"
       done
     else
-      #[[ -n "$1" ]] bg="%K{$1}" || bg="%k"
       # Strip eventual "bg-" prefixes
       1=${1#bg-}
       # Strip eventual "fg-" prefixes
       1=${1#fg-}
       # Strip eventual "br" prefixes ("bright" colors)
       1=${1#br}
-      echo -n $codes[$1]
+      echo -n ${__P9K_COLORS[$1]}
     fi
   fi
 }

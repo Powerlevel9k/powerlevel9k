@@ -52,7 +52,7 @@ __p9k_left_prompt_segment() {
   local current_index="${2}"
   # Check if the segment should be joined with the previous one
   local joined=false
-  [[ "${3}" == "true" ]] && __p9k_segment_should_be_joined $current_index $last_left_element_index "$P9K_LEFT_PROMPT_ELEMENTS" && joined=true
+  [[ "${3}" == "true" ]] && __p9k_segment_should_be_joined ${current_index} ${last_left_element_index} "$P9K_LEFT_PROMPT_ELEMENTS" && joined=true
   # Support for bold segment
   [[ $__P9K_DATA[${STATEFUL_NAME}_BD] == true ]] && content="%B${4}%b" || content="${4}"
   local visual_identifier="${5}"
@@ -60,22 +60,22 @@ __p9k_left_prompt_segment() {
   local bg=$__P9K_DATA[${STATEFUL_NAME}_BG]
   local fg=$__P9K_DATA[${STATEFUL_NAME}_FG]
 
-  if [[ $CURRENT_BG != 'NONE' ]]; then # not first segment
+  if [[ ${CURRENT_BG} != 'NONE' ]]; then # not first segment
     if [[ "$bg" != "$CURRENT_BG" ]]; then # background colors are different
       echo -n "$bg%F${CURRENT_BG#%K}"
-      [[ $joined == false ]] && echo -n "${p9k_icons[LEFT_SEGMENT_SEPARATOR]}$P9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS"
+      [[ ${joined} == false ]] && echo -n "${__P9K_ICONS[LEFT_SEGMENT_SEPARATOR]}$P9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS"
     else # background colors are the same
       # Middle segment with same color as previous segment
       # We take the current foreground color as color for our
       # subsegment. This should have enough contrast.
-      [[ $joined == false ]] && echo -n "${p9k_icons[LEFT_SUBSEGMENT_SEPARATOR]}$P9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS"
+      [[ ${joined} == false ]] && echo -n "${__P9K_ICONS[LEFT_SUBSEGMENT_SEPARATOR]}$P9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS"
     fi
   else # First segment
     echo -n "${bg}$P9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS"
   fi
 
   # Print the visual identifier
-  [[ $visual_identifier != "" ]] && echo -n "$__P9K_DATA[${STATEFUL_NAME}_VI]${visual_identifier}${P9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS}%f${fg}" || echo -n "${fg}"
+  [[ ${visual_identifier} != "" ]] && echo -n "$__P9K_DATA[${STATEFUL_NAME}_VI]${visual_identifier}${P9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS}%f${fg}" || echo -n "${fg}"
   # Print the content of the segment, if there is any
   [[ -n "${content}" ]] && echo -n "${content}${P9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS}"
 
@@ -90,12 +90,12 @@ __p9k_left_prompt_segment() {
 # @noargs
 ##
 __p9k_left_prompt_end() {
-  if [[ -n $CURRENT_BG ]]; then
-    echo -n "%k%F${CURRENT_BG#%K}${p9k_icons[LEFT_SEGMENT_SEPARATOR]}"
+  if [[ -n ${CURRENT_BG} ]]; then
+    echo -n "%k%F${CURRENT_BG#%K}${__P9K_ICONS[LEFT_SEGMENT_SEPARATOR]}"
   else
     echo -n "%k"
   fi
-  echo -n "%f${p9k_icons[LEFT_SEGMENT_END_SEPARATOR]}"
+  echo -n "%f${__P9K_ICONS[LEFT_SEGMENT_END_SEPARATOR]}"
   CURRENT_BG=''
 }
 
@@ -122,7 +122,7 @@ __p9k_right_prompt_segment() {
   local current_index="${2}"
   # Check if the segment should be joined with the previous one
   local joined=false
-  [[ "${3}" == "true" ]] && __p9k_segment_should_be_joined $current_index $last_right_element_index "$P9K_RIGHT_PROMPT_ELEMENTS" && joined=true
+  [[ "${3}" == "true" ]] && __p9k_segment_should_be_joined ${current_index} ${last_right_element_index} "$P9K_RIGHT_PROMPT_ELEMENTS" && joined=true
   local content
   # Support for bold segment
   [[ $__P9K_DATA[${STATEFUL_NAME}_BD] == true ]] && content="%B${4}%b" || content="${4}"
@@ -132,15 +132,15 @@ __p9k_right_prompt_segment() {
   local fg=$__P9K_DATA[${STATEFUL_NAME}_FG]
 
   # If CURRENT_RIGHT_BG is "NONE", we are the first right segment.
-  if [[ $joined == false ]] || [[ $CURRENT_RIGHT_BG == 'NONE' ]]; then
+  if [[ ${joined} == false ]] || [[ ${CURRENT_RIGHT_BG} == 'NONE' ]]; then
     if [[ "$bg" != "$CURRENT_RIGHT_BG" ]]; then
       # Use the new BG color for the foreground with separator
-      echo -n "%F${bg#%K}$p9k_icons[RIGHT_SEGMENT_SEPARATOR]"
+      echo -n "%F${bg#%K}${__P9K_ICONS[RIGHT_SEGMENT_SEPARATOR]}"
     else
       # Middle segment with same color as previous segment
       # We take the current foreground color as color for our
       # subsegment. This should have enough contrast.
-      echo -n "$fg$p9k_icons[RIGHT_SUBSEGMENT_SEPARATOR]"
+      echo -n "$fg${__P9K_ICONS[RIGHT_SUBSEGMENT_SEPARATOR]}"
     fi
   fi
 
@@ -153,7 +153,7 @@ __p9k_right_prompt_segment() {
     [[ -n "${content}" ]] && echo -n "${content}${P9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS}"
   else
     # Print whitespace only if segment is not joined or first right segment
-    [[ $joined == false ]] || [[ "$CURRENT_RIGHT_BG" == "NONE" ]] && echo -n "${P9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS}"
+    [[ ${joined} == false ]] || [[ "$CURRENT_RIGHT_BG" == "NONE" ]] && echo -n "${P9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS}"
     # Print segment content if there is any
     [[ -n "${content}" ]] && echo -n "${content}${P9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS}"
     # Print the visual identifier
@@ -189,7 +189,7 @@ p9k::prepare_segment() {
   if __p9k_segment_should_be_printed "${STATEFUL_NAME}" "${7}" "${6}"; then
     local VISUAL_IDENTIFIER
     if [[ -z "${8}" ]]; then
-      VISUAL_IDENTIFIER=$p9k_icons[$STATEFUL_NAME]
+      VISUAL_IDENTIFIER=${__P9K_ICONS[$STATEFUL_NAME]}
     else
       # test if the VISUAL_IDENTIFIER string is a ICON NAME otherwise treat it as a curston string
       [[ "${(U)8[1]}" =~ '[A-Z]' ]] && VISUAL_IDENTIFIER="$(p9k::print_icon ${8})" || VISUAL_IDENTIFIER="$(echo -n ${8})"
@@ -230,7 +230,7 @@ __p9k_prompt_custom() {
   local command=P9K_CUSTOM_$4:u
   local segment_content="$(eval ${(P)command})"
 
-  if [[ -n $segment_content ]]; then
+  if [[ -n ${segment_content} ]]; then
     p9k::prepare_segment "${4:u}" "" "$1" $2 $3 "$segment_content"
   fi
 }
@@ -259,7 +259,7 @@ __p9k_build_left_prompt() {
     # Check if it is a custom command, otherwise interpet it as
     # a prompt.
     if [[ $element[0,7] =~ "custom_" ]]; then
-      "__p9k_prompt_custom" "left" "$index" $joined $element[8,-1]
+      "__p9k_prompt_custom" "left" "$index" ${joined} $element[8,-1]
     else
       "prompt_$element" "left" "$index" $joined
     fi
@@ -290,7 +290,7 @@ __p9k_build_right_prompt() {
     # Check if it is a custom command, otherwise interpet it as
     # a prompt.
     if [[ $element[0,7] =~ "custom_" ]]; then
-      "__p9k_prompt_custom" "right" "$index" $joined $element[8,-1]
+      "__p9k_prompt_custom" "right" "$index" ${joined} $element[8,-1]
     else
       "prompt_$element" "right" "$index" $joined
     fi
@@ -343,8 +343,8 @@ __p9k_prepare_prompts() {
   local LC_ALL="" LC_CTYPE="en_US.UTF-8" # Set the right locale to protect special characters
 
   if [[ "$P9K_PROMPT_ON_NEWLINE" == true ]]; then
-    PROMPT='${p9k_icons[MULTILINE_FIRST_PROMPT_PREFIX]}%f%b%k$(__p9k_build_left_prompt)
-${p9k_icons[MULTILINE_LAST_PROMPT_PREFIX]}'
+    PROMPT='${__P9K_ICONS[MULTILINE_FIRST_PROMPT_PREFIX]}%f%b%k$(__p9k_build_left_prompt)
+${__P9K_ICONS[MULTILINE_LAST_PROMPT_PREFIX]}'
     if [[ "$P9K_RPROMPT_ON_NEWLINE" != true ]]; then
       # The right prompt should be on the same line as the first line of the left
       # prompt. To do so, there is just a quite ugly workaround: Before zsh draws
@@ -372,12 +372,12 @@ local NEWLINE='
 
   if [[ $P9K_PROMPT_ADD_NEWLINE == true ]]; then
     NEWLINES=""
-    repeat ${P9K_PROMPT_ADD_NEWLINE_COUNT:-1} { NEWLINES+=$NEWLINE }
+    repeat ${P9K_PROMPT_ADD_NEWLINE_COUNT:-1} { NEWLINES+=${NEWLINE} }
     PROMPT="$NEWLINES$PROMPT"
   fi
 
   # Allow iTerm integration to work
-  [[ $ITERM_SHELL_INTEGRATION_INSTALLED == "Yes" ]] && PROMPT="%{$(iterm2_prompt_mark)%}$PROMPT"
+  [[ ${ITERM_SHELL_INTEGRATION_INSTALLED} == "Yes" ]] && PROMPT="%{$(iterm2_prompt_mark)%}$PROMPT"
 }
 
 p9k::set_default P9K_IGNORE_TERM_COLORS false
@@ -426,7 +426,7 @@ prompt_powerlevel9k_setup() {
   if [[ $P9K_IGNORE_TERM_LANG == false ]]; then
       local term_lang
       term_lang=$(echo $LANG)
-      if [[ $term_lang == 'C' ]]; then
+      if [[ ${term_lang} == 'C' ]]; then
           print -P "\t%F{red}WARNING!%f Your terminal's 'LANG' is set to 'C', which breaks this theme!"
           print -P "\t%F{red}WARNING!%f Please set your 'LANG' to a UTF-8 language, like 'en_US.UTF-8'"
           print -P "\t%F{red}WARNING!%f _before_ loading this theme in your \~\.zshrc. Putting"

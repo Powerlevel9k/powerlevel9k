@@ -23,8 +23,8 @@ p9k::register_segment "ICONS_TEST" "" "${DEFAULT_COLOR_INVERTED}" "${DEFAULT_COL
 ##
 prompt_icons_test() {
   local icon_string=""
-  for key in ${(@k)p9k_icons}; do
-    icon_string+="$p9k_icons[$key] "
+  for key in ${(@k)__P9K_ICONS}; do
+    icon_string+="${__P9K_ICONS[$key]} "
   done
   p9k::prepare_segment "$0" "" $1 "$2" $3 "$icon_string"
 }

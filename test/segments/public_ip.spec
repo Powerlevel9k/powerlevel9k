@@ -47,7 +47,7 @@ function testPublicIpSegmentPrintsNothingByDefaultIfHostIsNotAvailable() {
   # uses an alternative host.
   alias dig='nodig'
 
-  assertEquals "%K{white} %F{black}world %k%F{white}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{015} %F{000}world %k%F{015}%f " "$(__p9k_build_left_prompt)"
 
   unalias dig
 }
@@ -61,7 +61,7 @@ function testPublicIpSegmentPrintsNoticeIfNotConnected() {
   # uses an alternative host.
   alias dig='nodig'
 
-  assertEquals "%K{black} %F{white}disconnected %k%F{black}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{000} %F{015}disconnected %k%F{000}%f " "$(__p9k_build_left_prompt)"
 
   unalias dig
 }
@@ -75,7 +75,7 @@ function testPublicIpSegmentWorksWithWget() {
     echo "wget 1.2.3.4"
   }
 
-  assertEquals "%K{black} %F{white}wget 1.2.3.4 %k%F{black}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{000} %F{015}wget 1.2.3.4 %k%F{000}%f " "$(__p9k_build_left_prompt)"
 
   unfunction wget
   unalias dig
@@ -91,7 +91,7 @@ function testPublicIpSegmentUsesCurlAsFallbackMethodIfWgetIsNotAvailable() {
     echo "curl 1.2.3.4"
   }
 
-  assertEquals "%K{black} %F{white}curl 1.2.3.4 %k%F{black}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{000} %F{015}curl 1.2.3.4 %k%F{000}%f " "$(__p9k_build_left_prompt)"
 
   unfunction curl
   unalias dig
@@ -108,7 +108,7 @@ function testPublicIpSegmentUsesDigAsFallbackMethodIfWgetAndCurlAreNotAvailable(
   }
 
   # Load Powerlevel9k
-  assertEquals "%K{black} %F{white}dig 1.2.3.4 %k%F{black}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{000} %F{015}dig 1.2.3.4 %k%F{000}%f " "$(__p9k_build_left_prompt)"
 
   unfunction dig
   unalias curl
@@ -116,20 +116,21 @@ function testPublicIpSegmentUsesDigAsFallbackMethodIfWgetAndCurlAreNotAvailable(
 }
 
 function testPublicIpSegmentCachesFile() {
+  local P9K_PUBLIC_IP_TIMEOUT=60
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(public_ip)
   dig() {
     echo "first"
   }
 
-  assertEquals "%K{black} %F{white}first %k%F{black}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{000} %F{015}first %k%F{000}%f " "$(__p9k_build_left_prompt)"
 
   dig() {
     echo "second"
   }
 
   # Segment should not have changed!
-  assertEquals "%K{black} %F{white}first %k%F{black}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{000} %F{015}first %k%F{000}%f " "$(__p9k_build_left_prompt)"
 
   unfunction dig
 }
@@ -142,7 +143,7 @@ function testPublicIpSegmentRefreshesCachesFileAfterTimeout() {
     echo "first"
   }
 
-  assertEquals "%K{black} %F{white}first %k%F{black}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{000} %F{015}first %k%F{000}%f " "$(__p9k_build_left_prompt)"
 
   sleep 3
   dig() {
@@ -150,7 +151,7 @@ function testPublicIpSegmentRefreshesCachesFileAfterTimeout() {
   }
 
   # Segment should not have changed!
-  assertEquals "%K{black} %F{white}second %k%F{black}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{000} %F{015}second %k%F{000}%f " "$(__p9k_build_left_prompt)"
 
   unfunction dig
 }
@@ -162,7 +163,7 @@ function testPublicIpSegmentRefreshesCachesFileIfEmpty() {
     echo "first"
   }
 
-  assertEquals "%K{black} %F{white}first %k%F{black}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{000} %F{015}first %k%F{000}%f " "$(__p9k_build_left_prompt)"
 
   # Truncate cache file
   echo "" >! $P9K_PUBLIC_IP_FILE
@@ -172,7 +173,7 @@ function testPublicIpSegmentRefreshesCachesFileIfEmpty() {
   }
 
   # Segment should not have changed!
-  assertEquals "%K{black} %F{white}second %k%F{black}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{000} %F{015}second %k%F{000}%f " "$(__p9k_build_left_prompt)"
 
   unfunction dig
 }
@@ -184,7 +185,7 @@ function testPublicIpSegmentWhenGoingOnline() {
   local P9K_PUBLIC_IP_NONE="disconnected"
   alias dig="nodig"
 
-  assertEquals "%K{black} %F{white}disconnected %k%F{black}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{000} %F{015}disconnected %k%F{000}%f " "$(__p9k_build_left_prompt)"
 
   unalias dig
 
@@ -193,7 +194,7 @@ function testPublicIpSegmentWhenGoingOnline() {
   }
 
   # Segment should not have changed!
-  assertEquals "%K{black} %F{white}second %k%F{black}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{000} %F{015}second %k%F{000}%f " "$(__p9k_build_left_prompt)"
 
   unfunction dig
 }

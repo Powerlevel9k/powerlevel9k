@@ -35,7 +35,7 @@ function testIpSegmentWorksOnLinuxWithNoInterfaceSpecified() {
 
   local OS='Linux' # Fake Linux
 
-  assertEquals "%K{cyan} %F{black}IP %f%F{black}10.0.2.15 %k%F{cyan}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{006} %F{000}IP %f%F{000}10.0.2.15 %k%F{006}%f " "$(__p9k_build_left_prompt)"
 
   unfunction ip
 }
@@ -68,7 +68,7 @@ function testIpSegmentWorksOnLinuxWithMultipleInterfacesSpecified() {
 
   local OS='Linux' # Fake Linux
 
-  assertEquals "%K{cyan} %F{black}IP %f%F{black}10.0.2.15 %k%F{cyan}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{006} %F{000}IP %f%F{000}10.0.2.15 %k%F{006}%f " "$(__p9k_build_left_prompt)"
 
   unfunction ip
 }
@@ -85,7 +85,7 @@ inet 10.0.2.15/24 brd 10.0.2.255 scope global eth0
 
   local OS='Linux' # Fake Linux
 
-  assertEquals "%K{cyan} %F{black}IP %f%F{black}10.0.2.15 %k%F{cyan}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{006} %F{000}IP %f%F{000}10.0.2.15 %k%F{006}%f " "$(__p9k_build_left_prompt)"
 
   unfunction ip
 }

@@ -71,7 +71,7 @@ function testKubeContext() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(kubecontext)
 
-  assertEquals "%K{magenta} %F{white}⎈ %f%F{white}minikube/default %k%F{magenta}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{005} %F{015}⎈ %f%F{015}minikube/default %k%F{005}%f " "$(__p9k_build_left_prompt)"
 
   unset P9K_LEFT_PROMPT_ELEMENTS
   unalias kubectl
@@ -81,7 +81,7 @@ function testKubeContextOtherNamespace() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(kubecontext)
 
-  assertEquals "%K{magenta} %F{white}⎈ %f%F{white}minikube/kube-system %k%F{magenta}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{005} %F{015}⎈ %f%F{015}minikube/kube-system %k%F{005}%f " "$(__p9k_build_left_prompt)"
 
   unset P9K_LEFT_PROMPT_ELEMENTS
   unalias kubectl
@@ -93,7 +93,7 @@ function testKubeContextPrintsNothingIfKubectlNotAvailable() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(custom_world kubecontext)
 
-  assertEquals "%K{white} %F{black}world %k%F{white}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{015} %F{000}world %k%F{015}%f " "$(__p9k_build_left_prompt)"
 
   unset P9K_LEFT_PROMPT_ELEMENTS
   unset P9K_CUSTOM_WORLD

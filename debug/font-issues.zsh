@@ -4,7 +4,7 @@
 source functions/utilities.zsh
 source functions/colors.zsh
 source functions/icons.zsh
-# Map our $OS to neofetch $os
+# Map our ${OS} to neofetch $os
 os="$OS"
 
 
@@ -81,7 +81,7 @@ get_term() {
     [[ "$SSH_CONNECTION" ]] && \
         term="$SSH_TTY"
 
-    # Check $PPID for terminal emulator.
+    # Check ${PPID} for terminal emulator.
     while [[ -z "$term" ]]; do
         parent="$(get_ppid "$parent")"
         [[ -z "$parent" ]] && break
@@ -178,7 +178,7 @@ END
                                      "$font_file")"
 
                         [[ "$term_font" != "$non_ascii" ]] && \
-                            term_font="$term_font (normal) / $non_ascii (non-ascii)"
+                            term_font="${term_font} (normal) / ${non_ascii} (non-ascii)"
                     fi
                 fi
             done

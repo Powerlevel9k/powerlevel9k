@@ -10,9 +10,9 @@
 # Parameters:
 #   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
 #                                                               ✔         ✔          ✔                                         
-p9k::register_segment "STATUS" "OK"       "$DEFAULT_COLOR" "green"    $'\u2714'  $'\u2714'  $'\u2714'  '\u'$CODEPOINT_OF_AWESOME_CHECK  $'\uF00C'
+p9k::register_segment "STATUS" "OK"       "$DEFAULT_COLOR" "green"    $'\u2714'  $'\u2714'  $'\u2714'  '\u'${CODEPOINT_OF_AWESOME_CHECK}  $'\uF00C'
 #                                                               ✘          ✘         ✘                                          
-p9k::register_segment "STATUS" "ERROR"    "$DEFAULT_COLOR" "red"      $'\u2718'  $'\u2718'  $'\u2718'  '\u'$CODEPOINT_OF_AWESOME_TIMES  $'\uF00D'
+p9k::register_segment "STATUS" "ERROR"    "$DEFAULT_COLOR" "red"      $'\u2718'  $'\u2718'  $'\u2718'  '\u'${CODEPOINT_OF_AWESOME_TIMES}  $'\uF00D'
 #                                                               ↵         ↵         ↵         ↵                               ↵
 p9k::register_segment "STATUS" "ERROR_CR" "red"            "yellow1"  $'\u21B5'  $'\u21B5'  $'\u21B5'  $'\u21B5'                        $'\u21B5'
 
@@ -65,7 +65,7 @@ prompt_status() {
       for ec in "${(@)RETVALS[2,-1]}"; do
         if [[ -n "${ec}" ]]; then
           ec_text="${ec_text}|$(exit_code_or_status "$ec")"
-          ec_sum=$(( $ec_sum + $ec ))
+          ec_sum=$(( ${ec_sum} + ${ec} ))
         fi
       done
     else
