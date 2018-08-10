@@ -89,6 +89,21 @@ function testColoringOfVisualIdentifiersDoesNotOverwriteColoringOfSegment() {
   cd -
 }
 
+function testFirstSegmentNeverBeginsWithSegmentSeparator() {
+  local -a POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
+  POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(os_icon)
+  # Fake OSX
+  OS="OSX"
+
+  assertEquals "%K{000} %F{015}OSX %k%F{000}%f " "$(build_left_prompt)"
+
+  local POWERLEVEL9K_OS_ICON_BACKGROUND="none"
+  assertEquals "%K{none} %F{015}OSX %k%F{none}%f " "$(build_left_prompt)"
+
+  local POWERLEVEL9K_OS_ICON_BACKGROUND="initial"
+  assertEquals "%k%F{015} %F{015}OSX %k%f " "$(build_left_prompt)"
+}
+
 function testOverwritingIconsWork() {
   local -a POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
   POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(dir)

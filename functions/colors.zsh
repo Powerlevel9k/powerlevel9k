@@ -347,12 +347,17 @@ function getColorCode() {
 
 # Check if two colors are equal, even if one is specified as ANSI code.
 function isSameColor() {
-  if [[ "$1" == "NONE" || "$2" == "NONE" ]]; then
-    return 1
-  fi
-
   local color1=$(getColorCode "$1")
   local color2=$(getColorCode "$2")
 
+  # Check if one of the colors is not numerical, and
+  # do a string comparison if so.
+  if [[ "${color1}" != <-> || "${color2}" != <-> ]]; then
+    [[ "${color1}" == "${color2}" ]] && return 0 || return 1
+  fi
+
+  # Return code confusion ahead. We compare the colors,
+  # but the shell return code for "true" is 0, "false"
+  # is 1. That is why we direcly flip that expression.
   return $(( color1 != color2 ))
 }

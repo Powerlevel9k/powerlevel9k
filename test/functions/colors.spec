@@ -48,10 +48,13 @@ function testIsSameColorHandlesNoneCorrectly() {
 
 function testIsSameColorCompareTwoNoneColorsCorrectly() {
   assertTrue "isSameColor 'none' 'none'"
+  assertTrue "isSameColor 'NONE' 'NONE'"
+  assertTrue "isSameColor 'none' 'NONE'"
 }
 
 function testIsSameColorComparesColorWithNoneCorrectly() {
   assertFalse "isSameColor 'green' 'none'"
+  assertFalse "isSameColor '000' 'none'"
 }
 
 function testBrightColorsWork() {
