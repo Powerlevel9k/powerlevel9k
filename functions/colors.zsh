@@ -313,7 +313,7 @@ function foregroundColor() {
 # into ZSH-Style color codes.
 function getColorCode() {
   # Early exit: Check if given value is already numerical
-  if [[ "$1" == <-> ]]; then
+  if [[ "$1" =~ ^-?[0-9.]+$ ]]; then
     # Pad color with zeroes
     echo -n "${(l:3::0:)1}"
     return
@@ -322,7 +322,10 @@ function getColorCode() {
   local colorName="${1}"
   # Check if value is none with any case.
   if [[ "${(L)colorName}" == "none" ]]; then
-      echo -n 'none'
+      # Return a negative numerical value so that
+      # the comparison on numerical values in
+      # isSameColor works.
+      echo -n '-1'
   elif [[ "${colorName}" == "foreground"  ]]; then
       # for testing purposes in terminal
       # call via `getColorCode foreground`
@@ -349,12 +352,6 @@ function getColorCode() {
 function isSameColor() {
   local color1=$(getColorCode "$1")
   local color2=$(getColorCode "$2")
-
-  # Check if one of the colors is not numerical, and
-  # do a string comparison if so.
-  if [[ "${color1}" != <-> || "${color2}" != <-> ]]; then
-    [[ "${color1}" == "${color2}" ]] && return 0 || return 1
-  fi
 
   # Return code confusion ahead. We compare the colors,
   # but the shell return code for "true" is 0, "false"

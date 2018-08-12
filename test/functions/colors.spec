@@ -23,7 +23,7 @@ function testGetColorCodeWithNumericalColor() {
 }
 
 function testGetColorCodeWithNoneColor() {
-  assertEquals 'none' "$(getColorCode 'NONE')"
+  assertEquals '-1' "$(getColorCode 'NONE')"
 }
 
 function testIsSameColorComparesAnsiForegroundAndNumericalColorCorrectly() {
