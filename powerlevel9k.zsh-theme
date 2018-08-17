@@ -359,6 +359,7 @@ prompt_newline() {
 set_default POWERLEVEL9K_DISK_USAGE_ONLY_WARNING false
 set_default POWERLEVEL9K_DISK_USAGE_WARNING_LEVEL 90
 set_default POWERLEVEL9K_DISK_USAGE_CRITICAL_LEVEL 95
+set_default POWERLEVEL9K_DISK_USAGE_PATH "."
 prompt_disk_usage() {
   local current_state="unknown"
   typeset -AH hdd_usage_forecolors
@@ -374,7 +375,7 @@ prompt_disk_usage() {
     'critical'      'red'
   )
 
-  local disk_usage="${$(\df -P . | sed -n '2p' | awk '{ print $5 }')%%\%}"
+  local disk_usage="${$(\df -P $POWERLEVEL9K_DISK_USAGE_PATH | sed -n '2p' | awk '{ print $5 }')%%\%}"
 
   if [ "$disk_usage" -ge "$POWERLEVEL9K_DISK_USAGE_WARNING_LEVEL" ]; then
     current_state='warning'
