@@ -322,7 +322,7 @@ function getColorCode() {
   local colorName="${1}"
   # Check if value is none with any case.
   if [[ "${(L)colorName}" == "none" ]]; then
-      echo -n 'none'
+      echo -n 'NONE'
   elif [[ "${colorName}" == "foreground"  ]]; then
       # for testing purposes in terminal
       # call via `getColorCode foreground`
