@@ -109,49 +109,49 @@ function testColorOverridingForUntrackedStateWorks() {
 
 function testGitIconWorks() {
   local P9K_LEFT_PROMPT_ELEMENTS=(vcs)
-  local P9K_VCS_GIT_ICON='*Git-Icon'
+  local P9K_VCS_GIT_ICON='Git-icon'
   source ${P9K_HOME}/segments/vcs.p9k
 
-  assertEquals "%K{002} %F{000}*Git-Icon %f%F{000} master %k%F{002}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{002} %F{000}Git-icon %f%F{000} master %k%F{002}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testGitlabIconWorks() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(vcs)
-  local P9K_VCS_GIT_GITLAB_ICON='*GL-Icon'
+  local P9K_VCS_GIT_GITLAB_ICON='GL-icon'
   source ${P9K_HOME}/segments/vcs.p9k
 
   # Add a GitLab project as remote origin. This is
   # sufficient to show the GitLab-specific icon.
   git remote add origin https://gitlab.com/dritter/gitlab-test-project.git
 
-  assertEquals "%K{002} %F{000}*GL-Icon %f%F{000} master %k%F{002}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{002} %F{000}GL-icon %f%F{000} master %k%F{002}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testBitbucketIconWorks() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(vcs)
-  local P9K_VCS_GIT_BITBUCKET_ICON='*BB-Icon'
+  local P9K_VCS_GIT_BITBUCKET_ICON='BB-icon'
   source ${P9K_HOME}/segments/vcs.p9k
 
   # Add a BitBucket project as remote origin. This is
   # sufficient to show the BitBucket-specific icon.
   git remote add origin https://dritter@bitbucket.org/dritter/dr-test.git
 
-  assertEquals "%K{002} %F{000}*BB-Icon %f%F{000} master %k%F{002}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{002} %F{000}BB-icon %f%F{000} master %k%F{002}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testGitHubIconWorks() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(vcs)
-  local P9K_VCS_GIT_GITHUB_ICON='*GH-Icon'
+  local P9K_VCS_GIT_GITHUB_ICON='GH-icon'
   source ${P9K_HOME}/segments/vcs.p9k
 
   # Add a GitHub project as remote origin. This is
   # sufficient to show the GitHub-specific icon.
   git remote add origin https://github.com/dritter/test.git
 
-  assertEquals "%K{002} %F{000}*GH-Icon %f%F{000} master %k%F{002}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{002} %F{000}GH-icon %f%F{000} master %k%F{002}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testUntrackedFilesIconWorks() {

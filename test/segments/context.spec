@@ -42,20 +42,14 @@ function testContextSegmentDoesGetRenderedWhenSshConnectionIsOpen() {
 }
 
 function testContextSegmentWithForeignUser() {
-  function sudo() {
-    return 0
-  }
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(context)
 
   assertEquals "%K{000} %F{003}%n@%m %k%F{000}%f " "$(__p9k_build_left_prompt)"
-
-  unfunction sudo
 }
 
-# TODO: How to test root?
 function testContextSegmentWithRootUser() {
-  startSkipping # Skip test
+  local SUDO_COMMAND="sudo"
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(context)
 

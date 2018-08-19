@@ -67,12 +67,12 @@ function testDynamicColoringOfVisualIdentifiersWork() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
   local P9K_LEFT_PROMPT_ELEMENTS=(dir)
   local P9K_DIR_DEFAULT_ICON_COLOR='green'
-  local P9K_DIR_DEFAULT_ICON="*icon-here"
+  local P9K_DIR_DEFAULT_ICON="icon-here"
   source segments/dir.p9k
 
   cd /tmp
 
-  assertEquals "%K{004} %F{002}*icon-here %f%F{000}/tmp %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{004} %F{002}icon-here %f%F{000}/tmp %k%F{004}%f " "$(__p9k_build_left_prompt)"
 
   cd -
 }
@@ -83,7 +83,7 @@ function testColoringOfVisualIdentifiersDoesNotOverwriteColoringOfSegment() {
   local P9K_DIR_DEFAULT_ICON_COLOR='green'
   local P9K_DIR_DEFAULT_FOREGROUND='red'
   local P9K_DIR_DEFAULT_BACKGROUND='yellow'
-  local P9K_DIR_DEFAULT_ICON="*icon-here"
+  local P9K_DIR_DEFAULT_ICON="icon-here"
   source segments/dir.p9k
 
   # Re-Source the icons, as the P9K_MODE is directly
@@ -92,7 +92,7 @@ function testColoringOfVisualIdentifiersDoesNotOverwriteColoringOfSegment() {
 
   cd /tmp
 
-  assertEquals "%K{003} %F{002}*icon-here %f%F{001}/tmp %k%F{003}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{003} %F{002}icon-here %f%F{001}/tmp %k%F{003}%f " "$(__p9k_build_left_prompt)"
 
   cd -
 }

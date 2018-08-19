@@ -318,9 +318,7 @@ __p9k_term_colors() {
 ##
 p9k::get_color() {
   # no need to check numerical values
-  if [[ "$1" != <-> ]]; then
-    1=$(p9k::get_color_code $1)
-  fi
+  [[ "$1" != <-> ]] && 1=$(p9k::get_color_code $1)
   echo -n "$1"
 }
 
@@ -338,11 +336,7 @@ p9k::get_color() {
 #   An empty paramenter resets (stops) background color.
 ##
 p9k::background_color() {
-  if [[ -n $1 ]]; then
-    echo -n "%K{$(p9k::get_color $1)}"
-  else
-    echo -n "%k"
-  fi
+  [[ -n $1 ]] && echo -n "%K{$(p9k::get_color $1)}" || echo -n "%k"
 }
 
 ################################################################
@@ -359,11 +353,7 @@ p9k::background_color() {
 #   An empty paramenter resets (stops) foreground color.
 ##
 p9k::foreground_color() {
-  if [[ -n $1 ]]; then
-    echo -n "%F{$(p9k::get_color $1)}"
-  else
-    echo -n "%f"
-  fi
+  [[ -n $1 ]] && echo -n "%F{$(p9k::get_color $1)}" || echo -n "%f"
 }
 
 ################################################################
@@ -380,20 +370,16 @@ p9k::get_color_code() {
     # Pad color with zeroes
     echo -n "${(l:3::0:)1}"
     return
-  # Check if value is none with any case.
-  elif [[ "${(L)1}" == "none" ]]; then
-    echo -n 'NONE'
-    return
   else
     # for testing purposes in terminal
     if [[ "$1" == "foreground"  ]]; then
       # call via `p9k::get_color_code foreground`
-      for i in "${(k@)__P9K_COLORS}"; do
+      for i in "${(ok@)__P9K_COLORS}"; do
         print -P "$(p9k::foreground_color $i)$(p9k::get_color $i) - $i$(p9k::foreground_color)"
       done
     elif [[ "$1" == "background"  ]]; then
       # call via `p9k::get_color_code background`
-      for i in "${(k@)__P9K_COLORS}"; do
+      for i in "${(ok@)__P9K_COLORS}"; do
         print -P "$(p9k::background_color $i)$(p9k::get_color $i) - $i$(p9k::background_color)"
       done
     else
@@ -403,7 +389,8 @@ p9k::get_color_code() {
       1=${1#fg-}
       # Strip eventual "br" prefixes ("bright" colors)
       1=${1#br}
-      echo -n ${__P9K_COLORS[$1]}
+      local color_code=${__P9K_COLORS[$1]}
+      [[ "${color_code}" != "" ]] && echo -n "${color_code}" || echo -n -1
     fi
   fi
 }

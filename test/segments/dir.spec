@@ -299,12 +299,12 @@ function testTruncateWithPackageNameIfRepoIsSymlinkedInsideGitDir() {
 function testHomeFolderDetectionWorks() {
   typeset -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(dir)
-  local P9K_DIR_HOME_ICON='*home-icon'
+  local P9K_DIR_HOME_ICON='home-icon'
   # re-source the segment to register updates
   source segments/dir.p9k
 
   cd ~
-  assertEquals "%K{004} %F{000}*home-icon %f%F{000}~ %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{004} %F{000}home-icon %f%F{000}~ %k%F{004}%f " "$(__p9k_build_left_prompt)"
 
   cd -
 }
@@ -312,14 +312,14 @@ function testHomeFolderDetectionWorks() {
 function testHomeSubfolderDetectionWorks() {
   typeset -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(dir)
-  local P9K_DIR_HOME_SUBFOLDER_ICON='*sub-icon'
+  local P9K_DIR_HOME_SUBFOLDER_ICON='sub-icon'
   # re-source the segment to register updates
   source segments/dir.p9k
 
   local FOLDER=~/powerlevel9k-test
   mkdir $FOLDER
   cd $FOLDER
-  assertEquals "%K{004} %F{000}*sub-icon %f%F{000}~/powerlevel9k-test %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{004} %F{000}sub-icon %f%F{000}~/powerlevel9k-test %k%F{004}%f " "$(__p9k_build_left_prompt)"
 
   cd -
   rm -fr $FOLDER
@@ -328,14 +328,14 @@ function testHomeSubfolderDetectionWorks() {
 function testOtherFolderDetectionWorks() {
   typeset -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(dir)
-  local P9K_DIR_DEFAULT_ICON='*folder-icon'
+  local P9K_DIR_DEFAULT_ICON='folder-icon'
   # re-source the segment to register updates
   source segments/dir.p9k
 
   local FOLDER=/tmp/powerlevel9k-test
   mkdir $FOLDER
   cd $FOLDER
-  assertEquals "%K{004} %F{000}*folder-icon %f%F{000}/tmp/powerlevel9k-test %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{004} %F{000}folder-icon %f%F{000}/tmp/powerlevel9k-test %k%F{004}%f " "$(__p9k_build_left_prompt)"
 
   cd -
   rm -fr $FOLDER
@@ -387,13 +387,13 @@ function testOmittingFirstCharacterWorks() {
   typeset -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(dir)
   local P9K_DIR_OMIT_FIRST_CHARACTER=true
-  local P9K_DIR_DEFAULT_ICON='*folder-icon'
+  local P9K_DIR_DEFAULT_ICON='folder-icon'
   # re-source the segment to register updates
   source segments/dir.p9k
 
   cd /tmp
 
-  assertEquals "%K{004} %F{000}*folder-icon %f%F{000}tmp %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{004} %F{000}folder-icon %f%F{000}tmp %k%F{004}%f " "$(__p9k_build_left_prompt)"
 
   cd -
 }
@@ -403,14 +403,14 @@ function testOmittingFirstCharacterWorksWithChangingPathSeparator() {
   P9K_LEFT_PROMPT_ELEMENTS=(dir)
   local P9K_DIR_OMIT_FIRST_CHARACTER=true
   local P9K_DIR_PATH_SEPARATOR='xXx'
-  local P9K_DIR_DEFAULT_ICON='*folder-icon'
+  local P9K_DIR_DEFAULT_ICON='folder-icon'
   # re-source the segment to register updates
   source segments/dir.p9k
 
   mkdir -p /tmp/powerlevel9k-test/1/2
   cd /tmp/powerlevel9k-test/1/2
 
-  assertEquals "%K{004} %F{000}*folder-icon %f%F{000}tmpxXxpowerlevel9k-testxXx1xXx2 %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{004} %F{000}folder-icon %f%F{000}tmpxXxpowerlevel9k-testxXx1xXx2 %k%F{004}%f " "$(__p9k_build_left_prompt)"
 
   cd -
   rm -fr /tmp/powerlevel9k-test

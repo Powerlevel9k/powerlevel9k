@@ -21,6 +21,7 @@ if [[ ${fpath[(ie)$autoload_path]} -gt ${#fpath} ]]; then
   autoload -Uz __p9k_segment_should_be_printed
   autoload -Uz __p9k_sub_str_count
   autoload -Uz __p9k_truncate_path
+  autoload -Uz __p9k_update_var_name
   autoload -Uz __p9k_upsearch
 fi
 
@@ -292,36 +293,6 @@ __p9k_print_deprecation_warning() {
       print -P "%F{yellow}Warning!%f The '$key' segment is deprecated. Use '%F{blue}${raw_deprecated_segments[$key]}%f' instead. For more information, have a look at the CHANGELOG.md."
     fi
   done
-}
-
-###############################################################
-# @description
-#   This function determines if older variable namess have been
-#   previously defined and changes them to newer variable names.
-##
-# @args
-#   $1 string Old variable name
-#   $2 string New variable name
-##
-# @returns
-#   0 if variable was renamed
-#   1 if variable could not be renamed
-##
-__p9k_update_var_name() {
-  # check if old variable is defined
-  if p9k::defined $1 && [[ -n "$2" ]]; then
-    # check for multiple Variables
-    local newVars=("${(@s:,:)2}")
-    for key in ${newVars}; do
-      # set new variable name
-      typeset -g "$key"="${(P)1}"
-      print -P "%F{yellow}Warning!%f The '$1' variable is deprecated. This has been updated to '%F{cyan}${key}%f' for you. For more information, have a look at the CHANGELOG.md."
-    done
-    unset $1
-    return 0
-  else
-    return 1
-  fi
 }
 
 ###############################################################

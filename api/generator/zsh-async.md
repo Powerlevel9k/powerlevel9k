@@ -28,7 +28,7 @@
 
 - [__p9k_left_prompt_segment](#__p9k_left_prompt_segment)
 - [__p9k_right_prompt_segment](#__p9k_right_prompt_segment)
-- [p9kAsyncCallback](#p9kAsyncCallback)
+- [__p9k_async_callback](#__p9k_async_callback)
 - [p9k::prepare_segment](#p9k::prepare_segment)
 - [prompt_custom](#prompt_custom)
 - [__p9k_build_left_prompt](#__p9k_build_left_prompt)
@@ -66,7 +66,7 @@
 - **$6** (string) - Previous segments background color
 
 
-## p9kAsyncCallback
+## __p9k_async_callback
 *This function is the heart of the async engine. Whenever a subshell is completed, this function is called to deal with the generated output. *
 
 #### Arguments
@@ -79,7 +79,7 @@
 
 
 ## p9k::prepare_segment
-*This function processes the segment code in a subshell. When done, the resulting data is sent to `p9kAsyncCallback`. *
+*This function processes the segment code in a subshell. When done, the resulting data is sent to `__p9k_async_callback`. *
 
 #### Arguments
 

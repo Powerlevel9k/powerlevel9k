@@ -164,7 +164,7 @@ __p9k_right_prompt_segment() {
 #   $4 number Exec_Time - Execution time, floating point (in seconds)
 #   $5 string Err - Resulting (stderr) output from the job
 ##
-p9kAsyncCallback() {
+__p9k_async_callback() {
   local JOB="${1}" CODE="${2}" RAW_SEGMENT_DATA="${3}" EXEC_TIME="${4}" ERR="${5}"
 
   # Exit early, if ${RAW_SEGMENT_DATA} is empty
@@ -208,7 +208,7 @@ p9kAsyncCallback() {
     local INDEX="${segment[3]}"
     local JOINED="${segment[4]}"
     local CONTENT="${segment[5]}"
-    local VISUAL_IDENTIFIER="${segment[6]}"
+    local SEGMENT_ICON="${segment[6]}"
 
     [[ -n "${segment[7]}" ]] && __P9K_DATA[${STATEFUL_NAME}_BG]="${segment[7]}"
     [[ -n "${segment[8]}" ]] && __P9K_DATA[${STATEFUL_NAME}_FG]="${segment[8]}"
@@ -259,10 +259,10 @@ p9kAsyncCallback() {
     _p9k_last_segments_print_states["${ALIGNMENT}_${paddedIndex}"]="${CONDITION}"
 
     if [[ "${ALIGNMENT}" == "left" ]]; then
-      PROMPT+=$("${ALIGNMENT}__p9k__prompt_segment" "${STATEFUL_NAME}" "${INDEX}" "${should_join_segment}" "${CONTENT}" "${VISUAL_IDENTIFIER}" "${LAST_LEFT_BACKGROUND}")
+      PROMPT+=$("__p9k_${ALIGNMENT}_prompt_segment" "${STATEFUL_NAME}" "${INDEX}" "${should_join_segment}" "${CONTENT}" "${SEGMENT_ICON}" "${LAST_LEFT_BACKGROUND}")
       LAST_LEFT_BACKGROUND="$__P9K_DATA[${STATEFUL_NAME}_BG]"
     elif [[ "${ALIGNMENT}" == "right" ]]; then
-      RPROMPT+=$("${ALIGNMENT}__p9k__prompt_segment" "${STATEFUL_NAME}" "${INDEX}" "${should_join_segment}" "${CONTENT}" "${VISUAL_IDENTIFIER}" "${LAST_RIGHT_BACKGROUND}")
+      RPROMPT+=$("__p9k_${ALIGNMENT}_prompt_segment" "${STATEFUL_NAME}" "${INDEX}" "${should_join_segment}" "${CONTENT}" "${SEGMENT_ICON}" "${LAST_RIGHT_BACKGROUND}")
       LAST_RIGHT_BACKGROUND="$__P9K_DATA[${STATEFUL_NAME}_BG]"
     fi
   done
@@ -287,7 +287,7 @@ p9kAsyncCallback() {
 ###############################################################
 # @description
 #   This function processes the segment code in a subshell.
-#   When done, the resulting data is sent to `p9kAsyncCallback`.
+#   When done, the resulting data is sent to `__p9k_async_callback`.
 ##
 # @args
 #   $1 string Name of the function that was originally invoked (mandatory)
@@ -308,16 +308,21 @@ p9k::prepare_segment() {
 
   # Pre-Compile condition
   if __p9k_segment_should_be_printed "${STATEFUL_NAME}" "${7}" "${6}"; then
-    local VISUAL_IDENTIFIER
+    local SEGMENT_ICON
     if [[ -z "${8}" ]]; then
-      VISUAL_IDENTIFIER=${__P9K_ICONS[$STATEFUL_NAME]}
+      SEGMENT_ICON=${__P9K_ICONS[$STATEFUL_NAME]}
     else
-      # test if the VISUAL_IDENTIFIER string is a ICON NAME otherwise treat it as a curston string
-      [[ "${(U)8[1]}" =~ '[A-Z]' ]] && VISUAL_IDENTIFIER="$(p9k::print_icon ${8})" || VISUAL_IDENTIFIER="$(echo -n ${8})"
+      SEGMENT_ICON=${__P9K_ICONS[${8}]}
     fi
 
+    # Background overide
+    [[ -n "${9}" ]] && __P9K_DATA[${STATEFUL_NAME}_BG]="${9}"
+
+    # Foreground overide
+    [[ -n "${10}" ]] && __P9K_DATA[${STATEFUL_NAME}_FG]="${10}"
+
     # Return the data to the main process, delimited with "·|·"
-    echo "${STATEFUL_NAME}·|·${3}·|·${4}·|·${5}·|·${6}·|·${VISUAL_IDENTIFIER}·|·${9}·|·${10}"
+    echo "${STATEFUL_NAME}·|·${3}·|·${4}·|·${5}·|·${6}·|·${SEGMENT_ICON}"
   fi
 }
 
@@ -335,7 +340,7 @@ p9k::prepare_segment() {
 #   $2 integer Segment index
 #   $3 boolean Whether the segment should be joined
 #   $4 string Custom segment name
-prompt_custom() {
+__p9k_prompt_custom() {
   local command=P9K_CUSTOM_$4:u
   local segment_content="$(eval ${(P)command})"
 
@@ -364,7 +369,7 @@ __p9k_build_left_prompt() {
     # Check if it is a custom command, otherwise interpet it as
     # a prompt.
     if [[ $element[0,7] =~ "custom_" ]]; then
-      async_job "p9k" "prompt_custom" "left" "${index}" "${joined}" "${element[8,-1]}"
+      async_job "p9k" "__p9k_prompt_custom" "left" "${index}" "${joined}" "${element[8,-1]}"
     else
       # Could we display placeholders?
       # -> At most it could be static ones, but
@@ -395,7 +400,7 @@ __p9k_build_right_prompt() {
     # Check if it is a custom command, otherwise interpet it as
     # a prompt.
     if [[ $element[0,7] =~ "custom_" ]]; then
-      async_job "p9k" "prompt_custom" "right" "${index}" "${joined}" "${element[8,-1]}"
+      async_job "p9k" "__p9k_prompt_custom" "right" "${index}" "${joined}" "${element[8,-1]}"
     else
       async_job "p9k" "prompt_${element}" "right" "${index}" "${joined}" "$PWD"
     fi
@@ -575,11 +580,11 @@ prompt_powerlevel9k_setup() {
       fi
   fi
 
-  if ! defined P9K_LEFT_PROMPT_ELEMENTS; then
+  if ! p9k::defined P9K_LEFT_PROMPT_ELEMENTS; then
     P9K_LEFT_PROMPT_ELEMENTS=(context dir rbenv vcs)
     P9K_PROMPT_ELEMENTS=("${P9K_LEFT_PROMPT_ELEMENTS[@]}" "${P9K_RIGHT_PROMPT_ELEMENTS[@]}")
   fi
-  if ! defined P9K_RIGHT_PROMPT_ELEMENTS; then
+  if ! p9k::defined P9K_RIGHT_PROMPT_ELEMENTS; then
     P9K_RIGHT_PROMPT_ELEMENTS=(status root_indicator background_jobs history time)
     P9K_PROMPT_ELEMENTS=("${P9K_LEFT_PROMPT_ELEMENTS[@]}" "${P9K_RIGHT_PROMPT_ELEMENTS[@]}")
   fi
@@ -615,7 +620,7 @@ prompt_powerlevel9k_setup() {
   # initialize async worker
   (( !${p9k_async_init:-0} )) && {
     async_start_worker "p9k" -n
-    async_register_callback "p9k" "p9kAsyncCallback"
+    async_register_callback "p9k" "__p9k_async_callback"
     p9k_async_init=1
   }
 

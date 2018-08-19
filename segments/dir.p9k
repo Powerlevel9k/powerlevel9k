@@ -204,7 +204,8 @@ prompt_dir() {
   # determine is the user has set a last directory color
   local dir_state_user_foreground=P9K_DIR_${current_state}_FOREGROUND
   local dir_state_foreground=$(p9k::foreground_color ${(P)dir_state_user_foreground})
-  [[ -z ${dir_state_foreground} ]] && dir_state_foreground=$(p9k::foreground_color ${DEFAULT_COLOR})
+  # if the user foreground is an empty string, p9k::foreground_color will return "%f" (reset foreground color)
+  [[ ${dir_state_foreground} == "%f" ]] && dir_state_foreground=${__P9K_DATA[DIR_${current_state}_FG]}
 
   local dir_name base_name
   # use ZSH substitution to get the dirname and basename instead of calling external functions
@@ -254,12 +255,12 @@ prompt_dir() {
   fi
 
   if [[ "${P9K_DIR_PATH_SEPARATOR}" != "/" && ${path_opt} != "/" ]]; then
-    current_path=${current_path//\//$P9K_DIR_PATH_SEPARATOR}
+    current_path=${current_path//\//${P9K_DIR_PATH_SEPARATOR}}
   fi
 
   if [[ "${P9K_DIR_HOME_FOLDER_ABBREVIATION}" != "~" && ! "${(L)P9K_DIR_OMIT_FIRST_CHARACTER}" == "true" ]]; then
     # use :s to only replace the first occurance
-    current_path=${current_path:s/~/$P9K_DIR_HOME_FOLDER_ABBREVIATION}
+    current_path=${current_path:s/~/${P9K_DIR_HOME_FOLDER_ABBREVIATION}}
   fi
 
   p9k::prepare_segment "$0" "${(U)current_state}" $1 "$2" $3 "${current_path}"

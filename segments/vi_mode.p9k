@@ -72,7 +72,7 @@ function rebuild_vi_mode {
         element="${(L)P9K_LEFT_PROMPT_ELEMENTS[$i]}"
         if [[ "${element}" =~ "vi_mode" ]]; then
           [[ "${element[-7,-1]}" == '_joined' ]] && joined=true
-          p9kAsyncCallback "" "0" "VI_MODE_${current_state}·|·left·|·${i}·|·${joined}·|·${(P)vi_mode}·|·$__P9K_ICONS[VI_MODE_${current_state}]" "0" "0"
+          __p9k_async_callback "" "0" "VI_MODE_${current_state}·|·left·|·${i}·|·${joined}·|·${(P)vi_mode}·|·$__P9K_ICONS[VI_MODE_${current_state}]" "0" "0"
           break
         fi
       done
@@ -80,7 +80,7 @@ function rebuild_vi_mode {
         element="${(L)P9K_RIGHT_PROMPT_ELEMENTS[$i]}"
         if [[ "${element}" =~ "vi_mode" ]]; then
           [[ "${element[-7,-1]}" == '_joined' ]] && joined=true
-          p9kAsyncCallback "" "0" "VI_MODE_${current_state}·|·right·|·${i}·|·${joined}·|·${(P)vi_mode}·|·$__P9K_ICONS[VI_MODE_${current_state}]" "0" "0"
+          __p9k_async_callback "" "0" "VI_MODE_${current_state}·|·right·|·${i}·|·${joined}·|·${(P)vi_mode}·|·$__P9K_ICONS[VI_MODE_${current_state}]" "0" "0"
           break
         fi
       done

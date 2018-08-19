@@ -187,12 +187,12 @@ function testShorteningCommitHashIsNotShownIfShowChangesetIsFalse() {
 function testMercurialIconWorks() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(vcs)
-  local P9K_VCS_HG_ICON='*HG-Icon'
+  local P9K_VCS_HG_ICON='HG-icon'
 
   # Load Powerlevel9k
   source ${P9K_HOME}/segments/vcs.p9k
 
-  assertEquals "%K{002} %F{000}*HG-Icon %f%F{000} default %k%F{002}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{002} %F{000}HG-icon %f%F{000} default %k%F{002}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testBookmarkIconWorks() {

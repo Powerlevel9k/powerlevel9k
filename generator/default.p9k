@@ -55,7 +55,7 @@ __p9k_left_prompt_segment() {
   [[ "${3}" == "true" ]] && __p9k_segment_should_be_joined ${current_index} ${last_left_element_index} "$P9K_LEFT_PROMPT_ELEMENTS" && joined=true
   # Support for bold segment
   [[ $__P9K_DATA[${STATEFUL_NAME}_BD] == true ]] && content="%B${4}%b" || content="${4}"
-  local visual_identifier="${5}"
+  local SEGMENT_ICON="${5}"
 
   local bg=$__P9K_DATA[${STATEFUL_NAME}_BG]
   local fg=$__P9K_DATA[${STATEFUL_NAME}_FG]
@@ -75,7 +75,7 @@ __p9k_left_prompt_segment() {
   fi
 
   # Print the visual identifier
-  [[ ${visual_identifier} != "" ]] && echo -n "$__P9K_DATA[${STATEFUL_NAME}_VI]${visual_identifier}${P9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS}%f${fg}" || echo -n "${fg}"
+  [[ ${SEGMENT_ICON} != "" ]] && echo -n "$__P9K_DATA[${STATEFUL_NAME}_VI]${SEGMENT_ICON}${P9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS}%f${fg}" || echo -n "${fg}"
   # Print the content of the segment, if there is any
   [[ -n "${content}" ]] && echo -n "${content}${P9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS}"
 
@@ -126,7 +126,7 @@ __p9k_right_prompt_segment() {
   local content
   # Support for bold segment
   [[ $__P9K_DATA[${STATEFUL_NAME}_BD] == true ]] && content="%B${4}%b" || content="${4}"
-  local visual_identifier="${5}"
+  local SEGMENT_ICON="${5}"
 
   local bg=$__P9K_DATA[${STATEFUL_NAME}_BG]
   local fg=$__P9K_DATA[${STATEFUL_NAME}_FG]
@@ -148,7 +148,7 @@ __p9k_right_prompt_segment() {
 
   if [[ ${(L)P9K_RPROMPT_ICON_LEFT} == "true" ]]; then # Visual identifier before content
     # Print the visual identifier
-    echo -n "${P9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS}$__P9K_DATA[${STATEFUL_NAME}_VI]${visual_identifier}${P9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS}"
+    echo -n "${P9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS}$__P9K_DATA[${STATEFUL_NAME}_VI]${SEGMENT_ICON}${P9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS}"
     # Print segment content if there is any
     [[ -n "${content}" ]] && echo -n "${content}${P9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS}"
   else
@@ -157,7 +157,7 @@ __p9k_right_prompt_segment() {
     # Print segment content if there is any
     [[ -n "${content}" ]] && echo -n "${content}${P9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS}"
     # Print the visual identifier
-    echo -n "$__P9K_DATA[${STATEFUL_NAME}_VI]${visual_identifier}${P9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS}"
+    echo -n "$__P9K_DATA[${STATEFUL_NAME}_VI]${SEGMENT_ICON}${P9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS}"
   fi
 
   CURRENT_RIGHT_BG=$bg
@@ -177,7 +177,7 @@ __p9k_right_prompt_segment() {
 #   $5 bool Whether the segment should be joined
 #   $6 string Content of the segment
 #   $7 string The condition - if the segment should be shown (gets evaluated)
-#   $8 string Visual identifier overide
+#   $8 string Visual identifier overide - *must* be a named icon string
 #   $9 string Background overide
 #   $10 string Foreground overide
 ##
@@ -187,12 +187,11 @@ p9k::prepare_segment() {
 
   # Precompile condition.
   if __p9k_segment_should_be_printed "${STATEFUL_NAME}" "${7}" "${6}"; then
-    local VISUAL_IDENTIFIER
+    local SEGMENT_ICON
     if [[ -z "${8}" ]]; then
-      VISUAL_IDENTIFIER=${__P9K_ICONS[$STATEFUL_NAME]}
+      SEGMENT_ICON=${__P9K_ICONS[${STATEFUL_NAME}]}
     else
-      # test if the VISUAL_IDENTIFIER string is a ICON NAME otherwise treat it as a curston string
-      [[ "${(U)8[1]}" =~ '[A-Z]' ]] && VISUAL_IDENTIFIER="$(p9k::print_icon ${8})" || VISUAL_IDENTIFIER="$(echo -n ${8})"
+      SEGMENT_ICON=${__P9K_ICONS[${8}]}
     fi
 
     # Background overide
@@ -201,7 +200,7 @@ p9k::prepare_segment() {
     # Foreground overide
     [[ -n "${10}" ]] && __P9K_DATA[${STATEFUL_NAME}_FG]="${10}"
 
-    "__p9k_${3}_prompt_segment" "${STATEFUL_NAME}" "${4}" "${5}" "${6}" "${VISUAL_IDENTIFIER}"
+    "__p9k_${3}_prompt_segment" "${STATEFUL_NAME}" "${4}" "${5}" "${6}" "${SEGMENT_ICON}"
   fi
 }
 
