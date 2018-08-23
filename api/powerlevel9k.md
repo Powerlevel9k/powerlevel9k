@@ -3,8 +3,7 @@
 
 ### Source(s)
 
-[https://github.com/bhilburn/powerlevel9k](#https://github.com/bhilburn/powerlevel9k)
-
+[powerlevel9k](https://github.com/bhilburn/powerlevel9k)
 
 ### Author(s)
 

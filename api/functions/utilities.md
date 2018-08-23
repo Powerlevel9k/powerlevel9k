@@ -3,8 +3,7 @@
 
 ### Source(s)
 
-[https://github.com/bhilburn/powerlevel9k](#https://github.com/bhilburn/powerlevel9k)
-
+[powerlevel9k](https://github.com/bhilburn/powerlevel9k)
 
 ### File Description
 
@@ -13,19 +12,13 @@
 ## Table of Contents
 
 - [__p9k_update_environment_vars](#__p9k_update_environment_vars)
-- [defined](#defined)
-- [p9k::set_default](#p9k::set_default)
-- [p9k::print_size_human_readable](#p9k::print_size_human_readable)
-- [p9k::get_relevant_item](#p9k::get_relevant_item)
-- [p9k::segment_in_use](#p9k::segment_in_use)
+- [p9k::defined](#p9kdefined)
+- [p9k::set_default](#p9kset_default)
+- [p9k::print_size_human_readable](#p9kprint_size_human_readable)
+- [p9k::get_relevant_item](#p9kget_relevant_item)
+- [p9k::segment_in_use](#p9ksegment_in_use)
 - [__p9k_print_deprecation_warning](#__p9k_print_deprecation_warning)
-- [__p9k_update_var_name](#__p9k_update_var_name)
 - [__p9k_print_deprecation_var_warning](#__p9k_print_deprecation_var_warning)
-- [__p9k_segment_should_be_joined](#__p9k_segment_should_be_joined)
-- [__p9k_segment_should_be_printed](#__p9k_segment_should_be_printed)
-- [__p9k_truncate_path](#__p9k_truncate_path)
-- [__p9k_truncate_pathFromRight](#__p9k_truncate_pathFromRight)
-- [__p9k_upsearch](#__p9k_upsearch)
 
 ## __p9k_update_environment_vars
 *This function determines if POWERLEVEL9K_ variables have been previously defined and changes them to P9K_ variables. *
@@ -35,7 +28,7 @@
 - *Function has no arguments.*
 
 
-## defined
+## p9k::defined
 *This function determines if a variable has been previously defined, even if empty. *
 
 #### Arguments
@@ -45,7 +38,7 @@
 
 #### Returns
 
-- 0 if the variable has been defined.
+- 0 if the variable has been defined (even when empty).
 
 
 ## p9k::set_default
@@ -109,21 +102,6 @@
 - deprecated segments as keys, and the new segment names as values.
 
 
-## __p9k_update_var_name
-*This function determines if older variable namess have been previously defined and changes them to newer variable names. *
-
-#### Arguments
-
-- **$1** (string) Old variable name
-- **$2** (string) New variable name
-
-
-#### Returns
-
-- 0 if variable was renamed
-- 1 if variable could not be renamed
-
-
 ## __p9k_print_deprecation_var_warning
 *Print a deprecation warning if an old variable is in use. *
 
@@ -132,51 +110,5 @@
 - **$1** (associative-array) An associative array that contains
 - the deprecated variables as keys, and the new variable
 - names as values.
-
-
-## __p9k_segment_should_be_joined
-*A helper function to determine if a segment should be joined or promoted to a full one. *
-
-## __p9k_segment_should_be_printed
-*A helper function to determine if a segment should be printed or not. *
-
-*Conditions have three layers: 1. No segment should print if they provide no content (default condition). 2. Segments can define a default condition on their own, overriding the previous one. 3. Users can set a condition for each segment. This is the trump card, and has highest precedence. *
-
-#### Arguments
-
-- **$1** (string) The stateful name of the segment
-- **$2** (string) The user condition that gets evaluated
-- **$3** (string) Content of the segment (for default condition)
-
-
-## __p9k_truncate_path
-*Given a directory path, truncate it according to the settings. *
-
-#### Arguments
-
-- **$1** (string) The directory path to be truncated.
-- **$2** (integer) Length to truncate to.
-- **$3** (string) Delimiter to use.
-- **$4** (string) Where to truncate from - "right" | "middle" | "left". If omited, assumes right.
-
-
-## __p9k_truncate_pathFromRight
-*Given a directory path, truncate it according to the settings for `truncate_from_right`. *
-
-#### Arguments
-
-- **$1** (string) Directory path.
-
-
-#### Notes
-
-*Deprecated. Use `__p9k_truncate_path` instead. *
-
-## __p9k_upsearch
-*Search recursively in parent folders for given file. *
-
-#### Arguments
-
-- **$1** (string) Filename to search for.
 
 

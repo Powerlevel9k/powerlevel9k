@@ -3,8 +3,7 @@
 
 ### Source(s)
 
-[https://github.com/bhilburn/powerlevel9k](#https://github.com/bhilburn/powerlevel9k)
-
+[powerlevel9k](https://github.com/bhilburn/powerlevel9k)
 
 ### Author(s)
 
@@ -22,8 +21,8 @@
 - [__p9k_left_prompt_segment](#__p9k_left_prompt_segment)
 - [__p9k_left_prompt_end](#__p9k_left_prompt_end)
 - [__p9k_right_prompt_segment](#__p9k_right_prompt_segment)
-- [p9k::prepare_segment](#p9k::prepare_segment)
-- [prompt_custom](#prompt_custom)
+- [p9k::prepare_segment](#p9kprepare_segment)
+- [__p9k_prompt_custom](#__p9k_prompt_custom)
 - [__p9k_build_left_prompt](#__p9k_build_left_prompt)
 - [__p9k_build_right_prompt](#__p9k_build_right_prompt)
 - [__p9k_preexec](#__p9k_preexec)
@@ -80,12 +79,12 @@
 - **$5** (bool) Whether the segment should be joined
 - **$6** (string) Content of the segment
 - **$7** (string) The condition - if the segment should be shown (gets evaluated)
-- **$8** (string) Visual identifier overide
+- **$8** (string) Visual identifier overide - *must* be a named icon string
 - **$9** (string) Background overide
 - **$10** (string) Foreground overide
 
 
-## prompt_custom
+## __p9k_prompt_custom
 *The `custom` prompt provides a way for users to invoke commands and display the output in a segment. *
 
 #### Arguments

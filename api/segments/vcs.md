@@ -3,15 +3,14 @@
 
 ### Source(s)
 
-[https://github.com/bhilburn/powerlevel9k](#https://github.com/bhilburn/powerlevel9k)
-
+[powerlevel9k](https://github.com/bhilburn/powerlevel9k)
 
 ## Table of Contents
 
-- [p9k_vcs_init](#p9k_vcs_init)
+- [__p9k_vcs_init](#__p9k_vcs_init)
 - [prompt_vcs](#prompt_vcs)
 
-## p9k_vcs_init
+## __p9k_vcs_init
 *Initializes the VCS segment by setting the required ZSH options. *
 
 #### Arguments
@@ -28,8 +27,8 @@
 
 #### Arguments
 
-- **$1** (string) Alignment - left | right
-- **$2** (integer) Segment index
-- **$3** (boolean) Whether the segment should be joined
+- ${1} string Alignment - left | right
+- ${2} integer Segment index
+- ${3} boolean Whether the segment should be joined
 
 

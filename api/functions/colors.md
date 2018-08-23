@@ -3,8 +3,7 @@
 
 ### Source(s)
 
-[https://github.com/bhilburn/powerlevel9k](#https://github.com/bhilburn/powerlevel9k)
-
+[powerlevel9k](https://github.com/bhilburn/powerlevel9k)
 
 ### File Description
 
@@ -13,11 +12,11 @@
 ## Table of Contents
 
 - [__p9k_term_colors](#__p9k_term_colors)
-- [p9k::get_color](#p9k::get_color)
-- [p9k::background_color](#p9k::background_color)
-- [p9k::foreground_color](#p9k::foreground_color)
-- [p9k::get_color_code](#p9k::get_color_code)
-- [p9k::is_same_color](#p9k::is_same_color)
+- [p9k::get_color](#p9kget_color)
+- [p9k::background_color](#p9kbackground_color)
+- [p9k::foreground_color](#p9kforeground_color)
+- [p9k::get_color_code](#p9kget_color_code)
+- [p9k::is_same_color](#p9kis_same_color)
 
 ## __p9k_term_colors
 *This function checks if the terminal supports 256 colors. If it doesn't, an error message is displayed. *

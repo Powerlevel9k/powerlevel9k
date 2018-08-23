@@ -1,4 +1,4 @@
-# powerlevel9k Segment - SSH
+# powerlevel9k Segment - TaskWarrior
 
 
 ### Source(s)
@@ -7,10 +7,10 @@
 
 ## Table of Contents
 
-- [prompt_ssh](#prompt_ssh)
+- [prompt_tw](#prompt_tw)
 
-## prompt_ssh
-*Displays an SSH icon when connected. *
+## prompt_tw
+*Displays data from TaskWarrior. *
 
 #### Arguments
 

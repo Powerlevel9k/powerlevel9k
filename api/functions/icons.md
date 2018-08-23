@@ -3,8 +3,7 @@
 
 ### Source(s)
 
-[https://github.com/bhilburn/powerlevel9k](#https://github.com/bhilburn/powerlevel9k)
-
+[powerlevel9k](https://github.com/bhilburn/powerlevel9k)
 
 ### File Description
 
@@ -16,9 +15,9 @@
 
 ## Table of Contents
 
-- [p9k::register_icon](#p9k::register_icon)
-- [p9k::register_segment](#p9k::register_segment)
-- [p9k::print_icon](#p9k::print_icon)
+- [p9k::register_icon](#p9kregister_icon)
+- [p9k::register_segment](#p9kregister_segment)
+- [p9k::print_icon](#p9kprint_icon)
 - [show_defined_icons](#show_defined_icons)
 
 ## p9k::register_icon

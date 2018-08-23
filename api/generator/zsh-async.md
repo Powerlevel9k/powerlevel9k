@@ -3,8 +3,7 @@
 
 ### Source(s)
 
-[https://github.com/bhilburn/powerlevel9k](#https://github.com/bhilburn/powerlevel9k)
-
+[powerlevel9k](https://github.com/bhilburn/powerlevel9k)
 
 ### Author(s)
 
@@ -29,8 +28,8 @@
 - [__p9k_left_prompt_segment](#__p9k_left_prompt_segment)
 - [__p9k_right_prompt_segment](#__p9k_right_prompt_segment)
 - [__p9k_async_callback](#__p9k_async_callback)
-- [p9k::prepare_segment](#p9k::prepare_segment)
-- [prompt_custom](#prompt_custom)
+- [p9k::prepare_segment](#p9kprepare_segment)
+- [__p9k_prompt_custom](#__p9k_prompt_custom)
 - [__p9k_build_left_prompt](#__p9k_build_left_prompt)
 - [__p9k_build_right_prompt](#__p9k_build_right_prompt)
 - [__p9k_preexec](#__p9k_preexec)
@@ -95,7 +94,7 @@
 - **$10** (string) Foreground overide
 
 
-## prompt_custom
+## __p9k_prompt_custom
 *The `custom` prompt provides a way for users to invoke commands and display the output in a segment. *
 
 #### Arguments
