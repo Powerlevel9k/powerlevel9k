@@ -312,7 +312,10 @@ p9k::prepare_segment() {
     if [[ -z "${8}" ]]; then
       SEGMENT_ICON=${__P9K_ICONS[$STATEFUL_NAME]}
     else
+      # check if it is a named icon
       SEGMENT_ICON=${__P9K_ICONS[${8}]}
+      # otherwise use it literally
+      [[ ${SEGMENT_ICON} == "" ]] && SEGMENT_ICON=$(echo ${8})
     fi
 
     # Background overide
