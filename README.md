@@ -291,6 +291,8 @@ If you want more precision, just set the
 |`POWERLEVEL9K_COMMAND_EXECUTION_TIME_THRESHOLD`|3|Threshold above which to print this segment. Can be set to `0` to always print.|
 |`POWERLEVEL9K_COMMAND_EXECUTION_TIME_PRECISION`|2|Number of digits to use in the fractional part of the time value.|
 
+Additionally, the icon can be changed by setting `POWERLEVEL9K_EXECUTION_TIME_ICON` to your choice.
+
 ##### custom_command
 
 The `custom_...` segment allows you to turn the output of a custom command into
