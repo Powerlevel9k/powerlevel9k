@@ -438,20 +438,13 @@ function testRemoteBranchNameIdenticalToTag() {
 
 function testAlwaysShowRemoteBranch()
 {
-  P9K_LEFT_PROMPT_ELEMENTS=(vcs)
-  P9K_VCS_GIT_ALWAYS_SHOW_REMOTE_BRANCH=true
+  POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(vcs)
+  local POWERLEVEL9K_VCS_GIT_ALWAYS_SHOW_REMOTE_BRANCH='true'
 
-  FOLDER=/tmp/powerlevel9k-test/vcs-test
-  mkdir -p $FOLDER
-  cd $FOLDER
-  git clone https://github.com/bhilburn/powerlevel9k.git "$FOLDER" 1>/dev/null 2>&1
+  mkdir repo
+  cd repo
+  git clone https://github.com/bhilburn/powerlevel9k.git . 1>/dev/null 2>&1
 
   assertEquals "%K{002} %F{000} master →origin/master %k%F{002}%f " "$(build_left_prompt)"
-
-  cd -
-  rm -fr /tmp/powerlevel9k-test
-
-  unset POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
-  unset POWERLEVEL9K_VCS_GIT_ALWAYS_SHOW_REMOTE_BRANCH
 }
 source shunit2/shunit2
