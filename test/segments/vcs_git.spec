@@ -440,6 +440,7 @@ function testAlwaysShowRemoteBranch()
 {
   POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(vcs)
   local POWERLEVEL9K_VCS_GIT_ALWAYS_SHOW_REMOTE_BRANCH='true'
+  local POWERLEVEL9K_VCS_HIDE_TAGS='true'
 
   mkdir repo
   cd repo
