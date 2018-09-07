@@ -446,7 +446,7 @@ function testAlwaysShowRemoteBranch()
   cd $FOLDER
   git clone https://github.com/bhilburn/powerlevel9k.git "$FOLDER" 1>/dev/null 2>&1
 
-  assertEquals "%K{green} %F{black} master →origin/master %k%F{green}%f " "$(build_left_prompt)"
+  assertEquals "%K{002} %F{000} master →origin/master %k%F{002}%f " "$(build_left_prompt)"
 
   cd -
   rm -fr /tmp/powerlevel9k-test
