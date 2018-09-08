@@ -1,0 +1,16 @@
+# vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
+################################################################
+# @title powerlevel9k Segment - PHP Version
+# @source [powerlevel9k](https://github.com/bhilburn/powerlevel9k)
+##
+
+################################################################
+# Segment to display PHP version number
+prompt_php_version() {
+  local php_version
+  php_version=$(php -v 2>&1 | grep -oe "^PHP\s*[0-9.]*")
+
+  if [[ -n "$php_version" ]]; then
+    "$1_prompt_segment" "$0" "$2" "fuchsia" "grey93" "$php_version"
+  fi
+}

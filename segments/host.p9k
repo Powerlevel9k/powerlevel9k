@@ -1,0 +1,31 @@
+# vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
+################################################################
+# @title powerlevel9k Segment - Host
+# @source [powerlevel9k](https://github.com/bhilburn/powerlevel9k)
+##
+
+################################################################
+# Host: machine (where am I)
+set_default POWERLEVEL9K_HOST_TEMPLATE "%m"
+prompt_host() {
+  local current_state="LOCAL"
+  typeset -AH host_state
+  if [[ -n "$SSH_CLIENT" ]] || [[ -n "$SSH_TTY" ]]; then
+    host_state=(
+      "STATE"               "REMOTE"
+      "CONTENT"             "${POWERLEVEL9K_HOST_TEMPLATE}"
+      "BACKGROUND_COLOR"    "${DEFAULT_COLOR}"
+      "FOREGROUND_COLOR"    "yellow"
+      "VISUAL_IDENTIFIER"   "SSH_ICON"
+    )
+  else
+    host_state=(
+      "STATE"               "LOCAL"
+      "CONTENT"             "${POWERLEVEL9K_HOST_TEMPLATE}"
+      "BACKGROUND_COLOR"    "${DEFAULT_COLOR}"
+      "FOREGROUND_COLOR"    "yellow"
+      "VISUAL_IDENTIFIER"   "HOST_ICON"
+    )
+  fi
+  "$1_prompt_segment" "$0_${host_state[STATE]}" "$2" "${host_state[BACKGROUND_COLOR]}" "${host_state[FOREGROUND_COLOR]}" "${host_state[CONTENT]}" "${host_state[VISUAL_IDENTIFIER]}"
+}

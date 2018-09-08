@@ -1,0 +1,25 @@
+# vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
+################################################################
+# @title powerlevel9k Support File - Test Statistics
+# @source [powerlevel9k](https://github.com/bhilburn/powerlevel9k)
+##
+# @info
+#   This file contains supplemental Test Statistics functions
+#   for the rspec_stats.p9k and symfony_tests segments.
+##
+
+################################################################
+# Show a ratio of tests vs code
+build_test_stats() {
+  local code_amount="$4"
+  local tests_amount="$5"+0.00001
+  local headline="$6"
+
+  # Set float precision to 2 digits:
+  typeset -F 2 ratio
+  local ratio=$(( (tests_amount/code_amount) * 100 ))
+
+  (( ratio >= 75 )) && "$1_prompt_segment" "${2}_GOOD" "$3" "cyan" "$DEFAULT_COLOR" "$headline: $ratio%%" "$6"
+  (( ratio >= 50 && ratio < 75 )) && "$1_prompt_segment" "$2_AVG" "$3" "yellow" "$DEFAULT_COLOR" "$headline: $ratio%%" "$6"
+  (( ratio < 50 )) && "$1_prompt_segment" "$2_BAD" "$3" "red" "$DEFAULT_COLOR" "$headline: $ratio%%" "$6"
+}

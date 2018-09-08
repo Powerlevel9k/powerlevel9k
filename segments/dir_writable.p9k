@@ -1,0 +1,13 @@
+# vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
+################################################################
+# @title powerlevel9k Segment - Dir Writable
+# @source [powerlevel9k](https://github.com/bhilburn/powerlevel9k)
+##
+
+################################################################
+# dir_writable: Display information about the user's permission to write in the current directory
+prompt_dir_writable() {
+  if [[ ! -w "$PWD" ]]; then
+    "$1_prompt_segment" "$0_FORBIDDEN" "$2" "red" "yellow1" "" 'LOCK_ICON'
+  fi
+}

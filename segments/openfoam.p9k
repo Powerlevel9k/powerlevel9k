@@ -1,0 +1,17 @@
+# vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
+################################################################
+# @title powerlevel9k Segment - Openfoam
+# @source [powerlevel9k](https://github.com/bhilburn/powerlevel9k)
+##
+
+################################################################
+# Display openfoam information
+prompt_openfoam() {
+  local wm_project_version="$WM_PROJECT_VERSION"
+  local wm_fork="$WM_FORK"
+  if [[ -n "$wm_project_version" ]] &&  [[ -z "$wm_fork" ]] ; then
+    "$1_prompt_segment" "$0" "$2" "yellow" "$DEFAULT_COLOR" "OF: $(basename "$wm_project_version")"
+  elif [[ -n "$wm_project_version" ]] && [[ -n "$wm_fork" ]] ; then
+    "$1_prompt_segment" "$0" "$2" "yellow" "$DEFAULT_COLOR" "F-X: $(basename "$wm_project_version")"
+  fi
+}

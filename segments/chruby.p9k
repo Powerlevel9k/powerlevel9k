@@ -1,0 +1,30 @@
+# vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
+################################################################
+# @title powerlevel9k Segment - chruby
+# @source [powerlevel9k](https://github.com/bhilburn/powerlevel9k)
+##
+
+################################################################
+# Segment to display chruby information
+# see https://github.com/postmodern/chruby/issues/245 for chruby_auto issue with ZSH
+prompt_chruby() {
+  # Uses $RUBY_VERSION and $RUBY_ENGINE set by chruby
+  set_default POWERLEVEL9K_CHRUBY_SHOW_VERSION true
+  set_default POWERLEVEL9K_CHRUBY_SHOW_ENGINE true
+  local chruby_label=""
+
+  if [[ "$POWERLEVEL9K_CHRUBY_SHOW_ENGINE" == true ]]; then
+    chruby_label+="$RUBY_ENGINE "
+  fi
+  if [[ "$POWERLEVEL9K_CHRUBY_SHOW_VERSION" == true ]]; then
+    chruby_label+="$RUBY_VERSION"
+  fi
+
+  # Truncate trailing spaces
+  chruby_label="${chruby_label%"${chruby_label##*[![:space:]]}"}"
+
+  # Don't show anything if the chruby did not change the default ruby
+  if [[ "$RUBY_ENGINE" != "" ]]; then
+    "$1_prompt_segment" "$0" "$2" "red" "$DEFAULT_COLOR" "${chruby_label}" 'RUBY_ICON'
+  fi
+}

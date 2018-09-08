@@ -1,0 +1,11 @@
+# vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
+################################################################
+# @title powerlevel9k Segment - OS Icon
+# @source [powerlevel9k](https://github.com/bhilburn/powerlevel9k)
+##
+
+################################################################
+# Segment to print a little OS icon
+prompt_os_icon() {
+  "$1_prompt_segment" "$0" "$2" "black" "white" "$OS_ICON"
+}

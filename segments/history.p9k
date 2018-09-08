@@ -1,0 +1,11 @@
+# vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
+################################################################
+# @title powerlevel9k Segment - History
+# @source [powerlevel9k](https://github.com/bhilburn/powerlevel9k)
+##
+
+################################################################
+# Command number (in local history)
+prompt_history() {
+  "$1_prompt_segment" "$0" "$2" "grey50" "$DEFAULT_COLOR" '%h'
+}

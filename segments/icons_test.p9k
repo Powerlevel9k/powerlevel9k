@@ -1,0 +1,17 @@
+# vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
+################################################################
+# @title powerlevel9k Segment - Test Icons
+# @source [powerlevel9k](https://github.com/bhilburn/powerlevel9k)
+##
+
+################################################################
+# Test icons
+prompt_icons_test() {
+  for key in ${(@k)icons}; do
+    # The lower color spectrum in ZSH makes big steps. Choosing
+    # the next color has enough contrast to read.
+    local random_color=$((RANDOM % 8))
+    local next_color=$((random_color+1))
+    "$1_prompt_segment" "$0" "$2" "$random_color" "$next_color" "$key" "$key"
+  done
+}

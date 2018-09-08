@@ -1,0 +1,15 @@
+# vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
+################################################################
+# @title powerlevel9k Segment - RVM
+# @source [powerlevel9k](https://github.com/bhilburn/powerlevel9k)
+##
+
+################################################################
+# Segment to display Ruby Version Manager information
+prompt_rvm() {
+  local version_and_gemset=${rvm_env_string/ruby-}
+
+  if [[ -n "$version_and_gemset" ]]; then
+    "$1_prompt_segment" "$0" "$2" "grey35" "$DEFAULT_COLOR" "$version_and_gemset" 'RUBY_ICON'
+  fi
+}

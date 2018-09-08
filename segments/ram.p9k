@@ -1,0 +1,30 @@
+# vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
+################################################################
+# @title powerlevel9k Segment - Ram
+# @source [powerlevel9k](https://github.com/bhilburn/powerlevel9k)
+##
+
+################################################################
+# Segment to display free RAM and used Swap
+prompt_ram() {
+  local ROOT_PREFIX="${4}"
+  local base=''
+  local ramfree=0
+  if [[ "$OS" == "OSX" ]]; then
+    # Available = Free + Inactive
+    # See https://support.apple.com/en-us/HT201538
+    ramfree=$(vm_stat | grep "Pages free" | grep -o -E '[0-9]+')
+    ramfree=$((ramfree + $(vm_stat | grep "Pages inactive" | grep -o -E '[0-9]+')))
+    # Convert pages into Bytes
+    ramfree=$(( ramfree * 4096 ))
+  else
+    if [[ "$OS" == "BSD" ]]; then
+      ramfree=$(grep 'avail memory' ${ROOT_PREFIX}/var/run/dmesg.boot | awk '{print $4}')
+    else
+      ramfree=$(grep -o -E "MemAvailable:\s+[0-9]+" ${ROOT_PREFIX}/proc/meminfo | grep -o -E "[0-9]+")
+      base='K'
+    fi
+  fi
+
+  "$1_prompt_segment" "$0" "$2" "yellow" "$DEFAULT_COLOR" "$(printSizeHumanReadable "$ramfree" $base)" 'RAM_ICON'
+}
