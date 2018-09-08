@@ -19,6 +19,7 @@ function setUp() {
 function testJoinedSegments() {
   local -a POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
   POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(dir dir_joined)
+  source segments/dir.p9k
   cd /tmp
 
   assertEquals "%K{004} %F{000}/tmp %K{004}%F{000}%F{000}/tmp %k%F{004}%f " "$(build_left_prompt)"
@@ -29,6 +30,8 @@ function testJoinedSegments() {
 function testTransitiveJoinedSegments() {
   local -a POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
   POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(dir root_indicator_joined dir_joined)
+  source segments/dir.p9k
+  source segments/root_indicator.p9k
   cd /tmp
 
   assertEquals "%K{004} %F{000}/tmp %K{004}%F{000}%F{000}/tmp %k%F{004}%f " "$(build_left_prompt)"
@@ -39,6 +42,8 @@ function testTransitiveJoinedSegments() {
 function testJoiningWithConditionalSegment() {
   local -a POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
   POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(dir background_jobs dir_joined)
+  source segments/dir.p9k
+  source segments/background_jobs.p9k
   cd /tmp
 
   assertEquals "%K{004} %F{000}/tmp %K{004}%F{000} %F{000}/tmp %k%F{004}%f " "$(build_left_prompt)"
@@ -50,6 +55,7 @@ function testDynamicColoringOfSegmentsWork() {
   local -a POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
   POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(dir)
   local POWERLEVEL9K_DIR_DEFAULT_BACKGROUND='red'
+  source segments/dir.p9k
   cd /tmp
 
   assertEquals "%K{001} %F{000}/tmp %k%F{001}%f " "$(build_left_prompt)"
@@ -62,6 +68,7 @@ function testDynamicColoringOfVisualIdentifiersWork() {
   POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(dir)
   local POWERLEVEL9K_DIR_DEFAULT_VISUAL_IDENTIFIER_COLOR='green'
   local POWERLEVEL9K_FOLDER_ICON="icon-here"
+  source segments/dir.p9k
 
   cd /tmp
 
@@ -77,6 +84,7 @@ function testColoringOfVisualIdentifiersDoesNotOverwriteColoringOfSegment() {
   local POWERLEVEL9K_DIR_DEFAULT_FOREGROUND='red'
   local POWERLEVEL9K_DIR_DEFAULT_BACKGROUND='yellow'
   local POWERLEVEL9K_FOLDER_ICON="icon-here"
+  source segments/dir.p9k
 
   # Re-Source the icons, as the POWERLEVEL9K_MODE is directly
   # evaluated there.
@@ -93,6 +101,7 @@ function testOverwritingIconsWork() {
   local -a POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
   POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(dir)
   local POWERLEVEL9K_FOLDER_ICON='icon-here'
+  source segments/dir.p9k
   #local testFolder=$(mktemp -d -p p9k)
   # Move testFolder under home folder
   #mv testFolder ~

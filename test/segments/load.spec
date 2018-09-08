@@ -40,6 +40,7 @@ function testLoadSegmentWorksOnOsx() {
 
     # Load Powerlevel9k
     source ${P9K_HOME}/powerlevel9k.zsh-theme
+    source ${P9K_HOME}/segments/load.p9k
     local OS="OSX" # Fake OSX
 
     assertEquals "%K{002} %F{000}L %f%F{000}1.38 " "$(prompt_load left 1 false ${FOLDER})"
@@ -59,9 +60,10 @@ function testLoadSegmentWorksOnBsd() {
     }
 
     local POWERLEVEL9K_LOAD_WHICH=1
-    
+
     # Load Powerlevel9k
     source ${P9K_HOME}/powerlevel9k.zsh-theme
+    source ${P9K_HOME}/segments/load.p9k
     local OS="BSD" # Fake BSD
 
     assertEquals "%K{002} %F{000}L %f%F{000}1.38 " "$(prompt_load left 1 false ${FOLDER})"
@@ -79,6 +81,7 @@ function testLoadSegmentWorksOnLinux() {
 
     # Load Powerlevel9k
     source ${P9K_HOME}/powerlevel9k.zsh-theme
+    source ${P9K_HOME}/segments/load.p9k
     local OS="Linux" # Fake Linux
 
     assertEquals "%K{002} %F{000}L %f%F{000}1.38 " "$(prompt_load left 1 false ${FOLDER})"
@@ -99,6 +102,7 @@ function testLoadSegmentNormalState() {
 
     # Load Powerlevel9k
     source ${P9K_HOME}/powerlevel9k.zsh-theme
+    source ${P9K_HOME}/segments/load.p9k
     local OS="Linux" # Fake Linux
 
     assertEquals "%K{002} %F{000}L %f%F{000}1.00 " "$(prompt_load left 1 false ${FOLDER})"
@@ -119,6 +123,7 @@ function testLoadSegmentWarningState() {
 
     # Load Powerlevel9k
     source ${P9K_HOME}/powerlevel9k.zsh-theme
+    source ${P9K_HOME}/segments/load.p9k
     local OS="Linux" # Fake Linux
 
     assertEquals "%K{003} %F{000}L %f%F{000}2.01 " "$(prompt_load left 1 false ${FOLDER})"
@@ -139,6 +144,7 @@ function testLoadSegmentCriticalState() {
 
     # Load Powerlevel9k
     source ${P9K_HOME}/powerlevel9k.zsh-theme
+    source ${P9K_HOME}/segments/load.p9k
     local OS="Linux" # Fake Linux
 
     assertEquals "%K{001} %F{000}L %f%F{000}2.81 " "$(prompt_load left 1 false ${FOLDER})"

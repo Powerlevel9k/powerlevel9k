@@ -6,6 +6,9 @@ setopt shwordsplit
 SHUNIT_PARENT=$0
 
 function setUp() {
+  source functions/icons.zsh
+  source functions/utilities.zsh
+  source segments/vi_mode.p9k
   export TERM="xterm-256color"
 }
 
