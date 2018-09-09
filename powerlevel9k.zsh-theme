@@ -334,18 +334,27 @@ prompt_aws_eb_env() {
 # Segment to indicate background jobs with an icon.
 set_default POWERLEVEL9K_BACKGROUND_JOBS_VERBOSE true
 set_default POWERLEVEL9K_BACKGROUND_JOBS_VERBOSE_ALWAYS false
+set_default POWERLEVEL9K_BACKGROUND_JOBS_EXPANDED false
+jobs_running=0
+jobs_suspended=0
 prompt_background_jobs() {
-  local background_jobs_number=${$(jobs -l | wc -l)// /}
-  local wrong_lines=`jobs -l | awk '/pwd now/{ count++ } END {print count}'`
-  if [[ wrong_lines -gt 0 ]]; then
-     background_jobs_number=$(( $background_jobs_number - $wrong_lines ))
-  fi
-  if [[ background_jobs_number -gt 0 ]]; then
-    local background_jobs_number_print=""
-    if [[ "$POWERLEVEL9K_BACKGROUND_JOBS_VERBOSE" == "true" ]] && ([[ "$background_jobs_number" -gt 1 ]] || [[ "$POWERLEVEL9K_BACKGROUND_JOBS_VERBOSE_ALWAYS" == "true" ]]); then
-      background_jobs_number_print="$background_jobs_number"
+  local jobs_print=""
+  local total_jobs=$(( ${jobs_running} + ${jobs_suspended} ))
+
+  if [[ "${(L)POWERLEVEL9K_BACKGROUND_JOBS_VERBOSE}" == "true" \
+      || "${(L)POWERLEVEL9K_BACKGROUND_JOBS_VERBOSE_ALWAYS}" == "true" ]]; then
+    jobs_print=0
+    if (( ${total_jobs} > 0 )); then
+      if [[ "${(L)POWERLEVEL9K_BACKGROUND_JOBS_EXPANDED}" == "true" ]]; then
+        jobs_print="${jobs_running}r ${jobs_suspended}s"
+      else
+        jobs_print="${total_jobs}"
+      fi
     fi
-    "$1_prompt_segment" "$0" "$2" "$DEFAULT_COLOR" "cyan" "$background_jobs_number_print" 'BACKGROUND_JOBS_ICON'
+  fi
+
+  if [[ "${(L)POWERLEVEL9K_BACKGROUND_JOBS_VERBOSE_ALWAYS}" == "true" ]] || (( ${total_jobs} > 0 )); then
+    "$1_prompt_segment" "$0" "$2" "$DEFAULT_COLOR" "cyan" "${jobs_print}" 'BACKGROUND_JOBS_ICON'
   fi
 }
 
@@ -1870,6 +1879,12 @@ local NEWLINE='
   [[ $ITERM_SHELL_INTEGRATION_INSTALLED == "Yes" ]] && PROMPT="%{$(iterm2_prompt_mark)%}$PROMPT"
 }
 
+powerlevel9k_background_jobs() {
+  # See https://unix.stackexchange.com/questions/68571/show-jobs-count-only-if-it-is-more-than-0
+  jobs_running=${(M)#${jobstates%%:*}:#running}
+  jobs_suspended=${(M)#${jobstates%%:*}:#suspended}
+}
+
 zle-keymap-select () {
 	zle reset-prompt
 	zle -R
@@ -1940,6 +1955,7 @@ prompt_powerlevel9k_setup() {
 
   # prepare prompts
   add-zsh-hook precmd powerlevel9k_prepare_prompts
+  add-zsh-hook precmd powerlevel9k_background_jobs
   add-zsh-hook preexec powerlevel9k_preexec
 
   zle -N zle-keymap-select
