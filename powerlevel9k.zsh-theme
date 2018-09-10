@@ -19,7 +19,7 @@
 ## Turn on for Debugging
 #PS4='%s%f%b%k%F{blue}%{λ%}%L %F{240}%N:%i%(?.. %F{red}%?) %1(_.%F{yellow}%-1_ .)%s%f%b%k '
 #zstyle ':vcs_info:*+*:*' debug true
-#set -o xtrace
+# set -o xtrace
 
 # Try to set the installation path
 if [[ -n "$POWERLEVEL9K_INSTALLATION_DIR" ]]; then
@@ -101,17 +101,31 @@ case "${(L)POWERLEVEL9K_GENERATOR}" in
 esac
 
 ################################################################
+# Set default prompt segments
+################################################################
+
+defined POWERLEVEL9K_LEFT_PROMPT_ELEMENTS || POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(context dir vcs)
+defined POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS || POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(status root_indicator background_jobs history time)
+
+################################################################
 # Load Prompt Segment Definitions
 ################################################################
 
 # load only the segments that are being used!
-local segmentName
-for segment in $p9k_directory/segments/*.p9k; do
-  segmentName=${${segment##*/}%.p9k}
-  if segment_in_use "$segmentName"; then
-    source "${segment}" 2>&1
-  fi
-done
+function __p9k_loadSegments() {
+  local segment
+  for segment in ${POWERLEVEL9K_LEFT_PROMPT_ELEMENTS} ${POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS}; do
+    # Remove joined information
+    segment=${segment%_joined}
+
+    # Custom segments must be loaded by user
+    if [[ $segment[0,7] =~ "custom_" ]]; then
+      continue
+    fi
+    source "${p9k_directory}/segments/${segment}.p9k" 2>&1
+  done
+}
+__p9k_loadSegments
 
 # lauch the prompt
 prompt_powerlevel9k_setup "$@"
