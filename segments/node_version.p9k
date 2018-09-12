@@ -1,0 +1,14 @@
+# vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
+################################################################
+# @title powerlevel9k Segment - Node Version
+# @source [powerlevel9k](https://github.com/bhilburn/powerlevel9k)
+##
+
+################################################################
+# Segment to diplay Node version
+prompt_node_version() {
+  local node_version=$(node -v 2>/dev/null)
+  [[ -z "${node_version}" ]] && return
+
+  "$1_prompt_segment" "$0" "$2" "green" "white" "${node_version:1}" 'NODE_ICON'
+}

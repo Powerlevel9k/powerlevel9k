@@ -1,0 +1,63 @@
+# vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
+################################################################
+# @title powerlevel9k Segment - Load
+# @source [powerlevel9k](https://github.com/bhilburn/powerlevel9k)
+##
+
+################################################################
+# Segment to display load
+set_default POWERLEVEL9K_LOAD_WHICH 5
+prompt_load() {
+  local ROOT_PREFIX="${4}"
+  # The load segment can have three different states
+  local current_state="unknown"
+  local load_select=2
+  local load_avg
+  local cores
+
+  typeset -AH load_states
+  load_states=(
+    'critical'      'red'
+    'warning'       'yellow'
+    'normal'        'green'
+  )
+
+  case "$POWERLEVEL9K_LOAD_WHICH" in
+    1)
+      load_select=1
+      ;;
+    5)
+      load_select=2
+      ;;
+    15)
+      load_select=3
+      ;;
+  esac
+
+  case "$OS" in
+    OSX|BSD)
+      load_avg=$(sysctl vm.loadavg | grep -o -E '[0-9]+(\.|,)[0-9]+' | sed -n ${load_select}p)
+      if [[ "$OS" == "OSX" ]]; then
+        cores=$(sysctl -n hw.logicalcpu)
+      else
+        cores=$(sysctl -n hw.ncpu)
+      fi
+      ;;
+    *)
+      load_avg=$(cut -d" " -f${load_select} ${ROOT_PREFIX}/proc/loadavg)
+      cores=$(nproc)
+  esac
+
+  # Replace comma
+  load_avg=${load_avg//,/.}
+
+  if [[ "$load_avg" -gt $((${cores} * 0.7)) ]]; then
+    current_state="critical"
+  elif [[ "$load_avg" -gt $((${cores} * 0.5)) ]]; then
+    current_state="warning"
+  else
+    current_state="normal"
+  fi
+
+  "$1_prompt_segment" "${0}_${current_state}" "$2" "${load_states[$current_state]}" "$DEFAULT_COLOR" "$load_avg" 'LOAD_ICON'
+}

@@ -20,7 +20,7 @@ function testLeftNormalSegmentsShouldNotBeJoined() {
   local POWERLEVEL9K_CUSTOM_WORLD4="echo world4"
   local POWERLEVEL9K_CUSTOM_WORLD5="echo " # Print nothing to simulate unmet conditions
   local POWERLEVEL9K_CUSTOM_WORLD6="echo world6"
-  
+
   assertEquals "%K{007} %F{000}world1 %K{007}%F{000} %F{000}world2 %K{007}%F{000} %F{000}world4 %K{007}%F{000} %F{000}world6 %k%F{007}%f " "$(build_left_prompt)"
 }
 
@@ -91,6 +91,7 @@ function testLeftPromotingSegmentWithDeepJoinedConditionalPredecessor() {
 function testLeftJoiningBuiltinSegmentWorks() {
   local -a POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
   POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(php_version php_version_joined)
+  source segments/php_version.p9k
   alias php="echo PHP 1.2.3"
 
   assertEquals "%K{013} %F{255}PHP 1.2.3 %K{013}%F{255}%F{255}PHP 1.2.3 %k%F{013}%f " "$(build_left_prompt)"
@@ -178,6 +179,7 @@ function testRightPromotingSegmentWithDeepJoinedConditionalPredecessor() {
 function testRightJoiningBuiltinSegmentWorks() {
   local -a POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS
   POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(php_version php_version_joined)
+  source segments/php_version.p9k
   alias php="echo PHP 1.2.3"
 
   assertEquals "%F{013}%f%K{013}%F{255} PHP 1.2.3 %f%K{013}%F{255}PHP 1.2.3%E" "$(build_right_prompt)"

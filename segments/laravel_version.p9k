@@ -1,0 +1,16 @@
+# vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
+################################################################
+# @title powerlevel9k Segment - Laravel Version
+# @source [powerlevel9k](https://github.com/bhilburn/powerlevel9k)
+##
+
+################################################################
+# Segment to display laravel version
+prompt_laravel_version() {
+  local laravel_version="$(php artisan --version 2> /dev/null)"
+  if [[ -n "${laravel_version}" && "${laravel_version}" =~ "Laravel Framework" ]]; then
+    # Strip out everything but the version
+    laravel_version="${laravel_version//Laravel Framework /}"
+    "$1_prompt_segment" "$0" "$2" "maroon" "white" "${laravel_version}" 'LARAVEL_ICON'
+  fi
+}

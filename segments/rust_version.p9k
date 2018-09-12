@@ -1,0 +1,20 @@
+# vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
+################################################################
+# @title powerlevel9k Segment - Rust Version
+# @source [powerlevel9k](https://github.com/bhilburn/powerlevel9k)
+##
+
+################################################################
+# Segment to display Rust version number
+prompt_rust_version() {
+  local rust_version
+  rust_version=$(command rustc --version 2>/dev/null)
+  # Remove "rustc " (including the whitespace) from the beginning
+  # of the version string and remove everything after the next
+  # whitespace. This way we'll end up with only the version.
+  rust_version=${${rust_version/rustc /}%% *}
+
+  if [[ -n "$rust_version" ]]; then
+    "$1_prompt_segment" "$0" "$2" "darkorange" "$DEFAULT_COLOR" "$rust_version" 'RUST_ICON'
+  fi
+}

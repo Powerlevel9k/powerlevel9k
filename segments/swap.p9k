@@ -1,0 +1,32 @@
+# vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
+################################################################
+# @title powerlevel9k Segment - Swap
+# @source [powerlevel9k](https://github.com/bhilburn/powerlevel9k)
+##
+
+################################################################
+# Segment to display Swap information
+prompt_swap() {
+  local ROOT_PREFIX="${4}"
+  local swap_used=0
+  local base=''
+
+  if [[ "$OS" == "OSX" ]]; then
+    local raw_swap_used
+    raw_swap_used=$(sysctl vm.swapusage | grep -o "used\s*=\s*[0-9,.A-Z]*" | grep -o "[0-9,.A-Z]*$")
+
+    typeset -F 2 swap_used
+    swap_used=${$(echo $raw_swap_used | grep -o "[0-9,.]*")//,/.}
+    # Replace comma
+    swap_used=${swap_used//,/.}
+
+    base=$(echo "$raw_swap_used" | grep -o "[A-Z]*$")
+  else
+    swap_total=$(grep -o -E "SwapTotal:\s+[0-9]+" ${ROOT_PREFIX}/proc/meminfo | grep -o -E "[0-9]+")
+    swap_free=$(grep -o -E "SwapFree:\s+[0-9]+" ${ROOT_PREFIX}/proc/meminfo | grep -o -E "[0-9]+")
+    swap_used=$(( swap_total - swap_free ))
+    base='K'
+  fi
+
+  "$1_prompt_segment" "$0" "$2" "yellow" "$DEFAULT_COLOR" "$(printSizeHumanReadable "$swap_used" $base)" 'SWAP_ICON'
+}

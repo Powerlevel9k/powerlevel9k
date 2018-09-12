@@ -1,0 +1,13 @@
+# vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
+################################################################
+# @title powerlevel9k Segment - AWS EB Environment
+# @source [powerlevel9k](https://github.com/bhilburn/powerlevel9k)
+##
+
+prompt_aws_eb_env() {
+  local eb_env=$(grep environment .elasticbeanstalk/config.yml 2> /dev/null | awk '{print $2}')
+
+  if [[ -n "$eb_env" ]]; then
+    "$1_prompt_segment" "$0" "$2" black green "$eb_env" 'AWS_EB_ICON'
+  fi
+}

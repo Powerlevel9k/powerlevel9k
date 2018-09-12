@@ -1,0 +1,20 @@
+# vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
+################################################################
+# @title powerlevel9k Segment - Detect Virtualization
+# @source [powerlevel9k](https://github.com/bhilburn/powerlevel9k)
+##
+
+################################################################
+# Detection for virtualization (systemd based systems only)
+prompt_detect_virt() {
+  local virt=$(systemd-detect-virt 2> /dev/null)
+  if [[ "$virt" == "none" ]]; then
+    if [[ "$(ls -di / | grep -o 2)" != "2" ]]; then
+      virt="chroot"
+    fi
+  fi
+
+  if [[ -n "${virt}" ]]; then
+    "$1_prompt_segment" "$0" "$2" "$DEFAULT_COLOR" "yellow" "$virt"
+  fi
+}

@@ -1,0 +1,15 @@
+# vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
+################################################################
+# @title powerlevel9k Segment - Docker Machine
+# @source [powerlevel9k](https://github.com/bhilburn/powerlevel9k)
+##
+
+################################################################
+# Docker machine
+prompt_docker_machine() {
+  local docker_machine="$DOCKER_MACHINE_NAME"
+
+  if [[ -n "$docker_machine" ]]; then
+    "$1_prompt_segment" "$0" "$2" "magenta" "$DEFAULT_COLOR" "$docker_machine" 'SERVER_ICON'
+  fi
+}
