@@ -27,25 +27,25 @@ function mockRust() {
 }
 
 function testRust() {
-  local -a POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
-  POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(rust_version)
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(rust_version)
   mockRust
 
   # Load Powerlevel9k
   source powerlevel9k.zsh-theme
 
-  assertEquals "%K{208} %F{000}Rust %f%F{000}0.4.1a-alpha %k%F{208}%f " "$(build_left_prompt)"
+  assertEquals "%K{208} %F{000}Rust %f%F{000}0.4.1a-alpha %k%F{208}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testRustPrintsNothingIfRustIsNotAvailable() {
-  local -a POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
-  POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(custom_world rust_version)
-  local POWERLEVEL9K_CUSTOM_WORLD='echo world'
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(custom_world rust_version)
+  local P9K_CUSTOM_WORLD='echo world'
 
   # Load Powerlevel9k
   source powerlevel9k.zsh-theme
 
-  assertEquals "%K{007} %F{000}world %k%F{007}%f " "$(build_left_prompt)"
+  assertEquals "%K{007} %F{000}world %k%F{007}%f " "$(__p9k_build_left_prompt)"
 }
 
 source shunit2/shunit2

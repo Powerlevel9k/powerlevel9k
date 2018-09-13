@@ -68,22 +68,22 @@ function tearDown() {
 }
 
 function testColorOverridingForCleanStateWorks() {
-  local -a POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
-  POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(vcs)
-  local POWERLEVEL9K_VCS_CLEAN_FOREGROUND='cyan'
-  local POWERLEVEL9K_VCS_CLEAN_BACKGROUND='white'
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(vcs)
+  local P9K_VCS_CLEAN_FOREGROUND='cyan'
+  local P9K_VCS_CLEAN_BACKGROUND='white'
 
   # Load Powerlevel9k
   source ${P9K_HOME}/powerlevel9k.zsh-theme
 
-  assertEquals "%K{007} %F{006} master %k%F{007}%f " "$(build_left_prompt)"
+  assertEquals "%K{007} %F{006} master %k%F{007}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testColorOverridingForModifiedStateWorks() {
-  local -a POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
-  POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(vcs)
-  local POWERLEVEL9K_VCS_MODIFIED_FOREGROUND='red'
-  local POWERLEVEL9K_VCS_MODIFIED_BACKGROUND='yellow'
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(vcs)
+  local P9K_VCS_MODIFIED_FOREGROUND='red'
+  local P9K_VCS_MODIFIED_BACKGROUND='yellow'
 
   touch testfile
   git add testfile
@@ -93,37 +93,37 @@ function testColorOverridingForModifiedStateWorks() {
   # Load Powerlevel9k
   source ${P9K_HOME}/powerlevel9k.zsh-theme
 
-  assertEquals "%K{003} %F{001} master ● %k%F{003}%f " "$(build_left_prompt)"
+  assertEquals "%K{003} %F{001} master ● %k%F{003}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testColorOverridingForUntrackedStateWorks() {
-  local -a POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
-  POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(vcs)
-  local POWERLEVEL9K_VCS_UNTRACKED_FOREGROUND='cyan'
-  local POWERLEVEL9K_VCS_UNTRACKED_BACKGROUND='yellow'
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(vcs)
+  local P9K_VCS_UNTRACKED_FOREGROUND='cyan'
+  local P9K_VCS_UNTRACKED_BACKGROUND='yellow'
 
   touch testfile
 
   # Load Powerlevel9k
   source ${P9K_HOME}/powerlevel9k.zsh-theme
 
-  assertEquals "%K{003} %F{006} master ? %k%F{003}%f " "$(build_left_prompt)"
+  assertEquals "%K{003} %F{006} master ? %k%F{003}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testGitIconWorks() {
-  local POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(vcs)
-  local POWERLEVEL9K_VCS_GIT_ICON='Git-Icon'
+  local P9K_LEFT_PROMPT_ELEMENTS=(vcs)
+  local P9K_VCS_GIT_ICON='Git-Icon'
 
   # Load Powerlevel9k
   source ${P9K_HOME}/powerlevel9k.zsh-theme
 
-  assertEquals "%K{002} %F{000}Git-Icon %f%F{000} master %k%F{002}%f " "$(build_left_prompt)"
+  assertEquals "%K{002} %F{000}Git-Icon %f%F{000} master %k%F{002}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testGitlabIconWorks() {
-  local -a POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
-  POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(vcs)
-  local POWERLEVEL9K_VCS_GIT_GITLAB_ICON='GL-Icon'
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(vcs)
+  local P9K_VCS_GIT_GITLAB_ICON='GL-Icon'
 
   # Add a GitLab project as remote origin. This is
   # sufficient to show the GitLab-specific icon.
@@ -132,13 +132,13 @@ function testGitlabIconWorks() {
   # Load Powerlevel9k
   source ${P9K_HOME}/powerlevel9k.zsh-theme
 
-  assertEquals "%K{002} %F{000}GL-Icon %f%F{000} master %k%F{002}%f " "$(build_left_prompt)"
+  assertEquals "%K{002} %F{000}GL-Icon %f%F{000} master %k%F{002}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testBitbucketIconWorks() {
-  local -a POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
-  POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(vcs)
-  local POWERLEVEL9K_VCS_GIT_BITBUCKET_ICON='BB-Icon'
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(vcs)
+  local P9K_VCS_GIT_BITBUCKET_ICON='BB-Icon'
 
   # Add a BitBucket project as remote origin. This is
   # sufficient to show the BitBucket-specific icon.
@@ -147,13 +147,13 @@ function testBitbucketIconWorks() {
   # Load Powerlevel9k
   source ${P9K_HOME}/powerlevel9k.zsh-theme
 
-  assertEquals "%K{002} %F{000}BB-Icon %f%F{000} master %k%F{002}%f " "$(build_left_prompt)"
+  assertEquals "%K{002} %F{000}BB-Icon %f%F{000} master %k%F{002}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testGitHubIconWorks() {
-  local -a POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
-  POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(vcs)
-  local POWERLEVEL9K_VCS_GIT_GITHUB_ICON='GH-Icon'
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(vcs)
+  local P9K_VCS_GIT_GITHUB_ICON='GH-Icon'
 
   # Add a GitHub project as remote origin. This is
   # sufficient to show the GitHub-specific icon.
@@ -162,13 +162,13 @@ function testGitHubIconWorks() {
   # Load Powerlevel9k
   source ${P9K_HOME}/powerlevel9k.zsh-theme
 
-  assertEquals "%K{002} %F{000}GH-Icon %f%F{000} master %k%F{002}%f " "$(build_left_prompt)"
+  assertEquals "%K{002} %F{000}GH-Icon %f%F{000} master %k%F{002}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testUntrackedFilesIconWorks() {
-  local -a POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
-  POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(vcs)
-  local POWERLEVEL9K_VCS_UNTRACKED_ICON='?'
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(vcs)
+  local P9K_VCS_UNTRACKED_ICON='?'
 
   # Create untracked file
   touch "i-am-untracked.txt"
@@ -176,13 +176,13 @@ function testUntrackedFilesIconWorks() {
   # Load Powerlevel9k
   source ${P9K_HOME}/powerlevel9k.zsh-theme
 
-  assertEquals "%K{002} %F{000} master ? %k%F{002}%f " "$(build_left_prompt)"
+  assertEquals "%K{002} %F{000} master ? %k%F{002}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testStagedFilesIconWorks() {
-  local -a POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
-  POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(vcs)
-  local POWERLEVEL9K_VCS_STAGED_ICON='+'
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(vcs)
+  local P9K_VCS_STAGED_ICON='+'
 
   # Create staged file
   touch "i-am-added.txt"
@@ -194,13 +194,13 @@ function testStagedFilesIconWorks() {
   # Load Powerlevel9k
   source ${P9K_HOME}/powerlevel9k.zsh-theme
 
-  assertEquals "%K{003} %F{000} master + %k%F{003}%f " "$(build_left_prompt)"
+  assertEquals "%K{003} %F{000} master + %k%F{003}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testUnstagedFilesIconWorks() {
-  local -a POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
-  POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(vcs)
-  local POWERLEVEL9K_VCS_UNSTAGED_ICON='M'
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(vcs)
+  local P9K_VCS_UNSTAGED_ICON='M'
 
   # Create unstaged (modified, but not added to index) file
   touch "i-am-modified.txt"
@@ -211,13 +211,13 @@ function testUnstagedFilesIconWorks() {
   # Load Powerlevel9k
   source ${P9K_HOME}/powerlevel9k.zsh-theme
 
-  assertEquals "%K{003} %F{000} master M %k%F{003}%f " "$(build_left_prompt)"
+  assertEquals "%K{003} %F{000} master M %k%F{003}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testStashIconWorks() {
-  local -a POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
-  POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(vcs)
-  local POWERLEVEL9K_VCS_STASH_ICON='S'
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(vcs)
+  local P9K_VCS_STASH_ICON='S'
 
   # Create modified file
   touch "i-am-modified.txt"
@@ -229,13 +229,13 @@ function testStashIconWorks() {
   # Load Powerlevel9k
   source ${P9K_HOME}/powerlevel9k.zsh-theme
 
-  assertEquals "%K{002} %F{000} master S1 %k%F{002}%f " "$(build_left_prompt)"
+  assertEquals "%K{002} %F{000} master S1 %k%F{002}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testTagIconWorks() {
-  local -a POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
-  POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(vcs)
-  local POWERLEVEL9K_VCS_TAG_ICON='T'
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(vcs)
+  local P9K_VCS_TAG_ICON='T'
 
   touch "file.txt"
   git add file.txt
@@ -245,13 +245,13 @@ function testTagIconWorks() {
   # Load Powerlevel9k
   source ${P9K_HOME}/powerlevel9k.zsh-theme
 
-  assertEquals "%K{002} %F{000} master Tv0.0.1 %k%F{002}%f " "$(build_left_prompt)"
+  assertEquals "%K{002} %F{000} master Tv0.0.1 %k%F{002}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testTagIconInDetachedHeadState() {
-  local -a POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
-  POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(vcs)
-  local POWERLEVEL9K_VCS_TAG_ICON='T'
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(vcs)
+  local P9K_VCS_TAG_ICON='T'
 
   touch "file.txt"
   git add file.txt
@@ -266,12 +266,12 @@ function testTagIconInDetachedHeadState() {
   # Load Powerlevel9k
   source ${P9K_HOME}/powerlevel9k.zsh-theme
 
-  assertEquals "%K{002} %F{000} ${hash} Tv0.0.1 %k%F{002}%f " "$(build_left_prompt)"
+  assertEquals "%K{002} %F{000} ${hash} Tv0.0.1 %k%F{002}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testActionHintWorks() {
-  local -a POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
-  POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(vcs)
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(vcs)
 
   touch "i-am-modified.txt"
   git add i-am-modified.txt
@@ -289,13 +289,13 @@ function testActionHintWorks() {
   # Load Powerlevel9k
   source ${P9K_HOME}/powerlevel9k.zsh-theme
 
-  assertEquals "%K{003} %F{000} master %F{red}| merge%f %k%F{003}%f " "$(build_left_prompt)"
+  assertEquals "%K{003} %F{000} master %F{red}| merge%f %k%F{003}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testIncomingHintWorks() {
-  local -a POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
-  POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(vcs)
-  local POWERLEVEL9K_VCS_INCOMING_CHANGES_ICON='I'
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(vcs)
+  local P9K_VCS_INCOMING_CHANGES_ICON='I'
 
   touch "i-am-modified.txt"
   git add i-am-modified.txt
@@ -311,13 +311,13 @@ function testIncomingHintWorks() {
   # Load Powerlevel9k
   source ${P9K_HOME}/powerlevel9k.zsh-theme
 
-  assertEquals "%K{002} %F{000} master I1 %k%F{002}%f " "$(build_left_prompt)"
+  assertEquals "%K{002} %F{000} master I1 %k%F{002}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testOutgoingHintWorks() {
-  local -a POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
-  POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(vcs)
-  local POWERLEVEL9K_VCS_OUTGOING_CHANGES_ICON='o'
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(vcs)
+  local P9K_VCS_OUTGOING_CHANGES_ICON='o'
 
   touch "i-am-modified.txt"
   git add i-am-modified.txt
@@ -333,14 +333,14 @@ function testOutgoingHintWorks() {
   # Load Powerlevel9k
   source ${P9K_HOME}/powerlevel9k.zsh-theme
 
-  assertEquals "%K{002} %F{000} master o1 %k%F{002}%f " "$(build_left_prompt)"
+  assertEquals "%K{002} %F{000} master o1 %k%F{002}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testShorteningCommitHashWorks() {
-  local -a POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
-  POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(vcs)
-  local POWERLEVEL9K_SHOW_CHANGESET=true
-  local POWERLEVEL9K_CHANGESET_HASH_LENGTH='4'
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(vcs)
+  local P9K_SHOW_CHANGESET=true
+  local P9K_CHANGESET_HASH_LENGTH='4'
 
   touch "file.txt"
   git add file.txt
@@ -353,14 +353,14 @@ function testShorteningCommitHashWorks() {
   # This test needs to call powerlevel9k_vcs_init, where
   # the changeset is truncated.
   powerlevel9k_vcs_init
-  assertEquals "%K{002} %F{000}${hash}  master %k%F{002}%f " "$(build_left_prompt)"
+  assertEquals "%K{002} %F{000}${hash}  master %k%F{002}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testShorteningCommitHashIsNotShownIfShowChangesetIsFalse() {
-  local -a POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
-  POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(vcs)
-  local POWERLEVEL9K_SHOW_CHANGESET=false
-  local POWERLEVEL9K_CHANGESET_HASH_LENGTH='4'
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(vcs)
+  local P9K_SHOW_CHANGESET=false
+  local P9K_CHANGESET_HASH_LENGTH='4'
 
   touch "file.txt"
   git add file.txt
@@ -372,7 +372,7 @@ function testShorteningCommitHashIsNotShownIfShowChangesetIsFalse() {
   # This test needs to call powerlevel9k_vcs_init, where
   # the changeset is truncated.
   powerlevel9k_vcs_init
-  assertEquals "%K{002} %F{000} master %k%F{002}%f " "$(build_left_prompt)"
+  assertEquals "%K{002} %F{000} master %k%F{002}%f " "$(__p9k_build_left_prompt)"
 }
 
 source shunit2/shunit2

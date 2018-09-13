@@ -10,7 +10,7 @@ prompt_ram() {
   local ROOT_PREFIX="${4}"
   local base=''
   local ramfree=0
-  if [[ "$OS" == "OSX" ]]; then
+  if [[ "$__P9K_OS" == "OSX" ]]; then
     # Available = Free + Inactive
     # See https://support.apple.com/en-us/HT201538
     ramfree=$(vm_stat | grep "Pages free" | grep -o -E '[0-9]+')
@@ -18,7 +18,7 @@ prompt_ram() {
     # Convert pages into Bytes
     ramfree=$(( ramfree * 4096 ))
   else
-    if [[ "$OS" == "BSD" ]]; then
+    if [[ "$__P9K_OS" == "BSD" ]]; then
       ramfree=$(grep 'avail memory' ${ROOT_PREFIX}/var/run/dmesg.boot | awk '{print $4}')
     else
       ramfree=$(grep -o -E "MemAvailable:\s+[0-9]+" ${ROOT_PREFIX}/proc/meminfo | grep -o -E "[0-9]+")
@@ -26,5 +26,5 @@ prompt_ram() {
     fi
   fi
 
-  "$1_prompt_segment" "$0" "$2" "yellow" "$DEFAULT_COLOR" "$(printSizeHumanReadable "$ramfree" $base)" 'RAM_ICON'
+  "__p9k_$1_prompt_segment" "$0" "$2" "yellow" "$DEFAULT_COLOR" "$(p9k::print_size_human_readable "$ramfree" $base)" 'RAM_ICON'
 }

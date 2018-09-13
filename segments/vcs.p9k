@@ -4,99 +4,101 @@
 # @source [powerlevel9k](https://github.com/bhilburn/powerlevel9k)
 ##
 
-set_default POWERLEVEL9K_VCS_SHOW_SUBMODULE_DIRTY true
+p9k::set_default P9K_VCS_ACTIONFORMAT_FOREGROUND "red"
+p9k::set_default P9K_VCS_HIDE_TAGS false
+p9k::set_default P9K_VCS_INTERNAL_HASH_LENGTH "8" # Default: Just display the first 8 characters of our changeset-ID.
+p9k::set_default P9K_VCS_SHORTEN_DELIMITER $'\U2026'
+p9k::set_default P9K_VCS_SHOW_SUBMODULE_DIRTY true
+
 function +vi-git-untracked() {
-    # TODO: check git >= 1.7.2 - see function git_compare_version()
-    local FLAGS
-    FLAGS=('--porcelain')
+  # TODO: check git >= 1.7.2 - see function git_compare_version()
+  local FLAGS
+  FLAGS=('--porcelain')
 
-    if [[ "$POWERLEVEL9K_VCS_SHOW_SUBMODULE_DIRTY" == "false" ]]; then
-      FLAGS+='--ignore-submodules=dirty'
-    fi
+  if [[ "$P9K_VCS_SHOW_SUBMODULE_DIRTY" == "false" ]]; then
+    FLAGS+='--ignore-submodules=dirty'
+  fi
 
-    if [[ $(command git rev-parse --is-inside-work-tree 2> /dev/null) == 'true' && \
-            -n $(command git status ${FLAGS} | \grep -E '^\?\?' 2> /dev/null | tail -n1) ]]; then
-        hook_com[unstaged]+=" $(print_icon 'VCS_UNTRACKED_ICON')"
-        VCS_WORKDIR_HALF_DIRTY=true
-    else
-        VCS_WORKDIR_HALF_DIRTY=false
-    fi
+  if [[ $(command git rev-parse --is-inside-work-tree 2> /dev/null) == 'true' && \
+      -n $(command git status ${FLAGS} | \grep -E '^\?\?' 2> /dev/null | tail -n1) ]]; then
+    hook_com[unstaged]+=" $(p9k::print_icon 'VCS_UNTRACKED_ICON')"
+    VCS_WORKDIR_HALF_DIRTY=true
+  else
+    VCS_WORKDIR_HALF_DIRTY=false
+  fi
 }
 
 function +vi-git-aheadbehind() {
-    local ahead behind branch_name
-    local -a gitstatus
+  local ahead behind branch_name
+  local -a gitstatus
 
-    branch_name=$(command git symbolic-ref --short HEAD 2>/dev/null)
+  branch_name=$(command git symbolic-ref --short HEAD 2>/dev/null)
 
-    # for git prior to 1.7
-    # ahead=$(command git rev-list origin/${branch_name}..HEAD | wc -l)
-    ahead=$(command git rev-list "${branch_name}"@{upstream}..HEAD 2>/dev/null | wc -l)
-    (( ahead )) && gitstatus+=( " $(print_icon 'VCS_OUTGOING_CHANGES_ICON')${ahead// /}" )
+  # for git prior to 1.7
+  # ahead=$(command git rev-list origin/${branch_name}..HEAD | wc -l)
+  ahead=$(command git rev-list "${branch_name}"@{upstream}..HEAD 2>/dev/null | wc -l)
+  (( ahead )) && gitstatus+=( " $(p9k::print_icon 'VCS_OUTGOING_CHANGES_ICON')${ahead// /}" )
 
-    # for git prior to 1.7
-    # behind=$(command git rev-list HEAD..origin/${branch_name} | wc -l)
-    behind=$(command git rev-list HEAD.."${branch_name}"@{upstream} 2>/dev/null | wc -l)
-    (( behind )) && gitstatus+=( " $(print_icon 'VCS_INCOMING_CHANGES_ICON')${behind// /}" )
+  # for git prior to 1.7
+  # behind=$(command git rev-list HEAD..origin/${branch_name} | wc -l)
+  behind=$(command git rev-list HEAD.."${branch_name}"@{upstream} 2>/dev/null | wc -l)
+  (( behind )) && gitstatus+=( " $(p9k::print_icon 'VCS_INCOMING_CHANGES_ICON')${behind// /}" )
 
-    hook_com[misc]+=${(j::)gitstatus}
+  hook_com[misc]+=${(j::)gitstatus}
 }
 
 function +vi-git-remotebranch() {
-    local remote branch_name
+  local remote branch_name
 
-    # Are we on a remote-tracking branch?
-    remote=${$(command git rev-parse --verify HEAD@{upstream} --symbolic-full-name 2>/dev/null)/refs\/(remotes|heads)\/}
-    branch_name=$(command git symbolic-ref --short HEAD 2>/dev/null)
+  # Are we on a remote-tracking branch?
+  remote=${$(command git rev-parse --verify HEAD@{upstream} --symbolic-full-name 2>/dev/null)/refs\/(remotes|heads)\/}
+  branch_name=$(command git symbolic-ref --short HEAD 2>/dev/null)
 
-    if [[ -n "$POWERLEVEL9K_VCS_SHORTEN_LENGTH" ]] && [[ -n "$POWERLEVEL9K_VCS_SHORTEN_MIN_LENGTH" ]]; then
-     set_default POWERLEVEL9K_VCS_SHORTEN_DELIMITER $'\U2026'
-
-     if [ ${#hook_com[branch]} -gt $POWERLEVEL9K_VCS_SHORTEN_MIN_LENGTH ] && [ ${#hook_com[branch]} -gt $POWERLEVEL9K_VCS_SHORTEN_LENGTH ]; then
-       case "$POWERLEVEL9K_VCS_SHORTEN_STRATEGY" in
-         truncate_middle)
-           hook_com[branch]="$(echo "${branch_name:0:$POWERLEVEL9K_VCS_SHORTEN_LENGTH}")$POWERLEVEL9K_VCS_SHORTEN_DELIMITER$(echo "${branch_name: -$POWERLEVEL9K_VCS_SHORTEN_LENGTH}")"
-         ;;
-         truncate_from_right)
-           hook_com[branch]="$(echo "${branch_name:0:$POWERLEVEL9K_VCS_SHORTEN_LENGTH}")$POWERLEVEL9K_VCS_SHORTEN_DELIMITER"
-         ;;
-       esac
-     fi
+  if [[ -n "$P9K_VCS_SHORTEN_LENGTH" ]] && [[ -n "$P9K_VCS_SHORTEN_MIN_LENGTH" ]]; then
+    if [ ${#hook_com[branch]} -gt $P9K_VCS_SHORTEN_MIN_LENGTH ] && [ ${#hook_com[branch]} -gt $P9K_VCS_SHORTEN_LENGTH ]; then
+      case "$P9K_VCS_SHORTEN_STRATEGY" in
+        truncate_middle)
+          hook_com[branch]="$(echo "${branch_name:0:$P9K_VCS_SHORTEN_LENGTH}")$P9K_VCS_SHORTEN_DELIMITER$(echo "${branch_name: -$P9K_VCS_SHORTEN_LENGTH}")"
+        ;;
+        truncate_from_right)
+          hook_com[branch]="$(echo "${branch_name:0:$P9K_VCS_SHORTEN_LENGTH}")$P9K_VCS_SHORTEN_DELIMITER"
+        ;;
+      esac
     fi
+  fi
 
-    hook_com[branch]="$(print_icon 'VCS_BRANCH_ICON')${hook_com[branch]}"
-    # Always show the remote
-    #if [[ -n ${remote} ]] ; then
-    # Only show the remote if it differs from the local
-    if [[ -n ${remote} ]] && [[ "${remote#*/}" != "${branch_name}" ]] ; then
-        hook_com[branch]+="$(print_icon 'VCS_REMOTE_BRANCH_ICON')${remote// /}"
-    fi
+  hook_com[branch]="$(p9k::print_icon 'VCS_BRANCH_ICON')${hook_com[branch]}"
+  # Always show the remote
+  #if [[ -n ${remote} ]] ; then
+  # Only show the remote if it differs from the local
+  if [[ -n ${remote} ]] && [[ "${remote#*/}" != "${branch_name}" ]] ; then
+    hook_com[branch]+="$(p9k::print_icon 'VCS_REMOTE_BRANCH_ICON')${remote// /}"
+  fi
 }
 
-set_default POWERLEVEL9K_VCS_HIDE_TAGS false
 function +vi-git-tagname() {
-    if [[ "$POWERLEVEL9K_VCS_HIDE_TAGS" == "false" ]]; then
-        # If we are on a tag, append the tagname to the current branch string.
-        local tag
-        tag=$(command git describe --tags --exact-match HEAD 2>/dev/null)
+  if [[ "$P9K_VCS_HIDE_TAGS" == "false" ]]; then
+    # If we are on a tag, append the tagname to the current branch string.
+    local tag
+    tag=$(command git describe --tags --exact-match HEAD 2>/dev/null)
 
-        if [[ -n "${tag}" ]] ; then
-            # There is a tag that points to our current commit. Need to determine if we
-            # are also on a branch, or are in a DETACHED_HEAD state.
-            if [[ -z $(command git symbolic-ref HEAD 2>/dev/null) ]]; then
-                # DETACHED_HEAD state. We want to append the tag name to the commit hash
-                # and print it. Unfortunately, `vcs_info` blows away the hash when a tag
-                # exists, so we have to manually retrieve it and clobber the branch
-                # string.
-                local revision
-                revision=$(command git rev-list -n 1 --abbrev-commit --abbrev=${POWERLEVEL9K_VCS_INTERNAL_HASH_LENGTH} HEAD)
-                hook_com[branch]="$(print_icon 'VCS_BRANCH_ICON')${revision} $(print_icon 'VCS_TAG_ICON')${tag}"
-            else
-                # We are on both a tag and a branch; print both by appending the tag name.
-                hook_com[branch]+=" $(print_icon 'VCS_TAG_ICON')${tag}"
-            fi
-        fi
+    if [[ -n "${tag}" ]] ; then
+      # There is a tag that points to our current commit. Need to determine if we
+      # are also on a branch, or are in a DETACHED_HEAD state.
+      if [[ -z $(command git symbolic-ref HEAD 2>/dev/null) ]]; then
+        # DETACHED_HEAD state. We want to append the tag name to the commit hash
+        # and print it. Unfortunately, `vcs_info` blows away the hash when a tag
+        # exists, so we have to manually retrieve it and clobber the branch
+        # string.
+        local revision
+        revision=$(command git rev-list -n 1 --abbrev-commit --abbrev=${P9K_VCS_INTERNAL_HASH_LENGTH} HEAD)
+        hook_com[branch]="$(p9k::print_icon 'VCS_BRANCH_ICON')${revision} $(p9k::print_icon 'VCS_TAG_ICON')${tag}"
+      else
+        # We are on both a tag and a branch; print both by appending the tag name.
+        hook_com[branch]+=" $(p9k::print_icon 'VCS_TAG_ICON')${tag}"
+      fi
     fi
+  fi
 }
 
 # Show count of stashed changes
@@ -106,13 +108,13 @@ function +vi-git-stash() {
 
   if [[ -s $(command git rev-parse --git-dir)/refs/stash ]] ; then
     stashes=$(command git stash list 2>/dev/null | wc -l)
-    hook_com[misc]+=" $(print_icon 'VCS_STASH_ICON')${stashes// /}"
+    hook_com[misc]+=" $(p9k::print_icon 'VCS_STASH_ICON')${stashes// /}"
   fi
 }
 
 function +vi-hg-bookmarks() {
   if [[ -n "${hgbmarks[@]}" ]]; then
-    hook_com[hg-bookmark-string]=" $(print_icon 'VCS_BOOKMARK_ICON')${hgbmarks[@]}"
+    hook_com[hg-bookmark-string]=" $(p9k::print_icon 'VCS_BOOKMARK_ICON')${hgbmarks[@]}"
 
     # To signal that we want to use the sting we just generated, set the special
     # variable `ret' to something other than the default zero:
@@ -153,15 +155,15 @@ function +vi-vcs-detect-changes() {
 function +vi-svn-detect-changes() {
   local svn_status="$(svn status)"
   if [[ -n "$(echo "$svn_status" | \grep \^\?)" ]]; then
-    hook_com[unstaged]+=" $(print_icon 'VCS_UNTRACKED_ICON')"
+    hook_com[unstaged]+=" $(p9k::print_icon 'VCS_UNTRACKED_ICON')"
     VCS_WORKDIR_HALF_DIRTY=true
   fi
   if [[ -n "$(echo "$svn_status" | \grep \^\M)" ]]; then
-    hook_com[unstaged]+=" $(print_icon 'VCS_UNSTAGED_ICON')"
+    hook_com[unstaged]+=" $(p9k::print_icon 'VCS_UNSTAGED_ICON')"
     VCS_WORKDIR_DIRTY=true
   fi
   if [[ -n "$(echo "$svn_status" | \grep \^\A)" ]]; then
-    hook_com[staged]+=" $(print_icon 'VCS_STAGED_ICON')"
+    hook_com[staged]+=" $(p9k::print_icon 'VCS_STAGED_ICON')"
     VCS_WORKDIR_DIRTY=true
   fi
 }
@@ -169,12 +171,9 @@ function +vi-svn-detect-changes() {
 ################################################################
 # VCS segment: shows the state of your repository, if you are in a folder under
 # version control
-set_default POWERLEVEL9K_VCS_ACTIONFORMAT_FOREGROUND "red"
-# Default: Just display the first 8 characters of our changeset-ID.
-set_default POWERLEVEL9K_VCS_INTERNAL_HASH_LENGTH "8"
 powerlevel9k_vcs_init() {
-  if [[ -n "$POWERLEVEL9K_CHANGESET_HASH_LENGTH" ]]; then
-    POWERLEVEL9K_VCS_INTERNAL_HASH_LENGTH="$POWERLEVEL9K_CHANGESET_HASH_LENGTH"
+  if [[ -n "$P9K_CHANGESET_HASH_LENGTH" ]]; then
+    P9K_VCS_INTERNAL_HASH_LENGTH="$P9K_CHANGESET_HASH_LENGTH"
   fi
 
   # Load VCS_INFO
@@ -192,8 +191,8 @@ powerlevel9k_vcs_init() {
   )
 
   VCS_CHANGESET_PREFIX=''
-  if [[ "$POWERLEVEL9K_SHOW_CHANGESET" == true ]]; then
-    VCS_CHANGESET_PREFIX="$(print_icon 'VCS_COMMIT_ICON')%0.$POWERLEVEL9K_VCS_INTERNAL_HASH_LENGTH""i "
+  if [[ "$P9K_SHOW_CHANGESET" == true ]]; then
+    VCS_CHANGESET_PREFIX="$(p9k::print_icon 'VCS_COMMIT_ICON')%0.$P9K_VCS_INTERNAL_HASH_LENGTH""i "
   fi
 
   zstyle ':vcs_info:*' enable git hg svn
@@ -202,20 +201,20 @@ powerlevel9k_vcs_init() {
   VCS_DEFAULT_FORMAT="$VCS_CHANGESET_PREFIX%b%c%u%m"
   zstyle ':vcs_info:*' formats "$VCS_DEFAULT_FORMAT"
 
-  zstyle ':vcs_info:*' actionformats "%b %F{${POWERLEVEL9K_VCS_ACTIONFORMAT_FOREGROUND}}| %a%f"
+  zstyle ':vcs_info:*' actionformats "%b %F{${P9K_VCS_ACTIONFORMAT_FOREGROUND}}| %a%f"
 
-  zstyle ':vcs_info:*' stagedstr " $(print_icon 'VCS_STAGED_ICON')"
-  zstyle ':vcs_info:*' unstagedstr " $(print_icon 'VCS_UNSTAGED_ICON')"
+  zstyle ':vcs_info:*' stagedstr " $(p9k::print_icon 'VCS_STAGED_ICON')"
+  zstyle ':vcs_info:*' unstagedstr " $(p9k::print_icon 'VCS_UNSTAGED_ICON')"
 
-  defined POWERLEVEL9K_VCS_GIT_HOOKS || POWERLEVEL9K_VCS_GIT_HOOKS=(vcs-detect-changes git-untracked git-aheadbehind git-stash git-remotebranch git-tagname)
-  zstyle ':vcs_info:git*+set-message:*' hooks $POWERLEVEL9K_VCS_GIT_HOOKS
-  defined POWERLEVEL9K_VCS_HG_HOOKS || POWERLEVEL9K_VCS_HG_HOOKS=(vcs-detect-changes)
-  zstyle ':vcs_info:hg*+set-message:*' hooks $POWERLEVEL9K_VCS_HG_HOOKS
-  defined POWERLEVEL9K_VCS_SVN_HOOKS || POWERLEVEL9K_VCS_SVN_HOOKS=(vcs-detect-changes svn-detect-changes)
-  zstyle ':vcs_info:svn*+set-message:*' hooks $POWERLEVEL9K_VCS_SVN_HOOKS
+  p9k::defined P9K_VCS_GIT_HOOKS || P9K_VCS_GIT_HOOKS=(vcs-detect-changes git-untracked git-aheadbehind git-stash git-remotebranch git-tagname)
+  zstyle ':vcs_info:git*+set-message:*' hooks $P9K_VCS_GIT_HOOKS
+  p9k::defined P9K_VCS_HG_HOOKS || P9K_VCS_HG_HOOKS=(vcs-detect-changes)
+  zstyle ':vcs_info:hg*+set-message:*' hooks $P9K_VCS_HG_HOOKS
+  p9k::defined P9K_VCS_SVN_HOOKS || P9K_VCS_SVN_HOOKS=(vcs-detect-changes svn-detect-changes)
+  zstyle ':vcs_info:svn*+set-message:*' hooks $P9K_VCS_SVN_HOOKS
 
   # For Hg, only show the branch name
-  zstyle ':vcs_info:hg*:*' branchformat "$(print_icon 'VCS_BRANCH_ICON')%b"
+  zstyle ':vcs_info:hg*:*' branchformat "$(p9k::print_icon 'VCS_BRANCH_ICON')%b"
   # The `get-revision` function must be turned on for dirty-check to work for Hg
   zstyle ':vcs_info:hg*:*' get-revision true
   zstyle ':vcs_info:hg*:*' get-bookmarks true
@@ -225,9 +224,9 @@ powerlevel9k_vcs_init() {
   # TODO fix the %b (branch) format for svn. Using %b breaks
   # color-encoding of the foreground for the rest of the powerline.
   zstyle ':vcs_info:svn*:*' formats "$VCS_CHANGESET_PREFIX%c%u"
-  zstyle ':vcs_info:svn*:*' actionformats "$VCS_CHANGESET_PREFIX%c%u %F{${POWERLEVEL9K_VCS_ACTIONFORMAT_FOREGROUND}}| %a%f"
+  zstyle ':vcs_info:svn*:*' actionformats "$VCS_CHANGESET_PREFIX%c%u %F{${P9K_VCS_ACTIONFORMAT_FOREGROUND}}| %a%f"
 
-  if [[ "$POWERLEVEL9K_SHOW_CHANGESET" == true ]]; then
+  if [[ "$P9K_SHOW_CHANGESET" == true ]]; then
     zstyle ':vcs_info:*' get-revision true
   fi
 }
@@ -257,6 +256,6 @@ prompt_vcs() {
         current_state='clean'
       fi
     fi
-    "$1_prompt_segment" "${0}_${(U)current_state}" "$2" "${vcs_states[$current_state]}" "$DEFAULT_COLOR" "$vcs_prompt" "$vcs_visual_identifier"
+    "__p9k_$1_prompt_segment" "${0}_${(U)current_state}" "$2" "${vcs_states[$current_state]}" "$DEFAULT_COLOR" "$vcs_prompt" "$vcs_visual_identifier"
   fi
 }

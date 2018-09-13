@@ -15,6 +15,6 @@ prompt_detect_virt() {
   fi
 
   if [[ -n "${virt}" ]]; then
-    "$1_prompt_segment" "$0" "$2" "$DEFAULT_COLOR" "yellow" "$virt"
+    "__p9k_$1_prompt_segment" "$0" "$2" "$DEFAULT_COLOR" "yellow" "$virt"
   fi
 }

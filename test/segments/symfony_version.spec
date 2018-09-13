@@ -26,37 +26,37 @@ function tearDown() {
 }
 
 function testSymfonyVersionSegmentPrintsNothingIfPhpIsNotAvailable() {
-    local -a POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
-    POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(symfony2_version custom_world)
-    local POWERLEVEL9K_CUSTOM_WORLD='echo world'
+    local -a P9K_LEFT_PROMPT_ELEMENTS
+    P9K_LEFT_PROMPT_ELEMENTS=(symfony2_version custom_world)
+    local P9K_CUSTOM_WORLD='echo world'
     alias php="nophp"
 
     # Load Powerlevel9k
     source ${P9K_HOME}/powerlevel9k.zsh-theme
 
-    assertEquals "%K{007} %F{000}world %k%F{007}%f " "$(build_left_prompt)"
+    assertEquals "%K{007} %F{000}world %k%F{007}%f " "$(__p9k_build_left_prompt)"
 
     unalias php
 }
 
 function testSymfonyVersionSegmentPrintsNothingIfSymfonyIsNotAvailable() {
-    local -a POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
-    POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(symfony2_version custom_world)
+    local -a P9K_LEFT_PROMPT_ELEMENTS
+    P9K_LEFT_PROMPT_ELEMENTS=(symfony2_version custom_world)
     # "Symfony" is not a command, but rather a framework.
     # To sucessfully execute this test, we just need to
     # navigate into a folder that does not contain symfony.
-    local POWERLEVEL9K_CUSTOM_WORLD='echo world'
+    local P9K_CUSTOM_WORLD='echo world'
 
     # Load Powerlevel9k
     source ${P9K_HOME}/powerlevel9k.zsh-theme
 
-    assertEquals "%K{007} %F{000}world %k%F{007}%f " "$(build_left_prompt)"
+    assertEquals "%K{007} %F{000}world %k%F{007}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testSymfonyVersionPrintsNothingIfPhpThrowsAnError() {
-    local -a POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
-    POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(symfony2_version custom_world)
-    local POWERLEVEL9K_CUSTOM_WORLD='echo world'
+    local -a P9K_LEFT_PROMPT_ELEMENTS
+    P9K_LEFT_PROMPT_ELEMENTS=(symfony2_version custom_world)
+    local P9K_CUSTOM_WORLD='echo world'
     mkdir app
     touch app/AppKernel.php
     function php() {
@@ -68,15 +68,15 @@ function testSymfonyVersionPrintsNothingIfPhpThrowsAnError() {
     # Load Powerlevel9k
     source ${P9K_HOME}/powerlevel9k.zsh-theme
 
-    assertEquals "%K{007} %F{000}world %k%F{007}%f " "$(build_left_prompt)"
+    assertEquals "%K{007} %F{000}world %k%F{007}%f " "$(__p9k_build_left_prompt)"
 
     unfunction php
 }
 
 function testSymfonyVersionSegmentWorks() {
     startSkipping # Skip test
-    local -a POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
-    POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(symfony2_version)
+    local -a P9K_LEFT_PROMPT_ELEMENTS
+    P9K_LEFT_PROMPT_ELEMENTS=(symfony2_version)
     mkdir app
     touch app/AppKernel.php
 
@@ -87,15 +87,15 @@ function testSymfonyVersionSegmentWorks() {
     # Load Powerlevel9k
     source ${P9K_HOME}/powerlevel9k.zsh-theme
 
-    assertEquals "%K{240} %F{000}SF %f%F{000}3.1.4 %k%F{240}%f " "$(build_left_prompt)"
+    assertEquals "%K{240} %F{000}SF %f%F{000}3.1.4 %k%F{240}%f " "$(__p9k_build_left_prompt)"
 
     unfunction php
 }
 
 function testSymfonyVersionSegmentWorksInNestedFolder() {
     startSkipping # Skip test
-    local -a POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
-    POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(symfony2_version)
+    local -a P9K_LEFT_PROMPT_ELEMENTS
+    P9K_LEFT_PROMPT_ELEMENTS=(symfony2_version)
     mkdir app
     touch app/AppKernel.php
 
@@ -109,7 +109,7 @@ function testSymfonyVersionSegmentWorksInNestedFolder() {
     # Load Powerlevel9k
     source ${P9K_HOME}/powerlevel9k.zsh-theme
 
-    assertEquals "%K{240} %F{000}SF %f%F{000}3.1.4 %k%F{240}%f " "$(build_left_prompt)"
+    assertEquals "%K{240} %F{000}SF %f%F{000}3.1.4 %k%F{240}%f " "$(__p9k_build_left_prompt)"
 
     unfunction php
 }

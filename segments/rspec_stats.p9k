@@ -5,7 +5,7 @@
 ##
 
 # Source test stats script & icons
-source $p9k_directory/segments/test_stats.p9k
+source $__P9K_DIRECTORY/segments/test_stats.p9k
 
 # RSpec test ratio
 prompt_rspec_stats() {

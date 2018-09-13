@@ -11,7 +11,7 @@ prompt_swap() {
   local swap_used=0
   local base=''
 
-  if [[ "$OS" == "OSX" ]]; then
+  if [[ "$__P9K_OS" == "OSX" ]]; then
     local raw_swap_used
     raw_swap_used=$(sysctl vm.swapusage | grep -o "used\s*=\s*[0-9,.A-Z]*" | grep -o "[0-9,.A-Z]*$")
 
@@ -28,5 +28,5 @@ prompt_swap() {
     base='K'
   fi
 
-  "$1_prompt_segment" "$0" "$2" "yellow" "$DEFAULT_COLOR" "$(printSizeHumanReadable "$swap_used" $base)" 'SWAP_ICON'
+  "__p9k_$1_prompt_segment" "$0" "$2" "yellow" "$DEFAULT_COLOR" "$(p9k::print_size_human_readable "$swap_used" $base)" 'SWAP_ICON'
 }

@@ -32,22 +32,22 @@ function tearDown() {
 }
 
 function testColorOverridingForCleanStateWorks() {
-  local -a POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
-  POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(vcs)
-  local POWERLEVEL9K_VCS_CLEAN_FOREGROUND='cyan'
-  local POWERLEVEL9K_VCS_CLEAN_BACKGROUND='white'
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(vcs)
+  local P9K_VCS_CLEAN_FOREGROUND='cyan'
+  local P9K_VCS_CLEAN_BACKGROUND='white'
 
   # Load Powerlevel9k
   source ${P9K_HOME}/powerlevel9k.zsh-theme
 
-  assertEquals "%K{007} %F{006} default %k%F{007}%f " "$(build_left_prompt)"
+  assertEquals "%K{007} %F{006} default %k%F{007}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testColorOverridingForModifiedStateWorks() {
-  local -a POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
-  POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(vcs)
-  local POWERLEVEL9K_VCS_MODIFIED_FOREGROUND='red'
-  local POWERLEVEL9K_VCS_MODIFIED_BACKGROUND='yellow'
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(vcs)
+  local P9K_VCS_MODIFIED_FOREGROUND='red'
+  local P9K_VCS_MODIFIED_BACKGROUND='yellow'
 
   touch testfile
   hg add testfile
@@ -57,7 +57,7 @@ function testColorOverridingForModifiedStateWorks() {
   # Load Powerlevel9k
   source ${P9K_HOME}/powerlevel9k.zsh-theme
 
-  assertEquals "%K{003} %F{001} default ● %k%F{003}%f " "$(build_left_prompt)"
+  assertEquals "%K{003} %F{001} default ● %k%F{003}%f " "$(__p9k_build_left_prompt)"
 }
 
 # There is no staging area in mercurial, therefore there are no "untracked"
@@ -66,23 +66,23 @@ function testColorOverridingForModifiedStateWorks() {
 # This may be improved in future versions, to be a bit more consistent with
 # the git part.
 function testAddedFilesIconWorks() {
-  local -a POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
-  POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(vcs)
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(vcs)
   touch "myfile.txt"
   hg add myfile.txt
 
   # Load Powerlevel9k
   source ${P9K_HOME}/powerlevel9k.zsh-theme
 
-  assertEquals "%K{003} %F{000} default ● %k%F{003}%f " "$(build_left_prompt)"
+  assertEquals "%K{003} %F{000} default ● %k%F{003}%f " "$(__p9k_build_left_prompt)"
 }
 
 # We don't support tagging in mercurial right now..
 function testTagIconWorks() {
   startSkipping # Skip test
-  local -a POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
-  POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(vcs)
-  local POWERLEVEL9K_VCS_TAG_ICON='T'
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(vcs)
+  local P9K_VCS_TAG_ICON='T'
 
   touch "file.txt"
   hg add file.txt
@@ -92,14 +92,14 @@ function testTagIconWorks() {
   # Load Powerlevel9k
   source ${P9K_HOME}/powerlevel9k.zsh-theme
 
-  assertEquals "%K{002} %F{000} default Tv0.0.1 %k%F{002}%f " "$(build_left_prompt)"
+  assertEquals "%K{002} %F{000} default Tv0.0.1 %k%F{002}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testTagIconInDetachedHeadState() {
   startSkipping # Skip test
-  local -a POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
-  POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(vcs)
-  local POWERLEVEL9K_VCS_TAG_ICON='T'
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(vcs)
+  local P9K_VCS_TAG_ICON='T'
 
   touch "file.txt"
   hg add file.txt
@@ -114,12 +114,12 @@ function testTagIconInDetachedHeadState() {
   # Load Powerlevel9k
   source ${P9K_HOME}/powerlevel9k.zsh-theme
 
-  assertEquals "%K{002} %F{000} ${hash} Tv0.0.1 %k%F{002}%f " "$(build_left_prompt)"
+  assertEquals "%K{002} %F{000} ${hash} Tv0.0.1 %k%F{002}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testActionHintWorks() {
-  local -a POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
-  POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(vcs)
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(vcs)
   touch "i-am-modified.txt"
   hg add i-am-modified.txt
   hg commit -m "Add File" &>/dev/null
@@ -137,19 +137,19 @@ function testActionHintWorks() {
   # Load Powerlevel9k
   source ${P9K_HOME}/powerlevel9k.zsh-theme
 
-  assertEquals "%K{003} %F{000} default %F{red}| merging%f %k%F{003}%f " "$(build_left_prompt)"
+  assertEquals "%K{003} %F{000} default %F{red}| merging%f %k%F{003}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testShorteningCommitHashWorks() {
-  local -a POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
-  POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(vcs)
-  local POWERLEVEL9K_SHOW_CHANGESET=true
-  local POWERLEVEL9K_CHANGESET_HASH_LENGTH='4'
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(vcs)
+  local P9K_SHOW_CHANGESET=true
+  local P9K_CHANGESET_HASH_LENGTH='4'
 
   touch "file.txt"
   hg add file.txt
   hg commit -m "Add File" 1>/dev/null
-  local hash=$(hg id | head -c ${POWERLEVEL9K_CHANGESET_HASH_LENGTH})
+  local hash=$(hg id | head -c ${P9K_CHANGESET_HASH_LENGTH})
 
   # Load Powerlevel9k
   source ${P9K_HOME}/powerlevel9k.zsh-theme
@@ -158,14 +158,14 @@ function testShorteningCommitHashWorks() {
   # the changeset is truncated.
   powerlevel9k_vcs_init
 
-  assertEquals "%K{002} %F{000}${hash}  default %k%F{002}%f " "$(build_left_prompt)"
+  assertEquals "%K{002} %F{000}${hash}  default %k%F{002}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testShorteningCommitHashIsNotShownIfShowChangesetIsFalse() {
-  local -a POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
-  POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(vcs)
-  local POWERLEVEL9K_SHOW_CHANGESET=false
-  local POWERLEVEL9K_CHANGESET_HASH_LENGTH='4'
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(vcs)
+  local P9K_SHOW_CHANGESET=false
+  local P9K_CHANGESET_HASH_LENGTH='4'
 
   touch "file.txt"
   hg add file.txt
@@ -178,30 +178,30 @@ function testShorteningCommitHashIsNotShownIfShowChangesetIsFalse() {
   # the changeset is truncated.
   powerlevel9k_vcs_init
 
-  assertEquals "%K{002} %F{000} default %k%F{002}%f " "$(build_left_prompt)"
+  assertEquals "%K{002} %F{000} default %k%F{002}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testMercurialIconWorks() {
-  local -a POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
-  POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(vcs)
-  local POWERLEVEL9K_VCS_HG_ICON='HG-Icon'
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(vcs)
+  local P9K_VCS_HG_ICON='HG-Icon'
 
   # Load Powerlevel9k
   source ${P9K_HOME}/powerlevel9k.zsh-theme
 
-  assertEquals "%K{002} %F{000}HG-Icon %f%F{000} default %k%F{002}%f " "$(build_left_prompt)"
+  assertEquals "%K{002} %F{000}HG-Icon %f%F{000} default %k%F{002}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testBookmarkIconWorks() {
-  local -a POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
-  POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(vcs)
-  local POWERLEVEL9K_VCS_BOOKMARK_ICON='B'
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(vcs)
+  local P9K_VCS_BOOKMARK_ICON='B'
   hg bookmark "initial"
 
   # Load Powerlevel9k
   source ${P9K_HOME}/powerlevel9k.zsh-theme
 
-  assertEquals "%K{002} %F{000} default Binitial %k%F{002}%f " "$(build_left_prompt)"
+  assertEquals "%K{002} %F{000} default Binitial %k%F{002}%f " "$(__p9k_build_left_prompt)"
 }
 
 source shunit2/shunit2

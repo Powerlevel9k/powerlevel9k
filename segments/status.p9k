@@ -8,17 +8,17 @@
 # Status: When an error occur, return the error code, or a cross icon if option is set
 # Display an ok icon when no error occur, or hide the segment if option is set to false
 #
-set_default POWERLEVEL9K_STATUS_CROSS false
-set_default POWERLEVEL9K_STATUS_OK true
-set_default POWERLEVEL9K_STATUS_SHOW_PIPESTATUS true
-set_default POWERLEVEL9K_STATUS_HIDE_SIGNAME false
+p9k::set_default P9K_STATUS_CROSS false
+p9k::set_default P9K_STATUS_HIDE_SIGNAME false
+p9k::set_default P9K_STATUS_OK true
+p9k::set_default P9K_STATUS_SHOW_PIPESTATUS true
 # old options, retro compatibility
-set_default POWERLEVEL9K_STATUS_VERBOSE true
-set_default POWERLEVEL9K_STATUS_OK_IN_NON_VERBOSE false
+p9k::set_default P9K_STATUS_OK_IN_NON_VERBOSE false
+p9k::set_default P9K_STATUS_VERBOSE true
 
 exit_code_or_status() {
   local ec=$1
-  if [[ "$POWERLEVEL9K_STATUS_HIDE_SIGNAME" = true ]]; then
+  if [[ "$P9K_STATUS_HIDE_SIGNAME" = true ]]; then
     echo "$ec"
   elif (( ec <= 128 )); then
     echo "$ec"
@@ -34,7 +34,7 @@ prompt_status() {
   local ec_sum
   local ec
 
-  if [[ $POWERLEVEL9K_STATUS_SHOW_PIPESTATUS == true ]]; then
+  if [[ $P9K_STATUS_SHOW_PIPESTATUS == true ]]; then
     if (( $#RETVALS > 1 )); then
       ec_text=$(exit_code_or_status "${RETVALS[1]}")
       ec_sum=${RETVALS[1]}
@@ -55,12 +55,12 @@ prompt_status() {
   fi
 
   if (( ec_sum > 0 )); then
-    if [[ "$POWERLEVEL9K_STATUS_CROSS" == false && "$POWERLEVEL9K_STATUS_VERBOSE" == true ]]; then
-      "$1_prompt_segment" "$0_ERROR" "$2" "red" "yellow1" "$ec_text" 'CARRIAGE_RETURN_ICON'
+    if [[ "$P9K_STATUS_CROSS" == false && "$P9K_STATUS_VERBOSE" == true ]]; then
+      "__p9k_$1_prompt_segment" "$0_ERROR" "$2" "red" "yellow1" "$ec_text" 'CARRIAGE_RETURN_ICON'
     else
-      "$1_prompt_segment" "$0_ERROR" "$2" "$DEFAULT_COLOR" "red" "" 'FAIL_ICON'
+      "__p9k_$1_prompt_segment" "$0_ERROR" "$2" "$DEFAULT_COLOR" "red" "" 'FAIL_ICON'
     fi
-  elif [[ "$POWERLEVEL9K_STATUS_OK" == true ]] && [[ "$POWERLEVEL9K_STATUS_VERBOSE" == true || "$POWERLEVEL9K_STATUS_OK_IN_NON_VERBOSE" == true ]]; then
-    "$1_prompt_segment" "$0_OK" "$2" "$DEFAULT_COLOR" "green" "" 'OK_ICON'
+  elif [[ "$P9K_STATUS_OK" == true ]] && [[ "$P9K_STATUS_VERBOSE" == true || "$P9K_STATUS_OK_IN_NON_VERBOSE" == true ]]; then
+    "__p9k_$1_prompt_segment" "$0_OK" "$2" "$DEFAULT_COLOR" "green" "" 'OK_ICON'
   fi
 }

@@ -13,25 +13,25 @@ function mockKubectl() {
   case "$1" in
     'version')
       echo 'non-empty text'
-      ;;
+    ;;
     'config')
       case "$2" in
         'view')
           case "$3" in
             '-o=jsonpath={.current-context}')
               echo 'minikube'
-              ;;
+            ;;
             '-o=jsonpath={.contexts'*)
               echo ''
-              ;;
+            ;;
             *)
               echo "Mock value missed"
               exit 1
-              ;;
+            ;;
           esac
-          ;;
+        ;;
       esac
-      ;;
+    ;;
   esac
 }
 
@@ -39,7 +39,7 @@ function mockKubectlOtherNamespace() {
   case "$1" in
     'version')
       echo 'non-empty text'
-      ;;
+    ;;
     'config')
       case "$2" in
         'view')
@@ -47,56 +47,56 @@ function mockKubectlOtherNamespace() {
             # Get Current Context
             '-o=jsonpath={.current-context}')
               echo 'minikube'
-              ;;
+            ;;
             # Get current namespace
             '-o=jsonpath={.contexts'*)
               echo 'kube-system'
-              ;;
+            ;;
             *)
               echo "Mock value missed"
               exit 1
-              ;;
+            ;;
           esac
-          ;;
+        ;;
       esac
-      ;;
+    ;;
   esac
 }
 
 function testKubeContext() {
-  local -a POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
-  POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(kubecontext)
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(kubecontext)
   alias kubectl=mockKubectl
 
   # Load Powerlevel9k
   source powerlevel9k.zsh-theme
 
-  assertEquals "%K{005} %F{007}⎈ %f%F{007}minikube/default %k%F{005}%f " "$(build_left_prompt)"
+  assertEquals "%K{005} %F{007}⎈ %f%F{007}minikube/default %k%F{005}%f " "$(__p9k_build_left_prompt)"
 
   unalias kubectl
 }
 function testKubeContextOtherNamespace() {
-  local -a POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
-  POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(kubecontext)
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(kubecontext)
   alias kubectl=mockKubectlOtherNamespace
 
   # Load Powerlevel9k
   source powerlevel9k.zsh-theme
 
-  assertEquals "%K{005} %F{007}⎈ %f%F{007}minikube/kube-system %k%F{005}%f " "$(build_left_prompt)"
+  assertEquals "%K{005} %F{007}⎈ %f%F{007}minikube/kube-system %k%F{005}%f " "$(__p9k_build_left_prompt)"
 
   unalias kubectl
 }
 function testKubeContextPrintsNothingIfKubectlNotAvailable() {
-  local -a POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
-  POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(custom_world kubecontext)
-  local POWERLEVEL9K_CUSTOM_WORLD='echo world'
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(custom_world kubecontext)
+  local P9K_CUSTOM_WORLD='echo world'
   alias kubectl=noKubectl
 
   # Load Powerlevel9k
   source powerlevel9k.zsh-theme
 
-  assertEquals "%K{007} %F{000}world %k%F{007}%f " "$(build_left_prompt)"
+  assertEquals "%K{007} %F{000}world %k%F{007}%f " "$(__p9k_build_left_prompt)"
 
   unalias kubectl
 }

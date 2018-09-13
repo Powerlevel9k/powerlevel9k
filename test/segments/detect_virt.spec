@@ -12,35 +12,35 @@ function setUp() {
 }
 
 function testDetectVirtSegmentPrintsNothingIfSystemdIsNotAvailable() {
-    local -a POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
-    POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(detect_virt custom_world)
-    local POWERLEVEL9K_CUSTOM_WORLD='echo world'
+    local -a P9K_LEFT_PROMPT_ELEMENTS
+    P9K_LEFT_PROMPT_ELEMENTS=(detect_virt custom_world)
+    local P9K_CUSTOM_WORLD='echo world'
     alias systemd-detect-virt="novirt"
 
     # Load Powerlevel9k
     source powerlevel9k.zsh-theme
 
-    assertEquals "%K{007} %F{000}world %k%F{007}%f " "$(build_left_prompt)"
+    assertEquals "%K{007} %F{000}world %k%F{007}%f " "$(__p9k_build_left_prompt)"
 
     unalias systemd-detect-virt
 }
 
 function testDetectVirtSegmentIfSystemdReturnsPlainName() {
-    local -a POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
-    POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(detect_virt)
+    local -a P9K_LEFT_PROMPT_ELEMENTS
+    P9K_LEFT_PROMPT_ELEMENTS=(detect_virt)
     alias systemd-detect-virt="echo 'xxx'"
 
     # Load Powerlevel9k
     source powerlevel9k.zsh-theme
 
-    assertEquals "%K{000} %F{003}xxx %k%F{000}%f " "$(build_left_prompt)"
+    assertEquals "%K{000} %F{003}xxx %k%F{000}%f " "$(__p9k_build_left_prompt)"
 
     unalias systemd-detect-virt
 }
 
 function testDetectVirtSegmentIfRootFsIsOnExpectedInode() {
-    local -a POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
-    POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(detect_virt)
+    local -a P9K_LEFT_PROMPT_ELEMENTS
+    P9K_LEFT_PROMPT_ELEMENTS=(detect_virt)
     # Well. This is a weak test, as it fixates the implementation,
     # but it is necessary, as the implementation relys on the root
     # directory having the inode number "2"..
@@ -53,15 +53,15 @@ function testDetectVirtSegmentIfRootFsIsOnExpectedInode() {
     # which translates to: Show the inode number of "/" and test if it is "2".
     alias ls="echo '2'"
 
-    assertEquals "%K{000} %F{003}none %k%F{000}%f " "$(build_left_prompt)"
+    assertEquals "%K{000} %F{003}none %k%F{000}%f " "$(__p9k_build_left_prompt)"
 
     unalias ls
     unalias systemd-detect-virt
 }
 
 function testDetectVirtSegmentIfRootFsIsNotOnExpectedInode() {
-    local -a POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
-    POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(detect_virt)
+    local -a P9K_LEFT_PROMPT_ELEMENTS
+    P9K_LEFT_PROMPT_ELEMENTS=(detect_virt)
     # Well. This is a weak test, as it fixates the implementation,
     # but it is necessary, as the implementation relys on the root
     # directory having the inode number "2"..
@@ -74,7 +74,7 @@ function testDetectVirtSegmentIfRootFsIsNotOnExpectedInode() {
     # which translates to: Show the inode number of "/" and test if it is "2".
     alias ls="echo '3'"
 
-    assertEquals "%K{000} %F{003}chroot %k%F{000}%f " "$(build_left_prompt)"
+    assertEquals "%K{000} %F{003}chroot %k%F{000}%f " "$(__p9k_build_left_prompt)"
 
     unalias ls
     unalias systemd-detect-virt

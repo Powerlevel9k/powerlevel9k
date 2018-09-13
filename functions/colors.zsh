@@ -270,8 +270,8 @@ __P9K_COLORS=(
   grey93 255
 )
 
-function termColors() {
-  if [[ $POWERLEVEL9K_IGNORE_TERM_COLORS == true ]]; then
+function __p9k_term_colors() {
+  if [[ $P9K_IGNORE_TERM_COLORS == true ]]; then
     return
   fi
 
@@ -291,27 +291,27 @@ function termColors() {
 }
 
 # get the proper color code if it does not exist as a name.
-function getColor() {
+function p9k::get_color() {
   # If Color is not numerical, try to get the color code.
   if [[ "$1" != <-> ]]; then
-    1=$(getColorCode $1)
+    1=$(p9k::get_color_code $1)
   fi
   echo -n "$1"
 }
 
 # empty paramenter resets (stops) background color
-function backgroundColor() {
-  echo -n "%K{$(getColor $1)}"
+function p9k::background_color() {
+  echo -n "%K{$(p9k::get_color $1)}"
 }
 
 # empty paramenter resets (stops) foreground color
-function foregroundColor() {
-  echo -n "%F{$(getColor $1)}"
+function p9k::foreground_color() {
+  echo -n "%F{$(p9k::get_color $1)}"
 }
 
 # Get numerical color codes. That way we translate ANSI codes
 # into ZSH-Style color codes.
-function getColorCode() {
+function p9k::get_color_code() {
   # Early exit: Check if given value is already numerical
   if [[ "$1" == <-> ]]; then
     # Pad color with zeroes
@@ -321,20 +321,24 @@ function getColorCode() {
 
   local colorName="${1}"
   # Check if value is none with any case.
-  if [[ "${(L)colorName}" == "none" ]]; then
+  case "${(L)colorName}" in
+    "none")
       echo -n 'none'
-  elif [[ "${colorName}" == "foreground"  ]]; then
+    ;;
+    "foreground")
       # for testing purposes in terminal
-      # call via `getColorCode foreground`
+      # call via `p9k::get_color_code foreground`
       for i in "${(k@)__P9K_COLORS}"; do
-          print -P "$(foregroundColor $i)$(getColor $i) - $i%f"
+          print -P "$(p9k::foreground_color $i)$(p9k::get_color $i) - $i%f"
       done
-  elif [[ "${colorName}" == "background"  ]]; then
-      # call via `getColorCode background`
+    ;;
+    "background")
+      # call via `p9k::get_color_code background`
       for i in "${(k@)__P9K_COLORS}"; do
-          print -P "$(backgroundColor $i)$(getColor $i) - $i%k"
+          print -P "$(p9k::background_color $i)$(p9k::get_color $i) - $i%k"
       done
-  else
+    ;;
+    *)
       # Strip eventual "bg-" prefixes
       colorName=${colorName#bg-}
       # Strip eventual "fg-" prefixes
@@ -342,17 +346,18 @@ function getColorCode() {
       # Strip eventual "br" prefixes ("bright" colors)
       colorName=${colorName#br}
       echo -n $__P9K_COLORS[$colorName]
-  fi
+    ;;
+  esac
 }
 
 # Check if two colors are equal, even if one is specified as ANSI code.
-function isSameColor() {
+function p9k::is_same_color() {
   if [[ "$1" == "NONE" || "$2" == "NONE" ]]; then
     return 1
   fi
 
-  local color1=$(getColorCode "$1")
-  local color2=$(getColorCode "$2")
+  local color1=$(p9k::get_color_code "$1")
+  local color2=$(p9k::get_color_code "$2")
 
   return $(( color1 != color2 ))
 }
