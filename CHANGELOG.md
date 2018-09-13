@@ -2,7 +2,7 @@
 
   - PR #983
     - Split the code into separate files for segments and generators
-  - PR #
+  - PR #985
     - Applied coding guidelines
     - Moved all calls to `p9k::set_default` outside of functions so that they are only called at initialization
     - Renamed `POWERLEVEL9K_` variables to `P9K_`
@@ -10,7 +10,7 @@
     - Deprecated `truncatePathFromRight` in favor of `__p9k_truncate_path`
     - Added test for coreutils installed on OSX
     - Updated `prompt_public_ip` to use coreutils if installed
-    - 
+    - Renamed `get_icon_names` to `show_defined_icons` in preparation for `registerSegment`
 
 ## v0.6.6
 
