@@ -11,6 +11,6 @@ prompt_laravel_version() {
   if [[ -n "${laravel_version}" && "${laravel_version}" =~ "Laravel Framework" ]]; then
     # Strip out everything but the version
     laravel_version="${laravel_version//Laravel Framework /}"
-    "$1_prompt_segment" "$0" "$2" "maroon" "white" "${laravel_version}" 'LARAVEL_ICON'
+    "__p9k_$1_prompt_segment" "$0" "$2" "maroon" "white" "${laravel_version}" 'LARAVEL_ICON'
   fi
 }

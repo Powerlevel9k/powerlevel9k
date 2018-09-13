@@ -13,48 +13,48 @@ function setUp() {
 }
 
 function testOverwritingIconsWork() {
-  local -a POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
-  POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(custom_world1)
-  local POWERLEVEL9K_CUSTOM_WORLD1='echo world1'
-  local POWERLEVEL9K_CUSTOM_WORLD1_ICON='icon-here'
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(custom_world1)
+  local P9K_CUSTOM_WORLD1='echo world1'
+  local P9K_CUSTOM_WORLD1_ICON='icon-here'
 
-  assertEquals "%K{007} %F{000}icon-here %f%F{000}world1 %k%F{007}%f " "$(build_left_prompt)"
+  assertEquals "%K{007} %F{000}icon-here %f%F{000}world1 %k%F{007}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testVisualIdentifierAppearsBeforeSegmentContentOnLeftSegments() {
-  local -a POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
-  POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(custom_world1)
-  local POWERLEVEL9K_CUSTOM_WORLD1='echo world1'
-  local POWERLEVEL9K_CUSTOM_WORLD1_ICON='icon-here'
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(custom_world1)
+  local P9K_CUSTOM_WORLD1='echo world1'
+  local P9K_CUSTOM_WORLD1_ICON='icon-here'
 
-  assertEquals "%K{007} %F{000}icon-here %f%F{000}world1 %k%F{007}%f " "$(build_left_prompt)"
+  assertEquals "%K{007} %F{000}icon-here %f%F{000}world1 %k%F{007}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testVisualIdentifierAppearsAfterSegmentContentOnRightSegments() {
-  local -a POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS
-  POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(custom_world1)
-  local POWERLEVEL9K_CUSTOM_WORLD1='echo world1'
-  local POWERLEVEL9K_CUSTOM_WORLD1_ICON='icon-here'
+  local -a P9K_RIGHT_PROMPT_ELEMENTS
+  P9K_RIGHT_PROMPT_ELEMENTS=(custom_world1)
+  local P9K_CUSTOM_WORLD1='echo world1'
+  local P9K_CUSTOM_WORLD1_ICON='icon-here'
 
-  assertEquals "%F{007}%f%K{007}%F{000} world1%F{000} icon-here%f%E" "$(build_right_prompt)"
+  assertEquals "%F{007}%f%K{007}%F{000} world1%F{000} icon-here%f%E" "$(__p9k_build_right_prompt)"
 }
 
 function testVisualIdentifierPrintsNothingIfNotAvailable() {
-  local -a POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
-  POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(custom_world1)
-  local POWERLEVEL9K_CUSTOM_WORLD1='echo world1'
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(custom_world1)
+  local P9K_CUSTOM_WORLD1='echo world1'
 
-  assertEquals "%K{007} %F{000}world1 %k%F{007}%f " "$(build_left_prompt)"
+  assertEquals "%K{007} %F{000}world1 %k%F{007}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testVisualIdentifierIsPrintedInNumericalColorCode() {
-  local -a POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
-  POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(custom_world1)
-  local POWERLEVEL9K_CUSTOM_WORLD1='echo world1'
-  local POWERLEVEL9K_CUSTOM_WORLD1_ICON="xxx"
-  local POWERLEVEL9K_CUSTOM_WORLD1_VISUAL_IDENTIFIER_COLOR="purple3"
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(custom_world1)
+  local P9K_CUSTOM_WORLD1='echo world1'
+  local P9K_CUSTOM_WORLD1_ICON="xxx"
+  local P9K_CUSTOM_WORLD1_VISUAL_IDENTIFIER_COLOR="purple3"
 
-  assertEquals "%K{007} %F{056}xxx %f%F{000}world1 %k%F{007}%f " "$(build_left_prompt)"
+  assertEquals "%K{007} %F{056}xxx %f%F{000}world1 %k%F{007}%f " "$(__p9k_build_left_prompt)"
 }
 
 source shunit2/shunit2

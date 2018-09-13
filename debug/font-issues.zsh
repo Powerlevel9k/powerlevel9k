@@ -4,8 +4,8 @@
 source functions/colors.zsh
 source functions/icons.zsh
 source functions/utilities.zsh
-# Map our $OS to neofetch $os
-os="$OS"
+# Map our $__P9K_OS to neofetch $os
+os="$__P9K_OS"
 
 
 trim() {

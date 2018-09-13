@@ -4,12 +4,11 @@
 # @source [powerlevel9k](https://github.com/bhilburn/powerlevel9k)
 ##
 
+p9k::set_default P9K_COMMAND_EXECUTION_TIME_THRESHOLD 3
+p9k::set_default P9K_COMMAND_EXECUTION_TIME_PRECISION 2
 ################################################################
 # Display the duration the command needed to run.
 prompt_command_execution_time() {
-  set_default POWERLEVEL9K_COMMAND_EXECUTION_TIME_THRESHOLD 3
-  set_default POWERLEVEL9K_COMMAND_EXECUTION_TIME_PRECISION 2
-
   # Print time in human readable format
   # For that use `strftime` and convert
   # the duration (float) to an seconds
@@ -23,17 +22,17 @@ prompt_command_execution_time() {
   else
     # If the command executed in seconds, print as float.
     # Convert to float
-    if [[ "${POWERLEVEL9K_COMMAND_EXECUTION_TIME_PRECISION}" == "0" ]]; then
+    if [[ "${P9K_COMMAND_EXECUTION_TIME_PRECISION}" == "0" ]]; then
       # If user does not want microseconds, then we need to convert
       # the duration to an integer.
       typeset -i humanReadableDuration
     else
-      typeset -F ${POWERLEVEL9K_COMMAND_EXECUTION_TIME_PRECISION} humanReadableDuration
+      typeset -F ${P9K_COMMAND_EXECUTION_TIME_PRECISION} humanReadableDuration
     fi
     humanReadableDuration=$_P9K_COMMAND_DURATION
   fi
 
-  if (( _P9K_COMMAND_DURATION >= POWERLEVEL9K_COMMAND_EXECUTION_TIME_THRESHOLD )); then
-    "$1_prompt_segment" "$0" "$2" "red" "yellow1" "${humanReadableDuration}" 'EXECUTION_TIME_ICON'
+  if (( _P9K_COMMAND_DURATION >= P9K_COMMAND_EXECUTION_TIME_THRESHOLD )); then
+    "__p9k_$1_prompt_segment" "$0" "$2" "red" "yellow1" "${humanReadableDuration}" 'EXECUTION_TIME_ICON'
   fi
 }

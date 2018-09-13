@@ -14,8 +14,9 @@ function mockLaravelVersion() {
     "artisan")
       # artisan --version follows the format Laravel Framework <version>
       echo "Laravel Framework 5.4.23"
-      ;;
+    ;;
     default)
+    ;;
   esac
 }
 
@@ -26,45 +27,45 @@ function mockNoLaravelVersion() {
 }
 
 function testLaravelVersionSegment() {
-  local -a POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
-  POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(laravel_version)
-  local POWERLEVEL9K_LARAVEL_ICON='x'
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(laravel_version)
+  local P9K_LARAVEL_ICON='x'
   alias php=mockLaravelVersion
 
   # Load Powerlevel9k
   source powerlevel9k.zsh-theme
 
-  assertEquals "%K{009} %F{007}x %f%F{007}5.4.23 %k%F{009}%f " "$(build_left_prompt)"
+  assertEquals "%K{009} %F{007}x %f%F{007}5.4.23 %k%F{009}%f " "$(__p9k_build_left_prompt)"
 
   unalias php
 }
 
 function testLaravelVersionSegmentIfArtisanIsNotAvailable() {
-  local -a POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
-  POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(custom_world laravel_version)
-  local POWERLEVEL9K_CUSTOM_WORLD='echo world'
-  local POWERLEVEL9K_LARAVEL_ICON='x'
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(custom_world laravel_version)
+  local P9K_CUSTOM_WORLD='echo world'
+  local P9K_LARAVEL_ICON='x'
   alias php=mockNoLaravelVersion
 
   # Load Powerlevel9k
   source powerlevel9k.zsh-theme
 
-  assertEquals "%K{007} %F{000}world %k%F{007}%f " "$(build_left_prompt)"
+  assertEquals "%K{007} %F{000}world %k%F{007}%f " "$(__p9k_build_left_prompt)"
 
   unalias php
 }
 
 function testLaravelVersionSegmentPrintsNothingIfPhpIsNotAvailable() {
-  local -a POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
-  POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(custom_world laravel_version)
-  local POWERLEVEL9K_CUSTOM_WORLD='echo world'
-  local POWERLEVEL9K_LARAVEL_ICON='x'
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(custom_world laravel_version)
+  local P9K_CUSTOM_WORLD='echo world'
+  local P9K_LARAVEL_ICON='x'
   alias php=noPhp
 
   # Load Powerlevel9k
   source powerlevel9k.zsh-theme
 
-  assertEquals "%K{007} %F{000}world %k%F{007}%f " "$(build_left_prompt)"
+  assertEquals "%K{007} %F{000}world %k%F{007}%f " "$(__p9k_build_left_prompt)"
 
   unalias php
 }

@@ -15,6 +15,6 @@ prompt_java_version() {
   java_version=$(java -version 2>/dev/null && java -fullversion 2>&1 | cut -d '"' -f 2)
 
   if [[ -n "$java_version" ]]; then
-    "$1_prompt_segment" "$0" "$2" "red" "white" "$java_version" "JAVA_ICON"
+    "__p9k_$1_prompt_segment" "$0" "$2" "red" "white" "$java_version" "JAVA_ICON"
   fi
 }

@@ -4,19 +4,20 @@
 # @source [powerlevel9k](https://github.com/bhilburn/powerlevel9k)
 ##
 
+# Uses $RUBY_VERSION and $RUBY_ENGINE set by chruby
+p9k::set_default P9K_CHRUBY_SHOW_VERSION true
+p9k::set_default P9K_CHRUBY_SHOW_ENGINE true
+
 ################################################################
 # Segment to display chruby information
 # see https://github.com/postmodern/chruby/issues/245 for chruby_auto issue with ZSH
 prompt_chruby() {
-  # Uses $RUBY_VERSION and $RUBY_ENGINE set by chruby
-  set_default POWERLEVEL9K_CHRUBY_SHOW_VERSION true
-  set_default POWERLEVEL9K_CHRUBY_SHOW_ENGINE true
   local chruby_label=""
 
-  if [[ "$POWERLEVEL9K_CHRUBY_SHOW_ENGINE" == true ]]; then
+  if [[ "$P9K_CHRUBY_SHOW_ENGINE" == true ]]; then
     chruby_label+="$RUBY_ENGINE "
   fi
-  if [[ "$POWERLEVEL9K_CHRUBY_SHOW_VERSION" == true ]]; then
+  if [[ "$P9K_CHRUBY_SHOW_VERSION" == true ]]; then
     chruby_label+="$RUBY_VERSION"
   fi
 
@@ -25,6 +26,6 @@ prompt_chruby() {
 
   # Don't show anything if the chruby did not change the default ruby
   if [[ "$RUBY_ENGINE" != "" ]]; then
-    "$1_prompt_segment" "$0" "$2" "red" "$DEFAULT_COLOR" "${chruby_label}" 'RUBY_ICON'
+    "__p9k_$1_prompt_segment" "$0" "$2" "red" "$DEFAULT_COLOR" "${chruby_label}" 'RUBY_ICON'
   fi
 }

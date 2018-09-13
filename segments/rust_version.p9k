@@ -15,6 +15,6 @@ prompt_rust_version() {
   rust_version=${${rust_version/rustc /}%% *}
 
   if [[ -n "$rust_version" ]]; then
-    "$1_prompt_segment" "$0" "$2" "darkorange" "$DEFAULT_COLOR" "$rust_version" 'RUST_ICON'
+    "__p9k_$1_prompt_segment" "$0" "$2" "darkorange" "$DEFAULT_COLOR" "$rust_version" 'RUST_ICON'
   fi
 }

@@ -10,10 +10,10 @@ function setUp() {
 }
 
 function testSshSegmentPrintsNothingIfNoSshConnection() {
-  local -a POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
-  POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(ssh custom_world)
-  local POWERLEVEL9K_CUSTOM_WORLD='echo "world"'
-  local POWERLEVEL9K_SSH_ICON="ssh-icon"
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(ssh custom_world)
+  local P9K_CUSTOM_WORLD='echo "world"'
+  local P9K_SSH_ICON="ssh-icon"
   # Weak test: Emulate No SSH connection by unsetting
   # $SSH_CLIENT and $SSH_TTY
   unset SSH_CLIENT
@@ -22,13 +22,13 @@ function testSshSegmentPrintsNothingIfNoSshConnection() {
   # Load Powerlevel9k
   source powerlevel9k.zsh-theme
 
-  assertEquals "%K{007} %F{000}world %k%F{007}%f " "$(build_left_prompt)"
+  assertEquals "%K{007} %F{000}world %k%F{007}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testSshSegmentWorksIfOnlySshClientIsSet() {
-  local -a POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
-  POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(ssh)
-  local POWERLEVEL9K_SSH_ICON="ssh-icon"
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(ssh)
+  local P9K_SSH_ICON="ssh-icon"
   # Weak test: Emulate No SSH connection by unsetting
   # $SSH_CLIENT and $SSH_TTY
   SSH_CLIENT='ssh-client'
@@ -37,15 +37,15 @@ function testSshSegmentWorksIfOnlySshClientIsSet() {
   # Load Powerlevel9k
   source powerlevel9k.zsh-theme
 
-  assertEquals "%K{000} %F{003}ssh-icon%f %k%F{000}%f " "$(build_left_prompt)"
+  assertEquals "%K{000} %F{003}ssh-icon%f %k%F{000}%f " "$(__p9k_build_left_prompt)"
 
   unset SSH_CLIENT
 }
 
 function testSshSegmentWorksIfOnlySshTtyIsSet() {
-  local -a POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
-  POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(ssh)
-  local POWERLEVEL9K_SSH_ICON="ssh-icon"
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(ssh)
+  local P9K_SSH_ICON="ssh-icon"
   # Weak test: Emulate No SSH connection by unsetting
   # $SSH_CLIENT and $SSH_TTY
   SSH_TTY='ssh-tty'
@@ -54,15 +54,15 @@ function testSshSegmentWorksIfOnlySshTtyIsSet() {
   # Load Powerlevel9k
   source powerlevel9k.zsh-theme
 
-  assertEquals "%K{000} %F{003}ssh-icon%f %k%F{000}%f " "$(build_left_prompt)"
+  assertEquals "%K{000} %F{003}ssh-icon%f %k%F{000}%f " "$(__p9k_build_left_prompt)"
 
   unset SSH_TTY
 }
 
 function testSshSegmentWorksIfAllNecessaryVariablesAreSet() {
-  local -a POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
-  POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(ssh)
-  local POWERLEVEL9K_SSH_ICON="ssh-icon"
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(ssh)
+  local P9K_SSH_ICON="ssh-icon"
   # Weak test: Emulate No SSH connection by unsetting
   # $SSH_CLIENT and $SSH_TTY
   SSH_CLIENT='ssh-client'
@@ -71,7 +71,7 @@ function testSshSegmentWorksIfAllNecessaryVariablesAreSet() {
   # Load Powerlevel9k
   source powerlevel9k.zsh-theme
 
-  assertEquals "%K{000} %F{003}ssh-icon%f %k%F{000}%f " "$(build_left_prompt)"
+  assertEquals "%K{000} %F{003}ssh-icon%f %k%F{000}%f " "$(__p9k_build_left_prompt)"
 
   unset SSH_TTY
   unset SSH_CLIENT

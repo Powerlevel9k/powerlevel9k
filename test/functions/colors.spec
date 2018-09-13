@@ -11,47 +11,47 @@ function setUp() {
 }
 
 function testGetColorCodeWithAnsiForegroundColor() {
-  assertEquals '002' "$(getColorCode 'green')"
+  assertEquals '002' "$(p9k::get_color_code 'green')"
 }
 
 function testGetColorCodeWithAnsiBackgroundColor() {
-  assertEquals '002' "$(getColorCode 'bg-green')"
+  assertEquals '002' "$(p9k::get_color_code 'bg-green')"
 }
 
 function testGetColorCodeWithNumericalColor() {
-  assertEquals '002' "$(getColorCode '002')"
+  assertEquals '002' "$(p9k::get_color_code '002')"
 }
 
 function testGetColorCodeWithNoneColor() {
-  assertEquals 'none' "$(getColorCode 'NONE')"
+  assertEquals 'none' "$(p9k::get_color_code 'NONE')"
 }
 
 function testIsSameColorComparesAnsiForegroundAndNumericalColorCorrectly() {
-  assertTrue "isSameColor 'green' '002'"
+  assertTrue "p9k::is_same_color 'green' '002'"
 }
 
 function testIsSameColorComparesAnsiBackgroundAndNumericalColorCorrectly() {
-  assertTrue "isSameColor 'bg-green' '002'"
+  assertTrue "p9k::is_same_color 'bg-green' '002'"
 }
 
 function testIsSameColorComparesShortCodesCorrectly() {
-  assertTrue "isSameColor '002' '2'"
+  assertTrue "p9k::is_same_color '002' '2'"
 }
 
 function testIsSameColorDoesNotYieldNotEqualColorsTruthy() {
-  assertFalse "isSameColor 'green' '003'"
+  assertFalse "p9k::is_same_color 'green' '003'"
 }
 
 function testIsSameColorHandlesNoneCorrectly() {
-  assertTrue "isSameColor 'none' 'NOnE'"
+  assertTrue "p9k::is_same_color 'none' 'NOnE'"
 }
 
 function testIsSameColorCompareTwoNoneColorsCorrectly() {
-  assertTrue "isSameColor 'none' 'none'"
+  assertTrue "p9k::is_same_color 'none' 'none'"
 }
 
 function testIsSameColorComparesColorWithNoneCorrectly() {
-  assertFalse "isSameColor 'green' 'none'"
+  assertFalse "p9k::is_same_color 'green' 'none'"
 }
 
 function testBrightColorsWork() {
@@ -59,9 +59,9 @@ function testBrightColorsWork() {
   # with normal ones. This code is now gone, and this test should
   # ensure that all input channels for bright colors are handled
   # correctly.
-  assertTrue "isSameColor 'cyan' '006'"
-  assertEquals '006' "$(getColorCode 'cyan')"
-  assertEquals '006' "$(getColor 'cyan')"
+  assertTrue "p9k::is_same_color 'cyan' '006'"
+  assertEquals '006' "$(p9k::get_color_code 'cyan')"
+  assertEquals '006' "$(p9k::get_color 'cyan')"
 }
 
 source shunit2/shunit2

@@ -4,8 +4,97 @@
 # @source [powerlevel9k](https://github.com/bhilburn/powerlevel9k)
 ##
 
+# OS detection
+case "${__P9K_OS}" in
+  Darwin)
+    OS_ICON=$(p9k::print_icon 'APPLE_ICON')
+  ;;
+  CYGWIN_NT-* | MSYS_NT-*)
+    OS_ICON=$(p9k::print_icon 'WINDOWS_ICON')
+  ;;
+  FreeBSD)
+    OS_ICON=$(p9k::print_icon 'FREEBSD_ICON')
+  ;;
+  OpenBSD)
+    OS_ICON=$(p9k::print_icon 'FREEBSD_ICON')
+  ;;
+  DragonFly)
+    OS_ICON=$(p9k::print_icon 'FREEBSD_ICON')
+  ;;
+  Linux)
+    case "$__P9K_OS_ID" in
+      *arch*)
+        OS_ICON=$(p9k::print_icon 'LINUX_ARCH_ICON')
+      ;;
+      *debian*)
+        OS_ICON=$(p9k::print_icon 'LINUX_DEBIAN_ICON')
+      ;;
+      *ubuntu*)
+        OS_ICON=$(p9k::print_icon 'LINUX_UBUNTU_ICON')
+      ;;
+      *elementary*)
+        OS_ICON=$(p9k::print_icon 'LINUX_ELEMENTARY_ICON')
+      ;;
+      *fedora*)
+        OS_ICON=$(p9k::print_icon 'LINUX_FEDORA_ICON')
+      ;;
+      *coreos*)
+        OS_ICON=$(p9k::print_icon 'LINUX_COREOS_ICON')
+      ;;
+      *gentoo*)
+        OS_ICON=$(p9k::print_icon 'LINUX_GENTOO_ICON')
+      ;;
+      *mageia*)
+        OS_ICON=$(p9k::print_icon 'LINUX_MAGEIA_ICON')
+      ;;
+      *centos*)
+        OS_ICON=$(p9k::print_icon 'LINUX_CENTOS_ICON')
+      ;;
+      *opensuse*|*tumbleweed*)
+        OS_ICON=$(p9k::print_icon 'LINUX_OPENSUSE_ICON')
+      ;;
+      *sabayon*)
+        OS_ICON=$(p9k::print_icon 'LINUX_SABAYON_ICON')
+      ;;
+      *slackware*)
+        OS_ICON=$(p9k::print_icon 'LINUX_SLACKWARE_ICON')
+      ;;
+      *linuxmint*)
+        OS_ICON=$(p9k::print_icon 'LINUX_MINT_ICON')
+      ;;
+      *alpine*)
+        OS_ICON=$(p9k::print_icon 'LINUX_ALPINE_ICON')
+      ;;
+      *aosc*)
+        OS_ICON=$(p9k::print_icon 'LINUX_AOSC_ICON')
+      ;;
+      *nixos*)
+        OS_ICON=$(p9k::print_icon 'LINUX_NIXOS_ICON')
+      ;;
+      *devuan*)
+        OS_ICON=$(p9k::print_icon 'LINUX_DEVUAN_ICON')
+      ;;
+      *manjaro*)
+        OS_ICON=$(p9k::print_icon 'LINUX_MANJARO_ICON')
+      ;;
+      *)
+        OS_ICON=$(p9k::print_icon 'LINUX_ICON')
+      ;;
+    esac
+  ;;
+  Android)
+    OS_ICON=$(p9k::print_icon 'ANDROID_ICON')
+  ;;
+  SunOS)
+    OS_ICON=$(p9k::print_icon 'SUNOS_ICON')
+  ;;
+  *)
+    OS_ICON=''
+  ;;
+esac
+
 ################################################################
 # Segment to print a little OS icon
 prompt_os_icon() {
-  "$1_prompt_segment" "$0" "$2" "black" "white" "$OS_ICON"
+  "__p9k_$1_prompt_segment" "$0" "$2" "black" "white" "$OS_ICON"
 }

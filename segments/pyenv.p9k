@@ -4,13 +4,13 @@
 # @source [powerlevel9k](https://github.com/bhilburn/powerlevel9k)
 ##
 
+p9k::set_default P9K_PYENV_PROMPT_ALWAYS_SHOW false
 ################################################################
 # Segment to display pyenv information
 # https://github.com/pyenv/pyenv#choosing-the-python-version
-set_default POWERLEVEL9K_PYENV_PROMPT_ALWAYS_SHOW false
 prompt_pyenv() {
   if [[ -n "$PYENV_VERSION" ]]; then
-    "$1_prompt_segment" "$0" "$2" "blue" "$DEFAULT_COLOR" "$PYENV_VERSION" 'PYTHON_ICON'
+    "__p9k_$1_prompt_segment" "$0" "$2" "blue" "$DEFAULT_COLOR" "$PYENV_VERSION" 'PYTHON_ICON'
   elif [ $commands[pyenv] ]; then
     local pyenv_version_name="$(pyenv version-name)"
     local pyenv_global="system"
@@ -18,8 +18,8 @@ prompt_pyenv() {
     if [[ -f "${pyenv_root}/version" ]]; then
       pyenv_global="$(pyenv version-file-read ${pyenv_root}/version)"
     fi
-    if [[ "${pyenv_version_name}" != "${pyenv_global}" || "${POWERLEVEL9K_PYENV_PROMPT_ALWAYS_SHOW}" == "true" ]]; then
-      "$1_prompt_segment" "$0" "$2" "blue" "$DEFAULT_COLOR" "$pyenv_version_name" 'PYTHON_ICON'
+    if [[ "${pyenv_version_name}" != "${pyenv_global}" || "${P9K_PYENV_PROMPT_ALWAYS_SHOW}" == "true" ]]; then
+      "__p9k_$1_prompt_segment" "$0" "$2" "blue" "$DEFAULT_COLOR" "$pyenv_version_name" 'PYTHON_ICON'
     fi
   fi
 }

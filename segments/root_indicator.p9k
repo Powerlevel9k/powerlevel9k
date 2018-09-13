@@ -8,6 +8,6 @@
 # Segment to print an icon if user is root.
 prompt_root_indicator() {
   if [[ "$UID" -eq 0 ]]; then
-    "$1_prompt_segment" "$0" "$2" "$DEFAULT_COLOR" "yellow" "" 'ROOT_ICON'
+    "__p9k_$1_prompt_segment" "$0" "$2" "$DEFAULT_COLOR" "yellow" "" 'ROOT_ICON'
   fi
 }
