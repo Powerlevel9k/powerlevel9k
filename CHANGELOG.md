@@ -2,7 +2,7 @@
 
   - PR #983
     - Split the code into separate files for segments and generators
-  - PR #985
+  - PR #986
     - Applied coding guidelines
     - Moved all calls to `p9k::set_default` outside of functions so that they are only called at initialization
     - Renamed `POWERLEVEL9K_` variables to `P9K_`
