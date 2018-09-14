@@ -52,6 +52,7 @@ case $POWERLEVEL9K_MODE in
       LINUX_DEBIAN_ICON              $'\uE271'              # 
       LINUX_UBUNTU_ICON              $'\uE271'              # 
       LINUX_CENTOS_ICON              $'\uE271'              # 
+      LINUX_RHEL_ICON                $'\uE271'              # 
       LINUX_COREOS_ICON              $'\uE271'              # 
       LINUX_ELEMENTARY_ICON          $'\uE271'              # 
       LINUX_MINT_ICON                $'\uE271'              # 
@@ -152,6 +153,7 @@ case $POWERLEVEL9K_MODE in
       LINUX_DEBIAN_ICON              $'\uF17C'              # 
       LINUX_UBUNTU_ICON              $'\uF17C'              # 
       LINUX_CENTOS_ICON              $'\uF17C'              # 
+      LINUX_RHEL_ICON                $'\uF17C'              # 
       LINUX_COREOS_ICON              $'\uF17C'              # 
       LINUX_ELEMENTARY_ICON          $'\uF17C'              # 
       LINUX_MINT_ICON                $'\uF17C'              # 
@@ -254,6 +256,7 @@ case $POWERLEVEL9K_MODE in
       LINUX_DEBIAN_ICON              '\u'$CODEPOINT_OF_AWESOME_LINUX                # 
       LINUX_UBUNTU_ICON              '\u'$CODEPOINT_OF_AWESOME_LINUX                # 
       LINUX_CENTOS_ICON              '\u'$CODEPOINT_OF_AWESOME_LINUX                # 
+      LINUX_RHEL_ICON                '\u'$CODEPOINT_OF_AWESOME_LINUX                # 
       LINUX_COREOS_ICON              '\u'$CODEPOINT_OF_AWESOME_LINUX                # 
       LINUX_ELEMENTARY_ICON          '\u'$CODEPOINT_OF_AWESOME_LINUX                # 
       LINUX_MINT_ICON                '\u'$CODEPOINT_OF_AWESOME_LINUX                # 
@@ -347,6 +350,7 @@ case $POWERLEVEL9K_MODE in
       ANDROID_ICON                   $'\uF17B'              # 
       LINUX_ARCH_ICON                $'\uF303'              # 
       LINUX_CENTOS_ICON              $'\uF304'              # 
+      LINUX_RHEL_ICON                $'\uE7BB'              # 
       LINUX_COREOS_ICON              $'\uF305'              # 
       LINUX_DEBIAN_ICON              $'\uF306'              # 
       LINUX_ELEMENTARY_ICON          $'\uF309'              # 
@@ -446,6 +450,7 @@ case $POWERLEVEL9K_MODE in
       LINUX_DEBIAN_ICON              'Deb'
       LINUX_UBUNTU_ICON              'Ubu'
       LINUX_CENTOS_ICON              'Cen'
+      LINUX_RHEL_ICON                'Rhe'
       LINUX_COREOS_ICON              'Cor'
       LINUX_ELEMENTARY_ICON          'Elm'
       LINUX_MINT_ICON                'LMi'

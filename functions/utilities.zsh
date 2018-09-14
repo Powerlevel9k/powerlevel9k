@@ -131,6 +131,9 @@ case $(uname) in
        *centos*)
         OS_ICON=$(print_icon 'LINUX_CENTOS_ICON')
         ;;
+       *rhel*)
+        OS_ICON=$(print_icon 'LINUX_RHEL_ICON')
+        ;;
        *opensuse*|*tumbleweed*)
         OS_ICON=$(print_icon 'LINUX_OPENSUSE_ICON')
         ;;
