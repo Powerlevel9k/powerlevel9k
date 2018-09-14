@@ -4,10 +4,9 @@
 # @source [powerlevel9k](https://github.com/bhilburn/powerlevel9k)
 ##
 
+p9k::set_default P9K_TIME_FORMAT "%D{%H:%M:%S}"
 ################################################################
 # System time
 prompt_time() {
-  set_default POWERLEVEL9K_TIME_FORMAT "%D{%H:%M:%S}"
-
-  "$1_prompt_segment" "$0" "$2" "$DEFAULT_COLOR_INVERTED" "$DEFAULT_COLOR" "$POWERLEVEL9K_TIME_FORMAT" "TIME_ICON"
+  "__p9k_$1_prompt_segment" "$0" "$2" "$DEFAULT_COLOR_INVERTED" "$DEFAULT_COLOR" "$P9K_TIME_FORMAT" "TIME_ICON"
 }

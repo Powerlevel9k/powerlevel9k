@@ -8,18 +8,18 @@
 
 # These characters require the Powerline fonts to work properly. If you see
 # boxes or bizarre characters below, your fonts are not correctly installed. If
-# you do not want to install a special font, you can set `POWERLEVEL9K_MODE` to
+# you do not want to install a special font, you can set `P9K_MODE` to
 # `compatible`. This shows all icons in regular symbols.
 
-# Initialize the icon list according to the user's `POWERLEVEL9K_MODE`.
-typeset -gAH icons
-case $POWERLEVEL9K_MODE in
+# Initialize the icon list according to the user's `P9K_MODE`.
+typeset -gAH __P9K_ICONS
+case $P9K_MODE in
   'flat'|'awesome-patched')
     # Awesome-Patched Font required! See:
     # https://github.com/gabrielelana/awesome-terminal-fonts/tree/patching-strategy/patched
     # Set the right locale to protect special characters
     local LC_ALL="" LC_CTYPE="en_US.UTF-8"
-    icons=(
+    __P9K_ICONS=(
       LEFT_SEGMENT_SEPARATOR         $'\uE0B0'              # 
       RIGHT_SEGMENT_SEPARATOR        $'\uE0B2'              # 
       LEFT_SEGMENT_END_SEPARATOR     ' '                    # Whitespace
@@ -119,7 +119,7 @@ case $POWERLEVEL9K_MODE in
     # https://github.com/gabrielelana/awesome-terminal-fonts
     # Set the right locale to protect special characters
     local LC_ALL="" LC_CTYPE="en_US.UTF-8"
-    icons=(
+    __P9K_ICONS=(
       LEFT_SEGMENT_SEPARATOR         $'\uE0B0'              # 
       RIGHT_SEGMENT_SEPARATOR        $'\uE0B2'              # 
       LEFT_SEGMENT_END_SEPARATOR     ' '                    # Whitespace
@@ -224,7 +224,7 @@ case $POWERLEVEL9K_MODE in
         Or use a different Powerlevel9k font configuration.";
     fi
 
-    icons=(
+    __P9K_ICONS=(
       LEFT_SEGMENT_SEPARATOR         $'\uE0B0'                                      # 
       RIGHT_SEGMENT_SEPARATOR        $'\uE0B2'                                      # 
       LEFT_SEGMENT_END_SEPARATOR     ' '                                            # Whitespace
@@ -317,7 +317,7 @@ case $POWERLEVEL9K_MODE in
     # http://nerdfonts.com/#cheat-sheet
     # Set the right locale to protect special characters
     local LC_ALL="" LC_CTYPE="en_US.UTF-8"
-    icons=(
+    __P9K_ICONS=(
       LEFT_SEGMENT_SEPARATOR         $'\uE0B0'              # 
       RIGHT_SEGMENT_SEPARATOR        $'\uE0B2'              # 
       LEFT_SEGMENT_END_SEPARATOR     ' '                    # Whitespace
@@ -413,7 +413,7 @@ case $POWERLEVEL9K_MODE in
     # See https://github.com/Lokaltog/powerline-fonts
     # Set the right locale to protect special characters
     local LC_ALL="" LC_CTYPE="en_US.UTF-8"
-    icons=(
+    __P9K_ICONS=(
       LEFT_SEGMENT_SEPARATOR         $'\uE0B0'              # 
       RIGHT_SEGMENT_SEPARATOR        $'\uE0B2'              # 
       LEFT_SEGMENT_END_SEPARATOR     ' '                    # Whitespace
@@ -507,54 +507,54 @@ case $POWERLEVEL9K_MODE in
 esac
 
 # Override the above icon settings with any user-defined variables.
-case $POWERLEVEL9K_MODE in
+case $P9K_MODE in
   'flat')
     # Set the right locale to protect special characters
     local LC_ALL="" LC_CTYPE="en_US.UTF-8"
-    icons[LEFT_SEGMENT_SEPARATOR]=''
-    icons[RIGHT_SEGMENT_SEPARATOR]=''
-    icons[LEFT_SUBSEGMENT_SEPARATOR]='|'
-    icons[RIGHT_SUBSEGMENT_SEPARATOR]='|'
+    __P9K_ICONS[LEFT_SEGMENT_SEPARATOR]=''
+    __P9K_ICONS[RIGHT_SEGMENT_SEPARATOR]=''
+    __P9K_ICONS[LEFT_SUBSEGMENT_SEPARATOR]='|'
+    __P9K_ICONS[RIGHT_SUBSEGMENT_SEPARATOR]='|'
   ;;
   'compatible')
     # Set the right locale to protect special characters
     local LC_ALL="" LC_CTYPE="en_US.UTF-8"
-    icons[LEFT_SEGMENT_SEPARATOR]=$'\u2B80'                 # ⮀
-    icons[RIGHT_SEGMENT_SEPARATOR]=$'\u2B82'                # ⮂
-    icons[VCS_BRANCH_ICON]='@'
+    __P9K_ICONS[LEFT_SEGMENT_SEPARATOR]=$'\u2B80'                 # ⮀
+    __P9K_ICONS[RIGHT_SEGMENT_SEPARATOR]=$'\u2B82'                # ⮂
+    __P9K_ICONS[VCS_BRANCH_ICON]='@'
   ;;
 esac
 
-if [[ "$POWERLEVEL9K_HIDE_BRANCH_ICON" == true ]]; then
-    icons[VCS_BRANCH_ICON]=''
+if [[ "$P9K_HIDE_BRANCH_ICON" == true ]]; then
+    __P9K_ICONS[VCS_BRANCH_ICON]=''
 fi
 
 # Safety function for printing icons
 # Prints the named icon, or if that icon is undefined, the string name.
-function print_icon() {
+function p9k::print_icon() {
   local icon_name=$1
-  local ICON_USER_VARIABLE=POWERLEVEL9K_${icon_name}
-  if defined "$ICON_USER_VARIABLE"; then
+  local ICON_USER_VARIABLE=P9K_${icon_name}
+  if p9k::defined "$ICON_USER_VARIABLE"; then
     echo -n "${(P)ICON_USER_VARIABLE}"
   else
-    echo -n "${icons[$icon_name]}"
+    echo -n "${__P9K_ICONS[$icon_name]}"
   fi
 }
 
 # Get a list of configured icons
 #   * $1 string - If "original", then the original icons are printed,
-#                 otherwise "print_icon" is used, which takes the users
+#                 otherwise "p9k::print_icon" is used, which takes the users
 #                 overrides into account.
-get_icon_names() {
+show_defined_icons() {
   # Iterate over a ordered list of keys of the icons array
-  for key in ${(@kon)icons}; do
-    echo -n "POWERLEVEL9K_$key: "
+  for key in ${(@kon)__P9K_ICONS}; do
+    echo -n "P9K_$key: "
     if [[ "${1}" == "original" ]]; then
       # print the original icons as they are defined in the array above
-      echo "${icons[$key]}"
+      echo "${__P9K_ICONS[$key]}"
     else
       # print the icons as they are configured by the user
-      echo "$(print_icon "$key")"
+      echo "$(p9k::print_icon "$key")"
     fi
   done
 }

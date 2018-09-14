@@ -4,6 +4,11 @@
 # @source [powerlevel9k](https://github.com/bhilburn/powerlevel9k)
 ##
 
+# Set default values if the user did not configure them
+p9k::set_default P9K_BATTERY_LOW_THRESHOLD  10
+# Default behavior: Be verbose!
+p9k::set_default P9K_BATTERY_VERBOSE true
+
 ################################################################
 # Segment that displays the battery status in levels and colors
 prompt_battery() {
@@ -17,10 +22,8 @@ prompt_battery() {
     'disconnected'  "$DEFAULT_COLOR_INVERTED"
   )
   local ROOT_PREFIX="${4}"
-  # Set default values if the user did not configure them
-  set_default POWERLEVEL9K_BATTERY_LOW_THRESHOLD  10
 
-  if [[ $OS =~ OSX && -f "${ROOT_PREFIX}"/usr/bin/pmset && -x "${ROOT_PREFIX}"/usr/bin/pmset ]]; then
+  if [[ $__P9K_OS =~ OSX && -f "${ROOT_PREFIX}"/usr/bin/pmset && -x "${ROOT_PREFIX}"/usr/bin/pmset ]]; then
     # obtain battery information from system
     local raw_data="$(${ROOT_PREFIX}/usr/bin/pmset -g batt | awk 'FNR==2{print}')"
     # return if there is no battery on system
@@ -42,18 +45,18 @@ prompt_battery() {
       'charging'|'finishing charge'|'AC attached')
         current_state="charging"
         remain=" ($tstring)"
-        ;;
+      ;;
       'discharging')
-        [[ $bat_percent -lt $POWERLEVEL9K_BATTERY_LOW_THRESHOLD ]] && current_state="low" || current_state="disconnected"
+        [[ $bat_percent -lt $P9K_BATTERY_LOW_THRESHOLD ]] && current_state="low" || current_state="disconnected"
         remain=" ($tstring)"
-        ;;
+      ;;
       *)
         current_state="charged"
-        ;;
+      ;;
     esac
   fi
 
-  if [[ "$OS" == 'Linux' ]] || [[ "$OS" == 'Android' ]]; then
+  if [[ "$__P9K_OS" == 'Linux' ]] || [[ "$__P9K_OS" == 'Android' ]]; then
     local sysp="${ROOT_PREFIX}/sys/class/power_supply"
 
     # Reported BAT0 or BAT1 depending on kernel version
@@ -71,7 +74,7 @@ prompt_battery() {
     [[ $capacity -gt 100 ]] && local bat_percent=100 || local bat_percent=$capacity
     [[ $battery_status =~ Charging || $battery_status =~ Full ]] && local connected=true
     if [[ -z  $connected ]]; then
-      [[ $bat_percent -lt $POWERLEVEL9K_BATTERY_LOW_THRESHOLD ]] && current_state="low" || current_state="disconnected"
+      [[ $bat_percent -lt $P9K_BATTERY_LOW_THRESHOLD ]] && current_state="low" || current_state="disconnected"
     else
       [[ $bat_percent =~ 100 ]] && current_state="charged"
       [[ $bat_percent -lt 100 ]] && current_state="charging"
@@ -88,35 +91,33 @@ prompt_battery() {
   fi
 
   local message
-  # Default behavior: Be verbose!
-  set_default POWERLEVEL9K_BATTERY_VERBOSE true
-  if [[ "$POWERLEVEL9K_BATTERY_VERBOSE" == true ]]; then
+  if [[ "$P9K_BATTERY_VERBOSE" == true ]]; then
     message="$bat_percent%%$remain"
   else
     message="$bat_percent%%"
   fi
 
   # override default icon if we are using battery stages
-  if [[ -n "$POWERLEVEL9K_BATTERY_STAGES" ]]; then
-    local segment=$(( 100.0 / (${#POWERLEVEL9K_BATTERY_STAGES} - 1 ) ))
+  if [[ -n "$P9K_BATTERY_STAGES" ]]; then
+    local segment=$(( 100.0 / (${#P9K_BATTERY_STAGES} - 1 ) ))
     if [[ $segment > 1 ]]; then
       local offset=$(( ($bat_percent / $segment) + 1 ))
       # check if the stages are in an array or a string
-      [[ "${(t)POWERLEVEL9K_BATTERY_STAGES}" =~ "array" ]] && POWERLEVEL9K_BATTERY_ICON="$POWERLEVEL9K_BATTERY_STAGES[$offset]" || POWERLEVEL9K_BATTERY_ICON=${POWERLEVEL9K_BATTERY_STAGES:$offset:1}
+      [[ "${(t)P9K_BATTERY_STAGES}" =~ "array" ]] && P9K_BATTERY_ICON="$P9K_BATTERY_STAGES[$offset]" || P9K_BATTERY_ICON=${P9K_BATTERY_STAGES:$offset:1}
     fi
   fi
-  # return if POWERLEVEL9K_BATTERY_HIDE_ABOVE_THRESHOLD is set and the battery percentage is greater or equal
-  if defined POWERLEVEL9K_BATTERY_HIDE_ABOVE_THRESHOLD && [[ "${bat_percent}" -ge $POWERLEVEL9K_BATTERY_HIDE_ABOVE_THRESHOLD ]]; then
+  # return if P9K_BATTERY_HIDE_ABOVE_THRESHOLD is set and the battery percentage is greater or equal
+  if p9k::defined P9K_BATTERY_HIDE_ABOVE_THRESHOLD && [[ "${bat_percent}" -ge $P9K_BATTERY_HIDE_ABOVE_THRESHOLD ]]; then
     return
   fi
 
-    # override the default color if we are using a color level array
-    if [[ -n "$POWERLEVEL9K_BATTERY_LEVEL_BACKGROUND" ]] && [[ "${(t)POWERLEVEL9K_BATTERY_LEVEL_BACKGROUND}" =~ "array" ]]; then
-      local segment=$(( 100.0 / (${#POWERLEVEL9K_BATTERY_LEVEL_BACKGROUND} - 1 ) ))
-      local offset=$(( ($bat_percent / $segment) + 1 ))
-      "$1_prompt_segment" "$0_${current_state}" "$2" "${POWERLEVEL9K_BATTERY_LEVEL_BACKGROUND[$offset]}" "${battery_states[$current_state]}" "${message}" "BATTERY_ICON"
-    else
-      # Draw the prompt_segment
-      "$1_prompt_segment" "$0_${current_state}" "$2" "${DEFAULT_COLOR}" "${battery_states[$current_state]}" "${message}" "BATTERY_ICON"
-    fi
+  # override the default color if we are using a color level array
+  if [[ -n "$P9K_BATTERY_LEVEL_BACKGROUND" ]] && [[ "${(t)P9K_BATTERY_LEVEL_BACKGROUND}" =~ "array" ]]; then
+    local segment=$(( 100.0 / (${#P9K_BATTERY_LEVEL_BACKGROUND} - 1 ) ))
+    local offset=$(( ($bat_percent / $segment) + 1 ))
+    "__p9k_$1_prompt_segment" "$0_${current_state}" "$2" "${P9K_BATTERY_LEVEL_BACKGROUND[$offset]}" "${battery_states[$current_state]}" "${message}" "BATTERY_ICON"
+  else
+    # Draw the prompt_segment
+    "__p9k_$1_prompt_segment" "$0_${current_state}" "$2" "${DEFAULT_COLOR}" "${battery_states[$current_state]}" "${message}" "BATTERY_ICON"
+  fi
 }

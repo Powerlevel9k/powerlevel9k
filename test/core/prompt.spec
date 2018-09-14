@@ -14,12 +14,12 @@ function setUp() {
 function testSegmentOnRightSide() {
     # Reset RPROMPT, so a running P9K does not interfere with the test
     local RPROMPT=
-    local -a POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS
-    POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(custom_world1 custom_world2)
-    local POWERLEVEL9K_CUSTOM_WORLD1='echo world1'
-    local POWERLEVEL9K_CUSTOM_WORLD2='echo world2'
+    local -a P9K_RIGHT_PROMPT_ELEMENTS
+    P9K_RIGHT_PROMPT_ELEMENTS=(custom_world1 custom_world2)
+    local P9K_CUSTOM_WORLD1='echo world1'
+    local P9K_CUSTOM_WORLD2='echo world2'
 
-    powerlevel9k_prepare_prompts
+    __p9k_prepare_prompts
 
     local reset_attributes=$'\e[00m'
     assertEquals "%f%b%k%F{007}%f%K{007}%F{000} world1 %f%F{000}%f%K{007}%F{000} world2%E%{${reset_attributes}%}" "${(e)RPROMPT}"
@@ -28,24 +28,24 @@ function testSegmentOnRightSide() {
 function testDisablingRightPrompt() {
     # Reset RPROMPT, so a running P9K does not interfere with the test
     local RPROMPT=
-    local -a POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS
-    POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(custom_world1 custom_world2)
-    local POWERLEVEL9K_CUSTOM_WORLD1='echo world1'
-    local POWERLEVEL9K_CUSTOM_WORLD2='echo world2'
-    local POWERLEVEL9K_DISABLE_RPROMPT=true
+    local -a P9K_RIGHT_PROMPT_ELEMENTS
+    P9K_RIGHT_PROMPT_ELEMENTS=(custom_world1 custom_world2)
+    local P9K_CUSTOM_WORLD1='echo world1'
+    local P9K_CUSTOM_WORLD2='echo world2'
+    local P9K_DISABLE_RPROMPT=true
 
-    powerlevel9k_prepare_prompts
+    __p9k_prepare_prompts
 
     assertEquals "" "${(e)RPROMPT}"
 }
 
 function testLeftMultilinePrompt() {
-    local -a POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
-    POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(custom_world1)
-    local POWERLEVEL9K_CUSTOM_WORLD1='echo world1'
-    local POWERLEVEL9K_PROMPT_ON_NEWLINE=true
+    local -a P9K_LEFT_PROMPT_ELEMENTS
+    P9K_LEFT_PROMPT_ELEMENTS=(custom_world1)
+    local P9K_CUSTOM_WORLD1='echo world1'
+    local P9K_PROMPT_ON_NEWLINE=true
 
-    powerlevel9k_prepare_prompts
+    __p9k_prepare_prompts
 
     local nl=$'\n'
     assertEquals "╭─%f%b%k%K{007} %F{000}world1 %k%F{007}%f ${nl}╰─ " "${(e)PROMPT}"
@@ -54,12 +54,12 @@ function testLeftMultilinePrompt() {
 function testRightPromptOnSameLine() {
     # Reset RPROMPT, so a running P9K does not interfere with the test
     local RPROMPT=
-    local -a POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS
-    POWERLEVEL9K_RIGHT_PROMPT_ELEMENTS=(custom_world1)
-    local POWERLEVEL9K_CUSTOM_WORLD1='echo world1'
+    local -a P9K_RIGHT_PROMPT_ELEMENTS
+    P9K_RIGHT_PROMPT_ELEMENTS=(custom_world1)
+    local P9K_CUSTOM_WORLD1='echo world1'
 
-    local POWERLEVEL9K_PROMPT_ON_NEWLINE=true
-    local POWERLEVEL9K_RPROMPT_ON_NEWLINE=false # We want the RPROMPT on the same line as our left prompt
+    local P9K_PROMPT_ON_NEWLINE=true
+    local P9K_RPROMPT_ON_NEWLINE=false # We want the RPROMPT on the same line as our left prompt
 
     # Skip test, as this cannot be tested properly.
     # The "go one line up" instruction does not get
@@ -69,33 +69,33 @@ function testRightPromptOnSameLine() {
     # it fails anyway. :(
     startSkipping
 
-    powerlevel9k_prepare_prompts
+    __p9k_prepare_prompts
     assertEquals "%{\e[1A%}%F{007}%f%K{007}%F{000} world1 %f%{\e[1B%}" "${(e)RPROMPT}"
 }
 
 function testPrefixingFirstLineOnLeftPrompt() {
-    local -a POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
-    POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(custom_world1)
-    local POWERLEVEL9K_CUSTOM_WORLD1='echo world1'
+    local -a P9K_LEFT_PROMPT_ELEMENTS
+    P9K_LEFT_PROMPT_ELEMENTS=(custom_world1)
+    local P9K_CUSTOM_WORLD1='echo world1'
 
-    local POWERLEVEL9K_PROMPT_ON_NEWLINE=true
-    local POWERLEVEL9K_MULTILINE_FIRST_PROMPT_PREFIX='XXX'
+    local P9K_PROMPT_ON_NEWLINE=true
+    local P9K_MULTILINE_FIRST_PROMPT_PREFIX='XXX'
 
-    powerlevel9k_prepare_prompts
+    __p9k_prepare_prompts
 
     local nl=$'\n'
     assertEquals "XXX%f%b%k%K{007} %F{000}world1 %k%F{007}%f ${nl}╰─ " "${(e)PROMPT}"
 }
 
 function testPrefixingSecondLineOnLeftPrompt() {
-    local -a POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
-    POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(custom_world1)
-    local POWERLEVEL9K_CUSTOM_WORLD1='echo world1'
+    local -a P9K_LEFT_PROMPT_ELEMENTS
+    P9K_LEFT_PROMPT_ELEMENTS=(custom_world1)
+    local P9K_CUSTOM_WORLD1='echo world1'
 
-    local POWERLEVEL9K_PROMPT_ON_NEWLINE=true
-    local POWERLEVEL9K_MULTILINE_LAST_PROMPT_PREFIX='XXX'
+    local P9K_PROMPT_ON_NEWLINE=true
+    local P9K_MULTILINE_LAST_PROMPT_PREFIX='XXX'
 
-    powerlevel9k_prepare_prompts
+    __p9k_prepare_prompts
 
     local nl=$'\n'
     assertEquals "╭─%f%b%k%K{007} %F{000}world1 %k%F{007}%f ${nl}XXX" "${(e)PROMPT}"

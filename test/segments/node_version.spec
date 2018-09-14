@@ -10,22 +10,22 @@ function setUp() {
 }
 
 function testNodeVersionSegmentPrintsNothingWithoutNode() {
-    local -a POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
-    POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(node_version custom_world)
-    local POWERLEVEL9K_CUSTOM_WORLD='echo world'
+    local -a P9K_LEFT_PROMPT_ELEMENTS
+    P9K_LEFT_PROMPT_ELEMENTS=(node_version custom_world)
+    local P9K_CUSTOM_WORLD='echo world'
     alias node="nonode 2>/dev/null"
 
     # Load Powerlevel9k
     source powerlevel9k.zsh-theme
 
-    assertEquals "%K{007} %F{000}world %k%F{007}%f " "$(build_left_prompt)"
+    assertEquals "%K{007} %F{000}world %k%F{007}%f " "$(__p9k_build_left_prompt)"
 
     unalias node
 }
 
 function testNodeVersionSegmentWorks() {
-    local -a POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
-    POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(node_version)
+    local -a P9K_LEFT_PROMPT_ELEMENTS
+    P9K_LEFT_PROMPT_ELEMENTS=(node_version)
     node() {
         echo "v1.2.3"
     }
@@ -33,7 +33,7 @@ function testNodeVersionSegmentWorks() {
     # Load Powerlevel9k
     source powerlevel9k.zsh-theme
 
-    assertEquals "%K{002} %F{007}⬢ %f%F{007}1.2.3 %k%F{002}%f " "$(build_left_prompt)"
+    assertEquals "%K{002} %F{007}⬢ %f%F{007}1.2.3 %k%F{002}%f " "$(__p9k_build_left_prompt)"
 
     unfunction node
 }

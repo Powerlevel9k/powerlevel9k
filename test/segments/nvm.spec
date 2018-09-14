@@ -30,19 +30,19 @@ function tearDown() {
 }
 
 function testNvmSegmentPrintsNothingIfNvmIsNotAvailable() {
-  local -a POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
-  POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(nvm custom_world)
-  local POWERLEVEL9K_CUSTOM_WORLD='echo world'
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(nvm custom_world)
+  local P9K_CUSTOM_WORLD='echo world'
 
   # Load Powerlevel9k
   source ${P9K_HOME}/powerlevel9k.zsh-theme
 
-  assertEquals "%K{007} %F{000}world %k%F{007}%f " "$(build_left_prompt)"
+  assertEquals "%K{007} %F{000}world %k%F{007}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testNvmSegmentWorksWithoutHavingADefaultAlias() {
-  local -a POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
-  POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(nvm)
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(nvm)
 
   # Load Powerlevel9k
   source ${P9K_HOME}/powerlevel9k.zsh-theme
@@ -51,13 +51,13 @@ function testNvmSegmentWorksWithoutHavingADefaultAlias() {
     [[ ${1} == 'current' ]] && echo 'v4.6.0' || echo 'v1.4.0'
   }
 
-  assertEquals "%K{005} %F{000}⬢ %f%F{000}4.6.0 %k%F{005}%f " "$(build_left_prompt)"
+  assertEquals "%K{005} %F{000}⬢ %f%F{000}4.6.0 %k%F{005}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testNvmSegmentPrintsNothingWhenOnDefaultVersion() {
-  local -a POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
-  POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(nvm custom_world)
-  local POWERLEVEL9K_CUSTOM_WORLD='echo world'
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(nvm custom_world)
+  local P9K_CUSTOM_WORLD='echo world'
 
   # Load Powerlevel9k
   source ${P9K_HOME}/powerlevel9k.zsh-theme
@@ -66,7 +66,7 @@ function testNvmSegmentPrintsNothingWhenOnDefaultVersion() {
     [[ ${1} == 'current' ]] && echo 'v4.6.0' || echo 'v4.6.0'
   }
 
-  assertEquals "%K{007} %F{000}world %k%F{007}%f " "$(build_left_prompt)"
+  assertEquals "%K{007} %F{000}world %k%F{007}%f " "$(__p9k_build_left_prompt)"
 }
 
 source shunit2/shunit2

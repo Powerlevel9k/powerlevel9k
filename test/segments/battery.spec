@@ -66,7 +66,7 @@ function makeBatterySay() {
 }
 
 function testBatterySegmentIfBatteryIsLowWhileDischargingOnOSX() {
-  local OS='OSX' # Fake OSX
+  local __P9K_OS='OSX' # Fake OSX
   makeBatterySay "Now drawing from 'Battery Power'
  -InternalBattery-0 (id=1234567)	4%; discharging; 0:05 remaining present: true"
 
@@ -74,7 +74,7 @@ function testBatterySegmentIfBatteryIsLowWhileDischargingOnOSX() {
 }
 
 function testBatterySegmentIfBatteryIsLowWhileChargingOnOSX() {
-  local OS='OSX' # Fake OSX
+  local __P9K_OS='OSX' # Fake OSX
   makeBatterySay "Now drawing from 'Battery Power'
  -InternalBattery-0 (id=1234567)	4%; charging; 0:05 remaining present: true"
 
@@ -82,7 +82,7 @@ function testBatterySegmentIfBatteryIsLowWhileChargingOnOSX() {
 }
 
 function testBatterySegmentIfBatteryIsAlmostFullWhileDischargingOnOSX() {
-  local OS='OSX' # Fake OSX
+  local __P9K_OS='OSX' # Fake OSX
   makeBatterySay "Now drawing from 'Battery Power'
  -InternalBattery-0 (id=1234567)	98%; discharging; 3:57 remaining present: true"
 
@@ -90,7 +90,7 @@ function testBatterySegmentIfBatteryIsAlmostFullWhileDischargingOnOSX() {
 }
 
 function testBatterySegmentIfBatteryIsAlmostFullWhileChargingOnOSX() {
-  local OS='OSX' # Fake OSX
+  local __P9K_OS='OSX' # Fake OSX
   makeBatterySay "Now drawing from 'Battery Power'
  -InternalBattery-0 (id=1234567)	98%; charging; 3:57 remaining present: true"
 
@@ -98,7 +98,7 @@ function testBatterySegmentIfBatteryIsAlmostFullWhileChargingOnOSX() {
 }
 
 function testBatterySegmentIfBatteryIsFullOnOSX() {
-  local OS='OSX' # Fake OSX
+  local __P9K_OS='OSX' # Fake OSX
   makeBatterySay "Now drawing from 'AC Power'
  -InternalBattery-0 (id=1234567)	99%; charged; 0:00 remaining present: true"
 
@@ -106,7 +106,7 @@ function testBatterySegmentIfBatteryIsFullOnOSX() {
 }
 
 function testBatterySegmentIfBatteryIsCalculatingOnOSX() {
-  local OS='OSX' # Fake OSX
+  local __P9K_OS='OSX' # Fake OSX
   makeBatterySay "Now drawing from 'Battery Power'
  -InternalBattery-0 (id=1234567)	99%; discharging; (no estimate) present: true"
 
@@ -114,42 +114,42 @@ function testBatterySegmentIfBatteryIsCalculatingOnOSX() {
 }
 
 function testBatterySegmentIfBatteryIsLowWhileDischargingOnLinux() {
-  local OS='Linux' # Fake Linux
+  local __P9K_OS='Linux' # Fake Linux
   makeBatterySay "4" "Discharging"
 
   assertEquals "%K{000} %F{001}🔋 %f%F{001}4%% " "$(prompt_battery left 1 false ${FOLDER})"
 }
 
 function testBatterySegmentIfBatteryIsLowWhileChargingOnLinux() {
-  local OS='Linux' # Fake Linux
+  local __P9K_OS='Linux' # Fake Linux
   makeBatterySay "4" "Charging"
 
   assertEquals "%K{000} %F{003}🔋 %f%F{003}4%% " "$(prompt_battery left 1 false ${FOLDER})"
 }
 
 function testBatterySegmentIfBatteryIsNormalWhileDischargingOnLinux() {
-  local OS='Linux' # Fake Linux
+  local __P9K_OS='Linux' # Fake Linux
   makeBatterySay "10" "Discharging"
 
   assertEquals "%K{000} %F{007}🔋 %f%F{007}10%% " "$(prompt_battery left 1 false ${FOLDER})"
 }
 
 function testBatterySegmentIfBatteryIsNormalWhileChargingOnLinux() {
-  local OS='Linux' # Fake Linux
+  local __P9K_OS='Linux' # Fake Linux
   makeBatterySay "10" "Charging"
 
   assertEquals "%K{000} %F{003}🔋 %f%F{003}10%% " "$(prompt_battery left 1 false ${FOLDER})"
 }
 
 function testBatterySegmentIfBatteryIsFullOnLinux() {
-  local OS='Linux' # Fake Linux
+  local __P9K_OS='Linux' # Fake Linux
   makeBatterySay "100" "Full"
 
   assertEquals "%K{000} %F{002}🔋 %f%F{002}100%% " "$(prompt_battery left 1 false ${FOLDER})"
 }
 
 function testBatterySegmentIfBatteryIsNormalWithAcpiEnabledOnLinux() {
-  local OS='Linux' # Fake Linux
+  local __P9K_OS='Linux' # Fake Linux
   makeBatterySay "50" "Discharging"
   echo "echo 'Batter 0: Discharging, 50%, 01:38:54 remaining'" > ${FOLDER}/usr/bin/acpi
   chmod +x ${FOLDER}/usr/bin/acpi
@@ -166,7 +166,7 @@ function testBatterySegmentIfBatteryIsNormalWithAcpiEnabledOnLinux() {
 }
 
 function testBatterySegmentIfBatteryIsCalculatingWithAcpiEnabledOnLinux() {
-  local OS='Linux' # Fake Linux
+  local __P9K_OS='Linux' # Fake Linux
   makeBatterySay "50" "Discharging"
   # Todo: Include real acpi output!
   echo "echo 'Batter 0: Discharging, 50%, rate remaining'" > ${FOLDER}/usr/bin/acpi

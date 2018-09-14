@@ -7,5 +7,5 @@
 ################################################################
 # Command number (in local history)
 prompt_history() {
-  "$1_prompt_segment" "$0" "$2" "grey50" "$DEFAULT_COLOR" '%h'
+  "__p9k_$1_prompt_segment" "$0" "$2" "grey50" "$DEFAULT_COLOR" '%h'
 }

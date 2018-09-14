@@ -35,7 +35,7 @@ Pages inactive:                         1313411.
     # Load Powerlevel9k
     source ${P9K_HOME}/powerlevel9k.zsh-theme
     source ${P9K_HOME}/segments/ram.p9k
-    local OS="OSX" # Fake OSX
+    local __P9K_OS="OSX" # Fake OSX
 
     assertEquals "%K{003} %F{000}RAM %f%F{000}6.15G " "$(prompt_ram left 1 false ${FOLDER})"
 
@@ -49,7 +49,7 @@ function testRamSegmentWorksOnBsd() {
     # Load Powerlevel9k
     source ${P9K_HOME}/powerlevel9k.zsh-theme
     source ${P9K_HOME}/segments/ram.p9k
-    local OS="BSD" # Fake BSD
+    local __P9K_OS="BSD" # Fake BSD
 
     assertEquals "%K{003} %F{000}RAM %f%F{000}0.29M " "$(prompt_ram left 1 false ${FOLDER})"
 }
@@ -61,7 +61,7 @@ function testRamSegmentWorksOnLinux() {
     # Load Powerlevel9k
     source ${P9K_HOME}/powerlevel9k.zsh-theme
     source ${P9K_HOME}/segments/ram.p9k
-    local OS="Linux" # Fake Linux
+    local __P9K_OS="Linux" # Fake Linux
 
     assertEquals "%K{003} %F{000}RAM %f%F{000}0.29G " "$(prompt_ram left 1 false ${FOLDER})"
 }

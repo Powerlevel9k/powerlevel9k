@@ -4,18 +4,18 @@
 # @source [powerlevel9k](https://github.com/bhilburn/powerlevel9k)
 ##
 
+p9k::set_default P9K_VI_INSERT_MODE_STRING "INSERT"
+p9k::set_default P9K_VI_COMMAND_MODE_STRING "NORMAL"
 ################################################################
 # Vi Mode: show editing mode (NORMAL|INSERT)
-set_default POWERLEVEL9K_VI_INSERT_MODE_STRING "INSERT"
-set_default POWERLEVEL9K_VI_COMMAND_MODE_STRING "NORMAL"
 prompt_vi_mode() {
   case ${KEYMAP} in
     vicmd)
-      "$1_prompt_segment" "$0_NORMAL" "$2" "$DEFAULT_COLOR" "white" "$POWERLEVEL9K_VI_COMMAND_MODE_STRING"
+      "__p9k_$1_prompt_segment" "$0_NORMAL" "$2" "$DEFAULT_COLOR" "white" "$P9K_VI_COMMAND_MODE_STRING"
     ;;
     main|viins|*)
-      if [[ -z $POWERLEVEL9K_VI_INSERT_MODE_STRING ]]; then return; fi
-      "$1_prompt_segment" "$0_INSERT" "$2" "$DEFAULT_COLOR" "blue" "$POWERLEVEL9K_VI_INSERT_MODE_STRING"
+      if [[ -z $P9K_VI_INSERT_MODE_STRING ]]; then return; fi
+      "__p9k_$1_prompt_segment" "$0_INSERT" "$2" "$DEFAULT_COLOR" "blue" "$P9K_VI_INSERT_MODE_STRING"
     ;;
   esac
 }
