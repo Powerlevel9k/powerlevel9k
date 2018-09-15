@@ -100,7 +100,7 @@ fi
 # @noargs
 ##
 __p9k_update_environment_vars() {
-  local envVar varType varName origVar newVar newVal var
+  local envVar varType varName origVar newVar newVal
   local oldVarsFound=false
   for envVar in $(declare); do
     if [[ ${envVar} =~ "POWERLEVEL9K_" ]]; then

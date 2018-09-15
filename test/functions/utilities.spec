@@ -9,6 +9,17 @@ function setUp() {
   # Load Powerlevel9k
   source functions/icons.zsh
   source functions/utilities.zsh
+  ################################################################
+  # Source autoload functions
+  ################################################################
+  local autoload_path="$PWD/functions/autoload"
+  # test if we already autoloaded the functions
+  if [[ ${fpath[(ie)$autoload_path]} -gt ${#fpath} ]]; then
+    fpath=( ${autoload_path} "${fpath[@]}" )
+    autoload -Uz __p9k_segment_should_be_joined
+    autoload -Uz __p9k_truncate_path
+    autoload -Uz __p9k_upsearch
+  fi
 }
 
 function testDefinedFindsDefinedVariable() {
