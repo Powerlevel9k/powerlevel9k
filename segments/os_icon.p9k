@@ -6,19 +6,13 @@
 
 # OS detection
 case "${__P9K_OS}" in
-  Darwin)
+  OSX)
     OS_ICON=$(p9k::print_icon 'APPLE_ICON')
   ;;
-  CYGWIN_NT-* | MSYS_NT-*)
+  Windows)
     OS_ICON=$(p9k::print_icon 'WINDOWS_ICON')
   ;;
-  FreeBSD)
-    OS_ICON=$(p9k::print_icon 'FREEBSD_ICON')
-  ;;
-  OpenBSD)
-    OS_ICON=$(p9k::print_icon 'FREEBSD_ICON')
-  ;;
-  DragonFly)
+  BSD)
     OS_ICON=$(p9k::print_icon 'FREEBSD_ICON')
   ;;
   Linux)

@@ -1,8 +1,8 @@
 ## v0.7.0
 
-  - PR #983
+  - PR #983 (Stage 1)
     - Split the code into separate files for segments and generators
-  - PR #986
+  - PR #986 (Stage 2)
     - Applied coding guidelines
     - Moved all calls to `p9k::set_default` outside of functions so that they are only called at initialization
     - Renamed `POWERLEVEL9K_` variables to `P9K_`
@@ -11,6 +11,18 @@
     - Added test for coreutils installed on OSX
     - Updated `prompt_public_ip` to use coreutils if installed
     - Renamed `get_icon_names` to `show_defined_icons` in preparation for `registerSegment`
+  - PR # (Stage 3)
+    - Moved functions out to autoload.
+    - From `segment/dir.p9k`:
+      - `__p9k_get_unique_path`
+    - From `fcuntions/utilities.zsh`:
+      - `__p9k_segment_should_be_joined`
+      - `__p9k_truncate_path`
+      - `__p9k_upsearch`
+    - Added autoload code to `functions/utilities`
+  - PR # (Stage 4)
+  - PR # (Stage 5)
+  - PR # (Stage 6)
 
 ## v0.6.6
 

@@ -4,31 +4,6 @@
 # @source [powerlevel9k](https://github.com/bhilburn/powerlevel9k)
 ##
 
-################################################################
-# Determine the unique path - this is needed for the
-# truncate_to_unique strategy.
-#
-function __p9k_get_unique_path() {
-  local trunc_path directory test_dir test_dir_length
-  local -a matching
-  local -a paths
-  local cur_path='/'
-  paths=(${(s:/:)1})
-  for directory in ${paths[@]}; do
-    test_dir=''
-    for (( i=0; i < ${#directory}; i++ )); do
-      test_dir+="${directory:$i:1}"
-      matching=("$cur_path"/"$test_dir"*/)
-      if [[ ${#matching[@]} -eq 1 ]]; then
-        break
-      fi
-    done
-    trunc_path+="$test_dir/"
-    cur_path+="$directory/"
-  done
-  echo "${trunc_path: : -1}"
-}
-
 p9k::set_default P9K_DIR_PATH_HIGHLIGHT_BOLD false
 p9k::set_default P9K_DIR_PATH_SEPARATOR "/"
 p9k::set_default P9K_HOME_FOLDER_ABBREVIATION "~"

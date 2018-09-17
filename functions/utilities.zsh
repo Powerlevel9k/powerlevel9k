@@ -6,6 +6,19 @@
 # https://github.com/bhilburn/powerlevel9k
 ################################################################
 
+################################################################
+# Source autoload functions
+################################################################
+local autoload_path="$__P9K_DIRECTORY/functions/autoload"
+# test if we already autoloaded the functions
+if [[ ${fpath[(ie)$autoload_path]} -gt ${#fpath} ]]; then
+  fpath=( ${autoload_path} "${fpath[@]}" )
+  autoload -Uz __p9k_get_unique_path
+  autoload -Uz __p9k_segment_should_be_joined
+  autoload -Uz __p9k_truncate_path
+  autoload -Uz __p9k_upsearch
+fi
+
 ###############################################################
 # description
 #   Determine the OS and version (if applicable).
@@ -87,7 +100,7 @@ fi
 # @noargs
 ##
 __p9k_update_environment_vars() {
-  local envVar varType varName origVar newVar newVal var
+  local envVar varType varName origVar newVar newVal
   local oldVarsFound=false
   for envVar in $(declare); do
     if [[ ${envVar} =~ "POWERLEVEL9K_" ]]; then
@@ -236,145 +249,4 @@ __p9k_print_deprecation_warning() {
       print -P "%F{yellow}Warning!%f The '$key' segment is deprecated. Use '%F{blue}${raw_deprecated_segments[$key]}%f' instead. For more informations, have a look at the CHANGELOG.md."
     fi
   done
-}
-
-# A helper function to determine if a segment should be
-# joined or promoted to a full one.
-# Takes three arguments:
-#   * $1: The array index of the current segment
-#   * $2: The array index of the last printed segment
-#   * $3: The array of segments of the left or right prompt
-function __p9k_segment_should_be_joined() {
-  local current_index=$1
-  local last_segment_index=$2
-  # Explicitly split the elements by whitespace.
-  local -a elements
-  elements=(${=3})
-
-  local current_segment=${elements[$current_index]}
-  local joined=false
-  if [[ ${current_segment[-7,-1]} == '_joined' ]]; then
-    joined=true
-    # promote segment to a full one, if the predecessing full segment
-    # was conditional. So this can only be the case for segments that
-    # are not our direct predecessor.
-    if (( $(($current_index - $last_segment_index)) > 1)); then
-      # Now we have to examine every previous segment, until we reach
-      # the last printed one (found by its index). This is relevant if
-      # all previous segments are joined. Then we want to join our
-      # segment as well.
-      local examined_index=$((current_index - 1))
-      while (( $examined_index > $last_segment_index )); do
-        local previous_segment=${elements[$examined_index]}
-        # If one of the examined segments is not joined, then we know
-        # that the current segment should not be joined, as the target
-        # segment is the wrong one.
-        if [[ ${previous_segment[-7,-1]} != '_joined' ]]; then
-          joined=false
-          break
-        fi
-        examined_index=$((examined_index - 1))
-      done
-    fi
-  fi
-
-  # Return 1 means error; return 0 means no error. So we have
-  # to invert $joined
-  if [[ "$joined" == "true" ]]; then
-    return 0
-  else
-    return 1
-  fi
-}
-
-################################################################
-# Given a directory path, truncate it according to the settings.
-# Parameters:
-#   * $1 Path: string - the directory path to be truncated
-#   * $2 Length: integer - length to truncate to
-#   * $3 Delimiter: string - the delimiter to use
-#   * $4 From: string - "right" | "middle". If omited, assumes right.
-function __p9k_truncate_path() {
-  # if the current path is not 1 character long (e.g. "/" or "~")
-  if (( ${#1} > 1 )); then
-    # convert $2 from string to integer
-    2=$(( $2 ))
-    # set $3 to "" if not defined
-    [[ -z $3 ]] && 3="" || 3=$(echo -n $3)
-    # set $4 to "right" if not defined
-    [[ -z $4 ]] && 4="right"
-    # create a variable for the truncated path.
-    local trunc_path
-    # if the path is in the home folder, add "~/" to the start otherwise "/"
-    [[ $1 == "~"* ]] && trunc_path='~/' || trunc_path='/'
-    # split the path into an array using "/" as the delimiter
-    local paths=$1
-    paths=(${(s:/:)${paths//"~\/"/}})
-    # declare locals for the directory being tested and its length
-    local test_dir test_dir_length
-    # do the needed truncation
-    case $4 in
-      right)
-        # include the delimiter length in the threshhold
-        local threshhold=$(( $2 + ${#3} ))
-        # loop through the paths
-        for (( i=1; i<${#paths}; i++ )); do
-          # get the current directory value
-          test_dir=$paths[$i]
-          test_dir_length=${#test_dir}
-          # only truncate if the resulting truncation will be shorter than
-          # the truncation + delimiter length and at least 3 characters
-          if (( $test_dir_length > $threshhold )) && (( $test_dir_length > 3 )); then
-            # use the first $2 characters and the delimiter
-            trunc_path+="${test_dir:0:$2}$3/"
-          else
-            # use the full path
-            trunc_path+="${test_dir}/"
-          fi
-        done
-      ;;
-      middle)
-        # we need double the length for start and end truncation + delimiter length
-        local threshhold=$(( $2 * 2 ))
-        # create a variable for the start of the end truncation
-        local last_pos
-        # loop through the paths
-        for (( i=1; i<${#paths}; i++ )); do
-          # get the current directory value
-          test_dir=$paths[$i]
-          test_dir_length=${#test_dir}
-          # only truncate if the resulting truncation will be shorter than
-          # the truncation + delimiter length
-          if (( $test_dir_length > $threshhold )); then
-            # use the first $2 characters, the delimiter and the last $2 characters
-            last_pos=$(( $test_dir_length - $2 ))
-            trunc_path+="${test_dir:0:$2}$3${test_dir:$last_pos:$test_dir_length}/"
-          else
-            # use the full path
-            trunc_path+="${test_dir}/"
-          fi
-        done
-      ;;
-    esac
-    # return the truncated path + the current directory
-    echo $trunc_path${1:t}
-  else # current path is 1 character long (e.g. "/" or "~")
-    echo $1
-  fi
-}
-
-# Search recursively in parent folders for given file.
-function __p9k_upsearch() {
-  if [[ "$PWD" == "$HOME" || "$PWD" == "/" ]]; then
-    echo "$PWD"
-  elif test -e "$1"; then
-    pushd .. > /dev/null
-    __p9k_upsearch "$1"
-    popd > /dev/null
-    echo "$PWD"
-  else
-    pushd .. > /dev/null
-    __p9k_upsearch "$1"
-    popd > /dev/null
-  fi
 }
