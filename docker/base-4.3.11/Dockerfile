@@ -13,7 +13,8 @@ RUN \
   ruby \
   python \
   python-virtualenv \
-  sudo
+  sudo \
+  vim
 
 RUN adduser --shell /bin/zsh --comment 'fred' --user-group fred
 

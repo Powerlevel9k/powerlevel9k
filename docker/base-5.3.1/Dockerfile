@@ -18,7 +18,8 @@ RUN \
   python \
   python-virtualenv \
   sudo \
-  locales
+  locales \
+  vim
 
 RUN adduser --shell /bin/zsh --gecos 'fred' --disabled-password fred
 # Locale generation is different in debian. We need to enable en_US

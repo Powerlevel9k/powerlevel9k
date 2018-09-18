@@ -16,7 +16,8 @@ RUN \
   python \
   python-virtualenv \
   sudo \
-  locales
+  locales \
+  vim
 
 RUN adduser --shell /bin/zsh --gecos 'fred' --disabled-password fred
 RUN locale-gen "en_US.UTF-8"

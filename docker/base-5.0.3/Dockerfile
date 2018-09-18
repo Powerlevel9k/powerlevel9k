@@ -14,7 +14,8 @@ RUN \
   node \
   ruby \
   python \
-  python-virtualenv
+  python-virtualenv \
+  vim
 
 RUN adduser --shell /bin/zsh --gecos 'fred' --disabled-password fred
 RUN locale-gen "en_US.UTF-8"
