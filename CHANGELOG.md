@@ -41,7 +41,6 @@
       - Updated all segments to make use of `p9k::register_icon` and `p9k::register_segment`
     - `test/*`
       - Updated all tests for the new release
-      - Added functionality to `suite.spec` to allow more detailed local tests.
 
 ## v0.6.6
 

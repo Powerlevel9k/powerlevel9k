@@ -151,7 +151,7 @@ function testBatterySegmentIfBatteryIsFullOnLinux() {
 function testBatterySegmentIfBatteryIsNormalWithAcpiEnabledOnLinux() {
   local __P9K_OS='Linux' # Fake Linux
   makeBatterySay "50" "Discharging"
-  echo "echo 'Batter 0: Discharging, 50%, 01:38:54 remaining'" > ${FOLDER}/usr/bin/acpi
+  echo "echo 'Battery 0: Discharging, 50%, 01:38:54 remaining'" > ${FOLDER}/usr/bin/acpi
   chmod +x ${FOLDER}/usr/bin/acpi
   # For running on Mac, we need to mock date :(
   [[ -f /usr/local/bin/gdate ]] && alias date=gdate
@@ -165,7 +165,7 @@ function testBatterySegmentIfBatteryIsCalculatingWithAcpiEnabledOnLinux() {
   local __P9K_OS='Linux' # Fake Linux
   makeBatterySay "50" "Discharging"
   # Todo: Include real acpi output!
-  echo "echo 'Batter 0: Discharging, 50%, rate remaining'" > ${FOLDER}/usr/bin/acpi
+  echo "echo 'Battery 0: Discharging, 50%, rate remaining'" > ${FOLDER}/usr/bin/acpi
   chmod +x ${FOLDER}/usr/bin/acpi
 
   assertEquals "%K{000} %F{015}🔋 %f%F{015}50%% (...) " "$(prompt_battery left 1 false ${FOLDER})"

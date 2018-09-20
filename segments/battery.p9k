@@ -36,22 +36,25 @@ prompt_battery() {
 
   if [[ $__P9K_OS =~ OSX && -f "${ROOT_PREFIX}"/usr/bin/pmset && -x "${ROOT_PREFIX}"/usr/bin/pmset ]]; then
     # obtain battery information from system
-    local raw_data="$(${ROOT_PREFIX}/usr/bin/pmset -g batt | awk 'FNR==2{print}')"
+    # split lines into an array
+    local raw_data=("${(@f)$(/usr/bin/pmset -g batt)}")
+    # use only second line
+    raw_data=${raw_data[2]}
     # return if there is no battery on system
-    [[ -z $(echo $raw_data | grep "InternalBattery") ]] && return
+    [[ ! $raw_data =~ "InternalBattery" ]] && return
 
     # Time remaining on battery operation (charging/discharging)
-    local tstring=$(echo $raw_data | awk -F ';' '{print $3}' | awk '{print $1}')
+    local tstring=${${(s: :)${${(s:; :)raw_data}[3]}}[1]}
     # If time has not been calculated by system yet
     [[ $tstring =~ '(\(no|not)' ]] && tstring="..."
 
     # percent of battery charged
     typeset -i 10 bat_percent
-    bat_percent=$(echo $raw_data | grep -o '[0-9]*%' | sed 's/%//')
+    bat_percent=${${${(s: :)${${(s:; :)raw_data}[1]}}[2]##*)}//[^0-9]/}
 
     local remain=""
     # Logic for string output
-    case $(echo $raw_data | awk -F ';' '{print $2}' | awk '{$1=$1};1') in
+    case "${${(s:; :)raw_data}[2]}" in
       # for a short time after attaching power, status will be 'AC attached;'
       'charging'|'finishing charge'|'AC attached')
         current_state="charging"
@@ -91,8 +94,8 @@ prompt_battery() {
       [[ $bat_percent -lt 100 ]] && current_state="charging"
     fi
     if [[ -f ${ROOT_PREFIX}/usr/bin/acpi ]]; then
-      local time_remaining=$(${ROOT_PREFIX}/usr/bin/acpi | awk '{ print $5 }')
-      if [[ $time_remaining =~ rate ]]; then
+      local time_remaining=${${(s: :)$(${ROOT_PREFIX}/usr/bin/acpi)}[5]}
+      if [[ $time_remaining =~ "rate" ]]; then
         local tstring="..."
       elif [[ $time_remaining =~ "[[:digit:]]+" ]]; then
         local tstring=${(f)$(date -u -d "$(echo $time_remaining)" +%k:%M 2> /dev/null)}
