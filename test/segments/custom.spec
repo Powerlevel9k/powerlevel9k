@@ -16,7 +16,6 @@ function testCustomDirectOutputSegment() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(custom_world)
   local P9K_CUSTOM_WORLD="echo world"
-  p9k::register_segment "WORLD"
 
   assertEquals "%K{015} %F{000}world %k%F{015}%f " "$(__p9k_build_left_prompt)"
 }
@@ -28,7 +27,6 @@ function testCustomClosureSegment() {
     echo "world"
   }
   local P9K_CUSTOM_WORLD='p9k_hello_world'
-  p9k::register_segment "WORLD"
 
   assertEquals "%K{015} %F{000}world %k%F{015}%f " "$(__p9k_build_left_prompt)"
 }

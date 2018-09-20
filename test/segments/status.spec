@@ -19,7 +19,6 @@ function setUp() {
 
 function testStatusPrintsNothingIfReturnCodeIsZeroAndVerboseIsUnset() {
   local P9K_CUSTOM_WORLD='echo world'
-  p9k::register_segment "WORLD"
   local P9K_LEFT_PROMPT_ELEMENTS=(status custom_world)
   local P9K_STATUS_VERBOSE=false
   local P9K_STATUS_SHOW_PIPESTATUS=false

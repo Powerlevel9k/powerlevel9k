@@ -40,7 +40,6 @@ function testRust() {
 function testRustPrintsNothingIfRustIsNotAvailable() {
   alias rustc=""
   P9K_CUSTOM_WORLD='echo world'
-  p9k::register_segment "WORLD"
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(custom_world rust_version)
 

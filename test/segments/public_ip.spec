@@ -42,7 +42,6 @@ function testPublicIpSegmentPrintsNothingByDefaultIfHostIsNotAvailable() {
   P9K_LEFT_PROMPT_ELEMENTS=(public_ip custom_world)
   local P9K_PUBLIC_IP_HOST='http://unknown.xyz'
   local P9K_CUSTOM_WORLD='echo world'
-  p9k::register_segment "WORLD"
   # We need to overwrite dig, as this is a fallback method that
   # uses an alternative host.
   alias dig='nodig'

@@ -15,7 +15,6 @@ function testSshSegmentPrintsNothingIfNoSshConnection() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(ssh custom_world)
   local P9K_CUSTOM_WORLD='echo "world"'
-  p9k::register_segment "WORLD"
   local P9K_SSH_ICON="ssh-icon"
   source segments/ssh.p9k
   # Weak test: Emulate No SSH connection by unsetting

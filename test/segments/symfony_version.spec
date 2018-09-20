@@ -33,7 +33,6 @@ function testSymfonyVersionSegmentPrintsNothingIfPhpIsNotAvailable() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(symfony2_version custom_world)
   local P9K_CUSTOM_WORLD='echo world'
-  p9k::register_segment "WORLD"
   alias php="nophp"
 
   assertEquals "%K{015} %F{000}world %k%F{015}%f " "$(__p9k_build_left_prompt)"
@@ -48,7 +47,6 @@ function testSymfonyVersionSegmentPrintsNothingIfSymfonyIsNotAvailable() {
   # To sucessfully execute this test, we just need to
   # navigate into a folder that does not contain symfony.
   local P9K_CUSTOM_WORLD='echo world'
-  p9k::register_segment "WORLD"
 
   assertEquals "%K{015} %F{000}world %k%F{015}%f " "$(__p9k_build_left_prompt)"
 }
@@ -57,7 +55,6 @@ function testSymfonyVersionPrintsNothingIfPhpThrowsAnError() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(symfony2_version custom_world)
   local P9K_CUSTOM_WORLD='echo world'
-  p9k::register_segment "WORLD"
   mkdir app
   touch app/AppKernel.php
   function php() {
