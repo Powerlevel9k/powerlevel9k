@@ -37,7 +37,7 @@ prompt_battery() {
   if [[ $__P9K_OS =~ OSX && -f "${ROOT_PREFIX}"/usr/bin/pmset && -x "${ROOT_PREFIX}"/usr/bin/pmset ]]; then
     # obtain battery information from system
     # split lines into an array
-    local raw_data=("${(@f)$(/usr/bin/pmset -g batt)}")
+    local raw_data=("${(@f)$(${ROOT_PREFIX}/usr/bin/pmset -g batt)}")
     # use only second line
     raw_data=${raw_data[2]}
     # return if there is no battery on system
