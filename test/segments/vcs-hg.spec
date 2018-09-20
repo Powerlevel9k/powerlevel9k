@@ -143,13 +143,13 @@ function testActionHintWorks() {
 function testShorteningCommitHashWorks() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(vcs)
-  local P9K_SHOW_CHANGESET=true
-  local P9K_CHANGESET_HASH_LENGTH='4'
+  local P9K_VCS_SHOW_CHANGESET=true
+  local P9K_VCS_CHANGESET_HASH_LENGTH='4'
 
   touch "file.txt"
   hg add file.txt
   hg commit -m "Add File" 1>/dev/null
-  local hash=$(hg id | head -c ${P9K_CHANGESET_HASH_LENGTH})
+  local hash=$(hg id | head -c ${P9K_VCS_CHANGESET_HASH_LENGTH})
 
   # Load Powerlevel9k
   source ${P9K_HOME}/powerlevel9k.zsh-theme
@@ -164,8 +164,8 @@ function testShorteningCommitHashWorks() {
 function testShorteningCommitHashIsNotShownIfShowChangesetIsFalse() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(vcs)
-  local P9K_SHOW_CHANGESET=false
-  local P9K_CHANGESET_HASH_LENGTH='4'
+  local P9K_VCS_SHOW_CHANGESET=false
+  local P9K_VCS_CHANGESET_HASH_LENGTH='4'
 
   touch "file.txt"
   hg add file.txt

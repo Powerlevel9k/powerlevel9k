@@ -11,18 +11,35 @@
     - Added test for coreutils installed on OSX
     - Updated `prompt_public_ip` to use coreutils if installed
     - Renamed `get_icon_names` to `show_defined_icons` in preparation for `registerSegment`
-  - PR # (Stage 3)
+  - PR #989 (Stage 3)
     - Moved functions out to autoload.
     - From `segment/dir.p9k`:
       - `__p9k_get_unique_path`
-    - From `fcuntions/utilities.zsh`:
+    - From `functions/utilities.zsh`:
       - `__p9k_segment_should_be_joined`
       - `__p9k_truncate_path`
       - `__p9k_upsearch`
     - Added autoload code to `functions/utilities`
   - PR # (Stage 4)
+    - Renamed all variables to match their segments
+    - Added autoload functions:
+      - `__p9k_segment_should_be_printed`
+      - `__p9k_update_var_name`
+    - `powerlevel0k.zsh-theme`:
+      - Added `__p9k_print_deprecation_var_warning` to warn users of renamed variables and `__p9k_update_var_name` to automatically change the variables for users
+    - `functions/colors.zsh`:
+      - Added color aliases to `__P9K_COLORS`
+    - `functions/icons.zsh`:
+      - Added `__P9K_ICONS` to cache icons
+      - Added `__P9K_DATA` to cache segment formatting data
+      - Added `p9k::register_icon` and `p9k::register_segment` to handle icon and segment definitions and cache them.
+    - `functions/utilities.zsh`:
+      - Changed autoload, OS detection, and terminal detection code into private functions (useful to call during development).
+    - `generator/default.zsh`:
+      - Updated code to make use of cached data
+    - `segments/*`:
+      - Updated all segments to make use of `p9k::register_icon` and `p9k::register_segment`
   - PR # (Stage 5)
-  - PR # (Stage 6)
 
 ## v0.6.6
 

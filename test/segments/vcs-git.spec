@@ -339,8 +339,8 @@ function testOutgoingHintWorks() {
 function testShorteningCommitHashWorks() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(vcs)
-  local P9K_SHOW_CHANGESET=true
-  local P9K_CHANGESET_HASH_LENGTH='4'
+  local P9K_VCS_SHOW_CHANGESET=true
+  local P9K_VCS_CHANGESET_HASH_LENGTH='4'
 
   touch "file.txt"
   git add file.txt
@@ -359,8 +359,8 @@ function testShorteningCommitHashWorks() {
 function testShorteningCommitHashIsNotShownIfShowChangesetIsFalse() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(vcs)
-  local P9K_SHOW_CHANGESET=false
-  local P9K_CHANGESET_HASH_LENGTH='4'
+  local P9K_VCS_SHOW_CHANGESET=false
+  local P9K_VCS_CHANGESET_HASH_LENGTH='4'
 
   touch "file.txt"
   git add file.txt

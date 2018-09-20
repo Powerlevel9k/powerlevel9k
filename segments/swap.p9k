@@ -5,7 +5,21 @@
 ##
 
 ################################################################
-# Segment to display Swap information
+# Register segment
+# Parameters:
+#   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
+#                                                                                                                  
+p9k::register_segment "SWAP" "" "yellow" "$DEFAULT_COLOR"  'SWP'  $'\uE87D'  $'\uF0E4'  '\u'${CODEPOINT_OF_AWESOME_DASHBOARD}  $'\uF464'
+
+################################################################
+# @description
+#   Display information the swap file.
+##
+# @args
+#   $1 string Alignment - left | right
+#   $2 integer Segment index
+#   $3 boolean Whether the segment should be joined
+##
 prompt_swap() {
   local ROOT_PREFIX="${4}"
   local swap_used=0
@@ -16,7 +30,7 @@ prompt_swap() {
     raw_swap_used=$(sysctl vm.swapusage | grep -o "used\s*=\s*[0-9,.A-Z]*" | grep -o "[0-9,.A-Z]*$")
 
     typeset -F 2 swap_used
-    swap_used=${$(echo $raw_swap_used | grep -o "[0-9,.]*")//,/.}
+    swap_used=${$(echo ${raw_swap_used} | grep -o "[0-9,.]*")//,/.}
     # Replace comma
     swap_used=${swap_used//,/.}
 
@@ -28,5 +42,5 @@ prompt_swap() {
     base='K'
   fi
 
-  "__p9k_$1_prompt_segment" "$0" "$2" "yellow" "$DEFAULT_COLOR" "$(p9k::print_size_human_readable "$swap_used" $base)" 'SWAP_ICON'
+  p9k::prepare_segment "$0" "" $1 "$2" $3 "$(p9k::print_size_human_readable "$swap_used" $base)"
 }

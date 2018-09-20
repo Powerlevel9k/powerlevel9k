@@ -1,50 +1,60 @@
 # vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
 ################################################################
-# Color functions
-# This file holds some color-functions for
-# the powerlevel9k-ZSH-theme
-# https://github.com/bhilburn/powerlevel9k
-################################################################
+# @title powerlevel9k Color Functions
+# @source [powerlevel9k](https://github.com/bhilburn/powerlevel9k)
+##
+# @info
+#   This file contains some color-functions for powerlevel9k.
+##
 
 typeset -gAh __P9K_COLORS
 # https://jonasjacek.github.io/colors/
 # use color names by default to allow dark/light themes to adjust colors based on names
+# http://plumbum.readthedocs.io/en/latest/colors.html
+# alternate color names assigned where there are duplicates.
 __P9K_COLORS=(
   black 000
   red 001
+  maroon 001 # alt name
   green 002
   yellow 003
+  olive 003 # alt name
   blue 004
+  navy 004 # alt name
   magenta 005
   cyan 006
-  white 007
-  grey 008
-  maroon 009
-  lime 010
-  olive 011
-  navy 012
-  fuchsia 013
-  purple 013
-  aqua 014
-  teal 014
-  silver 015
+  teal 006 # alt name
+  lightgrey 007
+  silver 007 # alt name
+  darkgrey 008
+  grey 008 # alt name
+  lightred 009
+  lightgreen 010
+  lime 010 # alt name
+  lightyellow 011
+  lightblue 012
+  lightmagenta 013
+  fuchsia 013 # alt name
+  lightcyan 014
+  aqua 014 # alt name
+  white 015
   grey0 016
   navyblue 017
   darkblue 018
   blue3 019
-  blue3 020
+  blue3a 020
   blue1 021
   darkgreen 022
   deepskyblue4 023
-  deepskyblue4 024
-  deepskyblue4 025
+  deepskyblue4a 024
+  deepskyblue4b 025
   dodgerblue3 026
   dodgerblue2 027
   green4 028
   springgreen4 029
   turquoise4 030
   deepskyblue3 031
-  deepskyblue3 032
+  deepskyblue3a 032
   dodgerblue1 033
   green3 034
   springgreen3 035
@@ -52,14 +62,14 @@ __P9K_COLORS=(
   lightseagreen 037
   deepskyblue2 038
   deepskyblue1 039
-  green3 040
-  springgreen3 041
+  green3a 040
+  springgreen3a 041
   springgreen2 042
   cyan3 043
   darkturquoise 044
   turquoise2 045
   green1 046
-  springgreen2 047
+  springgreen2a 047
   springgreen1 048
   mediumspringgreen 049
   cyan2 050
@@ -67,14 +77,14 @@ __P9K_COLORS=(
   darkred 052
   deeppink4 053
   purple4 054
-  purple4 055
+  purple4a 055
   purple3 056
   blueviolet 057
   orange4 058
   grey37 059
   mediumpurple4 060
   slateblue3 061
-  slateblue3 062
+  slateblue3a 062
   royalblue1 063
   chartreuse4 064
   darkseagreen4 065
@@ -83,34 +93,34 @@ __P9K_COLORS=(
   steelblue3 068
   cornflowerblue 069
   chartreuse3 070
-  darkseagreen4 071
+  darkseagreen4a 071
   cadetblue 072
-  cadetblue 073
+  cadetbluea 073
   skyblue3 074
   steelblue1 075
-  chartreuse3 076
+  chartreuse3a 076
   palegreen3 077
   seagreen3 078
   aquamarine3 079
   mediumturquoise 080
-  steelblue1 081
-  chartreuse2 082
+  steelblue1a 081
+  chartreuse2a 082
   seagreen2 083
   seagreen1 084
-  seagreen1 085
+  seagreen1a 085
   aquamarine1 086
   darkslategray2 087
-  darkred 088
-  deeppink4 089
+  darkreda 088
+  deeppink4a 089
   darkmagenta 090
-  darkmagenta 091
+  darkmagentaa 091
   darkviolet 092
   purple 093
-  orange4 094
+  orange4a 094
   lightpink4 095
   plum4 096
   mediumpurple3 097
-  mediumpurple3 098
+  mediumpurple3a 098
   slateblue1 099
   yellow4 100
   wheat4 101
@@ -118,30 +128,30 @@ __P9K_COLORS=(
   lightslategrey 103
   mediumpurple 104
   lightslateblue 105
-  yellow4 106
+  yellow4a 106
   darkolivegreen3 107
   darkseagreen 108
   lightskyblue3 109
-  lightskyblue3 110
+  lightskyblue3a 110
   skyblue2 111
   chartreuse2 112
-  darkolivegreen3 113
-  palegreen3 114
+  darkolivegreen3a 113
+  palegreen3a 114
   darkseagreen3 115
   darkslategray3 116
   skyblue1 117
   chartreuse1 118
-  lightgreen 119
-  lightgreen 120
+  lightgreena 119
+  lightgreenb 120
   palegreen1 121
-  aquamarine1 122
+  aquamarine1a 122
   darkslategray1 123
   red3 124
-  deeppink4 125
+  deeppink4b 125
   mediumvioletred 126
   magenta3 127
-  darkviolet 128
-  purple 129
+  darkvioleta 128
+  purplea 129
   darkorange3 130
   indianred 131
   hotpink3 132
@@ -152,7 +162,7 @@ __P9K_COLORS=(
   lightsalmon3 137
   rosybrown 138
   grey63 139
-  mediumpurple2 140
+  mediumpurple2a 140
   mediumpurple1 141
   gold3 142
   darkkhaki 143
@@ -161,42 +171,42 @@ __P9K_COLORS=(
   lightsteelblue3 146
   lightsteelblue 147
   yellow3 148
-  darkolivegreen3 149
-  darkseagreen3 150
+  darkolivegreen3b 149
+  darkseagreen3a 150
   darkseagreen2 151
   lightcyan3 152
   lightskyblue1 153
   greenyellow 154
   darkolivegreen2 155
-  palegreen1 156
-  darkseagreen2 157
+  palegreen1a 156
+  darkseagreen2a 157
   darkseagreen1 158
   paleturquoise1 159
-  red3 160
+  red3a 160
   deeppink3 161
-  deeppink3 162
-  magenta3 163
-  magenta3 164
+  deeppink3a 162
+  magenta3a 163
+  magenta3b 164
   magenta2 165
-  darkorange3 166
-  indianred 167
-  hotpink3 168
+  darkorange3a 166
+  indianreda 167
+  hotpink3a 168
   hotpink2 169
   orchid 170
   mediumorchid1 171
   orange3 172
-  lightsalmon3 173
+  lightsalmon3a 173
   lightpink3 174
   pink3 175
   plum3 176
   violet 177
-  gold3 178
+  gold3a 178
   lightgoldenrod3 179
   tan 180
   mistyrose3 181
   thistle3 182
   plum2 183
-  yellow3 184
+  yellow3a 184
   khaki3 185
   lightgoldenrod2 186
   lightyellow3 187
@@ -204,22 +214,22 @@ __P9K_COLORS=(
   lightsteelblue1 189
   yellow2 190
   darkolivegreen1 191
-  darkolivegreen1 192
-  darkseagreen1 193
+  darkolivegreen1a 192
+  darkseagreen1a 193
   honeydew2 194
   lightcyan1 195
   red1 196
   deeppink2 197
   deeppink1 198
-  deeppink1 199
-  magenta2 200
+  deeppink1a 199
+  magenta2a 200
   magenta1 201
   orangered1 202
   indianred1 203
-  indianred1 204
+  indianred1a 204
   hotpink 205
-  hotpink 206
-  mediumorchid1 207
+  hotpinka 206
+  mediumorchid1a 207
   darkorange 208
   salmon1 209
   lightcoral 210
@@ -233,8 +243,8 @@ __P9K_COLORS=(
   pink1 218
   plum1 219
   gold1 220
-  lightgoldenrod2 221
-  lightgoldenrod2 222
+  lightgoldenrod2a 221
+  lightgoldenrod2b 222
   navajowhite1 223
   mistyrose1 224
   thistle1 225
@@ -270,19 +280,27 @@ __P9K_COLORS=(
   grey93 255
 )
 
+################################################################
+# @description
+#   This function checks if the terminal supports 256 colors.
+#   If it doesn't, an error message is displayed.
+##
+# @noargs
+##
+# @note
+#   You can bypass this check by setting `P9K_IGNORE_TERM_COLORS=true`.
+##
 function __p9k_term_colors() {
-  if [[ $P9K_IGNORE_TERM_COLORS == true ]]; then
-    return
-  fi
+  [[ $P9K_IGNORE_TERM_COLORS == true ]] && return
 
-  local term_colors
+  local __p9k_term_colors
 
   if which tput &>/dev/null; then
-	term_colors=$(tput colors)
+	__p9k_term_colors=$(tput colors)
   else
-	term_colors=$(echotc Co)
+	__p9k_term_colors=$(echotc Co)
   fi
-  if (( ! $? && ${term_colors:-0} < 256 )); then
+  if (( ! $? && ${__p9k_term_colors:-0} < 256 )); then
     print -P "%F{red}WARNING!%f Your terminal appears to support fewer than 256 colors!"
     print -P "If your terminal supports 256 colors, please export the appropriate environment variable"
     print -P "_before_ loading this theme in your \~\/.zshrc. In most terminal emulators, putting"
@@ -290,27 +308,61 @@ function __p9k_term_colors() {
   fi
 }
 
-# get the proper color code if it does not exist as a name.
+################################################################
+# @description
+#   This function gets the proper color code if it does not exist as a name.
+##
+# @args
+#   $1 misc Color to check (as a number or string)
+##
 function p9k::get_color() {
-  # If Color is not numerical, try to get the color code.
-  if [[ "$1" != <-> ]]; then
-    1=$(p9k::get_color_code $1)
-  fi
+  # no need to check numerical values
+  [[ "$1" != <-> ]] && 1=$(p9k::get_color_code $1)
   echo -n "$1"
 }
 
-# empty paramenter resets (stops) background color
+################################################################
+# @description
+#   Function to set the background color.
+##
+# @args
+#   $1 misc The background color.
+##
+# @returns
+#   An escape code string for (re)setting the background color.
+##
+# @note
+#   An empty paramenter resets (stops) background color.
+##
 function p9k::background_color() {
-  echo -n "%K{$(p9k::get_color $1)}"
+  [[ -n $1 ]] && echo -n "%K{$(p9k::get_color $1)}" || echo -n "%k"
 }
 
-# empty paramenter resets (stops) foreground color
+################################################################
+# @description
+#   Function to set the foreground color.
+##
+# @args
+#   $1 misc The foreground color.
+##
+# @returns
+#   An escape code string for (re)setting the foreground color.
+##
+# @note
+#   An empty paramenter resets (stops) foreground color.
+##
 function p9k::foreground_color() {
-  echo -n "%F{$(p9k::get_color $1)}"
+  [[ -n $1 ]] && echo -n "%F{$(p9k::get_color $1)}" || echo -n "%f"
 }
 
-# Get numerical color codes. That way we translate ANSI codes
-# into ZSH-Style color codes.
+################################################################
+# @description
+#   Function to get numerical color codes. That way we translate
+#   ANSI codes into ZSH-Style color codes.
+##
+# @args
+#   $1 misc Number or string of color.
+##
 function p9k::get_color_code() {
   # Early exit: Check if given value is already numerical
   if [[ "$1" == <-> ]]; then
@@ -350,7 +402,14 @@ function p9k::get_color_code() {
   esac
 }
 
-# Check if two colors are equal, even if one is specified as ANSI code.
+################################################################
+# @description
+#   Check if two colors are equal, even if one is specified as ANSI code.
+##
+# @args
+#   $1 misc First color (number or string)
+#   $2 misc Second color (number or string)
+##
 function p9k::is_same_color() {
   if [[ "$1" == "NONE" || "$2" == "NONE" ]]; then
     return 1

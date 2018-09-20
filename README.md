@@ -353,8 +353,8 @@ end of the hostname.
 | Variable | Default Value | Description |
 |----------|---------------|-------------|
 |`DEFAULT_USER`|None|Username to consider a "default context" (you can also set `$USER`).|
-|`P9K_ALWAYS_SHOW_CONTEXT`|false|Always show this segment, including $USER and hostname.|
-|`P9K_ALWAYS_SHOW_USER`|false|Always show the username, but conditionalize the hostname.|
+|`P9K_CONTEXT_ALWAYS_SHOW`|false|Always show this segment, including $USER and hostname.|
+|`P9K_CONTEXT_ALWAYS_SHOW_USER`|false|Always show the username, but conditionalize the hostname.|
 |`P9K_CONTEXT_TEMPLATE`|%n@%m|Default context prompt (username@machine). Refer to the [ZSH Documentation](http://zsh.sourceforge.net/Doc/Release/Prompt-Expansion.html) for all possible expansions, including deeper host depths.|
 
 This segment can have different states. They might help you to visualize your
@@ -390,10 +390,10 @@ Powerline" fonts, there are additional glyphs, as well:
 
 To turn off these icons you could set these variables to an empty string.
 ```zsh
-P9K_HOME_ICON=''
-P9K_HOME_SUB_ICON=''
+P9K_DIR_HOME_ICON=''
+P9K_DIR_HOME_SUBFOLDER_ICON=''
 P9K_FOLDER_ICON=''
-P9K_ETC_ICON=''
+P9K_DIR_ETC_ICON=''
 ```
 You can limit the output to a certain length by truncating long paths.
 Customizations available are:
@@ -401,32 +401,32 @@ Customizations available are:
 | Variable | Default Value | Description |
 |----------|---------------|-------------|
 |`P9K_DIR_PATH_ABSOLUTE`|None|If set to `true`, will use absolute paths instead of home folder abbreviation `~`|
-|`P9K_SHORTEN_DIR_LENGTH`|`2`|If your shorten strategy, below, is entire directories, this field determines how many directories to leave at the end. If your shorten strategy is by character count, this field determines how many characters to allow per directory string.|
-|`P9K_SHORTEN_STRATEGY`|None|How the directory strings should be truncated. See the table below for more informations.|
-|`P9K_SHORTEN_DELIMITER`|`..`|Delimiter to use in truncated strings. This can be any string you choose, including an empty string if you wish to have no delimiter.|
+|`P9K_DIR_SHORTEN_LENGTH`|`2`|If your shorten strategy, below, is entire directories, this field determines how many directories to leave at the end. If your shorten strategy is by character count, this field determines how many characters to allow per directory string.|
+|`P9K_DIR_SHORTEN_STRATEGY`|None|How the directory strings should be truncated. See the table below for more informations.|
+|`P9K_DIR_SHORTEN_DELIMITER`|`..`|Delimiter to use in truncated strings. This can be any string you choose, including an empty string if you wish to have no delimiter.|
 
 | Strategy Name | Description |
 |---------------|-------------|
-|Default|Truncate whole directories from left. How many is defined by `P9K_SHORTEN_DIR_LENGTH`|
-|`truncate_absolute_chars`|Truncates an absolute number of characters from the left such that the number of characters that your path displays (with or without `P9K_SHORTEN_DELIMITER`) is no more than `P9K_SHORTEN_DIR_LENGTH` + the length of `P9K_SHORTEN_DELIMITER` |
-|`truncate_middle`|Truncates the middle part of a folder. E.g. you are in a folder named `~/MySuperProjects/AwesomeFiles/BoringOffice`, then it will truncated to `~/MyS..cts/Awe..les/BoringOffice`, if `P9K_SHORTEN_DIR_LENGTH=3` is also set (controls the amount of characters to be left).|
-|`truncate_from_right`|Just leaves the beginning of a folder name untouched. E.g. your folders will be truncated like so: "/ro../Pr../office". How many characters will be untouched is controlled by `P9K_SHORTEN_DIR_LENGTH`.|
-|`truncate_absolute`|Truncates everything exept the last few characters in the path. E.g. if you are in a folder named "~/Projects/powerlevel9k" and you have set `P9K_SHORTEN_DIR_LENGTH=3`, you will get "..l9k".|
+|Default|Truncate whole directories from left. How many is defined by `P9K_DIR_SHORTEN_LENGTH`|
+|`truncate_absolute_chars`|Truncates an absolute number of characters from the left such that the number of characters that your path displays (with or without `P9K_DIR_SHORTEN_DELIMITER`) is no more than `P9K_DIR_SHORTEN_LENGTH` + the length of `P9K_DIR_SHORTEN_DELIMITER` |
+|`truncate_middle`|Truncates the middle part of a folder. E.g. you are in a folder named `~/MySuperProjects/AwesomeFiles/BoringOffice`, then it will truncated to `~/MyS..cts/Awe..les/BoringOffice`, if `P9K_DIR_SHORTEN_LENGTH=3` is also set (controls the amount of characters to be left).|
+|`truncate_from_right`|Just leaves the beginning of a folder name untouched. E.g. your folders will be truncated like so: "/ro../Pr../office". How many characters will be untouched is controlled by `P9K_DIR_SHORTEN_LENGTH`.|
+|`truncate_absolute`|Truncates everything exept the last few characters in the path. E.g. if you are in a folder named "~/Projects/powerlevel9k" and you have set `P9K_DIR_SHORTEN_LENGTH=3`, you will get "..l9k".|
 |`truncate_to_last`|Truncates everything before the last folder in the path.|
-|`truncate_to_first_and_last|Truncate middle directories from the path. How many directories will be untouched is controlled by P9K_SHORTER_DIR_LENGTH. E.g. if you are in a folder named "~/Projects/powerlevel9k" and you have set `P9K_SHORTEN_DIR_LENGTH=1`, you will get "~/../powerlevel9k".||
+|`truncate_to_first_and_last|Truncate middle directories from the path. How many directories will be untouched is controlled by P9K_SHORTER_DIR_LENGTH. E.g. if you are in a folder named "~/Projects/powerlevel9k" and you have set `P9K_DIR_SHORTEN_LENGTH=1`, you will get "~/../powerlevel9k".||
 |`truncate_to_unique`|Parse all parent path components and truncate them to the shortest unique length. If you copy & paste the result to a shell, after hitting `TAB` it should expand to the original path unambiguously.|
 |`truncate_with_package_name`|Search for a `package.json` or `composer.json` and prints the `name` field to abbreviate the directory path. The precedence and/or files could be set by `P9K_DIR_PACKAGE_FILES=(package.json composer.json)`. If you have [jq](https://stedolan.github.io/jq/) installed, it will dramatically improve the speed of this strategy.|
-|`truncate_with_folder_marker`|Search for a file that is specified by `P9K_SHORTEN_FOLDER_MARKER` and truncate everything before that (if found, otherwise stop on $HOME and ROOT).|
+|`truncate_with_folder_marker`|Search for a file that is specified by `P9K_DIR_SHORTEN_FOLDER_MARKER` and truncate everything before that (if found, otherwise stop on $HOME and ROOT).|
 
 For example, if you wanted the truncation behavior of the `fish` shell, which
 truncates `/usr/share/plasma` to `/u/s/plasma`, you would use the following:
 ```zsh
-P9K_SHORTEN_DIR_LENGTH=1
-P9K_SHORTEN_DELIMITER=""
-P9K_SHORTEN_STRATEGY="truncate_from_right"
+P9K_DIR_SHORTEN_LENGTH=1
+P9K_DIR_SHORTEN_DELIMITER=""
+P9K_DIR_SHORTEN_STRATEGY="truncate_from_right"
 ```
 In each case you have to specify the length you want to shorten the directory
-to. So in some cases `P9K_SHORTEN_DIR_LENGTH` means characters, in
+to. So in some cases `P9K_DIR_SHORTEN_LENGTH` means characters, in
 others whole directories.
 
 The `truncate_with_package_name` strategy gives your directory path relative to the root of your project.  For example, if you have a project inside `$HOME/projects/my-project` with a `package.json` that looks like:
@@ -450,7 +450,7 @@ you could set `P9K_DIR_OMIT_FIRST_CHARACTER=true`.
 You can also customize the leading tilde character when you are in `$HOME` using:
 ```zsh
 # Double quotes are important here!
-P9K_HOME_FOLDER_ABBREVIATION="%F{red} $(print_icon 'HOME_ICON') %F{black}"
+P9K_DIR_HOME_FOLDER_ABBREVIATION="%F{red} $(print_icon 'DIR_HOME_ICON') %F{black}"
 ```
 You can also configure the `dir` segment to show when you are in a directory without write permissions, using the variable below.
 
@@ -636,15 +636,15 @@ The `user` segment will print the username.
 You can also override the icons by setting:
 
 ```
-P9K_USER_ICON="\uF415" # 
-P9K_ROOT_ICON="#"
-P9K_SUDO_ICON=$'\uF09C' # 
+P9K_USER_DEFAULT_ICON="\uF415" # 
+P9K_USER_ROOT_ICON="#"
+P9K_USER_SUDO_ICON=$'\uF09C' # 
 ```
 
 | Variable | Default Value | Description |
 |----------|---------------|-------------|
 |`DEFAULT_USER`|None|Username to consider a "default context".|
-|`P9K_ALWAYS_SHOW_USER`|`false`|Always print this segment.|
+|`P9K_CONTEXT_ALWAYS_SHOW_USER`|`false`|Always print this segment.|
 |`P9K_USER_TEMPLATE`|`%n`|Default username prompt. Refer to the [ZSH Documentation](http://zsh.sourceforge.net/Doc/Release/Prompt-Expansion.html) for all possible expansions|
 
 ##### vcs
@@ -654,9 +654,9 @@ customization is provided via:
 
 | Variable | Default Value | Description |
 |----------|---------------|-------------|
-|`P9K_HIDE_BRANCH_ICON`|`false`|Set to `true` to hide the branch icon from the segment.|
-|`P9K_SHOW_CHANGESET`|`false`|Set to `true` to display the hash / changeset in the segment.|
-|`P9K_CHANGESET_HASH_LENGTH`|`12`|How many characters of the hash / changeset to display in the segment.|
+|`P9K_VCS_HIDE_BRANCH_ICON`|`false`|Set to `true` to hide the branch icon from the segment.|
+|`P9K_VCS_SHOW_CHANGESET`|`false`|Set to `true` to display the hash / changeset in the segment.|
+|`P9K_VCS_CHANGESET_HASH_LENGTH`|`12`|How many characters of the hash / changeset to display in the segment.|
 |`P9K_VCS_SHOW_SUBMODULE_DIRTY`|`true`|Set to `false` to not reflect submodule status in the top-level repository prompt.|
 |`P9K_VCS_HIDE_TAGS`|`false`|Set to `true` to stop tags being displayed in the segment.|
 |`P9K_VCS_GIT_HOOKS`|`(vcs-detect-changes git-untracked git-aheadbehind git-stash git-remotebranch git-tagname)`|Layout of the segment for git repositories.|
@@ -695,8 +695,8 @@ Customizations available are:
 |----------|---------------|-------------|
 |`P9K_VCS_SHORTEN_LENGTH`|None|This field determines how many characters to show.|
 |`P9K_VCS_SHORTEN_MIN_LENGTH`|None|This field determines minimum branch length. Branch name will be truncated if its length greater than this field.|
-|`P9K_VCS_SHORTEN_STRATEGY`|None|This field determines how branch name should be truncated. See the table below for more information.|
-|`P9K_SHORTEN_DELIMITER`|`...`|Delimiter to use in truncated strings. This can be any string you choose, including an empty string if you wish to have no delimiter.|
+|`P9K_VCS_DIR_SHORTEN_STRATEGY`|None|This field determines how branch name should be truncated. See the table below for more information.|
+|`P9K_DIR_SHORTEN_DELIMITER`|`...`|Delimiter to use in truncated strings. This can be any string you choose, including an empty string if you wish to have no delimiter.|
 
 | Strategy Name | Description |
 |---------------|-------------|
@@ -707,8 +707,8 @@ For example, if you want to truncate `1234-super_super_long_branch_name` to `123
 ```zsh
 P9K_VCS_SHORTEN_LENGTH=4
 P9K_VCS_SHORTEN_MIN_LENGTH=11
-P9K_VCS_SHORTEN_STRATEGY="truncate_from_right"
-P9K_VCS_SHORTEN_DELIMITER=".."
+P9K_VCS_DIR_SHORTEN_STRATEGY="truncate_from_right"
+P9K_VCS_DIR_SHORTEN_DELIMITER=".."
 ```
 
 ##### vi_mode
@@ -720,10 +720,10 @@ you are using the [ZSH Line Editor](http://zsh.sourceforge.net/Doc/Release/Zsh-L
 
 | Variable | Default Value | Description |
 |----------|---------------|-------------|
-|`P9K_VI_INSERT_MODE_STRING`|`"INSERT"`|String to display while in 'Insert' mode.|
-|`P9K_VI_COMMAND_MODE_STRING`|`"NORMAL"`|String to display while in 'Command' mode.|
+|`P9K_VI_MODE_INSERT_STRING`|`"INSERT"`|String to display while in 'Insert' mode.|
+|`P9K_VI_MODE_COMMAND_STRING`|`"NORMAL"`|String to display while in 'Command' mode.|
 
-To hide the segment entirely when in `INSERT` mode, set `P9K_VI_INSERT_MODE_STRING=''`
+To hide the segment entirely when in `INSERT` mode, set `P9K_VI_MODE_INSERT_STRING=''`
 
 #### Unit Test Ratios
 

@@ -5,12 +5,27 @@
 ##
 
 ################################################################
-# Segment to display laravel version
+# Register segment
+# Parameters:
+#   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
+#                                                                            
+p9k::register_segment "LARAVEL_VERSION" "" "maroon" "white" 'Laravel'  ''  ''  ''  $'\uE73F'
+
+################################################################
+# @description
+#   Display the current Laravel version.
+##
+# @args
+#   $1 string Alignment - left | right
+#   $2 integer Segment index
+#   $3 boolean Whether the segment should be joined
+##
 prompt_laravel_version() {
   local laravel_version="$(php artisan --version 2> /dev/null)"
   if [[ -n "${laravel_version}" && "${laravel_version}" =~ "Laravel Framework" ]]; then
     # Strip out everything but the version
     laravel_version="${laravel_version//Laravel Framework /}"
-    "__p9k_$1_prompt_segment" "$0" "$2" "maroon" "white" "${laravel_version}" 'LARAVEL_ICON'
+
+    p9k::prepare_segment "${0}" "" "${1}" "${2}" "${3}" "${laravel_version}"
   fi
 }

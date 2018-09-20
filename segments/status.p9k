@@ -5,6 +5,19 @@
 ##
 
 ################################################################
+# Register segment
+# Parameters:
+#   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
+#                                                                      ✔         ✔          ✔                                            
+p9k::register_segment "STATUS" "OK"       "$DEFAULT_COLOR" "green"    $'\u2714'  $'\u2714'  $'\u2714'  '\u'${CODEPOINT_OF_AWESOME_CHECK}  $'\uF00C'
+#                                                                      ✘          ✘         ✘                                             
+p9k::register_segment "STATUS" "ERROR"    "$DEFAULT_COLOR" "red"      $'\u2718'  $'\u2718'  $'\u2718'  '\u'${CODEPOINT_OF_AWESOME_TIMES}  $'\uF00D'
+#                                                                      ↵         ↵         ↵          ↵                                 ↵
+p9k::register_segment "STATUS" "ERROR_CR" "red"            "yellow1"  $'\u21B5'  $'\u21B5'  $'\u21B5'  $'\u21B5'                          $'\u21B5'
+
+################################################################
+# Register segment default values
+#
 # Status: When an error occur, return the error code, or a cross icon if option is set
 # Display an ok icon when no error occur, or hide the segment if option is set to false
 #
@@ -56,11 +69,11 @@ prompt_status() {
 
   if (( ec_sum > 0 )); then
     if [[ "$P9K_STATUS_CROSS" == false && "$P9K_STATUS_VERBOSE" == true ]]; then
-      "__p9k_$1_prompt_segment" "$0_ERROR" "$2" "red" "yellow1" "$ec_text" 'CARRIAGE_RETURN_ICON'
+      p9k::prepare_segment "$0" "ERROR_CR" $1 "$2" $3 "$ec_text" "[[ true ]]"
     else
-      "__p9k_$1_prompt_segment" "$0_ERROR" "$2" "$DEFAULT_COLOR" "red" "" 'FAIL_ICON'
+      p9k::prepare_segment "$0" "ERROR" $1 "$2" $3 "" "[[ true ]]"
     fi
   elif [[ "$P9K_STATUS_OK" == true ]] && [[ "$P9K_STATUS_VERBOSE" == true || "$P9K_STATUS_OK_IN_NON_VERBOSE" == true ]]; then
-    "__p9k_$1_prompt_segment" "$0_OK" "$2" "$DEFAULT_COLOR" "green" "" 'OK_ICON'
+    p9k::prepare_segment "$0" "OK" $1 "$2" $3  "" "[[ true ]]"
   fi
 }

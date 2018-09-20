@@ -5,9 +5,23 @@
 ##
 
 ################################################################
-# Segment to print an icon if user is root.
+# Register segment
+# Parameters:
+#   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
+#                                                                       ⚡                                                              
+p9k::register_segment "ROOT_INDICATOR" "" "${DEFAULT_COLOR}" "yellow"  $'\u26A1'  $'\uE801'  $'\uF201'  '\u'${CODEPOINT_OF_OCTICONS_ZAP}  $'\uE614 '
+
+################################################################
+# @description
+#   Displays an icon if user is root.
+##
+# @args
+#   $1 string Alignment - left | right
+#   $2 integer Segment index
+#   $3 boolean Whether the segment should be joined
+##
 prompt_root_indicator() {
   if [[ "$UID" -eq 0 ]]; then
-    "__p9k_$1_prompt_segment" "$0" "$2" "$DEFAULT_COLOR" "yellow" "" 'ROOT_ICON'
+    p9k::prepare_segment "$0" "" $1 "$2" $3 "" "true"
   fi
 }

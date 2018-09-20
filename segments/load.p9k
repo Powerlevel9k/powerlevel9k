@@ -4,9 +4,28 @@
 # @source [powerlevel9k](https://github.com/bhilburn/powerlevel9k)
 ##
 
-p9k::set_default P9K_LOAD_WHICH 5
 ################################################################
-# Segment to display load
+# Register segment
+# Parameters:
+#   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
+#                                                                                                                                      
+p9k::register_segment "LOAD" "NORMAL"   "green"  "${DEFAULT_COLOR}"  'L'  $'\uE190 '  $'\uF080 '  '\u'$CODEPOINT_OF_AWESOME_BAR_CHART' '  $'\uF080 '
+p9k::register_segment "LOAD" "WARNING"  "yellow" "${DEFAULT_COLOR}"  'L'  $'\uE190 '  $'\uF080 '  '\u'$CODEPOINT_OF_AWESOME_BAR_CHART' '  $'\uF080 '
+p9k::register_segment "LOAD" "CRITICAL" "red"    "${DEFAULT_COLOR}"  'L'  $'\uE190 '  $'\uF080 '  '\u'$CODEPOINT_OF_AWESOME_BAR_CHART' '  $'\uF080 '
+
+################################################################
+# Register segment default values
+p9k::set_default P9K_LOAD_WHICH 5
+
+################################################################
+# @description
+#   Display the current load.
+##
+# @args
+#   $1 string Alignment - left | right
+#   $2 integer Segment index
+#   $3 boolean Whether the segment should be joined
+##
 prompt_load() {
   local ROOT_PREFIX="${4}"
   # The load segment can have three different states
@@ -15,23 +34,16 @@ prompt_load() {
   local load_avg
   local cores
 
-  typeset -AH load_states
-  load_states=(
-    'critical'      'red'
-    'warning'       'yellow'
-    'normal'        'green'
-  )
-
   case "$P9K_LOAD_WHICH" in
     1)
       load_select=1
-    ;;
+      ;;
     5)
       load_select=2
-    ;;
+      ;;
     15)
       load_select=3
-    ;;
+      ;;
   esac
 
   case "$__P9K_OS" in
@@ -42,11 +54,10 @@ prompt_load() {
       else
         cores=$(sysctl -n hw.ncpu)
       fi
-    ;;
+      ;;
     *)
       load_avg=$(cut -d" " -f${load_select} ${ROOT_PREFIX}/proc/loadavg)
       cores=$(nproc)
-    ;;
   esac
 
   # Replace comma
@@ -60,5 +71,5 @@ prompt_load() {
     current_state="normal"
   fi
 
-  "__p9k_$1_prompt_segment" "${0}_${current_state}" "$2" "${load_states[$current_state]}" "$DEFAULT_COLOR" "$load_avg" 'LOAD_ICON'
+  p9k::prepare_segment "$0" "${current_state}" $1 "$2" $3 "$load_avg"
 }

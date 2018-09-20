@@ -89,7 +89,7 @@ function testOverridingContextTemplate() {
 function testContextSegmentIsShownIfDefaultUserIsSetWhenForced() {
     local -a P9K_LEFT_PROMPT_ELEMENTS
     P9K_LEFT_PROMPT_ELEMENTS=(context)
-    local P9K_ALWAYS_SHOW_CONTEXT=true
+    local P9K_CONTEXT_ALWAYS_SHOW=true
     local DEFAULT_USER=$(whoami)
 
     # Load Powerlevel9k
@@ -101,7 +101,7 @@ function testContextSegmentIsShownIfDefaultUserIsSetWhenForced() {
 function testContextSegmentIsShownIfForced() {
     local -a P9K_LEFT_PROMPT_ELEMENTS
     P9K_LEFT_PROMPT_ELEMENTS=(context)
-    local P9K_ALWAYS_SHOW_USER=true
+    local P9K_CONTEXT_ALWAYS_SHOW_USER=true
     local DEFAULT_USER=$(whoami)
 
     # Load Powerlevel9k

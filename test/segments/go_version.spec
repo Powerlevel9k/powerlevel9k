@@ -33,7 +33,7 @@ function mockGoEmptyGopath() {
 
 function testGo() {
   alias go=mockGo
-  local P9K_GO_ICON=""
+  local P9K_GO_VERSION_ICON=""
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(go_version)
 

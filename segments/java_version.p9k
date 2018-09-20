@@ -4,7 +4,22 @@
 # @source [powerlevel9k](https://github.com/bhilburn/powerlevel9k)
 ##
 
-# print Java version number
+################################################################
+# Register segment
+# Parameters:
+#   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
+#                                                                  ☕         ☕         
+p9k::register_segment "JAVA_VERSION" "" "red" "white" 'Java'  ''  $'\u2615'  $'\u2615'  $'\uE256'
+
+################################################################
+# @description
+#   Display the current Java version.
+##
+# @args
+#   $1 string Alignment - left | right
+#   $2 integer Segment index
+#   $3 boolean Whether the segment should be joined
+##
 prompt_java_version() {
   local java_version
   # Stupid: Java prints its version on STDERR.
@@ -13,8 +28,7 @@ prompt_java_version() {
   # If yes, we parse the version string (and need to
   # redirect the stderr to stdout to make the pipe work).
   java_version=$(java -version 2>/dev/null && java -fullversion 2>&1 | cut -d '"' -f 2)
-
   if [[ -n "$java_version" ]]; then
-    "__p9k_$1_prompt_segment" "$0" "$2" "red" "white" "$java_version" "JAVA_ICON"
+    p9k::prepare_segment "$0" "" $1 "$2" $3  "${java_version}"
   fi
 }

@@ -4,10 +4,27 @@
 # @source [powerlevel9k](https://github.com/bhilburn/powerlevel9k)
 ##
 
+################################################################
+# Register segment
+# Parameters:
+#   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
+#                                                            ⚙                                                               
+p9k::register_segment 'BACKGROUND_JOBS' '' "$DEFAULT_COLOR" "cyan" $'\u2699'  $'\uE82F '  $'\uF013 '  '\u'$CODEPOINT_OF_AWESOME_COG' '  $'\uF013 '
+
+################################################################
+# Register segment default values
 p9k::set_default P9K_BACKGROUND_JOBS_VERBOSE true
 p9k::set_default P9K_BACKGROUND_JOBS_VERBOSE_ALWAYS false
+
 ################################################################
-# Segment to indicate background jobs with an icon.
+# @description
+#   Displays the number of background jobs with an icon.
+##
+# @args
+#   $1 string Alignment - left | right
+#   $2 integer Segment index
+#   $3 boolean Whether the segment should be joined
+##
 prompt_background_jobs() {
   local background_jobs_number=${$(jobs -l | wc -l)// /}
   local wrong_lines=`jobs -l | awk '/pwd now/{ count++ } END {print count}'`
@@ -19,6 +36,6 @@ prompt_background_jobs() {
     if [[ "$P9K_BACKGROUND_JOBS_VERBOSE" == "true" ]] && ([[ "$background_jobs_number" -gt 1 ]] || [[ "$P9K_BACKGROUND_JOBS_VERBOSE_ALWAYS" == "true" ]]); then
       background_jobs_number_print="$background_jobs_number"
     fi
-    "__p9k_$1_prompt_segment" "$0" "$2" "$DEFAULT_COLOR" "cyan" "$background_jobs_number_print" 'BACKGROUND_JOBS_ICON'
+    p9k::prepare_segment "$0" "" "$1" "$2" "$3" "$background_jobs_number_print"
   fi
 }

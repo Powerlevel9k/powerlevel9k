@@ -5,10 +5,24 @@
 ##
 
 ################################################################
-# Segment to diplay Node version
+# Register segment
+# Parameters:
+#   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
+#                                                         ⬢         ⬢          ⬢          ⬢          
+p9k::register_segment "NODE_VERSION" "" "green" "white"  $'\u2B22'  $'\u2B22'  $'\u2B22'  $'\u2B22'  $'\uE617 '
+
+################################################################
+# @description
+#   Display the current Node version.
+##
+# @args
+#   $1 string Alignment - left | right
+#   $2 integer Segment index
+#   $3 boolean Whether the segment should be joined
+##
 prompt_node_version() {
   local node_version=$(node -v 2>/dev/null)
   [[ -z "${node_version}" ]] && return
 
-  "__p9k_$1_prompt_segment" "$0" "$2" "green" "white" "${node_version:1}" 'NODE_ICON'
+  p9k::prepare_segment "$0" "" $1 "$2" $3 "${node_version:1}"
 }

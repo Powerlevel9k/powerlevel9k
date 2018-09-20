@@ -4,18 +4,34 @@
 # @source [powerlevel9k](https://github.com/bhilburn/powerlevel9k)
 ##
 
-p9k::set_default P9K_RBENV_PROMPT_ALWAYS_SHOW false
 ################################################################
-# Segment to display rbenv information
-# https://github.com/rbenv/rbenv#choosing-the-ruby-version
+# Register segment
+# Parameters:
+#   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
+#                                                                                                                      
+p9k::register_segment "RBENV" "" "red" "${DEFAULT_COLOR}"  ''  $'\uE847 '  $'\uF219 '  '\u'$CODEPOINT_OF_OCTICONS_RUBY' '  $'\uF219 '
+
+################################################################
+# Register segment default values
+p9k::set_default P9K_RBENV_ALWAYS false
+
+################################################################
+# @description
+#   Display the current rbenv information.
+##
+# @args
+#   $1 string Alignment - left | right
+#   $2 integer Segment index
+#   $3 boolean Whether the segment should be joined
+##
 prompt_rbenv() {
-  if [[ -n "$RBENV_VERSION" ]]; then
-    "__p9k_$1_prompt_segment" "$0" "$2" "red" "$DEFAULT_COLOR" "$RBENV_VERSION" 'RUBY_ICON'
-  elif [ $commands[rbenv] ]; then
+  if [[ -n "${RBENV_VERSION}" ]]; then
+    p9k::prepare_segment "$0" "" $1 "$2" $3 "${RBENV_VERSION}"
+  elif [ ${commands[rbenv]} ]; then
     local rbenv_version_name="$(rbenv version-name)"
     local rbenv_global="$(rbenv global)"
     if [[ "${rbenv_version_name}" != "${rbenv_global}" || "${P9K_RBENV_PROMPT_ALWAYS_SHOW}" == "true" ]]; then
-      "__p9k_$1_prompt_segment" "$0" "$2" "red" "$DEFAULT_COLOR" "$rbenv_version_name" 'RUBY_ICON'
+      p9k::prepare_segment "$0" "" $1 "$2" $3 "${rbenv_version_name}"
     fi
   fi
 }

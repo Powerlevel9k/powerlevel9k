@@ -5,12 +5,27 @@
 ##
 
 ################################################################
-# Virtualenv: current working virtualenv
-# More information on virtualenv (Python):
-# https://virtualenv.pypa.io/en/latest/
+# Register segment
+# Parameters:
+#   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
+#                                                                                 🐍          
+p9k::register_segment "VIRTUALENV" "" "blue" "${DEFAULT_COLOR}"  ''  $'\uE63C'  $'\uE63C'  $'\U1F40D'  $'\uE73C '
+
+################################################################
+# @description
+#   Display the current working virtualenv.
+##
+# @args
+#   $1 string Alignment - left | right
+#   $2 integer Segment index
+#   $3 boolean Whether the segment should be joined
+##
+# @see
+#   [virtualenv (Python)](https://virtualenv.pypa.io/en/latest/)
+#   for more information.
 prompt_virtualenv() {
   local virtualenv_path="$VIRTUAL_ENV"
   if [[ -n "$virtualenv_path" && "$VIRTUAL_ENV_DISABLE_PROMPT" != true ]]; then
-    "__p9k_$1_prompt_segment" "$0" "$2" "blue" "$DEFAULT_COLOR" "${$virtualenv_path:t}" 'PYTHON_ICON'
+    p9k::prepare_segment "$0" "" $1 "$2" $3 "$(basename "$virtualenv_path")"
   fi
 }

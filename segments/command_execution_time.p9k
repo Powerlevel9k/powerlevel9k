@@ -4,10 +4,27 @@
 # @source [powerlevel9k](https://github.com/bhilburn/powerlevel9k)
 ##
 
+################################################################
+# Register segment
+# Parameters:
+#   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
+#                                                                                                                                    
+p9k::register_segment 'COMMAND_EXECUTION_TIME' '' "red" "yellow1" 'Dur'  $'\uE89C'  $'\uF253'  '\u'${CODEPOINT_OF_AWESOME_HOURGLASS_END}  $'\uF252'
+
+################################################################
+# Register segment default values
 p9k::set_default P9K_COMMAND_EXECUTION_TIME_THRESHOLD 3
 p9k::set_default P9K_COMMAND_EXECUTION_TIME_PRECISION 2
+
 ################################################################
-# Display the duration the command needed to run.
+# @description
+#   Displays the duration the command needed to run.
+##
+# @args
+#   $1 string Alignment - left | right
+#   $2 integer Segment index
+#   $3 boolean Whether the segment should be joined
+##
 prompt_command_execution_time() {
   # Print time in human readable format
   # For that use `strftime` and convert
@@ -33,6 +50,6 @@ prompt_command_execution_time() {
   fi
 
   if (( _P9K_COMMAND_DURATION >= P9K_COMMAND_EXECUTION_TIME_THRESHOLD )); then
-    "__p9k_$1_prompt_segment" "$0" "$2" "red" "yellow1" "${humanReadableDuration}" 'EXECUTION_TIME_ICON'
+    p9k::prepare_segment "$0" "" $1 "$2" $3 "${humanReadableDuration}"
   fi
 }

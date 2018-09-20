@@ -4,10 +4,26 @@
 # @source [powerlevel9k](https://github.com/bhilburn/powerlevel9k)
 ##
 
+################################################################
+# Register segment
+# Parameters:
+#   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
+#                                                 🌱            🌱           🌱                                                    
+p9k::register_segment "AWS_EB_ENV" "" black green $'\U1F331 '  $'\U1F331 '  $'\U1F331 '  '\u'$CODEPOINT_OF_AWESOME_DEVIANTART' '  $'\uF1BD '
+
+################################################################
+# @description
+#   Display the current Elastic Beanstalk environment.
+##
+# @args
+#   $1 string Alignment - left | right
+#   $2 integer Segment index
+#   $3 boolean Whether the segment should be joined
+##
 prompt_aws_eb_env() {
   local eb_env=$(grep environment .elasticbeanstalk/config.yml 2> /dev/null | awk '{print $2}')
 
   if [[ -n "$eb_env" ]]; then
-    "__p9k_$1_prompt_segment" "$0" "$2" black green "$eb_env" 'AWS_EB_ICON'
+    p9k::prepare_segment "$0" "" $1 "$2" $3 "$eb_env"
   fi
 }

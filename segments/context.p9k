@@ -4,31 +4,45 @@
 # @source [powerlevel9k](https://github.com/bhilburn/powerlevel9k)
 ##
 
-p9k::set_default P9K_ALWAYS_SHOW_CONTEXT false
-p9k::set_default P9K_ALWAYS_SHOW_USER false
-p9k::set_default P9K_CONTEXT_TEMPLATE "%n@%m"
 ################################################################
-# Context: user@hostname (who am I and where am I)
-# Note that if $DEFAULT_USER is not set, this prompt segment will always print
+# Register segment
+# Parameters:
+#   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
+#
+p9k::register_segment 'CONTEXT' 'ROOT'        "${DEFAULT_COLOR}" "yellow" ""  ""  ""  ""  ""  ""
+p9k::register_segment 'CONTEXT' 'SUDO'        "${DEFAULT_COLOR}" "yellow" ""  ""  ""  ""  ""  ""
+p9k::register_segment 'CONTEXT' 'DEFAULT'     "${DEFAULT_COLOR}" "yellow" ""  ""  ""  ""  ""  ""
+p9k::register_segment 'CONTEXT' 'REMOTE'      "${DEFAULT_COLOR}" "yellow" ""  ""  ""  ""  ""  ""
+p9k::register_segment 'CONTEXT' 'REMOTE_SUDO' "${DEFAULT_COLOR}" "yellow" ""  ""  ""  ""  ""  ""
+
+################################################################
+# Register segment default values
+p9k::set_default P9K_CONTEXT_ALWAYS_SHOW false
+p9k::set_default P9K_CONTEXT_ALWAYS_SHOW_USER false
+p9k::set_default P9K_CONTEXT_TEMPLATE "%n@%m"
+
+################################################################
+# @description
+#   Displays the context - user@hostname (who am I and where am I).
+##
+# @args
+#   $1 string Alignment - left | right
+#   $2 integer Segment index
+#   $3 boolean Whether the segment should be joined
+##
+# @note
+#    If ${DEFAULT_USER} is not set, this prompt segment will always print.
+##
 prompt_context() {
   local current_state="DEFAULT"
-  typeset -AH context_states
-  context_states=(
-    "ROOT"        "yellow"
-    "SUDO"        "yellow"
-    "DEFAULT"     "yellow"
-    "REMOTE"      "yellow"
-    "REMOTE_SUDO" "yellow"
-  )
-
   local content=""
 
-  if [[ "$P9K_ALWAYS_SHOW_CONTEXT" == true ]] || [[ "$(whoami)" != "$DEFAULT_USER" ]] || [[ -n "$SSH_CLIENT" || -n "$SSH_TTY" ]]; then
-      content="${P9K_CONTEXT_TEMPLATE}"
-  elif [[ "$P9K_ALWAYS_SHOW_USER" == true ]]; then
-      content="$(whoami)"
+  if [[ "$P9K_CONTEXT_ALWAYS_SHOW" == true ]] || [[ "$(whoami)" != "$DEFAULT_USER" ]] || [[ -n "$SSH_CLIENT" || -n "$SSH_TTY" ]]; then
+    content="${P9K_CONTEXT_TEMPLATE}"
+  elif [[ "$P9K_CONTEXT_ALWAYS_SHOW_USER" == true ]]; then
+    content="$(whoami)"
   else
-      return
+    return
   fi
 
   if [[ $(print -P "%#") == '#' ]]; then
@@ -43,5 +57,5 @@ prompt_context() {
     current_state="SUDO"
   fi
 
-  "__p9k_$1_prompt_segment" "${0}_${current_state}" "$2" "$DEFAULT_COLOR" "${context_states[$current_state]}" "${content}"
+  p9k::prepare_segment "$0" "${(U)current_state}" $1 "$2" $3 "${content}"
 }

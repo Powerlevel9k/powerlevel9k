@@ -4,28 +4,32 @@
 # @source [powerlevel9k](https://github.com/bhilburn/powerlevel9k)
 ##
 
-p9k::set_default P9K_HOST_TEMPLATE "%m"
 ################################################################
-# Host: machine (where am I)
+# Register segment
+# Parameters:
+#   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
+#                                                                                                                     
+p9k::register_segment "HOST" "REMOTE" "yellow"           "${DEFAULT_COLOR}"  '(ssh)'  '(ssh)'  '(ssh)'    '(ssh)'   $'\uF489'
+#                                                                                                                  
+p9k::register_segment "HOST" "LOCAL"  "${DEFAULT_COLOR}" "yellow"            ''       ''       $'\uF67C'  $'\uF67C' $'\uF67C'
+
+################################################################
+# Register segment default values
+p9k::set_default P9K_HOST_TEMPLATE "%m"
+
+################################################################
+# @description
+#   Display information about the Host - machine (where am I).
+##
+# @args
+#   $1 string Alignment - left | right
+#   $2 integer Segment index
+#   $3 boolean Whether the segment should be joined
+##
 prompt_host() {
   local current_state="LOCAL"
-  typeset -AH host_state
   if [[ -n "$SSH_CLIENT" ]] || [[ -n "$SSH_TTY" ]]; then
-    host_state=(
-      "STATE"               "REMOTE"
-      "CONTENT"             "${P9K_HOST_TEMPLATE}"
-      "BACKGROUND_COLOR"    "${DEFAULT_COLOR}"
-      "FOREGROUND_COLOR"    "yellow"
-      "VISUAL_IDENTIFIER"   "SSH_ICON"
-    )
-  else
-    host_state=(
-      "STATE"               "LOCAL"
-      "CONTENT"             "${P9K_HOST_TEMPLATE}"
-      "BACKGROUND_COLOR"    "${DEFAULT_COLOR}"
-      "FOREGROUND_COLOR"    "yellow"
-      "VISUAL_IDENTIFIER"   "HOST_ICON"
-    )
+    current_state="REMOTE"
   fi
-  "__p9k_$1_prompt_segment" "$0_${host_state[STATE]}" "$2" "${host_state[BACKGROUND_COLOR]}" "${host_state[FOREGROUND_COLOR]}" "${host_state[CONTENT]}" "${host_state[VISUAL_IDENTIFIER]}"
+  p9k::prepare_segment "$0" "${current_state}" $1 "$2" $3 "${P9K_HOST_TEMPLATE}"
 }

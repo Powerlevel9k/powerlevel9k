@@ -9,17 +9,43 @@
 ##
 
 ################################################################
-# Show a ratio of tests vs code
+# Register segment
+# Parameters:
+#   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
+#                                                                                                                                
+p9k::register_segment "TEST_STATS" "GOOD" "cyan"   "${DEFAULT_COLOR}"   ''  $'\uE891'  $'\uF291'  '\u'${CODEPOINT_OF_AWESOME_BUG}  $'\uF188'
+p9k::register_segment "TEST_STATS" "AVG"  "yellow" "${DEFAULT_COLOR}"   ''  $'\uE891'  $'\uF291'  '\u'${CODEPOINT_OF_AWESOME_BUG}  $'\uF188'
+p9k::register_segment "TEST_STATS" "BAD"  "red"    "${DEFAULT_COLOR}"   ''  $'\uE891'  $'\uF291'  '\u'${CODEPOINT_OF_AWESOME_BUG}  $'\uF188'
+
+################################################################
+# @description
+#   Show a ratio of tests vs code.
+##
+# @args
+#   $1 string of the calling segment
+#   $2 string Alignment - left | right
+#   $3 integer Index
+#   $4 bool Whether the segment should be joined
+#   $5 string Code Amount
+#   $6 string Tests Amount
+#   $7 string Headline
+#   $8 string Icon
+##
+# @note
+#   This function is called by prompt segments to display the information required.
 build_test_stats() {
-  local code_amount="$4"
-  local tests_amount="$5"+0.00001
-  local headline="$6"
+  local current_state="UNDEFINED"
+  local code_amount="$5"
+  local tests_amount="$6"+0.00001
+  local headline="$7"
 
   # Set float precision to 2 digits:
   typeset -F 2 ratio
   local ratio=$(( (tests_amount/code_amount) * 100 ))
 
-  (( ratio >= 75 )) && "__p9k_$1_prompt_segment" "${2}_GOOD" "$3" "cyan" "$DEFAULT_COLOR" "$headline: $ratio%%" "$6"
-  (( ratio >= 50 && ratio < 75 )) && "__p9k_$1_prompt_segment" "$2_AVG" "$3" "yellow" "$DEFAULT_COLOR" "$headline: $ratio%%" "$6"
-  (( ratio < 50 )) && "__p9k_$1_prompt_segment" "$2_BAD" "$3" "red" "$DEFAULT_COLOR" "$headline: $ratio%%" "$6"
+  (( ratio >= 75 )) && current_state="GOOD"
+  (( ratio >= 50 && ratio < 75 )) && current_state="AVG"
+  (( ratio < 50 )) && current_state="BAD"
+
+  p9k::prepare_segment "$1" "${current_state}" "$2" $3 $4 "$headline: $ratio%%"
 }
