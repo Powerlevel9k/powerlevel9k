@@ -7,55 +7,57 @@ SHUNIT_PARENT=$0
 
 function setUp() {
   export TERM="xterm-256color"
+  source powerlevel9k.zsh-theme
 }
 
 function testAwsEbEnvSegmentPrintsNothingIfNoElasticBeanstalkEnvironmentIsSet() {
-    local P9K_CUSTOM_WORLD='echo world'
-    local -a P9K_LEFT_PROMPT_ELEMENTS
-    P9K_LEFT_PROMPT_ELEMENTS=(aws_eb_env custom_world)
+  local P9K_CUSTOM_WORLD='echo world'
+  p9k::register_segment "WORLD"
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(aws_eb_env custom_world)
 
-    # Load Powerlevel9k
-    source powerlevel9k.zsh-theme
+  # Load Powerlevel9k
+  source segments/aws_eb_env.p9k
 
-    assertEquals "%K{007} %F{000}world %k%F{007}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{015} %F{000}world %k%F{015}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testAwsEbEnvSegmentWorksIfElasticBeanstalkEnvironmentIsSet() {
-    local -a P9K_LEFT_PROMPT_ELEMENTS
-    P9K_LEFT_PROMPT_ELEMENTS=(aws_eb_env)
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(aws_eb_env)
 
-    # Load Powerlevel9k
-    source powerlevel9k.zsh-theme
+  # Load Powerlevel9k
+  source segments/aws_eb_env.p9k
 
-    mkdir -p /tmp/powerlevel9k-test/.elasticbeanstalk
-    echo "test:\n    environment: test" > /tmp/powerlevel9k-test/.elasticbeanstalk/config.yml
-    cd /tmp/powerlevel9k-test
+  mkdir -p /tmp/powerlevel9k-test/.elasticbeanstalk
+  echo "test:\n    environment: test" > /tmp/powerlevel9k-test/.elasticbeanstalk/config.yml
+  cd /tmp/powerlevel9k-test
 
-    assertEquals "%K{000} %F{002}🌱  %f%F{002}test %k%F{000}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{000} %F{002}🌱  %f%F{002}test %k%F{000}%f " "$(__p9k_build_left_prompt)"
 
-    rm -fr /tmp/powerlevel9k-test
-    cd -
+  rm -fr /tmp/powerlevel9k-test
+  cd -
 }
 
 function testAwsEbEnvSegmentWorksIfElasticBeanstalkEnvironmentIsSetInParentDirectory() {
-    # Skip test, because currently we cannot detect
-    # if the configuration is in a parent directory
-    startSkipping # Skip test
-    local -a P9K_LEFT_PROMPT_ELEMENTS
-    P9K_LEFT_PROMPT_ELEMENTS=(aws_eb_env)
+  # Skip test, because currently we cannot detect
+  # if the configuration is in a parent directory
+  startSkipping # Skip test
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(aws_eb_env)
 
-    # Load Powerlevel9k
-    source powerlevel9k.zsh-theme
+  # Load Powerlevel9k
+  source segments/aws_eb_env.p9k
 
-    mkdir -p /tmp/powerlevel9k-test/.elasticbeanstalk
-    mkdir -p /tmp/powerlevel9k-test/1/12/123/1234/12345
-    echo "test:\n    environment: test" > /tmp/powerlevel9k-test/.elasticbeanstalk/config.yml
-    cd /tmp/powerlevel9k-test/1/12/123/1234/12345
+  mkdir -p /tmp/powerlevel9k-test/.elasticbeanstalk
+  mkdir -p /tmp/powerlevel9k-test/1/12/123/1234/12345
+  echo "test:\n    environment: test" > /tmp/powerlevel9k-test/.elasticbeanstalk/config.yml
+  cd /tmp/powerlevel9k-test/1/12/123/1234/12345
 
-    assertEquals "%K{000} %F{002}🌱  %f%F{002}test %k%F{000}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{000} %F{002}🌱  %f%F{002}test %k%F{000}%f " "$(__p9k_build_left_prompt)"
 
-    rm -fr /tmp/powerlevel9k-test
-    cd -
+  rm -fr /tmp/powerlevel9k-test
+  cd -
 }
 
 source shunit2/shunit2

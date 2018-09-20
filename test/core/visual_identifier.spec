@@ -14,47 +14,56 @@ function setUp() {
 
 function testOverwritingIconsWork() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
+  local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(custom_world1)
   local P9K_CUSTOM_WORLD1='echo world1'
-  local P9K_CUSTOM_WORLD1_ICON='icon-here'
+  local P9K_WORLD1_ICON='icon-here'
+  p9k::register_segment "WORLD1"
 
-  assertEquals "%K{007} %F{000}icon-here %f%F{000}world1 %k%F{007}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{015} %F{000}icon-here %f%F{000}world1 %k%F{015}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testVisualIdentifierAppearsBeforeSegmentContentOnLeftSegments() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
+  local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(custom_world1)
   local P9K_CUSTOM_WORLD1='echo world1'
-  local P9K_CUSTOM_WORLD1_ICON='icon-here'
+  local P9K_WORLD1_ICON='icon-here'
+  p9k::register_segment "WORLD1"
 
-  assertEquals "%K{007} %F{000}icon-here %f%F{000}world1 %k%F{007}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{015} %F{000}icon-here %f%F{000}world1 %k%F{015}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testVisualIdentifierAppearsAfterSegmentContentOnRightSegments() {
   local -a P9K_RIGHT_PROMPT_ELEMENTS
+  local -a P9K_RIGHT_PROMPT_ELEMENTS
   P9K_RIGHT_PROMPT_ELEMENTS=(custom_world1)
   local P9K_CUSTOM_WORLD1='echo world1'
-  local P9K_CUSTOM_WORLD1_ICON='icon-here'
+  local P9K_WORLD1_ICON='icon-here'
+  p9k::register_segment "WORLD1"
 
-  assertEquals "%F{007}%f%K{007}%F{000} world1%F{000} icon-here%f%E" "$(__p9k_build_right_prompt)"
+  assertEquals "%F{015}%K{015}%F{000} world1 %F{000}icon-here " "$(__p9k_build_right_prompt)"
 }
 
 function testVisualIdentifierPrintsNothingIfNotAvailable() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
-  P9K_LEFT_PROMPT_ELEMENTS=(custom_world1)
-  local P9K_CUSTOM_WORLD1='echo world1'
-
-  assertEquals "%K{007} %F{000}world1 %k%F{007}%f " "$(__p9k_build_left_prompt)"
-}
-
-function testVisualIdentifierIsPrintedInNumericalColorCode() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(custom_world1)
   local P9K_CUSTOM_WORLD1='echo world1'
-  local P9K_CUSTOM_WORLD1_ICON="xxx"
-  local P9K_CUSTOM_WORLD1_VISUAL_IDENTIFIER_COLOR="purple3"
+  p9k::register_segment "WORLD1"
 
-  assertEquals "%K{007} %F{056}xxx %f%F{000}world1 %k%F{007}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{015} %F{000}world1 %k%F{015}%f " "$(__p9k_build_left_prompt)"
+}
+
+function testVisualIdentifierWorksWithUnicodeIcon() {
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(custom_world1)
+  local P9K_CUSTOM_WORLD1='echo world1'
+  local P9K_WORLD1_ICON='\u2714'
+  p9k::register_segment "WORLD1"
+
+  assertEquals "%K{015} %F{000}✔ %f%F{000}world1 %k%F{015}%f " "$(__p9k_build_left_prompt)"
 }
 
 source shunit2/shunit2

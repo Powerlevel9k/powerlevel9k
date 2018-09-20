@@ -7,16 +7,19 @@ SHUNIT_PARENT=$0
 
 function setUp() {
   export TERM="xterm-256color"
+  # Load Powerlevel9k
+  source powerlevel9k.zsh-theme
+  source segments/go_version.p9k
 }
 
 function mockGo() {
   case "$1" in
   'version')
     echo 'go version go1.5.3 darwin/amd64'
-  ;;
+    ;;
   'env')
     echo "$HOME/go"
-  ;;
+    ;;
   esac
 }
 
@@ -24,64 +27,65 @@ function mockGoEmptyGopath() {
   case "$1" in
   'version')
     echo 'go version go1.5.3 darwin/amd64'
-  ;;
+    ;;
   'env')
     echo ""
-  ;;
+    ;;
   esac
 }
 
 function testGo() {
   alias go=mockGo
-  local P9K_GO_VERSION_ICON=""
+  P9K_GO_ICON=""
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(go_version)
 
-  # Load Powerlevel9k
-  source powerlevel9k.zsh-theme
+  PWD="$HOME/go/src/github.com/bhilburn/powerlevel9k"
 
-  local PWD="$HOME/go/src/github.com/bhilburn/powerlevel9k"
+  assertEquals "%K{002} %F{255}Go %f%F{255}go1.5.3 %k%F{002}%f " "$(__p9k_build_left_prompt)"
 
-  assertEquals "%K{002} %F{255} %f%F{255}go1.5.3 %k%F{002}%f " "$(__p9k_build_left_prompt)"
-
+  unset P9K_GO_ICON
+  unset PWD
+  unset P9K_LEFT_PROMPT_ELEMENTS
   unalias go
 }
 
 function testGoSegmentPrintsNothingIfEmptyGopath() {
+  alias go=mockGoEmptyGopath
+  P9K_CUSTOM_WORLD='echo world'
+  p9k::register_segment "WORLD"
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(custom_world go_version)
-  local P9K_CUSTOM_WORLD='echo world'
-  alias go=mockGoEmptyGopath
 
-  # Load Powerlevel9k
-  source powerlevel9k.zsh-theme
+  assertEquals "%K{015} %F{000}world %k%F{015}%f " "$(__p9k_build_left_prompt)"
 
-  assertEquals "%K{007} %F{000}world %k%F{007}%f " "$(__p9k_build_left_prompt)"
+  unset P9K_LEFT_PROMPT_ELEMENTS
+  unset P9K_CUSTOM_WORLD
+
 }
 
 function testGoSegmentPrintsNothingIfNotInGopath() {
+  alias go=mockGo
+  P9K_CUSTOM_WORLD='echo world'
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(custom_world go_version)
-  local P9K_CUSTOM_WORLD='echo world'
-  alias go=mockGo
 
-  # Load Powerlevel9k
-  source powerlevel9k.zsh-theme
+  assertEquals "%K{015} %F{000}world %k%F{015}%f " "$(__p9k_build_left_prompt)"
 
-  assertEquals "%K{007} %F{000}world %k%F{007}%f " "$(__p9k_build_left_prompt)"
+  unset P9K_LEFT_PROMPT_ELEMENTS
+  unset P9K_CUSTOM_WORLD
 }
 
 function testGoSegmentPrintsNothingIfGoIsNotAvailable() {
+  alias go=noGo
+  P9K_CUSTOM_WORLD='echo world'
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(custom_world go_version)
-  local P9K_CUSTOM_WORLD='echo world'
-  alias go=noGo
 
-  # Load Powerlevel9k
-  source powerlevel9k.zsh-theme
+  assertEquals "%K{015} %F{000}world %k%F{015}%f " "$(__p9k_build_left_prompt)"
 
-  assertEquals "%K{007} %F{000}world %k%F{007}%f " "$(__p9k_build_left_prompt)"
-
+  unset P9K_LEFT_PROMPT_ELEMENTS
+  unset P9K_CUSTOM_WORLD
   unalias go
 }
 

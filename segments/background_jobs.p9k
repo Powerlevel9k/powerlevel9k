@@ -36,6 +36,7 @@ prompt_background_jobs() {
     if [[ "$P9K_BACKGROUND_JOBS_VERBOSE" == "true" ]] && ([[ "$background_jobs_number" -gt 1 ]] || [[ "$P9K_BACKGROUND_JOBS_VERBOSE_ALWAYS" == "true" ]]); then
       background_jobs_number_print="$background_jobs_number"
     fi
-    p9k::prepare_segment "$0" "" "$1" "$2" "$3" "$background_jobs_number_print"
+    p9k::prepare_segment "$0" "" "$1" "$2" "$3" "$background_jobs_number_print" \
+      "[[ ${(L)P9K_BACKGROUND_JOBS_VERBOSE_ALWAYS} == true || ${background_jobs_number} -gt 0 ]]"
   fi
 }

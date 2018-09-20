@@ -25,8 +25,8 @@
 readonly P9K_VERSION="0.7.0"
 
 ## Turn on for Debugging
-#PS4='%s%f%b%k%F{blue}%{λ%}%L %F{240}%N:%i%(?.. %F{red}%?) %1(_.%F{yellow}%-1_ .)%s%f%b%k '
-#zstyle ':vcs_info:*+*:*' debug true
+# PS4='%s%f%b%k%F{blue}%{λ%}%L %F{240}%N:%i%(?.. %F{red}%?) %1(_.%F{yellow}%-1_ .)%s%f%b%k '
+# zstyle ':vcs_info:*+*:*' debug true
 # set -o xtrace
 
 # Try to set the installation path

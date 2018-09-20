@@ -18,6 +18,9 @@ function setUp() {
   export HGUSER="Test bot <bot@example.com>"
 
   hg init 1>/dev/null
+
+  # Load Powerlevel9k
+  source ${P9K_HOME}/powerlevel9k.zsh-theme
 }
 
 function tearDown() {
@@ -38,9 +41,9 @@ function testColorOverridingForCleanStateWorks() {
   local P9K_VCS_CLEAN_BACKGROUND='white'
 
   # Load Powerlevel9k
-  source ${P9K_HOME}/powerlevel9k.zsh-theme
+  source ${P9K_HOME}/segments/vcs.p9k
 
-  assertEquals "%K{007} %F{006} default %k%F{007}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{015} %F{006} default %k%F{015}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testColorOverridingForModifiedStateWorks() {
@@ -55,7 +58,7 @@ function testColorOverridingForModifiedStateWorks() {
   echo "test" > testfile
 
   # Load Powerlevel9k
-  source ${P9K_HOME}/powerlevel9k.zsh-theme
+  source ${P9K_HOME}/segments/vcs.p9k
 
   assertEquals "%K{003} %F{001} default ● %k%F{003}%f " "$(__p9k_build_left_prompt)"
 }
@@ -72,7 +75,7 @@ function testAddedFilesIconWorks() {
   hg add myfile.txt
 
   # Load Powerlevel9k
-  source ${P9K_HOME}/powerlevel9k.zsh-theme
+  source ${P9K_HOME}/segments/vcs.p9k
 
   assertEquals "%K{003} %F{000} default ● %k%F{003}%f " "$(__p9k_build_left_prompt)"
 }
@@ -82,7 +85,7 @@ function testTagIconWorks() {
   startSkipping # Skip test
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(vcs)
-  local P9K_VCS_TAG_ICON='T'
+  local P9K_VCS_TAG_ICON='*T'
 
   touch "file.txt"
   hg add file.txt
@@ -90,16 +93,16 @@ function testTagIconWorks() {
   hg tag "v0.0.1"
 
   # Load Powerlevel9k
-  source ${P9K_HOME}/powerlevel9k.zsh-theme
+  source ${P9K_HOME}/segments/vcs.p9k
 
-  assertEquals "%K{002} %F{000} default Tv0.0.1 %k%F{002}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{002} %F{000} default *Tv0.0.1 %k%F{002}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testTagIconInDetachedHeadState() {
   startSkipping # Skip test
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(vcs)
-  local P9K_VCS_TAG_ICON='T'
+  local P9K_VCS_TAG_ICON='*T'
 
   touch "file.txt"
   hg add file.txt
@@ -112,9 +115,9 @@ function testTagIconInDetachedHeadState() {
   local hash=$(hg id)
 
   # Load Powerlevel9k
-  source ${P9K_HOME}/powerlevel9k.zsh-theme
+  source ${P9K_HOME}/segments/vcs.p9k
 
-  assertEquals "%K{002} %F{000} ${hash} Tv0.0.1 %k%F{002}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{002} %F{000} ${hash} *Tv0.0.1 %k%F{002}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testActionHintWorks() {
@@ -135,9 +138,9 @@ function testActionHintWorks() {
   hg merge --tool internal:merge >/dev/null 2>&1
 
   # Load Powerlevel9k
-  source ${P9K_HOME}/powerlevel9k.zsh-theme
+  source ${P9K_HOME}/segments/vcs.p9k
 
-  assertEquals "%K{003} %F{000} default %F{red}| merging%f %k%F{003}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{003} %F{000} default %F{001}| merging%f %k%F{003}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testShorteningCommitHashWorks() {
@@ -152,11 +155,11 @@ function testShorteningCommitHashWorks() {
   local hash=$(hg id | head -c ${P9K_VCS_CHANGESET_HASH_LENGTH})
 
   # Load Powerlevel9k
-  source ${P9K_HOME}/powerlevel9k.zsh-theme
+  source ${P9K_HOME}/segments/vcs.p9k
 
-  # This test needs to call powerlevel9k_vcs_init, where
+  # This test needs to call __p9k_vcs_init, where
   # the changeset is truncated.
-  powerlevel9k_vcs_init
+  __p9k_vcs_init
 
   assertEquals "%K{002} %F{000}${hash}  default %k%F{002}%f " "$(__p9k_build_left_prompt)"
 }
@@ -172,11 +175,11 @@ function testShorteningCommitHashIsNotShownIfShowChangesetIsFalse() {
   hg commit -m "Add File" 1>/dev/null
 
   # Load Powerlevel9k
-  source ${P9K_HOME}/powerlevel9k.zsh-theme
+  source ${P9K_HOME}/segments/vcs.p9k
 
-  # This test needs to call powerlevel9k_vcs_init, where
+  # This test needs to call __p9k_vcs_init, where
   # the changeset is truncated.
-  powerlevel9k_vcs_init
+  __p9k_vcs_init
 
   assertEquals "%K{002} %F{000} default %k%F{002}%f " "$(__p9k_build_left_prompt)"
 }
@@ -184,24 +187,24 @@ function testShorteningCommitHashIsNotShownIfShowChangesetIsFalse() {
 function testMercurialIconWorks() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(vcs)
-  local P9K_VCS_HG_ICON='HG-Icon'
+  local P9K_VCS_HG_ICON='HG-icon'
 
   # Load Powerlevel9k
-  source ${P9K_HOME}/powerlevel9k.zsh-theme
+  source ${P9K_HOME}/segments/vcs.p9k
 
-  assertEquals "%K{002} %F{000}HG-Icon %f%F{000} default %k%F{002}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{002} %F{000}HG-icon %f%F{000} default %k%F{002}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testBookmarkIconWorks() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(vcs)
-  local P9K_VCS_BOOKMARK_ICON='B'
+  local P9K_VCS_BOOKMARK_ICON='*B'
   hg bookmark "initial"
 
   # Load Powerlevel9k
-  source ${P9K_HOME}/powerlevel9k.zsh-theme
+  source ${P9K_HOME}/segments/vcs.p9k
 
-  assertEquals "%K{002} %F{000} default Binitial %k%F{002}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{002} %F{000} default *Binitial %k%F{002}%f " "$(__p9k_build_left_prompt)"
 }
 
 source shunit2/shunit2

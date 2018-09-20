@@ -39,6 +39,9 @@
       - Updated code to make use of cached data
     - `segments/*`:
       - Updated all segments to make use of `p9k::register_icon` and `p9k::register_segment`
+    - `test/*`
+      - Updated all tests for the new release
+      - Added functionality to `suite.spec` to allow more detailed local tests and OS specific tests.
   - PR # (Stage 5)
 
 ## v0.6.6

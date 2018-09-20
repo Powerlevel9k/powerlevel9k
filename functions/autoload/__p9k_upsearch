@@ -29,7 +29,7 @@ elif test -e "$1"; then
   pushd .. > /dev/null
   __p9k_upsearch "$1"
   popd > /dev/null
-  echo "$PWD"
+  echo "${PWD}"
 else
   pushd .. > /dev/null
   __p9k_upsearch "$1"

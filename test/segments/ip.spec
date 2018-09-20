@@ -7,6 +7,9 @@ SHUNIT_PARENT=$0
 
 function setUp() {
   export TERM="xterm-256color"
+  # Load Powerlevel9k
+  source powerlevel9k.zsh-theme
+  source segments/ip.p9k
 }
 
 function testIpSegmentPrintsNothingOnOsxIfNotConnected() {
@@ -14,12 +17,11 @@ function testIpSegmentPrintsNothingOnOsxIfNotConnected() {
   P9K_LEFT_PROMPT_ELEMENTS=(ip custom_world)
   alias networksetup='echo "not connected"'
   local P9K_CUSTOM_WORLD='echo world'
+  p9k::register_segment "WORLD"
 
-  # Load Powerlevel9k
-  source powerlevel9k.zsh-theme
   local __P9K_OS="OSX" # Fake OSX
 
-  assertEquals "%K{007} %F{000}world %k%F{007}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{015} %F{000}world %k%F{015}%f " "$(__p9k_build_left_prompt)"
 
   unalias networksetup
 }
@@ -29,12 +31,11 @@ function testIpSegmentPrintsNothingOnLinuxIfNotConnected() {
   P9K_LEFT_PROMPT_ELEMENTS=(ip custom_world)
   alias ip='echo "not connected"'
   local P9K_CUSTOM_WORLD='echo world'
+  p9k::register_segment "WORLD"
 
-  # Load Powerlevel9k
-  source powerlevel9k.zsh-theme
   local __P9K_OS="Linux" # Fake Linux
 
-  assertEquals "%K{007} %F{000}world %k%F{007}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{015} %F{000}world %k%F{015}%f " "$(__p9k_build_left_prompt)"
 
   unalias ip
 }
@@ -62,10 +63,8 @@ function testIpSegmentWorksOnOsxWithNoInterfaceSpecified() {
 (Hardware Port: Apple USB Ethernet Adapter, Device: en4)
 '"
 
-  alias ipconfig="_() { echo '1.2.3.4'; };_"
+  alias ipconfig="_(){ echo '1.2.3.4'; };_"
 
-  # Load Powerlevel9k
-  source powerlevel9k.zsh-theme
   local __P9K_OS='OSX' # Fake OSX
 
   assertEquals "%K{006} %F{000}IP %f%F{000}1.2.3.4 %k%F{006}%f " "$(__p9k_build_left_prompt)"
@@ -103,7 +102,7 @@ function testIpSegmentWorksOnOsxWithMultipleInterfacesSpecified() {
 
   # Return a unique IP address for every interface
   ipconfig() {
-    case "${2}" in
+    case "${2}" {
       en0)
         echo 1.2.3.4
       ;;
@@ -116,11 +115,9 @@ function testIpSegmentWorksOnOsxWithMultipleInterfacesSpecified() {
       en3)
         echo 4.5.6.7
       ;;
-    esac
+    }
   }
 
-  # Load Powerlevel9k
-  source powerlevel9k.zsh-theme
   local __P9K_OS='OSX' # Fake OSX
 
   assertEquals "%K{006} %F{000}IP %f%F{000}1.2.3.4 %k%F{006}%f " "$(__p9k_build_left_prompt)"
@@ -133,10 +130,8 @@ function testIpSegmentWorksOnOsxWithInterfaceSpecified() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(ip)
   local P9K_IP_INTERFACE='xxx'
-  alias ipconfig="_() { echo '1.2.3.4'; };_"
+  alias ipconfig="_(){ echo '1.2.3.4'; };_"
 
-  # Load Powerlevel9k
-  source powerlevel9k.zsh-theme
   local __P9K_OS='OSX' # Fake OSX
 
   assertEquals "%K{006} %F{000}IP %f%F{000}1.2.3.4 %k%F{006}%f " "$(__p9k_build_left_prompt)"
@@ -145,82 +140,76 @@ function testIpSegmentWorksOnOsxWithInterfaceSpecified() {
 }
 
 function testIpSegmentWorksOnLinuxWithNoInterfaceSpecified() {
-    setopt aliases
-    local P9K_LEFT_PROMPT_ELEMENTS=(ip)
-    # That command is harder to test, as it is used at first
-    # to get all relevant network interfaces and then for
-    # getting the configuration of that segment..
-    ip() {
-      if [[ "$*" == 'link ls up' ]]; then
-        echo "1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN mode DEFAULT group default
-    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+  setopt aliases
+  local P9K_LEFT_PROMPT_ELEMENTS=(ip)
+  # That command is harder to test, as it is used at first
+  # to get all relevant network interfaces and then for
+  # getting the configuration of that segment..
+  ip(){
+    if [[ "$*" == 'link ls up' ]]; then
+    echo "1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN mode DEFAULT group default
+  link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
 2: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP mode DEFAULT group default qlen 1000
-    link/ether 08:00:27:7e:84:45 brd ff:ff:ff:ff:ff:ff";
-      fi
+  link/ether 08:00:27:7e:84:45 brd ff:ff:ff:ff:ff:ff";
+    fi
 
-      if [[ "$*" == '-4 a show eth0' ]]; then
-        echo '2: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
-    inet 10.0.2.15/24 brd 10.0.2.255 scope global eth0
-       valid_lft forever preferred_lft forever';
-      fi
-    }
+    if [[ "$*" == '-4 a show eth0' ]]; then
+    echo '2: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
+  inet 10.0.2.15/24 brd 10.0.2.255 scope global eth0
+     valid_lft forever preferred_lft forever';
+    fi
+  }
 
-    # Load Powerlevel9k
-    source powerlevel9k.zsh-theme
-    local __P9K_OS='Linux' # Fake Linux
+  local __P9K_OS='Linux' # Fake Linux
 
-    assertEquals "%K{006} %F{000}IP %f%F{000}10.0.2.15 %k%F{006}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{006} %F{000}IP %f%F{000}10.0.2.15 %k%F{006}%f " "$(__p9k_build_left_prompt)"
 
-    unfunction ip
+  unfunction ip
 }
 
 function testIpSegmentWorksOnLinuxWithMultipleInterfacesSpecified() {
-    setopt aliases
-    local -a P9K_LEFT_PROMPT_ELEMENTS
-    P9K_LEFT_PROMPT_ELEMENTS=(ip)
-    # That command is harder to test, as it is used at first
-    # to get all relevant network interfaces and then for
-    # getting the configuration of that segment..
-    ip() {
-      if [[ "$*" == 'link ls up' ]]; then
-        echo "1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN mode DEFAULT group default
-    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+  setopt aliases
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(ip)
+  # That command is harder to test, as it is used at first
+  # to get all relevant network interfaces and then for
+  # getting the configuration of that segment..
+  ip(){
+    if [[ "$*" == 'link ls up' ]]; then
+    echo "1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN mode DEFAULT group default
+  link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
 2: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP mode DEFAULT group default qlen 1000
-    link/ether 08:00:27:7e:84:45 brd ff:ff:ff:ff:ff:ff
+  link/ether 08:00:27:7e:84:45 brd ff:ff:ff:ff:ff:ff
 3: eth1: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP mode DEFAULT group default qlen 1000
-    link/ether 08:00:27:7e:84:45 brd ff:ff:ff:ff:ff:ff
+  link/ether 08:00:27:7e:84:45 brd ff:ff:ff:ff:ff:ff
 4: wlan0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP mode DEFAULT group default qlen 1000
-    link/ether 08:00:27:7e:84:45 brd ff:ff:ff:ff:ff:ff";
-      fi
+  link/ether 08:00:27:7e:84:45 brd ff:ff:ff:ff:ff:ff";
+    fi
 
-      if [[ "$*" == '-4 a show eth1' ]]; then
-        echo '3: eth1: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
-    inet 10.0.2.15/24 brd 10.0.2.255 scope global eth0
-       valid_lft forever preferred_lft forever';
-      fi
-    }
+    if [[ "$*" == '-4 a show eth1' ]]; then
+    echo '3: eth1: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
+  inet 10.0.2.15/24 brd 10.0.2.255 scope global eth0
+     valid_lft forever preferred_lft forever';
+    fi
+  }
 
-    # Load Powerlevel9k
-    source powerlevel9k.zsh-theme
-    local __P9K_OS='Linux' # Fake Linux
+  local __P9K_OS='Linux' # Fake Linux
 
-    assertEquals "%K{006} %F{000}IP %f%F{000}10.0.2.15 %k%F{006}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{006} %F{000}IP %f%F{000}10.0.2.15 %k%F{006}%f " "$(__p9k_build_left_prompt)"
 
-    unfunction ip
+  unfunction ip
 }
 
 function testIpSegmentWorksOnLinuxWithInterfaceSpecified() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(ip)
   local P9K_IP_INTERFACE='xxx'
-  ip() {
-    echo '2: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
+  ip(){
+  echo '2: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000
 inet 10.0.2.15/24 brd 10.0.2.255 scope global eth0
-    valid_lft forever preferred_lft forever';
+  valid_lft forever preferred_lft forever';
   }
 
-  # Load Powerlevel9k
-  source powerlevel9k.zsh-theme
   local __P9K_OS='Linux' # Fake Linux
 
   assertEquals "%K{006} %F{000}IP %f%F{000}10.0.2.15 %k%F{006}%f " "$(__p9k_build_left_prompt)"

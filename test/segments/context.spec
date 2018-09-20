@@ -11,103 +11,75 @@ function setUp() {
   # Test specific settings
   OLD_DEFAULT_USER=$DEFAULT_USER
   unset DEFAULT_USER
+
+  # Load Powerlevel9k
+  source powerlevel9k.zsh-theme
+  source segments/context.p9k
 }
 
 function tearDown() {
   # Restore old variables
   [[ -n "$OLD_DEFAULT_USER" ]] && DEFAULT_USER=$OLD_DEFAULT_USER
-
-  return 0
+  unset OLD_DEFAULT_USER
 }
 
 function testContextSegmentDoesNotGetRenderedWithDefaultUser() {
-    local DEFAULT_USER=$(whoami)
-    local P9K_CUSTOM_WORLD='echo world'
-    local -a P9K_LEFT_PROMPT_ELEMENTS
-    P9K_LEFT_PROMPT_ELEMENTS=(context custom_world)
+  local DEFAULT_USER=$(whoami)
+  local P9K_CUSTOM_WORLD='echo world'
+  p9k::register_segment "WORLD"
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(context custom_world)
 
-    # Load Powerlevel9k
-    source powerlevel9k.zsh-theme
-
-    assertEquals "%K{007} %F{000}world %k%F{007}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{015} %F{000}world %k%F{015}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testContextSegmentDoesGetRenderedWhenSshConnectionIsOpen() {
-    function sudo() {
-        return 0
-    }
-    local SSH_CLIENT="putty"
-    local -a P9K_LEFT_PROMPT_ELEMENTS
-    P9K_LEFT_PROMPT_ELEMENTS=(context)
+  local SSH_CLIENT="putty"
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(context)
 
-    # Load Powerlevel9k
-    source powerlevel9k.zsh-theme
-
-    assertEquals "%K{000} %F{003}%n@%m %k%F{000}%f " "$(__p9k_build_left_prompt)"
-
-    unfunction sudo
+  assertEquals "%K{000} %F{003}%n@%m %k%F{000}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testContextSegmentWithForeignUser() {
-    function sudo() {
-        return 0
-    }
-    local -a P9K_LEFT_PROMPT_ELEMENTS
-    P9K_LEFT_PROMPT_ELEMENTS=(context)
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(context)
 
-    # Load Powerlevel9k
-    source powerlevel9k.zsh-theme
-
-    assertEquals "%K{000} %F{003}%n@%m %k%F{000}%f " "$(__p9k_build_left_prompt)"
-
-    unfunction sudo
+  assertEquals "%K{000} %F{003}%n@%m %k%F{000}%f " "$(__p9k_build_left_prompt)"
 }
 
-# TODO: How to test root?
 function testContextSegmentWithRootUser() {
-    startSkipping # Skip test
-    local -a P9K_LEFT_PROMPT_ELEMENTS
-    P9K_LEFT_PROMPT_ELEMENTS=(context)
+  local SUDO_COMMAND="sudo"
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(context)
 
-    # Load Powerlevel9k
-    source powerlevel9k.zsh-theme
-
-    assertEquals "%K{000} %F{003}%n@%m %k%F{000}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{000} %F{003}%n@%m %k%F{000}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testOverridingContextTemplate() {
-    local -a P9K_LEFT_PROMPT_ELEMENTS
-    P9K_LEFT_PROMPT_ELEMENTS=(context)
-    local P9K_CONTEXT_TEMPLATE=xx
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(context)
+  local P9K_CONTEXT_TEMPLATE=xx
 
-    # Load Powerlevel9k
-    source powerlevel9k.zsh-theme
-
-    assertEquals "%K{000} %F{003}xx %k%F{000}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{000} %F{003}xx %k%F{000}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testContextSegmentIsShownIfDefaultUserIsSetWhenForced() {
-    local -a P9K_LEFT_PROMPT_ELEMENTS
-    P9K_LEFT_PROMPT_ELEMENTS=(context)
-    local P9K_CONTEXT_ALWAYS_SHOW=true
-    local DEFAULT_USER=$(whoami)
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(context)
+  local P9K_CONTEXT_ALWAYS_SHOW=true
+  local DEFAULT_USER=$(whoami)
 
-    # Load Powerlevel9k
-    source powerlevel9k.zsh-theme
-
-    assertEquals "%K{000} %F{003}%n@%m %k%F{000}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{000} %F{003}%n@%m %k%F{000}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testContextSegmentIsShownIfForced() {
-    local -a P9K_LEFT_PROMPT_ELEMENTS
-    P9K_LEFT_PROMPT_ELEMENTS=(context)
-    local P9K_CONTEXT_ALWAYS_SHOW_USER=true
-    local DEFAULT_USER=$(whoami)
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(context)
+  local P9K_CONTEXT_ALWAYS_SHOW_USER=true
+  local DEFAULT_USER=$(whoami)
 
-    # Load Powerlevel9k
-    source powerlevel9k.zsh-theme
-
-    assertEquals "%K{000} %F{003}$(whoami) %k%F{000}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{000} %F{003}$(whoami) %k%F{000}%f " "$(__p9k_build_left_prompt)"
 }
 
 source shunit2/shunit2

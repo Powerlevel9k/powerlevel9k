@@ -9,6 +9,9 @@ function setUp() {
   export TERM="xterm-256color"
 
   P9K_HOME=$(pwd)
+  # Load Powerlevel9k
+  source ${P9K_HOME}/powerlevel9k.zsh-theme
+  source ${P9K_HOME}/segments/load.p9k
   ### Test specific
   # Create default folder and git init it.
   FOLDER=/tmp/powerlevel9k-test/load-test
@@ -23,133 +26,115 @@ function tearDown() {
   rm -fr "${FOLDER}"
   # At least remove test folder completely
   rm -fr /tmp/powerlevel9k-test
-}
+  }
 
 function testLoadSegmentWorksOnOsx() {
-    sysctl() {
-        if [[ "$*" == 'vm.loadavg' ]]; then
-            echo "vm.loadavg: { 1,38 1,45 2,16 }";
-        fi
+  sysctl() {
+    if [[ "$*" == 'vm.loadavg' ]]; then
+      echo "vm.loadavg: { 1,38 1,45 2,16 }";
+    fi
 
-        if [[ "$*" == '-n hw.logicalcpu' ]]; then
-            echo "4";
-        fi
-    }
+    if [[ "$*" == '-n hw.logicalcpu' ]]; then
+      echo "4";
+    fi
+  }
 
-    local P9K_LOAD_WHICH=1
+  local P9K_LOAD_WHICH=1
 
-    # Load Powerlevel9k
-    source ${P9K_HOME}/powerlevel9k.zsh-theme
-    source ${P9K_HOME}/segments/load.p9k
-    local __P9K_OS="OSX" # Fake OSX
+  local __P9K_OS="OSX" # Fake OSX
 
-    assertEquals "%K{002} %F{000}L %f%F{000}1.38 " "$(prompt_load left 1 false ${FOLDER})"
+  assertEquals "%K{002} %F{000}L %f%F{000}1.38 " "$(prompt_load left 1 false ${FOLDER})"
 
-    unfunction sysctl
+  unfunction sysctl
 }
 
 function testLoadSegmentWorksOnBsd() {
-    sysctl() {
-        if [[ "$*" == 'vm.loadavg' ]]; then
-            echo "vm.loadavg: { 1,38 1,45 2,16 }";
-        fi
+  sysctl() {
+    if [[ "$*" == 'vm.loadavg' ]]; then
+      echo "vm.loadavg: { 1,38 1,45 2,16 }";
+    fi
 
-        if [[ "$*" == '-n hw.ncpu' ]]; then
-            echo "4";
-        fi
-    }
+    if [[ "$*" == '-n hw.ncpu' ]]; then
+      echo "4";
+    fi
+  }
 
-    local P9K_LOAD_WHICH=1
+  local P9K_LOAD_WHICH=1
 
-    # Load Powerlevel9k
-    source ${P9K_HOME}/powerlevel9k.zsh-theme
-    source ${P9K_HOME}/segments/load.p9k
-    local __P9K_OS="BSD" # Fake BSD
+  local __P9K_OS="BSD" # Fake BSD
 
-    assertEquals "%K{002} %F{000}L %f%F{000}1.38 " "$(prompt_load left 1 false ${FOLDER})"
+  assertEquals "%K{002} %F{000}L %f%F{000}1.38 " "$(prompt_load left 1 false ${FOLDER})"
 
-    unfunction sysctl
+  unfunction sysctl
 }
 
 function testLoadSegmentWorksOnLinux() {
-    # Prepare loadavg
-    mkdir proc
-    echo "1.38 0.01 0.05 1/87 8641" > proc/loadavg
+  # Prepare loadavg
+  mkdir proc
+  echo "1.38 0.01 0.05 1/87 8641" > proc/loadavg
 
-    alias nproc="echo 4"
-    local P9K_LOAD_WHICH=1
+  alias nproc="echo 4"
+  local P9K_LOAD_WHICH=1
 
-    # Load Powerlevel9k
-    source ${P9K_HOME}/powerlevel9k.zsh-theme
-    source ${P9K_HOME}/segments/load.p9k
-    local __P9K_OS="Linux" # Fake Linux
+  local __P9K_OS="Linux" # Fake Linux
 
-    assertEquals "%K{002} %F{000}L %f%F{000}1.38 " "$(prompt_load left 1 false ${FOLDER})"
+  assertEquals "%K{002} %F{000}L %f%F{000}1.38 " "$(prompt_load left 1 false ${FOLDER})"
 
-    unalias nproc
+  unalias nproc
 }
 
 # Test normal state. This test is not OS specific.
 # We test it as the Linux version, but that
 # does not matter here.
 function testLoadSegmentNormalState() {
-    # Prepare loadavg
-    mkdir proc
-    echo "1.00 0.01 0.05 1/87 8641" > proc/loadavg
+  # Prepare loadavg
+  mkdir proc
+  echo "1.00 0.01 0.05 1/87 8641" > proc/loadavg
 
-    alias nproc="echo 4"
-    local P9K_LOAD_WHICH=1
+  alias nproc="echo 4"
+  local P9K_LOAD_WHICH=1
 
-    # Load Powerlevel9k
-    source ${P9K_HOME}/powerlevel9k.zsh-theme
-    source ${P9K_HOME}/segments/load.p9k
-    local __P9K_OS="Linux" # Fake Linux
+  local __P9K_OS="Linux" # Fake Linux
 
-    assertEquals "%K{002} %F{000}L %f%F{000}1.00 " "$(prompt_load left 1 false ${FOLDER})"
+  assertEquals "%K{002} %F{000}L %f%F{000}1.00 " "$(prompt_load left 1 false ${FOLDER})"
 
-    unalias nproc
+  unalias nproc
 }
 
 # Test warning state. This test is not OS specific.
 # We test it as the Linux version, but that
 # does not matter here.
 function testLoadSegmentWarningState() {
-    # Prepare loadavg
-    mkdir proc
-    echo "2.01 0.01 0.05 1/87 8641" > proc/loadavg
+  # Prepare loadavg
+  mkdir proc
+  echo "2.01 0.01 0.05 1/87 8641" > proc/loadavg
 
-    alias nproc="echo 4"
-    local P9K_LOAD_WHICH=1
+  alias nproc="echo 4"
+  local P9K_LOAD_WHICH=1
 
-    # Load Powerlevel9k
-    source ${P9K_HOME}/powerlevel9k.zsh-theme
-    source ${P9K_HOME}/segments/load.p9k
-    local __P9K_OS="Linux" # Fake Linux
+  local __P9K_OS="Linux" # Fake Linux
 
-    assertEquals "%K{003} %F{000}L %f%F{000}2.01 " "$(prompt_load left 1 false ${FOLDER})"
+  assertEquals "%K{003} %F{000}L %f%F{000}2.01 " "$(prompt_load left 1 false ${FOLDER})"
 
-    unalias nproc
+  unalias nproc
 }
 
 # Test critical state. This test is not OS specific.
 # We test it as the Linux version, but that
 # does not matter here.
 function testLoadSegmentCriticalState() {
-    # Prepare loadavg
-    mkdir proc
-    echo "2.81 0.01 0.05 1/87 8641" > proc/loadavg
+  # Prepare loadavg
+  mkdir proc
+  echo "2.81 0.01 0.05 1/87 8641" > proc/loadavg
 
-    alias nproc="echo 4"
-    local P9K_LOAD_WHICH=1
+  alias nproc="echo 4"
+  local P9K_LOAD_WHICH=1
 
-    # Load Powerlevel9k
-    source ${P9K_HOME}/powerlevel9k.zsh-theme
-    source ${P9K_HOME}/segments/load.p9k
-    local __P9K_OS="Linux" # Fake Linux
+  local __P9K_OS="Linux" # Fake Linux
 
-    assertEquals "%K{001} %F{000}L %f%F{000}2.81 " "$(prompt_load left 1 false ${FOLDER})"
+  assertEquals "%K{001} %F{000}L %f%F{000}2.81 " "$(prompt_load left 1 false ${FOLDER})"
 
-    unalias nproc
+  unalias nproc
 }
 
 source shunit2/shunit2

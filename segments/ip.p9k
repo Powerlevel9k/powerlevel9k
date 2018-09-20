@@ -21,7 +21,7 @@ p9k::register_segment "IP" "" "cyan" "$DEFAULT_COLOR"  'IP'  $'\uE1AD'  $'\uF09E
 #   $3 boolean Whether the segment should be joined
 ##
 prompt_ip() {
-  if [[ "$__p9K_OS" == "OSX" ]]; then
+  if [[ "$__P9K_OS" == "OSX" ]]; then
     if p9k::defined P9K_IP_INTERFACE; then
       # Get the IP address of the specified interface.
       ip=$(ipconfig getifaddr "$P9K_IP_INTERFACE")

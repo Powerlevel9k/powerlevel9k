@@ -8,8 +8,8 @@
 # Register segment
 # Parameters:
 #   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
-#                                                    ⬢         ⬢          ⬢          ⬢          
-p9k::register_segment "NODE_ENV" "" "black" "green" $'\u2B22'  $'\u2B22'  $'\u2B22'  $'\u2B22'  $'\uE617 '
+#                                                  ⬢          ⬢          ⬢          ⬢          
+p9k::register_segment "NODEENV" "" "black" "green" $'\u2B22'  $'\u2B22'  $'\u2B22'  $'\u2B22'  $'\uE617 '
 
 ################################################################
 # @description
@@ -21,9 +21,8 @@ p9k::register_segment "NODE_ENV" "" "black" "green" $'\u2B22'  $'\u2B22'  $'\u2B
 #   $3 boolean Whether the segment should be joined
 ##
 prompt_nodeenv() {
-  local nodeenv_path="$NODE_VIRTUAL_ENV"
-  if [[ -n "$nodeenv_path" && "$NODE_VIRTUAL_ENV_DISABLE_PROMPT" != true ]]; then
-    local info="$(node -v)[${nodeenv_path:t}]"
+  if [[ -n "${NODE_VIRTUAL_ENV}" && "$NODE_VIRTUAL_ENV_DISABLE_PROMPT" != true ]]; then
+    local info="$(node -v)[${NODE_VIRTUAL_ENV:t}]"
     p9k::prepare_segment "$0" "" $1 "$2" $3 "$info"
   fi
 }

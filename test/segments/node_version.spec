@@ -7,35 +7,33 @@ SHUNIT_PARENT=$0
 
 function setUp() {
   export TERM="xterm-256color"
+  # Load Powerlevel9k
+  source powerlevel9k.zsh-theme
+  source segments/node_version.p9k
 }
 
 function testNodeVersionSegmentPrintsNothingWithoutNode() {
-    local -a P9K_LEFT_PROMPT_ELEMENTS
-    P9K_LEFT_PROMPT_ELEMENTS=(node_version custom_world)
-    local P9K_CUSTOM_WORLD='echo world'
-    alias node="nonode 2>/dev/null"
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(node_version custom_world)
+  local P9K_CUSTOM_WORLD='echo world'
+  p9k::register_segment "WORLD"
+  alias node="nonode 2>/dev/null"
 
-    # Load Powerlevel9k
-    source powerlevel9k.zsh-theme
+  assertEquals "%K{015} %F{000}world %k%F{015}%f " "$(__p9k_build_left_prompt)"
 
-    assertEquals "%K{007} %F{000}world %k%F{007}%f " "$(__p9k_build_left_prompt)"
-
-    unalias node
+  unalias node
 }
 
 function testNodeVersionSegmentWorks() {
-    local -a P9K_LEFT_PROMPT_ELEMENTS
-    P9K_LEFT_PROMPT_ELEMENTS=(node_version)
-    node() {
-        echo "v1.2.3"
-    }
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(node_version)
+  node() {
+    echo "v1.2.3"
+  }
 
-    # Load Powerlevel9k
-    source powerlevel9k.zsh-theme
+  assertEquals "%K{002} %F{015}⬢ %f%F{015}1.2.3 %k%F{002}%f " "$(__p9k_build_left_prompt)"
 
-    assertEquals "%K{002} %F{007}⬢ %f%F{007}1.2.3 %k%F{002}%f " "$(__p9k_build_left_prompt)"
-
-    unfunction node
+  unfunction node
 }
 
 source shunit2/shunit2

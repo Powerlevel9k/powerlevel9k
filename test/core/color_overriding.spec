@@ -23,16 +23,16 @@ function testDynamicColoringOfSegmentsWork() {
 function testDynamicColoringOfVisualIdentifiersWork() {
   local P9K_LEFT_PROMPT_ELEMENTS=(date)
   local P9K_DATE_ICON="date-icon"
-  local P9K_DATE_VISUAL_IDENTIFIER_COLOR='green'
+  local P9K_DATE_ICON_COLOR='green'
   source segments/date.p9k
 
-  assertEquals "%K{007} %F{002}date-icon %f%F{000}%D{%d.%m.%y} %k%F{007}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{015} %F{002}date-icon %f%F{000}%D{%d.%m.%y} %k%F{015}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testColoringOfVisualIdentifiersDoesNotOverwriteColoringOfSegment() {
   local P9K_LEFT_PROMPT_ELEMENTS=(date)
   local P9K_DATE_ICON="date-icon"
-  local P9K_DATE_VISUAL_IDENTIFIER_COLOR='green'
+  local P9K_DATE_ICON_COLOR='green'
   local P9K_DATE_FOREGROUND='red'
   local P9K_DATE_BACKGROUND='yellow'
   source segments/date.p9k
@@ -42,7 +42,7 @@ function testColoringOfVisualIdentifiersDoesNotOverwriteColoringOfSegment() {
 
 function testColorOverridingOfStatefulSegment() {
   local P9K_LEFT_PROMPT_ELEMENTS=(host)
-  local P9K_SSH_ICON="ssh-icon"
+  local P9K_HOST_REMOTE_ICON="ssh-icon"
   local P9K_HOST_REMOTE_BACKGROUND='red'
   local P9K_HOST_REMOTE_FOREGROUND='green'
   # Provoke state
@@ -55,10 +55,11 @@ function testColorOverridingOfStatefulSegment() {
 function testColorOverridingOfCustomSegment() {
   local P9K_LEFT_PROMPT_ELEMENTS=(custom_world)
   local P9K_CUSTOM_WORLD='echo world'
-  local P9K_CUSTOM_WORLD_ICON='CW'
-  local P9K_CUSTOM_WORLD_VISUAL_IDENTIFIER_COLOR='green'
-  local P9K_CUSTOM_WORLD_FOREGROUND='red'
-  local P9K_CUSTOM_WORLD_BACKGROUND='red'
+  local P9K_WORLD_ICON='CW'
+  local P9K_WORLD_ICON_COLOR='green'
+  local P9K_WORLD_FOREGROUND='red'
+  local P9K_WORLD_BACKGROUND='red'
+  p9k::register_segment "WORLD"
 
   assertEquals "%K{001} %F{002}CW %f%F{001}world %k%F{001}%f " "$(__p9k_build_left_prompt)"
 }
