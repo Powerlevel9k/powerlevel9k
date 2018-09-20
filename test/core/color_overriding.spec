@@ -55,11 +55,10 @@ function testColorOverridingOfStatefulSegment() {
 function testColorOverridingOfCustomSegment() {
   local P9K_LEFT_PROMPT_ELEMENTS=(custom_world)
   local P9K_CUSTOM_WORLD='echo world'
-  local P9K_WORLD_ICON='CW'
-  local P9K_WORLD_ICON_COLOR='green'
-  local P9K_WORLD_FOREGROUND='red'
-  local P9K_WORLD_BACKGROUND='red'
-  p9k::register_segment "WORLD"
+  local P9K_CUSTOM_WORLD_ICON='CW'
+  local P9K_CUSTOM_WORLD_ICON_COLOR='green'
+  local P9K_CUSTOM_WORLD_FOREGROUND='red'
+  local P9K_CUSTOM_WORLD_BACKGROUND='red'
 
   assertEquals "%K{001} %F{002}CW %f%F{001}world %k%F{001}%f " "$(__p9k_build_left_prompt)"
 }

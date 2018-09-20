@@ -17,7 +17,7 @@ function testOverwritingIconsWork() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(custom_world1)
   local P9K_CUSTOM_WORLD1='echo world1'
-  local P9K_WORLD1_ICON='icon-here'
+  local P9K_CUSTOM_WORLD1_ICON='icon-here'
   p9k::register_segment "WORLD1"
 
   assertEquals "%K{015} %F{000}icon-here %f%F{000}world1 %k%F{015}%f " "$(__p9k_build_left_prompt)"
@@ -28,7 +28,7 @@ function testVisualIdentifierAppearsBeforeSegmentContentOnLeftSegments() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(custom_world1)
   local P9K_CUSTOM_WORLD1='echo world1'
-  local P9K_WORLD1_ICON='icon-here'
+  local P9K_CUSTOM_WORLD1_ICON='icon-here'
   p9k::register_segment "WORLD1"
 
   assertEquals "%K{015} %F{000}icon-here %f%F{000}world1 %k%F{015}%f " "$(__p9k_build_left_prompt)"
@@ -39,7 +39,7 @@ function testVisualIdentifierAppearsAfterSegmentContentOnRightSegments() {
   local -a P9K_RIGHT_PROMPT_ELEMENTS
   P9K_RIGHT_PROMPT_ELEMENTS=(custom_world1)
   local P9K_CUSTOM_WORLD1='echo world1'
-  local P9K_WORLD1_ICON='icon-here'
+  local P9K_CUSTOM_WORLD1_ICON='icon-here'
   p9k::register_segment "WORLD1"
 
   assertEquals "%F{015}%K{015}%F{000} world1 %F{000}icon-here " "$(__p9k_build_right_prompt)"
@@ -60,7 +60,7 @@ function testVisualIdentifierWorksWithUnicodeIcon() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(custom_world1)
   local P9K_CUSTOM_WORLD1='echo world1'
-  local P9K_WORLD1_ICON='\u2714'
+  local P9K_CUSTOM_WORLD1_ICON='\u2714'
   p9k::register_segment "WORLD1"
 
   assertEquals "%K{015} %F{000}✔ %f%F{000}world1 %k%F{015}%f " "$(__p9k_build_left_prompt)"
