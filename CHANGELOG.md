@@ -20,7 +20,7 @@
       - `__p9k_truncate_path`
       - `__p9k_upsearch`
     - Added autoload code to `functions/utilities`
-  - PR # (Stage 4)
+  - PR #993 (Stage 4)
     - Renamed all variables to match their segments
     - Added autoload functions:
       - `__p9k_segment_should_be_printed`
@@ -41,8 +41,7 @@
       - Updated all segments to make use of `p9k::register_icon` and `p9k::register_segment`
     - `test/*`
       - Updated all tests for the new release
-      - Added functionality to `suite.spec` to allow more detailed local tests and OS specific tests.
-  - PR # (Stage 5)
+      - Added functionality to `suite.spec` to allow more detailed local tests.
 
 ## v0.6.6
 

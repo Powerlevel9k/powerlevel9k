@@ -39,8 +39,6 @@ function testTransitiveJoinedSegments() {
 function testJoiningWithConditionalSegment() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
   local P9K_LEFT_PROMPT_ELEMENTS=(dir background_jobs dir_joined)
-  local jobs_running=0
-  local jobs_suspended=0
   source segments/background_jobs.p9k
 
   cd /tmp

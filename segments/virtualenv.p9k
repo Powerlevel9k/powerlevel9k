@@ -24,8 +24,7 @@ p9k::register_segment "VIRTUALENV" "" "blue" "${DEFAULT_COLOR}"  ''  $'\uE63C'  
 #   [virtualenv (Python)](https://virtualenv.pypa.io/en/latest/)
 #   for more information.
 prompt_virtualenv() {
-  local virtualenv_path="$VIRTUAL_ENV"
-  if [[ -n "$virtualenv_path" && "$VIRTUAL_ENV_DISABLE_PROMPT" != true ]]; then
-    p9k::prepare_segment "$0" "" $1 "$2" $3 "$(basename "$virtualenv_path")"
+  if [[ -n "${VIRTUAL_ENV}" && "${VIRTUAL_ENV_DISABLE_PROMPT}" != true ]]; then
+    p9k::prepare_segment "$0" "" $1 "$2" $3 "${VIRTUAL_ENV:t}"
   fi
 }

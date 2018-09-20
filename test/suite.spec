@@ -3,15 +3,6 @@
 
 typeset -AH test_results
 
-###############################################################
-# description
-#   Determine the OS and version (if applicable).
-case $(uname) in
-  Darwin) OS='OSX' ;;
-  Linux)  OS='Linux' ;;
-esac
-
-
 # check for command line arguments and deal with them.
 typeset -ah commandline_args
 commandline_args=("$@")
@@ -70,24 +61,14 @@ run_tests() {
 
   # run the tests
   for test in **/*.spec; do
-    # skip suite spec
-    if [[ "${test}" == "test/suite.spec" ]]; then
-      continue;
-    fi
-    # a - in a file name is a delimiter for an OS specific test
-    if [[ "${test}" =~ "-" ]]; then
-      # skip OS specific tests if they don't match the os...
-      if [[ "${OS}" == "OSX" && "${(LM)test:#*osx*}" == "" ]]; then
-        continue;
-      fi
-      if [[ "${OS}" == "Linux" && "${(LM)test:#*linux*}" == "" ]]; then
-        continue;
-      fi
-    fi
     echo
     [[ ${use_color} == true ]] \
         && echo "\x1b[38;5;33m••• Now executing ${test} •••\x1b[0m" \
         || echo "••• Now executing ${test} •••"
+    # skip suite spec
+    if [[ "${test}" == "test/suite.spec" ]]; then
+      continue;
+    fi
     pass=true
     ./${test} || pass=false
     test_results[${test}]=${pass}
