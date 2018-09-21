@@ -41,6 +41,11 @@
       - Updated all segments to make use of `p9k::register_icon` and `p9k::register_segment`
     - `test/*`
       - Updated all tests for the new release
+    - Code updates
+      - Removed calls to external programs (grep, sed, awk, cut, tail):
+        - `functions/utilities.zsh` (`__P9K_OS_ID`)
+        - `segments/battery` (OSX battery status, Linux `cat` to `<`)
+        - `segments/swap` (OSX & Linux)
 
 ## v0.6.6
 
