@@ -29,16 +29,16 @@ prompt_ram() {
     # See https://support.apple.com/en-us/HT201538
     local raw_data
     raw_data="$(vm_stat)"
-    [[ $raw_data =~ "Pages free:[ ]+([0-9]+)" ]] && ramfree=${match[1]}
-    [[ $raw_data =~ "Pages inactive:[ ]+([0-9]+)" ]] && ramfree=$((ramfree + ${match[1]}))
+    [[ "${raw_data}" =~ "Pages free:[ ]+([0-9]+)" ]] && ramfree=${match[1]}
+    [[ "${raw_data}" =~ "Pages inactive:[ ]+([0-9]+)" ]] && ramfree=$((ramfree + ${match[1]}))
     # Convert pages into Bytes
     ramfree=$(( ramfree * 4096 ))
   else
     if [[ "$__P9K_OS" == "BSD" ]]; then
-      [[ ${(f)"$(${ROOT_PREFIX}/var/run/dmesg.boot)"} =~ "avail memory = ([0-9]+)" ]] && ramfree=${match[1]}
+      [[ "$(<${ROOT_PREFIX}/var/run/dmesg.boot)" =~ "avail memory = ([0-9]+)" ]] && ramfree=${match[1]}
       base='K'
     else
-      [[ ${(f)"$(<${ROOT_PREFIX}/proc/meminfo)"} =~ "MemAvailable:[ ]+([0-9]+)" ]] && ramfree=${match[1]}
+      [[ "$(<${ROOT_PREFIX}/proc/meminfo)" =~ "MemAvailable:[ ]+([0-9]+)" ]] && ramfree=${match[1]}
       base='K'
     fi
   fi

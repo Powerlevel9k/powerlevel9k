@@ -25,17 +25,17 @@ prompt_swap() {
   local swap_used=0
   local base=''
 
-  if [[ "$__P9K_OS" == "OSX" ]]; then
+  if [[ "${__P9K_OS}" == "OSX" ]]; then
     local raw_swap_used
-    [[ $(sysctl vm.swapusage) =~ "used = ([0-9A-Z,.]+)" ]] && raw_swap_used="${match[1]}"
+    [[ "$(sysctl vm.swapusage)" =~ "used = ([0-9A-Z,.]+)" ]] && raw_swap_used="${match[1]}"
     typeset -F 2 swap_used
-    [[ $raw_swap_used =~ "([0-9,.]+)" ]] && swap_used="${${match[1]}//,/.}"
-    [[ $raw_swap_used =~ "([A-Z]+)" ]] && base="${match[1]}"
+    [[ "${raw_swap_used}" =~ "([0-9,.]+)" ]] && swap_used=${${match[1]}//,/.}
+    [[ "${raw_swap_used}" =~ "([A-Z]+)" ]] && base="${match[1]}"
   else
     local raw_data
-    raw_data=${(f)"$(<${ROOT_PREFIX}/proc/meminfo)"}
-    [[ $raw_data =~ "SwapTotal:[ ]+([0-9]+)" ]] && swap_total="${match[1]}"
-    [[ $raw_data =~ "SwapFree:[ ]+([0-9]+)" ]] && swap_free="${match[1]}"
+    raw_data="$(<${ROOT_PREFIX}/proc/meminfo)"
+    [[ "${raw_data}" =~ "SwapTotal:[ ]+([0-9]+)" ]] && swap_total=${match[1]}
+    [[ "${raw_data}" =~ "SwapFree:[ ]+([0-9]+)" ]] && swap_free=${match[1]}
     swap_used=$(( swap_total - swap_free ))
     base='K'
   fi
