@@ -230,11 +230,14 @@ CURRENT_BG='NONE'
 #   $4 string Custom segment name
 ##
 function __p9k_prompt_custom() {
-  local command=P9K_CUSTOM_$4:u
+  local STATEFUL_NAME="CUSTOM_${${(U)4}}"
+  local command="P9K_${STATEFUL_NAME}"
   local segment_content="$(eval ${(P)command})"
 
+  p9k::register_segment "${STATEFUL_NAME}" "" "white" "black"
+
   if [[ -n ${segment_content} ]]; then
-    p9k::prepare_segment "${4:u}" "" "$1" $2 $3 "$segment_content"
+    p9k::prepare_segment "${STATEFUL_NAME}" "" "$1" $2 $3 "$segment_content"
   fi
 }
 

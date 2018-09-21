@@ -17,7 +17,6 @@ function testIpSegmentPrintsNothingOnOsxIfNotConnected() {
   P9K_LEFT_PROMPT_ELEMENTS=(ip custom_world)
   alias networksetup='echo "not connected"'
   local P9K_CUSTOM_WORLD='echo world'
-  p9k::register_segment "WORLD"
 
   local __P9K_OS="OSX" # Fake OSX
 
@@ -31,7 +30,6 @@ function testIpSegmentPrintsNothingOnLinuxIfNotConnected() {
   P9K_LEFT_PROMPT_ELEMENTS=(ip custom_world)
   alias ip='echo "not connected"'
   local P9K_CUSTOM_WORLD='echo world'
-  p9k::register_segment "WORLD"
 
   local __P9K_OS="Linux" # Fake Linux
 

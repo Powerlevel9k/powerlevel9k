@@ -22,7 +22,6 @@ function testNodeenvSegmentPrintsNothingWithoutNode() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(nodeenv custom_world)
   local P9K_CUSTOM_WORLD='echo world'
-  p9k::register_segment "WORLD"
   alias node="nonode 2>/dev/null"
 
   assertEquals "%K{015} %F{000}world %k%F{015}%f " "$(__p9k_build_left_prompt)"
@@ -34,7 +33,6 @@ function testNodeenvSegmentPrintsNothingIfNodeVirtualEnvIsNotSet() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(nodeenv custom_world)
   local P9K_CUSTOM_WORLD='echo world'
-  p9k::register_segment "WORLD"
   node() {
     echo "v1.2.3"
   }
@@ -48,7 +46,6 @@ function testNodeenvSegmentPrintsNothingIfNodeVirtualEnvDisablePromptIsSet() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(nodeenv custom_world)
   local P9K_CUSTOM_WORLD='echo world'
-  p9k::register_segment "WORLD"
   node() {
     echo "v1.2.3"
   }

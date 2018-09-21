@@ -117,9 +117,7 @@ function testNewlineOnRpromptCanBeDisabled() {
   local P9K_PROMPT_ON_NEWLINE=true
   local P9K_RPROMPT_ON_NEWLINE=false
   local P9K_CUSTOM_WORLD='echo world'
-  p9k::register_segment "WORLD"
   local P9K_CUSTOM_RWORLD='echo rworld'
-  p9k::register_segment "RWORLD"
   local -a P9K_LEFT_PROMPT_ELEMENTS
   local P9K_LEFT_PROMPT_ELEMENTS=(custom_world)
   local -a P9K_RIGHT_PROMPT_ELEMENTS

@@ -40,7 +40,6 @@ function testLaravelVersionSegment() {
 function testLaravelVersionSegmentIfArtisanIsNotAvailable() {
   alias php=mockNoLaravelVersion
   local P9K_CUSTOM_WORLD='echo world'
-  p9k::register_segment "WORLD"
   local P9K_LARAVEL_VERSION_ICON='*x'
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(custom_world laravel_version)
@@ -54,7 +53,6 @@ function testLaravelVersionSegmentIfArtisanIsNotAvailable() {
 function testLaravelVersionSegmentPrintsNothingIfPhpIsNotAvailable() {
   alias php=noPhp
   local P9K_CUSTOM_WORLD='echo world'
-  p9k::register_segment "WORLD"
   local P9K_LARAVEL_VERSION_ICON='*x'
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(custom_world laravel_version)

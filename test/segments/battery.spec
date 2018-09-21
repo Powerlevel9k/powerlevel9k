@@ -159,6 +159,7 @@ function testBatterySegmentIfBatteryIsNormalWithAcpiEnabledOnLinux() {
   assertEquals "%K{000} %F{015}🔋 %f%F{015}50%% (1:38) " "$(prompt_battery left 1 false ${FOLDER})"
 
   unalias date &>/dev/null
+  return 0
 }
 
 function testBatterySegmentIfBatteryIsCalculatingWithAcpiEnabledOnLinux() {

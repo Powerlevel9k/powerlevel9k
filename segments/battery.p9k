@@ -50,7 +50,7 @@ prompt_battery() {
 
     # percent of battery charged
     typeset -i 10 bat_percent
-    bat_percent=${${${(s: :)${${(s:; :)raw_data}[1]}}[2]##*)}//[^0-9]/}
+    [[ "${raw_data}" =~ "([0-9]+)%" ]] && bat_percent="${match[1]}"
 
     local remain=""
     # Logic for string output
