@@ -50,6 +50,7 @@ function testRamSegmentWorksOnBsd() {
   local __P9K_OS="BSD" # Fake BSD
 
   assertEquals "%K{003} %F{000}RAM %f%F{000}0.29M " "$(prompt_ram left 1 false ${FOLDER})"
+  return 0
 }
 
 function testRamSegmentWorksOnLinux() {

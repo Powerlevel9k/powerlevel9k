@@ -35,8 +35,9 @@ prompt_ram() {
     ramfree=$(( ramfree * 4096 ))
   else
     if [[ "$__P9K_OS" == "BSD" ]]; then
-      [[ "$(<${ROOT_PREFIX}/var/run/dmesg.boot)" =~ "avail memory = ([0-9]+)" ]] && ramfree=${match[1]}
-      base='K'
+      ramfree=$(grep 'avail memory' ${ROOT_PREFIX}/var/run/dmesg.boot | awk '{print $4}')
+      #[[ "$(<${ROOT_PREFIX}/var/run/dmesg.boot)" =~ "avail memory = ([0-9]+)" ]] && ramfree=${match[1]}
+      #base='K'
     else
       [[ "$(<${ROOT_PREFIX}/proc/meminfo)" =~ "MemAvailable:[ ]+([0-9]+)" ]] && ramfree=${match[1]}
       base='K'
