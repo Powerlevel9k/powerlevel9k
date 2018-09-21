@@ -28,19 +28,19 @@ function mockNoLaravelVersion() {
 
 function testLaravelVersionSegment() {
   alias php=mockLaravelVersion
-  local P9K_LARAVEL_VERSION_ICON='*x'
+  local P9K_LARAVEL_VERSION_ICON='x'
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(laravel_version)
   source segments/laravel_version.p9k
 
-  assertEquals "%K{001} %F{015}*x %f%F{015}5.4.23 %k%F{001}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{001} %F{015}x %f%F{015}5.4.23 %k%F{001}%f " "$(__p9k_build_left_prompt)"
   unalias php
 }
 
 function testLaravelVersionSegmentIfArtisanIsNotAvailable() {
   alias php=mockNoLaravelVersion
   local P9K_CUSTOM_WORLD='echo world'
-  local P9K_LARAVEL_VERSION_ICON='*x'
+  local P9K_LARAVEL_VERSION_ICON='x'
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(custom_world laravel_version)
   source segments/laravel_version.p9k
@@ -53,7 +53,7 @@ function testLaravelVersionSegmentIfArtisanIsNotAvailable() {
 function testLaravelVersionSegmentPrintsNothingIfPhpIsNotAvailable() {
   alias php=noPhp
   local P9K_CUSTOM_WORLD='echo world'
-  local P9K_LARAVEL_VERSION_ICON='*x'
+  local P9K_LARAVEL_VERSION_ICON='x'
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(custom_world laravel_version)
   source segments/laravel_version.p9k

@@ -85,7 +85,7 @@ function testTagIconWorks() {
   startSkipping # Skip test
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(vcs)
-  local P9K_VCS_TAG_ICON='*T'
+  local P9K_VCS_TAG_ICON='T'
 
   touch "file.txt"
   hg add file.txt
@@ -95,14 +95,14 @@ function testTagIconWorks() {
   # Load Powerlevel9k
   source ${P9K_HOME}/segments/vcs.p9k
 
-  assertEquals "%K{002} %F{000} default *Tv0.0.1 %k%F{002}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{002} %F{000} default Tv0.0.1 %k%F{002}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testTagIconInDetachedHeadState() {
   startSkipping # Skip test
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(vcs)
-  local P9K_VCS_TAG_ICON='*T'
+  local P9K_VCS_TAG_ICON='T'
 
   touch "file.txt"
   hg add file.txt
@@ -117,7 +117,7 @@ function testTagIconInDetachedHeadState() {
   # Load Powerlevel9k
   source ${P9K_HOME}/segments/vcs.p9k
 
-  assertEquals "%K{002} %F{000} ${hash} *Tv0.0.1 %k%F{002}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{002} %F{000} ${hash} Tv0.0.1 %k%F{002}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testActionHintWorks() {
@@ -198,13 +198,13 @@ function testMercurialIconWorks() {
 function testBookmarkIconWorks() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(vcs)
-  local P9K_VCS_BOOKMARK_ICON='*B'
+  local P9K_VCS_BOOKMARK_ICON='B'
   hg bookmark "initial"
 
   # Load Powerlevel9k
   source ${P9K_HOME}/segments/vcs.p9k
 
-  assertEquals "%K{002} %F{000} default *Binitial %k%F{002}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{002} %F{000} default Binitial %k%F{002}%f " "$(__p9k_build_left_prompt)"
 }
 
 source shunit2/shunit2

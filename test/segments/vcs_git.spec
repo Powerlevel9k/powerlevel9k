@@ -185,7 +185,7 @@ function testStagedFilesIconWorks() {
 function testUnstagedFilesIconWorks() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(vcs)
-  local P9K_VCS_UNSTAGED_ICON='*M'
+  local P9K_VCS_UNSTAGED_ICON='M'
   source ${P9K_HOME}/segments/vcs.p9k
 
   # Create unstaged (modified, but not added to index) file
@@ -194,13 +194,13 @@ function testUnstagedFilesIconWorks() {
   git commit -m "Add File" 1>/dev/null
   echo "xx" > i-am-modified.txt
 
-  assertEquals "%K{003} %F{000} master *M %k%F{003}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{003} %F{000} master M %k%F{003}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testStashIconWorks() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(vcs)
-  local P9K_VCS_STASH_ICON='*S'
+  local P9K_VCS_STASH_ICON='S'
   source ${P9K_HOME}/segments/vcs.p9k
 
   # Create modified file
@@ -210,13 +210,13 @@ function testStashIconWorks() {
   echo "xx" > i-am-modified.txt
   git stash 1>/dev/null
 
-  assertEquals "%K{002} %F{000} master *S1 %k%F{002}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{002} %F{000} master S1 %k%F{002}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testTagIconWorks() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(vcs)
-  local P9K_VCS_TAG_ICON='*T'
+  local P9K_VCS_TAG_ICON='T'
   source ${P9K_HOME}/segments/vcs.p9k
 
   touch "file.txt"
@@ -224,13 +224,13 @@ function testTagIconWorks() {
   git commit -m "Add File" 1>/dev/null
   git tag "v0.0.1"
 
-  assertEquals "%K{002} %F{000} master *Tv0.0.1 %k%F{002}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{002} %F{000} master Tv0.0.1 %k%F{002}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testTagIconInDetachedHeadState() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(vcs)
-  local P9K_VCS_TAG_ICON='*T'
+  local P9K_VCS_TAG_ICON='T'
   source ${P9K_HOME}/segments/vcs.p9k
 
   touch "file.txt"
@@ -243,7 +243,7 @@ function testTagIconInDetachedHeadState() {
   git checkout v0.0.1 &>/dev/null
   local hash=$(git rev-list -n 1 --abbrev-commit --abbrev=8 HEAD)
 
-  assertEquals "%K{002} %F{000} ${hash} *Tv0.0.1 %k%F{002}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{002} %F{000} ${hash} Tv0.0.1 %k%F{002}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testActionHintWorks() {
@@ -270,7 +270,7 @@ function testActionHintWorks() {
 function testIncomingHintWorks() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(vcs)
-  local P9K_VCS_INCOMING_CHANGES_ICON='*I'
+  local P9K_VCS_INCOMING_CHANGES_ICON='I'
   source ${P9K_HOME}/segments/vcs.p9k
 
   touch "i-am-modified.txt"
@@ -284,13 +284,13 @@ function testIncomingHintWorks() {
   cd ../vcs-test2
   git fetch &>/dev/null
 
-  assertEquals "%K{002} %F{000} master *I1 %k%F{002}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{002} %F{000} master I1 %k%F{002}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testOutgoingHintWorks() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(vcs)
-  local P9K_VCS_OUTGOING_CHANGES_ICON='*O'
+  local P9K_VCS_OUTGOING_CHANGES_ICON='O'
   source ${P9K_HOME}/segments/vcs.p9k
 
   touch "i-am-modified.txt"
@@ -304,7 +304,7 @@ function testOutgoingHintWorks() {
   echo "xx" >> i-am-modified.txt
   git commit -a -m "Modified file" &>/dev/null
 
-  assertEquals "%K{002} %F{000} master *O1 %k%F{002}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{002} %F{000} master O1 %k%F{002}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testShorteningCommitHashWorks() {
