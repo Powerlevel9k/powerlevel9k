@@ -83,8 +83,8 @@ prompt_battery() {
 
     # Return if no battery found
     [[ -z $bat ]] && return
-    local capacity=$(cat $bat/capacity)
-    local battery_status=$(cat $bat/status)
+    local capacity=$(<$bat/capacity)
+    local battery_status=$(<$bat/status)
     [[ $capacity -gt 100 ]] && local bat_percent=100 || local bat_percent=$capacity
     [[ $battery_status =~ Charging || $battery_status =~ Full ]] && local connected=true
     if [[ -z $connected ]]; then
