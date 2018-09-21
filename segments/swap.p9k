@@ -8,7 +8,7 @@
 # Register segment
 # Parameters:
 #   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
-#                                                                                                                  
+#                                                                                                                           
 p9k::register_segment "SWAP" "" "yellow" "$DEFAULT_COLOR"  'SWP'  $'\uE87D'  $'\uF0E4'  '\u'${CODEPOINT_OF_AWESOME_DASHBOARD}  $'\uF464'
 
 ################################################################
@@ -33,7 +33,7 @@ prompt_swap() {
     [[ $raw_swap_used =~ "([A-Z]+)" ]] && base="${match[1]}"
   else
     local raw_data
-    raw_data=${(f)"$(</proc/meminfo)"}
+    raw_data=${(f)"$(<{$ROOT_PREFIX}/proc/meminfo)"}
     [[ $raw_data =~ "SwapTotal:[ ]+([0-9]+)" ]] && swap_total="${match[1]}"
     [[ $raw_data =~ "SwapFree:[ ]+([0-9]+)" ]] && swap_free="${match[1]}"
     swap_used=$(( swap_total - swap_free ))
