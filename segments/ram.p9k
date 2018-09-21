@@ -24,10 +24,10 @@ prompt_ram() {
   local ROOT_PREFIX="${4}"
   local base=''
   local ramfree=0
-  local raw_data
   if [[ "$__P9K_OS" == "OSX" ]]; then
     # Available = Free + Inactive
     # See https://support.apple.com/en-us/HT201538
+    local raw_data
     raw_data="$(vm_stat)"
     [[ $raw_data =~ "Pages free:[ ]+([0-9]+)" ]] && ramfree=${match[1]}
     [[ $raw_data =~ "Pages inactive:[ ]+([0-9]+)" ]] && ramfree=$((ramfree + ${match[1]}))
@@ -35,10 +35,10 @@ prompt_ram() {
     ramfree=$(( ramfree * 4096 ))
   else
     if [[ "$__P9K_OS" == "BSD" ]]; then
-      ramfree=$(grep 'avail memory' ${ROOT_PREFIX}/var/run/dmesg.boot | awk '{print $4}')
+      [[ ${(f)"$(${ROOT_PREFIX}/var/run/dmesg.boot)"} =~ "avail memory = ([0-9]+)" ]] && ramfree=${match[1]}
+      base='K'
     else
-      raw_data=${(f)"$(<${ROOT_PREFIX}/proc/meminfo)"}
-      [[ $raw_data =~ "MemAvailable:[ ]+([0-9]+)" ]] && ramfree=${match[1]}
+      [[ ${(f)"$(<${ROOT_PREFIX}/proc/meminfo)"} =~ "MemAvailable:[ ]+([0-9]+)" ]] && ramfree=${match[1]}
       base='K'
     fi
   fi
