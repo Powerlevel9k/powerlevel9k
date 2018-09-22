@@ -452,7 +452,7 @@ function prompt_powerlevel9k_setup() {
   fi
 
   if ! p9k::defined P9K_LEFT_PROMPT_ELEMENTS; then
-    P9K_LEFT_PROMPT_ELEMENTS=(context dir rbenv vcs)
+    P9K_LEFT_PROMPT_ELEMENTS=(context dir vcs)
     P9K_PROMPT_ELEMENTS=("${P9K_LEFT_PROMPT_ELEMENTS[@]}" "${P9K_RIGHT_PROMPT_ELEMENTS[@]}")
   fi
   if ! p9k::defined P9K_RIGHT_PROMPT_ELEMENTS; then
