@@ -122,20 +122,7 @@ function p9k::register_segment() {
     __P9K_DATA[${STATEFUL_NAME}_FG]="$(p9k::foreground_color $4)"
   fi
 
-  local map
-  local ICON_USER_VARIABLE="P9K_${STATEFUL_NAME}_ICON"
-  if p9k::defined "${ICON_USER_VARIABLE}"; then # check for icon override first
-    map="${(P)ICON_USER_VARIABLE}"
-  else # use the icons that are registered by the segment
-    case ${P9K_MODE} in
-      'flat'|'awesome-patched')                   map=$6 ;;
-      'awesome-fontconfig')                       map=$7 ;;
-      'awesome-mapped-fontconfig')                map=$8 ;;
-      'nerdfont-complete'|'nerdfont-fontconfig')  map=$9 ;;
-      *)                                          map=$5 ;;
-    esac
-  fi
-  __P9K_ICONS[${STATEFUL_NAME}]=${map}
+  p9k::register_icon "${STATEFUL_NAME}" "${5}" "${6}" "${7}" "${8}" "${9}"
 
   local ICON_COLOR_VARIABLE="P9K_${STATEFUL_NAME}_ICON_COLOR"
   if p9k::defined "${ICON_COLOR_VARIABLE}"; then
