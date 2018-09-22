@@ -407,8 +407,8 @@ function __p9k_ch_pwd() {
 # @noargs
 ##
 function __p9k_zle_keymap_select () {
-	zle reset-prompt
-	zle -R
+  zle reset-prompt
+  zle -R
 }
 
 ###############################################################

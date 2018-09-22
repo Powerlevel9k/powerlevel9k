@@ -59,19 +59,19 @@ fi
 ##
 function p9k::register_icon() {
   local map
-	local ICON_USER_VARIABLE="P9K_${1}"
-	if p9k::defined "${ICON_USER_VARIABLE}"; then # check for icon override first
-		map="${(P)ICON_USER_VARIABLE}"
-	else # use the icons that are registered by the segment
+  local ICON_USER_VARIABLE="P9K_${1}"
+  if p9k::defined "${ICON_USER_VARIABLE}"; then # check for icon override first
+    map="${(P)ICON_USER_VARIABLE}"
+  else # use the icons that are registered by the segment
     case ${P9K_MODE} in
-    	'flat'|'awesome-patched')                   map=$3 ;;
-    	'awesome-fontconfig')                       map=$4 ;;
-    	'awesome-mapped-fontconfig')                map=$5 ;;
-    	'nerdfont-complete'|'nerdfont-fontconfig')  map=$6 ;;
-    	*)                                          map=$2 ;;
+      'flat'|'awesome-patched')                   map=$3 ;;
+      'awesome-fontconfig')                       map=$4 ;;
+      'awesome-mapped-fontconfig')                map=$5 ;;
+      'nerdfont-complete'|'nerdfont-fontconfig')  map=$6 ;;
+      *)                                          map=$2 ;;
     esac
   fi
-	__P9K_ICONS[$1]=${map}
+  __P9K_ICONS[$1]=${map}
 }
 
 ################################################################
@@ -123,19 +123,19 @@ function p9k::register_segment() {
   fi
 
   local map
-	local ICON_USER_VARIABLE="P9K_${STATEFUL_NAME}_ICON"
-	if p9k::defined "${ICON_USER_VARIABLE}"; then # check for icon override first
-		map="${(P)ICON_USER_VARIABLE}"
-	else # use the icons that are registered by the segment
+  local ICON_USER_VARIABLE="P9K_${STATEFUL_NAME}_ICON"
+  if p9k::defined "${ICON_USER_VARIABLE}"; then # check for icon override first
+    map="${(P)ICON_USER_VARIABLE}"
+  else # use the icons that are registered by the segment
     case ${P9K_MODE} in
-    	'flat'|'awesome-patched')                   map=$6 ;;
-    	'awesome-fontconfig')                       map=$7 ;;
-    	'awesome-mapped-fontconfig')                map=$8 ;;
-    	'nerdfont-complete'|'nerdfont-fontconfig')  map=$9 ;;
-    	*)                                          map=$5 ;;
+      'flat'|'awesome-patched')                   map=$6 ;;
+      'awesome-fontconfig')                       map=$7 ;;
+      'awesome-mapped-fontconfig')                map=$8 ;;
+      'nerdfont-complete'|'nerdfont-fontconfig')  map=$9 ;;
+      *)                                          map=$5 ;;
     esac
   fi
-	__P9K_ICONS[${STATEFUL_NAME}]=${map}
+  __P9K_ICONS[${STATEFUL_NAME}]=${map}
 
   local ICON_COLOR_VARIABLE="P9K_${STATEFUL_NAME}_ICON_COLOR"
   if p9k::defined "${ICON_COLOR_VARIABLE}"; then
@@ -169,20 +169,20 @@ p9k::register_icon "MULTILINE_LAST_PROMPT_PREFIX"     $'\u2570'$'\u2500 ' $'\u25
 
 # Override the above icon settings with any user-defined variables.
 case ${P9K_MODE} in
-	'flat')
-		# Set the right locale to protect special characters
-		local LC_ALL="" LC_CTYPE="en_US.UTF-8"
-		__P9K_ICONS[LEFT_SEGMENT_SEPARATOR]=''
-		__P9K_ICONS[RIGHT_SEGMENT_SEPARATOR]=''
-		__P9K_ICONS[LEFT_SUBSEGMENT_SEPARATOR]='|'
-		__P9K_ICONS[RIGHT_SUBSEGMENT_SEPARATOR]='|'
-	;;
-	'compatible')
-		# Set the right locale to protect special characters
-		local LC_ALL="" LC_CTYPE="en_US.UTF-8"
-		__P9K_ICONS[LEFT_SEGMENT_SEPARATOR]=$'\u2B80'                 # ⮀
-		__P9K_ICONS[RIGHT_SEGMENT_SEPARATOR]=$'\u2B82'                # ⮂
-	;;
+  'flat')
+    # Set the right locale to protect special characters
+    local LC_ALL="" LC_CTYPE="en_US.UTF-8"
+    __P9K_ICONS[LEFT_SEGMENT_SEPARATOR]=''
+    __P9K_ICONS[RIGHT_SEGMENT_SEPARATOR]=''
+    __P9K_ICONS[LEFT_SUBSEGMENT_SEPARATOR]='|'
+    __P9K_ICONS[RIGHT_SUBSEGMENT_SEPARATOR]='|'
+  ;;
+  'compatible')
+    # Set the right locale to protect special characters
+    local LC_ALL="" LC_CTYPE="en_US.UTF-8"
+    __P9K_ICONS[LEFT_SEGMENT_SEPARATOR]=$'\u2B80'                 # ⮀
+    __P9K_ICONS[RIGHT_SEGMENT_SEPARATOR]=$'\u2B82'                # ⮂
+  ;;
 esac
 
 ################################################################
@@ -193,7 +193,7 @@ esac
 #   $1 string Name of icon
 ##
 function p9k::print_icon() {
-	echo -n "${__P9K_ICONS[$1]}"
+  echo -n "${__P9K_ICONS[$1]}"
 }
 
 ################################################################
