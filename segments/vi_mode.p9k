@@ -138,7 +138,7 @@ cursorShape() {
   )
   local cursor_shape_line=""
 
-  case ${TERMINAL} in
+  case ${__P9K_TERMINAL} in
     konsole | iterm | yakuake)
       cursor_shape_line=$CS_konsole[prefix]$CS_konsole[$1]$CS_konsole[suffix]
     ;;
