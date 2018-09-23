@@ -97,11 +97,14 @@ __p9k_print_deprecation_warning deprecated_segments
 typeset -AH deprecated_variables
 # old => new
 deprecated_variables=(
+  # General icons
+  'P9K_MULTILINE_FIRST_PROMPT_PREFIX' 'P9K_MULTILINE_FIRST_PROMPT_PREFIX_ICON'
+  'P9K_MULTILINE_LAST_PROMPT_PREFIX'  'P9K_MULTILINE_LAST_PROMPT_PREFIX_ICON'
   # status icons
   'P9K_OK_ICON'                   'P9K_STATUS_OK_ICON'
   'P9K_FAIL_ICON'                 'P9K_STATUS_ERROR_ICON'
   'P9K_CARRIAGE_RETURN_ICON'      'P9K_STATUS_ERROR_CR_ICON'
-  #aws segment
+  # aws segment
   'AWS_DEFAULT_PROFILE'           'P9K_AWS_DEFAULT_PROFILE'
   # aws_eb_env segment
   'P9K_AWS_EB_ICON'               'P9K_AWS_EB_ENV_ICON'

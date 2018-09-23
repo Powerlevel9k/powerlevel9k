@@ -59,7 +59,7 @@ fi
 ##
 function p9k::register_icon() {
   local map
-  local ICON_USER_VARIABLE="P9K_${1}"
+  local ICON_USER_VARIABLE="P9K_${1}_ICON"
   if p9k::defined "${ICON_USER_VARIABLE}"; then # check for icon override first
     map="${(P)ICON_USER_VARIABLE}"
   else # use the icons that are registered by the segment
@@ -122,10 +122,7 @@ function p9k::register_segment() {
     __P9K_DATA[${STATEFUL_NAME}_FG]="$(p9k::foreground_color $4)"
   fi
 
-  local ICON_NAME="${STATEFUL_NAME}"
-  # For custom segments, we need a special name for the icon variable.
-  [[ "${STATEFUL_NAME}" =~ "^CUSTOM_" ]] && ICON_NAME="${STATEFUL_NAME}_ICON"
-  p9k::register_icon "${ICON_NAME}" "${5}" "${6}" "${7}" "${8}" "${9}"
+  p9k::register_icon "${STATEFUL_NAME}" "${5}" "${6}" "${7}" "${8}" "${9}"
 
   local ICON_COLOR_VARIABLE="P9K_${STATEFUL_NAME}_ICON_COLOR"
   if p9k::defined "${ICON_COLOR_VARIABLE}"; then

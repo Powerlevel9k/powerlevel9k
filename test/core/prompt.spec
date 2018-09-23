@@ -90,7 +90,7 @@ function testPrefixingFirstLineOnLeftPrompt() {
   local P9K_CUSTOM_WORLD1='echo world1'
 
   local P9K_PROMPT_ON_NEWLINE=true
-  local P9K_MULTILINE_FIRST_PROMPT_PREFIX='XXX'
+  local P9K_MULTILINE_FIRST_PROMPT_PREFIX_ICON='XXX'
   source functions/icons.zsh
 
   __p9k_prepare_prompts
@@ -105,7 +105,7 @@ function testPrefixingSecondLineOnLeftPrompt() {
   local P9K_CUSTOM_WORLD1='echo world1'
 
   local P9K_PROMPT_ON_NEWLINE=true
-  local P9K_MULTILINE_LAST_PROMPT_PREFIX='XXX'
+  local P9K_MULTILINE_LAST_PROMPT_PREFIX_ICON='XXX'
   source functions/icons.zsh
 
   __p9k_prepare_prompts

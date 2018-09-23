@@ -195,7 +195,7 @@ function p9k::prepare_segment() {
       # check if it is a named icon
       SEGMENT_ICON=${__P9K_ICONS[${8}]}
       # otherwise use it literally
-      [[ ${SEGMENT_ICON} == "" ]] && SEGMENT_ICON=$(echo ${8})
+      [[ -z "${SEGMENT_ICON}" ]] && SEGMENT_ICON=$(echo ${8})
     fi
 
     # Background overide
