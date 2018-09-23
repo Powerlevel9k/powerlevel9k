@@ -122,7 +122,10 @@ function p9k::register_segment() {
     __P9K_DATA[${STATEFUL_NAME}_FG]="$(p9k::foreground_color $4)"
   fi
 
-  p9k::register_icon "${STATEFUL_NAME}" "${5}" "${6}" "${7}" "${8}" "${9}"
+  local ICON_NAME="${STATEFUL_NAME}"
+  # For custom segments, we need a special name for the icon variable.
+  [[ "${STATEFUL_NAME}" =~ "^CUSTOM_" ]] && ICON_NAME="${STATEFUL_NAME}_ICON"
+  p9k::register_icon "${ICON_NAME}" "${5}" "${6}" "${7}" "${8}" "${9}"
 
   local ICON_COLOR_VARIABLE="P9K_${STATEFUL_NAME}_ICON_COLOR"
   if p9k::defined "${ICON_COLOR_VARIABLE}"; then
