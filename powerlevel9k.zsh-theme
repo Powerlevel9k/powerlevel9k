@@ -98,8 +98,13 @@ typeset -AH deprecated_variables
 # old => new
 deprecated_variables=(
   # General icons
+  # Due to the changes to `p9k::register_icon`, these now require the '_ICON' suffix to work.
   'P9K_MULTILINE_FIRST_PROMPT_PREFIX' 'P9K_MULTILINE_FIRST_PROMPT_PREFIX_ICON'
   'P9K_MULTILINE_LAST_PROMPT_PREFIX'  'P9K_MULTILINE_LAST_PROMPT_PREFIX_ICON'
+  'P9K_LEFT_SEGMENT_SEPARATOR'        'P9K_LEFT_SEGMENT_SEPARATOR_ICON'
+  'P9K_LEFT_SUBSEGMENT_SEPARATOR'     'P9K_LEFT_SUBSEGMENT_SEPARATOR_ICON'
+  'P9K_RIGHT_SEGMENT_SEPARATOR'       'P9K_RIGHT_SEGMENT_SEPARATOR_ICON'
+  'P9K_RIGHT_SUBSEGMENT_SEPARATOR'    'P9K_RIGHT_SUBSEGMENT_SEPARATOR_ICON'
   # status icons
   'P9K_OK_ICON'                       'P9K_STATUS_OK_ICON'
   'P9K_FAIL_ICON'                     'P9K_STATUS_ERROR_ICON'
@@ -187,6 +192,7 @@ p9k::defined P9K_RIGHT_PROMPT_ELEMENTS || P9K_RIGHT_PROMPT_ELEMENTS=(status root
 # Load Prompt Segment Definitions
 ################################################################
 
+p9k::set_default P9K_CUSTOM_SEGMENT_LOCATION "$HOME/.config/powerlevel9k/segments"
 # load only the segments that are being used!
 function __p9k_load_segments() {
   local segment
@@ -198,25 +204,24 @@ function __p9k_load_segments() {
     if [[ $segment[0,7] =~ "custom_" ]]; then
       continue
     fi
-    source "${__P9K_DIRECTORY}/segments/${segment}.p9k" 2>&1
+    # check if the file exists as a core segment
+    if [[ -f ${__P9K_DIRECTORY}/segments/${segment}.p9k ]]; then
+      source "${__P9K_DIRECTORY}/segments/${segment}.p9k" 2>&1
+    else
+      # check if the file exists as a custom segment
+      if [[ -f "${P9K_CUSTOM_SEGMENT_LOCATION}/${segment}.p9k" ]]; then
+        source "${P9K_CUSTOM_SEGMENT_LOCATION}/${segment}.p9k"
+      else
+        # file not found!
+        print -P "%F{yellow}Warning!%f The '%F{cyan}${segment}%f' segment was not found. Removing it from the prompt."
+        P9K_LEFT_PROMPT_ELEMENTS=("${(@)P9K_LEFT_PROMPT_ELEMENTS:#${segment}}")
+        P9K_RIGHT_PROMPT_ELEMENTS=("${(@)P9K_RIGHT_PROMPT_ELEMENTS:#${segment}}")
+        P9K_PROMPT_ELEMENTS=("${(@)P9K_PROMPT_ELEMENTS:#${segment}}")
+      fi
+    fi
   done
 }
 __p9k_load_segments
-
-p9k::set_default P9K_CUSTOM_SEGMENT_LOCATION "$HOME/.config/powerlevel9k/segments"
-function __p9k_load_custom_segments() {
-  local segment_name
-  if [[ -d ${P9K_CUSTOM_SEGMENT_LOCATION} ]]; then
-    for segment in ${P9K_CUSTOM_SEGMENT_LOCATION}/*.p9k; do
-      segment_name=${${segment##*/}%.p9k}
-      # only load the custom segment if it is being used.
-      if p9k::segment_in_use "${segment_name}"; then
-        source "${__P9K_DIRECTORY}/segments/${segment}.p9k" 2>&1
-      fi
-    done
-  fi
-}
-__p9k_load_custom_segments
 
 # lauch the generator (prompt)
 prompt_powerlevel9k_setup "$@"

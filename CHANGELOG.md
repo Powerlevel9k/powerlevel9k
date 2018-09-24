@@ -27,6 +27,8 @@
       - `__p9k_update_var_name`
     - `powerlevel0k.zsh-theme`:
       - Added `__p9k_print_deprecation_var_warning` to warn users of renamed variables and `__p9k_update_var_name` to automatically change the variables for users
+      - Added new variable `P9K_CUSTOM_SEGMENT_LOCATION` (default: `$HOME/.config/powerlevel9k/segments`) to allow user to set the location of their custom segment files.
+      - `__p9k_load_segments` - added checking if segment exists in default location, then custom location, and finally print an error and remove the segment from the prompt. This allows a user to see if they made a typo in a name or added something that doesn't exist, and also stops the `prompt_segment not found` error from appearing before every prompt.
     - `functions/colors.zsh`:
       - Added color aliases to `__P9K_COLORS`
     - `functions/icons.zsh`:
@@ -42,10 +44,14 @@
     - `test/*`
       - Updated all tests for the new release
     - Code updates
-      - Removed calls to external programs (grep, sed, awk, cut, tail):
+      - Removed calls to external programs (grep, sed, awk, cut, tail, etc.):
         - `functions/utilities.zsh` (`__P9K_OS_ID`)
-        - `segments/battery` (OSX battery status, Linux `cat` to `<`)
-        - `segments/swap` (OSX & Linux)
+        - `segments/battery` (and changed `cat` to `<`)
+        - `segments/swap`
+        - `segments/php`
+    - General changes
+      - Replaced all tabs with spaces
+      - Removed `rbenv` from default segments
 
 ## v0.6.6
 
