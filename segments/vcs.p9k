@@ -68,47 +68,47 @@
 # Register segment helper icons
 # Parameters:
 #   name_of_icon  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
-#                                                ●                                                                                  
+#                                          ●                                                                                  
 p9k::register_icon "VCS_UNSTAGED"          $'\u25CF'   $'\uE17C'   $'\uF06A'   '\u'${CODEPOINT_OF_AWESOME_EXCLAMATION_CIRCLE}    $'\uF06A'
-#                                                ✚                                                                                  
+#                                          ✚                                                                                  
 p9k::register_icon "VCS_STAGED"            $'\u271A'   $'\uE168'   $'\uF055'   '\u'${CODEPOINT_OF_AWESOME_PLUS_CIRCLE}           $'\uF055'
-#                                                ⍟                                                                                  
+#                                          ⍟                                                                                  
 p9k::register_icon "VCS_STASH"             $'\u235F'   $'\uE133 '  $'\uF01C '  '\u'${CODEPOINT_OF_AWESOME_INBOX}' '              $'\uF01C '
-#                                                ↓                                                                                  
+#                                          ↓                                                                                  
 p9k::register_icon "VCS_INCOMING_CHANGES"  $'\u2193'   $'\uE131 '  $'\uF01A '  '\u'${CODEPOINT_OF_AWESOME_ARROW_CIRCLE_DOWN}' '  $'\uF01A '
-#                                                ↑                                                                                  
+#                                          ↑                                                                                  
 p9k::register_icon "VCS_OUTGOING_CHANGES"  $'\u2191'   $'\uE132 '  $'\uF01B '  '\u'${CODEPOINT_OF_AWESOME_ARROW_CIRCLE_UP}' '    $'\uF01B '
-#                                                                                                                                  
+#                                                                                                                             
 p9k::register_icon "VCS_TAG"               ''          $'\uE817 '  $'\uF217 '  '\u'${CODEPOINT_OF_AWESOME_TAG}' '                $'\uF02B '
-#                                                ☿                                                                                  
+#                                          ☿                                                                                  
 p9k::register_icon "VCS_BOOKMARK"          $'\u263F'   $'\uE87B'   $'\uF27B'   '\u'${CODEPOINT_OF_OCTICONS_BOOKMARK}             $'\uF461 '
-#                                                                                                                                  
+#                                                                                                                             
 p9k::register_icon "VCS_COMMIT"            ''          $'\uE821 '  $'\uF221 '  '\u'${CODEPOINT_OF_OCTICONS_GIT_COMMIT}' '        $'\uE729 '
 
 # Hide branch icon if user wants it hidden
 if [[ "${P9K_VCS_HIDE_BRANCH_ICON}" != true ]]; then
   if [[ ${P9K_MODE} != 'compatible' ]]; then
-    #                                                                                                                              
+    #                                                                                                                        
     p9k::register_icon "VCS_BRANCH"        $'\uE0A0 '  $'\uE220 '  $'\uF126 '  '\u'${CODEPOINT_OF_OCTICONS_GIT_BRANCH}' '        $'\uF126 '
   else
-    #                                                                                                                               
+    #                                                                                                                         
     p9k::register_icon "VCS_BRANCH"        "@ "        $'\uE220 '  $'\uF126 '  '\u'${CODEPOINT_OF_OCTICONS_GIT_BRANCH}' '        $'\uF126 '
   fi
 fi
 
-#                                                →          →          →                                                            
+#                                          →           →           →                                                            
 p9k::register_icon "VCS_REMOTE_BRANCH"     $'\u2192'   $'\u2192'   $'\u2192'   '\u'${CODEPOINT_OF_OCTICONS_REPO_PUSH}            $'\uE728 '
-#                                                                                                                                   
+#                                                                                                                             
 p9k::register_icon "VCS_GIT"               ''          $'\uE20E '  $'\uF1D3 '  '\u'${CODEPOINT_OF_AWESOME_GIT}' '                $'\uF1D3 '
-#                                                                                                                                    
+#                                                                                                                              
 p9k::register_icon "VCS_GIT_GITHUB"        ''          $'\uE20E '  $'\uF113 '  '\u'${CODEPOINT_OF_AWESOME_GITHUB_ALT}' '         $'\uF113 '
-#                                                                                                                                    
+#                                                                                                                              
 p9k::register_icon "VCS_GIT_BITBUCKET"     ''          $'\uE20E '  $'\uF171 '  '\u'${CODEPOINT_OF_AWESOME_BITBUCKET}' '          $'\uE703 '
-#                                                                                                                                    
+#                                                                                                                              
 p9k::register_icon "VCS_GIT_GITLAB"        ''          $'\uE20E '  $'\uF296 '  '\u'${CODEPOINT_OF_AWESOME_GITLAB}' '             $'\uF296 '
-#                                                                                                                                   
+#                                                                                                                             
 p9k::register_icon "VCS_HG"                ''          $'\uE1C3 '  $'\uF0C3 '  '\u'${CODEPOINT_OF_AWESOME_FLASK}' '              $'\uF0C3 '
-#                                                                                                                                       
+#                                                                                                                                
 p9k::register_icon "VCS_SVN"               ''          '(svn) '    '(svn) '    '(svn) '                                          $'\uE72D '
 
 ################################################################
