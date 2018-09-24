@@ -326,7 +326,7 @@ function __p9k_print_deprecation_var_warning() {
     if p9k::defined "${key}"; then
       # segment is deprecated
       if ! __p9k_update_var_name ${key} $raw_deprecated_variables[$key]; then
-        print -P "%F{yellow}Warning!%f The '$key' variable is deprecated. This could not be updated to '%F{cyan}${raw_deprecated_variables[$key]}%f' for you. For more information, have a look at the CHANGELOG.md."
+        print -P "%F{yellow}Warning!%f The '%F{cyan}$key%f' variable is deprecated. This could not be updated to '%F{red}${raw_deprecated_variables[$key]}%f' for you. For more information, have a look at the CHANGELOG.md."
       fi
     fi
   done
