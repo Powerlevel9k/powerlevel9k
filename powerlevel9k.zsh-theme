@@ -98,8 +98,10 @@ typeset -AH deprecated_variables
 # old => new
 deprecated_variables=(
   # General icons
-  'P9K_MULTILINE_FIRST_PROMPT_PREFIX' 'P9K_MULTILINE_FIRST_PROMPT_PREFIX_ICON'
-  'P9K_MULTILINE_LAST_PROMPT_PREFIX'  'P9K_MULTILINE_LAST_PROMPT_PREFIX_ICON'
+  # I don't agree with adding _ICON, since a prefix can contain more than just an icon.
+  # I don't think we should rename this one.
+  # 'P9K_MULTILINE_FIRST_PROMPT_PREFIX' 'P9K_MULTILINE_FIRST_PROMPT_PREFIX_ICON'
+  # 'P9K_MULTILINE_LAST_PROMPT_PREFIX'  'P9K_MULTILINE_LAST_PROMPT_PREFIX_ICON'
   # status icons
   'P9K_OK_ICON'                   'P9K_STATUS_OK_ICON'
   'P9K_FAIL_ICON'                 'P9K_STATUS_ERROR_ICON'
