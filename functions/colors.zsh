@@ -296,9 +296,9 @@ function __p9k_term_colors() {
   local __p9k_term_colors
 
   if which tput &>/dev/null; then
-	__p9k_term_colors=$(tput colors)
+  __p9k_term_colors=$(tput colors)
   else
-	__p9k_term_colors=$(echotc Co)
+  __p9k_term_colors=$(echotc Co)
   fi
   if (( ! $? && ${__p9k_term_colors:-0} < 256 )); then
     print -P "%F{red}WARNING!%f Your terminal appears to support fewer than 256 colors!"

@@ -68,50 +68,48 @@
 # Register segment helper icons
 # Parameters:
 #   name_of_icon  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
-#                                                                                                                                   
-p9k::register_icon "VCS_UNTRACKED_ICON"         '?'         $'\uE16C'   $'\uF059'   '\u'${CODEPOINT_OF_AWESOME_QUESTION_CIRCLE}       $'\uF059'
-#                                                ●                                                                                  
-p9k::register_icon "VCS_UNSTAGED_ICON"          $'\u25CF'   $'\uE17C'   $'\uF06A'   '\u'${CODEPOINT_OF_AWESOME_EXCLAMATION_CIRCLE}    $'\uF06A'
-#                                                ✚                                                                                  
-p9k::register_icon "VCS_STAGED_ICON"            $'\u271A'   $'\uE168'   $'\uF055'   '\u'${CODEPOINT_OF_AWESOME_PLUS_CIRCLE}           $'\uF055'
-#                                                ⍟                                                                                  
-p9k::register_icon "VCS_STASH_ICON"             $'\u235F'   $'\uE133 '  $'\uF01C '  '\u'${CODEPOINT_OF_AWESOME_INBOX}' '              $'\uF01C '
-#                                                ↓                                                                                  
-p9k::register_icon "VCS_INCOMING_CHANGES_ICON"  $'\u2193'   $'\uE131 '  $'\uF01A '  '\u'${CODEPOINT_OF_AWESOME_ARROW_CIRCLE_DOWN}' '  $'\uF01A '
-#                                                ↑                                                                                  
-p9k::register_icon "VCS_OUTGOING_CHANGES_ICON"  $'\u2191'   $'\uE132 '  $'\uF01B '  '\u'${CODEPOINT_OF_AWESOME_ARROW_CIRCLE_UP}' '    $'\uF01B '
-#                                                                                                                                  
-p9k::register_icon "VCS_TAG_ICON"               ''          $'\uE817 '  $'\uF217 '  '\u'${CODEPOINT_OF_AWESOME_TAG}' '                $'\uF02B '
-#                                                ☿                                                                                  
-p9k::register_icon "VCS_BOOKMARK_ICON"          $'\u263F'   $'\uE87B'   $'\uF27B'   '\u'${CODEPOINT_OF_OCTICONS_BOOKMARK}             $'\uF461 '
-#                                                                                                                                  
-p9k::register_icon "VCS_COMMIT_ICON"            ''          $'\uE821 '  $'\uF221 '  '\u'${CODEPOINT_OF_OCTICONS_GIT_COMMIT}' '        $'\uE729 '
+#                                          ●                                                                                  
+p9k::register_icon "VCS_UNSTAGED"          $'\u25CF'   $'\uE17C'   $'\uF06A'   '\u'${CODEPOINT_OF_AWESOME_EXCLAMATION_CIRCLE}    $'\uF06A'
+#                                          ✚                                                                                  
+p9k::register_icon "VCS_STAGED"            $'\u271A'   $'\uE168'   $'\uF055'   '\u'${CODEPOINT_OF_AWESOME_PLUS_CIRCLE}           $'\uF055'
+#                                          ⍟                                                                                  
+p9k::register_icon "VCS_STASH"             $'\u235F'   $'\uE133 '  $'\uF01C '  '\u'${CODEPOINT_OF_AWESOME_INBOX}' '              $'\uF01C '
+#                                          ↓                                                                                  
+p9k::register_icon "VCS_INCOMING_CHANGES"  $'\u2193'   $'\uE131 '  $'\uF01A '  '\u'${CODEPOINT_OF_AWESOME_ARROW_CIRCLE_DOWN}' '  $'\uF01A '
+#                                          ↑                                                                                  
+p9k::register_icon "VCS_OUTGOING_CHANGES"  $'\u2191'   $'\uE132 '  $'\uF01B '  '\u'${CODEPOINT_OF_AWESOME_ARROW_CIRCLE_UP}' '    $'\uF01B '
+#                                                                                                                             
+p9k::register_icon "VCS_TAG"               ''          $'\uE817 '  $'\uF217 '  '\u'${CODEPOINT_OF_AWESOME_TAG}' '                $'\uF02B '
+#                                          ☿                                                                                  
+p9k::register_icon "VCS_BOOKMARK"          $'\u263F'   $'\uE87B'   $'\uF27B'   '\u'${CODEPOINT_OF_OCTICONS_BOOKMARK}             $'\uF461 '
+#                                                                                                                             
+p9k::register_icon "VCS_COMMIT"            ''          $'\uE821 '  $'\uF221 '  '\u'${CODEPOINT_OF_OCTICONS_GIT_COMMIT}' '        $'\uE729 '
 
 # Hide branch icon if user wants it hidden
 if [[ "${P9K_VCS_HIDE_BRANCH_ICON}" != true ]]; then
   if [[ ${P9K_MODE} != 'compatible' ]]; then
-    #                                                                                                                              
-    p9k::register_icon "VCS_BRANCH_ICON"        $'\uE0A0 '  $'\uE220 '  $'\uF126 '  '\u'${CODEPOINT_OF_OCTICONS_GIT_BRANCH}' '        $'\uF126 '
+    #                                                                                                                        
+    p9k::register_icon "VCS_BRANCH"        $'\uE0A0 '  $'\uE220 '  $'\uF126 '  '\u'${CODEPOINT_OF_OCTICONS_GIT_BRANCH}' '        $'\uF126 '
   else
-    #                                                                                                                               
-    p9k::register_icon "VCS_BRANCH_ICON"        "@ "        $'\uE220 '  $'\uF126 '  '\u'${CODEPOINT_OF_OCTICONS_GIT_BRANCH}' '        $'\uF126 '
+    #                                                                                                                         
+    p9k::register_icon "VCS_BRANCH"        "@ "        $'\uE220 '  $'\uF126 '  '\u'${CODEPOINT_OF_OCTICONS_GIT_BRANCH}' '        $'\uF126 '
   fi
 fi
 
-#                                                →          →          →                                                            
-p9k::register_icon "VCS_REMOTE_BRANCH_ICON"     $'\u2192'   $'\u2192'   $'\u2192'   '\u'${CODEPOINT_OF_OCTICONS_REPO_PUSH}            $'\uE728 '
-#                                                                                                                                   
-p9k::register_icon "VCS_GIT_ICON"               ''          $'\uE20E '  $'\uF1D3 '  '\u'${CODEPOINT_OF_AWESOME_GIT}' '                $'\uF1D3 '
-#                                                                                                                                    
-p9k::register_icon "VCS_GIT_GITHUB_ICON"        ''          $'\uE20E '  $'\uF113 '  '\u'${CODEPOINT_OF_AWESOME_GITHUB_ALT}' '         $'\uF113 '
-#                                                                                                                                    
-p9k::register_icon "VCS_GIT_BITBUCKET_ICON"     ''          $'\uE20E '  $'\uF171 '  '\u'${CODEPOINT_OF_AWESOME_BITBUCKET}' '          $'\uE703 '
-#                                                                                                                                    
-p9k::register_icon "VCS_GIT_GITLAB_ICON"        ''          $'\uE20E '  $'\uF296 '  '\u'${CODEPOINT_OF_AWESOME_GITLAB}' '             $'\uF296 '
-#                                                                                                                                   
-p9k::register_icon "VCS_HG_ICON"                ''          $'\uE1C3 '  $'\uF0C3 '  '\u'${CODEPOINT_OF_AWESOME_FLASK}' '              $'\uF0C3 '
-#                                                                                                                                       
-p9k::register_icon "VCS_SVN_ICON"               ''          '(svn) '    '(svn) '    '(svn) '                                          $'\uE72D '
+#                                          →           →           →                                                            
+p9k::register_icon "VCS_REMOTE_BRANCH"     $'\u2192'   $'\u2192'   $'\u2192'   '\u'${CODEPOINT_OF_OCTICONS_REPO_PUSH}            $'\uE728 '
+#                                                                                                                             
+p9k::register_icon "VCS_GIT"               ''          $'\uE20E '  $'\uF1D3 '  '\u'${CODEPOINT_OF_AWESOME_GIT}' '                $'\uF1D3 '
+#                                                                                                                              
+p9k::register_icon "VCS_GIT_GITHUB"        ''          $'\uE20E '  $'\uF113 '  '\u'${CODEPOINT_OF_AWESOME_GITHUB_ALT}' '         $'\uF113 '
+#                                                                                                                              
+p9k::register_icon "VCS_GIT_BITBUCKET"     ''          $'\uE20E '  $'\uF171 '  '\u'${CODEPOINT_OF_AWESOME_BITBUCKET}' '          $'\uE703 '
+#                                                                                                                              
+p9k::register_icon "VCS_GIT_GITLAB"        ''          $'\uE20E '  $'\uF296 '  '\u'${CODEPOINT_OF_AWESOME_GITLAB}' '             $'\uF296 '
+#                                                                                                                             
+p9k::register_icon "VCS_HG"                ''          $'\uE1C3 '  $'\uF0C3 '  '\u'${CODEPOINT_OF_AWESOME_FLASK}' '              $'\uF0C3 '
+#                                                                                                                                
+p9k::register_icon "VCS_SVN"               ''          '(svn) '    '(svn) '    '(svn) '                                          $'\uE72D '
 
 ################################################################
 # Register segment default values
@@ -136,7 +134,7 @@ function +vi-git-untracked() {
 
   if [[ $(command git rev-parse --is-inside-work-tree 2> /dev/null) == 'true' && \
       -n $(command git status ${FLAGS} | \grep -E '^\?\?' 2> /dev/null | tail -n1) ]]; then
-    hook_com[unstaged]+=" ${__P9K_ICONS[VCS_UNTRACKED_ICON]}"
+    hook_com[unstaged]+=" ${__P9K_ICONS[VCS_UNTRACKED]}"
     VCS_WORKDIR_HALF_DIRTY=true
   else
     VCS_WORKDIR_HALF_DIRTY=false
@@ -152,12 +150,12 @@ function +vi-git-aheadbehind() {
   # for git prior to 1.7
   # ahead=$(command git rev-list origin/${branch_name}..HEAD | wc -l)
   ahead=$(command git rev-list "${branch_name}"@{upstream}..HEAD 2>/dev/null | wc -l)
-  (( ahead )) && gitstatus+=( " ${__P9K_ICONS[VCS_OUTGOING_CHANGES_ICON]}${ahead// /}" )
+  (( ahead )) && gitstatus+=( " ${__P9K_ICONS[VCS_OUTGOING_CHANGES]}${ahead// /}" )
 
   # for git prior to 1.7
   # behind=$(command git rev-list HEAD..origin/${branch_name} | wc -l)
   behind=$(command git rev-list HEAD.."${branch_name}"@{upstream} 2>/dev/null | wc -l)
-  (( behind )) && gitstatus+=( " ${__P9K_ICONS[VCS_INCOMING_CHANGES_ICON]}${behind// /}" )
+  (( behind )) && gitstatus+=( " ${__P9K_ICONS[VCS_INCOMING_CHANGES]}${behind// /}" )
 
   hook_com[misc]+=${(j::)gitstatus}
 }
@@ -184,12 +182,12 @@ function +vi-git-remotebranch() {
     fi
   fi
 
-  hook_com[branch]="${__P9K_ICONS[VCS_BRANCH_ICON]}${hook_com[branch]}"
+  hook_com[branch]="${__P9K_ICONS[VCS_BRANCH]}${hook_com[branch]}"
   # Always show the remote
   #if [[ -n ${remote} ]] ; then
   # Only show the remote if it differs from the local
   if [[ -n ${remote} ]] && [[ "${remote#*/}" != "${branch_name}" ]] ; then
-    hook_com[branch]+="${__P9K_ICONS[VCS_REMOTE_BRANCH_ICON]}${remote// /}"
+    hook_com[branch]+="${__P9K_ICONS[VCS_REMOTE_BRANCH]}${remote// /}"
   fi
 }
 
@@ -210,10 +208,10 @@ function +vi-git-tagname() {
         # string.
         local revision
         revision=$(command git rev-list -n 1 --abbrev-commit --abbrev=${P9K_VCS_INTERNAL_HASH_LENGTH} HEAD)
-        hook_com[branch]="${__P9K_ICONS[VCS_BRANCH_ICON]}${revision} ${__P9K_ICONS[VCS_TAG_ICON]}${tag}"
+        hook_com[branch]="${__P9K_ICONS[VCS_BRANCH]}${revision} ${__P9K_ICONS[VCS_TAG]}${tag}"
       else
         # We are on both a tag and a branch; print both by appending the tag name.
-        hook_com[branch]+=" ${__P9K_ICONS[VCS_TAG_ICON]}${tag}"
+        hook_com[branch]+=" ${__P9K_ICONS[VCS_TAG]}${tag}"
       fi
     fi
   fi
@@ -226,13 +224,13 @@ function +vi-git-stash() {
 
   if [[ -s $(command git rev-parse --git-dir)/refs/stash ]] ; then
     stashes=$(command git stash list 2>/dev/null | wc -l)
-    hook_com[misc]+=" ${__P9K_ICONS[VCS_STASH_ICON]}${stashes// /}"
+    hook_com[misc]+=" ${__P9K_ICONS[VCS_STASH]}${stashes// /}"
   fi
 }
 
 function +vi-hg-bookmarks() {
   if [[ -n "${hgbmarks[@]}" ]]; then
-    hook_com[hg-bookmark-string]=" ${__P9K_ICONS[VCS_BOOKMARK_ICON]}${hgbmarks[@]}"
+    hook_com[hg-bookmark-string]=" ${__P9K_ICONS[VCS_BOOKMARK]}${hgbmarks[@]}"
 
     # To signal that we want to use the sting we just generated, set the special
     # variable `ret' to something other than the default zero:
@@ -246,21 +244,21 @@ function +vi-vcs-detect-changes() {
 
     local remote=$(command git ls-remote --get-url 2> /dev/null)
     if [[ "$remote" =~ "github" ]] then
-      vcs_segment_icon=${__P9K_ICONS[VCS_GIT_GITHUB_ICON]}
+      vcs_segment_icon=${__P9K_ICONS[VCS_GIT_GITHUB]}
     elif [[ "$remote" =~ "bitbucket" ]] then
-      vcs_segment_icon=${__P9K_ICONS[VCS_GIT_BITBUCKET_ICON]}
+      vcs_segment_icon=${__P9K_ICONS[VCS_GIT_BITBUCKET]}
     elif [[ "$remote" =~ "stash" ]] then
-      vcs_segment_icon=${__P9K_ICONS[VCS_GIT_BITBUCKET_ICON]}
+      vcs_segment_icon=${__P9K_ICONS[VCS_GIT_BITBUCKET]}
     elif [[ "$remote" =~ "gitlab" ]] then
-      vcs_segment_icon=${__P9K_ICONS[VCS_GIT_GITLAB_ICON]}
+      vcs_segment_icon=${__P9K_ICONS[VCS_GIT_GITLAB]}
     else
-      vcs_segment_icon=${__P9K_ICONS[VCS_GIT_ICON]}
+      vcs_segment_icon=${__P9K_ICONS[VCS_GIT]}
     fi
 
   elif [[ "${hook_com[vcs]}" == "hg" ]]; then
-    vcs_segment_icon=${__P9K_ICONS[VCS_HG_ICON]}
+    vcs_segment_icon=${__P9K_ICONS[VCS_HG]}
   elif [[ "${hook_com[vcs]}" == "svn" ]]; then
-    vcs_segment_icon=${__P9K_ICONS[VCS_SVN_ICON]}
+    vcs_segment_icon=${__P9K_ICONS[VCS_SVN]}
   fi
 
   if [[ -n "${hook_com[staged]}" ]] || [[ -n "${hook_com[unstaged]}" ]]; then
@@ -273,15 +271,15 @@ function +vi-vcs-detect-changes() {
 function +vi-svn-detect-changes() {
   local svn_status="$(svn status)"
   if [[ -n "$(echo "$svn_status" | \grep \^\?)" ]]; then
-    hook_com[unstaged]+=" ${__P9K_ICONS[VCS_UNTRACKED_ICON]}"
+    hook_com[unstaged]+=" ${__P9K_ICONS[VCS_UNTRACKED]}"
     VCS_WORKDIR_HALF_DIRTY=true
   fi
   if [[ -n "$(echo "$svn_status" | \grep \^\M)" ]]; then
-    hook_com[unstaged]+=" ${__P9K_ICONS[VCS_UNSTAGED_ICON]}"
+    hook_com[unstaged]+=" ${__P9K_ICONS[VCS_UNSTAGED]}"
     VCS_WORKDIR_DIRTY=true
   fi
   if [[ -n "$(echo "$svn_status" | \grep \^\A)" ]]; then
-    hook_com[staged]+=" ${__P9K_ICONS[VCS_STAGED_ICON]}"
+    hook_com[staged]+=" ${__P9K_ICONS[VCS_STAGED]}"
     VCS_WORKDIR_DIRTY=true
   fi
 }
@@ -308,7 +306,7 @@ __p9k_vcs_init() {
 
   VCS_CHANGESET_PREFIX=''
   if [[ "${P9K_VCS_SHOW_CHANGESET}" == true ]]; then
-    VCS_CHANGESET_PREFIX="${__P9K_ICONS[VCS_COMMIT_ICON]}%0.${P9K_VCS_INTERNAL_HASH_LENGTH}i "
+    VCS_CHANGESET_PREFIX="${__P9K_ICONS[VCS_COMMIT]}%0.${P9K_VCS_INTERNAL_HASH_LENGTH}i "
   fi
 
   # Load supported version control backends
@@ -325,10 +323,10 @@ __p9k_vcs_init() {
   zstyle ':vcs_info:*' actionformats "%b $(p9k::foreground_color ${P9K_VCS_ACTIONFORMAT_FOREGROUND})| %a%f"
 
   # This string will be used in the %c escape if there are staged changes in the repository.
-  zstyle ':vcs_info:*' stagedstr " ${__P9K_ICONS[VCS_STAGED_ICON]}"
+  zstyle ':vcs_info:*' stagedstr " ${__P9K_ICONS[VCS_STAGED]}"
 
   # This string will be used in the %u escape if there are unstaged changes in the repository.
-  zstyle ':vcs_info:*' unstagedstr " ${__P9K_ICONS[VCS_UNSTAGED_ICON]}"
+  zstyle ':vcs_info:*' unstagedstr " ${__P9K_ICONS[VCS_UNSTAGED]}"
 
   # Hooks are places in vcs_info where you can run your own code. That code can communicate with the code that called it and through that, change the system’s behaviour.
   # For configuration, hooks change the style context:
@@ -341,7 +339,7 @@ __p9k_vcs_init() {
   zstyle ':vcs_info:svn*+set-message:*' hooks ${P9K_VCS_SVN_HOOKS}
 
   # For Hg, only show the branch name
-  zstyle ':vcs_info:hg*:*' branchformat "${__P9K_ICONS[VCS_BRANCH_ICON]}%b"
+  zstyle ':vcs_info:hg*:*' branchformat "${__P9K_ICONS[VCS_BRANCH]}%b"
 
   # The `get-revision` function must be turned on for dirty-check to work for Hg
   # The revision of a repository’s work tree (currently for the git and hg backends, where this kind of information is not always vital). For git, the hash value of the currently checked out commit is available via the %i expansion. With hg, the local revision number and the corresponding global hash are available via %i.
@@ -373,7 +371,8 @@ __p9k_vcs_init() {
 #   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
 p9k::register_segment  "VCS" "CLEAN"     "green"  "${DEFAULT_COLOR}" ''  ''  ''  ''  ''
 p9k::register_segment  "VCS" "MODIFIED"  "yellow" "${DEFAULT_COLOR}" ''  ''  ''  ''  ''
-p9k::register_segment  "VCS" "UNTRACKED" "green"  "${DEFAULT_COLOR}" ''  ''  ''  ''  ''
+#                                                                                                                                     
+p9k::register_segment  "VCS" "UNTRACKED" "green"  "${DEFAULT_COLOR}" '?' $'\uE16C' $'\uF059' '\u'${CODEPOINT_OF_AWESOME_QUESTION_CIRCLE} $'\uF059'
 
 ################################################################
 # @description

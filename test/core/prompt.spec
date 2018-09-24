@@ -34,9 +34,7 @@ function testSegmentOnRightSide() {
   local -a P9K_RIGHT_PROMPT_ELEMENTS
   P9K_RIGHT_PROMPT_ELEMENTS=(custom_world1 custom_world2)
   local P9K_CUSTOM_WORLD1='echo world1'
-  p9k::register_segment "WORLD1"
   local P9K_CUSTOM_WORLD2='echo world2'
-  p9k::register_segment "WORLD2"
 
   __p9k_prepare_prompts
 
@@ -50,9 +48,7 @@ function testDisablingRightPrompt() {
   local -a P9K_RIGHT_PROMPT_ELEMENTS
   P9K_RIGHT_PROMPT_ELEMENTS=(custom_world1 custom_world2)
   local P9K_CUSTOM_WORLD1='echo world1'
-  p9k::register_segment "WORLD1"
   local P9K_CUSTOM_WORLD2='echo world2'
-  p9k::register_segment "WORLD2"
   local P9K_DISABLE_RPROMPT=true
 
   __p9k_prepare_prompts
@@ -64,7 +60,6 @@ function testLeftMultilinePrompt() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(custom_world1)
   local P9K_CUSTOM_WORLD1='echo world1'
-  p9k::register_segment "WORLD1"
   local P9K_PROMPT_ON_NEWLINE=true
 
   __p9k_prepare_prompts
@@ -79,7 +74,6 @@ function testRightPromptOnSameLine() {
   local -a P9K_RIGHT_PROMPT_ELEMENTS
   P9K_RIGHT_PROMPT_ELEMENTS=(custom_world1)
   local P9K_CUSTOM_WORLD1='echo world1'
-  p9k::register_segment "WORLD1"
 
   local P9K_PROMPT_ON_NEWLINE=true
   local P9K_RPROMPT_ON_NEWLINE=false # We want the RPROMPT on the same line as our left prompt
@@ -94,10 +88,9 @@ function testPrefixingFirstLineOnLeftPrompt() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(custom_world1)
   local P9K_CUSTOM_WORLD1='echo world1'
-  p9k::register_segment "WORLD1"
 
   local P9K_PROMPT_ON_NEWLINE=true
-  local P9K_MULTILINE_FIRST_PROMPT_PREFIX='XXX'
+  local P9K_MULTILINE_FIRST_PROMPT_PREFIX_ICON='XXX'
   source functions/icons.zsh
 
   __p9k_prepare_prompts
@@ -110,10 +103,9 @@ function testPrefixingSecondLineOnLeftPrompt() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(custom_world1)
   local P9K_CUSTOM_WORLD1='echo world1'
-  p9k::register_segment "WORLD1"
 
   local P9K_PROMPT_ON_NEWLINE=true
-  local P9K_MULTILINE_LAST_PROMPT_PREFIX='XXX'
+  local P9K_MULTILINE_LAST_PROMPT_PREFIX_ICON='XXX'
   source functions/icons.zsh
 
   __p9k_prepare_prompts

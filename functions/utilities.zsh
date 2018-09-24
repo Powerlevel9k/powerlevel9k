@@ -275,27 +275,6 @@ function p9k::get_relevant_item() {
   done
 }
 
-###############################################################
-# @description
-#   Determines the correct sed parameter.
-##
-# @noargs
-##
-# @note
-#   `sed` is unfortunately not consistent across OSes when it comes to flags.
-##
-function __p9k_detect_sed() {
-  typeset -g SED_EXTENDED_REGEX_PARAMETER
-  SED_EXTENDED_REGEX_PARAMETER="-r"
-  if [[ "$__P9K_OS" == 'OSX' ]]; then
-    local IS_BSD_SED="$(sed --version &>> /dev/null || echo "BSD sed")"
-    if [[ -n "$IS_BSD_SED" ]]; then
-      SED_EXTENDED_REGEX_PARAMETER="-E"
-    fi
-  fi
-}
-__p9k_detect_sed
-
 # Combine the PROMPT_ELEMENTS
 typeset -gU P9K_PROMPT_ELEMENTS
 P9K_PROMPT_ELEMENTS=("${P9K_LEFT_PROMPT_ELEMENTS[@]}" "${P9K_RIGHT_PROMPT_ELEMENTS[@]}")

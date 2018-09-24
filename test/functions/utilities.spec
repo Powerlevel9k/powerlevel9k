@@ -30,7 +30,7 @@ function testDefinedFindsDefinedVariable() {
   unset my_var
 }
 
-function testDefinedDoesNotFindUnp9k::definedVariable() {
+function testDefinedDoesNotFindUndefinedVariable() {
   assertFalse "p9k::defined 'my_var'"
 }
 

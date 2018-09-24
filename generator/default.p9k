@@ -195,7 +195,7 @@ function p9k::prepare_segment() {
       # check if it is a named icon
       SEGMENT_ICON=${__P9K_ICONS[${8}]}
       # otherwise use it literally
-      [[ ${SEGMENT_ICON} == "" ]] && SEGMENT_ICON=$(echo ${8})
+      [[ -z "${SEGMENT_ICON}" ]] && SEGMENT_ICON=$(echo ${8})
     fi
 
     # Background overide
@@ -407,8 +407,8 @@ function __p9k_ch_pwd() {
 # @noargs
 ##
 function __p9k_zle_keymap_select () {
-	zle reset-prompt
-	zle -R
+  zle reset-prompt
+  zle -R
 }
 
 ###############################################################
@@ -452,7 +452,7 @@ function prompt_powerlevel9k_setup() {
   fi
 
   if ! p9k::defined P9K_LEFT_PROMPT_ELEMENTS; then
-    P9K_LEFT_PROMPT_ELEMENTS=(context dir rbenv vcs)
+    P9K_LEFT_PROMPT_ELEMENTS=(context dir vcs)
     P9K_PROMPT_ELEMENTS=("${P9K_LEFT_PROMPT_ELEMENTS[@]}" "${P9K_RIGHT_PROMPT_ELEMENTS[@]}")
   fi
   if ! p9k::defined P9K_RIGHT_PROMPT_ELEMENTS; then
