@@ -13,7 +13,7 @@ setopt localoptions # extendedglob
 
 ###############################################################
 # @description
-#   This function determines if older variable namess have been
+#   This function determines if older variable names have been
 #   previously defined and changes them to newer variable names.
 ##
 # @args
@@ -30,10 +30,10 @@ setopt localoptions # extendedglob
   if p9k::defined "${1}" && [[ -n "${2}" ]]; then
     # check for multiple Variables
     local newVars=("${(@s:,:)2}")
-    for key in ${newVars}; do
+    for var in ${newVars}; do
       # set new variable name
-      typeset -g "${key}"="${(P)1}"
-      print -P "%F{yellow}Warning!%f The '$1' variable is deprecated. This has been updated to '%F{cyan}${key}%f' for you. For more information, have a look at the CHANGELOG.md."
+      typeset -g "${var}"="${(P)1}"
+      print -P "%F{yellow}Warning!%f The '%F{cyan}$1%f' variable is deprecated. This has been updated to '%F{green}${var}%f' for you. For more information, have a look at the CHANGELOG.md."
     done
     unset ${1}
     return 0
