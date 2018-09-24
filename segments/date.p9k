@@ -4,9 +4,26 @@
 # @source [powerlevel9k](https://github.com/bhilburn/powerlevel9k)
 ##
 
-p9k::set_default P9K_DATE_FORMAT "%D{%d.%m.%y}"
 ################################################################
-# System date
+# Register segment
+# Parameters:
+#   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
+#                                                                                                                                         
+p9k::register_segment 'DATE' '' "$DEFAULT_COLOR_INVERTED" "$DEFAULT_COLOR" ''  $'\uE184'  $'\uF073 '  '\u'$CODEPOINT_OF_AWESOME_CALENDAR' '  $'\uF073 '
+
+################################################################
+# Register segment default values
+p9k::set_default P9K_DATE_FORMAT "%D{%d.%m.%y}"
+
+################################################################
+# @description
+#   Displays the system date.
+##
+# @args
+#   $1 string Alignment - left | right
+#   $2 integer Segment index
+#   $3 boolean Whether the segment should be joined
+##
 prompt_date() {
-  "__p9k_$1_prompt_segment" "$0" "$2" "$DEFAULT_COLOR_INVERTED" "$DEFAULT_COLOR" "$P9K_DATE_FORMAT" "DATE_ICON"
+  p9k::prepare_segment "$0" "" $1 "$2" $3 "$P9K_DATE_FORMAT"
 }

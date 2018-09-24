@@ -40,7 +40,7 @@ function testDiskUsageSegmentWhenDiskIsAlmostFull() {
   # Load Powerlevel9k
   source ${P9K_HOME}/powerlevel9k.zsh-theme
 
-  assertEquals "%K{001} %F{007}hdd  %f%F{007}97%% %k%F{001}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{001} %F{015}hdd  %f%F{015}97%% %k%F{001}%f " "$(__p9k_build_left_prompt)"
 
   unfunction df
 }
@@ -72,7 +72,7 @@ function testDiskUsageSegmentWhenDiskIsQuiteEmpty() {
   # Load Powerlevel9k
   source ${P9K_HOME}/powerlevel9k.zsh-theme
 
-  assertEquals "%K{000} %F{003}hdd  %f%F{003}4%% %k%F{000}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{000} %F{046}hdd  %f%F{046}4%% %k%F{000}%f " "$(__p9k_build_left_prompt)"
 
   unfunction df
 }
@@ -88,7 +88,7 @@ function testDiskUsageSegmentPrintsNothingIfDiskIsQuiteEmptyAndOnlyWarningsShoul
   local P9K_DISK_USAGE_ONLY_WARNING=true
   local P9K_CUSTOM_WORLD='echo world'
 
-  assertEquals "%K{007} %F{000}world %k%F{007}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{015} %F{000}world %k%F{015}%f " "$(__p9k_build_left_prompt)"
 
   unfunction df
 }
@@ -123,7 +123,7 @@ function testDiskUsageSegmentCriticalLevelCouldBeAdjusted() {
   # Load Powerlevel9k
   source ${P9K_HOME}/powerlevel9k.zsh-theme
 
-  assertEquals "%K{001} %F{007}hdd  %f%F{007}11%% %k%F{001}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{001} %F{015}hdd  %f%F{015}11%% %k%F{001}%f " "$(__p9k_build_left_prompt)"
 
   unfunction df
 }

@@ -17,6 +17,10 @@ function setUp() {
   # Change cache file, so that the users environment don't
   # interfere with the tests.
   P9K_PUBLIC_IP_FILE=$FOLDER/public_ip_file
+
+  # Load Powerlevel9k
+  source ${P9K_HOME}/powerlevel9k.zsh-theme
+  source ${P9K_HOME}/segments/public_ip.p9k
 }
 
 function tearDown() {
@@ -42,10 +46,7 @@ function testPublicIpSegmentPrintsNothingByDefaultIfHostIsNotAvailable() {
   # uses an alternative host.
   alias dig='nodig'
 
-  # Load Powerlevel9k
-  source ${P9K_HOME}/powerlevel9k.zsh-theme
-
-  assertEquals "%K{007} %F{000}world %k%F{007}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{015} %F{000}world %k%F{015}%f " "$(__p9k_build_left_prompt)"
 
   unalias dig
 }
@@ -59,10 +60,7 @@ function testPublicIpSegmentPrintsNoticeIfNotConnected() {
   # uses an alternative host.
   alias dig='nodig'
 
-  # Load Powerlevel9k
-  source ${P9K_HOME}/powerlevel9k.zsh-theme
-
-  assertEquals "%K{000} %F{007}disconnected %k%F{000}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{000} %F{015}disconnected %k%F{000}%f " "$(__p9k_build_left_prompt)"
 
   unalias dig
 }
@@ -73,13 +71,10 @@ function testPublicIpSegmentWorksWithWget() {
   alias dig='nodig'
   alias curl='nocurl'
   wget() {
-      echo "wget 1.2.3.4"
+    echo "wget 1.2.3.4"
   }
 
-  # Load Powerlevel9k
-  source ${P9K_HOME}/powerlevel9k.zsh-theme
-
-  assertEquals "%K{000} %F{007}wget 1.2.3.4 %k%F{000}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{000} %F{015}wget 1.2.3.4 %k%F{000}%f " "$(__p9k_build_left_prompt)"
 
   unfunction wget
   unalias dig
@@ -92,13 +87,10 @@ function testPublicIpSegmentUsesCurlAsFallbackMethodIfWgetIsNotAvailable() {
   alias dig='nodig'
   alias wget='nowget'
   curl() {
-      echo "curl 1.2.3.4"
+    echo "curl 1.2.3.4"
   }
 
-  # Load Powerlevel9k
-  source ${P9K_HOME}/powerlevel9k.zsh-theme
-
-  assertEquals "%K{000} %F{007}curl 1.2.3.4 %k%F{000}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{000} %F{015}curl 1.2.3.4 %k%F{000}%f " "$(__p9k_build_left_prompt)"
 
   unfunction curl
   unalias dig
@@ -111,13 +103,11 @@ function testPublicIpSegmentUsesDigAsFallbackMethodIfWgetAndCurlAreNotAvailable(
   alias curl='nocurl'
   alias wget='nowget'
   dig() {
-      echo "dig 1.2.3.4"
+    echo "dig 1.2.3.4"
   }
 
   # Load Powerlevel9k
-  source ${P9K_HOME}/powerlevel9k.zsh-theme
-
-  assertEquals "%K{000} %F{007}dig 1.2.3.4 %k%F{000}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{000} %F{015}dig 1.2.3.4 %k%F{000}%f " "$(__p9k_build_left_prompt)"
 
   unfunction dig
   unalias curl
@@ -125,23 +115,21 @@ function testPublicIpSegmentUsesDigAsFallbackMethodIfWgetAndCurlAreNotAvailable(
 }
 
 function testPublicIpSegmentCachesFile() {
+  local P9K_PUBLIC_IP_TIMEOUT=60
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(public_ip)
   dig() {
-      echo "first"
+    echo "first"
   }
 
-  # Load Powerlevel9k
-  source ${P9K_HOME}/powerlevel9k.zsh-theme
-
-  assertEquals "%K{000} %F{007}first %k%F{000}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{000} %F{015}first %k%F{000}%f " "$(__p9k_build_left_prompt)"
 
   dig() {
-      echo "second"
+    echo "second"
   }
 
   # Segment should not have changed!
-  assertEquals "%K{000} %F{007}first %k%F{000}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{000} %F{015}first %k%F{000}%f " "$(__p9k_build_left_prompt)"
 
   unfunction dig
 }
@@ -151,21 +139,18 @@ function testPublicIpSegmentRefreshesCachesFileAfterTimeout() {
   P9K_LEFT_PROMPT_ELEMENTS=(public_ip)
   local P9K_PUBLIC_IP_TIMEOUT=2
   dig() {
-      echo "first"
+    echo "first"
   }
 
-  # Load Powerlevel9k
-  source ${P9K_HOME}/powerlevel9k.zsh-theme
-
-  assertEquals "%K{000} %F{007}first %k%F{000}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{000} %F{015}first %k%F{000}%f " "$(__p9k_build_left_prompt)"
 
   sleep 3
   dig() {
-      echo "second"
+    echo "second"
   }
 
   # Segment should not have changed!
-  assertEquals "%K{000} %F{007}second %k%F{000}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{000} %F{015}second %k%F{000}%f " "$(__p9k_build_left_prompt)"
 
   unfunction dig
 }
@@ -174,23 +159,20 @@ function testPublicIpSegmentRefreshesCachesFileIfEmpty() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(public_ip)
   dig() {
-      echo "first"
+    echo "first"
   }
 
-  # Load Powerlevel9k
-  source ${P9K_HOME}/powerlevel9k.zsh-theme
-
-  assertEquals "%K{000} %F{007}first %k%F{000}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{000} %F{015}first %k%F{000}%f " "$(__p9k_build_left_prompt)"
 
   # Truncate cache file
   echo "" >! $P9K_PUBLIC_IP_FILE
 
   dig() {
-      echo "second"
+    echo "second"
   }
 
   # Segment should not have changed!
-  assertEquals "%K{000} %F{007}second %k%F{000}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{000} %F{015}second %k%F{000}%f " "$(__p9k_build_left_prompt)"
 
   unfunction dig
 }
@@ -202,19 +184,16 @@ function testPublicIpSegmentWhenGoingOnline() {
   local P9K_PUBLIC_IP_NONE="disconnected"
   alias dig="nodig"
 
-  # Load Powerlevel9k
-  source ${P9K_HOME}/powerlevel9k.zsh-theme
-
-  assertEquals "%K{000} %F{007}disconnected %k%F{000}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{000} %F{015}disconnected %k%F{000}%f " "$(__p9k_build_left_prompt)"
 
   unalias dig
 
   dig() {
-      echo "second"
+    echo "second"
   }
 
   # Segment should not have changed!
-  assertEquals "%K{000} %F{007}second %k%F{000}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{000} %F{015}second %k%F{000}%f " "$(__p9k_build_left_prompt)"
 
   unfunction dig
 }

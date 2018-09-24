@@ -4,13 +4,30 @@
 # @source [powerlevel9k](https://github.com/bhilburn/powerlevel9k)
 ##
 
-p9k::set_default P9K_VPN_IP_INTERFACE "tun"
 ################################################################
-# Segment to display if VPN is active
+# Register segment
+# Parameters:
+#   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
+#                                                                                                                  
+p9k::register_segment "VPN_IP" "" "cyan" "${DEFAULT_COLOR}"  '(vpn)'  '(vpn)'  $'\uF023'  '\u'${CODEPOINT_OF_AWESOME_LOCK}  $'\uF023'
+
+################################################################
+# Register segment default values
+p9k::set_default P9K_VPN_IP_INTERFACE "tun"
+
+################################################################
+# @description
+#   Segment to display if the VPN is active.
+##
+# @args
+#   $1 string Alignment - left | right
+#   $2 integer Segment index
+#   $3 boolean Whether the segment should be joined
+##
 prompt_vpn_ip() {
   for vpn_iface in $(/sbin/ifconfig | grep -e ^"$P9K_VPN_IP_INTERFACE" | cut -d":" -f1)
   do
     ip=$(/sbin/ifconfig "$vpn_iface" | grep -o "inet\s.*" | cut -d' ' -f2)
-    "__p9k_$1_prompt_segment" "$0" "$2" "cyan" "$DEFAULT_COLOR" "$ip" 'VPN_ICON'
+    p9k::prepare_segment "$0" "" $1 "$2" $3 "$ip"
   done
 }

@@ -5,11 +5,25 @@
 ##
 
 ################################################################
-# Segment to display Swift version
+# Register segment
+# Parameters:
+#   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
+#                                                                                      
+p9k::register_segment "SWIFT_VERSION" "" "magenta" "white"  'Swift'  ''  ''  $'\uE655'  $'\uE755'
+
+################################################################
+# @description
+#   Display the current Swift version.
+##
+# @args
+#   $1 string Alignment - left | right
+#   $2 integer Segment index
+#   $3 boolean Whether the segment should be joined
+##
 prompt_swift_version() {
   # Get the first number as this is probably the "main" version number..
   local swift_version=$(swift --version 2>/dev/null | grep -o -E "[0-9.]+" | head -n 1)
   [[ -z "${swift_version}" ]] && return
 
-  "__p9k_$1_prompt_segment" "$0" "$2" "magenta" "white" "${swift_version}" 'SWIFT_ICON'
+  p9k::prepare_segment "$0" "" $1 "$2" $3 "${swift_version}"
 }

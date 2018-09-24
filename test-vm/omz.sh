@@ -13,7 +13,7 @@ chmod 440 /etc/sudoers.d/$NEW_USER
         #UID=$(id -u $NEW_USER)
         #EUID=$(id -u $NEW_USER)
         HOME=/home/$NEW_USER
-	SHELL=$(which zsh)
+        SHELL=$(which zsh)
 
         sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
 

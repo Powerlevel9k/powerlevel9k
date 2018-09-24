@@ -5,7 +5,21 @@
 ##
 
 ################################################################
-# Command number (in local history)
+# Register segment
+# Parameters:
+#   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
+#                                                                                             
+p9k::register_segment "HISTORY" '' "grey50" "${DEFAULT_COLOR}"  ''  ''  $'\uE29A '  $'\uE29A '  $'\uE29A '
+
+################################################################
+# @description
+#   Display the command number (in local history).
+##
+# @args
+#   $1 string Alignment - left | right
+#   $2 integer Segment index
+#   $3 boolean Whether the segment should be joined
+##
 prompt_history() {
-  "__p9k_$1_prompt_segment" "$0" "$2" "grey50" "$DEFAULT_COLOR" '%h'
+  p9k::prepare_segment "$0" "" $1 "$2" $3 '%h'
 }

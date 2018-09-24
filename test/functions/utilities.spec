@@ -7,8 +7,8 @@ SHUNIT_PARENT=$0
 
 function setUp() {
   # Load Powerlevel9k
-  source functions/icons.zsh
   source functions/utilities.zsh
+  source functions/icons.zsh
   ################################################################
   # Source autoload functions
   ################################################################
@@ -17,6 +17,7 @@ function setUp() {
   if [[ ${fpath[(ie)$autoload_path]} -gt ${#fpath} ]]; then
     fpath=( ${autoload_path} "${fpath[@]}" )
     autoload -Uz __p9k_segment_should_be_joined
+    autoload -Uz __p9k_segment_should_be_printed
     autoload -Uz __p9k_truncate_path
     autoload -Uz __p9k_upsearch
   fi
@@ -79,7 +80,7 @@ function testSegmentShouldBeJoinedIfDirectPredecessingSegmentIsJoined() {
   local last_element_index=2
 
   local joined
-  __p9k_segment_should_be_joined $current_index $last_element_index "$segments" && joined=true || joined=false
+  __p9k_segment_should_be_joined ${current_index} ${last_element_index} "$segments" && joined=true || joined=false
   assertTrue "$joined"
 
   unset segments
@@ -95,7 +96,7 @@ function testSegmentShouldBeJoinedIfPredecessingSegmentIsJoinedTransitivley() {
   local last_element_index=1
 
   local joined
-  __p9k_segment_should_be_joined $current_index $last_element_index "$segments" && joined=true || joined=false
+  __p9k_segment_should_be_joined ${current_index} ${last_element_index} "$segments" && joined=true || joined=false
   assertTrue "$joined"
 
   unset segments
@@ -111,7 +112,7 @@ function testSegmentShouldNotBeJoinedIfPredecessingSegmentIsNotJoinedButConditio
   local last_element_index=1
 
   local joined
-  __p9k_segment_should_be_joined $current_index $last_element_index "$segments" && joined=true || joined=false
+  __p9k_segment_should_be_joined ${current_index} ${last_element_index} "$segments" && joined=true || joined=false
   assertFalse "$joined"
 
   unset segments

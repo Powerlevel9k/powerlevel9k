@@ -21,7 +21,7 @@ function setUp() {
   # Prepare folder for pmset (OSX)
   PMSET_PATH=$FOLDER/usr/bin
   mkdir -p $PMSET_PATH
-  # Prepare folder for $BATTERY (Linux)
+  # Prepare folder for ${BATTERY} (Linux)
   BATTERY_PATH=$FOLDER/sys/class/power_supply
   mkdir -p $BATTERY_PATH
   mkdir -p $BATTERY_PATH/BAT0
@@ -86,7 +86,7 @@ function testBatterySegmentIfBatteryIsAlmostFullWhileDischargingOnOSX() {
   makeBatterySay "Now drawing from 'Battery Power'
  -InternalBattery-0 (id=1234567)	98%; discharging; 3:57 remaining present: true"
 
-  assertEquals "%K{000} %F{007}🔋 %f%F{007}98%% (3:57) " "$(prompt_battery left 1 false ${FOLDER})"
+  assertEquals "%K{000} %F{015}🔋 %f%F{015}98%% (3:57) " "$(prompt_battery left 1 false ${FOLDER})"
 }
 
 function testBatterySegmentIfBatteryIsAlmostFullWhileChargingOnOSX() {
@@ -110,7 +110,7 @@ function testBatterySegmentIfBatteryIsCalculatingOnOSX() {
   makeBatterySay "Now drawing from 'Battery Power'
  -InternalBattery-0 (id=1234567)	99%; discharging; (no estimate) present: true"
 
-  assertEquals "%K{000} %F{007}🔋 %f%F{007}99%% (...) " "$(prompt_battery left 1 false ${FOLDER})"
+  assertEquals "%K{000} %F{015}🔋 %f%F{015}99%% (...) " "$(prompt_battery left 1 false ${FOLDER})"
 }
 
 function testBatterySegmentIfBatteryIsLowWhileDischargingOnLinux() {
@@ -131,7 +131,7 @@ function testBatterySegmentIfBatteryIsNormalWhileDischargingOnLinux() {
   local __P9K_OS='Linux' # Fake Linux
   makeBatterySay "10" "Discharging"
 
-  assertEquals "%K{000} %F{007}🔋 %f%F{007}10%% " "$(prompt_battery left 1 false ${FOLDER})"
+  assertEquals "%K{000} %F{015}🔋 %f%F{015}10%% " "$(prompt_battery left 1 false ${FOLDER})"
 }
 
 function testBatterySegmentIfBatteryIsNormalWhileChargingOnLinux() {
@@ -151,17 +151,14 @@ function testBatterySegmentIfBatteryIsFullOnLinux() {
 function testBatterySegmentIfBatteryIsNormalWithAcpiEnabledOnLinux() {
   local __P9K_OS='Linux' # Fake Linux
   makeBatterySay "50" "Discharging"
-  echo "echo 'Batter 0: Discharging, 50%, 01:38:54 remaining'" > ${FOLDER}/usr/bin/acpi
+  echo "echo 'Battery 0: Discharging, 50%, 01:38:54 remaining'" > ${FOLDER}/usr/bin/acpi
   chmod +x ${FOLDER}/usr/bin/acpi
   # For running on Mac, we need to mock date :(
   [[ -f /usr/local/bin/gdate ]] && alias date=gdate
 
-  assertEquals "%K{000} %F{007}🔋 %f%F{007}50%% (1:38) " "$(prompt_battery left 1 false ${FOLDER})"
+  assertEquals "%K{000} %F{015}🔋 %f%F{015}50%% (1:38) " "$(prompt_battery left 1 false ${FOLDER})"
 
   unalias date &>/dev/null
-  # unaliasing date fails where it was never aliased (e.g. on Linux).
-  # This causes the whole test to fail, because the return code is
-  # non-zero.
   return 0
 }
 
@@ -169,10 +166,10 @@ function testBatterySegmentIfBatteryIsCalculatingWithAcpiEnabledOnLinux() {
   local __P9K_OS='Linux' # Fake Linux
   makeBatterySay "50" "Discharging"
   # Todo: Include real acpi output!
-  echo "echo 'Batter 0: Discharging, 50%, rate remaining'" > ${FOLDER}/usr/bin/acpi
+  echo "echo 'Battery 0: Discharging, 50%, rate remaining'" > ${FOLDER}/usr/bin/acpi
   chmod +x ${FOLDER}/usr/bin/acpi
 
-  assertEquals "%K{000} %F{007}🔋 %f%F{007}50%% (...) " "$(prompt_battery left 1 false ${FOLDER})"
+  assertEquals "%K{000} %F{015}🔋 %f%F{015}50%% (...) " "$(prompt_battery left 1 false ${FOLDER})"
 }
 
 source shunit2/shunit2

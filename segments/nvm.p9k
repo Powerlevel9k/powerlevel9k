@@ -5,8 +5,24 @@
 ##
 
 ################################################################
-# Segment to display Node version from NVM
-# Only prints the segment if different than the default value
+# Register segment icon
+# Parameters:
+#   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
+#                                                  ⬢         ⬢          ⬢          ⬢          
+p9k::register_segment "NVM" "" "magenta" "black"  $'\u2B22'  $'\u2B22'  $'\u2B22'  $'\u2B22'  $'\uE617 '
+
+################################################################
+# @description
+#   Display the current Node version from NVM.
+##
+# @args
+#   $1 string Alignment - left | right
+#   $2 integer Segment index
+#   $3 boolean Whether the segment should be joined
+##
+# @note
+#   Only prints the segment if different than the default value.
+##
 prompt_nvm() {
   local node_version nvm_default
   (( $+functions[nvm_version] )) || return
@@ -17,5 +33,5 @@ prompt_nvm() {
   nvm_default=$(nvm_version default)
   [[ "$node_version" =~ "$nvm_default" ]] && return
 
-  __p9k_$1_prompt_segment "$0" "$2" "magenta" "black" "${node_version:1}" 'NODE_ICON'
+  p9k::prepare_segment "$0" "" $1 "$2" $3 "${node_version:1}"
 }

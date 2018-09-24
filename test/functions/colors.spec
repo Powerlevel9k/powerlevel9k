@@ -22,10 +22,6 @@ function testGetColorCodeWithNumericalColor() {
   assertEquals '002' "$(p9k::get_color_code '002')"
 }
 
-function testGetColorCodeWithNoneColor() {
-  assertEquals 'none' "$(p9k::get_color_code 'NONE')"
-}
-
 function testIsSameColorComparesAnsiForegroundAndNumericalColorCorrectly() {
   assertTrue "p9k::is_same_color 'green' '002'"
 }
@@ -35,23 +31,10 @@ function testIsSameColorComparesAnsiBackgroundAndNumericalColorCorrectly() {
 }
 
 function testIsSameColorComparesShortCodesCorrectly() {
-  assertTrue "p9k::is_same_color '002' '2'"
-}
+  assertTrue "p9k::is_same_color '002' '2'"}
 
 function testIsSameColorDoesNotYieldNotEqualColorsTruthy() {
   assertFalse "p9k::is_same_color 'green' '003'"
-}
-
-function testIsSameColorHandlesNoneCorrectly() {
-  assertTrue "p9k::is_same_color 'none' 'NOnE'"
-}
-
-function testIsSameColorCompareTwoNoneColorsCorrectly() {
-  assertTrue "p9k::is_same_color 'none' 'none'"
-}
-
-function testIsSameColorComparesColorWithNoneCorrectly() {
-  assertFalse "p9k::is_same_color 'green' 'none'"
 }
 
 function testBrightColorsWork() {
@@ -59,9 +42,9 @@ function testBrightColorsWork() {
   # with normal ones. This code is now gone, and this test should
   # ensure that all input channels for bright colors are handled
   # correctly.
-  assertTrue "p9k::is_same_color 'cyan' '006'"
-  assertEquals '006' "$(p9k::get_color_code 'cyan')"
-  assertEquals '006' "$(p9k::get_color 'cyan')"
+  assertTrue "p9k::is_same_color 'lightcyan' '014'"
+  assertEquals '014' "$(p9k::get_color_code 'lightcyan')"
+  assertEquals '014' "$(p9k::get_color 'lightcyan')"
 }
 
 source shunit2/shunit2

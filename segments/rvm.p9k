@@ -5,11 +5,25 @@
 ##
 
 ################################################################
-# Segment to display Ruby Version Manager information
+# Register segment
+# Parameters:
+#   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
+#                                                                                                                       
+p9k::register_segment "RVM" "" "grey35" "${DEFAULT_COLOR}"  ''  $'\uE847 '  $'\uF219 '  '\u'$CODEPOINT_OF_OCTICONS_RUBY' '  $'\uF219 '
+
+################################################################
+# @description
+#   Display Ruby Version Manager information.
+##
+# @args
+#   $1 string Alignment - left | right
+#   $2 integer Segment index
+#   $3 boolean Whether the segment should be joined
+##
 prompt_rvm() {
   local version_and_gemset=${rvm_env_string/ruby-}
 
   if [[ -n "$version_and_gemset" ]]; then
-    "__p9k_$1_prompt_segment" "$0" "$2" "grey35" "$DEFAULT_COLOR" "$version_and_gemset" 'RUBY_ICON'
+    p9k::prepare_segment "$0" "" $1 "$2" $3 "$version_and_gemset"
   fi
 }

@@ -5,7 +5,21 @@
 ##
 
 ################################################################
-# Dropbox status
+# Register segment
+# Parameters:
+#   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
+#                                                                                                                    
+p9k::register_segment "DROPBOX" '' 'white' 'blue' 'Dropbox'  $'\uF16B'  $'\uF16B'  '\u'${CODEPOINT_OF_AWESOME_DROPBOX}  $'\uF16B'
+
+################################################################
+# @description
+#   Display information about the current Dropbox status.
+##
+# @args
+#   $1 string Alignment - left | right
+#   $2 integer Segment index
+#   $3 boolean Whether the segment should be joined
+##
 prompt_dropbox() {
   # The first column is just the directory, so cut it
   local dropbox_status="$(dropbox-cli filestatus . | cut -d\  -f2-)"
@@ -14,9 +28,10 @@ prompt_dropbox() {
   if [[ "$dropbox_status" != 'unwatched' && "$dropbox_status" != "isn't running!" ]]; then
     # If "up to date", only show the icon
     if [[ "$dropbox_status" =~ 'up to date' ]]; then
-      dropbox_status=""
+      dropbox_status=" "
     fi
 
-    "__p9k_$1_prompt_segment" "$0" "$2" "white" "blue" "$dropbox_status" "DROPBOX_ICON"
+    p9k::prepare_segment "$0" "" $1 "$2" $3 "$dropbox_status"
   fi
+
 }
