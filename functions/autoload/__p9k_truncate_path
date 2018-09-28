@@ -82,8 +82,8 @@ if (( ${#1} > 1 )); then
       done
     ;;
     left)
-      # include the delimiter length in the threshhold
-      threshold=$(( $2 + ${#3} ))
+      # include the delimiter length in the threshold
+      threshold=$(( $2 + ${delim_len} ))
       # loop through the paths
       for (( i=1; i<${#paths}; i++ )); do
         # get the current directory value
@@ -92,9 +92,9 @@ if (( ${#1} > 1 )); then
         # only truncate if the resulting truncation will be shorter than
         # the truncation + delimiter length and at least 3 characters
         if (( $test_dir_length > $threshold )) && (( $test_dir_length > 3 )); then
-          # use the delimiter and the first $2 characters
+          # use the delimiter and the last $2 characters
           last_pos=$(( $test_dir_length - $2 ))
-          trunc_path+="$3${test_dir:$last_pos:$test_dir_length}/"
+          trunc_path+="${delim}${test_dir:$last_pos:$2}/"
         else
           # use the full path
           trunc_path+="${test_dir}/"
