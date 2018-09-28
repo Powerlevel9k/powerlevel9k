@@ -253,6 +253,7 @@ function __p9k_prompt_custom() {
 # @noargs
 ##
 function __p9k_build_left_prompt() {
+  [[ ${P9K_LEFT_PROMPT_ELEMENTS[1]} == "" ]] && return
   local index=1
   local element joined
   for element in "${P9K_LEFT_PROMPT_ELEMENTS[@]}"; do
@@ -284,6 +285,7 @@ function __p9k_build_left_prompt() {
 # @noargs
 ##
 function __p9k_build_right_prompt() {
+  [[ ${P9K_RIGHT_PROMPT_ELEMENTS[1]} == "" ]] && return
   local index=1
   local element joined
   for element in "${P9K_RIGHT_PROMPT_ELEMENTS[@]}"; do
