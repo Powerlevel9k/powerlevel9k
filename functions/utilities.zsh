@@ -102,7 +102,7 @@ case $(uname) in
       ;;
     Linux)
       OS='Linux'
-      os_release_id="$(grep -E '^ID=([a-zA-Z]*)' /etc/os-release | cut -d '=' -f 2)"
+      os_release_id="$(grep -s -E '^ID=([a-zA-Z]*)' /etc/os-release | cut -d '=' -f 2)"
       case "$os_release_id" in
         *arch*)
         OS_ICON=$(print_icon 'LINUX_ARCH_ICON')
@@ -130,6 +130,9 @@ case $(uname) in
         ;;
        *centos*)
         OS_ICON=$(print_icon 'LINUX_CENTOS_ICON')
+        ;;
+       *rhel*)
+        OS_ICON=$(print_icon 'LINUX_RHEL_ICON')
         ;;
        *opensuse*|*tumbleweed*)
         OS_ICON=$(print_icon 'LINUX_OPENSUSE_ICON')
