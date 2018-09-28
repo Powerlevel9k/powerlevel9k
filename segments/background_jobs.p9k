@@ -8,14 +8,20 @@
 # Register segment
 # Parameters:
 #   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
-#                                                            ⚙                                                               
+#                                                                   ⚙                                                               
 p9k::register_segment 'BACKGROUND_JOBS' '' "$DEFAULT_COLOR" "cyan" $'\u2699'  $'\uE82F '  $'\uF013 '  '\u'$CODEPOINT_OF_AWESOME_COG' '  $'\uF013 '
 
-################################################################
-# Register segment default values
+__p9k_background_jobs() {
+  # See https://unix.stackexchange.com/questions/68571/show-jobs-count-only-if-it-is-more-than-0
+  jobs_running=${(M)#${jobstates%%:*}:#running}
+  jobs_suspended=${(M)#${jobstates%%:*}:#suspended}
+}
+
+add-zsh-hook precmd __p9k_background_jobs
+
 p9k::set_default P9K_BACKGROUND_JOBS_VERBOSE true
 p9k::set_default P9K_BACKGROUND_JOBS_VERBOSE_ALWAYS false
-
+p9k::set_default P9K_BACKGROUND_JOBS_EXPANDED false
 ################################################################
 # @description
 #   Displays the number of background jobs with an icon.
@@ -26,17 +32,20 @@ p9k::set_default P9K_BACKGROUND_JOBS_VERBOSE_ALWAYS false
 #   $3 boolean Whether the segment should be joined
 ##
 prompt_background_jobs() {
-  local background_jobs_number=${$(jobs -l | wc -l)// /}
-  local wrong_lines=`jobs -l | awk '/pwd now/{ count++ } END {print count}'`
-  if [[ wrong_lines -gt 0 ]]; then
-     background_jobs_number=$(( $background_jobs_number - $wrong_lines ))
-  fi
-  if [[ background_jobs_number -gt 0 ]]; then
-    local background_jobs_number_print=""
-    if [[ "$P9K_BACKGROUND_JOBS_VERBOSE" == "true" ]] && ([[ "$background_jobs_number" -gt 1 ]] || [[ "$P9K_BACKGROUND_JOBS_VERBOSE_ALWAYS" == "true" ]]); then
-      background_jobs_number_print="$background_jobs_number"
+  local jobs_print=""
+  local total_jobs=$(( ${jobs_running} + ${jobs_suspended} ))
+
+  if [[ "${(L)P9K_BACKGROUND_JOBS_VERBOSE}" == "true" || "${(L)P9K_BACKGROUND_JOBS_VERBOSE_ALWAYS}" == "true" ]]; then
+    jobs_print=0
+    if (( ${total_jobs} > 0 )); then
+      if [[ "${(L)P9K_BACKGROUND_JOBS_EXPANDED}" == "true" ]]; then
+        jobs_print="${jobs_running}r ${jobs_suspended}s"
+      else
+        jobs_print="${total_jobs}"
+      fi
     fi
-    p9k::prepare_segment "$0" "" "$1" "$2" "$3" "$background_jobs_number_print" \
-      "[[ ${(L)P9K_BACKGROUND_JOBS_VERBOSE_ALWAYS} == true || ${background_jobs_number} -gt 0 ]]"
   fi
+
+  p9k::prepare_segment "$0" "" $1 "$2" $3 "${jobs_print}" \
+      "[[ ${(L)P9K_BACKGROUND_JOBS_VERBOSE_ALWAYS} == true ]] || (( ${total_jobs} > 0 ))"
 }
