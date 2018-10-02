@@ -213,6 +213,30 @@ function testTruncateWithFolderMarkerWorks() {
   rm -fr $BASEFOLDER
 }
 
+function testTruncateWithFolderMarkerInHome() {
+  local -a POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
+  POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(dir)
+  local POWERLEVEL9K_SHORTEN_STRATEGY="truncate_with_folder_marker"
+
+  local BASEFOLDER=/tmp/powerlevel9k-test
+  local SAVED_HOME=$HOME
+  HOME=$BASEFOLDER
+
+  # Load Powerlevel9k
+  source ${P9K_HOME}/powerlevel9k.zsh-theme
+
+  local FOLDER=$BASEFOLDER/1/12/123/1234/12345/123456/1234567
+  mkdir -p $FOLDER
+  # Setup folder marker
+  touch $BASEFOLDER/1/12/.shorten_folder_marker
+  cd $FOLDER
+  assertEquals "%K{004} %F{000}~/…/12/123/1234/12345/123456/1234567 %k%F{004}%f " "$(build_left_prompt)"
+
+  cd -
+  rm -fr $BASEFOLDER
+  HOME=$SAVED_HOME
+}
+
 function testTruncateWithFolderMarkerWithChangedFolderMarker() {
   local -a POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
   POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(dir)

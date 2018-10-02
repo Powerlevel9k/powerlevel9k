@@ -881,6 +881,9 @@ prompt_dir() {
             last_marked_folder=$marked_folder
           done
 
+          # make sure that last_marked_folder will match the current_path
+          [[ ${(L)POWERLEVEL9K_DIR_PATH_ABSOLUTE} != "true" ]] && last_marked_folder=${last_marked_folder//$HOME/"~"}
+
           # Replace the shortest possible match of the marked folder from
           # the current path.
           current_path=$trunc_path${current_path#${last_marked_folder}*}
