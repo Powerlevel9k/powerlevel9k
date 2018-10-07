@@ -12,6 +12,14 @@ function setUp() {
   OLD_DEFAULT_USER=$DEFAULT_USER
   unset DEFAULT_USER
 
+  # Fix leaked state for travis
+  OLD_P9K_CONTEXT_ALWAYS_SHOW=$P9K_CONTEXT_ALWAYS_SHOW
+  unset P9K_CONTEXT_ALWAYS_SHOW
+  OLD_SSH_CLIENT=$SSH_CLIENT
+  unset SSH_CLIENT
+  OLD_SSH_TTY=$SSH_TTY
+  unset SSH_TTY
+
   # Load Powerlevel9k
   source powerlevel9k.zsh-theme
   source segments/context.p9k
@@ -21,14 +29,18 @@ function tearDown() {
   # Restore old variables
   [[ -n "$OLD_DEFAULT_USER" ]] && DEFAULT_USER=$OLD_DEFAULT_USER
   unset OLD_DEFAULT_USER
+
+  [[ -n "$OLD_P9K_CONTEXT_ALWAYS_SHOW" ]] && P9K_CONTEXT_ALWAYS_SHOW=$OLD_P9K_CONTEXT_ALWAYS_SHOW
+  unset OLD_P9K_CONTEXT_ALWAYS_SHOW
+
+  [[ -n "$OLD_SSH_CLIENT" ]] && SSH_CLIENT=$OLD_SSH_CLIENT
+  unset OLD_SSH_CLIENT
+
+  [[ -n "$OLD_SSH_TTY" ]] && SSH_TTY=$OLD_SSH_TTY
+  unset OLD_SSH_TTY
 }
 
 function testContextSegmentDoesNotGetRenderedWithDefaultUser() {
-  # Fix leaked state for travis
-  unset P9K_CONTEXT_ALWAYS_SHOW
-  unset SSH_CLIENT
-  unset SSH_TTY
-
   local DEFAULT_USER=$(whoami)
   local P9K_CUSTOM_WORLD='echo world'
   local -a P9K_LEFT_PROMPT_ELEMENTS
@@ -78,11 +90,6 @@ function testContextSegmentIsShownIfDefaultUserIsSetWhenForced() {
 }
 
 function testContextSegmentIsShownIfForced() {
-  # Fix leaked state for travis
-  unset P9K_CONTEXT_ALWAYS_SHOW
-  unset SSH_CLIENT
-  unset SSH_TTY
-
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(context)
   local P9K_CONTEXT_ALWAYS_SHOW_USER=true
