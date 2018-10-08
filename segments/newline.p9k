@@ -26,5 +26,6 @@ prompt_newline() {
   P9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS=
 
   p9k::prepare_segment "$0" "" $1 "$2" $3 "${newline}" "false" "" "%k"
+  CURRENT_BG="NONE"
   P9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS=$lws
 }
