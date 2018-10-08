@@ -23,11 +23,8 @@ prompt_newline() {
   lws=$P9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS
   [[ "$P9K_PROMPT_ON_NEWLINE" == true ]] \
       && newline="${newline}${__P9K_ICONS[MULTILINE_NEWLINE_PROMPT_PREFIX]}"
-  fi
   P9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS=
-  "$1__p9k__prompt_segment" \
-    "$0" \
-    "$2" \
-    "NONE" "NONE" "${newline}"
+
+  p9k::prepare_segment "$0" "" $1 "$2" $3 "${newline}" "false" "" "%k"
   P9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS=$lws
 }
