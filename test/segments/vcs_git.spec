@@ -410,4 +410,30 @@ function testBranchNameTruncatingShortenStrategy() {
   rm -fr /tmp/powerlevel9k-test
 }
 
+function testRemoteBranchNameIdenticalToTag() {
+  # This tests the fix from #941
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(vcs)
+
+  echo "test" > test.txt
+  git add test.txt
+  git commit -m "Initial commit"
+
+  # Prepare a tag named "test"
+  git tag test
+
+  # Prepare branch named "test"
+  git checkout -b test
+
+  # Clone Repo
+  git clone . ../vcs-test2
+  cd ../vcs-test2
+
+  git checkout test
+
+  assertEquals "%K{002} %F{000} test test %k%F{002}%f " "$(__p9k_build_left_prompt)"
+
+  cd -
+}
+
 source shunit2/shunit2
