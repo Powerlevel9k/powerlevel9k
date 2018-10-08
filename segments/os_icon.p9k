@@ -29,6 +29,8 @@ case "$__P9K_OS" in
       "elementary")            p9k::register_segment "OS_ICON" "" "black" "white" 'Elm'  'Elm'      'Elm'      'Elm'                              $'\uF311' ;;
       #                                                                                                                                             
       "fedora")                p9k::register_segment "OS_ICON" "" "black" "white" 'Fed'  'Fed'      'Fed'      'Fed'                              $'\uF303' ;;
+      #                                                                                                                                          
+      "rhel")                  p9k::register_segment "OS_ICON" "" "black" "white" 'Rhe'  $'\uE271'  $'\uF17C'  '\u'$CODEPOINT_OF_AWESOME_LINUX    $'\uE7BB' ;;
       #                                                                                                                                             
       "coreos")                p9k::register_segment "OS_ICON" "" "black" "white" 'Cor'  'Cor'      'Cor'      'Cor'                              $'\uF30F' ;;
       #                                                                                                                                             
