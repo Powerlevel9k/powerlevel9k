@@ -1,9 +1,9 @@
 #!/usr/bin/env zsh
 #vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
 
+source functions/utilities.zsh
 source functions/colors.zsh
 source functions/icons.zsh
-source functions/utilities.zsh
 # Map our $__P9K_OS to neofetch $os
 os="$__P9K_OS"
 
