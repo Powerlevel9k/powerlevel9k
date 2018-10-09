@@ -201,9 +201,9 @@ END
         ;;
 
         "kitty"*)
-            shopt -s nullglob
+            setopt nullglob
             confs=({$KITTY_CONFIG_DIRECTORY,$XDG_CONFIG_HOME,~/Library/Preferences,~/.config}/kitty/kitty.con?)
-            shopt -u nullglob
+            unsetopt nullglob
 
             [[ -f "${confs[0]}" ]] || return
 
