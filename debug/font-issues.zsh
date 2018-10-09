@@ -205,7 +205,7 @@ END
             confs=({$KITTY_CONFIG_DIRECTORY,$XDG_CONFIG_HOME,~/Library/Preferences,~/.config}/kitty/kitty.con?)
             unsetopt nullglob
 
-            [[ -f "${confs[0]}" ]] || return
+            [[ -f "${confs[1]}" ]] || return
 
             term_font="$(awk '/^([[:space:]]*|[^#_])font_family[[:space:]]+/ {
                                   $1 = "";
@@ -215,7 +215,7 @@ END
                               /^([[:space:]]*|[^#_])font_size[[:space:]]+/ {
                                   size = $2
                               }
-                              END { print font " " size}' "${confs[0]}")"
+                              END { print font " " size}' "${confs[1]}")"
         ;;
 
         "konsole"*)
