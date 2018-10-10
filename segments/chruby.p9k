@@ -1,0 +1,48 @@
+# vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
+################################################################
+# @title powerlevel9k Segment - chruby
+# @source [powerlevel9k](https://github.com/bhilburn/powerlevel9k)
+##
+
+################################################################
+# Register segment
+# Parameters:
+#   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
+#                                                                                                                    
+p9k::register_segment 'CHRUBY' '' "red" "$DEFAULT_COLOR" ''  $'\uE847 '  $'\uF219 '  '\u'$CODEPOINT_OF_OCTICONS_RUBY' '  $'\uF43B '
+
+################################################################
+# Register segment default values
+p9k::set_default P9K_CHRUBY_SHOW_VERSION true
+p9k::set_default P9K_CHRUBY_SHOW_ENGINE true
+
+################################################################
+# @description
+#   Display chruby information.
+##
+# @args
+#   $1 string Alignment - left | right
+#   $2 integer Segment index
+#   $3 boolean Whether the segment should be joined
+# @see
+#   [chruby_auto issue with ZSH](https://github.com/postmodern/chruby/issues/245).
+##
+prompt_chruby() {
+  # Uses ${RUBY_VERSION} and ${RUBY_ENGINE} set by chruby
+  local chruby_label=""
+
+  if [[ "$P9K_CHRUBY_SHOW_ENGINE" == true ]]; then
+    chruby_label+="${RUBY_ENGINE} "
+  fi
+  if [[ "$P9K_CHRUBY_SHOW_VERSION" == true ]]; then
+    chruby_label+="$RUBY_VERSION"
+  fi
+
+  # Truncate trailing spaces
+  chruby_label="${chruby_label%"${chruby_label##*[![:space:]]}"}"
+
+  # Don't show anything if the chruby did not change the default ruby
+  if [[ "$RUBY_ENGINE" != "" ]]; then
+    p9k::prepare_segment "$0" "" $1 "$2" $3 "${chruby_label}"
+  fi
+}

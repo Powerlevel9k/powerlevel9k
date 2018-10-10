@@ -5,36 +5,48 @@
 setopt shwordsplit
 SHUNIT_PARENT=$0
 
+TEST_BASE_FOLDER=/tmp/powerlevel9k-test
+RUST_TEST_FOLDER="${TEST_BASE_FOLDER}/rust-test"
+
 function setUp() {
+  OLDPATH="${PATH}"
+  mkdir -p "${RUST_TEST_FOLDER}"
+  PATH="${RUST_TEST_FOLDER}:${PATH}"
+
   export TERM="xterm-256color"
   # Load Powerlevel9k
   source powerlevel9k.zsh-theme
+  source segments/rust_version.p9k
+}
+
+function tearDown() {
+  PATH="${OLDPATH}"
+  rm -fr "${TEST_BASE_FOLDER}"
 }
 
 function mockRust() {
-  echo 'rustc  0.4.1a-alpha'
+  echo "#!/bin/sh\n\necho 'rustc 0.4.1a-alpha'" > "${RUST_TEST_FOLDER}/rustc"
+  chmod +x "${RUST_TEST_FOLDER}/rustc"
 }
 
 function testRust() {
-  alias rustc=mockRust
-  POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(rust_version)
+  mockRust
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(rust_version)
 
-  assertEquals "%K{208} %F{black}Rust 0.4.1a-alpha %k%F{208}%f " "$(build_left_prompt)"
-
-  unset POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
-  unalias rustc
+  assertEquals "%K{208} %F{000}Rust %f%F{000}0.4.1a-alpha %k%F{208}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testRustPrintsNothingIfRustIsNotAvailable() {
-  alias rustc=noRust
-  POWERLEVEL9K_CUSTOM_WORLD='echo world'
-  POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(custom_world rust_version)
+  alias rustc=""
+  P9K_CUSTOM_WORLD='echo world'
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(custom_world rust_version)
 
-  assertEquals "%K{white} %F{black}world %k%F{white}%f " "$(build_left_prompt)"
+  assertEquals "%K{015} %F{000}world %k%F{015}%f " "$(__p9k_build_left_prompt)"
 
-  unset POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
-  unset POWERLEVEL9K_CUSTOM_WORLD
+  unset P9K_CUSTOM_WORLD
   unalias rustc
 }
 
-source shunit2/source/2.1/src/shunit2
+source shunit2/shunit2

@@ -1,0 +1,35 @@
+# vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
+################################################################
+# @title powerlevel9k Segment - Anaconda
+# @source [powerlevel9k](https://github.com/bhilburn/powerlevel9k)
+##
+
+################################################################
+# Register segment
+# Parameters:
+#   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
+#                                                                                                                      
+p9k::register_segment "ANACONDA" "" "blue" "$DEFAULT_COLOR" ''  $'\ue63c'  $'\ue63c'  '\u'${CODEPOINT_OF_DEVICONS_PYTHON}  $'\uE73C '
+
+################################################################
+# Register segment default values
+p9k::set_default P9K_ANACONDA_LEFT_DELIMITER "("
+p9k::set_default P9K_ANACONDA_RIGHT_DELIMITER ")"
+
+################################################################
+# @description
+#   Display the Anaconda Environment.
+##
+# @args
+#   $1 string Alignment - left | right
+#   $2 integer Segment index
+#   $3 boolean Whether the segment should be joined
+##
+prompt_anaconda() {
+  # Depending on the conda version, either might be set. This
+  # variant works even if both are set.
+  _path=$CONDA_ENV_PATH$CONDA_PREFIX
+  if ! [ -z "$_path" ]; then
+    p9k::prepare_segment "$0" "" $1 "$2" $3 "$P9K_ANACONDA_LEFT_DELIMITER$(basename $_path)$P9K_ANACONDA_RIGHT_DELIMITER"
+  fi
+}

@@ -1,0 +1,35 @@
+# vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
+################################################################
+# @title powerlevel9k Segment - Host
+# @source [powerlevel9k](https://github.com/bhilburn/powerlevel9k)
+##
+
+################################################################
+# Register segment
+# Parameters:
+#   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
+#                                                                                                                     
+p9k::register_segment "HOST" "REMOTE" "yellow"           "${DEFAULT_COLOR}"  '(ssh)'  '(ssh)'  '(ssh)'    '(ssh)'   $'\uF489'
+#                                                                                                                  
+p9k::register_segment "HOST" "LOCAL"  "${DEFAULT_COLOR}" "yellow"            ''       ''       $'\uF67C'  $'\uF67C' $'\uF67C'
+
+################################################################
+# Register segment default values
+p9k::set_default P9K_HOST_TEMPLATE "%m"
+
+################################################################
+# @description
+#   Display information about the Host - machine (where am I).
+##
+# @args
+#   $1 string Alignment - left | right
+#   $2 integer Segment index
+#   $3 boolean Whether the segment should be joined
+##
+prompt_host() {
+  local current_state="LOCAL"
+  if [[ -n "$SSH_CLIENT" ]] || [[ -n "$SSH_TTY" ]]; then
+    current_state="REMOTE"
+  fi
+  p9k::prepare_segment "$0" "${current_state}" $1 "$2" $3 "${P9K_HOST_TEMPLATE}"
+}
