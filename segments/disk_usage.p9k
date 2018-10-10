@@ -20,6 +20,7 @@ p9k::register_segment "DISK_USAGE" "CRITICAL" "red"               "white"       
 p9k::set_default P9K_DISK_USAGE_ONLY_WARNING false
 p9k::set_default P9K_DISK_USAGE_WARNING_LEVEL 90
 p9k::set_default P9K_DISK_USAGE_CRITICAL_LEVEL 95
+p9k::set_default P9K_DISK_USAGE_PATH "."
 
 ################################################################
 # @description
@@ -32,7 +33,7 @@ p9k::set_default P9K_DISK_USAGE_CRITICAL_LEVEL 95
 ##
 prompt_disk_usage() {
   local current_state="unknown"
-  local disk_usage="${$(\df -P . | sed -n '2p' | awk '{ print $5 }')%%\%}"
+  local disk_usage="${$(\df -P $P9K_DISK_USAGE_PATH | sed -n '2p' | awk '{ print $5 }')%%\%}"
 
   if [ "$disk_usage" -ge "$P9K_DISK_USAGE_WARNING_LEVEL" ]; then
     current_state='warning'
