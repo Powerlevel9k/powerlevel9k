@@ -17,6 +17,8 @@ __p9k_background_jobs() {
   jobs_suspended=${(M)#${jobstates%%:*}:#suspended}
 }
 
+# initialize hooks
+autoload -Uz add-zsh-hook
 add-zsh-hook precmd __p9k_background_jobs
 
 p9k::set_default P9K_BACKGROUND_JOBS_VERBOSE true
