@@ -9,7 +9,7 @@
 # Parameters:
 #   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
 #                                                                   ⚙                                                               
-p9k::register_segment 'BACKGROUND_JOBS' '' "$DEFAULT_COLOR" "cyan" $'\u2699'  $'\uE82F '  $'\uF013 '  '\u'$CODEPOINT_OF_AWESOME_COG' '  $'\uF013 '
+p9k::register_segment 'BACKGROUND_JOBS' '' "yellow" "black" $'\u2699'  $'\uE82F '  $'\uF013 '  '\u'$CODEPOINT_OF_AWESOME_COG' '  $'\uF013 '
 
 __p9k_background_jobs() {
   # See https://unix.stackexchange.com/questions/68571/show-jobs-count-only-if-it-is-more-than-0
