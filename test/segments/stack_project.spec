@@ -52,7 +52,7 @@ function testStackProjectSegment() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(stack_project)
 
-  assertEquals "%K{purple3} %F{white%}x %f%F{white}Stack %k%F{purple3}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{056} %F{015%}x %f%F{015}Stack %k%F{056}%f " "$(__p9k_build_left_prompt)"
 
   unalias stack
 }
