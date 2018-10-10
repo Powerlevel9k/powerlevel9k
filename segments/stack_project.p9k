@@ -27,7 +27,7 @@ prompt_stack_project() {
     local stackyaml_file_search=$(__p9k_upsearch "${stackyaml_file}")
     # Check for both a global Stack installation and a stack.yaml files (in current or parent directories)
     if [[ -n "${haskellstack_version}" ]]; then
-        if [[ "${stackyaml_file_search}" != "$HOME" && "${stackyaml_file_search}" != "/" ]]; then
+        if [[ "${stackyaml_file_search}" != $HOME && "${stackyaml_file_search}" != "/" ]]; then
             p9k::prepare_segment "${0}" "" "${1}" "${2}" "${3}" "Stack"
         fi
     fi
