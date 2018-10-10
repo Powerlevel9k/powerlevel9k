@@ -14,7 +14,6 @@ function setUp() {
 function mockLaravelVersion() {
   case "$1" in
     "artisan")
-      # artisan --version follows the format Laravel Framework <version>
       echo "Laravel Framework 5.4.23"
       ;;
     default)
@@ -29,42 +28,39 @@ function mockNoLaravelVersion() {
 
 function testLaravelVersionSegment() {
   alias php=mockLaravelVersion
-  POWERLEVEL9K_LARAVEL_ICON='x'
-  POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(laravel_version)
+  local P9K_LARAVEL_VERSION_ICON='x'
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(laravel_version)
+  source segments/laravel_version.p9k
 
-  assertEquals "%K{001} %F{white%}x %f%F{white}5.4.23 %k%F{maroon}%f " "$(build_left_prompt)"
-
-  unset POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
-  unset POWERLEVEL9K_LARAVEL_ICON
+  assertEquals "%K{001} %F{015}x %f%F{015}5.4.23 %k%F{001}%f " "$(__p9k_build_left_prompt)"
   unalias php
 }
 
 function testLaravelVersionSegmentIfArtisanIsNotAvailable() {
   alias php=mockNoLaravelVersion
-  POWERLEVEL9K_CUSTOM_WORLD='echo world'
-  POWERLEVEL9K_LARAVEL_ICON='x'
-  POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(custom_world laravel_version)
+  local P9K_CUSTOM_WORLD='echo world'
+  local P9K_LARAVEL_VERSION_ICON='x'
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(custom_world laravel_version)
+  source segments/laravel_version.p9k
 
-  assertEquals "%K{white} %F{black}world %k%F{white}%f " "$(build_left_prompt)"
+  assertEquals "%K{015} %F{000}world %k%F{015}%f " "$(__p9k_build_left_prompt)"
 
-  unset POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
-  unset POWERLEVEL9K_LARAVEL_ICON
-  unset POWERLEVEL9K_CUSTOM_WORLD
   unalias php
 }
 
 function testLaravelVersionSegmentPrintsNothingIfPhpIsNotAvailable() {
   alias php=noPhp
-  POWERLEVEL9K_CUSTOM_WORLD='echo world'
-  POWERLEVEL9K_LARAVEL_ICON='x'
-  POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(custom_world laravel_version)
+  local P9K_CUSTOM_WORLD='echo world'
+  local P9K_LARAVEL_VERSION_ICON='x'
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(custom_world laravel_version)
+  source segments/laravel_version.p9k
 
-  assertEquals "%K{white} %F{black}world %k%F{white}%f " "$(build_left_prompt)"
+  assertEquals "%K{015} %F{000}world %k%F{015}%f " "$(__p9k_build_left_prompt)"
 
-  unset POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
-  unset POWERLEVEL9K_LARAVEL_ICON
-  unset POWERLEVEL9K_CUSTOM_WORLD
   unalias php
 }
 
-source shunit2/source/2.1/src/shunit2
+source shunit2/shunit2

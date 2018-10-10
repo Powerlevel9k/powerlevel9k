@@ -1,0 +1,37 @@
+# vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
+################################################################
+# @title powerlevel9k Autoload Function - __p9k_upsearch
+# @sources
+#   [powerlevel9k](https://github.com/bhilburn/powerlevel9k)
+##
+# @info
+#   This file contains the __p9k_upsearch autoload function for
+#   the powerlevel9k ZSH theme.
+##
+
+setopt localoptions extendedglob
+
+###############################################################
+# @description
+#   Search recursively in parent folders for given file.
+##
+# @args
+#   $1 string File/folder name to search for
+#   $2 string Path to search in
+##
+# @returns
+#   An array with the path(s) where the file/folder name has been found
+##
+# @function __p9k_upsearch() {}
+if [[ "$PWD" == "$HOME" || "$PWD" == "/" ]]; then
+  echo "$PWD"
+elif test -e "$1"; then
+  pushd .. > /dev/null
+  __p9k_upsearch "$1"
+  popd > /dev/null
+  echo "${PWD}"
+else
+  pushd .. > /dev/null
+  __p9k_upsearch "$1"
+  popd > /dev/null
+fi

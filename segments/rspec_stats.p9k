@@ -1,0 +1,27 @@
+# vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
+################################################################
+# @title powerlevel9k Segment - RSpec Statistics
+# @source [powerlevel9k](https://github.com/bhilburn/powerlevel9k)
+##
+
+# Source test stats script & icons
+source $__P9K_DIRECTORY/segments/test_stats.p9k
+
+###############################################################
+# @description
+#   Display the current RSpec test ratio.
+##
+# @args
+#   $1 string Alignment - left | right
+#   $2 integer Segment index
+#   $3 boolean Whether the segment should be joined
+##
+prompt_rspec_stats() {
+  if [[ (-d app && -d spec) ]]; then
+    local code_amount tests_amount
+    code_amount=$(ls -1 app/**/*.rb | wc -l)
+    tests_amount=$(ls -1 spec/**/*.rb | wc -l)
+
+    build_test_stats "$1" "$0" "$2" "$code_amount" "$tests_amount" "RSpec" 'TEST_ICON'
+  fi
+}
