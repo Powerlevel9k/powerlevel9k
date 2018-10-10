@@ -7,7 +7,7 @@
 ################################################################
 # Register segment
 # Parameters:
-#   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
+#   segment_name  context  background  foreground  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
 #                                                                                                          
 p9k::register_segment "GO_VERSION" '' 'green' 'grey93' 'Go'  ''  ''  '\u'${CODEPOINT_OF_DEVICONS_GIT_PULL_REQUEST}  $'\uE626'
 

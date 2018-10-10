@@ -7,7 +7,7 @@
 ################################################################
 # Register segment
 # Parameters:
-#   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
+#   segment_name  context  background  foreground  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
 #                                                                                                                              
 p9k::register_segment 'DIR_WRITABLE' 'FORBIDDEN' "red" "yellow1" $'\uE0A2'  $'\uE138'  $'\uF023'  '\u'${CODEPOINT_OF_AWESOME_LOCK}  $'\uF023'
 

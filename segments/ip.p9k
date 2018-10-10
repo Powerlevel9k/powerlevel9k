@@ -7,7 +7,7 @@
 ################################################################
 # Register segment
 # Parameters:
-#   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
+#   segment_name  context  background  foreground  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
 #                                                                                                                 
 p9k::register_segment "IP" "" "cyan" "$DEFAULT_COLOR"  'IP'  $'\uE1AD'  $'\uF09E'  '\u'${CODEPOINT_OF_AWESOME_RSS}  $'\uF1EB'
 
