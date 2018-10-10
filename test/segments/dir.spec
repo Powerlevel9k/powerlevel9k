@@ -64,6 +64,22 @@ function testTruncateFolderWithHomeDirWorks() {
   cd ${CURRENT_DIR}
 }
 
+function testTruncationFromRightWorks() {
+  typeset -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(dir)
+  local P9K_DIR_SHORTEN_LENGTH=2
+  local P9K_DIR_SHORTEN_STRATEGY='truncate_from_right'
+
+  local FOLDER=/tmp/powerlevel9k-test/1/12/123/1234/12345/123456/1234567/12345678/123456789
+  mkdir -p $FOLDER
+  cd $FOLDER
+
+  assertEquals "%K{004} %F{000}/tmp/po…/1/12/123/12…/12…/12…/12…/12…/123456789 %k%F{004}%f " "$(__p9k_build_left_prompt)"
+
+  cd -
+  rm -fr /tmp/powerlevel9k-test
+}
+
 function testTruncateMiddleWorks() {
   typeset -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(dir)
@@ -80,17 +96,17 @@ function testTruncateMiddleWorks() {
   rm -fr /tmp/powerlevel9k-test
 }
 
-function testTruncationFromRightWorks() {
+function testTruncationFromLeftWorks() {
   typeset -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(dir)
   local P9K_DIR_SHORTEN_LENGTH=2
-  local P9K_DIR_SHORTEN_STRATEGY='truncate_from_right'
+  local P9K_DIR_SHORTEN_STRATEGY='truncate_from_left'
 
   local FOLDER=/tmp/powerlevel9k-test/1/12/123/1234/12345/123456/1234567/12345678/123456789
   mkdir -p $FOLDER
   cd $FOLDER
 
-  assertEquals "%K{004} %F{000}/tmp/po…/1/12/123/12…/12…/12…/12…/12…/123456789 %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{004} %F{000}/tmp/…st/1/12/123/…34/…45/…56/…67/…78/123456789 %k%F{004}%f " "$(__p9k_build_left_prompt)"
 
   cd -
   rm -fr /tmp/powerlevel9k-test
@@ -156,6 +172,23 @@ function testTruncationFromRightWithEmptyDelimiter() {
   cd $FOLDER
 
   assertEquals "%K{004} %F{000}/tmp/po/1/12/123/12/12/12/12/12/123456789 %k%F{004}%f " "$(__p9k_build_left_prompt)"
+
+  cd -
+  rm -fr /tmp/powerlevel9k-test
+}
+
+function testTruncationFromLeftWithEmptyDelimiter() {
+  typeset -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(dir)
+  local P9K_DIR_SHORTEN_LENGTH=2
+  local P9K_DIR_SHORTEN_DELIMITER=""
+  local P9K_DIR_SHORTEN_STRATEGY='truncate_from_left'
+
+  local FOLDER=/tmp/powerlevel9k-test/1/12/123/1234/12345/123456/1234567/12345678/123456789
+  mkdir -p $FOLDER
+  cd $FOLDER
+
+  assertEquals "%K{004} %F{000}/tmp/st/1/12/123/34/45/56/67/78/123456789 %k%F{004}%f " "$(__p9k_build_left_prompt)"
 
   cd -
   rm -fr /tmp/powerlevel9k-test
