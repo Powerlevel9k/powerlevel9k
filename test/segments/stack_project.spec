@@ -10,6 +10,7 @@ function setUp() {
   # Load Powerlevel9k
   source powerlevel9k.zsh-theme
   source segments/stack_project.p9k
+
 }
 
 function mockStackVersion() {
@@ -47,13 +48,11 @@ function mockNoStackVersion() {
 
 function testStackProjectSegment() {
   alias stack=mockStackVersion
-  P9K_HASKELL_ICON='x'
-  P9K_LEFT_PROMPT_ELEMENTS=(stack_project)
+  local P9K_HASKELL_ICON='x'
+  local -a P9K_LEFT_PROMPT_ELEMENTS=(stack_project)
 
   assertEquals "%K{purple3} %F{white%}x %f%F{white}Stack %k%F{purple3}%f " "$(__p9k_build_left_prompt)"
 
-  unset P9K_LEFT_PROMPT_ELEMENTS
-  unset P9K_HASKELL_ICON
   unalias stack
 }
 
@@ -61,44 +60,35 @@ function testStackProjectSegmentNoStackYaml() {
   alias stack=mockStackVersion
   alias __p9k_upsearch=mockUpsearchNoStackYaml
 
-  P9K_CUSTOM_WORLD='echo world'
-  P9K_HASKELL_ICON='x'
-  P9K_LEFT_PROMPT_ELEMENTS=(custom_world stack_project)
+  local P9K_CUSTOM_WORLD='echo world'
+  local P9K_HASKELL_ICON='x'
+  local -a P9K_LEFT_PROMPT_ELEMENTS=(custom_world stack_project)
 
   assertEquals "%K{015} %F{000}world %k%F{015}%f " "$(__p9k_build_left_prompt)"
 
-  unset P9K_LEFT_PROMPT_ELEMENTS
-  unset P9K_HASKELL_ICON
-  unset P9K_CUSTOM_WORLD
   unalias stack
   unalias __p9k_upsearch
 }
 
 function testStackProjectSegmentIfStackIsNotAvailable() {
   alias stack=mockNoStackVersion
-  P9K_CUSTOM_WORLD='echo world'
-  P9K_HASKELL_ICON='x'
-  P9K_LEFT_PROMPT_ELEMENTS=(custom_world stack_project)
+  local P9K_CUSTOM_WORLD='echo world'
+  local P9K_HASKELL_ICON='x'
+  local -a P9K_LEFT_PROMPT_ELEMENTS=(custom_world stack_project)
 
   assertEquals "%K{015} %F{000}world %k%F{015}%f " "$(__p9k_build_left_prompt)"
 
-  unset P9K_LEFT_PROMPT_ELEMENTS
-  unset P9K_HASKELL_ICON
-  unset P9K_CUSTOM_WORLD
   unalias stack
 }
 
 function testStackProjectSegmentPrintsNothingIfStackIsNotAvailable() {
   alias stack=noStack
-  P9K_CUSTOM_WORLD='echo world'
-  P9K_HASKELL_ICON='x'
-  P9K_LEFT_PROMPT_ELEMENTS=(custom_world stack_project)
+  local P9K_CUSTOM_WORLD='echo world'
+  local P9K_HASKELL_ICON='x'
+  local -a P9K_LEFT_PROMPT_ELEMENTS=(custom_world stack_project)
 
   assertEquals "%K{015} %F{000}world %k%F{015}%f " "$(__p9k_build_left_prompt)"
 
-  unset P9K_LEFT_PROMPT_ELEMENTS
-  unset P9K_HASKELL_ICON
-  unset P9K_CUSTOM_WORLD
   unalias stack
 }
 
