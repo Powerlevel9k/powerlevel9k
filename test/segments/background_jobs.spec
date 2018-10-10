@@ -14,6 +14,8 @@ function testBackgroundJobsSegmentPrintsNothingWithoutBackgroundJobs() {
   local P9K_CUSTOM_WORLD='echo world'
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(background_jobs custom_world)
+  local jobs_running=0
+  local jobs_suspended=0
 
   # Load Powerlevel9k
   source segments/background_jobs.p9k
@@ -21,31 +23,37 @@ function testBackgroundJobsSegmentPrintsNothingWithoutBackgroundJobs() {
   assertEquals "%K{015} %F{000}world %k%F{015}%f " "$(__p9k_build_left_prompt)"
 }
 
-function testBackgroundJobsSegmentWorksWithOneBackgroundJob() {
-  unset P9K_BACKGROUND_JOBS_VERBOSE
+function testBackgroundJobsSegmentVerboseAlwaysPrintsZeroWithoutBackgroundJobs() {
+  local P9K_BACKGROUND_JOBS_VERBOSE_ALWAYS=true
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(background_jobs)
-  jobs() {
-      echo '[1]  + 30444 suspended  nvim xx'
-  }
+  local jobs_running=0
+  local jobs_suspended=0
 
   # Load Powerlevel9k
   source segments/background_jobs.p9k
 
-  assertEquals "%K{000} %F{006}⚙ %f%F{006}%k%F{000}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{000} %F{006}⚙ %f%F{006}0 %k%F{000}%f " "$(__p9k_build_left_prompt)"
+}
 
-  unfunction jobs
+function testBackgroundJobsSegmentWorksWithOneBackgroundJob() {
+  local P9K_BACKGROUND_JOBS_VERBOSE=false
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(background_jobs)
+  local jobs_running=0
+  local jobs_suspended=1
+
+  # Load Powerlevel9k
+  source segments/background_jobs.p9k
+  assertEquals "%K{000} %F{006}⚙ %f%F{006}%k%F{000}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testBackgroundJobsSegmentWorksWithMultipleBackgroundJobs() {
   local P9K_BACKGROUND_JOBS_VERBOSE=true
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(background_jobs)
-  jobs() {
-      echo "[1]    31190 suspended  nvim xx"
-      echo "[2]  - 31194 suspended  nvim xx2"
-      echo "[3]  + 31206 suspended  nvim xx3"
-  }
+  local jobs_running=0
+  local jobs_suspended=3
 
   # Load Powerlevel9k
   source segments/background_jobs.p9k
@@ -57,18 +65,27 @@ function testBackgroundJobsSegmentWithVerboseMode() {
     local P9K_BACKGROUND_JOBS_VERBOSE=true
     local -a P9K_LEFT_PROMPT_ELEMENTS
     P9K_LEFT_PROMPT_ELEMENTS=(background_jobs)
-    jobs() {
-        echo "[1]    31190 suspended  nvim xx"
-        echo "[2]  - 31194 suspended  nvim xx2"
-        echo "[3]  + 31206 suspended  nvim xx3"
-    }
+    local jobs_running=1
+    local jobs_suspended=2
 
     # Load Powerlevel9k
     source segments/background_jobs.p9k
 
     assertEquals "%K{000} %F{006}⚙ %f%F{006}3 %k%F{000}%f " "$(__p9k_build_left_prompt)"
+}
 
-    unfunction jobs
+function testBackgroundJobsSegmentWorksWithExpandedMode() {
+  local P9K_BACKGROUND_JOBS_VERBOSE=true
+  local P9K_BACKGROUND_JOBS_EXPANDED=true
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(background_jobs)
+  local jobs_running=1
+  local jobs_suspended=2
+
+  # Load Powerlevel9k
+  source segments/background_jobs.p9k
+
+  assertEquals "%K{000} %F{006}⚙ %f%F{006}1r 2s %k%F{000}%f " "$(__p9k_build_left_prompt)"
 }
 
 source shunit2/shunit2
