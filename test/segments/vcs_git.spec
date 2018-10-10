@@ -447,5 +447,8 @@ function testAlwaysShowRemoteBranch()
   git clone https://github.com/bhilburn/powerlevel9k.git . 1>/dev/null 2>&1
 
   assertEquals "%K{002} %F{000} master→origin/master %k%F{002}%f " "$(__p9k_build_left_prompt)"
+
+  local POWERLEVEL9K_VCS_HIDE_TAGS='false'
+  assertEquals "%K{002} %F{000} master %k%F{002}%f " "$(__p9k_build_left_prompt)"
 }
 source shunit2/shunit2
