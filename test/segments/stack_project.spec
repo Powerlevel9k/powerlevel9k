@@ -64,7 +64,7 @@ function testStackProjectSegmentNoStackYaml() {
   P9K_HASKELL_ICON='x'
   P9K_LEFT_PROMPT_ELEMENTS=(custom_world stack_project)
 
-  assertEquals "%K{white} %F{black}world %k%F{white}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{015} %F{000}world %k%F{015}%f " "$(__p9k_build_left_prompt)"
 
   unset P9K_LEFT_PROMPT_ELEMENTS
   unset P9K_HASKELL_ICON
@@ -79,7 +79,7 @@ function testStackProjectSegmentIfStackIsNotAvailable() {
   P9K_HASKELL_ICON='x'
   P9K_LEFT_PROMPT_ELEMENTS=(custom_world stack_project)
 
-  assertEquals "%K{white} %F{black}world %k%F{white}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{015} %F{000}world %k%F{015}%f " "$(__p9k_build_left_prompt)"
 
   unset P9K_LEFT_PROMPT_ELEMENTS
   unset P9K_HASKELL_ICON
@@ -93,7 +93,7 @@ function testStackProjectSegmentPrintsNothingIfStackIsNotAvailable() {
   P9K_HASKELL_ICON='x'
   P9K_LEFT_PROMPT_ELEMENTS=(custom_world stack_project)
 
-  assertEquals "%K{white} %F{black}world %k%F{white}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{015} %F{000}world %k%F{015}%f " "$(__p9k_build_left_prompt)"
 
   unset P9K_LEFT_PROMPT_ELEMENTS
   unset P9K_HASKELL_ICON
