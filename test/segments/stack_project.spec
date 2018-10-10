@@ -43,7 +43,7 @@ function mockUpsearchNoStackYaml() {
 function mockNoStackVersion() {
   # This should output some error
   echo "Stack does not seem to be present"
-  return 1
+  return 0
 }
 
 function testStackProjectSegment() {
