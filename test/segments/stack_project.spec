@@ -16,7 +16,7 @@ function setUp() {
 function mockStackVersion() {
   case "$1" in
     "--version")
-      echo "Version 1.7.1, Git revision 681c800873816c022739ca7ed14755e85a579565 (5807 commits) x86_64 hpack-0.28.2"
+      echo "Version 1.7.1 x86_64"
       ;;
     default)
   esac
@@ -49,7 +49,8 @@ function mockNoStackVersion() {
 function testStackProjectSegment() {
   alias stack=mockStackVersion
   local P9K_HASKELL_ICON='x'
-  local -a P9K_LEFT_PROMPT_ELEMENTS=(stack_project)
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(stack_project)
 
   assertEquals "%K{purple3} %F{white%}x %f%F{white}Stack %k%F{purple3}%f " "$(__p9k_build_left_prompt)"
 
@@ -62,7 +63,8 @@ function testStackProjectSegmentNoStackYaml() {
 
   local P9K_CUSTOM_WORLD='echo world'
   local P9K_HASKELL_ICON='x'
-  local -a P9K_LEFT_PROMPT_ELEMENTS=(custom_world stack_project)
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(custom_world stack_project)
 
   assertEquals "%K{015} %F{000}world %k%F{015}%f " "$(__p9k_build_left_prompt)"
 
@@ -74,7 +76,8 @@ function testStackProjectSegmentIfStackIsNotAvailable() {
   alias stack=mockNoStackVersion
   local P9K_CUSTOM_WORLD='echo world'
   local P9K_HASKELL_ICON='x'
-  local -a P9K_LEFT_PROMPT_ELEMENTS=(custom_world stack_project)
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(custom_world stack_project)
 
   assertEquals "%K{015} %F{000}world %k%F{015}%f " "$(__p9k_build_left_prompt)"
 
@@ -85,7 +88,8 @@ function testStackProjectSegmentPrintsNothingIfStackIsNotAvailable() {
   alias stack=noStack
   local P9K_CUSTOM_WORLD='echo world'
   local P9K_HASKELL_ICON='x'
-  local -a P9K_LEFT_PROMPT_ELEMENTS=(custom_world stack_project)
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(custom_world stack_project)
 
   assertEquals "%K{015} %F{000}world %k%F{015}%f " "$(__p9k_build_left_prompt)"
 
