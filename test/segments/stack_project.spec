@@ -58,7 +58,7 @@ function testStackProjectSegment() {
 
 function testStackProjectSegmentNoStackYaml() {
   alias stack=mockStackVersion
-  alias upsearch=mockUpsearchNoStackYaml
+  alias __p9k_upsearch=mockUpsearchNoStackYaml
 
   P9K_CUSTOM_WORLD='echo world'
   P9K_HASKELL_ICON='x'
@@ -70,7 +70,7 @@ function testStackProjectSegmentNoStackYaml() {
   unset P9K_HASKELL_ICON
   unset P9K_CUSTOM_WORLD
   unalias stack
-  unalias upsearch
+  unalias __p9k_upsearch
 }
 
 function testStackProjectSegmentIfStackIsNotAvailable() {

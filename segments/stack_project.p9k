@@ -21,8 +21,14 @@ p9k::register_segment "STACK_PROJECT" "" "purple3" "white" ''  $'\u03BB='  $'\u0
 #   $3 boolean Whether the segment should be joined
 ##
 prompt_stack_project() {
-  local haskellstack_version=$(stack --version 2> /dev/null | grep -oE '[0-9.]+' | head -n1)
-  if [[ -s "stack.yaml" && -n "$haskellstack_version" ]]; then
-    p9k::prepare_segment "${0}" "" "${1}" "${2}" "${3}" "Stack"
-  fi
+
+    local haskellstack_version=$(stack --version 2>/dev/null | grep -oE '[0-9.]+' | head -n1)
+    local stackyaml_file="stack.yaml"
+    local stackyaml_file_search=$(__p9k_upsearch "${stackyaml_file}")
+    # Check for both a global Stack installation and a stack.yaml files (in current or parent directories)
+    if [[ -n "${haskellstack_version}" ]]; then
+        if [[ "${stackyaml_file_search}" != $HOME && "${stackyaml_file_search}" != "/" ]]; then
+            p9k::prepare_segment "${0}" "" "${1}" "${2}" "${3}" "Stack"
+        fi
+    fi
 }
