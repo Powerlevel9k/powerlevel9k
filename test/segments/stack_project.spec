@@ -9,7 +9,6 @@ function setUp() {
   export TERM="xterm-256color"
   # Load Powerlevel9k
   source powerlevel9k.zsh-theme
-  source segments/stack_project.p9k
 
 }
 
@@ -48,11 +47,13 @@ function mockNoStackVersion() {
 
 function testStackProjectSegment() {
   alias stack=mockStackVersion
-  local P9K_HASKELL_ICON='x'
+  alias __p9k_upsearch=mockUpsearchStackYaml
+  local P9K_STACK_PROJECT_ICON='x'
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(stack_project)
+  source segments/stack_project.p9k
 
-  assertEquals "%K{056} %F{015%}x %f%F{015}Stack %k%F{056}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{056} %F{015}x %f%F{015}Stack %k%F{056}%f " "$(__p9k_build_left_prompt)"
 
   unalias stack
 }
@@ -62,9 +63,10 @@ function testStackProjectSegmentNoStackYaml() {
   alias __p9k_upsearch=mockUpsearchNoStackYaml
 
   local P9K_CUSTOM_WORLD='echo world'
-  local P9K_HASKELL_ICON='x'
+  local P9K_STACK_PROJECT_ICON='x'
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(custom_world stack_project)
+  source segments/stack_project.p9k
 
   assertEquals "%K{015} %F{000}world %k%F{015}%f " "$(__p9k_build_left_prompt)"
 
@@ -75,9 +77,10 @@ function testStackProjectSegmentNoStackYaml() {
 function testStackProjectSegmentIfStackIsNotAvailable() {
   alias stack=mockNoStackVersion
   local P9K_CUSTOM_WORLD='echo world'
-  local P9K_HASKELL_ICON='x'
+  local P9K_STACK_PROJECT_ICON='x'
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(custom_world stack_project)
+  source segments/stack_project.p9k
 
   assertEquals "%K{015} %F{000}world %k%F{015}%f " "$(__p9k_build_left_prompt)"
 
@@ -87,9 +90,10 @@ function testStackProjectSegmentIfStackIsNotAvailable() {
 function testStackProjectSegmentPrintsNothingIfStackIsNotAvailable() {
   alias stack=noStack
   local P9K_CUSTOM_WORLD='echo world'
-  local P9K_HASKELL_ICON='x'
+  local P9K_STACK_PROJECT_ICON='x'
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(custom_world stack_project)
+  source segments/stack_project.p9k
 
   assertEquals "%K{015} %F{000}world %k%F{015}%f " "$(__p9k_build_left_prompt)"
 
