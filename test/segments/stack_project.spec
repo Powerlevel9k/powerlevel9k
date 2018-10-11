@@ -24,7 +24,7 @@ function mockStackVersion() {
 function mockUpsearchStackYaml() {
   case "$1" in
     "stack.yaml")
-      echo "/home/MockProject"
+      echo "/home\n/home/MockProject"
       ;;
     default)
   esac
