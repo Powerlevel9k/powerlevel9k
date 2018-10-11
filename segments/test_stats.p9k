@@ -11,7 +11,7 @@
 ################################################################
 # Register segment
 # Parameters:
-#   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
+#   segment_name  context  background  foreground  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
 #                                                                                                                                
 p9k::register_segment "TEST_STATS" "GOOD" "cyan"   "${DEFAULT_COLOR}"   ''  $'\uE891'  $'\uF291'  '\u'${CODEPOINT_OF_AWESOME_BUG}  $'\uF188'
 p9k::register_segment "TEST_STATS" "AVG"  "yellow" "${DEFAULT_COLOR}"   ''  $'\uE891'  $'\uF291'  '\u'${CODEPOINT_OF_AWESOME_BUG}  $'\uF188'

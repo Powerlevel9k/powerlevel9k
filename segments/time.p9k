@@ -7,7 +7,7 @@
 ################################################################
 # Register segment
 # Parameters:
-#   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
+#   segment_name  context  background  foreground  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
 #                                                                                                            
 p9k::register_segment "TIME" "" "${DEFAULT_COLOR_INVERTED}" "${DEFAULT_COLOR}"  ''  $'\uE12E'  $'\uF017 '  $'\uF017 '  $'\uF017 '
 

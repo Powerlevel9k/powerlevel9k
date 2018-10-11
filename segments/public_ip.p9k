@@ -7,7 +7,7 @@
 ################################################################
 # Register segment
 # Parameters:
-#   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
+#   segment_name  context  background  foreground  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
 #                                                                                                                               
 p9k::register_segment "PUBLIC_IP" "" "$DEFAULT_COLOR" "$DEFAULT_COLOR_INVERTED"  ''  ''  ''  '\u'${CODEPOINT_OF_AWESOME_GLOBE}  $'\uF0AC'
 

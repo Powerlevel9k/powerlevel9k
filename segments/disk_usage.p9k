@@ -7,7 +7,7 @@
 ################################################################
 # Register segment
 # Parameters:
-#   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
+#   segment_name  context  background  foreground  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
 #                                                                                                                                                       
 p9k::register_segment "DISK_USAGE" "NORMAL"   "${DEFAULT_COLOR}"  "green1"            $'hdd '  $'\uE1AE '  $'\uF0A0 '  '\u'$CODEPOINT_OF_AWESOME_HDD_O' '  $'\uF0A0'
 #                                                                                                                                                       
