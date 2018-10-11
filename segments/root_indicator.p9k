@@ -22,6 +22,6 @@ p9k::register_segment "ROOT_INDICATOR" "" "${DEFAULT_COLOR}" "yellow"  $'\u26A1'
 ##
 prompt_root_indicator() {
   if [[ "$UID" -eq 0 ]]; then
-    p9k::prepare_segment "$0" "" $1 "$2" $3 "" "true"
+    p9k::prepare_segment "$0" "" $1 "$2" $3 "" "[[ true ]]"
   fi
 }
