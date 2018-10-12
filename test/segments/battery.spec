@@ -63,6 +63,8 @@ function makeBatterySay() {
   local battery_status="$2"
   echo "$battery_status" > $BATTERY_PATH/BAT0/status
   echo "$battery_status" > $BATTERY_PATH/BAT1/status
+  echo "21510000" > $BATTERY_PATH/BAT0/energy_full
+  echo "21510000" > $BATTERY_PATH/BAT1/energy_full
 }
 
 function testBatterySegmentIfBatteryIsLowWhileDischargingOnOSX() {
