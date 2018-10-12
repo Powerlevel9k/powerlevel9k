@@ -88,7 +88,7 @@ function __p9k_detect_terminal() {
       # test if we are in a sudo su -
       if [[ ${termtest} == "-" || ${termtest} == "root" ]]; then
         termtest=($(ps -o 'command=' -p $(ps -o 'ppid=' -p $(ps -o 'ppid='$$))))
-        termtest=$(basename $termtest[1])
+        termtest=${termtest[1]:t}
       fi
     else
       local termtest=$(ps -o 'cmd=' -p $(ps -o 'ppid=' -p $$) | tail -1 | awk '{print $NF}')

@@ -30,6 +30,6 @@ prompt_anaconda() {
   # variant works even if both are set.
   _path=$CONDA_ENV_PATH$CONDA_PREFIX
   if ! [ -z "$_path" ]; then
-    p9k::prepare_segment "$0" "" $1 "$2" $3 "$P9K_ANACONDA_LEFT_DELIMITER$(basename $_path)$P9K_ANACONDA_RIGHT_DELIMITER"
+    p9k::prepare_segment "$0" "" $1 "$2" $3 "$P9K_ANACONDA_LEFT_DELIMITER${_path:t}$P9K_ANACONDA_RIGHT_DELIMITER"
   fi
 }
