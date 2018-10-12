@@ -9,7 +9,7 @@
 # Parameters:
 #   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
 #                                                                                    
-p9k::register_segment "STACK_PROJECT" "" "purple3" "white" ''  $'\u03BB='  $'\u03BB='  $'\u03BB='  $'\uE777'
+p9k::register_segment "STACK_PROJECT" "" "purple3" "white" $'\u03BB='  $'\u03BB='  $'\u03BB='  $'\u03BB='  $'\uE777'
 
 ################################################################
 # @description
