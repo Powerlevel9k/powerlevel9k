@@ -132,8 +132,7 @@ function +vi-git-untracked() {
     FLAGS+='--ignore-submodules=dirty'
   fi
 
-  if [[ $(command git rev-parse --is-inside-work-tree 2> /dev/null) == 'true' && \
-      -n $(command git status ${FLAGS} | \grep -E '^\?\?' 2> /dev/null | tail -n1) ]]; then
+  if [[ -n $(command git status ${FLAGS} | \grep -E '^\?\?' 2> /dev/null | tail -n1) ]]; then
     hook_com[unstaged]+=" ${__P9K_ICONS[VCS_UNTRACKED]}"
     VCS_WORKDIR_HALF_DIRTY=true
   else
