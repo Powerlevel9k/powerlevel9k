@@ -50,7 +50,6 @@ function testStackProjectSegment() {
   alias __p9k_upsearch=mockUpsearchStackYaml
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(stack_project)
-  
 
   assertEquals "%K{056} %F{015}λ= %f%F{015}Stack %k%F{056}%f " "$(__p9k_build_left_prompt)"
 
