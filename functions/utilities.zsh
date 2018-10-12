@@ -52,7 +52,7 @@ function __p9k_detect_os() {
     FreeBSD | OpenBSD | DragonFly) __P9K_OS='BSD' ;;
     Linux)
       __P9K_OS='Linux'
-      [[ ${(f)"$(</etc/os-release)"} =~ "ID=([A-Za-z]+)" ]] && __P9K_OS_ID="${match[1]}"
+      [[ ${(f)"$(</etc/os-release 2> /dev/null)"} =~ "ID=([A-Za-z]+)" ]] && __P9K_OS_ID="${match[1]}"
       case $(uname -o 2>/dev/null) in
         Android) __P9K_OS='Android' ;;
       esac
