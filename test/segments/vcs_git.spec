@@ -442,13 +442,18 @@ function testAlwaysShowRemoteBranch()
   local P9K_VCS_GIT_ALWAYS_SHOW_REMOTE_BRANCH='true'
   local P9K_VCS_HIDE_TAGS='true'
 
-  mkdir repo
-  cd repo
-  git clone https://github.com/bhilburn/powerlevel9k.git . 1>/dev/null 2>&1
+  echo "test" > test.txt
+  git add . 1>/dev/null
+  git commit -m "Initial Commit" 1>/dev/null
+
+  git clone . ../vcs-test2 1>/dev/null 2>&1
+  cd ../vcs-test2
 
   assertEquals "%K{002} %F{000} master→origin/master %k%F{002}%f " "$(__p9k_build_left_prompt)"
 
   local P9K_VCS_GIT_ALWAYS_SHOW_REMOTE_BRANCH='false'
   assertEquals "%K{002} %F{000} master %k%F{002}%f " "$(__p9k_build_left_prompt)"
+
+  cd -
 }
 source shunit2/shunit2
