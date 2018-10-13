@@ -88,7 +88,7 @@ p9k::register_icon "VCS_COMMIT"            ''          $'\uE821 '  $'\uF221 '  '
 # Hide branch icon if user wants it hidden
 if [[ "${P9K_VCS_HIDE_BRANCH_ICON}" != true ]]; then
   if [[ ${P9K_MODE} != 'compatible' ]]; then
-    #                                                                                                                        
+    #                                                                                                                         
     p9k::register_icon "VCS_BRANCH"        $'\uE0A0 '  $'\uE220 '  $'\uF126 '  '\u'${CODEPOINT_OF_OCTICONS_GIT_BRANCH}' '        $'\uF126 '
   else
     #                                                                                                                         
@@ -96,7 +96,7 @@ if [[ "${P9K_VCS_HIDE_BRANCH_ICON}" != true ]]; then
   fi
 fi
 
-#                                          →           →           →                                                            
+#                                          →           →          →                                                            
 p9k::register_icon "VCS_REMOTE_BRANCH"     $'\u2192'   $'\u2192'   $'\u2192'   '\u'${CODEPOINT_OF_OCTICONS_REPO_PUSH}            $'\uE728 '
 #                                                                                                                             
 p9k::register_icon "VCS_GIT"               ''          $'\uE20E '  $'\uF1D3 '  '\u'${CODEPOINT_OF_AWESOME_GIT}' '                $'\uF1D3 '
@@ -132,7 +132,7 @@ function +vi-git-untracked() {
     FLAGS+='--ignore-submodules=dirty'
   fi
 
-  if [[ -n $(command git status ${FLAGS} | \grep -E '^\?\?' 2> /dev/null | tail -n1) ]]; then
+  if [[ "$(command git status ${FLAGS})" =~ "\?\?" ]]; then
     hook_com[unstaged]+=" ${__P9K_ICONS[VCS_UNTRACKED]}"
     VCS_WORKDIR_HALF_DIRTY=true
   else
@@ -268,19 +268,21 @@ function +vi-vcs-detect-changes() {
 }
 
 function +vi-svn-detect-changes() {
-  local svn_status="$(svn status)"
-  if [[ -n "$(echo "$svn_status" | \grep \^\?)" ]]; then
+  declare -a svn_status
+  svn_status=( "${(@f)$(svn status)}" )
+  if [[ "${(M)#svn_status:#\?*}" -gt 0 ]]; then
     hook_com[unstaged]+=" ${__P9K_ICONS[VCS_UNTRACKED]}"
     VCS_WORKDIR_HALF_DIRTY=true
   fi
-  if [[ -n "$(echo "$svn_status" | \grep \^\M)" ]]; then
+  if [[ "${(M)#svn_status:#M*}" -gt 0 ]]; then
     hook_com[unstaged]+=" ${__P9K_ICONS[VCS_UNSTAGED]}"
     VCS_WORKDIR_DIRTY=true
   fi
-  if [[ -n "$(echo "$svn_status" | \grep \^\A)" ]]; then
+  if [[ "${(M)#svn_status:#A*}" -gt 0 ]]; then
     hook_com[staged]+=" ${__P9K_ICONS[VCS_STAGED]}"
     VCS_WORKDIR_DIRTY=true
   fi
+  unset svn_status
 }
 
 ################################################################
