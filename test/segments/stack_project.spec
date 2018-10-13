@@ -7,9 +7,18 @@ SHUNIT_PARENT=$0
 
 function setUp() {
   export TERM="xterm-256color"
+  # Backing up P9K_MODE and setting it to default
+  BACKUP_P9K_MODE=$P9K_MODE
+  P9K_MODE=default
   # Load Powerlevel9k
   source powerlevel9k.zsh-theme
+  # Load Stack project segment
   source segments/stack_project.p9k
+}
+
+function tearDown(){
+  # Resetting P9K_MODE to its previous value
+  P9K_MODE=$BACKUP_P9K_MODE
 }
 
 function mockStackVersion() {

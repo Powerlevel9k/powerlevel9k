@@ -23,7 +23,7 @@ p9k::register_segment "STACK_PROJECT" "" "purple3" "white" $'\u03BB='  $'\u03BB=
 prompt_stack_project() {
     local haskellstack_version=$(stack --version 2>/dev/null)
     # Check for both a global Stack installation and a stack.yaml files (in current or parent directories)
-    if [[ -n "${haskellstack_version}" && "${haskellstack_version}" =~ "([0-9.]+)" ]]; then
+    if [[ "${haskellstack_version}" =~ "([0-9.]+)" ]]; then
         local stackyaml_file_search=$(__p9k_upsearch "stack.yaml")
         if [[ "${stackyaml_file_search}" != "$HOME" && "${stackyaml_file_search}" != "/" ]]; then
             p9k::prepare_segment "${0}" "" "${1}" "${2}" "${3}" "Stack"
