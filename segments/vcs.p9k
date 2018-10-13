@@ -122,6 +122,7 @@ p9k::set_default P9K_VCS_SHOW_SUBMODULE_DIRTY true
 ################################################################
 # Register segment helper default values
 p9k::set_default P9K_VCS_SHOW_SUBMODULE_DIRTY true
+p9k::set_default P9K_VCS_GIT_ALWAYS_SHOW_REMOTE_BRANCH false
 
 function +vi-git-untracked() {
   # TODO: check git >= 1.7.2 - see function git_compare_version()
@@ -186,7 +187,11 @@ function +vi-git-remotebranch() {
   # Always show the remote
   #if [[ -n ${remote} ]] ; then
   # Only show the remote if it differs from the local
-  if [[ -n ${remote} ]] && [[ "${remote#*/}" != "${branch_name#heads/}" ]] ; then
+  if [[ -n ${remote} \
+      && ( \
+        "${P9K_VCS_GIT_ALWAYS_SHOW_REMOTE_BRANCH}" == 'true' \
+        || "${remote#*/}" != "${branch_name#heads/}" \
+      ) ]]; then
     hook_com[branch]+="${__P9K_ICONS[VCS_REMOTE_BRANCH]}${remote// /}"
   fi
 }
