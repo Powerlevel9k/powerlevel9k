@@ -146,7 +146,7 @@ function +vi-git-aheadbehind() {
   local ahead behind branch_name
   local -a gitstatus
 
-  branch_name=$(command git symbolic-ref --short HEAD 2>/dev/null)
+  branch_name=${(q)$(command git symbolic-ref --short HEAD 2>/dev/null)}
 
   # for git prior to 1.7
   # ahead=$(command git rev-list origin/${branch_name}..HEAD | wc -l)
@@ -183,7 +183,7 @@ function +vi-git-remotebranch() {
     fi
   fi
 
-  hook_com[branch]="${__P9K_ICONS[VCS_BRANCH]}${hook_com[branch]}"
+  hook_com[branch]="${__P9K_ICONS[VCS_BRANCH]}${(q)hook_com[branch]}"
   # Always show the remote
   #if [[ -n ${remote} ]] ; then
   # Only show the remote if it differs from the local
@@ -192,7 +192,7 @@ function +vi-git-remotebranch() {
         "${P9K_VCS_GIT_ALWAYS_SHOW_REMOTE_BRANCH}" == 'true' \
         || "${remote#*/}" != "${branch_name#heads/}" \
       ) ]]; then
-    hook_com[branch]+="${__P9K_ICONS[VCS_REMOTE_BRANCH]}${remote// /}"
+    hook_com[branch]+="${__P9K_ICONS[VCS_REMOTE_BRANCH]}${(q)remote// /}"
   fi
 }
 
@@ -216,7 +216,7 @@ function +vi-git-tagname() {
         hook_com[branch]="${__P9K_ICONS[VCS_BRANCH]}${revision} ${__P9K_ICONS[VCS_TAG]}${tag}"
       else
         # We are on both a tag and a branch; print both by appending the tag name.
-        hook_com[branch]+=" ${__P9K_ICONS[VCS_TAG]}${tag}"
+        hook_com[branch]+=" ${__P9K_ICONS[VCS_TAG]}${(q)tag}"
       fi
     fi
   fi
@@ -229,13 +229,13 @@ function +vi-git-stash() {
 
   if [[ -s $(command git rev-parse --git-dir)/refs/stash ]] ; then
     stashes=$(command git stash list 2>/dev/null | wc -l)
-    hook_com[misc]+=" ${__P9K_ICONS[VCS_STASH]}${stashes// /}"
+    hook_com[misc]+=" ${__P9K_ICONS[VCS_STASH]}${(q)stashes// /}"
   fi
 }
 
 function +vi-hg-bookmarks() {
   if [[ -n "${hgbmarks[@]}" ]]; then
-    hook_com[hg-bookmark-string]=" ${__P9K_ICONS[VCS_BOOKMARK]}${hgbmarks[@]}"
+    hook_com[hg-bookmark-string]=" ${__P9K_ICONS[VCS_BOOKMARK]}${(q)hgbmarks[@]}"
 
     # To signal that we want to use the sting we just generated, set the special
     # variable `ret' to something other than the default zero:
