@@ -105,12 +105,13 @@ prompt_battery() {
     fi
     if [[ -f ${ROOT_PREFIX}/usr/bin/acpi ]]; then
       local time_remaining
-      local acpi_lines="$(${ROOT_PREFIX}/usr/bin/acpi)"
-      acpi_lines=(${(@f)acpi_lines})
+      declare -a acpi_lines
+      acpi_lines=( "${(@f)$(${ROOT_PREFIX}/usr/bin/acpi)}" )
       for line in $acpi_lines; do
         [[ -n ${${(s: :)line}[5]} ]] \
           && local time_remaining=${${(s: :)line}[5]}
       done
+      unset acpi_lines
 
       if [[ $time_remaining =~ "rate" ]]; then
         local tstring="..."
