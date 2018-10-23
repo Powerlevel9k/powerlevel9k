@@ -7,7 +7,7 @@
 ################################################################
 # Register segment
 # Parameters:
-#   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
+#   segment_name  context  background  foreground  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
 #                                                                                                                              
 p9k::register_segment 'DIR_WRITABLE' 'FORBIDDEN' "red" "yellow1" $'\uE0A2'  $'\uE138'  $'\uF023'  '\u'${CODEPOINT_OF_AWESOME_LOCK}  $'\uF023'
 
@@ -22,6 +22,6 @@ p9k::register_segment 'DIR_WRITABLE' 'FORBIDDEN' "red" "yellow1" $'\uE0A2'  $'\u
 ##
 prompt_dir_writable() {
   if [[ ! -w "$PWD" ]]; then
-    p9k::prepare_segment "$0" "FORBIDDEN" $1 "$2" $3 "" "true"
+    p9k::prepare_segment "$0" "FORBIDDEN" $1 "$2" $3 "" "[[ true ]]"
   fi
 }

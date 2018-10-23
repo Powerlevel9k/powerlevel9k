@@ -1,0 +1,32 @@
+# vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
+################################################################
+# @title powerlevel9k Segment - Haskell Stack Project
+# @source [powerlevel9k](https://github.com/bhilburn/powerlevel9k)
+##
+
+################################################################
+# Register segment
+# Parameters:
+#   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
+#                                                                                    
+p9k::register_segment "STACK_PROJECT" "" "purple3" "white" $'\u03BB='  $'\u03BB='  $'\u03BB='  $'\u03BB='  $'\uE777'
+
+################################################################
+# @description
+#   This segment displays if the current directory belongs to a Haskell Stack project.
+##
+# @args
+#   $1 string Alignment - left | right
+#   $2 integer Segment index
+#   $3 boolean Whether the segment should be joined
+##
+prompt_stack_project() {
+    local haskellstack_version=$(stack --version 2>/dev/null)
+    # Check for both a global Stack installation and a stack.yaml files (in current or parent directories)
+    if [[ "${haskellstack_version}" =~ "([0-9.]+)" ]]; then
+        local stackyaml_file_search=$(__p9k_upsearch "stack.yaml")
+        if [[ "${stackyaml_file_search}" != "$HOME" && "${stackyaml_file_search}" != "/" ]]; then
+            p9k::prepare_segment "${0}" "" "${1}" "${2}" "${3}" "Stack"
+        fi
+    fi
+}

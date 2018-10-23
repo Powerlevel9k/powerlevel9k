@@ -416,24 +416,44 @@ function testRemoteBranchNameIdenticalToTag() {
   P9K_LEFT_PROMPT_ELEMENTS=(vcs)
 
   echo "test" > test.txt
-  git add test.txt
-  git commit -m "Initial commit"
+  git add test.txt 1>/dev/null
+  git commit -m "Initial commit" 1>/dev/null
 
   # Prepare a tag named "test"
-  git tag test
+  git tag test 1>/dev/null
 
   # Prepare branch named "test"
-  git checkout -b test
+  git checkout -b test 1>/dev/null 2>&1
 
   # Clone Repo
-  git clone . ../vcs-test2
+  git clone . ../vcs-test2 1>/dev/null 2>&1
   cd ../vcs-test2
 
-  git checkout test
+  git checkout test 1>/dev/null 2>&1
 
   assertEquals "%K{002} %F{000} test test %k%F{002}%f " "$(__p9k_build_left_prompt)"
 
   cd -
 }
 
+function testAlwaysShowRemoteBranch()
+{
+  P9K_LEFT_PROMPT_ELEMENTS=(vcs)
+  local P9K_VCS_GIT_ALWAYS_SHOW_REMOTE_BRANCH='true'
+  local P9K_VCS_HIDE_TAGS='true'
+
+  echo "test" > test.txt
+  git add . 1>/dev/null
+  git commit -m "Initial Commit" 1>/dev/null
+
+  git clone . ../vcs-test2 1>/dev/null 2>&1
+  cd ../vcs-test2
+
+  assertEquals "%K{002} %F{000} master→origin/master %k%F{002}%f " "$(__p9k_build_left_prompt)"
+
+  local P9K_VCS_GIT_ALWAYS_SHOW_REMOTE_BRANCH='false'
+  assertEquals "%K{002} %F{000} master %k%F{002}%f " "$(__p9k_build_left_prompt)"
+
+  cd -
+}
 source shunit2/shunit2

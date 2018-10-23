@@ -1,5 +1,29 @@
 # Tests
 
+There are four different ways to test P9K:
+
+1. Most obvious: You could change settings in your Shell, and directly test
+   them in your shell with your environment; Like you use it.
+2. Old way: With [vagrant and virtualbox](#vagrant). This starts a whole
+   operating system in a virtual machine. This is still the way to go, if
+   you want to test on BSD. Downside: There is just one ZSH version
+   available per VM..
+3. New way: With [test-in-docker](#docker). This way starts a docker
+   container with the ZSH version and ZSH Framework you want. This is the
+   way to go, if you want to test something on a specific ZSH version.
+   Because this is more flexible, you should use this method if you want to
+   test in a different (more limited) environment. This is especially
+   helpful if you want a similar environment like Travis.
+4. [Automatic way](#automated-tests): We have a lot of test scripts that
+   test specific parts of P9K everytime somebody pushes a commit. The
+   tests are executed by Travis, an external Service that we connected with
+   this Repo. You could execute these tests on your machine locally as well,
+   we added shUnit as git submodule. After you installed the submodules, it
+   is possible to simply execute the test scripts (see test/ folder).
+
+So, option 1-3 are for manual testing, but it is possible to execute the test
+scripts in that environments as well.
+
 ## Automated Tests
 
 The Unit-Tests do not follow exactly the file structure of Powerlevel9k itself,

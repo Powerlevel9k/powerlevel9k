@@ -48,7 +48,7 @@ p9k::set_default P9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS " "
 #   $5 string Visual identifier (must be a key of the icons array)
 ##
 function __p9k_left_prompt_segment() {
-  local STATEFUL_NAME="${1#__p9k_}"
+  local STATEFUL_NAME="${1}"
   local current_index="${2}"
   # Check if the segment should be joined with the previous one
   local joined=false
@@ -119,7 +119,7 @@ p9k::set_default P9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS " "
 #   No ending for the right prompt segment is needed (unlike the left prompt, above).
 ##
 function __p9k_right_prompt_segment() {
-  local STATEFUL_NAME="${1#__p9k_}"
+  local STATEFUL_NAME="${1}"
   local current_index="${2}"
   # Check if the segment should be joined with the previous one
   local joined=false

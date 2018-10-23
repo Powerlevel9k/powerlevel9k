@@ -138,6 +138,8 @@ The segments that are currently available are:
     * `swift_version` - Show the version number of the installed Swift.
 * **Java Segments:**
     * `java_version` - Show the current Java version.
+* **Haskell Segments:**
+    * `stack_project` - Show if you are in a Haskell Stack project directory.
 
 **Cloud Segments:**
 * **AWS Segments:**
@@ -664,6 +666,7 @@ customization is provided via:
 |`P9K_VCS_HG_HOOKS`|`(vcs-detect-changes)`|Layout of the segment for Mercurial repositories.|
 |`P9K_VCS_SVN_HOOKS`|`(vcs-detect-changes svn-detect-changes)`|Layout of the segment for SVN repositories.|
 |`P9K_VCS_ACTIONFORMAT_FOREGROUND`|`red`|The color of the foreground font during actions (e.g., `REBASE`).|
+|`P9K_VCS_GIT_ALWAYS_SHOW_REMOTE_BRANCH`|`false`|Set to true If you would to always see the remote branch.|
 
 
 ##### vcs symbols

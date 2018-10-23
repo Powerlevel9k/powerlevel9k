@@ -52,7 +52,7 @@ function __p9k_detect_os() {
     FreeBSD | OpenBSD | DragonFly) __P9K_OS='BSD' ;;
     Linux)
       __P9K_OS='Linux'
-      [[ ${(f)"$(</etc/os-release)"} =~ "ID=([A-Za-z]+)" ]] && __P9K_OS_ID="${match[1]}"
+      [[ ${(f)"$((</etc/os-release) 2>/dev/null)"} =~ "ID=([A-Za-z]+)" ]] && __P9K_OS_ID="${match[1]}"
       case $(uname -o 2>/dev/null) in
         Android) __P9K_OS='Android' ;;
       esac
@@ -88,7 +88,7 @@ function __p9k_detect_terminal() {
       # test if we are in a sudo su -
       if [[ ${termtest} == "-" || ${termtest} == "root" ]]; then
         termtest=($(ps -o 'command=' -p $(ps -o 'ppid=' -p $(ps -o 'ppid='$$))))
-        termtest=$(basename $termtest[1])
+        termtest=${termtest[1]:t}
       fi
     else
       local termtest=$(ps -o 'cmd=' -p $(ps -o 'ppid=' -p $$) | tail -1 | awk '{print $NF}')

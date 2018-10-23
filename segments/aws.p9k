@@ -7,7 +7,7 @@
 ################################################################
 # Register segment
 # Parameters:
-#   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
+#   segment_name  context  background  foreground  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
 #                                                                                                        
 p9k::register_segment 'AWS' '' red white 'AWS:'  $'\uE895'  $'\uF270'  '\u'${CODEPOINT_OF_AWESOME_AMAZON}  $'\uF270'
 

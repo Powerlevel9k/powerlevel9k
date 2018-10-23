@@ -7,7 +7,7 @@
 ################################################################
 # Register segment
 # Parameters:
-#   segment_name  context  foreground  background  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
+#   segment_name  context  background  foreground  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
 #                                                                                                                      
 p9k::register_segment "ANACONDA" "" "blue" "$DEFAULT_COLOR" ''  $'\ue63c'  $'\ue63c'  '\u'${CODEPOINT_OF_DEVICONS_PYTHON}  $'\uE73C '
 
@@ -28,8 +28,8 @@ p9k::set_default P9K_ANACONDA_RIGHT_DELIMITER ")"
 prompt_anaconda() {
   # Depending on the conda version, either might be set. This
   # variant works even if both are set.
-  _path=$CONDA_ENV_PATH$CONDA_PREFIX
+  local _path=$CONDA_ENV_PATH$CONDA_PREFIX
   if ! [ -z "$_path" ]; then
-    p9k::prepare_segment "$0" "" $1 "$2" $3 "$P9K_ANACONDA_LEFT_DELIMITER$(basename $_path)$P9K_ANACONDA_RIGHT_DELIMITER"
+    p9k::prepare_segment "$0" "" $1 "$2" $3 "$P9K_ANACONDA_LEFT_DELIMITER${_path:t}$P9K_ANACONDA_RIGHT_DELIMITER"
   fi
 }
