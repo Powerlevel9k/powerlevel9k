@@ -165,6 +165,7 @@ deprecated_variables=(
   'P9K_VI_INSERT_MODE_STRING'         'P9K_VI_MODE_INSERT_STRING'
   'P9K_VI_COMMAND_MODE_STRING'        'P9K_VI_MODE_NORMAL_STRING'
   'P9K_VI_VISUAL_MODE_STRING'         'P9K_VI_MODE_VISUAL_STRING'
+  'P9K_VI_SEARCH_MODE_STRING'         'P9K_VI_MODE_SEARCH_STRING'
 )
 __p9k_print_deprecation_var_warning deprecated_variables
 

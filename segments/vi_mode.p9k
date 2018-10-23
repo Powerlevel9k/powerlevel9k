@@ -10,12 +10,14 @@
 #   segment_name  context  background  foreground  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
 p9k::register_segment  "VI_MODE" "NORMAL" "${DEFAULT_COLOR}" "white"  ''  ''  ''  ''  ''
 p9k::register_segment  "VI_MODE" "INSERT" "${DEFAULT_COLOR}" "blue"   ''  ''  ''  ''  ''
+p9k::register_segment  "VI_MODE" "SEARCH" "${DEFAULT_COLOR}" "purple" ''  ''  ''  ''  ''
 p9k::register_segment  "VI_MODE" "VISUAL" "${DEFAULT_COLOR}" "orange" ''  ''  ''  ''  ''
 
 ################################################################
 # Register segment default values
 p9k::set_default P9K_VI_MODE_NORMAL_STRING 'NORMAL'
 p9k::set_default P9K_VI_MODE_INSERT_STRING 'INSERT'
+p9k::set_default P9K_VI_MODE_SEARCH_STRING 'SEARCH'
 p9k::set_default P9K_VI_MODE_VISUAL_STRING 'VISUAL'
 
 ###############################################################
@@ -45,6 +47,7 @@ prompt_vi_mode() {
   case "${VIM_MODE_KEYMAP:-$KEYMAP}" in
     vicmd)        current_state="NORMAL" ;;
     vivis)        current_state="VISUAL" ;;
+    isearch)      current_state="SEARCH" ;;
     main|viins|*) current_state="INSERT" ;;
   esac
 
@@ -71,6 +74,10 @@ function rebuild_vi_mode {
           ;;
         vivis)
           current_state="VISUAL"
+          ;;
+        isearch)
+          [[ -z "${P9K_VI_MODE_SEARCH_STRING}" ]] && return
+          current_state="SEARCH"
           ;;
         main|viins|*)
           [[ -z "${P9K_VI_MODE_INSERT_STRING}" ]] && return
@@ -183,6 +190,7 @@ function zle-line-init {
       vicmd)      cursorShape ${P9K_CURSOR_SHAPE_NORMAL};;
       viins|main) cursorShape ${P9K_CURSOR_SHAPE_INSERT};;
       vivis)      cursorShape ${P9K_CURSOR_SHAPE_VISUAL};;
+      isearch)    cursorShape ${P9K_CURSOR_SHAPE_SEARCH};;
       *)          cursorShape ${P9K_CURSOR_SHAPE_DEFAULT};;
     esac
   fi
@@ -216,6 +224,7 @@ function zle-keymap-select {
       vicmd)      cursorShape ${P9K_CURSOR_SHAPE_NORMAL};;
       viins|main) cursorShape ${P9K_CURSOR_SHAPE_INSERT};;
       vivis)      cursorShape ${P9K_CURSOR_SHAPE_VISUAL};;
+      isearch)    cursorShape ${P9K_CURSOR_SHAPE_SEARCH};;
       *)          cursorShape ${P9K_CURSOR_SHAPE_DEFAULT};;
     esac
   fi
