@@ -9,88 +9,73 @@ function setUp() {
   export TERM="xterm-256color"
   # Load Powerlevel9k
   source powerlevel9k.zsh-theme
+  source segments/command_execution_time.p9k
+  source segments/context.p9k
+  source segments/dir.p9k
+  source segments/rbenv.p9k
+  source segments/vcs.p9k
 }
 
 function testCommandExecutionTimeIsNotShownIfTimeIsBelowThreshold() {
-  POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(custom_world command_execution_time)
-  POWERLEVEL9K_CUSTOM_WORLD='echo world'
-  _P9K_COMMAND_DURATION=2
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(custom_world command_execution_time)
+  P9K_CUSTOM_WORLD='echo world'
+  local _P9K_COMMAND_DURATION=2
 
-  assertEquals "%K{white} %F{black}world %k%F{white}%f " "$(build_left_prompt)"
-
-  unset POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
-  unset POWERLEVEL9K_CUSTOM_WORLD
-  unset _P9K_COMMAND_DURATION
+  assertEquals "%K{015} %F{000}world %k%F{015}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testCommandExecutionTimeThresholdCouldBeChanged() {
-  POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(command_execution_time)
-  POWERLEVEL9K_COMMAND_EXECUTION_TIME_THRESHOLD=1
-  _P9K_COMMAND_DURATION=2.03
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(command_execution_time)
+  local P9K_COMMAND_EXECUTION_TIME_THRESHOLD=1
+  local _P9K_COMMAND_DURATION=2.03
 
-  assertEquals "%K{red} %F{226%}Dur%f %F{226}2.03 %k%F{red}%f " "$(build_left_prompt)"
-
-  unset POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
-  unset _P9K_COMMAND_DURATION
-  unset POWERLEVEL9K_COMMAND_EXECUTION_TIME_THRESHOLD
+  assertEquals "%K{001} %F{226}Dur %f%F{226}2.03 %k%F{001}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testCommandExecutionTimeThresholdCouldBeSetToZero() {
-  POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(command_execution_time)
-  POWERLEVEL9K_COMMAND_EXECUTION_TIME_THRESHOLD=0
-  _P9K_COMMAND_DURATION=0.03
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(command_execution_time)
+  local P9K_COMMAND_EXECUTION_TIME_THRESHOLD=0
+  local _P9K_COMMAND_DURATION=0.03
 
-  assertEquals "%K{red} %F{226%}Dur%f %F{226}0.03 %k%F{red}%f " "$(build_left_prompt)"
-
-  unset POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
-  unset _P9K_COMMAND_DURATION
-  unset POWERLEVEL9K_COMMAND_EXECUTION_TIME_THRESHOLD
+  assertEquals "%K{001} %F{226}Dur %f%F{226}0.03 %k%F{001}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testCommandExecutionTimePrecisionCouldBeChanged() {
-  POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(command_execution_time)
-  POWERLEVEL9K_COMMAND_EXECUTION_TIME_THRESHOLD=0
-  POWERLEVEL9K_COMMAND_EXECUTION_TIME_PRECISION=4
-  _P9K_COMMAND_DURATION=0.0001
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(command_execution_time)
+  local P9K_COMMAND_EXECUTION_TIME_THRESHOLD=0
+  local P9K_COMMAND_EXECUTION_TIME_PRECISION=4
+  local _P9K_COMMAND_DURATION=0.0001
 
-  assertEquals "%K{red} %F{226%}Dur%f %F{226}0.0001 %k%F{red}%f " "$(build_left_prompt)"
-
-  unset POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
-  unset _P9K_COMMAND_DURATION
-  unset POWERLEVEL9K_COMMAND_EXECUTION_TIME_PRECISION
-  unset POWERLEVEL9K_COMMAND_EXECUTION_TIME_THRESHOLD
+  assertEquals "%K{001} %F{226}Dur %f%F{226}0.0001 %k%F{001}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testCommandExecutionTimePrecisionCouldBeSetToZero() {
-  POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(command_execution_time)
-  POWERLEVEL9K_COMMAND_EXECUTION_TIME_PRECISION=0
-  _P9K_COMMAND_DURATION=23.5001
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(command_execution_time)
+  local P9K_COMMAND_EXECUTION_TIME_PRECISION=0
+  local _P9K_COMMAND_DURATION=23.5001
 
-  assertEquals "%K{red} %F{226%}Dur%f %F{226}23 %k%F{red}%f " "$(build_left_prompt)"
-
-  unset POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
-  unset _P9K_COMMAND_DURATION
-  unset POWERLEVEL9K_COMMAND_EXECUTION_TIME_PRECISION
+  assertEquals "%K{001} %F{226}Dur %f%F{226}23 %k%F{001}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testCommandExecutionTimeIsFormattedHumandReadbleForMinuteLongCommand() {
-  POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(command_execution_time)
-  _P9K_COMMAND_DURATION=180
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(command_execution_time)
+  local _P9K_COMMAND_DURATION=180
 
-  assertEquals "%K{red} %F{226%}Dur%f %F{226}03:00 %k%F{red}%f " "$(build_left_prompt)"
-
-  unset POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
-  unset _P9K_COMMAND_DURATION
+  assertEquals "%K{001} %F{226}Dur %f%F{226}03:00 %k%F{001}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testCommandExecutionTimeIsFormattedHumandReadbleForHourLongCommand() {
-  POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(command_execution_time)
-  _P9K_COMMAND_DURATION=7200
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(command_execution_time)
+  local _P9K_COMMAND_DURATION=7200
 
-  assertEquals "%K{red} %F{226%}Dur%f %F{226}02:00:00 %k%F{red}%f " "$(build_left_prompt)"
-
-  unset POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
-  unset _P9K_COMMAND_DURATION
+  assertEquals "%K{001} %F{226}Dur %f%F{226}02:00:00 %k%F{001}%f " "$(__p9k_build_left_prompt)"
 }
 
-source shunit2/source/2.1/src/shunit2
+source shunit2/shunit2
