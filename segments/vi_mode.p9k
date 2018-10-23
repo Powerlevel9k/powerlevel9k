@@ -40,7 +40,6 @@ p9k::set_default P9K_VI_MODE_VISUAL_STRING 'VISUAL'
 #   [zsh-vimode-visual](https://github.com/b4b4r07/zsh-vimode-visual)
 ##
 prompt_vi_mode() {
-  local vi_mode
   local current_state
   typeset -gAH vi_states
   case "${KEYMAP}" in
@@ -48,11 +47,13 @@ prompt_vi_mode() {
     vivis)        current_state="VISUAL" ;;
     main|viins|*) current_state="INSERT" ;;
   esac
-  vi_mode="P9K_VI_MODE_${current_state}_STRING"
+
+  local vi_mode="P9K_VI_MODE_${current_state}_STRING"
+  local vi_mode_string="${(P)vi_mode}"
   # NOTE: The display test at the end of the next line ensures that the segment_state is displayed if an icon is defined
   #       even if the string is set to an empty string. This allows you to define and use icons for this segment instead
   #       of the default text string and also bypasses the ugly icon as content string. As a bonus, you can set both!
-  p9k::prepare_segment "$0" "${current_state}" $1 "$2" $3 "${(P)vi_mode}" "[[ '$__P9K_ICONS[VI_MODE_${current_state}]' != '' || '${(P)vi_mode}' != '' ]]"
+  p9k::prepare_segment "$0" "${current_state}" $1 "$2" $3 "${vi_mode_string}" "[[ '$__P9K_ICONS[VI_MODE_${current_state}]' != '' || '${vi_mode_string}' != '' ]]"
 }
 
 ###############################################################
@@ -64,9 +65,17 @@ function rebuild_vi_mode {
       fi
       local current_state
       case "${KEYMAP}" in
-        vicmd)        current_state="NORMAL" ;;
-        vivis)        current_state="VISUAL" ;;
-        main|viins|*) current_state="INSERT" ;;
+        vicmd)
+          [[ -z "${P9K_VI_COMMAND_MODE_STRING}" ]] && return
+          current_state="NORMAL"
+          ;;
+        vivis)
+          current_state="VISUAL"
+          ;;
+        main|viins|*)
+          [[ -z "$P9K_VI_INSERT_MODE_STRING" ]] && return
+          current_state="INSERT"
+          ;;
       esac
       local element joined=false
       local vi_mode="P9K_VI_${current_state}_MODE_STRING"
