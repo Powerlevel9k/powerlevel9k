@@ -84,6 +84,10 @@ p9k::register_icon "VCS_TAG"               ''          $'\uE817 '  $'\uF217 '  '
 p9k::register_icon "VCS_BOOKMARK"          $'\u263F'   $'\uE87B'   $'\uF27B'   '\u'${CODEPOINT_OF_OCTICONS_BOOKMARK}             $'\uF461 '
 #                                                                                                                             
 p9k::register_icon "VCS_COMMIT"            ''          $'\uE821 '  $'\uF221 '  '\u'${CODEPOINT_OF_OCTICONS_GIT_COMMIT}' '        $'\uE729 '
+#                                                                                                                             
+p9k::register_icon "VCS_CLOBBERED_FOLDER"  ''          $'\uE818'   $'\uF115'   '\u'${CODEPOINT_OF_AWESOME_FOLDER_O}              $'\uF115'
+#                                          ✘           ✘           ✘                                                             
+p9k::register_icon "VCS_ERROR"             $'\u2718'   $'\u2718'   $'\u2718'   '\u'${CODEPOINT_OF_AWESOME_TIMES}                 $'\uF00D'
 
 # Hide branch icon if user wants it hidden
 if [[ "${P9K_VCS_HIDE_BRANCH_ICON}" != true ]]; then
@@ -199,7 +203,7 @@ function +vi-git-gitdir() {
     if (( $+GIT_DIR )); then
         local gitdir
         print -v gitdir -D "$GIT_DIR"
-        local icon="${__P9K_ICONS[FOLDER_ICON]}"
+        local icon="${__P9K_ICONS[VCS_CLOBBERED_FOLDER]}"
 
         local inner
         () {
@@ -212,7 +216,7 @@ function +vi-git-gitdir() {
             # GIT_DIR is shadowing a different repo. This can be
             # very confusing! Flag to alert.
             VCS_WORKDIR_CLOBBERED=true
-            icon="${__P9K_ICONS[FAIL_ICON]} $icon"
+            icon="${__P9K_ICONS[VCS_ERROR]} $icon"
         fi
 
         hook_com[branch]="$icon $gitdir ${hook_com[branch]}"
