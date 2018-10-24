@@ -436,8 +436,7 @@ function testRemoteBranchNameIdenticalToTag() {
   cd -
 }
 
-function testAlwaysShowRemoteBranch()
-{
+function testAlwaysShowRemoteBranch() {
   P9K_LEFT_PROMPT_ELEMENTS=(vcs)
   local P9K_VCS_GIT_ALWAYS_SHOW_REMOTE_BRANCH='true'
   local P9K_VCS_HIDE_TAGS='true'
@@ -456,4 +455,39 @@ function testAlwaysShowRemoteBranch()
 
   cd -
 }
+
+function testGitDirClobber() {
+  P9K_LEFT_PROMPT_ELEMENTS=(vcs)
+  local P9K_VCS_GIT_ALWAYS_SHOW_REMOTE_BRANCH='true'
+  local P9K_VCS_HIDE_TAGS='true'
+
+  echo "xxx" > xxx.txt
+  git add . 1>/dev/null
+  git commit -m "Initial Commit" 1>/dev/null
+
+  cd ..
+
+  git clone --bare vcs-test test-dotfiles 1>/dev/null
+
+  # Create completely independent git repo in a sub directory.
+  mkdir vcs-test2
+  cd vcs-test2
+  git init 1>/dev/null
+  echo "yyy" > yyy.txt
+  git add . 1>/dev/null
+  git commit -m "Initial Commit" 1>/dev/null
+
+  cd ..
+
+  export GIT_DIR="${PWD}/test-dotfiles" GIT_WORK_TREE="${PWD}"
+
+  # CD into the second dir that is below the git work tree,
+  # so for git this is a repo inside another repo.
+  cd vcs-test2
+
+  assertEquals "%K{001} %F{000}✘  /tmp/powerlevel9k-test/test-dotfiles  master ✚ ? %k%F{001}%f " "$(__p9k_build_left_prompt)"
+
+  cd -
+}
+
 source shunit2/shunit2
