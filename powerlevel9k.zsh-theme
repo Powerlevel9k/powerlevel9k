@@ -930,6 +930,10 @@ prompt_dir() {
           || node -e 'console.log(require(process.argv[1]).name);' ${pkgFile} 2>/dev/null \
           || cat "${pkgFile}" 2> /dev/null | grep -m 1 "\"name\"" | awk -F ':' '{print $2}' | awk -F '"' '{print $2}' 2>/dev/null \
           )
+        if [ "$packageName" = null ]; then
+          # fix for missing name in pkgFile
+          packageName=$(basename `git rev-parse --show-toplevel`)
+        fi
         if [[ -n "${packageName}" ]]; then
           # Instead of printing out the full path, print out the name of the package
           # from the package.json and append the current subdirectory
