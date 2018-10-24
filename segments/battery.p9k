@@ -72,10 +72,10 @@ prompt_battery() {
 
   if [[ "$__P9K_OS" == 'Linux' ]] || [[ "$__P9K_OS" == 'Android' ]]; then
     local sysp="${ROOT_PREFIX}/sys/class/power_supply"
-    local bats=(${$(ls -d $sysp/(battery|BAT*))})
-
-    # Return if no battery found
-    [[ -z $bats ]] && return
+    local potential_bats=( "$sysp/*" )
+    [[ ${#${(M)potential_bats:#*(BAT|battery)*}} ]] \
+      && local bats=(${$(ls -d $sysp/(battery|BAT*))}) \
+      || return
 
     local numerator="0"
     local denominator="0"
@@ -104,13 +104,9 @@ prompt_battery() {
       [[ $bat_percent -lt 100 ]] && current_state="charging"
     fi
     if [[ -f ${ROOT_PREFIX}/usr/bin/acpi ]]; then
-      local time_remaining
       declare -a acpi_lines
       acpi_lines=( "${(@f)$(${ROOT_PREFIX}/usr/bin/acpi)}" )
-      for line in $acpi_lines; do
-        [[ -n ${${(s: :)line}[5]} ]] \
-          && local time_remaining=${${(s: :)line}[5]}
-      done
+      local time_remaining=${${=${(M)acpi_lines:#*([[:digit:]][[:digit:]]:|rate)*}}[5]}
       unset acpi_lines
 
       if [[ $time_remaining =~ "rate" ]]; then
