@@ -467,7 +467,7 @@ function testGitDirClobber() {
 
   cd ..
 
-  git clone --bare vcs-test test-dotfiles 1>/dev/null
+  git clone --bare vcs-test test-dotfiles 1>/dev/null 2>&1
 
   # Create completely independent git repo in a sub directory.
   mkdir vcs-test2
