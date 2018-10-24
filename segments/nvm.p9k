@@ -1,0 +1,37 @@
+# vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
+################################################################
+# @title powerlevel9k Segment - NVM
+# @source [powerlevel9k](https://github.com/bhilburn/powerlevel9k)
+##
+
+################################################################
+# Register segment icon
+# Parameters:
+#   segment_name  context  background  foreground  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
+#                                                  ⬢         ⬢          ⬢          ⬢          
+p9k::register_segment "NVM" "" "magenta" "black"  $'\u2B22'  $'\u2B22'  $'\u2B22'  $'\u2B22'  $'\uE617 '
+
+################################################################
+# @description
+#   Display the current Node version from NVM.
+##
+# @args
+#   $1 string Alignment - left | right
+#   $2 integer Segment index
+#   $3 boolean Whether the segment should be joined
+##
+# @note
+#   Only prints the segment if different than the default value.
+##
+prompt_nvm() {
+  local node_version nvm_default
+  (( $+functions[nvm_version] )) || return
+
+  node_version=$(nvm_version current)
+  [[ -z "${node_version}" || ${node_version} == "none" ]] && return
+
+  nvm_default=$(nvm_version default)
+  [[ "$node_version" =~ "$nvm_default" ]] && return
+
+  p9k::prepare_segment "$0" "" $1 "$2" $3 "${node_version:1}"
+}

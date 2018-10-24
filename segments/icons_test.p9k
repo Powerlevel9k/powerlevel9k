@@ -1,0 +1,33 @@
+# vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
+################################################################
+# @title powerlevel9k Segment - Test Icons
+# @source [powerlevel9k](https://github.com/bhilburn/powerlevel9k)
+##
+
+################################################################
+# Register segment
+# Parameters:
+#   segment_name  context  background  foreground  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
+#
+p9k::register_segment "ICONS_TEST" "" "${DEFAULT_COLOR_INVERTED}" "${DEFAULT_COLOR}"  "" "" "" "" ""
+
+################################################################
+# @description
+#   Print some test icons in a segment.
+##
+# @args
+#   $1 string Alignment - left | right
+#   $2 integer Segment index
+#   $3 boolean Whether the segment should be joined
+##
+prompt_icons_test() {
+  local icon_string=""
+  for key in ${(@k)__P9K_ICONS}; do
+    icon_string+="${__P9K_ICONS[$key]} "
+  done
+  # The lower color spectrum in ZSH makes big steps. Choosing
+  # the next color has enough contrast to read.
+  local random_color=$((RANDOM % 8))
+  local next_color=$((random_color+1))
+  p9k::prepare_segment "$0" "" $1 "$2" $3 "$icon_string" "" "" "$random_color" "$next_color"
+}

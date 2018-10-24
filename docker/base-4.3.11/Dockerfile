@@ -13,7 +13,8 @@ RUN \
   ruby \
   python \
   python-virtualenv \
-  sudo
+  sudo \
+  vim
 
 RUN adduser --shell /bin/zsh --comment 'fred' --user-group fred
 
@@ -24,7 +25,7 @@ WORKDIR /home/fred
 ENV LANG=en_US.UTF-8
 ENV TERM=xterm-256color
 ENV DEFAULT_USER=fred
-ENV POWERLEVEL9K_ALWAYS_SHOW_CONTEXT=true
+ENV P9K_CONTEXT_ALWAYS_SHOW=true
 
 RUN touch .zshrc
 

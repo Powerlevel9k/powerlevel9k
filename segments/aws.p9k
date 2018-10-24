@@ -1,0 +1,29 @@
+# vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
+################################################################
+# @title powerlevel9k Segment - AWS
+# @source [powerlevel9k](https://github.com/bhilburn/powerlevel9k)
+##
+
+################################################################
+# Register segment
+# Parameters:
+#   segment_name  context  background  foreground  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
+#                                                                                                        
+p9k::register_segment 'AWS' '' red white 'AWS:'  $'\uE895'  $'\uF270'  '\u'${CODEPOINT_OF_AWESOME_AMAZON}  $'\uF270'
+
+################################################################
+# @description
+#   Display the current AWS Profile.
+##
+# @args
+#   $1 string Alignment - left | right
+#   $2 integer Segment index
+#   $3 boolean Whether the segment should be joined
+##
+prompt_aws() {
+  local aws_profile="${AWS_PROFILE:-$P9K_AWS_DEFAULT_PROFILE}"
+
+  if [[ -n "$aws_profile" ]]; then
+    p9k::prepare_segment "$0" "" $1 "$2" $3 "$aws_profile"
+  fi
+}
