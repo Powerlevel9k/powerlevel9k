@@ -84,6 +84,10 @@ p9k::register_icon "VCS_TAG"               ''          $'\uE817 '  $'\uF217 '  '
 p9k::register_icon "VCS_BOOKMARK"          $'\u263F'   $'\uE87B'   $'\uF27B'   '\u'${CODEPOINT_OF_OCTICONS_BOOKMARK}             $'\uF461 '
 #                                                                                                                             
 p9k::register_icon "VCS_COMMIT"            ''          $'\uE821 '  $'\uF221 '  '\u'${CODEPOINT_OF_OCTICONS_GIT_COMMIT}' '        $'\uE729 '
+#                                                                                                                             
+p9k::register_icon "VCS_CLOBBERED_FOLDER"  ''          $'\uE818'   $'\uF115'   '\u'${CODEPOINT_OF_AWESOME_FOLDER_O}              $'\uF115'
+#                                          ✘           ✘           ✘                                                             
+p9k::register_icon "VCS_ERROR"             $'\u2718'   $'\u2718'   $'\u2718'   '\u'${CODEPOINT_OF_AWESOME_TIMES}                 $'\uF00D'
 
 # Hide branch icon if user wants it hidden
 if [[ "${P9K_VCS_HIDE_BRANCH_ICON}" != true ]]; then
@@ -193,6 +197,29 @@ function +vi-git-remotebranch() {
       ) ]]; then
     hook_com[branch]+="${__P9K_ICONS[VCS_REMOTE_BRANCH]}${remote// /}"
   fi
+}
+
+function +vi-git-gitdir() {
+    if (( $+GIT_DIR )); then
+        local gitdir="$GIT_DIR"
+        local icon="${__P9K_ICONS[VCS_CLOBBERED_FOLDER]}"
+
+        local inner
+        () {
+            # See if current working directory is a shadowed repository
+            local GIT_DIR GIT_WORK_TREE
+            inner=$(git rev-parse --verify HEAD 2> /dev/null)
+        }
+
+        if [[ -n $inner && $inner != "$(git rev-parse --verify HEAD 2> /dev/null)" ]]; then
+            # GIT_DIR is shadowing a different repo. This can be
+            # very confusing! Flag to alert.
+            VCS_WORKDIR_CLOBBERED=true
+            icon="${__P9K_ICONS[VCS_ERROR]} $icon"
+        fi
+
+        hook_com[branch]="$icon $gitdir ${hook_com[branch]}"
+    fi
 }
 
 p9k::set_default P9K_VCS_HIDE_TAGS false
@@ -337,7 +364,7 @@ __p9k_vcs_init() {
   # Hooks are places in vcs_info where you can run your own code. That code can communicate with the code that called it and through that, change the system’s behaviour.
   # For configuration, hooks change the style context:
   #   :vcs_info:vcs-string+hook-name:user-context:repo-root-name
-  p9k::defined P9K_VCS_GIT_HOOKS || P9K_VCS_GIT_HOOKS=(vcs-detect-changes git-untracked git-aheadbehind git-stash git-remotebranch git-tagname)
+  p9k::defined P9K_VCS_GIT_HOOKS || P9K_VCS_GIT_HOOKS=(vcs-detect-changes git-untracked git-aheadbehind git-stash git-remotebranch git-gitdir git-tagname)
   zstyle ':vcs_info:git*+set-message:*' hooks ${P9K_VCS_GIT_HOOKS}
   p9k::defined P9K_VCS_HG_HOOKS || P9K_VCS_HG_HOOKS=(vcs-detect-changes)
   zstyle ':vcs_info:hg*+set-message:*' hooks ${P9K_VCS_HG_HOOKS}
@@ -379,6 +406,7 @@ p9k::register_segment  "VCS" "CLEAN"     "green"  "${DEFAULT_COLOR}" ''  ''  '' 
 p9k::register_segment  "VCS" "MODIFIED"  "yellow" "${DEFAULT_COLOR}" ''  ''  ''  ''  ''
 #                                                                                                                                     
 p9k::register_segment  "VCS" "UNTRACKED" "green"  "${DEFAULT_COLOR}" '?' $'\uE16C' $'\uF059' '\u'${CODEPOINT_OF_AWESOME_QUESTION_CIRCLE} $'\uF059'
+p9k::register_segment  "VCS" "CLOBBERED" "red"    "${DEFAULT_COLOR}" ''  ''  ''  ''  ''
 
 ################################################################
 # @description
@@ -391,6 +419,7 @@ p9k::register_segment  "VCS" "UNTRACKED" "green"  "${DEFAULT_COLOR}" '?' $'\uE16
 ##
 prompt_vcs() {
   [[ ${P9K_GENERATOR} == "zsh-async" && -n ${4} ]] && cd ${4}
+  VCS_WORKDIR_CLOBBERED=false
   VCS_WORKDIR_DIRTY=false
   VCS_WORKDIR_HALF_DIRTY=false
   local current_state=""
@@ -400,7 +429,9 @@ prompt_vcs() {
   local vcs_prompt="${vcs_info_msg_0_}"
 
   if [[ -n "${vcs_prompt}" ]]; then
-    if [[ "${VCS_WORKDIR_DIRTY}" == true ]]; then
+    if [[ "${VCS_WORKDIR_CLOBBERED}" == true ]]; then
+      current_state='clobbered'
+    elif [[ "${VCS_WORKDIR_DIRTY}" == true ]]; then
       current_state='modified'
     else
       if [[ "${VCS_WORKDIR_HALF_DIRTY}" == true ]]; then
