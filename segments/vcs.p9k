@@ -201,8 +201,7 @@ function +vi-git-remotebranch() {
 
 function +vi-git-gitdir() {
     if (( $+GIT_DIR )); then
-        local gitdir
-        print -v gitdir -D "$GIT_DIR"
+        local gitdir="$GIT_DIR"
         local icon="${__P9K_ICONS[VCS_CLOBBERED_FOLDER]}"
 
         local inner
