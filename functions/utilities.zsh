@@ -41,7 +41,7 @@ __p9k_source_autoloads
 #   __P9K_OS_ID string Version of OS
 ##
 function __p9k_detect_os() {
-  typeset -g __p9K_OS __P9K_OS_ID
+  typeset -g __P9K_OS __P9K_OS_ID
   case $(uname) in
     Darwin)
       __P9K_OS='OSX'
@@ -60,6 +60,8 @@ function __p9k_detect_os() {
     SunOS) __P9K_OS='Solaris' ;;
     *) __P9K_OS='' ;;
   esac
+  readonly __P9K_OS
+  readonly __P9K_OS_ID
 }
 __p9k_detect_os
 
@@ -76,19 +78,23 @@ __p9k_detect_os
 #  __P9K_TERMINAL string Readonly global with the terminal ID
 ##
 function __p9k_detect_terminal() {
+  typeset -g __P9K_TERMINAL
   if [[ "$TMUX" =~ "tmux" ]]; then
-    readonly __P9K_TERMINAL="tmux"
+    __P9K_TERMINAL="tmux"
   elif [[ "$TERM_PROGRAM" == "iTerm.app" ]]; then
-    readonly __P9K_TERMINAL="iterm"
+    __P9K_TERMINAL="iterm"
   elif [[ "$TERM_PROGRAM" == "Apple_Terminal" ]]; then
-    readonly __P9K_TERMINAL="appleterm"
+    __P9K_TERMINAL="appleterm"
   else
-    if [[ "$OS" == "OSX" ]]; then
-      local termtest=$(ps -o 'command=' -p $(ps -o 'ppid=' -p $$) | tail -1 | awk '{print $NF}')
+    if [[ "${__P9K_OS}" == "OSX" ]]; then
+      #local termtest=$(ps -o 'command=' -p $(ps -o 'ppid=' -p $$) | tail -1 | awk '{print $NF}')
+      local termtest=${$(ps -o 'command=' -p $(ps -o 'ppid='$$))[1]:t}
       # test if we are in a sudo su -
-      if [[ ${termtest} == "-" || ${termtest} == "root" ]]; then
-        termtest=($(ps -o 'command=' -p $(ps -o 'ppid=' -p $(ps -o 'ppid='$$))))
-        termtest=${termtest[1]:t}
+      #if [[ ${termtest} == "-" || ${termtest} == "root" ]]; then
+      if [[ ${termtest} == "zsh" ]]; then
+        #termtest=${($(ps -o 'command=' -p $(ps -o 'ppid=' -p $(ps -o 'ppid='$$))))[1]:t}
+        #termtest=${termtest[1]:t}
+        termtest=${$(ps -o 'command=' -p $(ps -o 'ppid=' -p $(ps -o 'ppid='$$)))[1]:t}
       fi
     else
       local termtest=$(ps -o 'cmd=' -p $(ps -o 'ppid=' -p $$) | tail -1 | awk '{print $NF}')
@@ -105,21 +111,22 @@ function __p9k_detect_terminal() {
       fi
     fi
     case "${termtest##*/}" in
-      gnome-terminal-server)    readonly __P9K_TERMINAL="gnometerm";;
-      guake.main)               readonly __P9K_TERMINAL="guake";;
-      iTerm2)                   readonly __P9K_TERMINAL="iterm";;
-      konsole)                  readonly __P9K_TERMINAL="konsole";;
-      termite)                  readonly __P9K_TERMINAL="termite";;
-      urxvt)                    readonly __P9K_TERMINAL="rxvt";;
-      yakuake)                  readonly __P9K_TERMINAL="yakuake";;
-      xterm | xterm-256color)   readonly __P9K_TERMINAL="xterm";;
-      *tty*)                    readonly __P9K_TERMINAL="tty";;
-      *)                        readonly __P9K_TERMINAL=${termtest##*/};;
+      gnome-terminal-server)    __P9K_TERMINAL="gnometerm";;
+      guake.main)               __P9K_TERMINAL="guake";;
+      iTerm2)                   __P9K_TERMINAL="iterm";;
+      konsole)                  __P9K_TERMINAL="konsole";;
+      termite)                  __P9K_TERMINAL="termite";;
+      urxvt)                    __P9K_TERMINAL="rxvt";;
+      yakuake)                  __P9K_TERMINAL="yakuake";;
+      xterm | xterm-256color)   __P9K_TERMINAL="xterm";;
+      *tty*)                    __P9K_TERMINAL="tty";;
+      *)                        __P9K_TERMINAL=${termtest##*/};;
     esac
 
     unset termtest
     unset uname
   fi
+  readonly __P9K_TERMINAL
 }
 __p9k_detect_terminal
 
