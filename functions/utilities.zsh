@@ -102,7 +102,6 @@ function __p9k_detect_terminal() {
       while true; do
         proc_stat=(${(@f)$(</proc/${pid}/stat)})
         termtest=${proc_stat[2]//[()]/}
-        echo "$termtest" # debug line
         case "${termtest}" in
           gnome-terminal|guake|konsole|rxvt|termite|urxvt|xterm|yakuake)
             __P9K_TERMINAL="${termtest}"
