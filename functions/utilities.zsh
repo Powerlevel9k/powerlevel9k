@@ -87,44 +87,50 @@ function __p9k_detect_terminal() {
     __P9K_TERMINAL="appleterm"
   else
     if [[ "${__P9K_OS}" == "OSX" ]]; then
-      #local termtest=$(ps -o 'command=' -p $(ps -o 'ppid=' -p $$) | tail -1 | awk '{print $NF}')
       local termtest=${$(ps -o 'command=' -p $(ps -o 'ppid='$$))[1]:t}
       # test if we are in a sudo su -
-      #if [[ ${termtest} == "-" || ${termtest} == "root" ]]; then
       if [[ ${termtest} == "zsh" ]]; then
-        #termtest=${($(ps -o 'command=' -p $(ps -o 'ppid=' -p $(ps -o 'ppid='$$))))[1]:t}
-        #termtest=${termtest[1]:t}
         termtest=${$(ps -o 'command=' -p $(ps -o 'ppid=' -p $(ps -o 'ppid='$$)))[1]:t}
       fi
-    else
-      local termtest=$(ps -o 'cmd=' -p $(ps -o 'ppid=' -p $$) | tail -1 | awk '{print $NF}')
-      # test if we are in a sudo su -
-      if [[ ${termtest} == "-" || ${termtest} == "root" ]]; then
-        termtest=($(ps -o 'cmd=' -p $(ps -o 'ppid=' $(ps -o 'ppid='$$))))
-        if [[ $termtest[1] == "zsh" ]]; then  # gnome terminal works differently than the rest... sigh
-          termtest=$termtest[-1]
-        elif [[ $termtest[1] =~ "python" ]]; then   # as does guake
-          termtest=$termtest[3]
-        else
-          termtest=$termtest[1]
-        fi
+    else # Linux
+      # see: https://askubuntu.com/a/966934
+      if [[ $TTY = "/dev/tty"* ]]; then
+        __P9K_TERMINAL="linux-console"
+        return
       fi
+      local pid=$$ termtest=''
+      while true; do
+        proc_stat=(${(@f)$(</proc/${pid}/stat)})
+        termtest=${proc_stat[2]//[()]/}
+        echo "$termtest" # debug line
+        case "${termtest}" in
+          gnome-terminal|guake|konsole|rxvt|termite|urxvt|xterm|yakuake)
+            __P9K_TERMINAL="${termtest}"
+            return
+          ;;
+          python*)
+            local cmdline=(${(@f)$(</proc/${pid}/cmdline)})
+            if [[ "$cmdline" =~ "\\bguake.main\\b" ]]; then
+              __P9K_TERMINAL="guake"
+              return
+            fi
+          ;;
+        esac
+        if test "$pid" = "1" -o "$pid" = ""; then
+          __P9K_TERMINAL="unknown"
+          return
+        fi
+        pid=${proc_stat[4]}
+      done
     fi
     case "${termtest##*/}" in
-      gnome-terminal-server)    __P9K_TERMINAL="gnometerm";;
-      guake.main)               __P9K_TERMINAL="guake";;
+      gnome-terminal*)          __P9K_TERMINAL="gnometerm";;
       iTerm2)                   __P9K_TERMINAL="iterm";;
-      konsole)                  __P9K_TERMINAL="konsole";;
-      termite)                  __P9K_TERMINAL="termite";;
       urxvt)                    __P9K_TERMINAL="rxvt";;
-      yakuake)                  __P9K_TERMINAL="yakuake";;
       xterm | xterm-256color)   __P9K_TERMINAL="xterm";;
       *tty*)                    __P9K_TERMINAL="tty";;
       *)                        __P9K_TERMINAL=${termtest##*/};;
     esac
-
-    unset termtest
-    unset uname
   fi
   readonly __P9K_TERMINAL
 }
