@@ -41,7 +41,7 @@ __p9k_source_autoloads
 #   __P9K_OS_ID string Version of OS
 ##
 function __p9k_detect_os() {
-  typeset -g __p9K_OS __P9K_OS_ID
+  typeset -g __P9K_OS __P9K_OS_ID
   case $(uname) in
     Darwin)
       __P9K_OS='OSX'
@@ -60,6 +60,8 @@ function __p9k_detect_os() {
     SunOS) __P9K_OS='Solaris' ;;
     *) __P9K_OS='' ;;
   esac
+  readonly __P9K_OS
+  readonly __P9K_OS_ID
 }
 __p9k_detect_os
 
@@ -76,50 +78,60 @@ __p9k_detect_os
 #  __P9K_TERMINAL string Readonly global with the terminal ID
 ##
 function __p9k_detect_terminal() {
+  typeset -g __P9K_TERMINAL
   if [[ "$TMUX" =~ "tmux" ]]; then
-    readonly __P9K_TERMINAL="tmux"
+    __P9K_TERMINAL="tmux"
   elif [[ "$TERM_PROGRAM" == "iTerm.app" ]]; then
-    readonly __P9K_TERMINAL="iterm"
+    __P9K_TERMINAL="iterm"
   elif [[ "$TERM_PROGRAM" == "Apple_Terminal" ]]; then
-    readonly __P9K_TERMINAL="appleterm"
+    __P9K_TERMINAL="appleterm"
   else
-    if [[ "$OS" == "OSX" ]]; then
-      local termtest=$(ps -o 'command=' -p $(ps -o 'ppid=' -p $$) | tail -1 | awk '{print $NF}')
+    if [[ "${__P9K_OS}" == "OSX" ]]; then
+      local termtest=${$(ps -o 'command=' -p $(ps -o 'ppid='$$))[1]:t}
       # test if we are in a sudo su -
-      if [[ ${termtest} == "-" || ${termtest} == "root" ]]; then
-        termtest=($(ps -o 'command=' -p $(ps -o 'ppid=' -p $(ps -o 'ppid='$$))))
-        termtest=${termtest[1]:t}
+      if [[ ${termtest} == "zsh" ]]; then
+        termtest=${$(ps -o 'command=' -p $(ps -o 'ppid=' -p $(ps -o 'ppid='$$)))[1]:t}
       fi
-    else
-      local termtest=$(ps -o 'cmd=' -p $(ps -o 'ppid=' -p $$) | tail -1 | awk '{print $NF}')
-      # test if we are in a sudo su -
-      if [[ ${termtest} == "-" || ${termtest} == "root" ]]; then
-        termtest=($(ps -o 'cmd=' -p $(ps -o 'ppid=' $(ps -o 'ppid='$$))))
-        if [[ $termtest[1] == "zsh" ]]; then  # gnome terminal works differently than the rest... sigh
-          termtest=$termtest[-1]
-        elif [[ $termtest[1] =~ "python" ]]; then   # as does guake
-          termtest=$termtest[3]
-        else
-          termtest=$termtest[1]
+    else # Linux
+      # see: https://askubuntu.com/a/966934
+      if [[ $TTY = "/dev/tty"* ]]; then
+        __P9K_TERMINAL="linux-console"
+        return
+      fi
+      local pid=$$ termtest=''
+      while true; do
+        proc_stat=(${(@f)$(</proc/${pid}/stat)})
+        termtest=${proc_stat[2]//[()]/}
+        case "${termtest}" in
+          gnome-terminal|guake|konsole|rxvt|termite|urxvt|xterm|yakuake)
+            __P9K_TERMINAL="${termtest}"
+            return
+          ;;
+          python*)
+            local cmdline=(${(@f)$(</proc/${pid}/cmdline)})
+            if [[ "$cmdline" =~ "\\bguake.main\\b" ]]; then
+              __P9K_TERMINAL="guake"
+              return
+            fi
+          ;;
+        esac
+        if test "$pid" = "1" -o "$pid" = ""; then
+          __P9K_TERMINAL="unknown"
+          return
         fi
-      fi
+        pid=${proc_stat[4]}
+      done
     fi
     case "${termtest##*/}" in
-      gnome-terminal-server)    readonly __P9K_TERMINAL="gnometerm";;
-      guake.main)               readonly __P9K_TERMINAL="guake";;
-      iTerm2)                   readonly __P9K_TERMINAL="iterm";;
-      konsole)                  readonly __P9K_TERMINAL="konsole";;
-      termite)                  readonly __P9K_TERMINAL="termite";;
-      urxvt)                    readonly __P9K_TERMINAL="rxvt";;
-      yakuake)                  readonly __P9K_TERMINAL="yakuake";;
-      xterm | xterm-256color)   readonly __P9K_TERMINAL="xterm";;
-      *tty*)                    readonly __P9K_TERMINAL="tty";;
-      *)                        readonly __P9K_TERMINAL=${termtest##*/};;
+      gnome-terminal*)          __P9K_TERMINAL="gnometerm";;
+      iTerm2)                   __P9K_TERMINAL="iterm";;
+      urxvt)                    __P9K_TERMINAL="rxvt";;
+      xterm | xterm-256color)   __P9K_TERMINAL="xterm";;
+      *tty*)                    __P9K_TERMINAL="tty";;
+      *)                        __P9K_TERMINAL=${termtest##*/};;
     esac
-
-    unset termtest
-    unset uname
   fi
+  readonly __P9K_TERMINAL
 }
 __p9k_detect_terminal
 
