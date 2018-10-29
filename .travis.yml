@@ -57,7 +57,7 @@ before_script:
         tmp="$(${coreutils_mktemp} --directory --tmpdir="${TMPDIR:/tmp}" zshbuild.XXXXXX)"
         (
           cd "$tmp" &&
-          curl -L https://sourceforge.net/projects/zsh/files/zsh/${1}/zsh-${1}.tar.xz/download | tar zx &&
+          curl -L https://downloads.sourceforge.net/project/zsh/zsh/${1}/zsh-${1}.tar.xz | tar zx &&
           cd zsh-$1 &&
           ./configure --prefix="$dest" &&
           make &&
