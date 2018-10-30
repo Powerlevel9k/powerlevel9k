@@ -146,30 +146,28 @@ function +vi-git-untracked() {
 }
 
 function +vi-git-aheadbehind() {
-  local ahead behind branch_name
+  local ahead behind
   local -a gitstatus
 
-  branch_name=$(command git symbolic-ref --short HEAD 2>/dev/null)
-
   # for git prior to 1.7
-  # ahead=$(command git rev-list origin/${branch_name}..HEAD | wc -l)
-  ahead=$(command git rev-list "${branch_name}"@{upstream}..HEAD 2>/dev/null | wc -l)
+  # ahead=$(command git rev-list origin/${hook_com[branch]}..HEAD | wc -l)
+  ahead=$(command git rev-list --count "${hook_com[branch]}"@{upstream}..HEAD 2>/dev/null)
   (( ahead )) && gitstatus+=( " ${__P9K_ICONS[VCS_OUTGOING_CHANGES]}${ahead// /}" )
 
   # for git prior to 1.7
-  # behind=$(command git rev-list HEAD..origin/${branch_name} | wc -l)
-  behind=$(command git rev-list HEAD.."${branch_name}"@{upstream} 2>/dev/null | wc -l)
+  # behind=$(command git rev-list HEAD..origin/${hook_com[branch]} | wc -l)
+  behind=$(command git rev-list --count HEAD.."${hook_com[branch]}"@{upstream} 2>/dev/null)
   (( behind )) && gitstatus+=( " ${__P9K_ICONS[VCS_INCOMING_CHANGES]}${behind// /}" )
 
   hook_com[misc]+=${(j::)gitstatus}
 }
 
 function +vi-git-remotebranch() {
-  local remote branch_name
+  local remote
+  local branch_name="${hook_com[branch]}"
 
   # Are we on a remote-tracking branch?
   remote=${$(command git rev-parse --verify HEAD@{upstream} --symbolic-full-name 2>/dev/null)/refs\/(remotes|heads)\/}
-  branch_name=$(command git symbolic-ref --short HEAD 2>/dev/null)
 
   if [[ -n "$P9K_VCS_SHORTEN_LENGTH" ]] && [[ -n "$P9K_VCS_SHORTEN_MIN_LENGTH" ]]; then
     p9k::set_default P9K_VCS_SHORTEN_DELIMITER $'\u2026'
@@ -253,7 +251,7 @@ function +vi-git-tagname() {
 function +vi-git-stash() {
   local -a stashes
 
-  if [[ -s $(command git rev-parse --git-dir)/refs/stash ]] ; then
+  if [[ -s "${vcs_comm[gitdir]}/refs/stash" ]] ; then
     stashes=$(command git stash list 2>/dev/null | wc -l)
     hook_com[misc]+=" ${__P9K_ICONS[VCS_STASH]}${stashes// /}"
   fi
