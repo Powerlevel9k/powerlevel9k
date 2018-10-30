@@ -261,7 +261,7 @@ function testActionHintWorks() {
   git commit -a -m "Provoke conflict" &>/dev/null
   git pull &>/dev/null
 
-  assertEquals "%K{003} %F{000} master %F{001}| merge%f %k%F{003}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{003} %F{000} master %F{001}| merge 1/1 ↑1 ↓1%f %k%F{003}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testIncomingHintWorks() {

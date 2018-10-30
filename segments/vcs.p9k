@@ -342,6 +342,10 @@ __p9k_vcs_init() {
     VCS_CHANGESET_PREFIX="${__P9K_ICONS[VCS_COMMIT]}%0.${P9K_VCS_INTERNAL_HASH_LENGTH}i "
   fi
 
+  # Show number of applied patches. This is used during merges and rebases
+  # %c number of unapplied patches | %n number of applied patched | %a number of all patches
+  zstyle ':vcs_info:*' patch-format ' %n/%a'
+
   # Load supported version control backends
   zstyle ':vcs_info:*' enable git hg svn
 
@@ -353,7 +357,7 @@ __p9k_vcs_init() {
   zstyle ':vcs_info:*' formats "${VCS_DEFAULT_FORMAT}"
 
   # A list of formats, used if there is a special action going on in your current repository; like an interactive rebase or a merge conflict.
-  zstyle ':vcs_info:*' actionformats "%b $(p9k::foreground_color ${P9K_VCS_ACTIONFORMAT_FOREGROUND})| %a%f"
+  zstyle ':vcs_info:*' actionformats "%b $(p9k::foreground_color ${P9K_VCS_ACTIONFORMAT_FOREGROUND})| %a%m%f"
 
   # This string will be used in the %c escape if there are staged changes in the repository.
   zstyle ':vcs_info:*' stagedstr " ${__P9K_ICONS[VCS_STAGED]}"
