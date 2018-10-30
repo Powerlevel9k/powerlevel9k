@@ -29,8 +29,8 @@ env:
   matrix:
     # Use _ZSH_VERSION since if ZSH_VERSION is present, travis cacher thinks it
     # is running in zsh and tries to use zsh specific functions.
-    # - _ZSH_VERSION=5.6.2
-    # - _ZSH_VERSION=5.6.1
+    - _ZSH_VERSION=5.6.2
+    - _ZSH_VERSION=5.6.1
     - _ZSH_VERSION=5.6
     - _ZSH_VERSION=5.5.1
     - _ZSH_VERSION=5.5
@@ -57,7 +57,7 @@ before_script:
         tmp="$(${coreutils_mktemp} --directory --tmpdir="${TMPDIR:/tmp}" zshbuild.XXXXXX)"
         (
           cd "$tmp" &&
-          curl -L http://downloads.sourceforge.net/zsh/zsh-${1}.tar.gz | tar zx &&
+          curl -L https://downloads.sourceforge.net/project/zsh/zsh/${1}/zsh-${1}.tar.xz | tar -xJ &&
           cd zsh-$1 &&
           ./configure --prefix="$dest" &&
           make &&
