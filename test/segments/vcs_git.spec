@@ -488,6 +488,8 @@ function testGitDirClobber() {
   assertEquals "%K{001} %F{000}✘  /tmp/powerlevel9k-test/test-dotfiles  master ✚ ? %k%F{001}%f " "$(__p9k_build_left_prompt)"
 
   cd -
+  unset GIT_DIR
+  unset GIT_WORK_TREE
 }
 
 source shunit2/shunit2
