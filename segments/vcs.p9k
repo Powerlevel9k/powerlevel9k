@@ -129,7 +129,7 @@ p9k::set_default P9K_VCS_SHOW_SUBMODULE_DIRTY false
 p9k::set_default P9K_VCS_GIT_ALWAYS_SHOW_REMOTE_BRANCH false
 
 function +vi-git-untracked() {
-  if [[ "$P9K_VCS_SHOW_SUBMODULE_DIRTY" == "true" && "$(command git submodule foreach --quiet --recursive 'git ls-files --others --exclude-standard')" != "" ]]; then
+  if [[ "$P9K_VCS_SHOW_SUBMODULE_DIRTY" == "true" && "$(command git submodule foreach --quiet --recursive 'command git ls-files --others --exclude-standard')" != "" ]]; then
     hook_com[unstaged]+=" ${__P9K_ICONS[VCS_UNTRACKED]}"
     VCS_WORKDIR_HALF_DIRTY=true
   elif [[ "$(command git ls-files --others --exclude-standard)" != "" ]]; then
@@ -201,10 +201,10 @@ function +vi-git-gitdir() {
         () {
             # See if current working directory is a shadowed repository
             local GIT_DIR GIT_WORK_TREE
-            inner=$(git rev-parse --verify HEAD 2> /dev/null)
+            inner=$(command git rev-parse --verify HEAD 2> /dev/null)
         }
 
-        if [[ -n $inner && $inner != "$(git rev-parse --verify HEAD 2> /dev/null)" ]]; then
+        if [[ -n $inner && $inner != "$(command git rev-parse --verify HEAD 2> /dev/null)" ]]; then
             # GIT_DIR is shadowing a different repo. This can be
             # very confusing! Flag to alert.
             VCS_WORKDIR_CLOBBERED=true
