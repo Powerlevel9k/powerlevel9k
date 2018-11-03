@@ -167,13 +167,13 @@ function +vi-git-remotebranch() {
   if [[ -n "$P9K_VCS_SHORTEN_LENGTH" ]] && [[ -n "$P9K_VCS_SHORTEN_MIN_LENGTH" ]]; then
     p9k::set_default P9K_VCS_SHORTEN_DELIMITER $'\u2026'
 
-    if [ ${#hook_com[branch]} -gt $P9K_VCS_SHORTEN_MIN_LENGTH ] && [ ${#hook_com[branch]} -gt $P9K_VCS_SHORTEN_LENGTH ]; then
+    if [ ${#hook_com[branch]} -gt ${P9K_VCS_SHORTEN_MIN_LENGTH} ] && [ ${#hook_com[branch]} -gt ${P9K_VCS_SHORTEN_LENGTH} ]; then
       case "$P9K_VCS_SHORTEN_STRATEGY" in
         truncate_middle)
-          hook_com[branch]="$(echo "${branch_name:0:$P9K_VCS_SHORTEN_LENGTH}")$P9K_VCS_SHORTEN_DELIMITER$(echo "${branch_name: -$P9K_VCS_SHORTEN_LENGTH}")"
+          hook_com[branch]="${branch_name:0:$P9K_VCS_SHORTEN_LENGTH}${P9K_VCS_SHORTEN_DELIMITER}${branch_name: -$P9K_VCS_SHORTEN_LENGTH}"
         ;;
         truncate_from_right)
-          hook_com[branch]="$(echo "${branch_name:0:$P9K_VCS_SHORTEN_LENGTH}")$P9K_VCS_SHORTEN_DELIMITER"
+          hook_com[branch]="${branch_name:0:$P9K_VCS_SHORTEN_LENGTH}${P9K_VCS_SHORTEN_DELIMITER}"
         ;;
       esac
     fi
