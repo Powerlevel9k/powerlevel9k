@@ -72,29 +72,43 @@ prompt_battery() {
 
   if [[ "$__P9K_OS" == 'Linux' ]] || [[ "$__P9K_OS" == 'Android' ]]; then
     local sysp="${ROOT_PREFIX}/sys/class/power_supply"
+    local potential_bats=( "$sysp/*" )
+    [[ ${#${(M)potential_bats:#*(BAT|battery)*}} ]] \
+      && local bats=(${$(ls -d $sysp/(battery|BAT*))}) \
+      || return
 
-    # Reported BAT0 or BAT1 depending on kernel version
-    [[ -a $sysp/BAT0 ]] && local bat=$sysp/BAT0
-    [[ -a $sysp/BAT1 ]] && local bat=$sysp/BAT1
+    local numerator="0"
+    local denominator="0"
+    local battery_status_full=true
+    local battery_status_charging=false
+    for bat in $bats; do
+      numerator+="+ $(cat $bat/capacity) * $(cat $bat/(energy|charge)_full)"
+      denominator+="+ $(cat $bat/(energy|charge)_full)"
+      [[ $(cat $bat/status) != Full ]] && battery_status_full=false
+      [[ $(cat $bat/status) == Charging ]] && battery_status_charging=true
+    done
 
-    # Android-related
-    # Tested on: Moto G falcon (CM 13.0)
-    [[ -a $sysp/battery ]] && local bat=$sysp/battery
+    local capacity=$(( ($numerator)/($denominator) ))
+    [[ $capacity -gt 100 ]] \
+      && local bat_percent=100 \
+      || local bat_percent=$capacity
+    [[ $battery_status_full == true || $battery_status_charging == true ]] \
+      && local connected=true
 
-    # Return if no battery found
-    [[ -z $bat ]] && return
-    local capacity=$(<$bat/capacity)
-    local battery_status=$(<$bat/status)
-    [[ $capacity -gt 100 ]] && local bat_percent=100 || local bat_percent=$capacity
-    [[ $battery_status =~ Charging || $battery_status =~ Full ]] && local connected=true
     if [[ -z $connected ]]; then
-      [[ $bat_percent -lt $P9K_BATTERY_LOW_THRESHOLD ]] && current_state="low" || current_state="disconnected"
+      [[ $bat_percent -lt $P9K_BATTERY_LOW_THRESHOLD ]] \
+        && current_state="low" \
+        || current_state="disconnected"
     else
       [[ $bat_percent =~ 100 ]] && current_state="charged"
       [[ $bat_percent -lt 100 ]] && current_state="charging"
     fi
     if [[ -f ${ROOT_PREFIX}/usr/bin/acpi ]]; then
-      local time_remaining=${${(s: :)$(${ROOT_PREFIX}/usr/bin/acpi)}[5]}
+      declare -a acpi_lines
+      acpi_lines=( "${(@f)$(${ROOT_PREFIX}/usr/bin/acpi)}" )
+      local time_remaining=${${=${(M)acpi_lines:#*([[:digit:]][[:digit:]]:|rate)*}}[5]}
+      unset acpi_lines
+
       if [[ $time_remaining =~ "rate" ]]; then
         local tstring="..."
       elif [[ $time_remaining =~ "[[:digit:]]+" ]]; then
