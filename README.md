@@ -464,6 +464,12 @@ If you want to customize the last directory of the path, you can now set `P9K_DI
 
 You can also color the separator separately by setting the color using `P9K_DIR_PATH_SEPARATOR_FOREGROUND`.
 
+The theme now has limited support for directory hyperlinks in supported terminals. To make use of this feature, please see below.
+
+| Variable | Default Value | Description |
+|----------|---------------|-------------|
+|`P9K_DIR_HYPERLINK`|`false`|If set to `true`, the dir segment will contain a hyperlink to the current path.|
+
 ##### disk_usage
 
 The `disk_usage` segment will show the usage level of the partition that your current working directory (or a directory of your choice) resides in. It can be configured with the following variables.
@@ -473,7 +479,7 @@ The `disk_usage` segment will show the usage level of the partition that your cu
 |P9K_DISK_USAGE_ONLY_WARNING|false|Hide the segment except when usage levels have hit warning or critical levels.|
 |P9K_DISK_USAGE_WARNING_LEVEL|90|The usage level that triggers a warning state.|
 |P9K_DISK_USAGE_CRITICAL_LEVEL|95|The usage level that triggers a critical state.|
-|P9K_DISK_USAGE_PATH|`.` (working directory)|Set a path to use a fixed directory instead of the working 
+|P9K_DISK_USAGE_PATH|`.` (working directory)|Set a path to use a fixed directory instead of the working
 
 ##### host
 

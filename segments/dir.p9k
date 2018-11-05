@@ -8,15 +8,15 @@
 # Register segment
 # Parameters:
 #   segment_name  context  background  foreground  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
-#                                                                                                                                     
+#                                                                                                                                                      
 p9k::register_segment "DIR" 'DEFAULT'         "blue" "$DEFAULT_COLOR"   ''         $'\uE818'  $'\uF115'  '\u'${CODEPOINT_OF_AWESOME_FOLDER_O}     $'\uF115'
-#                                                                                                                                     
+#                                                                                                                                                      
 p9k::register_segment "DIR" 'HOME'            "blue" "$DEFAULT_COLOR"   ''         $'\uE12C'  $'\uF015'  '\u'${CODEPOINT_OF_AWESOME_HOME}         $'\uF015'
-#                                                                                                                                     
+#                                                                                                                                                      
 p9k::register_segment "DIR" 'HOME_SUBFOLDER'  "blue" "$DEFAULT_COLOR"   ''         $'\uE18D'  $'\uF07C'  '\u'${CODEPOINT_OF_AWESOME_FOLDER_OPEN}  $'\uF07C'
-#                                                                                                                                     
+#                                                                                                                                                      
 p9k::register_segment "DIR" 'NOT_WRITABLE'    "blue" "$DEFAULT_COLOR"   $'\uE0A2'  $'\uE138'  $'\uF023'  '\u'${CODEPOINT_OF_AWESOME_LOCK}         $'\uF023'
-#                                                                                                                                   
+#                                                                                                                                                    
 p9k::register_segment "DIR" 'ETC'             "blue" "$DEFAULT_COLOR"   $'\uE818'  $'\uF013'  $'\uF013'  '\u'${CODEPOINT_OF_AWESOME_COG}          $'\uF013'
 
 p9k::set_default P9K_DIR_PATH_SEPARATOR "/"
@@ -25,6 +25,7 @@ p9k::set_default P9K_DIR_PATH_HIGHLIGHT_BOLD false
 p9k::set_default P9K_DIR_PATH_ABSOLUTE false
 p9k::set_default P9K_DIR_SHORTEN_DELIMITER "\u2026"
 p9k::set_default P9K_DIR_SHORTEN_FOLDER_MARKER ".shorten_folder_marker"
+p9k::set_default P9K_DIR_HYPERLINK false
 ################################################################
 # @description
 #   Display information about the current working directory.
@@ -39,6 +40,12 @@ prompt_dir() {
   local -a paths
   # using ${PWD} instead of "$(print -P '%~')" to allow use of P9K_DIR_PATH_ABSOLUTE
   local current_path=${PWD} # WAS: local current_path="$(print -P '%~')"
+  # add hyperlink support
+  local hyper_on="" hyper_off=""
+  if [[ "${(L)P9K_DIR_HYPERLINK}" == "true" ]]; then
+    hyper_on="%{\e]8;;file://${current_path}\a%}"
+    hyper_off="%{\e]8;;\a%}"
+  fi
   # check if the user wants to use absolute paths or "~" paths
   [[ ${(L)P9K_DIR_PATH_ABSOLUTE} != "true" ]] && current_path=${current_path//$HOME/"~"}
   # declare all local variables
@@ -257,5 +264,5 @@ prompt_dir() {
     current_path=${current_path:s/~/${P9K_DIR_HOME_FOLDER_ABBREVIATION}}
   fi
 
-  p9k::prepare_segment "$0" "${(U)current_state}" $1 "$2" $3 "${current_path}"
+  p9k::prepare_segment "$0" "${(U)current_state}" $1 "$2" $3 "${hyper_on}${current_path}${hyper_off}"
 }
