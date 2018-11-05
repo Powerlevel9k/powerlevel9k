@@ -40,7 +40,7 @@ prompt_dir() {
   # using ${PWD} instead of "$(print -P '%~')" to allow use of P9K_DIR_PATH_ABSOLUTE
   local current_path=${PWD} # WAS: local current_path="$(print -P '%~')"
   local pathPrefix
-  [[ ${current_path:A} == "${HOME}"* ]] && pathPrefix="~/" || pathPrefix="/"
+  [[ ${current_path} == "${HOME}"* ]] && pathPrefix="~/" || pathPrefix="/"
   # check if the user wants to use absolute paths or "~" paths
   [[ ${(L)P9K_DIR_PATH_ABSOLUTE} != "true" ]] && current_path=${current_path//$HOME/"~"}
   # declare all local variables
