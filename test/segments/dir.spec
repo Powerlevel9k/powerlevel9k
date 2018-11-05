@@ -36,7 +36,7 @@ function testTruncateFoldersWorks() {
   mkdir -p $FOLDER
   cd $FOLDER
 
-  assertEquals "%K{blue} %F{black}…/12345678/123456789 %k%F{blue}%f " "$(build_left_prompt)"
+  assertEquals "%K{blue} %F{black}/…/12345678/123456789 %k%F{blue}%f " "$(build_left_prompt)"
 
   cd -
   rm -fr /tmp/powerlevel9k-test
@@ -187,7 +187,7 @@ function testTruncateWithFolderMarkerWorks() {
   # Setup folder marker
   touch $BASEFOLDER/1/12/.shorten_folder_marker
   cd $FOLDER
-  assertEquals "%K{blue} %F{black}…/12/123/1234/12345/123456/1234567 %k%F{blue}%f " "$(build_left_prompt)"
+  assertEquals "%K{blue} %F{black}/…/12/123/1234/12345/123456/1234567 %k%F{blue}%f " "$(build_left_prompt)"
 
   cd -
   rm -fr $BASEFOLDER
@@ -209,7 +209,7 @@ function testTruncateWithFolderMarkerWithChangedFolderMarker() {
   touch $BASEFOLDER/1/12/.xxx
   cd $FOLDER
 
-  assertEquals "%K{blue} %F{black}…/12/123/1234/12345/123456/1234567 %k%F{blue}%f " "$(build_left_prompt)"
+  assertEquals "%K{blue} %F{black}/…/12/123/1234/12345/123456/1234567 %k%F{blue}%f " "$(build_left_prompt)"
 
   cd -
   rm -fr $BASEFOLDER
@@ -242,7 +242,7 @@ function testTruncateWithPackageNameWorks() {
   POWERLEVEL9K_SHORTEN_DIR_LENGTH=2
   POWERLEVEL9K_SHORTEN_STRATEGY='truncate_with_package_name'
 
-  assertEquals "%K{blue} %F{black}My_Package/1/12/123/12…/12…/12…/12…/12…/123456789 %k%F{blue}%f " "$(build_left_prompt)"
+  assertEquals "%K{blue} %F{black}/My_Package/1/12/123/12…/12…/12…/12…/12…/123456789 %k%F{blue}%f " "$(build_left_prompt)"
 
   # Go back
   cd $p9kFolder
@@ -281,7 +281,7 @@ function testTruncateWithPackageNameIfRepoIsSymlinkedInsideDeepFolder() {
   POWERLEVEL9K_SHORTEN_DIR_LENGTH=2
   POWERLEVEL9K_SHORTEN_STRATEGY='truncate_with_package_name'
 
-  assertEquals "%K{blue} %F{black}My_Package/as…/qwerqwer %k%F{blue}%f " "$(build_left_prompt)"
+  assertEquals "%K{blue} %F{black}/My_Package/as…/qwerqwer %k%F{blue}%f " "$(build_left_prompt)"
 
   # Go back
   cd $p9kFolder
@@ -316,7 +316,7 @@ function testTruncateWithPackageNameIfRepoIsSymlinkedInsideGitDir() {
   POWERLEVEL9K_SHORTEN_DIR_LENGTH=2
   POWERLEVEL9K_SHORTEN_STRATEGY='truncate_with_package_name'
 
-  assertEquals "%K{blue} %F{black}My_Package/.g…/re…/heads %k%F{blue}%f " "$(build_left_prompt)"
+  assertEquals "%K{blue} %F{black}/My_Package/.g…/re…/heads %k%F{blue}%f " "$(build_left_prompt)"
 
   # Go back
   cd $p9kFolder

@@ -757,6 +757,8 @@ prompt_dir() {
   local current_path=$PWD # WAS: local current_path="$(print -P '%~')"
   # check if the user wants to use absolute paths or "~" paths
   [[ ${(L)POWERLEVEL9K_DIR_PATH_ABSOLUTE} != "true" ]] && current_path=${current_path//$HOME/"~"}
+  local pathPrefix
+  [[ "${current_path}" == "~"* ]] && pathPrefix="~/" || pathPrefix="/"
   # declare all local variables
   local paths directory test_dir test_dir_length trunc_path threshold
   # if we are not in "~" or "/", split the paths into an array and exclude "~"
@@ -795,7 +797,6 @@ prompt_dir() {
         if (( ${#current_path} > 1 )) && (( ${POWERLEVEL9K_SHORTEN_DIR_LENGTH} > 0 )); then
           threshold=$(( ${POWERLEVEL9K_SHORTEN_DIR_LENGTH} * 2))
           # if we are in "~", add it back into the paths array
-          [[ $current_path == '~'* ]] && paths=("~" "${paths[@]}")
           if (( ${#paths} > $threshold )); then
             local num=$(( ${#paths} - ${POWERLEVEL9K_SHORTEN_DIR_LENGTH} ))
             # repace the middle elements
@@ -852,8 +853,7 @@ prompt_dir() {
             # Remove one directory more. If the match was in /tmp/1/12, then we want
             # to show .../12/some/deep/folder. That is why we have to go to the
             # "parent" folder..
-            markedFolder="${markedFolder%/*}"
-            current_path="${POWERLEVEL9K_SHORTEN_DELIMITER}${PWD#${markedFolder}*}"
+            current_path="${pathPrefix}${POWERLEVEL9K_SHORTEN_DELIMITER}${PWD#${markedFolder}}"
           fi
         fi
       ;;
@@ -904,12 +904,12 @@ prompt_dir() {
         if [[ -n "${packageName}" ]]; then
           # Instead of printing out the full path, print out the name of the package
           # from the package.json and append the current subdirectory
-          current_path="`echo $packageName | tr -d '"'`$subdirectory_path"
+          current_path="${pathPrefix}$(echo $packageName | tr -d '"')$subdirectory_path"
         fi
       ;;
       *)
         if [[ $current_path != "~" ]]; then
-          current_path="$(print -P "%$((POWERLEVEL9K_SHORTEN_DIR_LENGTH+1))(c:$POWERLEVEL9K_SHORTEN_DELIMITER/:)%${POWERLEVEL9K_SHORTEN_DIR_LENGTH}c")"
+          current_path="${pathPrefix}$(print -P "%$((POWERLEVEL9K_SHORTEN_DIR_LENGTH+1))(c:$POWERLEVEL9K_SHORTEN_DELIMITER/:)%${POWERLEVEL9K_SHORTEN_DIR_LENGTH}c")"
         fi
       ;;
     esac
