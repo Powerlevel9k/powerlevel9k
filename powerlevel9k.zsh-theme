@@ -22,7 +22,7 @@
 ################################################################
 
 # Define the version number. This will make it easier to support as users can report this with tickets.
-readonly P9K_VERSION="0.7.0"
+declare -g P9K_VERSION="0.7.0"
 
 ## Turn on for Debugging
 # PS4='%s%f%b%k%F{blue}%{λ%}%L %F{240}%N:%i%(?.. %F{red}%?) %1(_.%F{yellow}%-1_ .)%s%f%b%k '
