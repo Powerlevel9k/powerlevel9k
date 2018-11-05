@@ -39,6 +39,8 @@ prompt_dir() {
   local -a paths
   # using ${PWD} instead of "$(print -P '%~')" to allow use of P9K_DIR_PATH_ABSOLUTE
   local current_path=${PWD} # WAS: local current_path="$(print -P '%~')"
+  local pathPrefix
+  [[ ${current_path:A} == "${HOME}"* ]] && pathPrefix="~/" || pathPrefix="/"
   # check if the user wants to use absolute paths or "~" paths
   [[ ${(L)P9K_DIR_PATH_ABSOLUTE} != "true" ]] && current_path=${current_path//$HOME/"~"}
   # declare all local variables
@@ -81,8 +83,7 @@ prompt_dir() {
             for (( i=$P9K_DIR_SHORTEN_LENGTH; i<$num; i++ )); do
               paths[$i+1]=$P9K_DIR_SHORTEN_DELIMITER
             done
-            [[ ${current_path} != '~'* ]] && current_path="/" || current_path=""
-            current_path+="${(j:/:)paths}"
+            current_path="${pathPrefix}${(j:/:)paths}"
           fi
         fi
       ;;
@@ -93,7 +94,7 @@ prompt_dir() {
           # cheating here to retain ~ as home folder
           local home_path="$(__p9k_get_unique_path $HOME:A)"
           trunc_path="$(__p9k_get_unique_path $PWD:A)"
-          [[ ${current_path} == "~"* ]] && current_path="~${trunc_path//${home_path}/}" || current_path="/${trunc_path}"
+          current_path="${pathPrefix}${trunc_path//${home_path}/}"
         fi
       ;;
       truncate_with_folder_marker)
@@ -111,7 +112,7 @@ prompt_dir() {
             # Remove the last path segment from the match. The last path segment
             # is the matched marker.
             markedFolder="${markedFolder%/*}"
-            current_path="/${P9K_DIR_SHORTEN_DELIMITER}${current_path#${markedFolder}*}"
+            current_path="${pathPrefix}${P9K_DIR_SHORTEN_DELIMITER}${current_path#${markedFolder}*}"
           fi
         fi
       ;;
