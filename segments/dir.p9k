@@ -176,16 +176,16 @@ prompt_dir() {
   # save state of path for highlighting and bold options
   local path_opt=$current_path
 
-  local state_path="$(print -P '%~')"
+  local state_path="${PWD:A}"
   local current_state="DEFAULT"
   # added '/private/etc' for macOS compatibility
   if [[ ${state_path} == '/etc'* || ${state_path} == '/private/etc'* ]]; then
     current_state='ETC'
   elif [[ "${P9K_DIR_SHOW_WRITABLE}" == true && ! -w "$PWD" ]]; then
     current_state="NOT_WRITABLE"
-  elif [[ ${state_path} == '~' ]]; then
+  elif [[ ${state_path} == "${HOME}" ]]; then
     current_state="HOME"
-  elif [[ ${state_path} == '~'* ]]; then
+  elif [[ ${state_path} == "${HOME}"* ]]; then
     current_state="HOME_SUBFOLDER"
   fi
 
