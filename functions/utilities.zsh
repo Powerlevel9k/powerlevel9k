@@ -368,7 +368,7 @@ function upsearch() {
 
   local -a results
   # Search upwards (See https://unix.stackexchange.com/a/64164)
-  results=((../)#$1(:a)) 2>/dev/null
+  results=((../)#(${1})(:a)) 2>/dev/null
 
   # Print in lexical order
   print -l ${(@o)results}
