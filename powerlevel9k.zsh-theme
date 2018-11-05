@@ -846,9 +846,6 @@ prompt_dir() {
           if (( ${#markedFolders} > 0 )); then
             # Take the first match. This is the longest one.
             local markedFolder="${markedFolders[1]}"
-            # Remove the last path segment from the match. The last path segment
-            # is the matched marker.
-            markedFolder="${markedFolder%/*}"
             # Remove one directory more. If the match was in /tmp/1/12, then we want
             # to show .../12/some/deep/folder. That is why we have to go to the
             # "parent" folder..

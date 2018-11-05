@@ -363,12 +363,13 @@ function truncatePathFromRight() {
 # Parameters:
 #   * $1 Name: string - Name of file or directory
 function upsearch() {
-  # The upsearch pattern needs extended globbing
-  setopt extended_glob
-
   local -a results
-  # Search upwards (See https://unix.stackexchange.com/a/64164)
-  results=((../)#$1(:a))
+  local currentDir="${PWD}"
+
+  while [[ "${currentDir}" != / ]]; do
+    currentDir="${currentDir:h}"
+    [[ -f "${currentDir}/${1}" ]] && results+=("${currentDir}")
+  done
 
   # Print in lexical order
   print -l ${(@o)results}
