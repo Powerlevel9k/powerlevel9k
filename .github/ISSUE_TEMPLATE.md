@@ -30,6 +30,6 @@ This information will help us understand your configuration.
 You may delete this section if your issue is not font / icon related.
 
   - Which font do you use?
-  - Which [font configuration mode](https://github.com/bhilburn/powerlevel9k/wiki/About-Fonts) are you using? You can check this with (`echo $POWERLEVEL9K_MODE`).
+  - Which [font configuration mode](https://github.com/bhilburn/powerlevel9k/wiki/About-Fonts) are you using? You can check this with (`echo $P9K_MODE`).
   - Please share the contents of `$P9k/debug/font-issues.zsh`.
-  - If this is an icon problem, does the output of `$ get_icon_names` look correct?
+  - If this is an icon problem, does the output of `$ show_defined_icons` look correct?
