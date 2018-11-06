@@ -77,18 +77,23 @@ prompt_battery() {
       && local bats=(${$(ls -d $sysp/(battery|BAT*))}) \
       || return
 
-    local numerator="0"
-    local denominator="0"
+    local energy_now="0"
+    local energy_full="0"
+    local power_now="0"
     local battery_status_full=true
     local battery_status_charging=false
     for bat in $bats; do
-      numerator+="+ $(cat $bat/capacity) * $(cat $bat/(energy|charge)_full)"
-      denominator+="+ $(cat $bat/(energy|charge)_full)"
+      energy_now+="+ $(cat $bat/(energy|charge)_now)"
+      energy_full+="+ $(cat $bat/(energy|charge)_full)"
+      power_now+="+ $(cat $bat/(power|current)_now)"
       [[ $(cat $bat/status) != Full ]] && battery_status_full=false
       [[ $(cat $bat/status) == Charging ]] && battery_status_charging=true
     done
+    energy_now=$(($energy_now))
+    energy_full=$(($energy_full))
+    power_now=$(($power_now))
 
-    local capacity=$(( ($numerator)/($denominator) ))
+    local capacity=$(( 100 * $energy_now / $energy_full ))
     [[ $capacity -gt 100 ]] \
       && local bat_percent=100 \
       || local bat_percent=$capacity
@@ -103,17 +108,21 @@ prompt_battery() {
       [[ $bat_percent =~ 100 ]] && current_state="charged"
       [[ $bat_percent -lt 100 ]] && current_state="charging"
     fi
-    if [[ -f ${ROOT_PREFIX}/usr/bin/acpi ]]; then
-      declare -a acpi_lines
-      acpi_lines=( "${(@f)$(${ROOT_PREFIX}/usr/bin/acpi)}" )
-      local time_remaining=${${=${(M)acpi_lines:#*([[:digit:]][[:digit:]]:|rate)*}}[5]}
-      unset acpi_lines
 
-      if [[ $time_remaining =~ "rate" ]]; then
-        local tstring="..."
-      elif [[ $time_remaining =~ "[[:digit:]]+" ]]; then
-        local tstring=${(f)$(date -u -d "$(echo $time_remaining)" +%k:%M 2> /dev/null)}
+    # calculate (dis)charging time
+    if [[ $battery_status_full == true ]]; then
+      # ignore full case (this just keeps a flat if structure)
+    elif [[ $power_now -gt 0 ]]; then
+      local tstring
+      if [[ $battery_status_charging == true ]]; then
+        tstring=$(( 60 * ($energy_full - $energy_now) / $power_now ))
+      else
+        tstring=$(( 60 * $energy_now / $power_now ))
       fi
+      # format to h:mm
+      tstring="$(($tstring/60)):${(l#2##0#)$(($tstring%60))}"
+    else
+      tstring="..."
     fi
     [[ -n $tstring ]] && local remain=" ($tstring)"
   fi
