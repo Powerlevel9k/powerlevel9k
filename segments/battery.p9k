@@ -72,8 +72,8 @@ prompt_battery() {
 
   if [[ "$__P9K_OS" == 'Linux' ]] || [[ "$__P9K_OS" == 'Android' ]]; then
     local sysp="${ROOT_PREFIX}/sys/class/power_supply"
-    local potential_bats=( "$sysp/*" )
-    [[ ${#${(M)potential_bats:#*(BAT|battery)*}} ]] \
+    local potential_bats=( $sysp/* )
+    [[ ${#${(M)potential_bats:#*(BAT|battery)*}} > 0 ]] \
       && local bats=(${$(ls -d $sysp/(battery|BAT*))}) \
       || return
 
@@ -83,9 +83,13 @@ prompt_battery() {
     local battery_status_full=true
     local battery_status_charging=false
     for bat in $bats; do
-      energy_now+="+ $(cat $bat/(energy|charge)_now)"
-      energy_full+="+ $(cat $bat/(energy|charge)_full)"
-      power_now+="+ $(cat $bat/(power|current)_now)"
+      local bat_files=( $bat/* )
+      [[ ${#${(M)bat_files:#*(energy|charge)_now*}} > 0 ]] \
+        && energy_now+="+ $(cat $bat/(energy|charge)_now)"
+      [[ ${#${(M)bat_files:#*(energy|charge)_full*}} > 0 ]] \
+        && energy_full+="+ $(cat $bat/(energy|charge)_full)"
+      [[ ${#${(M)bat_files:#*(power|current)_now*}} > 0 ]] \
+        && power_now+="+ $(cat $bat/(power|current)_now)"
       [[ $(cat $bat/status) != Full ]] && battery_status_full=false
       [[ $(cat $bat/status) == Charging ]] && battery_status_charging=true
     done
@@ -112,7 +116,7 @@ prompt_battery() {
     # calculate (dis)charging time
     if [[ $battery_status_full == true ]]; then
       # ignore full case (this just keeps a flat if structure)
-    elif [[ $power_now -gt 0 ]]; then
+    elif [[ $power_now > 0 ]]; then
       local tstring
       if [[ $battery_status_charging == true ]]; then
         tstring=$(( 60 * ($energy_full - $energy_now) / $power_now ))
