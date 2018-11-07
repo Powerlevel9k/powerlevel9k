@@ -71,11 +71,10 @@ prompt_battery() {
   fi
 
   if [[ "$__P9K_OS" == 'Linux' ]] || [[ "$__P9K_OS" == 'Android' ]]; then
+    setopt local_options null_glob
     local sysp="${ROOT_PREFIX}/sys/class/power_supply"
-    local potential_bats=( $sysp/* )
-    [[ ${#${(M)potential_bats:#*(BAT|battery)*}} > 0 ]] \
-      && local bats=(${$(ls -d $sysp/(battery|BAT*))}) \
-      || return
+    local bats=( $sysp/(BAT*|battery) )
+    [[ ${#bats} > 0 ]] || return
 
     local energy_now="0"
     local energy_full="0"
