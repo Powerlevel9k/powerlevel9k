@@ -83,15 +83,19 @@ prompt_battery() {
     local battery_status_full=true
     local battery_status_charging=false
     for bat in $bats; do
-      local bat_files=( $bat/* )
+      [[ ${#$(ls $bat)} > 0 ]] \
+        && local bat_files=( $bat/* ) \
+        || continue
       [[ ${#${(M)bat_files:#*(energy|charge)_now*}} > 0 ]] \
         && energy_now+="+ $(cat $bat/(energy|charge)_now)"
       [[ ${#${(M)bat_files:#*(energy|charge)_full*}} > 0 ]] \
         && energy_full+="+ $(cat $bat/(energy|charge)_full)"
       [[ ${#${(M)bat_files:#*(power|current)_now*}} > 0 ]] \
         && power_now+="+ $(cat $bat/(power|current)_now)"
-      [[ $(cat $bat/status) != Full ]] && battery_status_full=false
-      [[ $(cat $bat/status) == Charging ]] && battery_status_charging=true
+      if [[ ${#${(M)bat_files:#*status*}} > 0 ]]; then
+        [[ $(<$bat/status) != Full ]] && battery_status_full=false
+        [[ $(<$bat/status) == Charging ]] && battery_status_charging=true
+      fi
     done
     energy_now=$(($energy_now))
     energy_full=$(($energy_full))
