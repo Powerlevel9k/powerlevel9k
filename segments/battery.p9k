@@ -71,6 +71,7 @@ prompt_battery() {
   fi
 
   if [[ "$__P9K_OS" == 'Linux' ]] || [[ "$__P9K_OS" == 'Android' ]]; then
+    # needed if files or directory do not match globbing pattern
     setopt local_options null_glob
     local sysp="${ROOT_PREFIX}/sys/class/power_supply"
     local bats=( $sysp/(BAT*|battery) )
@@ -82,20 +83,25 @@ prompt_battery() {
     local battery_status_full=true
     local battery_status_charging=false
     for bat in $bats; do
-      [[ ${#$(ls $bat)} > 0 ]] \
-        && local bat_files=( $bat/* ) \
-        || continue
-      [[ ${#${(M)bat_files:#*(energy|charge)_now*}} > 0 ]] \
-        && energy_now+="+ $(cat $bat/(energy|charge)_now)"
-      [[ ${#${(M)bat_files:#*(energy|charge)_full*}} > 0 ]] \
-        && energy_full+="+ $(cat $bat/(energy|charge)_full)"
-      [[ ${#${(M)bat_files:#*(power|current)_now*}} > 0 ]] \
-        && power_now+="+ $(cat $bat/(power|current)_now)"
-      if [[ ${#${(M)bat_files:#*status*}} > 0 ]]; then
-        [[ $(<$bat/status) != Full ]] && battery_status_full=false
-        [[ $(<$bat/status) == Charging ]] && battery_status_charging=true
-      fi
+      # skip this loop if no files in $bat
+      local bat_tmp=( $bat/* )
+      [[ ${#bat_tmp} > 0 ]] || continue
+      # add + [number in file] if the file exists
+      local energy_now_tmp=( $bat/(energy|charge)_now )
+      energy_now+="+ 0$(<${energy_now_tmp[1]:-/dev/null})"
+      local energy_full_tmp=( $bat/(energy|charge)_full )
+      energy_full+="+ 0$(< ${energy_full_tmp[1]:-/dev/null})"
+      local power_now_tmp=( $bat/(power|current)_now )
+      power_now+="+ 0$(< ${power_now_tmp[1]:-/dev/null})"
+      # get kumulative battery status (ignore if no status file exists)
+      local battery_status=( $bat/status )
+      [[ $(<${battery_status[1]:-/dev/null}) != Full && -n $(<${battery_status[1]:-/dev/null}) ]] \
+        && battery_status_full=false
+      [[ $(<${battery_status[1]:-/dev/null}) == Charging ]] \
+        && battery_status_charging=true
     done
+
+    # replace values of varibales with evaluation of the sums
     energy_now=$(($energy_now))
     energy_full=$(($energy_full))
     power_now=$(($power_now))
