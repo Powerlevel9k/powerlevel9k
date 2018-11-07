@@ -24,6 +24,8 @@ function setUp() {
   # Prepare folder for ${BATTERY} (Linux)
   BATTERY_PATH=$FOLDER/sys/class/power_supply
   mkdir -p $BATTERY_PATH/BAT{0..2}
+  # empty battery
+  mkdir -p $BATTERY_PATH/BAT3
 }
 
 function tearDown() {
@@ -146,16 +148,16 @@ function testBatterySegmentIfBatteryIsLowWhileChargingOnLinux() {
 
 function testBatterySegmentIfBatteryIsNormalWhileDischargingOnLinux() {
   local __P9K_OS='Linux' # Fake Linux
-  makeBatterySay "10" "Discharging"
+  makeBatterySay "98" "Discharging"
 
-  assertEquals "%K{000} %F{015}🔋 %f%F{015}10%% (0:14) " "$(prompt_battery left 1 false ${FOLDER})"
+  assertEquals "%K{000} %F{015}🔋 %f%F{015}98%% (2:17) " "$(prompt_battery left 1 false ${FOLDER})"
 }
 
 function testBatterySegmentIfBatteryIsNormalWhileChargingOnLinux() {
   local __P9K_OS='Linux' # Fake Linux
-  makeBatterySay "10" "Charging"
+  makeBatterySay "98" "Charging"
 
-  assertEquals "%K{000} %F{003}🔋 %f%F{003}10%% (2:06) " "$(prompt_battery left 1 false ${FOLDER})"
+  assertEquals "%K{000} %F{003}🔋 %f%F{003}98%% (0:02) " "$(prompt_battery left 1 false ${FOLDER})"
 }
 
 function testBatterySegmentIfBatteryIsFullOnLinux() {
