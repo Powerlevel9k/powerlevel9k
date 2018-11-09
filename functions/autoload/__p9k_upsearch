@@ -9,7 +9,9 @@
 #   the powerlevel9k ZSH theme.
 ##
 
-setopt localoptions globsubst extended_glob
+setopt localoptions globsubst
+# Reset possible options
+setopt localoptions noglobdots noshglob nonumericglobsort
 
 ###############################################################
 # @description
