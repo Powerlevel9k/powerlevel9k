@@ -19,6 +19,7 @@ setopt localoptions noglobdots noshglob nonumericglobsort
 ##
 # @args
 #   $1 string File/folder name to search for. This may be a file glob
+#   $2 string Optional Glob Qualifiers
 ##
 # @returns
 #   An array with the path(s) where the file/folder name has been found
@@ -26,11 +27,13 @@ setopt localoptions noglobdots noshglob nonumericglobsort
 # @function __p9k_upsearch() {}
 local -a results
 local currentDir="${PWD}"
+# Always append "N" for NULL_GLOB
+local globModifiers="${2}N"
 
 while [[ "${currentDir}" != / ]]; do
   currentDir="${currentDir:h}"
   local -a resolvedGlobs
-  resolvedGlobs=( ${currentDir}/${1}(N) )
+  resolvedGlobs=( ${currentDir}/${1}(${globModifiers}) )
   # There is at least one match in that directory
   [[ ${#resolvedGlobs} > 0 ]] && results+=("${currentDir}")
 done
