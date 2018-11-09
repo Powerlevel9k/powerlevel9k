@@ -72,10 +72,10 @@ prompt_battery() {
 
   if [[ "$__P9K_OS" == 'Linux' ]] || [[ "$__P9K_OS" == 'Android' ]]; then
     # needed if files or directory do not match globbing pattern
-    setopt local_options null_glob
     local sysp="${ROOT_PREFIX}/sys/class/power_supply"
-    local bats=( $sysp/(BAT*|battery) )
-    [[ ${#bats} > 0 ]] || return
+    local -a bats
+    bats=( $sysp/(BAT*|battery)(N) )
+    [[ ${#bats} == 0 ]] && return
 
     local energy_now="0"
     local energy_full="0"
@@ -84,17 +84,22 @@ prompt_battery() {
     local battery_status_charging=false
     for bat in $bats; do
       # skip this loop if no files in $bat
-      local bat_tmp=( $bat/* )
-      [[ ${#bat_tmp} > 0 ]] || continue
-      # add + [number in file] if the file exists
-      local energy_now_tmp=( $bat/(energy|charge)_now )
+      local -a bat_tmp
+      bat_tmp=( $bat/*(N) )
+      [[ ${#bat_tmp} == 0 ]] && continue
+      # add "+ 0[number in file]" if the file exists (0 padding if glob fails)
+      local -a energy_now_tmp
+      energy_now_tmp=( $bat/(energy|charge)_now(N) )
       energy_now+="+ 0$(<${energy_now_tmp[1]:-/dev/null})"
-      local energy_full_tmp=( $bat/(energy|charge)_full )
+      local -a energy_full_tmp
+      energy_full_tmp=( $bat/(energy|charge)_full(N) )
       energy_full+="+ 0$(< ${energy_full_tmp[1]:-/dev/null})"
-      local power_now_tmp=( $bat/(power|current)_now )
+      local -a power_now_tmp
+      power_now_tmp=( $bat/(power|current)_now(N) )
       power_now+="+ 0$(< ${power_now_tmp[1]:-/dev/null})"
-      # get kumulative battery status (ignore if no status file exists)
-      local battery_status=( $bat/status )
+      # get cumulative battery status (ignore if no status file exists)
+      local -a battery_status
+      battery_status=( $bat/status(N) )
       [[ $(<${battery_status[1]:-/dev/null}) != Full && -n $(<${battery_status[1]:-/dev/null}) ]] \
         && battery_status_full=false
       [[ $(<${battery_status[1]:-/dev/null}) == Charging ]] \
