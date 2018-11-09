@@ -18,8 +18,7 @@ setopt localoptions noglobdots noshglob nonumericglobsort
 #   Search recursively in parent folders for given file.
 ##
 # @args
-#   $1 string File/folder name to search for
-#   $2 string Path to search in. This may be a file glob
+#   $1 string File/folder name to search for. This may be a file glob
 ##
 # @returns
 #   An array with the path(s) where the file/folder name has been found

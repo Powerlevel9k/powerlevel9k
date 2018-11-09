@@ -105,7 +105,7 @@ prompt_dir() {
           # buildup a pattern that is removed from the current path
           # later on.
           local -a markedFolders
-          markedFolders=( $(__p9k_upsearch $P9K_DIR_SHORTEN_FOLDER_MARKER $current_path) )
+          markedFolders=( $(__p9k_upsearch $P9K_DIR_SHORTEN_FOLDER_MARKER) )
           if (( ${#markedFolders} > 0 )); then
             # Take the last match. This is the longest one.
             local markedFolder="${markedFolders[${#markedFolders}]}"
