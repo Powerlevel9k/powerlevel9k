@@ -184,4 +184,41 @@ function testUpsearchWithDirectories() {
   rm -fr "/tmp/p9k-test"
 }
 
+function testUpsearchWithFileGlobs() {
+  local OLDPWD="${PWD}"
+  local TESTDIR=/tmp/p9k-test/1/12/123/1234/12345/123456/1234567/12345678/123456789/gap\ dir/test
+
+  mkdir -p "${TESTDIR}"
+  cd "${TESTDIR}"
+  mkdir ../.needle
+  mkdir ../.another-needle
+  touch ../../../.needle
+  mkdir ../../../.needle-noMatch
+  touch ../../../../../.another-needle
+  touch ../../../../../../.needle
+  mkdir ../../../../../../../../.needle
+
+  local -a result
+  # Modify internal field separator to newline, for easier
+  # handling of paths with whitespaces.
+  local OLDIFS="${IFS}"
+  IFS=$'\n'
+  # Alternative File syntax "(A|B)"    Glob qualifiers; "." is file; "/" is directory; "," means OR
+  result=($(__p9k_upsearch "(.needle|.another-needle)" ".,/"))
+  IFS="${OLDIFS}"
+
+  # Count array values
+  assertEquals "5" "${#result}"
+
+  # The Paths should be sorted by length. The innermost (longest) path should be returned first.
+  assertEquals "/tmp/p9k-test/1/12/123/1234/12345/123456/1234567/12345678/123456789/gap dir" "${result[1]}"
+  assertEquals "/tmp/p9k-test/1/12/123/1234/12345/123456/1234567/12345678" "${result[2]}"
+  assertEquals "/tmp/p9k-test/1/12/123/1234/12345/123456" "${result[3]}"
+  assertEquals "/tmp/p9k-test/1/12/123/1234/12345" "${result[4]}"
+  assertEquals "/tmp/p9k-test/1/12/123" "${result[5]}"
+
+  cd "${OLDPWD}"
+  rm -fr "/tmp/p9k-test"
+}
+
 source shunit2/shunit2
