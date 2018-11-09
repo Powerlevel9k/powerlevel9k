@@ -30,6 +30,12 @@ local currentDir="${PWD}"
 # Always append "N" for NULL_GLOB
 local globModifiers="${2}N"
 
+# First search in current directory.
+local -a resolvedGlobs
+resolvedGlobs=( ${currentDir}/${1}(${globModifiers}) )
+# There is at least one match in that directory
+[[ ${#resolvedGlobs} > 0 ]] && results+=("${currentDir}")
+
 while [[ "${currentDir}" != / ]]; do
   currentDir="${currentDir:h}"
   local -a resolvedGlobs
