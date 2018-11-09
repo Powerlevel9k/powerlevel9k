@@ -25,6 +25,9 @@ p9k::set_default P9K_DIR_PATH_HIGHLIGHT_BOLD false
 p9k::set_default P9K_DIR_PATH_ABSOLUTE false
 p9k::set_default P9K_DIR_SHORTEN_DELIMITER "\u2026"
 p9k::set_default P9K_DIR_SHORTEN_FOLDER_MARKER ".shorten_folder_marker"
+# Parse the 'name' from the package.json; if there are any problems, just
+# print the file path
+p9k::defined P9K_DIR_PACKAGE_FILES || P9K_DIR_PACKAGE_FILES=(package.json composer.json)
 ################################################################
 # @description
 #   Display information about the current working directory.
@@ -145,9 +148,6 @@ prompt_dir() {
         # subdirectory path as a substring of the current directory's path from 0
         # to the length of the package path's string
         subdirectory_path=$(__p9k_truncate_path "${trunc_path:${#${(S%%)package_path//$~zero/}}}" $P9K_DIR_SHORTEN_LENGTH $P9K_DIR_SHORTEN_DELIMITER)
-        # Parse the 'name' from the package.json; if there are any problems, just
-        # print the file path
-        p9k::defined P9K_DIR_PACKAGE_FILES || P9K_DIR_PACKAGE_FILES=(package.json composer.json)
 
         local pkgFile="unknown"
         for file in "${P9K_DIR_PACKAGE_FILES[@]}"; do
