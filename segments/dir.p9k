@@ -102,19 +102,20 @@ prompt_dir() {
       ;;
       truncate_with_folder_marker)
         if (( ${#paths} > 0 )); then # root and home are exceptions and won't have paths, so skip this
-          local last_marked_folder marked_folder
-          current_path=${PWD}
           # Search for the folder marker in the parent directories and
           # buildup a pattern that is removed from the current path
           # later on.
           local -a markedFolders
           markedFolders=( $(__p9k_upsearch $P9K_DIR_SHORTEN_FOLDER_MARKER) )
           if (( ${#markedFolders} > 0 )); then
-            # Take the last match. This is the longest one.
-            local markedFolder="${markedFolders[${#markedFolders}]}"
-            # Remove the last path segment from the match. The last path segment
-            # is the matched marker.
-            markedFolder="${markedFolder%/*}"
+            # Take the first match. This is the longest one.
+            local markedFolder="${markedFolders[1]}"
+            # We want to remove up to the matched parent folder
+            markedFolder="${markedFolder:h}"
+            # TODO: Do not duplicate code from above, but this is necessary to truncate the path right.
+            # Also, this has to take P9K_DIR_PATH_ABSOLUTE into account..
+            markedFolder=${markedFolder//$HOME/"~"}
+            local shortenedFolder="${current_path#${markedFolder}*}"
             current_path="${pathPrefix}${P9K_DIR_SHORTEN_DELIMITER}${current_path#${markedFolder}*}"
           fi
         fi
@@ -143,11 +144,10 @@ prompt_dir() {
         # in the path (this is done by the "zero" pattern; see
         # http://stackoverflow.com/a/40855342/5586433).
         local zero='%([BSUbfksu]|([FB]|){*})'
-        trunc_path=$PWD
         # Then, find the length of the package_path string, and save the
         # subdirectory path as a substring of the current directory's path from 0
         # to the length of the package path's string
-        subdirectory_path=$(__p9k_truncate_path "${trunc_path:${#${(S%%)package_path//$~zero/}}}" $P9K_DIR_SHORTEN_LENGTH $P9K_DIR_SHORTEN_DELIMITER)
+        subdirectory_path=$(__p9k_truncate_path "${current_path:${#${(S%%)package_path//$~zero/}}}" $P9K_DIR_SHORTEN_LENGTH $P9K_DIR_SHORTEN_DELIMITER)
 
         local pkgFile="unknown"
         for file in "${P9K_DIR_PACKAGE_FILES[@]}"; do
