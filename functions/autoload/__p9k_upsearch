@@ -17,7 +17,7 @@ setopt localoptions globsubst extended_glob
 ##
 # @args
 #   $1 string File/folder name to search for
-#   $2 string Path to search in
+#   $2 string Path to search in. This may be a file glob
 ##
 # @returns
 #   An array with the path(s) where the file/folder name has been found
@@ -29,7 +29,7 @@ local currentDir="${PWD}"
 while [[ "${currentDir}" != / ]]; do
   currentDir="${currentDir:h}"
   local -a resolvedGlobs
-  resolvedGlobs=( ${currentDir}/${1} )
+  resolvedGlobs=( ${currentDir}/${1}(N) )
   # There is at least one match in that directory
   [[ ${#resolvedGlobs} > 0 ]] && results+=("${currentDir}")
 done
