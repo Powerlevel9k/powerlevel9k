@@ -284,6 +284,25 @@ function testTruncateWithFolderMarkerWithSymlinks() {
   rm -fr $BASEFOLDER
 }
 
+function testTruncateWithFolderMarkerInMarkedFolder() {
+  typeset -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(dir)
+  local P9K_DIR_SHORTEN_STRATEGY="truncate_with_folder_marker"
+
+  local BASEFOLDER=/tmp/powerlevel9k-test
+  local FOLDER=$BASEFOLDER/1/12
+  mkdir -p $FOLDER
+  # Setup folder marker
+  touch $FOLDER/.shorten_folder_marker
+  cd $FOLDER
+  # setopt xtrace
+  assertEquals "%K{004} %F{000}/…/12 %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  # unsetopt xtrace
+
+  cd -
+  rm -fr $BASEFOLDER
+}
+
 function testTruncateWithPackageNameWorks() {
   typeset -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(dir)
