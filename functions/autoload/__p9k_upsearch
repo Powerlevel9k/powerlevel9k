@@ -9,7 +9,7 @@
 #   the powerlevel9k ZSH theme.
 ##
 
-setopt localoptions
+setopt localoptions globsubst extended_glob
 
 ###############################################################
 # @description
@@ -28,7 +28,10 @@ local currentDir="${PWD}"
 
 while [[ "${currentDir}" != / ]]; do
   currentDir="${currentDir:h}"
-  [[ -f "${currentDir}/${1}" || -d "${currentDir}/${1}" ]] && results+=("${currentDir}")
+  local -a resolvedGlobs
+  resolvedGlobs=( ${currentDir}/${1} )
+  # There is at least one match in that directory
+  [[ ${#resolvedGlobs} > 0 ]] && results+=("${currentDir}")
 done
 
 # Print in lexical order
