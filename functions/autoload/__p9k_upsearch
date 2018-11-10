@@ -9,29 +9,40 @@
 #   the powerlevel9k ZSH theme.
 ##
 
-setopt localoptions extendedglob
+setopt localoptions globsubst
+# Reset possible options
+setopt localoptions noglobdots noshglob nonumericglobsort
 
 ###############################################################
 # @description
 #   Search recursively in parent folders for given file.
 ##
 # @args
-#   $1 string File/folder name to search for
-#   $2 string Path to search in
+#   $1 string File/folder name to search for. This may be a file glob
+#   $2 string Optional Glob Qualifiers
 ##
 # @returns
 #   An array with the path(s) where the file/folder name has been found
 ##
 # @function __p9k_upsearch() {}
-if [[ "$PWD" == "$HOME" || "$PWD" == "/" ]]; then
-  echo "$PWD"
-elif test -e "$1"; then
-  pushd .. > /dev/null
-  __p9k_upsearch "$1"
-  popd > /dev/null
-  echo "${PWD}"
-else
-  pushd .. > /dev/null
-  __p9k_upsearch "$1"
-  popd > /dev/null
-fi
+local -a results
+local currentDir="${PWD}"
+# Always append "N" for NULL_GLOB
+local globModifiers="${2}N"
+
+# First search in current directory.
+local -a resolvedGlobs
+resolvedGlobs=( ${currentDir}/${1}(${globModifiers}) )
+# There is at least one match in that directory
+[[ ${#resolvedGlobs} > 0 ]] && results+=("${currentDir}")
+
+while [[ "${currentDir}" != / ]]; do
+  currentDir="${currentDir:h}"
+  local -a resolvedGlobs
+  resolvedGlobs=( ${currentDir}/${1}(${globModifiers}) )
+  # There is at least one match in that directory
+  [[ ${#resolvedGlobs} > 0 ]] && results+=("${currentDir}")
+done
+
+# Print in lexical order
+print -l ${(@O)results}
