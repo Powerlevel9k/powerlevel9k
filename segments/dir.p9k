@@ -112,6 +112,10 @@ prompt_dir() {
             local markedFolder="${markedFolders[1]}"
             # We want to remove up to the matched parent folder
             markedFolder="${markedFolder:h}"
+            # Remove $HOME from it. This has to be done, as the truncated
+            # path may be prefixed by a tilde, and we cannot resolve the
+            # current path softly without symlinks.
+            markedFolder=${markedFolder//$HOME/"~"}
             local shortenedFolder="${current_path#${markedFolder}*}"
             current_path="${pathPrefix}${P9K_DIR_SHORTEN_DELIMITER}${current_path#${markedFolder}*}"
           fi
