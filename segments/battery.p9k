@@ -71,24 +71,47 @@ prompt_battery() {
   fi
 
   if [[ "$__P9K_OS" == 'Linux' ]] || [[ "$__P9K_OS" == 'Android' ]]; then
+    # needed if files or directory do not match globbing pattern
     local sysp="${ROOT_PREFIX}/sys/class/power_supply"
-    local potential_bats=( "$sysp/*" )
-    [[ ${#${(M)potential_bats:#*(BAT|battery)*}} ]] \
-      && local bats=(${$(ls -d $sysp/(battery|BAT*))}) \
-      || return
+    local -a bats
+    bats=( $sysp/(BAT*|battery)(N) )
+    [[ ${#bats} == 0 ]] && return
 
-    local numerator="0"
-    local denominator="0"
+    local energy_now="0"
+    local energy_full="0"
+    local power_now="0"
     local battery_status_full=true
     local battery_status_charging=false
     for bat in $bats; do
-      numerator+="+ $(cat $bat/capacity) * $(cat $bat/(energy|charge)_full)"
-      denominator+="+ $(cat $bat/(energy|charge)_full)"
-      [[ $(cat $bat/status) != Full ]] && battery_status_full=false
-      [[ $(cat $bat/status) == Charging ]] && battery_status_charging=true
+      # skip this loop if no files in $bat
+      local -a bat_tmp
+      bat_tmp=( $bat/*(N) )
+      [[ ${#bat_tmp} == 0 ]] && continue
+      # add "+ 0[number in file]" if the file exists (0 padding if glob fails)
+      local -a energy_now_tmp
+      energy_now_tmp=( $bat/(energy|charge)_now(N) )
+      energy_now+="+ 0$(<${energy_now_tmp[1]:-/dev/null})"
+      local -a energy_full_tmp
+      energy_full_tmp=( $bat/(energy|charge)_full(N) )
+      energy_full+="+ 0$(< ${energy_full_tmp[1]:-/dev/null})"
+      local -a power_now_tmp
+      power_now_tmp=( $bat/(power|current)_now(N) )
+      power_now+="+ 0$(< ${power_now_tmp[1]:-/dev/null})"
+      # get cumulative battery status (ignore if no status file exists)
+      local -a battery_status
+      battery_status=( $bat/status(N) )
+      [[ $(<${battery_status[1]:-/dev/null}) != Full && -n $(<${battery_status[1]:-/dev/null}) ]] \
+        && battery_status_full=false
+      [[ $(<${battery_status[1]:-/dev/null}) == Charging ]] \
+        && battery_status_charging=true
     done
 
-    local capacity=$(( ($numerator)/($denominator) ))
+    # replace values of varibales with evaluation of the sums
+    energy_now=$(($energy_now))
+    energy_full=$(($energy_full))
+    power_now=$(($power_now))
+
+    local capacity=$(( 100 * $energy_now / $energy_full ))
     [[ $capacity -gt 100 ]] \
       && local bat_percent=100 \
       || local bat_percent=$capacity
@@ -103,17 +126,21 @@ prompt_battery() {
       [[ $bat_percent =~ 100 ]] && current_state="charged"
       [[ $bat_percent -lt 100 ]] && current_state="charging"
     fi
-    if [[ -f ${ROOT_PREFIX}/usr/bin/acpi ]]; then
-      declare -a acpi_lines
-      acpi_lines=( "${(@f)$(${ROOT_PREFIX}/usr/bin/acpi)}" )
-      local time_remaining=${${=${(M)acpi_lines:#*([[:digit:]][[:digit:]]:|rate)*}}[5]}
-      unset acpi_lines
 
-      if [[ $time_remaining =~ "rate" ]]; then
-        local tstring="..."
-      elif [[ $time_remaining =~ "[[:digit:]]+" ]]; then
-        local tstring=${(f)$(date -u -d "$(echo $time_remaining)" +%k:%M 2> /dev/null)}
+    # calculate (dis)charging time
+    if [[ $battery_status_full == true ]]; then
+      # ignore full case (this just keeps a flat if structure)
+    elif [[ $power_now > 0 ]]; then
+      local tstring
+      if [[ $battery_status_charging == true ]]; then
+        tstring=$(( 60 * ($energy_full - $energy_now) / $power_now ))
+      else
+        tstring=$(( 60 * $energy_now / $power_now ))
       fi
+      # format to h:mm
+      tstring="$(($tstring/60)):${(l#2##0#)$(($tstring%60))}"
+    else
+      tstring="..."
     fi
     [[ -n $tstring ]] && local remain=" ($tstring)"
   fi

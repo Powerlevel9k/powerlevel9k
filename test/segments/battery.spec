@@ -23,9 +23,9 @@ function setUp() {
   mkdir -p $PMSET_PATH
   # Prepare folder for ${BATTERY} (Linux)
   BATTERY_PATH=$FOLDER/sys/class/power_supply
-  mkdir -p $BATTERY_PATH
-  mkdir -p $BATTERY_PATH/BAT0
-  mkdir -p $BATTERY_PATH/BAT1
+  mkdir -p $BATTERY_PATH/BAT{0..2}
+  # empty battery
+  mkdir -p $BATTERY_PATH/BAT3
 }
 
 function tearDown() {
@@ -57,14 +57,31 @@ function makeBatterySay() {
   chmod +x $PMSET_PATH/pmset
 
   # Linux
-  local capacity="$1"
-  echo "$capacity" > $BATTERY_PATH/BAT0/capacity
-  echo "$capacity" > $BATTERY_PATH/BAT1/capacity
   local battery_status="$2"
   echo "$battery_status" > $BATTERY_PATH/BAT0/status
   echo "$battery_status" > $BATTERY_PATH/BAT1/status
-  echo "21510000" > $BATTERY_PATH/BAT0/energy_full
-  echo "21510000" > $BATTERY_PATH/BAT1/energy_full
+  echo "$battery_status" > $BATTERY_PATH/BAT2/status
+
+  local capacity="$1"
+  if [[ $capacity =~ ^[0-9]*$ ]]; then
+    echo "10000000" > $BATTERY_PATH/BAT0/energy_full
+    echo  "5000000" > $BATTERY_PATH/BAT1/charge_full
+    echo  "2500000" > $BATTERY_PATH/BAT2/energy_full
+    echo  "$((10000000*$capacity/100))" > $BATTERY_PATH/BAT0/energy_now
+    echo  "$(( 5000000*$capacity/100))" > $BATTERY_PATH/BAT1/energy_now
+    echo  "$(( 2500000*$capacity/100))" > $BATTERY_PATH/BAT2/charge_now
+  fi
+
+  # charge or discharge
+  if [[ $battery_status == Charging || $battery_status == Discharging ]]; then
+    echo  "5000000" > $BATTERY_PATH/BAT0/current_now
+    echo  "2500000" > $BATTERY_PATH/BAT1/power_now
+    echo        "0" > $BATTERY_PATH/BAT2/power_now
+  else
+    echo        "0" > $BATTERY_PATH/BAT0/power_now
+    echo        "0" > $BATTERY_PATH/BAT1/power_now
+    echo        "0" > $BATTERY_PATH/BAT2/power_now
+  fi
 }
 
 function testBatterySegmentIfBatteryIsLowWhileDischargingOnOSX() {
@@ -83,7 +100,7 @@ function testBatterySegmentIfBatteryIsLowWhileChargingOnOSX() {
   assertEquals "%K{000} %F{003}🔋 %f%F{003}4%% (0:05) " "$(prompt_battery left 1 false ${FOLDER})"
 }
 
-function testBatterySegmentIfBatteryIsAlmostFullWhileDischargingOnOSX() {
+function testBatterySegmentIfBatteryIsNormalWhileDischargingOnOSX() {
   local __P9K_OS='OSX' # Fake OSX
   makeBatterySay "Now drawing from 'Battery Power'
  -InternalBattery-0 (id=1234567)	98%; discharging; 3:57 remaining present: true"
@@ -91,7 +108,7 @@ function testBatterySegmentIfBatteryIsAlmostFullWhileDischargingOnOSX() {
   assertEquals "%K{000} %F{015}🔋 %f%F{015}98%% (3:57) " "$(prompt_battery left 1 false ${FOLDER})"
 }
 
-function testBatterySegmentIfBatteryIsAlmostFullWhileChargingOnOSX() {
+function testBatterySegmentIfBatteryIsNormalWhileChargingOnOSX() {
   local __P9K_OS='OSX' # Fake OSX
   makeBatterySay "Now drawing from 'Battery Power'
  -InternalBattery-0 (id=1234567)	98%; charging; 3:57 remaining present: true"
@@ -119,28 +136,28 @@ function testBatterySegmentIfBatteryIsLowWhileDischargingOnLinux() {
   local __P9K_OS='Linux' # Fake Linux
   makeBatterySay "4" "Discharging"
 
-  assertEquals "%K{000} %F{001}🔋 %f%F{001}4%% " "$(prompt_battery left 1 false ${FOLDER})"
+  assertEquals "%K{000} %F{001}🔋 %f%F{001}4%% (0:05) " "$(prompt_battery left 1 false ${FOLDER})"
 }
 
 function testBatterySegmentIfBatteryIsLowWhileChargingOnLinux() {
   local __P9K_OS='Linux' # Fake Linux
   makeBatterySay "4" "Charging"
 
-  assertEquals "%K{000} %F{003}🔋 %f%F{003}4%% " "$(prompt_battery left 1 false ${FOLDER})"
+  assertEquals "%K{000} %F{003}🔋 %f%F{003}4%% (2:14) " "$(prompt_battery left 1 false ${FOLDER})"
 }
 
 function testBatterySegmentIfBatteryIsNormalWhileDischargingOnLinux() {
   local __P9K_OS='Linux' # Fake Linux
-  makeBatterySay "10" "Discharging"
+  makeBatterySay "98" "Discharging"
 
-  assertEquals "%K{000} %F{015}🔋 %f%F{015}10%% " "$(prompt_battery left 1 false ${FOLDER})"
+  assertEquals "%K{000} %F{015}🔋 %f%F{015}98%% (2:17) " "$(prompt_battery left 1 false ${FOLDER})"
 }
 
 function testBatterySegmentIfBatteryIsNormalWhileChargingOnLinux() {
   local __P9K_OS='Linux' # Fake Linux
-  makeBatterySay "10" "Charging"
+  makeBatterySay "98" "Charging"
 
-  assertEquals "%K{000} %F{003}🔋 %f%F{003}10%% " "$(prompt_battery left 1 false ${FOLDER})"
+  assertEquals "%K{000} %F{003}🔋 %f%F{003}98%% (0:02) " "$(prompt_battery left 1 false ${FOLDER})"
 }
 
 function testBatterySegmentIfBatteryIsFullOnLinux() {
@@ -150,28 +167,11 @@ function testBatterySegmentIfBatteryIsFullOnLinux() {
   assertEquals "%K{000} %F{002}🔋 %f%F{002}100%% " "$(prompt_battery left 1 false ${FOLDER})"
 }
 
-function testBatterySegmentIfBatteryIsNormalWithAcpiEnabledOnLinux() {
+function testBatterySegmentIfBatteryIsCalculatingOnLinux() {
   local __P9K_OS='Linux' # Fake Linux
-  makeBatterySay "50" "Discharging"
-  echo "echo 'Battery 0: Unknown, 50%\nBattery 1: Discharging, 50%, 01:38:54 remaining\n'" > ${FOLDER}/usr/bin/acpi
-  chmod +x ${FOLDER}/usr/bin/acpi
-  # For running on Mac, we need to mock date :(
-  [[ -f /usr/local/bin/gdate ]] && alias date=gdate
+  makeBatterySay "99" "Unknown"
 
-  assertEquals "%K{000} %F{015}🔋 %f%F{015}50%% (1:38) " "$(prompt_battery left 1 false ${FOLDER})"
-
-  unalias date &>/dev/null
-  return 0
-}
-
-function testBatterySegmentIfBatteryIsCalculatingWithAcpiEnabledOnLinux() {
-  local __P9K_OS='Linux' # Fake Linux
-  makeBatterySay "50" "Discharging"
-  # Todo: Include real acpi output!
-  echo "echo 'Battery 0: Discharging, 50%, rate remaining\nBattery 1: Unknown, 98%'" > ${FOLDER}/usr/bin/acpi
-  chmod +x ${FOLDER}/usr/bin/acpi
-
-  assertEquals "%K{000} %F{015}🔋 %f%F{015}50%% (...) " "$(prompt_battery left 1 false ${FOLDER})"
+  assertEquals "%K{000} %F{015}🔋 %f%F{015}99%% (...) " "$(prompt_battery left 1 false ${FOLDER})"
 }
 
 source shunit2/shunit2
