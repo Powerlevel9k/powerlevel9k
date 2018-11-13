@@ -44,8 +44,8 @@ prompt_dir() {
   local current_path=${PWD} # WAS: local current_path="$(print -P '%~')"
   local pathPrefix
   [[ ${current_path} == "${HOME}"* ]] && pathPrefix="~/" || pathPrefix="/"
-  # check if the user wants to use absolute paths or "~" paths
-  [[ ${(L)P9K_DIR_PATH_ABSOLUTE} != "true" ]] && current_path=${current_path//$HOME/"~"}
+  # Always rewrite current path to be prefixed with ~ if in home folder
+  current_path=${current_path//$HOME/"~"}
   # declare all local variables
   local directory test_dir test_dir_length trunc_path threshold
   # if we are not in "~" or "/", split the paths into an array and exclude "~"
@@ -112,9 +112,6 @@ prompt_dir() {
             local markedFolder="${markedFolders[1]}"
             # We want to remove up to the matched parent folder
             markedFolder="${markedFolder:h}"
-            # TODO: Do not duplicate code from above, but this is necessary to truncate the path right.
-            # Also, this has to take P9K_DIR_PATH_ABSOLUTE into account..
-            markedFolder=${markedFolder//$HOME/"~"}
             local shortenedFolder="${current_path#${markedFolder}*}"
             current_path="${pathPrefix}${P9K_DIR_SHORTEN_DELIMITER}${current_path#${markedFolder}*}"
           fi
@@ -172,6 +169,9 @@ prompt_dir() {
       ;;
     esac
   fi
+
+  # check if the user wants to use absolute paths or "~" paths
+  [[ ${(L)P9K_DIR_PATH_ABSOLUTE} == "true" ]] && current_path=${current_path//"~"/$HOME}
 
   # save state of path for highlighting and bold options
   local path_opt=$current_path
