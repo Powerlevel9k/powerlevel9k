@@ -1,0 +1,71 @@
+# vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
+################################################################
+# @title powerlevel9k Segment - Reminder
+# @source [powerlevel9k](https://github.com/bhilburn/powerlevel9k)
+##
+
+################################################################
+# Register segment
+# Parameters:
+#   segment_name  context  background  foreground  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
+#                                                                                                                             
+p9k::register_segment 'REMINDER' '' green "$DEFAULT_COLOR" '!!' ''   $'\UF0A4 '   '\u'"${CODEPOINT_OF_AWESOME_HAND_O_RIGHT}"   $'\UF0A4'
+
+################################################################
+# @description
+#   Display the reminder icon/text for the current time interval.
+##
+# @args
+#   $1 string Alignment - left | right
+#   $2 integer Segment index
+#   $3 boolean Whether the segment should be joined
+##
+prompt_reminder() {
+	typeset -AH __lookup
+  __lookup=(
+    "sun" 0
+    "mon" 1
+    "tue" 2
+    "wed" 3
+    "thu" 4
+    "fri" 5
+    "sat" 6
+  )
+	local dow=$( date +"%w" )
+	local now=$( date +"%H%M" )
+  local segment_content=""
+	local separator=""
+	for rule in $P9K_REMINDER_RULES; do
+		echo $rule | while read date_exp time_exp icon; do
+			time_exp=$( echo "$time_exp" | sed -e "s/[:]//g" )
+			local match=false
+			case "$date_exp" in
+				'*')
+					match=true
+					;;
+
+				???-???)
+					d=("${(@s/-/)date_exp}")
+					start_day=$__lookup[$d[1]]
+					end_day=$__lookup[$d[2]]
+					[[ ( $dow -ge $start_day ) && ( $dow -le $end_day ) ]] && match=true
+					;;
+
+				???)
+					start_day=$__lookup[$date_exp]
+					[[ $dow -eq $start_day ]] && match=true
+					;;
+			esac
+			if ( ! $match ) break;
+			t=("${(@s/-/)time_exp}")
+			match=false
+			[[ ( $now -ge $t[1] ) && ( $now -le $t[2] ) ]] && match=true
+			if ( ! $match ) break;
+			segment_content="${segment_content}${separator}${icon}"
+			separator=${P9K_REMINDER_SEPARATOR:-"┊"}
+		done
+	done
+  if ! [ -z "${segment_content}" ]; then
+    p9k::prepare_segment "$0" "" "$1" "$2" "$3" "${segment_content}"
+  fi
+}
