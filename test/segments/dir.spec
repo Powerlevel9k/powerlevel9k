@@ -27,8 +27,23 @@ function testDirPathAbsoluteWorks() {
   local P9K_DIR_PATH_ABSOLUTE=true
 
   cd ~
-  assertEquals "%K{004} %F{000}${PWD} %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  local absoluteDir="${PWD}"
+  assertEquals "%K{004} %F{000}${absoluteDir} %k%F{004}%f " "$(__p9k_build_left_prompt)"
 
+  local P9K_DIR_PATH_ABSOLUTE=false
+  assertEquals "%K{004} %F{000}~ %k%F{004}%f " "$(__p9k_build_left_prompt)"
+
+  typeset -a _strategies
+  _strategies=( truncate_from_left truncate_from_right truncate_middle truncate_to_last truncate_to_first_and_last truncate_absolute truncate_to_unique truncate_with_folder_marker truncate_with_package_name )
+
+  for strategy in ${_strategies}; do
+    local P9K_DIR_PATH_ABSOLUTE=true
+    P9K_DIR_SHORTEN_STRATEGY=${strategy}
+    assertEquals "${strategy} failed rendering absolute dir" "%K{004} %F{000}${absoluteDir} %k%F{004}%f " "$(__p9k_build_left_prompt)"
+
+    local P9K_DIR_PATH_ABSOLUTE=false
+    assertEquals "${strategy} failed rendering relative dir" "%K{004} %F{000}~ %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  done
   cd -
 }
 
