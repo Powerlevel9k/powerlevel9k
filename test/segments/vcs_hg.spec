@@ -208,6 +208,8 @@ function testBookmarkIconWorks() {
 }
 
 function testBranchNameScriptingVulnerability() {
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(vcs)
   echo "#!/bin/sh\n\necho 'hacked'\n" > evil_script.sh
   chmod +x evil_script.sh
 
@@ -215,7 +217,7 @@ function testBranchNameScriptingVulnerability() {
   hg add . >/dev/null
   hg commit -m "Initial commit" >/dev/null
 
-  assertEquals "%K{002} %F{000} %f%F{000} \$(./evil_script.sh) %k%F{002}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{002} %F{000} \$(./evil_script.sh) %k%F{002}%f " "$(__p9k_build_left_prompt)"
 }
 
 source shunit2/shunit2

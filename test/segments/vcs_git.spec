@@ -614,6 +614,8 @@ function testDetectingUntrackedFilesInCleanSubdirectoryWorks() {
 }
 
 function testBranchNameScriptingVulnerability() {
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(vcs)
   echo "#!/bin/sh\n\necho 'hacked'\n" > evil_script.sh
   chmod +x evil_script.sh
 
