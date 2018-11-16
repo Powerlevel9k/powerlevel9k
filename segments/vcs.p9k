@@ -122,10 +122,6 @@ p9k::set_default P9K_VCS_HIDE_TAGS false
 p9k::set_default P9K_VCS_INTERNAL_HASH_LENGTH "8" # Default: Just display the first 8 characters of our changeset-ID.
 p9k::set_default P9K_VCS_DIR_SHORTEN_DELIMITER $'\U2026'
 p9k::set_default P9K_VCS_SHOW_SUBMODULE_DIRTY true
-
-################################################################
-# Register segment helper default values
-p9k::set_default P9K_VCS_SHOW_SUBMODULE_DIRTY false
 p9k::set_default P9K_VCS_GIT_ALWAYS_SHOW_REMOTE_BRANCH false
 
 function +vi-git-untracked() {
