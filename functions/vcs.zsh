@@ -29,11 +29,19 @@ function +vi-git-untracked() {
     if [[ "$POWERLEVEL9K_VCS_SHOW_SUBMODULE_DIRTY" == "true" && "$(command git submodule foreach --quiet --recursive 'command git ls-files --others --exclude-standard')" != "" ]]; then
         hook_com[unstaged]+=" $(print_icon 'VCS_UNTRACKED_ICON')"
         VCS_WORKDIR_HALF_DIRTY=true
-    elif [[ "$(command git ls-files --others --exclude-standard "${repoDir}")" != "" ]]; then
-        hook_com[unstaged]+=" $(print_icon 'VCS_UNTRACKED_ICON')"
-        VCS_WORKDIR_HALF_DIRTY=true
     else
-        VCS_WORKDIR_HALF_DIRTY=false
+        local lsfiles=$(command git ls-files --others --exclude-standard "${repoDir}" 2>&1)
+        if [[ "$lsfiles" =~ "fatal:.*is outside repository" ]]; then
+            # Maybe we're in a submodule. Use top-level directory.
+            local toplevel=$(command git rev-parse --show-toplevel)
+            lsfiles=$(command git ls-files --others --exclude-standard "$toplevel")
+        fi
+        if [[ "$lsfiles" != "" ]]; then
+            hook_com[unstaged]+=" $(print_icon 'VCS_UNTRACKED_ICON')"
+            VCS_WORKDIR_HALF_DIRTY=true
+        else
+            VCS_WORKDIR_HALF_DIRTY=false
+        fi
     fi
 }
 
