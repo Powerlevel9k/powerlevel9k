@@ -126,7 +126,7 @@ p9k::set_default P9K_VCS_GIT_ALWAYS_SHOW_REMOTE_BRANCH false
 
 function +vi-git-untracked() {
   # get the root for the current repo or submodule
-  local repoTopLevel="$(git rev-parse --show-toplevel 2> /dev/null)"
+  local repoTopLevel="$(command git rev-parse --show-toplevel 2> /dev/null)"
   # dump out if we're outside a git repository (which includes being in the .git folder)
   [[ $? != 0 || -z $repoTopLevel ]] && return
 
