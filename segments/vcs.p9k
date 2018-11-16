@@ -134,7 +134,7 @@ function +vi-git-untracked() {
 
   local untrackedFiles=$(command git ls-files --others --exclude-standard "${repoTopLevel}")
 
-  if [[ -z $untrackedFiles && "$P9K_VCS_SHOW_SUBMODULE_DIRTY" != "false" ]]; then
+  if [[ -z $untrackedFiles && "$P9K_VCS_SHOW_SUBMODULE_DIRTY" == "true" ]]; then
     untrackedFiles+=$(command git submodule foreach --quiet --recursive 'command git ls-files --others --exclude-standard')
   fi
 
