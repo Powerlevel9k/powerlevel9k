@@ -122,41 +122,26 @@ p9k::set_default P9K_VCS_HIDE_TAGS false
 p9k::set_default P9K_VCS_INTERNAL_HASH_LENGTH "8" # Default: Just display the first 8 characters of our changeset-ID.
 p9k::set_default P9K_VCS_DIR_SHORTEN_DELIMITER $'\U2026'
 p9k::set_default P9K_VCS_SHOW_SUBMODULE_DIRTY true
-
-################################################################
-# Register segment helper default values
-p9k::set_default P9K_VCS_SHOW_SUBMODULE_DIRTY false
 p9k::set_default P9K_VCS_GIT_ALWAYS_SHOW_REMOTE_BRANCH false
 
 function +vi-git-untracked() {
   [[ -z "${vcs_comm[gitdir]}" || "${vcs_comm[gitdir]}" == "." ]] && return
 
-  # If we are in a .git folder, do not check for untracked files.
-  [[ "${PWD:A}" =~ "\.git/" ]] && return
+  # get the root for the current repo or submodule
+  local repoTopLevel="$(command git rev-parse --show-toplevel 2> /dev/null)"
+  # dump out if we're outside a git repository (which includes being in the .git folder)
+  [[ $? != 0 || -z $repoTopLevel ]] && return
 
-  # If we are in a repos root folder, vcs_comm[gitdir] yields ".git".
-  # Inside the .git dir itself (and not a subdir of it) the variable
-  # yields ".". In any other case (either a subdirectory of .git or
-  # the repo itself), the value of vcs_comm[gitdir] is the absolute
-  # path to the .git directory.
-  # Therefore we can step up a directory, if we are inside the .git
-  # folder. And in any other case, use the parent directory of the
-  # gitdir.
-  local repoDir="."
-  # Getting the parent dir of the current dir "." is still ".", so
-  # is is safe to do this always.
-  [[ "${vcs_comm[gitdir]}" != ".git" ]] && repoDir="${vcs_comm[gitdir]:A:h}"
-  [[ "${vcs_comm[gitdir]}" == "." ]] && repoDir="${PWD:A:h}"
+  local untrackedFiles=$(command git ls-files --others --exclude-standard "${repoTopLevel}")
 
-  if [[ "$P9K_VCS_SHOW_SUBMODULE_DIRTY" == "true" && "$(command git submodule foreach --quiet --recursive 'command git ls-files --others --exclude-standard')" != "" ]]; then
-    hook_com[unstaged]+=" ${__P9K_ICONS[VCS_UNTRACKED]}"
-    VCS_WORKDIR_HALF_DIRTY=true
-  elif [[ "$(command git ls-files --others --exclude-standard "${repoDir}")" != "" ]]; then
-    hook_com[unstaged]+=" ${__P9K_ICONS[VCS_UNTRACKED]}"
-    VCS_WORKDIR_HALF_DIRTY=true
-  else
-    VCS_WORKDIR_HALF_DIRTY=false
+  if [[ -z $untrackedFiles && "$P9K_VCS_SHOW_SUBMODULE_DIRTY" == "true" ]]; then
+    untrackedFiles+=$(command git submodule foreach --quiet --recursive 'command git ls-files --others --exclude-standard')
   fi
+
+  [[ -z $untrackedFiles ]] && return
+
+  hook_com[unstaged]+=" ${__P9K_ICONS[VCS_UNTRACKED]}"
+  VCS_WORKDIR_HALF_DIRTY=true
 }
 
 function +vi-git-aheadbehind() {
