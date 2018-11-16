@@ -44,8 +44,8 @@ prompt_dir() {
   local current_path=${PWD} # WAS: local current_path="$(print -P '%~')"
   local pathPrefix
   [[ ${current_path} == "${HOME}"* ]] && pathPrefix="~/" || pathPrefix="/"
-  # check if the user wants to use absolute paths or "~" paths
-  [[ ${(L)P9K_DIR_PATH_ABSOLUTE} != "true" ]] && current_path=${current_path//$HOME/"~"}
+  # Always rewrite current path to be prefixed with ~ if in home folder
+  current_path=${current_path//$HOME/"~"}
   # declare all local variables
   local directory test_dir test_dir_length trunc_path threshold
   # if we are not in "~" or "/", split the paths into an array and exclude "~"
@@ -112,8 +112,9 @@ prompt_dir() {
             local markedFolder="${markedFolders[1]}"
             # We want to remove up to the matched parent folder
             markedFolder="${markedFolder:h}"
-            # TODO: Do not duplicate code from above, but this is necessary to truncate the path right.
-            # Also, this has to take P9K_DIR_PATH_ABSOLUTE into account..
+            # Remove $HOME from it. This has to be done, as the truncated
+            # path may be prefixed by a tilde, and we cannot resolve the
+            # current path softly without symlinks.
             markedFolder=${markedFolder//$HOME/"~"}
             local shortenedFolder="${current_path#${markedFolder}*}"
             current_path="${pathPrefix}${P9K_DIR_SHORTEN_DELIMITER}${current_path#${markedFolder}*}"
@@ -121,22 +122,12 @@ prompt_dir() {
         fi
       ;;
       truncate_with_package_name)
-        local name repo_path package_path current_dir zero
-
-        package_path=${PWD:A}
-        # Get the path of the Git repo, which should have the package.json file
-        if [[ $(git rev-parse --is-inside-work-tree 2> /dev/null) == "true" ]]; then
-          # Get path from the root of the git repository to the current dir
-          local gitPath=$(git rev-parse --show-prefix)
-          # Remove trailing slash from git path, so that we can
-          # remove that git path from the pwd.
-          gitPath=${gitPath%/}
-          package_path=${PWD%%$gitPath}
-          # Remove trailing slash
-          package_path=${package_path%/}
-        elif [[ $(git rev-parse --is-inside-git-dir 2> /dev/null) == "true" ]]; then
-          package_path=${PWD%%/.git*}
-        fi
+        # Search for the folder marker in the parent directories and
+        # buildup a pattern that is removed from the current path
+        # later on.
+        local -a markedFolders
+        markedFolders=( $(__p9k_upsearch "(${(j:|:)P9K_DIR_PACKAGE_FILES})") )
+        local package_path="${markedFolders[1]}"
 
         # Replace the shortest possible match of the marked folder from
         # the current path. Remove the amount of characters up to the
@@ -172,6 +163,9 @@ prompt_dir() {
       ;;
     esac
   fi
+
+  # check if the user wants to use absolute paths or "~" paths
+  [[ ${(L)P9K_DIR_PATH_ABSOLUTE} == "true" ]] && current_path=${current_path//"~"/$HOME}
 
   # save state of path for highlighting and bold options
   local path_opt=$current_path
