@@ -147,31 +147,100 @@ function testCustomWhitespaceOfSegments() {
   P9K_RIGHT_PROMPT_ELEMENTS=(custom_world1 custom_world2 custom_world3)
   local P9K_CUSTOM_WORLD1='echo world1'
   local P9K_CUSTOM_WORLD1_ICON='{1}'
-  local P9K_CUSTOM_WORLD2='echo world1'
+  local P9K_CUSTOM_WORLD2='echo world2'
   local P9K_CUSTOM_WORLD3='echo world3'
+  local P9K_CUSTOM_WORLD3_ICON='{3}'
 
-  local P9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS="_A_"
-  local P9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS="_B_"
-  local P9K_LEFT_WHITESPACE_OF_LEFT_SEGMENTS="_C_"
-  local P9K_RIGHT_WHITESPACE_OF_LEFT_SEGMENTS="_D_"
-  local P9K_LEFT_WHITESPACE_OF_RIGHT_SEGMENTS="_E_"
-  local P9K_RIGHT_WHITESPACE_OF_RIGHT_SEGMENTS="_F_"
-
-  local P9K_CUSTOM_WORLD1_RIGHT_WHITESPACE="_G_"
-  local P9K_CUSTOM_WORLD3_LEFT_WHITESPACE="_H_"
+  local P9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS="_[L]_"
+  local P9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS="_[R]_"
 
   __p9k_prepare_prompts
+  assertEquals "%f%b%k%K{015}_[L]_%F{000}{1}%f_[L]_%F{000}world1_[L]__[L]_%F{000}world2_[L]__[L]_%F{000}{3}%f_[L]_%F{000}world3_[L]_%k%F{015}%f " "${(e)PROMPT}"
+  assertEquals "%f%b%k%F{015}%K{015}%F{000}_[R]_world1_[R]_%F{000}{1}%f_[R]_%F{000}%K{015}%F{000}_[R]_world2_[R]_%F{000}%K{015}%F{000}_[R]_world3_[R]_%F{000}{3}%f_[R]_%{<Esc>00m%" "$(stripEsc "${(e)RPROMPT}")"
 
-  assertEquals "%f%b%k%K{015}_C_%F{000}{1}%f_A_%F{000}world1_G__C_%F{000}world1_D__H_%F{000}world3_D_%k%F{015}%f " "${(e)PROMPT}"
-  local _right=$(stripEsc "${(e)RPROMPT}")
-  assertEquals "%f%b%k%F{015}%K{015}%F{000}_G_world1_B_%F{000}{1}%f_G_%F{000}%K{015}%F{000}_E_world1_F_%F{000}%K{015}%F{000}_E_world3_B_%{<Esc>00m%" "${_right}"
+}
+
+function testCustomWhitespaceOfLeftAndRightSegments() {
+  # Reset RPROMPT, so a running P9K does not interfere with the test
+  local PROMPT=
+  local RPROMPT=
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  local -a P9K_RIGHT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(custom_world1 custom_world2 custom_world3)
+  P9K_RIGHT_PROMPT_ELEMENTS=(custom_world1 custom_world2 custom_world3)
+  local P9K_CUSTOM_WORLD1='echo world1'
+  local P9K_CUSTOM_WORLD1_ICON='{1}'
+  local P9K_CUSTOM_WORLD2='echo world2'
+  local P9K_CUSTOM_WORLD3='echo world3'
+  local P9K_CUSTOM_WORLD3_ICON='{3}'
+  
+  local P9K_LEFT_WHITESPACE_OF_LEFT_SEGMENTS="_[LL]_"
+  local P9K_MIDDLE_WHITESPACE_OF_LEFT_SEGMENTS="_[LM]_"
+  local P9K_RIGHT_WHITESPACE_OF_LEFT_SEGMENTS="_[LR]_"
+
+  local P9K_LEFT_WHITESPACE_OF_RIGHT_SEGMENTS="_[RL]_"
+  local P9K_MIDDLE_WHITESPACE_OF_RIGHT_SEGMENTS="_[RM]_"
+  local P9K_RIGHT_WHITESPACE_OF_RIGHT_SEGMENTS="_[RR]_"
+
+    __p9k_prepare_prompts
+  assertEquals "%f%b%k%K{015}_[LL]_%F{000}{1}%f_[LM]_%F{000}world1_[LR]__[LL]_%F{000}world2_[LR]__[LL]_%F{000}{3}%f_[LM]_%F{000}world3_[LR]_%k%F{015}%f " "${(e)PROMPT}"
+  assertEquals "%f%b%k%F{015}%K{015}%F{000}_[RL]_world1_[RM]_%F{000}{1}%f_[RR]_%F{000}%K{015}%F{000}_[RL]_world2_[RR]_%F{000}%K{015}%F{000}_[RL]_world3_[RM]_%F{000}{3}%f_[RR]_%{<Esc>00m%" "$(stripEsc "${(e)RPROMPT}")"
+
+}
+
+function testCustomWhitespaceOfCustomSegments() {
+  # Reset RPROMPT, so a running P9K does not interfere with the test
+  local PROMPT=
+  local RPROMPT=
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  local -a P9K_RIGHT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(custom_world1 custom_world2 custom_world3)
+  P9K_RIGHT_PROMPT_ELEMENTS=(custom_world1 custom_world2 custom_world3)
+  local P9K_CUSTOM_WORLD1='echo world1'
+  local P9K_CUSTOM_WORLD1_ICON='{1}'
+  local P9K_CUSTOM_WORLD2='echo world2'
+  local P9K_CUSTOM_WORLD3='echo world3'
+  local P9K_CUSTOM_WORLD3_ICON='{3}'
+  
+  local P9K_CUSTOM_WORLD1_LEFT_WHITESPACE="_[L1]_"
+  local P9K_CUSTOM_WORLD1_MIDDLE_WHITESPACE="_[M1]_"
+  local P9K_CUSTOM_WORLD1_RIGHT_WHITESPACE="_[R1]_"
+
+  local P9K_CUSTOM_WORLD2_LEFT_WHITESPACE="_[L2]_"
+  local P9K_CUSTOM_WORLD2_MIDDLE_WHITESPACE="_[M2]_"
+  local P9K_CUSTOM_WORLD2_RIGHT_WHITESPACE="_[R2]_"
+
+  local P9K_CUSTOM_WORLD3_LEFT_WHITESPACE="_[L3]_"
+  local P9K_CUSTOM_WORLD3_MIDDLE_WHITESPACE="_[M3]_"
+  local P9K_CUSTOM_WORLD3_RIGHT_WHITESPACE="_[R3]_"
+
+    __p9k_prepare_prompts
+  assertEquals "%f%b%k%K{015}_[L1]_%F{000}{1}%f_[M1]_%F{000}world1_[R1]__[L2]_%F{000}world2_[R2]__[L3]_%F{000}{3}%f_[M3]_%F{000}world3_[R3]_%k%F{015}%f " "${(e)PROMPT}"
+  assertEquals "%f%b%k%F{015}%K{015}%F{000}_[R1]_world1_[M1]_%F{000}{1}%f_[R1]_%F{000}%K{015}%F{000}_[R2]_world2_[R2]_%F{000}%K{015}%F{000}_[R3]_world3_[M3]_%F{000}{3}%f_[R3]_%{<Esc>00m%" "$(stripEsc "${(e)RPROMPT}")"
+
+}
+
+function testCustomWhitespaceWithIconOnLeft() {
+  # Reset RPROMPT, so a running P9K does not interfere with the test
+  local PROMPT=
+  local RPROMPT=
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  local -a P9K_RIGHT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(custom_world1 custom_world2 custom_world3)
+  P9K_RIGHT_PROMPT_ELEMENTS=(custom_world1 custom_world2 custom_world3)
+  local P9K_CUSTOM_WORLD1='echo world1'
+  local P9K_CUSTOM_WORLD1_ICON='{1}'
+  local P9K_CUSTOM_WORLD2='echo world2'
+  local P9K_CUSTOM_WORLD3='echo world3'
+  local P9K_CUSTOM_WORLD3_ICON='{3}'
   
   local P9K_RPROMPT_ICON_LEFT=true
+  
+  local P9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS="_[L]_"
+  local P9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS="_[R]_"
 
   __p9k_prepare_prompts
-  _right=$(stripEsc "${(e)RPROMPT}")
-  
-  assertEquals "%f%b%k%F{015}%K{015}%F{000}_G_%F{000}{1}%f_B_world1_G_%F{000}%K{015}%F{000}_E_world1_F_%F{000}%K{015}%F{000}_E_world3_B_%{<Esc>00m%" "${_right}"
+  assertEquals "%f%b%k%F{015}%K{015}%F{000}_[R]_%F{000}{1}%f_[R]_world1_[R]_%F{000}%K{015}%F{000}_[R]_world2_[R]_%F{000}%K{015}%F{000}_[R]_%F{000}{3}%f_[R]_world3_[R]_%{<Esc>00m%" "$(stripEsc "${(e)RPROMPT}")"
 }
 
 # !!! keep this last test in this file !!!

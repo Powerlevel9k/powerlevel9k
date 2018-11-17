@@ -62,11 +62,12 @@ function __p9k_left_prompt_segment() {
   local bg=$__P9K_DATA[${STATEFUL_NAME}_BG]
   local fg=$__P9K_DATA[${STATEFUL_NAME}_FG]
 
-  local ws=$P9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS
   local left_ws=$(p9k::find_first_defined P9K_${STATEFUL_NAME}_LEFT_WHITESPACE \
-    P9K_LEFT_WHITESPACE_OF_LEFT_SEGMENTS ws)
+    P9K_LEFT_WHITESPACE_OF_LEFT_SEGMENTS P9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS)
+  local middle_ws=$(p9k::find_first_defined P9K_${STATEFUL_NAME}_MIDDLE_WHITESPACE \
+    P9K_MIDDLE_WHITESPACE_OF_LEFT_SEGMENTS P9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS )
   local right_ws=$(p9k::find_first_defined P9K_${STATEFUL_NAME}_RIGHT_WHITESPACE \
-    P9K_RIGHT_WHITESPACE_OF_LEFT_SEGMENTS ws)
+    P9K_RIGHT_WHITESPACE_OF_LEFT_SEGMENTS P9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS)
 
   if [[ ${CURRENT_BG} != 'NONE' ]]; then # not first segment
     if [[ "$bg" != "$CURRENT_BG" ]]; then # background colors are different
@@ -96,7 +97,7 @@ function __p9k_left_prompt_segment() {
   local visual_identifier
   [[ -n "${SEGMENT_ICON}" ]] && visual_identifier="$__P9K_DATA[${STATEFUL_NAME}_VI]${SEGMENT_ICON}%f"
   [[ -n "${content}" ]] && content="${fg}${content}"
-  echo -n "$(p9k::join_by "${ws}" "${visual_identifier}" "${content}")${right_ws}"
+  echo -n "$(p9k::join_by "${middle_ws}" "${visual_identifier}" "${content}")${right_ws}"
 
   CURRENT_BG=$bg
   last_left_element_index=$current_index
@@ -151,12 +152,12 @@ function __p9k_right_prompt_segment() {
   local bg=$__P9K_DATA[${STATEFUL_NAME}_BG]
   local fg=$__P9K_DATA[${STATEFUL_NAME}_FG]
 
-  local ws=$P9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS
   local left_ws=$(p9k::find_first_defined P9K_${STATEFUL_NAME}_RIGHT_WHITESPACE \
-    P9K_LEFT_WHITESPACE_OF_RIGHT_SEGMENTS ws )
+    P9K_LEFT_WHITESPACE_OF_RIGHT_SEGMENTS P9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS )
+  local middle_ws=$(p9k::find_first_defined P9K_${STATEFUL_NAME}_MIDDLE_WHITESPACE \
+    P9K_MIDDLE_WHITESPACE_OF_RIGHT_SEGMENTS P9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS )
   local right_ws=$(p9k::find_first_defined P9K_${last_right_element_stateful_name}_RIGHT_WHITESPACE \
-    P9K_RIGHT_WHITESPACE_OF_RIGHT_SEGMENTS ws )
-
+    P9K_RIGHT_WHITESPACE_OF_RIGHT_SEGMENTS P9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS )
 
   # If CURRENT_RIGHT_BG is "NONE", we are the first right segment.
   [[ ${CURRENT_RIGHT_BG} == 'NONE' ]] || echo -n "$right_ws" # print right whitespace of prev segment
@@ -177,20 +178,12 @@ function __p9k_right_prompt_segment() {
   local visual_identifier
   [[ -n "${SEGMENT_ICON}" ]] && visual_identifier="$__P9K_DATA[${STATEFUL_NAME}_VI]${SEGMENT_ICON}%f"
 
-  # if [[ ${(L)P9K_RPROMPT_ICON_LEFT} == "true" ]]; then # Visual identifier before content
-  #   echo -n "${left_ws}"
-  #   # Print the visual identifier if there is any
-  #   [[ -n "${visual_identifier}" ]] && echo -n "${visual_identifier}${ws}"
-  #   # Print segment content if there is any
-  #   [[ -n "${content}" ]] && echo -n "${content}${right_ws}"
-  # else
-    # Print whitespace only if segment is not joined or first right segment
-    [[ ${joined} == false ]] || [[ "$CURRENT_RIGHT_BG" == "NONE" ]] && echo -n "${left_ws}"
-    # Print segment content and icon, if any
-    [[ "${(L)P9K_RPROMPT_ICON_LEFT}" != "true" ]] \
-      && echo -n "$(p9k::join_by "${ws}" "${content}" "${visual_identifier}")" \
-      || echo -n "$(p9k::join_by "${ws}" "${visual_identifier}" "${content}")"
-  # fi
+  # Print whitespace only if segment is not joined or first right segment
+  [[ ${joined} == false ]] || [[ "$CURRENT_RIGHT_BG" == "NONE" ]] && echo -n "${left_ws}"
+  # Print segment content and icon, if any
+  [[ "${(L)P9K_RPROMPT_ICON_LEFT}" != "true" ]] \
+    && echo -n "$(p9k::join_by "${middle_ws}" "${content}" "${visual_identifier}")" \
+    || echo -n "$(p9k::join_by "${middle_ws}" "${visual_identifier}" "${content}")"
 
   CURRENT_RIGHT_BG=$bg
   last_right_element_index=$current_index
@@ -327,8 +320,7 @@ function __p9k_build_right_prompt() {
     # Remove joined information in direct calls
     element="${element%_joined}"
 
-    # Check if it is a custom command, otherwise interpet it as
-    # a prompt.
+    # Check if it is a custom command, otherwise interpet it as a prompt.
     if [[ $element[0,7] =~ "custom_" ]]; then
       "__p9k_prompt_custom" "right" "$index" ${joined} $element[8,-1]
     else
@@ -341,7 +333,7 @@ function __p9k_build_right_prompt() {
   # last whitespace with last segments right symbol, if any
   local last_symbol
   local last_ws=$(p9k::find_first_defined P9K_${last_right_element_stateful_name}_RIGHT_WHITESPACE \
-    P9K_RIGHT_PROMPT_LAST_SEGMENT_END_WHITESPACE P9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS )
+    P9K_RIGHT_PROMPT_LAST_SEGMENT_END_WHITESPACE P9K_RIGHT_WHITESPACE_OF_RIGHT_SEGMENTS P9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS )
   if p9k::defined "P9K_RIGHT_PROMPT_LAST_SEGMENT_END_SYMBOL"; then
     last_symbol="%K{none}%F${CURRENT_RIGHT_BG#%K}${P9K_RIGHT_PROMPT_LAST_SEGMENT_END_SYMBOL}"
   fi
