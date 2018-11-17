@@ -175,7 +175,7 @@ function __p9k_right_prompt_segment() {
   echo -n "${bg}${fg}"
 
   local visual_identifier
-  [[ -n "${SEGMENT_ICON}" ]] && visual_identifier="$__P9K_DATA[${STATEFUL_NAME}_VI]${SEGMENT_ICON}"
+  [[ -n "${SEGMENT_ICON}" ]] && visual_identifier="$__P9K_DATA[${STATEFUL_NAME}_VI]${SEGMENT_ICON}%f"
 
   # if [[ ${(L)P9K_RPROMPT_ICON_LEFT} == "true" ]]; then # Visual identifier before content
   #   echo -n "${left_ws}"
