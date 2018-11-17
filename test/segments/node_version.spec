@@ -30,7 +30,7 @@ function testNodeVersionSegmentWorks() {
     echo "v1.2.3"
   }
 
-  assertEquals "%K{002} %F{015}⬢ %f%F{015}1.2.3 %k%F{002}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{002} %F{015}⬢%f %F{015}1.2.3 %k%F{002}%f " "$(__p9k_build_left_prompt)"
 
   unfunction node
 }

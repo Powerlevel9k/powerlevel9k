@@ -65,7 +65,7 @@ function testNodeenvSegmentPrintsAtLeastNodeEnvWithoutNode() {
   alias node="nonode 2>/dev/null"
   NODE_VIRTUAL_ENV="node-env"
 
-  assertEquals "%K{000} %F{002}⬢ %f%F{002}[node-env] %k%F{000}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{000} %F{002}⬢%f %F{002}[node-env] %k%F{000}%f " "$(__p9k_build_left_prompt)"
 
   unset NODE_VIRTUAL_ENV
   unalias node
@@ -79,7 +79,7 @@ function testNodeenvSegmentWorks() {
   }
   NODE_VIRTUAL_ENV="node-env"
 
-  assertEquals "%K{000} %F{002}⬢ %f%F{002}v1.2.3[node-env] %k%F{000}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{000} %F{002}⬢%f %F{002}v1.2.3[node-env] %k%F{000}%f " "$(__p9k_build_left_prompt)"
 
   unfunction node
   unset NODE_VIRTUAL_ENV

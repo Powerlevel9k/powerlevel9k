@@ -72,7 +72,7 @@ function testDynamicColoringOfVisualIdentifiersWork() {
 
   cd /tmp
 
-  assertEquals "%K{004} %F{002}icon-here %f%F{000}/tmp %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{004} %F{002}icon-here%f %F{000}/tmp %k%F{004}%f " "$(__p9k_build_left_prompt)"
 
   cd -
 }
@@ -92,7 +92,7 @@ function testColoringOfVisualIdentifiersDoesNotOverwriteColoringOfSegment() {
 
   cd /tmp
 
-  assertEquals "%K{003} %F{002}icon-here %f%F{001}/tmp %k%F{003}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{003} %F{002}icon-here%f %F{001}/tmp %k%F{003}%f " "$(__p9k_build_left_prompt)"
 
   cd -
 }
@@ -109,7 +109,7 @@ function testOverwritingIconsWork() {
   #cd ~/$testFolder
 
   cd /tmp
-  assertEquals "%K{004} %F{000}icon-here %f%F{000}/tmp %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{004} %F{000}icon-here%f %F{000}/tmp %k%F{004}%f " "$(__p9k_build_left_prompt)"
 
   cd -
   # rm -fr ~/$testFolder
@@ -126,9 +126,23 @@ function testNewlineOnRpromptCanBeDisabled() {
   local P9K_RIGHT_PROMPT_ELEMENTS=(custom_rworld)
 
   __p9k_prepare_prompts
-  #             ╭─[39m[0m[49m[107m [30mworld [49m[97m[39m  ╰─ [1A[39m[0m[49m[97m[107m[30m rworld [30m [00m[1B
-  assertEquals '╭─[39m[0m[49m[107m [30mworld [49m[97m[39m  ╰─ [1A[39m[0m[49m[97m[107m[30m rworld [30m [00m[1B' "$(print -P ${PROMPT}${RPROMPT})"
 
+  #               ╭─[39m[0m[49m[107m [30mworld [49m[97m[39m  ╰─ [1A[39m[0m[49m[97m[107m[30m rworld [00m[1B
+  local expected='╭─[39m[0m[49m[107m [30mworld [49m[97m[39m  ╰─ [1A[39m[0m[49m[97m[107m[30m rworld [00m[1B'
+  local _real="$(print -P ${PROMPT}${RPROMPT})"
+
+  # use this to debug output with special escape sequences
+  # new lines for escape codes that move output one line above
+  # set -vx;
+  # echo "\n__1__\n"
+  # echo "\n__${expected}__\n"
+  # echo "\n__2__\n"
+  # echo "\n__${_real}__\n"
+  # echo "\n__3__\n"
+  # set +vx;
+
+  assertEquals "$expected" "$_real"
+  
 }
 
 source shunit2/shunit2

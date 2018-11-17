@@ -162,16 +162,16 @@ function testCustomWhitespaceOfSegments() {
 
   __p9k_prepare_prompts
 
-  assertEquals "%f%b%k%K{015}_C_%F{000}{1}_A_%F{000}world1_G__C_%F{000}world1_D__H_%F{000}world3_D_%k%F{015}%f " "${(e)PROMPT}"
+  assertEquals "%f%b%k%K{015}_C_%F{000}{1}%f_A_%F{000}world1_G__C_%F{000}world1_D__H_%F{000}world3_D_%k%F{015}%f " "${(e)PROMPT}"
   local _right=$(stripEsc "${(e)RPROMPT}")
-  assertEquals "%f%b%k%F{015}%K{015}%F{000}_G_world1_B_%F{000}{1}_G_%F{000}%K{015}%F{000}_E_world1_F_%F{000}%K{015}%F{000}_E_world3_B_%{<Esc>00m%" "${_right}"
+  assertEquals "%f%b%k%F{015}%K{015}%F{000}_G_world1_B_%F{000}{1}%f_G_%F{000}%K{015}%F{000}_E_world1_F_%F{000}%K{015}%F{000}_E_world3_B_%{<Esc>00m%" "${_right}"
   
   local P9K_RPROMPT_ICON_LEFT=true
 
   __p9k_prepare_prompts
   _right=$(stripEsc "${(e)RPROMPT}")
   
-  assertEquals "%f%b%k%F{015}%K{015}%F{000}_G_%F{000}{1}_B_world1_G_%F{000}%K{015}%F{000}_E_world1_F_%F{000}%K{015}%F{000}_E_world3_B_%{<Esc>00m%" "${_right}"
+  assertEquals "%f%b%k%F{015}%K{015}%F{000}_G_%F{000}{1}%f_B_world1_G_%F{000}%K{015}%F{000}_E_world1_F_%F{000}%K{015}%F{000}_E_world3_B_%{<Esc>00m%" "${_right}"
 }
 
 # !!! keep this last test in this file !!!

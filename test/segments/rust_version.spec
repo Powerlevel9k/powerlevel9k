@@ -34,7 +34,7 @@ function testRust() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(rust_version)
 
-  assertEquals "%K{208} %F{000}Rust %f%F{000}0.4.1a-alpha %k%F{208}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{208} %F{000}Rust%f %F{000}0.4.1a-alpha %k%F{208}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testRustPrintsNothingIfRustIsNotAvailable() {

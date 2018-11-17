@@ -426,7 +426,7 @@ function testHomeFolderDetectionWorks() {
   source segments/dir.p9k
 
   cd ~
-  assertEquals "%K{004} %F{000}home-icon %f%F{000}~ %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{004} %F{000}home-icon%f %F{000}~ %k%F{004}%f " "$(__p9k_build_left_prompt)"
 
   cd -
 }
@@ -441,7 +441,7 @@ function testHomeSubfolderDetectionWorks() {
   local FOLDER=~/powerlevel9k-test
   mkdir $FOLDER
   cd $FOLDER
-  assertEquals "%K{004} %F{000}sub-icon %f%F{000}~/powerlevel9k-test %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{004} %F{000}sub-icon%f %F{000}~/powerlevel9k-test %k%F{004}%f " "$(__p9k_build_left_prompt)"
 
   cd -
   rm -fr $FOLDER
@@ -457,7 +457,7 @@ function testOtherFolderDetectionWorks() {
   local FOLDER=/tmp/powerlevel9k-test
   mkdir $FOLDER
   cd $FOLDER
-  assertEquals "%K{004} %F{000}folder-icon %f%F{000}/tmp/powerlevel9k-test %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{004} %F{000}folder-icon%f %F{000}/tmp/powerlevel9k-test %k%F{004}%f " "$(__p9k_build_left_prompt)"
 
   cd -
   rm -fr $FOLDER
@@ -515,7 +515,7 @@ function testOmittingFirstCharacterWorks() {
 
   cd /tmp
 
-  assertEquals "%K{004} %F{000}folder-icon %f%F{000}tmp %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{004} %F{000}folder-icon%f %F{000}tmp %k%F{004}%f " "$(__p9k_build_left_prompt)"
 
   cd -
 }
@@ -532,7 +532,7 @@ function testOmittingFirstCharacterWorksWithChangingPathSeparator() {
   mkdir -p /tmp/powerlevel9k-test/1/2
   cd /tmp/powerlevel9k-test/1/2
 
-  assertEquals "%K{004} %F{000}folder-icon %f%F{000}tmpxXxpowerlevel9k-testxXx1xXx2 %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{004} %F{000}folder-icon%f %F{000}tmpxXxpowerlevel9k-testxXx1xXx2 %k%F{004}%f " "$(__p9k_build_left_prompt)"
 
   cd -
   rm -fr /tmp/powerlevel9k-test
