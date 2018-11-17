@@ -51,6 +51,17 @@ function testVagrantSegmentPrintsNothingIfVirtualboxIsNotAvailable() {
   assertEquals "%K{015} %F{000}world %k%F{015}%f " "$(__p9k_build_left_prompt)"
 }
 
+function testVagrantSegmentSaysVmIsDownIfVirtualboxIsNotAvailableButVagrantFolderExists() {
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(vagrant custom_world)
+  local P9K_CUSTOM_WORLD='echo world'
+  # Change path, so that VBoxManage is not found
+  local PATH=/bin:/usr/bin
+  mockVagrantFolder "some-id"
+
+  assertEquals "%K{001} %F{000}V %f%F{000}DOWN %K{015}%F{001} %F{000}world %k%F{015}%f " "$(__p9k_build_left_prompt)"
+}
+
 function testVagrantSegmentWorksIfVmIsUp() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(vagrant)
