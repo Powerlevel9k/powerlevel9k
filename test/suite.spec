@@ -1,6 +1,8 @@
 #!/usr/bin/env zsh
 #vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
 
+export SHUNIT_COLOR="always"
+
 local failed=false
 local P9K_IGNORE_VAR_WARNING=true
 
