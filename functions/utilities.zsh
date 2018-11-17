@@ -343,3 +343,76 @@ function __p9k_print_deprecation_var_warning() {
     fi
   done
 }
+
+###############################################################
+# @description
+#   Takes a list of variable names and returns the value of the 
+#   the first defined one, even if it's an empty string. Useful
+#   for cases when users can define variables that should take 
+#   priority even if they are empty.
+# @args
+#   $1 optional flag '-n' as first argument will make function to 
+#   return variable name instead of it's value.
+#   $* List of variable names.
+# @returns
+#   First defined variable value, or it's name if '-n' is passed.
+##
+function p9k::find_first_defined() {
+  local returnName
+  while [ $# -ne 0 ]; do
+    if [[ "$1" == "-n" ]]; then 
+      returnName=true
+    elif [[ ! -z "${(P)1+x}" ]]; then 
+      [[ -n $returnName ]] && echo "$1" || echo "${(P)1}"
+      break
+    fi
+    shift
+  done
+}
+
+###############################################################
+# @description
+#   Takes a list of variable names and returns the value of the 
+#   the first non empty one. 
+# @args
+#   $1 optional flag '-n' as first argument will make function to 
+#   return variable name instead of it's value.
+#   $* List of variable names.
+# @returns
+#   First non empty variable value, or it's name if '-n' is passed.
+##
+function p9k::find_first_non_empty() {
+  local returnName
+  while [ $# -ne 0 ]; do
+    if [[ "$1" == "-n" ]]; then 
+      returnName=true
+    elif [[ -n "${(P)1}" ]]; then 
+      [[ -n $returnName ]] && echo "$1" || echo "${(P)1}"
+      break
+    fi
+    shift
+  done
+}
+
+###############################################################
+# @description
+#   Joins supplied strings with specified separator.
+# @args
+#   $1 The separator to join strings with
+#   $* List of string to join.
+# @returns
+#   A joined string.
+##
+p9k::join_by() { 
+  local separator="$1"; 
+  local sep=""; 
+  shift; 
+  local result=""
+  for str in $@; do 
+    if [[ -n $str ]]; then
+      result="${result}${sep}${str}"
+      sep="${separator}"
+    fi
+  done
+  echo "$result"
+}
