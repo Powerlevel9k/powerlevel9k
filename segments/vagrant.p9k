@@ -19,18 +19,13 @@
 ################################################################
 # Shows the status of the vagrant VM (Up or Down)
 prompt_vagrant() {
-  typeset -AH vm_states
-  vm_states=(
-    "UP"         "green"
-    "DOWN"       "red"
-  )
   local current_state="NOT_FOUND"
   for vagrantFolder in $(__p9k_upsearch ".vagrant" "/"); do
     # Set NULL_GLOB option on file glob to silence error message,
     # if file does not exist.
-    for match in ${vagrantFolder}/machines/**/id(N); do
-      local vmId=$(cat ${match})
-      if [[ $(VBoxManage list runningvms | grep -c ${vmId}) -gt 0 ]]; then
+    for match in ${vagrantFolder}/.vagrant/machines/**/id(N); do
+      local vmId=$(< ${match})
+      if [[ $(command VBoxManage list runningvms) =~ "(${vmId})+" ]]; then
         current_state="UP"
       elif [[ "${current_state}" != "UP" ]]; then
         current_state="DOWN"
