@@ -4,18 +4,22 @@
 # @source [powerlevel9k](https://github.com/bhilburn/powerlevel9k)
 ##
 
-################################################################
-# Register segment
-# Parameters:
-#   segment_name  context  background  foreground  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
-#                                                                                                                     
-p9k::register_segment "HOST" "REMOTE" "yellow"           "${DEFAULT_COLOR}"  '(ssh)'  '(ssh)'  '(ssh)'    '(ssh)'   $'\uF489'
-#                                                                                                                  
-p9k::register_segment "HOST" "LOCAL"  "${DEFAULT_COLOR}" "yellow"            ''       ''       $'\uF67C'  $'\uF67C' $'\uF67C'
+(){
+  # Set the right locale to protect special characters
+  local LC_ALL="" LC_CTYPE="en_US.UTF-8"
+  ################################################################
+  # Register segment
+  # Parameters:
+  #   segment_name  context  background  foreground  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
+  #                                                                                                                     
+  p9k::register_segment "HOST" "REMOTE" "yellow"           "${DEFAULT_COLOR}"  '(ssh)'  '(ssh)'  '(ssh)'    '(ssh)'   $'\uF489'
+  #                                                                                                                  
+  p9k::register_segment "HOST" "LOCAL"  "${DEFAULT_COLOR}" "yellow"            ''       ''       $'\uF67C'  $'\uF67C' $'\uF67C'
 
-################################################################
-# Register segment default values
-p9k::set_default P9K_HOST_TEMPLATE "%m"
+  ################################################################
+  # Register segment default values
+  p9k::set_default P9K_HOST_TEMPLATE "%m"
+}
 
 ################################################################
 # @description

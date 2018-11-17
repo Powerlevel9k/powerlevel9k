@@ -4,16 +4,20 @@
 # @source [powerlevel9k](https://github.com/bhilburn/powerlevel9k)
 ##
 
-################################################################
-# Register segment
-# Parameters:
-#   segment_name  context  background  foreground  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
-#                                                                                                                                         
-p9k::register_segment 'DATE' '' "$DEFAULT_COLOR_INVERTED" "$DEFAULT_COLOR" ''  $'\uE184'  $'\uF073 '  '\u'$CODEPOINT_OF_AWESOME_CALENDAR' '  $'\uF073 '
+(){
+  # Set the right locale to protect special characters
+  local LC_ALL="" LC_CTYPE="en_US.UTF-8"
+  ################################################################
+  # Register segment
+  # Parameters:
+  #   segment_name  context  background  foreground  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
+  #                                                                                                                                         
+  p9k::register_segment 'DATE' '' "$DEFAULT_COLOR_INVERTED" "$DEFAULT_COLOR" ''  $'\uE184'  $'\uF073 '  '\u'$CODEPOINT_OF_AWESOME_CALENDAR' '  $'\uF073 '
 
-################################################################
-# Register segment default values
-p9k::set_default P9K_DATE_FORMAT "%D{%d.%m.%y}"
+  ################################################################
+  # Register segment default values
+  p9k::set_default P9K_DATE_FORMAT "%D{%d.%m.%y}"
+}
 
 ################################################################
 # @description

@@ -4,22 +4,26 @@
 # @source [powerlevel9k](https://github.com/bhilburn/powerlevel9k)
 ##
 
-################################################################
-# Register segment
-# Parameters:
-#   segment_name  context  background  foreground  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
-#
-p9k::register_segment 'CONTEXT' 'ROOT'        "${DEFAULT_COLOR}" "yellow" ""  ""  ""  ""  ""  ""
-p9k::register_segment 'CONTEXT' 'SUDO'        "${DEFAULT_COLOR}" "yellow" ""  ""  ""  ""  ""  ""
-p9k::register_segment 'CONTEXT' 'DEFAULT'     "${DEFAULT_COLOR}" "yellow" ""  ""  ""  ""  ""  ""
-p9k::register_segment 'CONTEXT' 'REMOTE'      "${DEFAULT_COLOR}" "yellow" ""  ""  ""  ""  ""  ""
-p9k::register_segment 'CONTEXT' 'REMOTE_SUDO' "${DEFAULT_COLOR}" "yellow" ""  ""  ""  ""  ""  ""
+(){
+  # Set the right locale to protect special characters
+  local LC_ALL="" LC_CTYPE="en_US.UTF-8"
+  ################################################################
+  # Register segment
+  # Parameters:
+  #   segment_name  context  background  foreground  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
+  #
+  p9k::register_segment 'CONTEXT' 'ROOT'        "${DEFAULT_COLOR}" "yellow" ""  ""  ""  ""  ""  ""
+  p9k::register_segment 'CONTEXT' 'SUDO'        "${DEFAULT_COLOR}" "yellow" ""  ""  ""  ""  ""  ""
+  p9k::register_segment 'CONTEXT' 'DEFAULT'     "${DEFAULT_COLOR}" "yellow" ""  ""  ""  ""  ""  ""
+  p9k::register_segment 'CONTEXT' 'REMOTE'      "${DEFAULT_COLOR}" "yellow" ""  ""  ""  ""  ""  ""
+  p9k::register_segment 'CONTEXT' 'REMOTE_SUDO' "${DEFAULT_COLOR}" "yellow" ""  ""  ""  ""  ""  ""
 
-################################################################
-# Register segment default values
-p9k::set_default P9K_CONTEXT_ALWAYS_SHOW false
-p9k::set_default P9K_CONTEXT_ALWAYS_SHOW_USER false
-p9k::set_default P9K_CONTEXT_TEMPLATE "%n@%m"
+  ################################################################
+  # Register segment default values
+  p9k::set_default P9K_CONTEXT_ALWAYS_SHOW false
+  p9k::set_default P9K_CONTEXT_ALWAYS_SHOW_USER false
+  p9k::set_default P9K_CONTEXT_TEMPLATE "%n@%m"
+}
 
 ################################################################
 # @description
