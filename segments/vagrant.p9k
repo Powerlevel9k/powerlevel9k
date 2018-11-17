@@ -1,0 +1,44 @@
+# vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
+################################################################
+# @title powerlevel9k Segment - Vagrant
+# @source [powerlevel9k](https://github.com/bhilburn/powerlevel9k)
+##
+
+(){
+  # Set the right locale to protect special characters
+  local LC_ALL="" LC_CTYPE="en_US.UTF-8"
+  ################################################################
+  # Register segment
+  # Parameters:
+  #                     segment_name  context   background  foreground          Generic     Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
+  #
+  p9k::register_segment "VAGRANT"     "UP"      "green"     "${DEFAULT_COLOR}"  'V'         'V'                   'V'                 'V'                        'V'
+  p9k::register_segment "VAGRANT"     "DOWN"    "red"       "${DEFAULT_COLOR}"  'V'         'V'                   'V'                 'V'                        'V'
+}
+
+################################################################
+# Shows the status of the vagrant VM (Up or Down)
+prompt_vagrant() {
+  typeset -AH vm_states
+  vm_states=(
+    "UP"         "green"
+    "DOWN"       "red"
+  )
+  local current_state="NOT_FOUND"
+  for vagrantFolder in $(__p9k_upsearch ".vagrant" "/"); do
+    # Set NULL_GLOB option on file glob to silence error message,
+    # if file does not exist.
+    for match in ${vagrantFolder}/machines/**/id(N); do
+      local vmId=$(cat ${match})
+      if [[ $(VBoxManage list runningvms | grep -c ${vmId}) -gt 0 ]]; then
+        current_state="UP"
+      elif [[ "${current_state}" != "UP" ]]; then
+        current_state="DOWN"
+      fi
+    done
+  done
+
+  if [[ "${current_state}" != "NOT_FOUND" ]]; then
+    p9k::prepare_segment "$0" ${current_state} $1 "$2" $3 "${current_state}"
+  fi
+}

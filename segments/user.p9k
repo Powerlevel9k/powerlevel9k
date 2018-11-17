@@ -1,0 +1,68 @@
+# vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
+################################################################
+# @title powerlevel9k Segment - User
+# @source [powerlevel9k](https://github.com/bhilburn/powerlevel9k)
+##
+
+(){
+  # Set the right locale to protect special characters
+  local LC_ALL="" LC_CTYPE="en_US.UTF-8"
+  ################################################################
+  # Register segment
+  # Parameters:
+  #   segment_name  context  background  foreground  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
+  #                                                                                                                                            
+  p9k::register_segment "USER" "DEFAULT"     "yellow" "${DEFAULT_COLOR}"  ''         ''         $'\uF2C0'  '\u'${CODEPOINT_OF_AWESOME_USER_O}  $'\uF2C0'
+  #                                                                        ⚡                                                                
+  p9k::register_segment "USER" "ROOT"        "yellow" "${DEFAULT_COLOR}"  $'\u26A1'  $'\uE801'  $'\uF201'  '\u'${CODEPOINT_OF_OCTICONS_ZAP}    $'\uE614 '
+  #                                                                                                                                         
+  p9k::register_segment "USER" "SUDO"        "yellow" "${DEFAULT_COLOR}"  $'\uE0A2'  $'\uF09C'  $'\uF09C'  '\u'${CODEPOINT_OF_AWESOME_UNLOCK}  $'\uF09C'
+  #                                                                                                                                            
+  p9k::register_segment "USER" "REMOTE"      "yellow" "${DEFAULT_COLOR}"  ''         ''         $'\uF2C0'  '\u'${CODEPOINT_OF_AWESOME_USER_O}  $'\uF2C0'
+  #                                                                                                                                         
+  p9k::register_segment "USER" "REMOTE_SUDO" "yellow" "${DEFAULT_COLOR}"  $'\uE0A2'  $'\uF09C'  $'\uF09C'  '\u'${CODEPOINT_OF_AWESOME_UNLOCK}  $'\uF09C'
+
+  ################################################################
+  # Register segment default values
+  p9k::set_default P9K_USER_ALWAYS_SHOW false
+  p9k::set_default P9K_USER_ALWAYS_SHOW_USER false
+  p9k::set_default P9K_USER_TEMPLATE "%n"
+}
+
+################################################################
+# @description
+#   Display information about the user (Who am I).
+##
+# @args
+#   $1 string Alignment - left | right
+#   $2 integer Segment index
+#   $3 boolean Whether the segment should be joined
+# @note
+#   If ${DEFAULT_USER} is not set, this prompt segment will always print.
+##
+prompt_user() {
+  local current_state="DEFAULT"
+  local content=""
+
+  if [[ "$P9K_USER_ALWAYS_SHOW" == true ]] || [[ "$(whoami)" != "$DEFAULT_USER" ]] || [[ -n "$SSH_CLIENT" || -n "$SSH_TTY" ]]; then
+    content="${P9K_USER_TEMPLATE}"
+  elif [[ "$P9K_USER_ALWAYS_SHOW_USER" == true ]]; then
+    content="$(whoami)"
+  else
+    return
+  fi
+
+  if [[ $(print -P "%#") == '#' ]]; then
+    current_state="ROOT"
+  elif [[ -n "$SSH_CLIENT" || -n "$SSH_TTY" ]]; then
+    if [[ -n "$SUDO_COMMAND" ]]; then
+      current_state="REMOTE_SUDO"
+    else
+      current_state="REMOTE"
+    fi
+  elif [[ -n "$SUDO_COMMAND" ]]; then
+    current_state="SUDO"
+  fi
+
+  p9k::prepare_segment "$0" ${current_state} $1 "$2" $3 "${content}"
+}

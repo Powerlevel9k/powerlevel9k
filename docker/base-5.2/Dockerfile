@@ -1,4 +1,4 @@
-FROM ubuntu:17.04
+FROM ubuntu:17.10
 
 RUN \
   apt-get update && \
@@ -6,7 +6,7 @@ RUN \
   DEBIAN_FRONTEND=noninteractive apt-get install -y \
   curl \
   git \
-  zsh \
+  zsh=5.2-5ubuntu1.2 \
   mercurial \
   subversion \
   golang \
@@ -16,7 +16,8 @@ RUN \
   python \
   python-virtualenv \
   sudo \
-  locales
+  locales \
+  vim
 
 RUN adduser --shell /bin/zsh --gecos 'fred' --disabled-password fred
 RUN locale-gen "en_US.UTF-8"
@@ -28,7 +29,7 @@ WORKDIR /home/fred
 ENV LANG=en_US.UTF-8
 ENV TERM=xterm-256color
 ENV DEFAULT_USER=fred
-ENV POWERLEVEL9K_ALWAYS_SHOW_CONTEXT=true
+ENV P9K_CONTEXT_ALWAYS_SHOW=true
 
 RUN touch .zshrc
 

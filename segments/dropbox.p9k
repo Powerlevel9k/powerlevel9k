@@ -1,0 +1,41 @@
+# vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
+################################################################
+# @title powerlevel9k Segment - Dropbox
+# @source [powerlevel9k](https://github.com/bhilburn/powerlevel9k)
+##
+
+(){
+  # Set the right locale to protect special characters
+  local LC_ALL="" LC_CTYPE="en_US.UTF-8"
+  ################################################################
+  # Register segment
+  # Parameters:
+  #   segment_name  context  background  foreground  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
+  #                                                                                                                    
+  p9k::register_segment "DROPBOX" '' 'white' 'blue' 'Dropbox'  $'\uF16B'  $'\uF16B'  '\u'${CODEPOINT_OF_AWESOME_DROPBOX}  $'\uF16B'
+}
+
+################################################################
+# @description
+#   Display information about the current Dropbox status.
+##
+# @args
+#   $1 string Alignment - left | right
+#   $2 integer Segment index
+#   $3 boolean Whether the segment should be joined
+##
+prompt_dropbox() {
+  # The first column is just the directory, so cut it
+  local dropbox_status="$(dropbox-cli filestatus . | cut -d\  -f2-)"
+
+  # Only show if the folder is tracked and dropbox is running
+  if [[ "$dropbox_status" != 'unwatched' && "$dropbox_status" != "isn't running!" ]]; then
+    # If "up to date", only show the icon
+    if [[ "$dropbox_status" =~ 'up to date' ]]; then
+      dropbox_status=" "
+    fi
+
+    p9k::prepare_segment "$0" "" $1 "$2" $3 "$dropbox_status"
+  fi
+
+}
