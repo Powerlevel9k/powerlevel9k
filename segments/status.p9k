@@ -4,30 +4,34 @@
 # @source [powerlevel9k](https://github.com/bhilburn/powerlevel9k)
 ##
 
-################################################################
-# Register segment
-# Parameters:
-#   segment_name  context  background  foreground  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
-#                                                                      ✔         ✔          ✔                                            
-p9k::register_segment "STATUS" "OK"       "$DEFAULT_COLOR" "green"    $'\u2714'  $'\u2714'  $'\u2714'  '\u'${CODEPOINT_OF_AWESOME_CHECK}  $'\uF00C'
-#                                                                      ✘          ✘         ✘                                             
-p9k::register_segment "STATUS" "ERROR"    "$DEFAULT_COLOR" "red"      $'\u2718'  $'\u2718'  $'\u2718'  '\u'${CODEPOINT_OF_AWESOME_TIMES}  $'\uF00D'
-#                                                                      ↵         ↵         ↵          ↵                                 ↵
-p9k::register_segment "STATUS" "ERROR_CR" "red"            "yellow1"  $'\u21B5'  $'\u21B5'  $'\u21B5'  $'\u21B5'                          $'\u21B5'
+(){
+  # Set the right locale to protect special characters
+  local LC_ALL="" LC_CTYPE="en_US.UTF-8"
+  ################################################################
+  # Register segment
+  # Parameters:
+  #   segment_name  context  background  foreground  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
+  #                                                                      ✔         ✔          ✔                                            
+  p9k::register_segment "STATUS" "OK"       "$DEFAULT_COLOR" "green"    $'\u2714'  $'\u2714'  $'\u2714'  '\u'${CODEPOINT_OF_AWESOME_CHECK}  $'\uF00C'
+  #                                                                      ✘          ✘         ✘                                             
+  p9k::register_segment "STATUS" "ERROR"    "$DEFAULT_COLOR" "red"      $'\u2718'  $'\u2718'  $'\u2718'  '\u'${CODEPOINT_OF_AWESOME_TIMES}  $'\uF00D'
+  #                                                                      ↵         ↵         ↵          ↵                                 ↵
+  p9k::register_segment "STATUS" "ERROR_CR" "red"            "yellow1"  $'\u21B5'  $'\u21B5'  $'\u21B5'  $'\u21B5'                          $'\u21B5'
 
-################################################################
-# Register segment default values
-#
-# Status: When an error occur, return the error code, or a cross icon if option is set
-# Display an ok icon when no error occur, or hide the segment if option is set to false
-#
-p9k::set_default P9K_STATUS_CROSS false
-p9k::set_default P9K_STATUS_HIDE_SIGNAME false
-p9k::set_default P9K_STATUS_OK true
-p9k::set_default P9K_STATUS_SHOW_PIPESTATUS true
-# old options, retro compatibility
-p9k::set_default P9K_STATUS_OK_IN_NON_VERBOSE false
-p9k::set_default P9K_STATUS_VERBOSE true
+  ################################################################
+  # Register segment default values
+  #
+  # Status: When an error occur, return the error code, or a cross icon if option is set
+  # Display an ok icon when no error occur, or hide the segment if option is set to false
+  #
+  p9k::set_default P9K_STATUS_CROSS false
+  p9k::set_default P9K_STATUS_HIDE_SIGNAME false
+  p9k::set_default P9K_STATUS_OK true
+  p9k::set_default P9K_STATUS_SHOW_PIPESTATUS true
+  # old options, retro compatibility
+  p9k::set_default P9K_STATUS_OK_IN_NON_VERBOSE false
+  p9k::set_default P9K_STATUS_VERBOSE true
+}
 
 exit_code_or_status() {
   local ec=$1

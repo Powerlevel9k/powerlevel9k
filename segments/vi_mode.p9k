@@ -4,21 +4,25 @@
 # @source [powerlevel9k](https://github.com/bhilburn/powerlevel9k)
 ##
 
-################################################################
-# Register segment
-# Parameters:
-#   segment_name  context  background  foreground  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
-p9k::register_segment  "VI_MODE" "NORMAL" "${DEFAULT_COLOR}" "white"  ''  ''  ''  ''  ''
-p9k::register_segment  "VI_MODE" "INSERT" "${DEFAULT_COLOR}" "blue"   ''  ''  ''  ''  ''
-p9k::register_segment  "VI_MODE" "SEARCH" "${DEFAULT_COLOR}" "purple" ''  ''  ''  ''  ''
-p9k::register_segment  "VI_MODE" "VISUAL" "${DEFAULT_COLOR}" "orange" ''  ''  ''  ''  ''
+() {
+  # Set the right locale to protect special characters
+  local LC_ALL="" LC_CTYPE="en_US.UTF-8"
+  ################################################################
+  # Register segment
+  # Parameters:
+  #   segment_name  context  background  foreground  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
+  p9k::register_segment  "VI_MODE" "NORMAL" "${DEFAULT_COLOR}" "white"  ''  ''  ''  ''  ''
+  p9k::register_segment  "VI_MODE" "INSERT" "${DEFAULT_COLOR}" "blue"   ''  ''  ''  ''  ''
+  p9k::register_segment  "VI_MODE" "SEARCH" "${DEFAULT_COLOR}" "purple" ''  ''  ''  ''  ''
+  p9k::register_segment  "VI_MODE" "VISUAL" "${DEFAULT_COLOR}" "orange" ''  ''  ''  ''  ''
 
-################################################################
-# Register segment default values
-p9k::set_default P9K_VI_MODE_NORMAL_STRING 'NORMAL'
-p9k::set_default P9K_VI_MODE_INSERT_STRING 'INSERT'
-p9k::set_default P9K_VI_MODE_SEARCH_STRING 'SEARCH'
-p9k::set_default P9K_VI_MODE_VISUAL_STRING 'VISUAL'
+  ################################################################
+  # Register segment default values
+  p9k::set_default P9K_VI_MODE_NORMAL_STRING 'NORMAL'
+  p9k::set_default P9K_VI_MODE_INSERT_STRING 'INSERT'
+  p9k::set_default P9K_VI_MODE_SEARCH_STRING 'SEARCH'
+  p9k::set_default P9K_VI_MODE_VISUAL_STRING 'VISUAL'
+}
 
 ###############################################################
 # Vi Mode: show editing mode (NORMAL|INSERT)

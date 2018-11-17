@@ -4,30 +4,35 @@
 # @source [powerlevel9k](https://github.com/bhilburn/powerlevel9k)
 ##
 
-################################################################
-# Register segment
-# Parameters:
-#   segment_name  context  background  foreground  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
-#                                                                                                                                     
-p9k::register_segment "DIR" 'DEFAULT'         "blue" "$DEFAULT_COLOR"   ''         $'\uE818'  $'\uF115'  '\u'${CODEPOINT_OF_AWESOME_FOLDER_O}     $'\uF115'
-#                                                                                                                                     
-p9k::register_segment "DIR" 'HOME'            "blue" "$DEFAULT_COLOR"   ''         $'\uE12C'  $'\uF015'  '\u'${CODEPOINT_OF_AWESOME_HOME}         $'\uF015'
-#                                                                                                                                     
-p9k::register_segment "DIR" 'HOME_SUBFOLDER'  "blue" "$DEFAULT_COLOR"   ''         $'\uE18D'  $'\uF07C'  '\u'${CODEPOINT_OF_AWESOME_FOLDER_OPEN}  $'\uF07C'
-#                                                                                                                                     
-p9k::register_segment "DIR" 'NOT_WRITABLE'    "blue" "$DEFAULT_COLOR"   $'\uE0A2'  $'\uE138'  $'\uF023'  '\u'${CODEPOINT_OF_AWESOME_LOCK}         $'\uF023'
-#                                                                                                                                   
-p9k::register_segment "DIR" 'ETC'             "blue" "$DEFAULT_COLOR"   $'\uE818'  $'\uF013'  $'\uF013'  '\u'${CODEPOINT_OF_AWESOME_COG}          $'\uF013'
+() {
+  # Set the right locale to protect special characters
+  local LC_ALL="" LC_CTYPE="en_US.UTF-8"
+  ################################################################
+  # Register segment
+  # Parameters:
+  #   segment_name  context  background  foreground  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
+  #                                                                                                                                     
+  p9k::register_segment "DIR" 'DEFAULT'         "blue" "$DEFAULT_COLOR"   ''         $'\uE818'  $'\uF115'  '\u'${CODEPOINT_OF_AWESOME_FOLDER_O}     $'\uF115'
+  #                                                                                                                                     
+  p9k::register_segment "DIR" 'HOME'            "blue" "$DEFAULT_COLOR"   ''         $'\uE12C'  $'\uF015'  '\u'${CODEPOINT_OF_AWESOME_HOME}         $'\uF015'
+  #                                                                                                                                     
+  p9k::register_segment "DIR" 'HOME_SUBFOLDER'  "blue" "$DEFAULT_COLOR"   ''         $'\uE18D'  $'\uF07C'  '\u'${CODEPOINT_OF_AWESOME_FOLDER_OPEN}  $'\uF07C'
+  #                                                                                                                                     
+  p9k::register_segment "DIR" 'NOT_WRITABLE'    "blue" "$DEFAULT_COLOR"   $'\uE0A2'  $'\uE138'  $'\uF023'  '\u'${CODEPOINT_OF_AWESOME_LOCK}         $'\uF023'
+  #                                                                                                                                   
+  p9k::register_segment "DIR" 'ETC'             "blue" "$DEFAULT_COLOR"   $'\uE818'  $'\uF013'  $'\uF013'  '\u'${CODEPOINT_OF_AWESOME_COG}          $'\uF013'
 
-p9k::set_default P9K_DIR_PATH_SEPARATOR "/"
-p9k::set_default P9K_DIR_HOME_FOLDER_ABBREVIATION "~"
-p9k::set_default P9K_DIR_PATH_HIGHLIGHT_BOLD false
-p9k::set_default P9K_DIR_PATH_ABSOLUTE false
-p9k::set_default P9K_DIR_SHORTEN_DELIMITER "\u2026"
-p9k::set_default P9K_DIR_SHORTEN_FOLDER_MARKER ".shorten_folder_marker"
-# Parse the 'name' from the package.json; if there are any problems, just
-# print the file path
-p9k::defined P9K_DIR_PACKAGE_FILES || P9K_DIR_PACKAGE_FILES=(package.json composer.json)
+  p9k::set_default P9K_DIR_PATH_SEPARATOR "/"
+  p9k::set_default P9K_DIR_HOME_FOLDER_ABBREVIATION "~"
+  p9k::set_default P9K_DIR_PATH_HIGHLIGHT_BOLD false
+  p9k::set_default P9K_DIR_PATH_ABSOLUTE false
+  p9k::set_default P9K_DIR_SHORTEN_DELIMITER "\u2026"
+  p9k::set_default P9K_DIR_SHORTEN_FOLDER_MARKER ".shorten_folder_marker"
+  # Parse the 'name' from the package.json; if there are any problems, just
+  # print the file path
+  p9k::defined P9K_DIR_PACKAGE_FILES || P9K_DIR_PACKAGE_FILES=(package.json composer.json)
+}
+
 ################################################################
 # @description
 #   Display information about the current working directory.
