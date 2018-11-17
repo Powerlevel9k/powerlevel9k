@@ -21,8 +21,6 @@
 # - [Powerline-Patched Font](https://github.com/Lokaltog/powerline-fonts)
 ##
 
-# Set the right locale to protect special characters
-local LC_ALL="" LC_CTYPE="en_US.UTF-8"
 typeset -gAH __P9K_DATA
 typeset -gAH __P9K_ICONS
 
@@ -137,40 +135,44 @@ function p9k::register_segment() {
   [[ -z "${BOLD}" ]] || __P9K_DATA[${STATEFUL_NAME}_BD]=true
 }
 
-#                                                                                                                                
-p9k::register_icon "LEFT_SEGMENT_SEPARATOR"           $'\uE0B0'           $'\uE0B0'           $'\uE0B0'           $'\uE0B0'           $'\uE0B0'
-#                                                                                                                                
-p9k::register_icon "RIGHT_SEGMENT_SEPARATOR"          $'\uE0B2'           $'\uE0B2'           $'\uE0B2'           $'\uE0B2'           $'\uE0B2'
-#                                                    Whitespace          Whitespace          Whitespace          Whitespace          Whitespace
-p9k::register_icon "LEFT_SEGMENT_END_SEPARATOR"       ' '                 ' '                 ' '                 ' '                 ' '
-#                                                                                                                                
-p9k::register_icon "LEFT_SUBSEGMENT_SEPARATOR"        $'\uE0B1'           $'\uE0B1'           $'\uE0B1'           $'\uE0B1'           $'\uE0B1'
-#                                                                                                                                
-p9k::register_icon "RIGHT_SUBSEGMENT_SEPARATOR"       $'\uE0B3'           $'\uE0B3'           $'\uE0B3'           $'\uE0B3'           $'\uE0B3'
-#                                                    ╭─                  ╭─                 ╭─                  ╭─                 ╭─
-p9k::register_icon "MULTILINE_FIRST_PROMPT_PREFIX"    $'\u256D'$'\u2500'  $'\u256D'$'\u2500'  $'\u256D'$'\u2500'  $'\u256D'$'\u2500'  $'\u256D'$'\u2500'
-#                                                    ├─                 ├─                  ├─                 ├─                  ├─
-p9k::register_icon "MULTILINE_NEWLINE_PROMPT_PREFIX"  $'\u251C'$'\u2500'  $'\u251C'$'\u2500'  $'\u251C'$'\u2500'  $'\u251C'$'\u2500'  $'\u251C'$'\u2500'
-#                                                    ╰─                 ╰─                  ╰─                 ╰─                  ╰─
-p9k::register_icon "MULTILINE_LAST_PROMPT_PREFIX"     $'\u2570'$'\u2500 ' $'\u2570'$'\u2500 ' $'\u2570'$'\u2500 ' $'\u2570'$'\u2500 ' $'\u2570'$'\u2500 '
+(){
+  # Set the right locale to protect special characters
+  local LC_ALL="" LC_CTYPE="en_US.UTF-8"
+  #                                                                                                                                
+  p9k::register_icon "LEFT_SEGMENT_SEPARATOR"           $'\uE0B0'           $'\uE0B0'           $'\uE0B0'           $'\uE0B0'           $'\uE0B0'
+  #                                                                                                                                
+  p9k::register_icon "RIGHT_SEGMENT_SEPARATOR"          $'\uE0B2'           $'\uE0B2'           $'\uE0B2'           $'\uE0B2'           $'\uE0B2'
+  #                                                    Whitespace          Whitespace          Whitespace          Whitespace          Whitespace
+  p9k::register_icon "LEFT_SEGMENT_END_SEPARATOR"       ' '                 ' '                 ' '                 ' '                 ' '
+  #                                                                                                                                
+  p9k::register_icon "LEFT_SUBSEGMENT_SEPARATOR"        $'\uE0B1'           $'\uE0B1'           $'\uE0B1'           $'\uE0B1'           $'\uE0B1'
+  #                                                                                                                                
+  p9k::register_icon "RIGHT_SUBSEGMENT_SEPARATOR"       $'\uE0B3'           $'\uE0B3'           $'\uE0B3'           $'\uE0B3'           $'\uE0B3'
+  #                                                    ╭─                  ╭─                 ╭─                  ╭─                 ╭─
+  p9k::register_icon "MULTILINE_FIRST_PROMPT_PREFIX"    $'\u256D'$'\u2500'  $'\u256D'$'\u2500'  $'\u256D'$'\u2500'  $'\u256D'$'\u2500'  $'\u256D'$'\u2500'
+  #                                                    ├─                 ├─                  ├─                 ├─                  ├─
+  p9k::register_icon "MULTILINE_NEWLINE_PROMPT_PREFIX"  $'\u251C'$'\u2500'  $'\u251C'$'\u2500'  $'\u251C'$'\u2500'  $'\u251C'$'\u2500'  $'\u251C'$'\u2500'
+  #                                                    ╰─                 ╰─                  ╰─                 ╰─                  ╰─
+  p9k::register_icon "MULTILINE_LAST_PROMPT_PREFIX"     $'\u2570'$'\u2500 ' $'\u2570'$'\u2500 ' $'\u2570'$'\u2500 ' $'\u2570'$'\u2500 ' $'\u2570'$'\u2500 '
 
-# Override the above icon settings with any user-defined variables.
-case ${P9K_MODE} in
-  'flat')
-    # Set the right locale to protect special characters
-    local LC_ALL="" LC_CTYPE="en_US.UTF-8"
-    __P9K_ICONS[LEFT_SEGMENT_SEPARATOR]=''
-    __P9K_ICONS[RIGHT_SEGMENT_SEPARATOR]=''
-    __P9K_ICONS[LEFT_SUBSEGMENT_SEPARATOR]='|'
-    __P9K_ICONS[RIGHT_SUBSEGMENT_SEPARATOR]='|'
-  ;;
-  'compatible')
-    # Set the right locale to protect special characters
-    local LC_ALL="" LC_CTYPE="en_US.UTF-8"
-    __P9K_ICONS[LEFT_SEGMENT_SEPARATOR]=$'\u2B80'                 # ⮀
-    __P9K_ICONS[RIGHT_SEGMENT_SEPARATOR]=$'\u2B82'                # ⮂
-  ;;
-esac
+  # Override the above icon settings with any user-defined variables.
+  case ${P9K_MODE} in
+    'flat')
+      # Set the right locale to protect special characters
+      local LC_ALL="" LC_CTYPE="en_US.UTF-8"
+      __P9K_ICONS[LEFT_SEGMENT_SEPARATOR]=''
+      __P9K_ICONS[RIGHT_SEGMENT_SEPARATOR]=''
+      __P9K_ICONS[LEFT_SUBSEGMENT_SEPARATOR]='|'
+      __P9K_ICONS[RIGHT_SUBSEGMENT_SEPARATOR]='|'
+    ;;
+    'compatible')
+      # Set the right locale to protect special characters
+      local LC_ALL="" LC_CTYPE="en_US.UTF-8"
+      __P9K_ICONS[LEFT_SEGMENT_SEPARATOR]=$'\u2B80'                 # ⮀
+      __P9K_ICONS[RIGHT_SEGMENT_SEPARATOR]=$'\u2B82'                # ⮂
+    ;;
+  esac
+}
 
 ################################################################
 # @description
