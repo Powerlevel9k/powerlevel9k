@@ -240,7 +240,7 @@ function testCustomWhitespaceWithIconOnLeft() {
   local P9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS="_[R]_"
 
   __p9k_prepare_prompts
-  assertEquals "%f%b%k%F{015}%K{015}%F{000}_[R]_%F{000}{1}%f_[R]_world1_[R]_%F{000}%K{015}%F{000}_[R]_world2_[R]_%F{000}%K{015}%F{000}_[R]_%F{000}{3}%f_[R]_world3_[R]_%{<Esc>00m%" "$(stripEsc "${(e)RPROMPT}")"
+  assertEquals "%f%b%k%F{015}%K{015}%F{000}_[R]_%F{000}{1}%f_[R]_%F{000}world1_[R]_%F{000}%K{015}%F{000}_[R]_%F{000}world2_[R]_%F{000}%K{015}%F{000}_[R]_%F{000}{3}%f_[R]_%F{000}world3_[R]_%{<Esc>00m%" "$(stripEsc "${(e)RPROMPT}")"
 }
 
 # !!! keep this last test in this file !!!
