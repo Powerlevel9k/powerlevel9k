@@ -31,7 +31,7 @@ prompt_vagrant() {
     # if file does not exist.
     for match in ${vagrantFolder}/.vagrant/machines/**/id(N); do
       local vmId=$(< ${match})
-      if [[ $(command VBoxManage list runningvms) =~ "(${vmId})+" ]]; then
+      if [[ $(command VBoxManage list runningvms 2>/dev/null) =~ "(${vmId})+" ]]; then
         current_state="UP"
         current_string="${P9K_VAGRANT_UP}"
       elif [[ "${current_state}" != "UP" ]]; then
