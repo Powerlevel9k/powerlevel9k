@@ -157,7 +157,7 @@ The segments that are currently available are:
 * `detect_virt` - Virtualization detection with systemd
 * `newline` - Continues the prompt on a new line.
 * `openfoam` - Shows the currently sourced [OpenFOAM](https://openfoam.org/) environment.
-* `vagrant` - Detects if you are in a folder with a running VM.
+* [`vagrant`](#vagrant) - Detects if you are in a folder with a running VM.
 
 --------------------------------------------------------------------------------
 
@@ -650,6 +650,18 @@ P9K_USER_SUDO_ICON=$'\uF09C' # 
 |`DEFAULT_USER`|None|Username to consider a "default context".|
 |`P9K_CONTEXT_ALWAYS_SHOW_USER`|`false`|Always print this segment.|
 |`P9K_USER_TEMPLATE`|`%n`|Default username prompt. Refer to the [ZSH Documentation](http://zsh.sourceforge.net/Doc/Release/Prompt-Expansion.html) for all possible expansions|
+
+##### vagrant
+
+This segment detects if you are in a folder with a running/stopped VM. If so,
+it displays `UP`, when VM is running or `DOWN` when VM is stopped.
+
+You can customize these strings with:
+
+| Variable           | Default Value | Description   |
+|--------------------|---------------|---------------|
+| `P9K_VAGRANT_UP`   | `UP`          | VM is running |
+| `P9K_VAGRANT_DOWN` | `DOWN`        | VM is stopped |
 
 ##### vcs
 
