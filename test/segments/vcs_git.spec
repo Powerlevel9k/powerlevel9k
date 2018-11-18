@@ -414,6 +414,7 @@ function testRemoteBranchNameIdenticalToTag() {
   # This tests the fix from #941
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(vcs)
+  source ${P9K_HOME}/powerlevel9k.zsh-theme
 
   echo "test" > test.txt
   git add test.txt 1>/dev/null
@@ -440,6 +441,7 @@ function testAlwaysShowRemoteBranch() {
   P9K_LEFT_PROMPT_ELEMENTS=(vcs)
   local P9K_VCS_GIT_ALWAYS_SHOW_REMOTE_BRANCH='true'
   local P9K_VCS_HIDE_TAGS='true'
+  source ${P9K_HOME}/powerlevel9k.zsh-theme
 
   echo "test" > test.txt
   git add . 1>/dev/null
@@ -460,6 +462,8 @@ function testGitDirClobber() {
   P9K_LEFT_PROMPT_ELEMENTS=(vcs)
   local P9K_VCS_GIT_ALWAYS_SHOW_REMOTE_BRANCH='true'
   local P9K_VCS_HIDE_TAGS='true'
+  local P9K_VCS_CLOBBERED_FOLDER_ICON="clob"
+  source ${P9K_HOME}/powerlevel9k.zsh-theme
 
   echo "xxx" > xxx.txt
   git add . 1>/dev/null
@@ -485,7 +489,7 @@ function testGitDirClobber() {
   # so for git this is a repo inside another repo.
   cd vcs-test2
 
-  assertEquals "%K{001} %F{000}✘ /tmp/powerlevel9k-test/test-dotfiles  master ✚ ? %k%F{001}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{001} %F{000}✘ clob /tmp/powerlevel9k-test/test-dotfiles  master ✚ ? %k%F{001}%f " "$(__p9k_build_left_prompt)"
 
   cd -
   unset GIT_DIR
