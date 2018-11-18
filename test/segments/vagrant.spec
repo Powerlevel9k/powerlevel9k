@@ -95,4 +95,18 @@ function testVagrantSegmentWorksIfVmIsUpFromWithinSubdir() {
   assertEquals "%K{002} %F{000}V %f%F{000}UP %k%F{002}%f " "$(__p9k_build_left_prompt)"
 }
 
+function testVagrantSegmentWithChangedString() {
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(vagrant)
+  local vagrantId="xxx234"
+  mockVagrantFolder "${vagrantId}"
+
+  local P9K_VAGRANT_DOWN="Nope"
+  assertEquals "%K{001} %F{000}V %f%F{000}Nope %k%F{001}%f " "$(__p9k_build_left_prompt)"
+
+  mockVBoxManage "${vagrantId}"
+  local P9K_VAGRANT_UP="Yep"
+  assertEquals "%K{002} %F{000}V %f%F{000}Yep %k%F{002}%f " "$(__p9k_build_left_prompt)"
+}
+
 source shunit2/shunit2

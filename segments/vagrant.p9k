@@ -14,12 +14,18 @@
   #
   p9k::register_segment "VAGRANT"     "UP"      "green"     "${DEFAULT_COLOR}"  'V'         'V'                   'V'                 'V'                        'V'
   p9k::register_segment "VAGRANT"     "DOWN"    "red"       "${DEFAULT_COLOR}"  'V'         'V'                   'V'                 'V'                        'V'
+
+  ################################################################
+  # Register segment default values
+  p9k::set_default P9K_VAGRANT_UP "UP"
+  p9k::set_default P9K_VAGRANT_DOWN "DOWN"
 }
 
 ################################################################
 # Shows the status of the vagrant VM (Up or Down)
 prompt_vagrant() {
   local current_state="NOT_FOUND"
+  local current_string
   for vagrantFolder in $(__p9k_upsearch ".vagrant" "/"); do
     # Set NULL_GLOB option on file glob to silence error message,
     # if file does not exist.
@@ -27,13 +33,15 @@ prompt_vagrant() {
       local vmId=$(< ${match})
       if [[ $(command VBoxManage list runningvms) =~ "(${vmId})+" ]]; then
         current_state="UP"
+        current_string="${P9K_VAGRANT_UP}"
       elif [[ "${current_state}" != "UP" ]]; then
         current_state="DOWN"
+        current_string="${P9K_VAGRANT_DOWN}"
       fi
     done
   done
 
   if [[ "${current_state}" != "NOT_FOUND" ]]; then
-    p9k::prepare_segment "$0" ${current_state} $1 "$2" $3 "${current_state}"
+    p9k::prepare_segment "$0" ${current_state} $1 "$2" $3 "${current_string}"
   fi
 }
