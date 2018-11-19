@@ -49,8 +49,10 @@ prompt_dir() {
   local current_path=${PWD} # WAS: local current_path="$(print -P '%~')"
   local pathPrefix
   [[ ${current_path} == "${HOME}"* ]] && pathPrefix="~/" || pathPrefix="/"
-  # Always rewrite current path to be prefixed with ~ if in home folder
-  current_path=${current_path//$HOME/"~"}
+
+  # check if the user wants to use absolute paths or "~" paths
+  [[ ${(L)P9K_DIR_PATH_ABSOLUTE} != "true" ]] && current_path=${current_path//$HOME/"~"}
+
   # declare all local variables
   local directory test_dir test_dir_length trunc_path threshold
   # if we are not in "~" or "/", split the paths into an array and exclude "~"
@@ -168,9 +170,6 @@ prompt_dir() {
       ;;
     esac
   fi
-
-  # check if the user wants to use absolute paths or "~" paths
-  [[ ${(L)P9K_DIR_PATH_ABSOLUTE} == "true" ]] && current_path=${current_path//"~"/$HOME}
 
   # save state of path for highlighting and bold options
   local path_opt=$current_path
