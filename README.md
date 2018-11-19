@@ -125,7 +125,7 @@ The segments that are currently available are:
     * `symfony2_version` - Show the current Symfony2 version, if you are in a Symfony2-Project dir.
 * **Python Segments:**
     * `virtualenv` - Your Python [VirtualEnv](https://virtualenv.pypa.io/en/latest/).
-    * [`anaconda`](#anaconda) - Your active [Anaconda](https://www.continuum.io/why-anaconda) environment.
+    * [`anaconda`](segments/anaconda/README.md) - Your active [Anaconda](https://www.continuum.io/why-anaconda) environment.
     * `pyenv` - Your active python version as reported by the first word of [`pyenv version`](https://github.com/yyuu/pyenv). Note that the segment is not displayed if that word is _system_ i.e. the segment is inactive if you are using system python.
 * **Ruby Segments:**
     * [`chruby`](#chruby) - Ruby environment information using `chruby` (if one is active).
@@ -160,25 +160,6 @@ The segments that are currently available are:
 * [`vagrant`](#vagrant) - Detects if you are in a folder with a running VM.
 
 --------------------------------------------------------------------------------
-
-
-##### anaconda
-
-This segment shows your active anaconda environment. It relies on either the
-`CONDA_ENV_PATH` or the `CONDA_PREFIX` (depending on the `conda` version)
-environment variable to be set which happens when you properly `source
-activate` an environment.
-
-Special configuration variables:
-
-| Variable | Default Value | Description |
-|----------|---------------|-------------|
-|`P9K_ANACONDA_LEFT_DELIMITER`|"("|The left delimiter just before the environment name.|
-|`P9K_ANACONDA_RIGHT_DELIMITER`|")"|The right delimiter just after the environment name.|
-
-Additionally the following segment specific parameters can be used to customize
-it: `P9K_PYTHON_ICON`, `P9K_ANACONDA_BACKGROUND`, and
-`P9K_ANACONDA_FOREGROUND`.
 
 ##### aws
 
