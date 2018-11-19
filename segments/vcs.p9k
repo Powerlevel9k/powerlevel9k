@@ -64,99 +64,88 @@
 # Initialize all the required VCS_INFO hooks / helper functions
 ################################################################
 
-################################################################
-# Register segment helper icons
-# Parameters:
-#   name_of_icon  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
-#                                          ●                                                                                  
-p9k::register_icon "VCS_UNSTAGED"          $'\u25CF'   $'\uE17C'   $'\uF06A'   '\u'${CODEPOINT_OF_AWESOME_EXCLAMATION_CIRCLE}    $'\uF06A'
-#                                          ✚                                                                                  
-p9k::register_icon "VCS_STAGED"            $'\u271A'   $'\uE168'   $'\uF055'   '\u'${CODEPOINT_OF_AWESOME_PLUS_CIRCLE}           $'\uF055'
-#                                          ⍟                                                                                  
-p9k::register_icon "VCS_STASH"             $'\u235F'   $'\uE133 '  $'\uF01C '  '\u'${CODEPOINT_OF_AWESOME_INBOX}' '              $'\uF01C '
-#                                          ↓                                                                                  
-p9k::register_icon "VCS_INCOMING_CHANGES"  $'\u2193'   $'\uE131 '  $'\uF01A '  '\u'${CODEPOINT_OF_AWESOME_ARROW_CIRCLE_DOWN}' '  $'\uF01A '
-#                                          ↑                                                                                  
-p9k::register_icon "VCS_OUTGOING_CHANGES"  $'\u2191'   $'\uE132 '  $'\uF01B '  '\u'${CODEPOINT_OF_AWESOME_ARROW_CIRCLE_UP}' '    $'\uF01B '
-#                                                                                                                             
-p9k::register_icon "VCS_TAG"               ''          $'\uE817 '  $'\uF217 '  '\u'${CODEPOINT_OF_AWESOME_TAG}' '                $'\uF02B '
-#                                          ☿                                                                                  
-p9k::register_icon "VCS_BOOKMARK"          $'\u263F'   $'\uE87B'   $'\uF27B'   '\u'${CODEPOINT_OF_OCTICONS_BOOKMARK}             $'\uF461 '
-#                                                                                                                             
-p9k::register_icon "VCS_COMMIT"            ''          $'\uE821 '  $'\uF221 '  '\u'${CODEPOINT_OF_OCTICONS_GIT_COMMIT}' '        $'\uE729 '
-#                                                                                                                             
-p9k::register_icon "VCS_CLOBBERED_FOLDER"  ''          $'\uE818'   $'\uF115'   '\u'${CODEPOINT_OF_AWESOME_FOLDER_O}              $'\uF115'
-#                                          ✘           ✘           ✘                                                             
-p9k::register_icon "VCS_ERROR"             $'\u2718'   $'\u2718'   $'\u2718'   '\u'${CODEPOINT_OF_AWESOME_TIMES}                 $'\uF00D'
+(){
+  # Set the right locale to protect special characters
+  local LC_ALL="" LC_CTYPE="en_US.UTF-8"
+  ################################################################
+  # Register segment helper icons
+  # Parameters:
+  #   name_of_icon  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
+  #                                          ●                                                                                  
+  p9k::register_icon "VCS_UNSTAGED"          $'\u25CF'   $'\uE17C'   $'\uF06A'   '\u'${CODEPOINT_OF_AWESOME_EXCLAMATION_CIRCLE}    $'\uF06A'
+  #                                          ✚                                                                                  
+  p9k::register_icon "VCS_STAGED"            $'\u271A'   $'\uE168'   $'\uF055'   '\u'${CODEPOINT_OF_AWESOME_PLUS_CIRCLE}           $'\uF055'
+  #                                          ⍟                                                                                  
+  p9k::register_icon "VCS_STASH"             $'\u235F'   $'\uE133 '  $'\uF01C '  '\u'${CODEPOINT_OF_AWESOME_INBOX}' '              $'\uF01C '
+  #                                          ↓                                                                                  
+  p9k::register_icon "VCS_INCOMING_CHANGES"  $'\u2193'   $'\uE131 '  $'\uF01A '  '\u'${CODEPOINT_OF_AWESOME_ARROW_CIRCLE_DOWN}' '  $'\uF01A '
+  #                                          ↑                                                                                  
+  p9k::register_icon "VCS_OUTGOING_CHANGES"  $'\u2191'   $'\uE132 '  $'\uF01B '  '\u'${CODEPOINT_OF_AWESOME_ARROW_CIRCLE_UP}' '    $'\uF01B '
+  #                                                                                                                             
+  p9k::register_icon "VCS_TAG"               ''          $'\uE817 '  $'\uF217 '  '\u'${CODEPOINT_OF_AWESOME_TAG}' '                $'\uF02B '
+  #                                          ☿                                                                                  
+  p9k::register_icon "VCS_BOOKMARK"          $'\u263F'   $'\uE87B'   $'\uF27B'   '\u'${CODEPOINT_OF_OCTICONS_BOOKMARK}             $'\uF461 '
+  #                                                                                                                             
+  p9k::register_icon "VCS_COMMIT"            ''          $'\uE821 '  $'\uF221 '  '\u'${CODEPOINT_OF_OCTICONS_GIT_COMMIT}' '        $'\uE729 '
+  #                                                                                                                             
+  p9k::register_icon "VCS_CLOBBERED_FOLDER"  ''          $'\uE818'   $'\uF115'   '\u'${CODEPOINT_OF_AWESOME_FOLDER_O}              $'\uF115'
+  #                                          ✘           ✘           ✘                                                             
+  p9k::register_icon "VCS_ERROR"             $'\u2718'   $'\u2718'   $'\u2718'   '\u'${CODEPOINT_OF_AWESOME_TIMES}                 $'\uF00D'
 
-# Hide branch icon if user wants it hidden
-if [[ "${P9K_VCS_HIDE_BRANCH_ICON}" != true ]]; then
-  if [[ ${P9K_MODE} != 'compatible' ]]; then
-    #                                                                                                                         
-    p9k::register_icon "VCS_BRANCH"        $'\uE0A0 '  $'\uE220 '  $'\uF126 '  '\u'${CODEPOINT_OF_OCTICONS_GIT_BRANCH}' '        $'\uF126 '
-  else
-    #                                                                                                                         
-    p9k::register_icon "VCS_BRANCH"        "@ "        $'\uE220 '  $'\uF126 '  '\u'${CODEPOINT_OF_OCTICONS_GIT_BRANCH}' '        $'\uF126 '
+  # Hide branch icon if user wants it hidden
+  if [[ "${P9K_VCS_HIDE_BRANCH_ICON}" != true ]]; then
+    if [[ ${P9K_MODE} != 'compatible' ]]; then
+      #                                                                                                                         
+      p9k::register_icon "VCS_BRANCH"        $'\uE0A0 '  $'\uE220 '  $'\uF126 '  '\u'${CODEPOINT_OF_OCTICONS_GIT_BRANCH}' '        $'\uF126 '
+    else
+      #                                                                                                                         
+      p9k::register_icon "VCS_BRANCH"        "@ "        $'\uE220 '  $'\uF126 '  '\u'${CODEPOINT_OF_OCTICONS_GIT_BRANCH}' '        $'\uF126 '
+    fi
   fi
-fi
 
-#                                          →           →          →                                                            
-p9k::register_icon "VCS_REMOTE_BRANCH"     $'\u2192'   $'\u2192'   $'\u2192'   '\u'${CODEPOINT_OF_OCTICONS_REPO_PUSH}            $'\uE728 '
-#                                                                                                                             
-p9k::register_icon "VCS_GIT"               ''          $'\uE20E '  $'\uF1D3 '  '\u'${CODEPOINT_OF_AWESOME_GIT}' '                $'\uF1D3 '
-#                                                                                                                              
-p9k::register_icon "VCS_GIT_GITHUB"        ''          $'\uE20E '  $'\uF113 '  '\u'${CODEPOINT_OF_AWESOME_GITHUB_ALT}' '         $'\uF113 '
-#                                                                                                                              
-p9k::register_icon "VCS_GIT_BITBUCKET"     ''          $'\uE20E '  $'\uF171 '  '\u'${CODEPOINT_OF_AWESOME_BITBUCKET}' '          $'\uE703 '
-#                                                                                                                              
-p9k::register_icon "VCS_GIT_GITLAB"        ''          $'\uE20E '  $'\uF296 '  '\u'${CODEPOINT_OF_AWESOME_GITLAB}' '             $'\uF296 '
-#                                                                                                                             
-p9k::register_icon "VCS_HG"                ''          $'\uE1C3 '  $'\uF0C3 '  '\u'${CODEPOINT_OF_AWESOME_FLASK}' '              $'\uF0C3 '
-#                                                                                                                                
-p9k::register_icon "VCS_SVN"               ''          '(svn) '    '(svn) '    '(svn) '                                          $'\uE72D '
+  #                                          →           →          →                                                            
+  p9k::register_icon "VCS_REMOTE_BRANCH"     $'\u2192'   $'\u2192'   $'\u2192'   '\u'${CODEPOINT_OF_OCTICONS_REPO_PUSH}            $'\uE728 '
+  #                                                                                                                             
+  p9k::register_icon "VCS_GIT"               ''          $'\uE20E '  $'\uF1D3 '  '\u'${CODEPOINT_OF_AWESOME_GIT}' '                $'\uF1D3 '
+  #                                                                                                                              
+  p9k::register_icon "VCS_GIT_GITHUB"        ''          $'\uE20E '  $'\uF113 '  '\u'${CODEPOINT_OF_AWESOME_GITHUB_ALT}' '         $'\uF113 '
+  #                                                                                                                              
+  p9k::register_icon "VCS_GIT_BITBUCKET"     ''          $'\uE20E '  $'\uF171 '  '\u'${CODEPOINT_OF_AWESOME_BITBUCKET}' '          $'\uE703 '
+  #                                                                                                                              
+  p9k::register_icon "VCS_GIT_GITLAB"        ''          $'\uE20E '  $'\uF296 '  '\u'${CODEPOINT_OF_AWESOME_GITLAB}' '             $'\uF296 '
+  #                                                                                                                             
+  p9k::register_icon "VCS_HG"                ''          $'\uE1C3 '  $'\uF0C3 '  '\u'${CODEPOINT_OF_AWESOME_FLASK}' '              $'\uF0C3 '
+  #                                                                                                                                
+  p9k::register_icon "VCS_SVN"               ''          '(svn) '    '(svn) '    '(svn) '                                          $'\uE72D '
 
-################################################################
-# Register segment default values
-p9k::set_default P9K_VCS_ACTIONFORMAT_FOREGROUND "red"
-p9k::set_default P9K_VCS_HIDE_TAGS false
-p9k::set_default P9K_VCS_INTERNAL_HASH_LENGTH "8" # Default: Just display the first 8 characters of our changeset-ID.
-p9k::set_default P9K_VCS_DIR_SHORTEN_DELIMITER $'\U2026'
-p9k::set_default P9K_VCS_SHOW_SUBMODULE_DIRTY true
-
-################################################################
-# Register segment helper default values
-p9k::set_default P9K_VCS_SHOW_SUBMODULE_DIRTY false
-p9k::set_default P9K_VCS_GIT_ALWAYS_SHOW_REMOTE_BRANCH false
+  ################################################################
+  # Register segment default values
+  p9k::set_default P9K_VCS_ACTIONFORMAT_FOREGROUND "red"
+  p9k::set_default P9K_VCS_HIDE_TAGS false
+  p9k::set_default P9K_VCS_INTERNAL_HASH_LENGTH "8" # Default: Just display the first 8 characters of our changeset-ID.
+  p9k::set_default P9K_VCS_DIR_SHORTEN_DELIMITER $'\U2026'
+  p9k::set_default P9K_VCS_SHOW_SUBMODULE_DIRTY true
+  p9k::set_default P9K_VCS_GIT_ALWAYS_SHOW_REMOTE_BRANCH false
+}
 
 function +vi-git-untracked() {
   [[ -z "${vcs_comm[gitdir]}" || "${vcs_comm[gitdir]}" == "." ]] && return
 
-  # If we are in a .git folder, do not check for untracked files.
-  [[ "${PWD:A}" =~ "\.git/" ]] && return
+  # get the root for the current repo or submodule
+  local repoTopLevel="$(command git rev-parse --show-toplevel 2> /dev/null)"
+  # dump out if we're outside a git repository (which includes being in the .git folder)
+  [[ $? != 0 || -z $repoTopLevel ]] && return
 
-  # If we are in a repos root folder, vcs_comm[gitdir] yields ".git".
-  # Inside the .git dir itself (and not a subdir of it) the variable
-  # yields ".". In any other case (either a subdirectory of .git or
-  # the repo itself), the value of vcs_comm[gitdir] is the absolute
-  # path to the .git directory.
-  # Therefore we can step up a directory, if we are inside the .git
-  # folder. And in any other case, use the parent directory of the
-  # gitdir.
-  local repoDir="."
-  # Getting the parent dir of the current dir "." is still ".", so
-  # is is safe to do this always.
-  [[ "${vcs_comm[gitdir]}" != ".git" ]] && repoDir="${vcs_comm[gitdir]:A:h}"
-  [[ "${vcs_comm[gitdir]}" == "." ]] && repoDir="${PWD:A:h}"
+  local untrackedFiles=$(command git ls-files --others --exclude-standard "${repoTopLevel}")
 
-  if [[ "$P9K_VCS_SHOW_SUBMODULE_DIRTY" == "true" && "$(command git submodule foreach --quiet --recursive 'command git ls-files --others --exclude-standard')" != "" ]]; then
-    hook_com[unstaged]+=" ${__P9K_ICONS[VCS_UNTRACKED]}"
-    VCS_WORKDIR_HALF_DIRTY=true
-  elif [[ "$(command git ls-files --others --exclude-standard "${repoDir}")" != "" ]]; then
-    hook_com[unstaged]+=" ${__P9K_ICONS[VCS_UNTRACKED]}"
-    VCS_WORKDIR_HALF_DIRTY=true
-  else
-    VCS_WORKDIR_HALF_DIRTY=false
+  if [[ -z $untrackedFiles && "$P9K_VCS_SHOW_SUBMODULE_DIRTY" == "true" ]]; then
+    untrackedFiles+=$(command git submodule foreach --quiet --recursive 'command git ls-files --others --exclude-standard')
   fi
+
+  [[ -z $untrackedFiles ]] && return
+
+  hook_com[unstaged]+=" ${__P9K_ICONS[VCS_UNTRACKED]}"
+  VCS_WORKDIR_HALF_DIRTY=true
 }
 
 function +vi-git-aheadbehind() {

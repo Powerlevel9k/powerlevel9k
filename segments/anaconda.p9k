@@ -4,17 +4,21 @@
 # @source [powerlevel9k](https://github.com/bhilburn/powerlevel9k)
 ##
 
-################################################################
-# Register segment
-# Parameters:
-#   segment_name  context  background  foreground  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
-#                                                                                                                      
-p9k::register_segment "ANACONDA" "" "blue" "$DEFAULT_COLOR" ''  $'\ue63c'  $'\ue63c'  '\u'${CODEPOINT_OF_DEVICONS_PYTHON}  $'\uE73C '
+() {
+  # Set the right locale to protect special characters
+  local LC_ALL="" LC_CTYPE="en_US.UTF-8"
+  ################################################################
+  # Register segment
+  # Parameters:
+  #   segment_name  context  background  foreground  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
+  #                                                                                                                      
+  p9k::register_segment "ANACONDA" "" "blue" "$DEFAULT_COLOR" ''  $'\ue63c'  $'\ue63c'  '\u'${CODEPOINT_OF_DEVICONS_PYTHON}  $'\uE73C '
 
-################################################################
-# Register segment default values
-p9k::set_default P9K_ANACONDA_LEFT_DELIMITER "("
-p9k::set_default P9K_ANACONDA_RIGHT_DELIMITER ")"
+  ################################################################
+  # Register segment default values
+  p9k::set_default P9K_ANACONDA_LEFT_DELIMITER "("
+  p9k::set_default P9K_ANACONDA_RIGHT_DELIMITER ")"
+}
 
 ################################################################
 # @description

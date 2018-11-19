@@ -1,5 +1,6 @@
 ## v0.7.0
 
+  - Add `vagrant` segment, that shows if you are in a directory where a VM is running.
   - PR #983 (Stage 1)
     - Split the code into separate files for segments and generators
   - PR #986 (Stage 2)

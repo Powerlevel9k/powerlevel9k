@@ -4,12 +4,20 @@
 # @source [powerlevel9k](https://github.com/bhilburn/powerlevel9k)
 ##
 
-################################################################
-# Register segment
-# Parameters:
-#   segment_name  context  background  foreground  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
-#                                                                   ⚙                                                               
-p9k::register_segment 'BACKGROUND_JOBS' '' "yellow" "black" $'\u2699'  $'\uE82F '  $'\uF013 '  '\u'$CODEPOINT_OF_AWESOME_COG' '  $'\uF013 '
+(){
+  # Set the right locale to protect special characters
+  local LC_ALL="" LC_CTYPE="en_US.UTF-8"
+  ################################################################
+  # Register segment
+  # Parameters:
+  #   segment_name  context  background  foreground  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
+  #                                                                   ⚙                                                               
+  p9k::register_segment 'BACKGROUND_JOBS' '' "yellow" "black" $'\u2699'  $'\uE82F '  $'\uF013 '  '\u'$CODEPOINT_OF_AWESOME_COG' '  $'\uF013 '
+
+  p9k::set_default P9K_BACKGROUND_JOBS_VERBOSE true
+  p9k::set_default P9K_BACKGROUND_JOBS_VERBOSE_ALWAYS false
+  p9k::set_default P9K_BACKGROUND_JOBS_EXPANDED false
+}
 
 __p9k_background_jobs() {
   # See https://unix.stackexchange.com/questions/68571/show-jobs-count-only-if-it-is-more-than-0
@@ -20,10 +28,6 @@ __p9k_background_jobs() {
 # initialize hooks
 autoload -Uz add-zsh-hook
 add-zsh-hook precmd __p9k_background_jobs
-
-p9k::set_default P9K_BACKGROUND_JOBS_VERBOSE true
-p9k::set_default P9K_BACKGROUND_JOBS_VERBOSE_ALWAYS false
-p9k::set_default P9K_BACKGROUND_JOBS_EXPANDED false
 ################################################################
 # @description
 #   Displays the number of background jobs with an icon.

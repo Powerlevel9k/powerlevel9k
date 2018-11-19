@@ -4,21 +4,25 @@
 # @source [powerlevel9k](https://github.com/bhilburn/powerlevel9k)
 ##
 
-################################################################
-# Register segment
-# Parameters:
-#   segment_name  context  background  foreground  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
-#                                                                                                🔋                    🔋                                                    
-p9k::register_segment "BATTERY" "LOW"           "${DEFAULT_COLOR}" "red"                        $'\U1F50B'  $'\uE894'  $'\U1F50B'  '\u'${CODEPOINT_OF_AWESOME_BATTERY_FULL}  $'\uF240 '
-p9k::register_segment "BATTERY" "CHARGING"      "${DEFAULT_COLOR}" "yellow"                     $'\U1F50B'  $'\uE894'  $'\U1F50B'  '\u'${CODEPOINT_OF_AWESOME_BATTERY_FULL}  $'\uF240 '
-p9k::register_segment "BATTERY" "CHARGED"       "${DEFAULT_COLOR}" "green"                      $'\U1F50B'  $'\uE894'  $'\U1F50B'  '\u'${CODEPOINT_OF_AWESOME_BATTERY_FULL}  $'\uF240 '
-p9k::register_segment "BATTERY" "DISCONNECTED"  "${DEFAULT_COLOR}" "${DEFAULT_COLOR_INVERTED}"  $'\U1F50B'  $'\uE894'  $'\U1F50B'  '\u'${CODEPOINT_OF_AWESOME_BATTERY_FULL}  $'\uF240 '
+(){
+  # Set the right locale to protect special characters
+  local LC_ALL="" LC_CTYPE="en_US.UTF-8"
+  ################################################################
+  # Register segment
+  # Parameters:
+  #   segment_name  context  background  foreground  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
+  #                                                                                                🔋                    🔋                                                    
+  p9k::register_segment "BATTERY" "LOW"           "${DEFAULT_COLOR}" "red"                        $'\U1F50B'  $'\uE894'  $'\U1F50B'  '\u'${CODEPOINT_OF_AWESOME_BATTERY_FULL}  $'\uF240 '
+  p9k::register_segment "BATTERY" "CHARGING"      "${DEFAULT_COLOR}" "yellow"                     $'\U1F50B'  $'\uE894'  $'\U1F50B'  '\u'${CODEPOINT_OF_AWESOME_BATTERY_FULL}  $'\uF240 '
+  p9k::register_segment "BATTERY" "CHARGED"       "${DEFAULT_COLOR}" "green"                      $'\U1F50B'  $'\uE894'  $'\U1F50B'  '\u'${CODEPOINT_OF_AWESOME_BATTERY_FULL}  $'\uF240 '
+  p9k::register_segment "BATTERY" "DISCONNECTED"  "${DEFAULT_COLOR}" "${DEFAULT_COLOR_INVERTED}"  $'\U1F50B'  $'\uE894'  $'\U1F50B'  '\u'${CODEPOINT_OF_AWESOME_BATTERY_FULL}  $'\uF240 '
 
-################################################################
-# Register segment default values
-p9k::set_default P9K_BATTERY_LOW_THRESHOLD 10
-# Default behavior: Be verbose!
-p9k::set_default P9K_BATTERY_VERBOSE true
+  ################################################################
+  # Register segment default values
+  p9k::set_default P9K_BATTERY_LOW_THRESHOLD 10
+  # Default behavior: Be verbose!
+  p9k::set_default P9K_BATTERY_VERBOSE true
+}
 
 ################################################################
 # @description

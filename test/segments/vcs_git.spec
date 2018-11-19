@@ -617,4 +617,45 @@ function testDetectingUntrackedFilesInCleanSubdirectoryWorks() {
   assertEquals "%K{002} %F{000}?%f %F{000} master ? %k%F{002}%f " "$(__p9k_build_left_prompt)"
 }
 
+function testBranchNameScriptingVulnerability() {
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(vcs)
+  echo "#!/bin/sh\n\necho 'hacked'\n" > evil_script.sh
+  chmod +x evil_script.sh
+
+  git checkout -b '$(./evil_script.sh)' 2>/dev/null
+  git add . 2>/dev/null
+  git commit -m "Initial commit" >/dev/null
+
+  assertEquals '%K{002} %F{000} $(./evil_script.sh) %k%F{002}%f ' "$(__p9k_build_left_prompt)"
+}
+
+function testGitSubmoduleWorks() {
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(vcs)
+  local P9K_VCS_SHOW_SUBMODULE_DIRTY="true"
+  unset P9K_VCS_UNTRACKED_BACKGROUND
+
+  mkdir ../submodule
+  cd ../submodule
+  git init 1>/dev/null
+  touch "i-am-tracked.txt"
+  git add . 1>/dev/null && git commit -m "Initial Commit" 1>/dev/null
+
+  local submodulePath="${PWD}"
+
+  cd -
+  git submodule add "${submodulePath}" 2>/dev/null
+  git commit -m "Add submodule" 1>/dev/null
+
+  cd submodule
+
+  source "${P9K_HOME}/powerlevel9k.zsh-theme"
+
+  local result="$(__p9k_build_left_prompt 2>&1)"
+  [[ "$result" =~ ".*(is outside repository)+" ]] && return 1
+
+  assertEquals "%K{002} %F{000} master %k%F{002}%f " "$result"
+}
+
 source shunit2/shunit2

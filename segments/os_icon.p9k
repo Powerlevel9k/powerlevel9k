@@ -4,64 +4,68 @@
 # @source [powerlevel9k](https://github.com/bhilburn/powerlevel9k)
 ##
 
-################################################################
-# Register segment icon
-# Parameters:
-#   name_of_icon  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
-case "$__P9K_OS" in
-  #                                                                                                                             
-  "OSX")      p9k::register_segment "OS_ICON" "" "black" "white" 'OSX'  $'\uE26E'    $'\uF179'    '\u'${CODEPOINT_OF_AWESOME_APPLE}  $'\uF179' ;;
-  #                                                                                                                             
-  "Windows")  p9k::register_segment "OS_ICON" "" "black" "white" 'WIN'  $'\uE26F'    $'\uF17A'    $'\uF17A'                        $'\uF17A' ;;
-  #                                                                      😈           😈           😈                                
-  "BSD")      p9k::register_segment "OS_ICON" "" "black" "white" 'BSD'  $'\U1F608 '  $'\U1F608 '  $'\U1F608 '                      $'\uF30c ' ;;
-#  OpenBSD) ;;
-#  DragonFly) ;;
-  "Linux")
-    case "$__P9K_OS_ID" in
-      #                                                                                                                                                                          
-      "arch")                  p9k::register_segment "OS_ICON" "" "black" "white" 'Arc'  $'\uE271'      $'\uF17C'      '\u'$CODEPOINT_OF_AWESOME_LINUX                              $'\uF303' ;;
-      #                                                                                                                                                                          
-      "debian")                p9k::register_segment "OS_ICON" "" "black" "white" 'Deb'  $'\uE271'      $'\uF17C'      '\u'$CODEPOINT_OF_AWESOME_LINUX                              $'\uE77D' ;;
-      #                                                                                                                                                                          
-      "ubuntu")                p9k::register_segment "OS_ICON" "" "black" "white" 'Ubu'  $'\uE271'      $'\uF17C'      '\u'$CODEPOINT_OF_AWESOME_LINUX                              $'\uF31B' ;;
-      #                                                                                                                                                                          
-      "elementary")            p9k::register_segment "OS_ICON" "" "black" "white" 'Elm'  $'\uE271'      $'\uF17C'      '\u'$CODEPOINT_OF_AWESOME_LINUX                              $'\uF309' ;;
-      #                                                                                                                                                                          
-      "fedora")                p9k::register_segment "OS_ICON" "" "black" "white" 'Fed'  $'\uE271'      $'\uF17C'      '\u'$CODEPOINT_OF_AWESOME_LINUX                              $'\uF30A' ;;
-      #                                                                                                                                                                          
-      "rhel")                  p9k::register_segment "OS_ICON" "" "black" "white" 'Rhe'  $'\uE271'      $'\uF17C'      '\u'$CODEPOINT_OF_AWESOME_LINUX                              $'\uE7BB' ;;
-      #                                                                                                                                                                          
-      "coreos")                p9k::register_segment "OS_ICON" "" "black" "white" 'Cor'  $'\uE271'      $'\uF17C'      '\u'$CODEPOINT_OF_AWESOME_LINUX                              $'\uF305' ;;
-      #                                                                                                                                                                          
-      "gentoo")                p9k::register_segment "OS_ICON" "" "black" "white" 'Gen'  $'\uE271'      $'\uF17C'      '\u'$CODEPOINT_OF_AWESOME_LINUX                              $'\uF30D' ;;
-      #                                                                                                                                                                          
-      "mageia")                p9k::register_segment "OS_ICON" "" "black" "white" 'Mag'  $'\uE271'      $'\uF17C'      '\u'$CODEPOINT_OF_AWESOME_LINUX                              $'\uF310' ;;
-      #                                                                                                                                                                          
-      "centos")                p9k::register_segment "OS_ICON" "" "black" "white" 'Cen'  $'\uE271'      $'\uF17C'      '\u'$CODEPOINT_OF_AWESOME_LINUX                              $'\uF304' ;;
-      #                                                                                                                                                                          
-      "opensuse"|"tumbleweed") p9k::register_segment "OS_ICON" "" "black" "white" 'OSu'  $'\uE271'      $'\uF17C'      '\u'$CODEPOINT_OF_AWESOME_LINUX                              $'\uF314' ;;
-      #                                                                                                                                                                          
-      "sabayon")               p9k::register_segment "OS_ICON" "" "black" "white" 'Sab'  $'\uE271'      $'\uF17C'      '\u'$CODEPOINT_OF_AWESOME_LINUX                              $'\uF317' ;;
-      #                                                                                                                                                                          
-      "slackware")             p9k::register_segment "OS_ICON" "" "black" "white" 'Sla'  $'\uE271'      $'\uF17C'      '\u'$CODEPOINT_OF_AWESOME_LINUX                              $'\uF318' ;;
-      #                                                                                                                                                                          
-      "linuxmint")             p9k::register_segment "OS_ICON" "" "black" "white" 'LMi'  $'\uE271'      $'\uF17C'      '\u'$CODEPOINT_OF_AWESOME_LINUX                              $'\uF30E' ;;
-      #                                                                                                                                                                          
-      *)                       p9k::register_segment "OS_ICON" "" "black" "white" 'Lx'   $'\uE271'      $'\uF17C'      '\u'$CODEPOINT_OF_AWESOME_LINUX                              $'\uF17C' ;;
-    esac
-  ;;
-  #                                                                                                                                
-  "Android") p9k::register_segment "OS_ICON" "" "black" "white"  'And'  $'\uE270'    $'\uE17B'   $'\uF17B'                           $'\uF17B'
-  ;;
-  #                                                                      🌞                                                         
-  "Solaris") p9k::register_segment "OS_ICON" "" "black" "white"  'Sun'  $'\U1F31E '  $'\uF185 '  '\u'$CODEPOINT_OF_AWESOME_SUN_O' '  $'\uF185 '
+(){
+  # Set the right locale to protect special characters
+  local LC_ALL="" LC_CTYPE="en_US.UTF-8"
+  ################################################################
+  # Register segment icon
+  # Parameters:
+  #   name_of_icon  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
+  case "$__P9K_OS" in
+    #                                                                                                                             
+    "OSX")      p9k::register_segment "OS_ICON" "" "black" "white" 'OSX'  $'\uE26E'    $'\uF179'    '\u'${CODEPOINT_OF_AWESOME_APPLE}  $'\uF179' ;;
+    #                                                                                                                             
+    "Windows")  p9k::register_segment "OS_ICON" "" "black" "white" 'WIN'  $'\uE26F'    $'\uF17A'    $'\uF17A'                        $'\uF17A' ;;
+    #                                                                      😈           😈           😈                                
+    "BSD")      p9k::register_segment "OS_ICON" "" "black" "white" 'BSD'  $'\U1F608 '  $'\U1F608 '  $'\U1F608 '                      $'\uF30c ' ;;
+  #  OpenBSD) ;;
+  #  DragonFly) ;;
+    "Linux")
+      case "$__P9K_OS_ID" in
+        #                                                                                                                                                                          
+        "arch")                  p9k::register_segment "OS_ICON" "" "black" "white" 'Arc'  $'\uE271'      $'\uF17C'      '\u'$CODEPOINT_OF_AWESOME_LINUX                              $'\uF303' ;;
+        #                                                                                                                                                                          
+        "debian")                p9k::register_segment "OS_ICON" "" "black" "white" 'Deb'  $'\uE271'      $'\uF17C'      '\u'$CODEPOINT_OF_AWESOME_LINUX                              $'\uE77D' ;;
+        #                                                                                                                                                                          
+        "ubuntu")                p9k::register_segment "OS_ICON" "" "black" "white" 'Ubu'  $'\uE271'      $'\uF17C'      '\u'$CODEPOINT_OF_AWESOME_LINUX                              $'\uF31B' ;;
+        #                                                                                                                                                                          
+        "elementary")            p9k::register_segment "OS_ICON" "" "black" "white" 'Elm'  $'\uE271'      $'\uF17C'      '\u'$CODEPOINT_OF_AWESOME_LINUX                              $'\uF309' ;;
+        #                                                                                                                                                                          
+        "fedora")                p9k::register_segment "OS_ICON" "" "black" "white" 'Fed'  $'\uE271'      $'\uF17C'      '\u'$CODEPOINT_OF_AWESOME_LINUX                              $'\uF30A' ;;
+        #                                                                                                                                                                          
+        "rhel")                  p9k::register_segment "OS_ICON" "" "black" "white" 'Rhe'  $'\uE271'      $'\uF17C'      '\u'$CODEPOINT_OF_AWESOME_LINUX                              $'\uE7BB' ;;
+        #                                                                                                                                                                          
+        "coreos")                p9k::register_segment "OS_ICON" "" "black" "white" 'Cor'  $'\uE271'      $'\uF17C'      '\u'$CODEPOINT_OF_AWESOME_LINUX                              $'\uF305' ;;
+        #                                                                                                                                                                          
+        "gentoo")                p9k::register_segment "OS_ICON" "" "black" "white" 'Gen'  $'\uE271'      $'\uF17C'      '\u'$CODEPOINT_OF_AWESOME_LINUX                              $'\uF30D' ;;
+        #                                                                                                                                                                          
+        "mageia")                p9k::register_segment "OS_ICON" "" "black" "white" 'Mag'  $'\uE271'      $'\uF17C'      '\u'$CODEPOINT_OF_AWESOME_LINUX                              $'\uF310' ;;
+        #                                                                                                                                                                          
+        "centos")                p9k::register_segment "OS_ICON" "" "black" "white" 'Cen'  $'\uE271'      $'\uF17C'      '\u'$CODEPOINT_OF_AWESOME_LINUX                              $'\uF304' ;;
+        #                                                                                                                                                                          
+        "opensuse"|"tumbleweed") p9k::register_segment "OS_ICON" "" "black" "white" 'OSu'  $'\uE271'      $'\uF17C'      '\u'$CODEPOINT_OF_AWESOME_LINUX                              $'\uF314' ;;
+        #                                                                                                                                                                          
+        "sabayon")               p9k::register_segment "OS_ICON" "" "black" "white" 'Sab'  $'\uE271'      $'\uF17C'      '\u'$CODEPOINT_OF_AWESOME_LINUX                              $'\uF317' ;;
+        #                                                                                                                                                                          
+        "slackware")             p9k::register_segment "OS_ICON" "" "black" "white" 'Sla'  $'\uE271'      $'\uF17C'      '\u'$CODEPOINT_OF_AWESOME_LINUX                              $'\uF318' ;;
+        #                                                                                                                                                                          
+        "linuxmint")             p9k::register_segment "OS_ICON" "" "black" "white" 'LMi'  $'\uE271'      $'\uF17C'      '\u'$CODEPOINT_OF_AWESOME_LINUX                              $'\uF30E' ;;
+        #                                                                                                                                                                          
+        *)                       p9k::register_segment "OS_ICON" "" "black" "white" 'Lx'   $'\uE271'      $'\uF17C'      '\u'$CODEPOINT_OF_AWESOME_LINUX                              $'\uF17C' ;;
+      esac
     ;;
-  *)
-    p9k::register_segment "OS_ICON" "" "black" "white"  ''  ''  ''  ''  ''
-    OS=''
+    #                                                                                                                                
+    "Android") p9k::register_segment "OS_ICON" "" "black" "white"  'And'  $'\uE270'    $'\uE17B'   $'\uF17B'                           $'\uF17B'
     ;;
-esac
+    #                                                                      🌞                                                         
+    "Solaris") p9k::register_segment "OS_ICON" "" "black" "white"  'Sun'  $'\U1F31E '  $'\uF185 '  '\u'$CODEPOINT_OF_AWESOME_SUN_O' '  $'\uF185 '
+      ;;
+    *)
+      p9k::register_segment "OS_ICON" "" "black" "white"  ''  ''  ''  ''  ''
+      OS=''
+      ;;
+  esac
+}
 
 ################################################################
 # @description

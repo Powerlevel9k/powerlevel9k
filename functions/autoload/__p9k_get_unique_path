@@ -28,7 +28,7 @@ for directory in ${paths[@]}; do
   test_dir=''
   for (( i=0; i < ${#directory}; i++ )); do
     test_dir+="${directory:$i:1}"
-    matching=("$cur_path"/"$test_dir"*/)
+    matching=("$cur_path"/"$test_dir"*/(N))
     if [[ ${#matching[@]} -eq 1 ]]; then
       break
     fi
