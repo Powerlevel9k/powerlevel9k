@@ -77,7 +77,7 @@ prompt_battery() {
   if [[ "$__P9K_OS" == 'Linux' ]] || [[ "$__P9K_OS" == 'Android' ]]; then
     # needed if files or directory do not match globbing pattern
     local sysp="${ROOT_PREFIX}/sys/class/power_supply"
-    declare -a bats
+    local -a bats
     bats=( $sysp/(BAT*|battery)(N) )
     [[ ${#bats} == 0 ]] && return
 
@@ -89,35 +89,30 @@ prompt_battery() {
     local battery_status_charging=false
     for bat in $bats; do
       # skip this loop if no files in $bat
-      local -a bat_tmp
-      bat_tmp=( $bat/*(N) )
-      [[ ${#bat_tmp} == 0 ]] && continue
+      local -a bat_files
+      bat_files=( $bat/*(N) )
+      [[ ${#bat_files} == 0 ]] && continue
       # add "+ 0[number in file]" if the file exists (0 padding if glob fails)
-      declare -a energy_now_tmp
-      declare -a energy_full_tmp
-      declare -a power_now_tmp
-      declare -a battery_status_tmp
-      energy_now_tmp=( $bat/(energy|charge)_now(N) )
-      energy_now+="+ 0$(<${energy_now_tmp[1]:-/dev/null})"
-      energy_full_tmp=( $bat/(energy|charge)_full(N) )
-      energy_full+="+ 0$(< ${energy_full_tmp[1]:-/dev/null})"
-      power_now_tmp=( $bat/(power|current)_now(N) )
-      power_now+="+ 0$(< ${power_now_tmp[1]:-/dev/null})"
+      local -a energy_now_files
+      local -a energy_full_files
+      local -a power_now_files
+      local -a battery_status_files
+      energy_now_files=( $bat/(energy|charge)_now(N) )
+      energy_now+="+ 0$(<${energy_now_files[1]:-/dev/null})"
+      energy_full_files=( $bat/(energy|charge)_full(N) )
+      energy_full+="+ 0$(< ${energy_full_files[1]:-/dev/null})"
+      power_now_files=( $bat/(power|current)_now(N) )
+      power_now+="+ 0$(< ${power_now_files[1]:-/dev/null})"
       # get cumulative battery status (ignore if no status file exists)
-      battery_status_tmp=( $bat/status(N) )
-      battery_status=$(<${battery_status_tmp[1]:-/dev/null})
+      battery_status_files=( $bat/status(N) )
+      local battery_status=$(<${battery_status_files[1]:-/dev/null})
       [[ ${battery_status} != Full && -n ${battery_status} ]] \
         && battery_status_full=false
       [[ ${battery_status} == Charging ]] \
         && battery_status_charging=true
-      [[ $(< ${power_now_tmp[1]:-/dev/null}) == 0 && ${battery_status} == (Charging|Discharging) ]] \
+      [[ $(< ${power_now_files[1]:-/dev/null}) == 0 && ${battery_status} == (Charging|Discharging) ]] \
         && battery_status_calculating=true
-      unset energy_now_tmp
-      unset energy_full_tmp
-      unset power_now_tmp
-      unset battery_status_tmp
     done
-    unset bats
 
     # replace values of varibales with evaluation of the sums
     energy_now=$(($energy_now))
