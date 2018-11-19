@@ -152,11 +152,15 @@ function testCustomWhitespaceOfSegments() {
   local P9K_CUSTOM_WORLD3_ICON='{3}'
 
   local P9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS="_[L]_"
+  local P9K_MIDDLE_WHITESPACE_OF_LEFT_SEGMENTS="_[M]_"
+
   local P9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS="_[R]_"
+  local P9K_MIDDLE_WHITESPACE_OF_RIGHT_SEGMENTS="_[M]_"
+
 
   __p9k_prepare_prompts
-  assertEquals "%f%b%k%K{015}_[L]_%F{000}{1}%f_[L]_%F{000}world1_[L]__[L]_%F{000}world2_[L]__[L]_%F{000}{3}%f_[L]_%F{000}world3_[L]_%k%F{015}%f " "${(e)PROMPT}"
-  assertEquals "%f%b%k%F{015}%K{015}%F{000}_[R]_world1_[R]_%F{000}{1}%f_[R]_%F{000}%K{015}%F{000}_[R]_world2_[R]_%F{000}%K{015}%F{000}_[R]_world3_[R]_%F{000}{3}%f_[R]_%{<Esc>00m%" "$(stripEsc "${(e)RPROMPT}")"
+  assertEquals "%f%b%k%K{015}_[L]_%F{000}{1}%f_[M]_%F{000}world1_[L]__[L]_%F{000}world2_[L]__[L]_%F{000}{3}%f_[M]_%F{000}world3_[L]_%k%F{015}%f " "${(e)PROMPT}"
+  assertEquals "%f%b%k%F{015}%K{015}%F{000}_[R]_world1_[M]_%F{000}{1}%f_[R]_%F{000}%K{015}%F{000}_[R]_world2_[R]_%F{000}%K{015}%F{000}_[R]_world3_[M]_%F{000}{3}%f_[R]_%{<Esc>00m%" "$(stripEsc "${(e)RPROMPT}")"
 
 }
 
@@ -216,7 +220,7 @@ function testCustomWhitespaceOfCustomSegments() {
 
     __p9k_prepare_prompts
   assertEquals "%f%b%k%K{015}_[L1]_%F{000}{1}%f_[M1]_%F{000}world1_[R1]__[L2]_%F{000}world2_[R2]__[L3]_%F{000}{3}%f_[M3]_%F{000}world3_[R3]_%k%F{015}%f " "${(e)PROMPT}"
-  assertEquals "%f%b%k%F{015}%K{015}%F{000}_[R1]_world1_[M1]_%F{000}{1}%f_[R1]_%F{000}%K{015}%F{000}_[R2]_world2_[R2]_%F{000}%K{015}%F{000}_[R3]_world3_[M3]_%F{000}{3}%f_[R3]_%{<Esc>00m%" "$(stripEsc "${(e)RPROMPT}")"
+  assertEquals "%f%b%k%F{015}%K{015}%F{000}_[L1]_world1_[M1]_%F{000}{1}%f_[R1]_%F{000}%K{015}%F{000}_[L2]_world2_[R2]_%F{000}%K{015}%F{000}_[L3]_world3_[M3]_%F{000}{3}%f_[R3]_%{<Esc>00m%" "$(stripEsc "${(e)RPROMPT}")"
 
 }
 
@@ -236,11 +240,11 @@ function testCustomWhitespaceWithIconOnLeft() {
   
   local P9K_RPROMPT_ICON_LEFT=true
   
-  local P9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS="_[L]_"
+  local P9K_MIDDLE_WHITESPACE_OF_RIGHT_SEGMENTS="_[M]_"
   local P9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS="_[R]_"
 
   __p9k_prepare_prompts
-  assertEquals "%f%b%k%F{015}%K{015}%F{000}_[R]_%F{000}{1}%f_[R]_%F{000}world1_[R]_%F{000}%K{015}%F{000}_[R]_%F{000}world2_[R]_%F{000}%K{015}%F{000}_[R]_%F{000}{3}%f_[R]_%F{000}world3_[R]_%{<Esc>00m%" "$(stripEsc "${(e)RPROMPT}")"
+  assertEquals "%f%b%k%F{015}%K{015}%F{000}_[R]_%F{000}{1}%f_[M]_%F{000}world1_[R]_%F{000}%K{015}%F{000}_[R]_%F{000}world2_[R]_%F{000}%K{015}%F{000}_[R]_%F{000}{3}%f_[M]_%F{000}world3_[R]_%{<Esc>00m%" "$(stripEsc "${(e)RPROMPT}")"
 }
 
 # !!! keep this last test in this file !!!
