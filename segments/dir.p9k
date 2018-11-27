@@ -79,8 +79,9 @@ prompt_dir() {
         fi
       ;;
       truncate_to_last)
-        # truncate all characters before the current directory
-        current_path=${current_path##*/}
+        # truncate all characters before the last shown directory
+        distance=${P9K_LAST_NUMBER_OF_DIRS:--1}
+        current_path="${current_path[(ws:/:)$distance,-1]}"
       ;;
       truncate_to_first_and_last)
         if (( ${#current_path} > 1 )) && (( ${P9K_DIR_SHORTEN_LENGTH} > 0 )); then

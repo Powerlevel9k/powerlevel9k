@@ -407,6 +407,7 @@ Customizations available are:
 |`P9K_DIR_SHORTEN_LENGTH`|`2`|If your shorten strategy, below, is entire directories, this field determines how many directories to leave at the end. If your shorten strategy is by character count, this field determines how many characters to allow per directory string.|
 |`P9K_DIR_SHORTEN_STRATEGY`|None|How the directory strings should be truncated. See the table below for more informations.|
 |`P9K_DIR_SHORTEN_DELIMITER`|`..`|Delimiter to use in truncated strings. This can be any string you choose, including an empty string if you wish to have no delimiter.|
+|`P9K_LAST_NUMBER_OF_DIRS`|`-1`|Number of parent dirs to show with the `truncate_to_last` strategy|
 
 | Strategy Name | Description |
 |---------------|-------------|
@@ -415,7 +416,7 @@ Customizations available are:
 |`truncate_middle`|Truncates the middle part of a folder. E.g. you are in a folder named `~/MySuperProjects/AwesomeFiles/BoringOffice`, then it will truncated to `~/MyS..cts/Awe..les/BoringOffice`, if `P9K_DIR_SHORTEN_LENGTH=3` is also set (controls the amount of characters to be left).|
 |`truncate_from_right`|Just leaves the beginning of a folder name untouched. E.g. your folders will be truncated like so: "/ro../Pr../office". How many characters will be untouched is controlled by `P9K_DIR_SHORTEN_LENGTH`.|
 |`truncate_absolute`|Truncates everything exept the last few characters in the path. E.g. if you are in a folder named "~/Projects/powerlevel9k" and you have set `P9K_DIR_SHORTEN_LENGTH=3`, you will get "..l9k".|
-|`truncate_to_last`|Truncates everything before the last folder in the path.|
+|`truncate_to_last`|Truncates everything before the last folder in the path. Number of parent folders to be shown can be customised with `P9K_LAST_NUMBER_OF_DIRS`.|
 |`truncate_to_first_and_last`|Truncate middle directories from the path. How many directories will be untouched is controlled by `P9K_DIR_SHORTEN_LENGTH`. E.g. if you are in a folder named `~/Projects/powerlevel9k` and you have set `P9K_DIR_SHORTEN_LENGTH=1`, you will get `~/../powerlevel9k`.||
 |`truncate_to_unique`|Parse all parent path components and truncate them to the shortest unique length. If you copy & paste the result to a shell, after hitting `TAB` it should expand to the original path unambiguously.|
 |`truncate_with_package_name`|Search for a `package.json` or `composer.json` and prints the `name` field to abbreviate the directory path. The precedence and/or files could be set by `P9K_DIR_PACKAGE_FILES=(package.json composer.json)`. If you have [jq](https://stedolan.github.io/jq/) installed, it will dramatically improve the speed of this strategy.|
@@ -474,7 +475,7 @@ The `disk_usage` segment will show the usage level of the partition that your cu
 |P9K_DISK_USAGE_ONLY_WARNING|false|Hide the segment except when usage levels have hit warning or critical levels.|
 |P9K_DISK_USAGE_WARNING_LEVEL|90|The usage level that triggers a warning state.|
 |P9K_DISK_USAGE_CRITICAL_LEVEL|95|The usage level that triggers a critical state.|
-|P9K_DISK_USAGE_PATH|`.` (working directory)|Set a path to use a fixed directory instead of the working 
+|P9K_DISK_USAGE_PATH|`.` (working directory)|Set a path to use a fixed directory instead of the working
 
 ##### host
 
