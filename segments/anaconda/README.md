@@ -1,4 +1,12 @@
-# anaconda
+# Anaconda
+
+## Installation
+
+To use this segment, you need to activate it by adding it to your
+`P9K_LEFT_PROMPT_ELEMENTS` or `P9K_RIGHT_PROMPT_ELEMENTS` array, depending
+where you want to show this segment.
+
+## Configuration
 
 This segment shows your active anaconda environment. It relies on either the
 `CONDA_ENV_PATH` or the `CONDA_PREFIX` (depending on the `conda` version)
