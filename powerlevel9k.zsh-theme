@@ -206,12 +206,12 @@ function __p9k_load_segments() {
       continue
     fi
     # check if the file exists as a core segment
-    if [[ -f ${__P9K_DIRECTORY}/segments/${segment}.p9k ]]; then
-      source "${__P9K_DIRECTORY}/segments/${segment}.p9k" 2>&1
+    if [[ -f ${__P9K_DIRECTORY}/segments/${segment}/${segment}.p9k ]]; then
+      source "${__P9K_DIRECTORY}/segments/${segment}/${segment}.p9k" 2>&1
     else
       # check if the file exists as a custom segment
-      if [[ -f "${P9K_CUSTOM_SEGMENT_LOCATION}/${segment}.p9k" ]]; then
-        source "${P9K_CUSTOM_SEGMENT_LOCATION}/${segment}.p9k"
+      if [[ -f "${P9K_CUSTOM_SEGMENT_LOCATION}/${segment}/${segment}.p9k" ]]; then
+        source "${P9K_CUSTOM_SEGMENT_LOCATION}/${segment}/${segment}.p9k"
       else
         # file not found!
         print -P "%F{yellow}Warning!%f The '%F{cyan}${segment}%f' segment was not found. Removing it from the prompt."
