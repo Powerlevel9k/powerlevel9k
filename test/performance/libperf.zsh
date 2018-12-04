@@ -1,7 +1,9 @@
 #!/usr/bin/env zsh
 # vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
 
-export LIBPERF_PERFORMANCE_LOG="perf.out"
+LIBPERF_PATH="$( cd "$(dirname "$0")" ; pwd -P )"
+
+export LIBPERF_PERFORMANCE_LOG="${LIBPERF_PATH}/perf.out"
 export LIBPERF_SAMPLE_SIZE=30 # The rule of thumb in statistics is 30 samples.
 export LIBPERF_STOPWATCH="$(date +%s%N)"
 export LIBPERF_LAPS=()
@@ -37,13 +39,14 @@ function libperf_stopwatchFinish() {
   LIBPERF_LAPS_RESULT=()
   LIBPERF_LAPS_RESULT[1]="$(libperf_calculate "(${LIBPERF_LAPS[1]} - $LIBPERF_STOPWATCH) / 1000000")"
   
-  local i=2
-  repeat ${#LIBPERF_LAPS[@]}; do;
+  # local i=2
+  # repeat ${#LIBPERF_LAPS[@]}; do;
+  for i in {2..${#LIBPERF_LAPS[@]}}; do;
     local prev="$(($i - 1))"
     if [[ "$i" -ne "$(( ${#LIBPERF_LAPS[@]} + 1 ))" ]]; then;
       LIBPERF_LAPS_RESULT[i]="$(libperf_calculate "(${LIBPERF_LAPS[i]} - ${LIBPERF_LAPS[prev]}) / 1000000")"
     fi
-    i="$(($i + 1))"
+    # i="$(($i + 1))"
   done;
   
   LIBPERF_LAPS=()
@@ -59,12 +62,17 @@ function libperf_stopwatchFinish() {
     }
     
     # min, mean, max, variance
-    print min "," sum/(NF-1) "," max "," ((sum*sum) - sum2)/(NF-1); 
-  }'
+    printf min "," sum/(NF) "," max "," ((sum*sum) - sum2)/(NF); 
+  }' && printf ',%s' "${LIBPERF_LAPS_RESULT[@]}"
 }
 
+# Clears and sets the header of the CSV log file.
 function libperf_initLog() {
-  echo "name,min,mean,max,variance" > "$LIBPERF_PERFORMANCE_LOG"
+  printf "name,min,mean,max,variance" > "$LIBPERF_PERFORMANCE_LOG"
+  for i in {1.."${LIBPERF_SAMPLE_SIZE}"}; do;
+    printf ",sample_${i}" >> "$LIBPERF_PERFORMANCE_LOG"
+  done;
+  printf "\n" >> "$LIBPERF_PERFORMANCE_LOG"
 }
 
 # First argument is the name of the performance test. Everything afterward is
@@ -78,7 +86,9 @@ function samplePerformance() {
     libperf_stopwatchLap
   done;
   local stats="$(libperf_stopwatchFinish)"
-  echo "$name,$stats"
+  local mean="$(echo $stats | awk -F ',' '{ printf $2 };')"
+  local variance="$(echo $stats | awk  -F ',' '{ printf $4 };')"
+  echo "[$name] mean: $mean ms; variance: $variance ms"
   echo "$name,$stats" >> "$LIBPERF_PERFORMANCE_LOG"
 }
 
@@ -92,12 +102,14 @@ function samplePerformanceSilent() {
     libperf_stopwatchLap
   done;
   local stats="$(libperf_stopwatchFinish)"
-  echo "$name,$stats"
+  local mean="$(echo $stats | awk -F ',' '{ printf $2 };')"
+  local variance="$(echo $stats | awk  -F ',' '{ printf $4 };')"
+  echo "[$name] mean: $mean ms; variance: $variance ms"
   echo "$name,$stats" >> "$LIBPERF_PERFORMANCE_LOG"
 }
 
 libperf_initLog
-samplePerformance "Warmup" awk "BEGIN { print 1 + 2 + 3 }"
-samplePerformance "Echo" echo Hello, world
-samplePerformanceSilent "Echo" echo Hello, world
-samplePerformance "Sleep" sleep 0.1
+# samplePerformance "Warmup" awk "BEGIN { print 1 + 2 + 3 }"
+# samplePerformance "Echo" echo Hello, world
+# samplePerformanceSilent "Echo" echo Hello, world
+# samplePerformance "Sleep" sleep 0.1
