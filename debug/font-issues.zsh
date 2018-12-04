@@ -225,7 +225,7 @@ END
                               END { print font " " size}' "${confs[1]}")"
         ;;
 
-        "konsole"*)
+        "konsole" | "yakuake")
             # Get Process ID of current konsole window / tab
             child="$(get_ppid "$$")"
 
