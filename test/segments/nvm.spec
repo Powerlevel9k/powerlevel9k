@@ -63,4 +63,24 @@ function testNvmSegmentPrintsNothingWhenOnDefaultVersion() {
   assertEquals "%K{015} %F{000}world %k%F{015}%f " "$(__p9k_build_left_prompt)"
 }
 
+function testNvmSegmentAppendsSystemWhenUsingSystem() {
+  function mockNode() {
+    echo '11.3.0'
+  }
+
+  function mockNvm() {
+    echo 'mockNode'
+  }
+
+  alias nvm=mockNvm
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(nvm)
+
+  function nvm_version() {
+    [[ ${1} == 'current' ]] && echo 'system' || echo 'v1.4.0'
+  }
+
+  assertEquals "%K{005} %F{000}⬢ %f%F{000}11.3.0 system %k%F{005}%f " "$(__p9k_build_left_prompt)"
+}
+
 source shunit2/shunit2
