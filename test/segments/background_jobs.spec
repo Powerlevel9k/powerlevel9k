@@ -1,5 +1,5 @@
 #!/usr/bin/env zsh
-#vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
+# vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
 
 # Required for shunit2 to run correctly
 setopt shwordsplit

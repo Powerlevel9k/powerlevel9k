@@ -1,12 +1,13 @@
 #!/usr/bin/env zsh
-#vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
+# vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
 
 # Required for shunit2 to run correctly
 setopt shwordsplit
 SHUNIT_PARENT=$0
 
-function setUpOnce() {
+function oneTimeSetUp() {
   source functions/autoload/__p9k_upsearch
+  source ./test/performance/libperf.zsh
 }
 
 function setUp() {
@@ -32,6 +33,7 @@ function testDirPathAbsoluteWorks() {
 
   local P9K_DIR_PATH_ABSOLUTE=false
   assertEquals "%K{004} %F{000}~ %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  samplePerformanceSilent "Dir Absolute" __p9k_build_left_prompt
 
   typeset -a _strategies
   # Do not check truncate_to_last
@@ -61,6 +63,7 @@ function testTruncateFoldersWorks() {
   cd $FOLDER
 
   assertEquals "%K{004} %F{000}…/12345678/123456789 %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  samplePerformanceSilent "Dir Truncate" __p9k_build_left_prompt
 
   cd -
   rm -fr /tmp/powerlevel9k-test
@@ -80,6 +83,7 @@ function testTruncateFolderWithHomeDirWorks() {
   cd ..
 
   assertEquals "%K{004} %F{000}~ %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  samplePerformanceSilent "Dir Truncate Home" __p9k_build_left_prompt
 
   rmdir $FOLDER
   cd ${CURRENT_DIR}
@@ -175,7 +179,12 @@ function testTruncateAbsoluteWorks() {
   mkdir -p $FOLDER
   cd $FOLDER
 
+<<<<<<< HEAD
   assertEquals "%K{004} %F{000}…89 %k%F{004}%f " "$(__p9k_build_left_prompt)"
+=======
+  assertEquals "%K{004} %F{000}…89 %k%F{004}%f " "$(build_left_prompt)"
+  samplePerformanceSilent "Dir Truncate Absolute" build_left_prompt
+>>>>>>> b73b181... Fix vim modelines
 
   cd -
   rm -fr /tmp/powerlevel9k-test

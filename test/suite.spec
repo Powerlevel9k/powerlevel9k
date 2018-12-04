@@ -1,12 +1,20 @@
 #!/usr/bin/env zsh
-#vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
+# vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
 
 export SHUNIT_COLOR="always"
 
 local failed=false
+local folder=**
 local P9K_IGNORE_VAR_WARNING=true
 
-for test in **/*.spec; do
+export LIBPERF_ENABLED=false
+
+# Allows you to run `./test/suite.spec segments` to only run tests in the segment folder.
+if [[ -n "$1" ]]; then
+  folder="test/$1"
+fi
+
+for test in "${folder}"/*.spec; do
   echo
   echo "••• Now executing ${test} •••"
   # skip suite spec
