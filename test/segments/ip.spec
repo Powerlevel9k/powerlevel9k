@@ -5,6 +5,10 @@
 setopt shwordsplit
 SHUNIT_PARENT=$0
 
+function oneTimeSetUp() {
+  source ./test/performance/libperf.zsh
+}
+
 function setUp() {
   export TERM="xterm-256color"
   # Load Powerlevel9k
@@ -21,6 +25,7 @@ function testIpSegmentPrintsNothingOnOsxIfNotConnected() {
   local __P9K_OS="OSX" # Fake OSX
 
   assertEquals "%K{015} %F{000}world %k%F{015}%f " "$(__p9k_build_left_prompt)"
+  samplePerformanceSilent "IP None (OSX)" __p9k_build_left_prompt
 
   unalias networksetup
 }
@@ -34,6 +39,7 @@ function testIpSegmentPrintsNothingOnLinuxIfNotConnected() {
   local __P9K_OS="Linux" # Fake Linux
 
   assertEquals "%K{015} %F{000}world %k%F{015}%f " "$(__p9k_build_left_prompt)"
+  samplePerformanceSilent "IP None (Linux)" __p9k_build_left_prompt
 
   unalias ip
 }
@@ -66,6 +72,7 @@ function testIpSegmentWorksOnOsxWithNoInterfaceSpecified() {
   local __P9K_OS='OSX' # Fake OSX
 
   assertEquals "%K{006} %F{000}IP %f%F{000}1.2.3.4 %k%F{006}%f " "$(__p9k_build_left_prompt)"
+  samplePerformanceSilent "IP (OSX)" __p9k_build_left_prompt
 
   unalias ipconfig
   unalias networksetup
@@ -119,6 +126,7 @@ function testIpSegmentWorksOnOsxWithMultipleInterfacesSpecified() {
   local __P9K_OS='OSX' # Fake OSX
 
   assertEquals "%K{006} %F{000}IP %f%F{000}1.2.3.4 %k%F{006}%f " "$(__p9k_build_left_prompt)"
+  samplePerformanceSilent "IP Multi (OSX)" __p9k_build_left_prompt
 
   unfunction ipconfig
   unalias networksetup
@@ -161,6 +169,7 @@ function testIpSegmentWorksOnLinuxWithNoInterfaceSpecified() {
   local __P9K_OS='Linux' # Fake Linux
 
   assertEquals "%K{006} %F{000}IP %f%F{000}10.0.2.15 %k%F{006}%f " "$(__p9k_build_left_prompt)"
+  samplePerformanceSilent "IP (Linux)" __p9k_build_left_prompt
 
   unfunction ip
 }
@@ -194,6 +203,7 @@ function testIpSegmentWorksOnLinuxWithMultipleInterfacesSpecified() {
   local __P9K_OS='Linux' # Fake Linux
 
   assertEquals "%K{006} %F{000}IP %f%F{000}10.0.2.15 %k%F{006}%f " "$(__p9k_build_left_prompt)"
+  samplePerformanceSilent "IP Multi (Linux)" __p9k_build_left_prompt
 
   unfunction ip
 }

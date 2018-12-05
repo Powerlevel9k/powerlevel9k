@@ -5,6 +5,10 @@
 setopt shwordsplit
 SHUNIT_PARENT=$0
 
+function oneTimeSetUp() {
+  source ./test/performance/libperf.zsh
+}
+
 function setUp() {
   export TERM="xterm-256color"
 
@@ -47,6 +51,7 @@ function testContextSegmentDoesNotGetRenderedWithDefaultUser() {
   P9K_LEFT_PROMPT_ELEMENTS=(context custom_world)
 
   assertEquals "%K{015} %F{000}world %k%F{015}%f " "$(__p9k_build_left_prompt)"
+  samplePerformanceSilent "Context None" __p9k_build_left_prompt
 }
 
 function testContextSegmentDoesGetRenderedWhenSshConnectionIsOpen() {
@@ -55,6 +60,7 @@ function testContextSegmentDoesGetRenderedWhenSshConnectionIsOpen() {
   P9K_LEFT_PROMPT_ELEMENTS=(context)
 
   assertEquals "%K{000} %F{003}%n@%m %k%F{000}%f " "$(__p9k_build_left_prompt)"
+  samplePerformanceSilent "Context SSH" __p9k_build_left_prompt
 }
 
 function testContextSegmentWithForeignUser() {
@@ -62,6 +68,7 @@ function testContextSegmentWithForeignUser() {
   P9K_LEFT_PROMPT_ELEMENTS=(context)
 
   assertEquals "%K{000} %F{003}%n@%m %k%F{000}%f " "$(__p9k_build_left_prompt)"
+  samplePerformanceSilent "Context Foreign" __p9k_build_left_prompt
 }
 
 function testContextSegmentWithRootUser() {

@@ -5,6 +5,10 @@
 setopt shwordsplit
 SHUNIT_PARENT=$0
 
+function oneTimeSetUp() {
+  source ./test/performance/libperf.zsh
+}
+
 function setUp() {
   export TERM="xterm-256color"
 
@@ -76,6 +80,7 @@ function testColorOverridingForCleanStateWorks() {
   source ${P9K_HOME}/powerlevel9k.zsh-theme
 
   assertEquals "%K{015} %F{006} master %k%F{015}%f " "$(__p9k_build_left_prompt)"
+  samplePerformanceSilent "Git Repo" __p9k_build_left_prompt
 }
 
 function testColorOverridingForModifiedStateWorks() {
@@ -91,6 +96,7 @@ function testColorOverridingForModifiedStateWorks() {
   echo "test" > testfile
 
   assertEquals "%K{003} %F{001} master ● %k%F{003}%f " "$(__p9k_build_left_prompt)"
+  samplePerformanceSilent "Git Modified" __p9k_build_left_prompt
 }
 
 function testColorOverridingForUntrackedStateWorks() {
@@ -103,6 +109,7 @@ function testColorOverridingForUntrackedStateWorks() {
   touch testfile
 
   assertEquals "%K{003} %F{006}? %f%F{006} master ? %k%F{003}%f " "$(__p9k_build_left_prompt)"
+  samplePerformanceSilent "Git Untracked" __p9k_build_left_prompt
 }
 
 function testGitIconWorks() {
@@ -282,6 +289,7 @@ function testIncomingHintWorks() {
   git fetch &>/dev/null
 
   assertEquals "%K{002} %F{000} master I1 %k%F{002}%f " "$(__p9k_build_left_prompt)"
+  samplePerformanceSilent "Git Incoming" __p9k_build_left_prompt
 }
 
 function testOutgoingHintWorks() {
@@ -302,6 +310,7 @@ function testOutgoingHintWorks() {
   git commit -a -m "Modified file" &>/dev/null
 
   assertEquals "%K{002} %F{000} master O1 %k%F{002}%f " "$(__p9k_build_left_prompt)"
+  samplePerformanceSilent "Git Outgoing" __p9k_build_left_prompt
 }
 
 function testShorteningCommitHashWorks() {
@@ -519,6 +528,7 @@ function testDetectingUntrackedFilesInSubmodulesWork() {
   source ${P9K_HOME}/powerlevel9k.zsh-theme
 
   assertEquals "%K{002} %F{000}? %f%F{000} master ? %k%F{002}%f " "$(__p9k_build_left_prompt)"
+  samplePerformanceSilent "Git Untracked Submodule" __p9k_build_left_prompt
 }
 
 function testDetectinUntrackedFilesInMainRepoWithDirtySubmodulesWork() {
@@ -588,6 +598,7 @@ function testDetectingUntrackedFilesInNestedSubmodulesWork() {
   source ${P9K_HOME}/powerlevel9k.zsh-theme
 
   assertEquals "%K{002} %F{000}? %f%F{000} master ? %k%F{002}%f " "$(__p9k_build_left_prompt)"
+  samplePerformanceSilent "Git Untracked Nested Submodule" __p9k_build_left_prompt
 }
 
 function testDetectingUntrackedFilesInCleanSubdirectoryWorks() {
@@ -624,6 +635,7 @@ function testBranchNameScriptingVulnerability() {
   git commit -m "Initial commit" >/dev/null
 
   assertEquals '%K{002} %F{000} $(./evil_script.sh) %k%F{002}%f ' "$(__p9k_build_left_prompt)"
+  samplePerformanceSilent "Git Vulnerability" __p9k_build_left_prompt
 }
 
 function testGitSubmoduleWorks() {

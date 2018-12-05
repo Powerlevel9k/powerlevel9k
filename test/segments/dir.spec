@@ -100,6 +100,7 @@ function testTruncationFromRightWorks() {
   cd $FOLDER
 
   assertEquals "%K{004} %F{000}/tmp/po…/1/12/123/12…/12…/12…/12…/12…/123456789 %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  samplePerformanceSilent "Dir Truncate Middle" __p9k_build_left_prompt
 
   cd -
   rm -fr /tmp/powerlevel9k-test
@@ -132,6 +133,7 @@ function testTruncationFromLeftWorks() {
   cd $FOLDER
 
   assertEquals "%K{004} %F{000}/tmp/…st/1/12/123/…34/…45/…56/…67/…78/123456789 %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  samplePerformanceSilent "Dir Truncate Right" __p9k_build_left_prompt
 
   cd -
   rm -fr /tmp/powerlevel9k-test
@@ -148,6 +150,7 @@ function testTruncateToLastWorks() {
   cd $FOLDER
 
   assertEquals "%K{004} %F{000}123456789 %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  samplePerformanceSilent "Dir Truncate Last" __p9k_build_left_prompt
 
   cd -
   rm -fr /tmp/powerlevel9k-test
@@ -164,6 +167,7 @@ function testTruncateToFirstAndLastWorks() {
   cd $FOLDER
 
   assertEquals "%K{004} %F{000}/tmp/powerlevel9k-test/…/…/…/…/…/…/…/12345678/123456789 %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  samplePerformanceSilent "Dir Truncate First Last" __p9k_build_left_prompt
 
   cd -
   rm -fr /tmp/powerlevel9k-test
@@ -179,12 +183,8 @@ function testTruncateAbsoluteWorks() {
   mkdir -p $FOLDER
   cd $FOLDER
 
-<<<<<<< HEAD
   assertEquals "%K{004} %F{000}…89 %k%F{004}%f " "$(__p9k_build_left_prompt)"
-=======
-  assertEquals "%K{004} %F{000}…89 %k%F{004}%f " "$(build_left_prompt)"
-  samplePerformanceSilent "Dir Truncate Absolute" build_left_prompt
->>>>>>> b73b181... Fix vim modelines
+  samplePerformanceSilent "Dir Truncate Absolute" __p9k_build_left_prompt
 
   cd -
   rm -fr /tmp/powerlevel9k-test
