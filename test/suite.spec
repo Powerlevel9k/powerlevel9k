@@ -7,7 +7,11 @@ local failed=false
 local folder=**
 local P9K_IGNORE_VAR_WARNING=true
 
-export LIBPERF_ENABLED=false
+export LIBPERF_ENABLED=true
+
+if ( "$LIBPERF_ENABLED" ); then
+  rm -f ./test/performance/perf_log.csv
+fi
 
 # Allows you to run `./test/suite.spec segments` to only run tests in the segment folder.
 if [[ -n "$1" ]]; then

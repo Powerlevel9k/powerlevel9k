@@ -5,7 +5,7 @@ if [[ -z "${LIBPERF_SOURCED}" ]]; then
   local LIBPERF_PATH="$( cd "$(dirname "$0")" ; pwd -P )"
   if [[ -z "${LIBPERF_ENABLED}" ]]; then export LIBPERF_ENABLED=true; fi
   if [[ -z "${LIBPERF_SAMPLE_SIZE}" ]]; then export LIBPERF_SAMPLE_SIZE=30; fi # The rule of thumb in statistics is 30 samples.
-  if [[ -z "${LIBPERF_PERFORMANCE_LOG}" ]]; then export LIBPERF_PERFORMANCE_LOG="${LIBPERF_PATH}/perf.out"; fi
+  if [[ -z "${LIBPERF_PERFORMANCE_LOG}" ]]; then export LIBPERF_PERFORMANCE_LOG="${LIBPERF_PATH}/perf_log.csv"; fi
   if [[ -z "${LIBPERF_QUIET}" ]]; then export LIBPERF_QUIET=false; fi
   export LIBPERF_STOPWATCH="$(date +%s%N)"
   export LIBPERF_LAPS=()
@@ -74,6 +74,13 @@ if [[ -z "${LIBPERF_SOURCED}" ]]; then
     printf "\n" >> "$LIBPERF_PERFORMANCE_LOG"
   }
 
+  # Checks if the log file exists, and if not, initializes it.
+  function libperf_checkLog() {
+    if [[ ! -f "$LIBPERF_PERFORMANCE_LOG" ]]; then
+      libperf_initLog
+    fi
+  }
+
   # First argument is the name of the performance test. Everything afterward is
   # executed within the test.
   function samplePerformance() {
@@ -91,6 +98,7 @@ if [[ -z "${LIBPERF_SOURCED}" ]]; then
         local variance="$(echo $stats | awk  -F ',' '{ printf $4 };')"
         echo "[$name] mean: $mean ms; variance: $variance ms"
       fi
+      libperf_checkLog
       echo "$name,$stats" >> "$LIBPERF_PERFORMANCE_LOG"
     fi
   }
@@ -111,13 +119,14 @@ if [[ -z "${LIBPERF_SOURCED}" ]]; then
         local variance="$(echo $stats | awk  -F ',' '{ printf $4 };')"
         echo "[$name] mean: $mean ms; variance: $variance ms"
       fi
+      libperf_checkLog
       echo "$name,$stats" >> "$LIBPERF_PERFORMANCE_LOG"
     fi
   }
 
-  if ("$LIBPERF_ENABLED"); then
-    libperf_initLog
-  fi
+  # if ("$LIBPERF_ENABLED"); then
+    # libperf_initLog
+  # fi
 
   export LIBPERF_SOURCED=true
 else
