@@ -82,10 +82,10 @@ function __p9k_left_prompt_segment() {
     # Custom symbol for left side of the first segment and 
     # custom white space that follows it
     local first_symbol=""
-    local first_ws=${left_ws}
+    local first_ws
     if [[ -n "$P9K_LEFT_PROMPT_FIRST_SEGMENT_START_SYMBOL" ]]; then
       first_symbol="%K{${CURRENT_BG}}%F${bg#%K}$P9K_LEFT_PROMPT_FIRST_SEGMENT_START_SYMBOL"
-      first_ws=$(p9k::find_first_defined P9K_LEFT_PROMPT_FIRST_SEGMENT_START_WHITESPACE first_ws)
+      first_ws="$__P9K_DATA[FIRST_WHITESPACE]"
     fi
 
     echo -n "${first_symbol}${bg}${first_ws}"
