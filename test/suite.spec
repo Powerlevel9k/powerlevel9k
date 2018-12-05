@@ -4,7 +4,6 @@
 export SHUNIT_COLOR="always"
 
 local failed=false
-local folder=**
 local P9K_IGNORE_VAR_WARNING=true
 
 export LIBPERF_ENABLED=true
@@ -15,18 +14,26 @@ fi
 
 # Allows you to run `./test/suite.spec segments` to only run tests in the segment folder.
 if [[ -n "$1" ]]; then
-  folder="test/$1"
+  for test in test/$1/*.spec; do
+    echo
+    echo "••• Now executing ${test} •••"
+    # skip suite spec
+    if [[ "${test}" == "test/suite.spec" ]]; then
+      continue;
+    fi
+    ./${test} || failed=true
+  done
+else
+  for test in **/*.spec; do
+    echo
+    echo "••• Now executing ${test} •••"
+    # skip suite spec
+    if [[ "${test}" == "test/suite.spec" ]]; then
+      continue;
+    fi
+    ./${test} || failed=true
+  done
 fi
-
-for test in "${folder}"/*.spec; do
-  echo
-  echo "••• Now executing ${test} •••"
-  # skip suite spec
-  if [[ "${test}" == "test/suite.spec" ]]; then
-    continue;
-  fi
-  ./${test} || failed=true
-done
 
 if [[ "${failed}" == "true" ]]; then
   exit 1
