@@ -30,10 +30,11 @@ function testDirPathAbsoluteWorks() {
   cd ~
   local absoluteDir="${PWD}"
   assertEquals "%K{004} %F{000}${absoluteDir} %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  # samplePerformanceSilent "Dir Absolute" __p9k_build_left_prompt
 
   local P9K_DIR_PATH_ABSOLUTE=false
   assertEquals "%K{004} %F{000}~ %k%F{004}%f " "$(__p9k_build_left_prompt)"
-  samplePerformanceSilent "Dir Absolute" __p9k_build_left_prompt
+  # samplePerformanceSilent "Dir Relative" __p9k_build_left_prompt
 
   typeset -a _strategies
   # Do not check truncate_to_last
@@ -43,10 +44,28 @@ function testDirPathAbsoluteWorks() {
     local P9K_DIR_PATH_ABSOLUTE=true
     P9K_DIR_SHORTEN_STRATEGY=${strategy}
     assertEquals "${strategy} failed rendering absolute dir" "%K{004} %F{000}${absoluteDir} %k%F{004}%f " "$(__p9k_build_left_prompt)"
+    # samplePerformanceSilent "Dir Absolute $strategy" __p9k_build_left_prompt
 
     local P9K_DIR_PATH_ABSOLUTE=false
     assertEquals "${strategy} failed rendering relative dir" "%K{004} %F{000}~ %k%F{004}%f " "$(__p9k_build_left_prompt)"
+    # samplePerformanceSilent "Dir Relative $strategy" __p9k_build_left_prompt
   done
+  
+  local absoluteDir="${PWD}"
+  samplePerformanceSilent "Dir Absolute" __p9k_build_left_prompt
+  
+  local P9K_DIR_PATH_ABSOLUTE=false
+  samplePerformanceSilent "Dir Relative" __p9k_build_left_prompt
+  
+  for strategy in ${_strategies}; do
+    local P9K_DIR_PATH_ABSOLUTE=true
+    P9K_DIR_SHORTEN_STRATEGY=${strategy}
+    samplePerformanceSilent "Dir Absolute $strategy" __p9k_build_left_prompt
+
+    local P9K_DIR_PATH_ABSOLUTE=false
+    samplePerformanceSilent "Dir Relative $strategy" __p9k_build_left_prompt
+  done
+
   cd -
 }
 
