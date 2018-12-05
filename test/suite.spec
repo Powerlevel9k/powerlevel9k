@@ -35,6 +35,12 @@ else
   done
 fi
 
+if ( "$LIBPERF_ENABLED" ) && [[ -s ./test/performance/perf_log.csv ]]; then
+  # This is particularly handy for Travis.
+  echo "Performance summary, times are displayed in milliseconds:"
+  cat test/performance/perf_log.csv | awk -F',' '{print $1 "," $3 "," $5 };' | column -t -s ','
+fi
+
 if [[ "${failed}" == "true" ]]; then
   exit 1
 fi
