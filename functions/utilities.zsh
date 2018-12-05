@@ -405,15 +405,8 @@ function p9k::find_first_non_empty() {
 #   A joined string.
 ##
 p9k::join_by() { 
-  local separator="$1"; 
-  local sep=""; 
-  shift; 
-  local result=""
-  for str in $@; do 
-    if [[ -n $str ]]; then
-      result="${result}${sep}${str}"
-      sep="${separator}"
-    fi
-  done
-  echo "$result"
+  local separator=$1
+  shift
+  local -a arr=($@)
+  echo ${(pj:$separator:)arr}
 }
