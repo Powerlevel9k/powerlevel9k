@@ -1726,7 +1726,7 @@ prompt_kubecontext() {
       k8s_final_text="$cur_ctx/$cur_namespace"
     fi
 
-    "$1_prompt_segment" "$0" "$2" "magenta" "white" "$k8s_final_text" "KUBERNETES_ICON"
+    "$1_prompt_segment" "$0" "$2" "blue" "white" "$k8s_final_text" "KUBERNETES_ICON"
   fi
 }
 
