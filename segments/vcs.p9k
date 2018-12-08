@@ -122,6 +122,7 @@
   # Register segment default values
   p9k::set_default P9K_VCS_ACTIONFORMAT_FOREGROUND "red"
   p9k::set_default P9K_VCS_HIDE_TAGS false
+  p9k::set_default P9K_VCS_HIDE_STASHES false
   p9k::set_default P9K_VCS_INTERNAL_HASH_LENGTH "8" # Default: Just display the first 8 characters of our changeset-ID.
   p9k::set_default P9K_VCS_DIR_SHORTEN_DELIMITER $'\U2026'
   p9k::set_default P9K_VCS_SHOW_SUBMODULE_DIRTY true
@@ -249,12 +250,15 @@ function +vi-git-tagname() {
   fi
 }
 
+p9k::set_default P9K_VCS_HIDE_STASHES false
 # Show count of stashed changes
 # Port from https://github.com/whiteinge/dotfiles/blob/5dfd08d30f7f2749cfc60bc55564c6ea239624d9/.zsh_shouse_prompt#L268
 function +vi-git-stash() {
-  if [[ -s "${vcs_comm[gitdir]}/logs/refs/stash" ]] ; then
-    local -a stashes=( "${(@f)"$(<${vcs_comm[gitdir]}/logs/refs/stash)"}" )
-    hook_com[misc]+=" ${__P9K_ICONS[VCS_STASH]}${#stashes}"
+  if [[ "$P9K_VCS_HIDE_STASHES" == "false" ]]; then
+    if [[ -s "${vcs_comm[gitdir]}/logs/refs/stash" ]] ; then
+      local -a stashes=( "${(@f)"$(<${vcs_comm[gitdir]}/logs/refs/stash)"}" )
+      hook_com[misc]+=" ${__P9K_ICONS[VCS_STASH]}${#stashes}"
+    fi
   fi
 }
 
