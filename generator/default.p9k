@@ -152,7 +152,9 @@ function __p9k_right_prompt_segment() {
 
   local left_ws="$__P9K_DATA[${STATEFUL_NAME}_RIGHT_LEFT_WHITESPACE]"
   local middle_ws="$__P9K_DATA[${STATEFUL_NAME}_RIGHT_MIDDLE_WHITESPACE]"
-  local right_ws="$__P9K_DATA[${STATEFUL_NAME}_RIGHT_RIGHT_WHITESPACE]"
+  # Due to how the right prompt segments are built, we need to output
+  # the whitespace of the _previous_ segment here.
+  local right_ws="$__P9K_DATA[${last_right_element_stateful_name}_RIGHT_RIGHT_WHITESPACE]"
 
   # If CURRENT_RIGHT_BG is "NONE", we are the first right segment.
   [[ ${CURRENT_RIGHT_BG} == 'NONE' ]] || echo -n "${right_ws}" # print right whitespace of prev segment
