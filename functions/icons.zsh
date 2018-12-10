@@ -153,7 +153,7 @@ function p9k::register_segment() {
   local first_ws="${__P9K_DATA[${STATEFUL_NAME}_LEFT_LEFT_WHITESPACE]}"
   __P9K_DATA[FIRST_WHITESPACE]=$(p9k::find_first_defined P9K_LEFT_PROMPT_FIRST_SEGMENT_START_WHITESPACE first_ws)
   local last_ws="${__P9K_DATA[${STATEFUL_NAME}_RIGHT_RIGHT_WHITESPACE]}"
-  __P9K_DATA[LAST_WHITESPACE]=$(p9k::find_first_defined P9K_LEFT_PROMPT_LAST_SEGMENT_END_WHITESPACE last_ws)
+  __P9K_DATA[LAST_WHITESPACE]=$(p9k::find_first_defined P9K_RIGHT_PROMPT_LAST_SEGMENT_END_WHITESPACE last_ws)
 
   # Overwrite given bold directive by user defined variable for this segment.
   local BOLD_USER_VARIABLE="P9K_${STATEFUL_NAME}_BOLD"

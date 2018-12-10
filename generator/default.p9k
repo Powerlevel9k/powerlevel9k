@@ -329,13 +329,11 @@ function __p9k_build_right_prompt() {
 
   # last whitespace with last segments right symbol, if any
   local last_symbol
-  local last_ws=$(p9k::find_first_defined P9K_${last_right_element_stateful_name}_RIGHT_WHITESPACE \
-    P9K_RIGHT_PROMPT_LAST_SEGMENT_END_WHITESPACE P9K_RIGHT_WHITESPACE_OF_RIGHT_SEGMENTS P9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS )
   if p9k::defined "P9K_RIGHT_PROMPT_LAST_SEGMENT_END_SYMBOL"; then
     last_symbol="%K{none}%F${CURRENT_RIGHT_BG#%K}${P9K_RIGHT_PROMPT_LAST_SEGMENT_END_SYMBOL}"
   fi
 
-  echo -n "${last_ws}${last_symbol}"
+  echo -n "${__P9K_DATA[LAST_WHITESPACE]}${last_symbol}"
 
 }
 
