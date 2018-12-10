@@ -13,27 +13,61 @@ setopt localoptions # extendedglob
 
 ################################################################
 # @description
-#   Given a directory path, determine the unique path.
+#   Given a path, determine the unique path. This is depending on other files
+#   that exists in the directories.
 ##
 # @args
-#   $1 string The directory path to be truncated.
+#   $1 string path to be truncated.
+#
+# @stdout
+#   Either new unique path or nothing if $1 was "."
+#
+# @example
+#   '/absolute/path/to/file'  as $1 echos '/ab/path/to/f'
+#   '~/other/absolute/path'   as $1 echos '~/ot/a/pa'
+#   './relative/path/to/file' as $1 echos './re/pa/to/fi'
+#   '.'                       as $1 echos nothing
 ##
 # @function __p9k_get_unique_path() {}
-local trunc_path directory test_dir test_dir_length
-local -a matching
+local full_path cur_path trunc_path directory test_dir
 local -a paths
-local cur_path='/'
-paths=(${(s:/:)1})
-for directory in ${paths[@]}; do
+local -a matching
+
+full_path="$1"
+paths=(${(s:/:)full_path})
+if [[ "${full_path}" == "." ]]; then
+  return 0
+elif [[ "${full_path}" == "~"* ]]; then
+  # home path: remove ~ from $paths and "move" $cur_paths to $HOME
+  paths=(${paths[@]:1})
+  cur_path="$HOME/"
+  trunc_path='~/'
+elif [[ "${full_path}" == "./"* ]]; then
+  # relative path: remove ./ from $paths and "move" $cur_paths to current dir
+  paths=(${paths[@]:1})
+  cur_path="./"
+  trunc_path='./'
+else
+  # absolute path
+  cur_path='/'
+  trunc_path='/'
+fi
+
+# for each parent path component find the shortest unique beginning
+# characters sequence. Source: https://stackoverflow.com/a/45336078
+for directory in ${paths}; do
+  # finds out how many characters you need for the $directory to be unique
   test_dir=''
+  matching=("$cur_path"*)
   for (( i=0; i < ${#directory}; i++ )); do
     test_dir+="${directory:$i:1}"
-    matching=("$cur_path"/"$test_dir"*/(N))
-    if [[ ${#matching[@]} -eq 1 ]]; then
-      break
-    fi
+    [[ ${(M)#matching:#${cur_path}${test_dir}*} -eq 1 ]] \
+      && break
   done
-  trunc_path+="$test_dir/"
-  cur_path+="$directory/"
+  trunc_path+="${test_dir}/"
+  cur_path+="${directory}/"
 done
-echo "${trunc_path: : -1}"
+
+[[ ${#trunc_path} == 1 ]] \
+  && echo "${trunc_path}" \
+  || echo "${trunc_path: : -1}"
