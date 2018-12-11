@@ -1,12 +1,12 @@
 FROM ubuntu:16.04
 
 RUN \
-  apt-get update && \
+  apt update && \
   echo 'golang-go golang-go/dashboard boolean false' | debconf-set-selections && \
-  DEBIAN_FRONTEND=noninteractive apt-get install -y \
+  DEBIAN_FRONTEND=noninteractive apt install -y \
   curl \
   git \
-  zsh=5.1.1-1ubuntu2.3 \
+  zsh=5.1.1-* \
   mercurial \
   subversion \
   golang \
