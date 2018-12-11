@@ -180,7 +180,7 @@ function __p9k_right_prompt_segment() {
   # Print segment content and icon, if any
   [[ "${(L)P9K_RPROMPT_ICON_LEFT}" != "true" ]] \
     && echo -n "$(p9k::join_by "${middle_ws}" "${content}" "${visual_identifier}")" \
-    || echo -n "$(p9k::join_by "${middle_ws}" "${visual_identifier}" "${fg}${content}")" 
+    || echo -n "$(p9k::join_by "${middle_ws}" "${visual_identifier}" "${fg}${content}")"
 
   CURRENT_RIGHT_BG=${bg}
   last_right_element_index=${current_index}
