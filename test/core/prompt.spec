@@ -11,21 +11,27 @@ function setUp() {
   source powerlevel9k.zsh-theme
 }
 
-function stripEsc() {
-  local clean_string="" escape_found=false
-  for (( i = 0; i < ${#1}; i++ )); do
-    case ${1[i]}; in
-      "")  clean_string+="<Esc>"; escape_found=true ;; # escape character
-      "[")  if [[ ${escape_found} == true ]]; then
-            escape_found=false
-          else
-            clean_string+="${1[i]}"
-          fi
-          ;;
-      *)    clean_string+="${1[i]}" ;;
-    esac
-  done
-  echo "${clean_string}"
+function oneTimeSetUp() {
+  function stripEsc() {
+    local clean_string="" escape_found=false
+    for (( i = 0; i < ${#1}; i++ )); do
+      case ${1[i]}; in
+        "")  clean_string+="<Esc>"; escape_found=true ;; # escape character
+        "[")  if [[ ${escape_found} == true ]]; then
+              escape_found=false
+            else
+              clean_string+="${1[i]}"
+            fi
+            ;;
+        *)    clean_string+="${1[i]}" ;;
+      esac
+    done
+    echo "${clean_string}"
+  }
+}
+
+function oneTimeTearDown() {
+  unfunction stripEsc
 }
 
 function testSegmentOnRightSide() {
@@ -235,11 +241,6 @@ function testCustomWhitespaceWithIconOnLeft() {
   local P9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS="_[R]_"
 
   assertEquals "%F{015}%K{015}%F{000}_[R]_%F{000}{1}%f_[M]_%F{000}world1_[R]_%F{000}%K{015}%F{000}_[R]_%F{000}world2_[R]_%F{000}%K{015}%F{000}_[R]_%F{000}{3}%f_[M]_%F{000}world3_[R]" "$(stripEsc "$(__p9k_build_right_prompt)")"
-}
-
-# !!! keep this last test in this file !!!
-test_unfunction_stripEsc() {
-  unfunction stripEsc
 }
 
 source shunit2/shunit2
