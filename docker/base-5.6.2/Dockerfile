@@ -3,12 +3,12 @@ FROM debian:buster
 # We switched here to debian, as there seems no ZSH 5.6 in ubuntu.
 
 RUN \
-  apt-get update && \
+  apt update && \
   echo 'golang-go golang-go/dashboard boolean false' | debconf-set-selections && \
-  DEBIAN_FRONTEND=noninteractive apt-get install -y \
+  DEBIAN_FRONTEND=noninteractive apt install -y \
   curl \
   git \
-  zsh=5.6.2-3 \
+  zsh=5.6.2-* \
   mercurial \
   subversion \
   golang \

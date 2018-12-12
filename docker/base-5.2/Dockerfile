@@ -1,12 +1,12 @@
 FROM ubuntu:17.10
 
 RUN \
-  apt-get update && \
+  apt update && \
   echo 'golang-go golang-go/dashboard boolean false' | debconf-set-selections && \
-  DEBIAN_FRONTEND=noninteractive apt-get install -y \
+  DEBIAN_FRONTEND=noninteractive apt install -y \
   curl \
   git \
-  zsh=5.2-5ubuntu1.2 \
+  zsh=5.2-* \
   mercurial \
   subversion \
   golang \
