@@ -85,29 +85,33 @@ prompt_battery() {
     local energy_full="0"
     local power_now="0"
     local battery_status_full=true
+    local battery_status_calculating=false
     local battery_status_charging=false
     for bat in $bats; do
       # skip this loop if no files in $bat
-      local -a bat_tmp
-      bat_tmp=( $bat/*(N) )
-      [[ ${#bat_tmp} == 0 ]] && continue
+      local -a bat_files
+      bat_files=( $bat/*(N) )
+      [[ ${#bat_files} == 0 ]] && continue
       # add "+ 0[number in file]" if the file exists (0 padding if glob fails)
-      local -a energy_now_tmp
-      energy_now_tmp=( $bat/(energy|charge)_now(N) )
-      energy_now+="+ 0$(<${energy_now_tmp[1]:-/dev/null})"
-      local -a energy_full_tmp
-      energy_full_tmp=( $bat/(energy|charge)_full(N) )
-      energy_full+="+ 0$(< ${energy_full_tmp[1]:-/dev/null})"
-      local -a power_now_tmp
-      power_now_tmp=( $bat/(power|current)_now(N) )
-      power_now+="+ 0$(< ${power_now_tmp[1]:-/dev/null})"
+      local -a energy_now_files
+      local -a energy_full_files
+      local -a power_now_files
+      local -a battery_status_files
+      energy_now_files=( $bat/(energy|charge)_now(N) )
+      energy_now+="+ 0$(<${energy_now_files[1]:-/dev/null})"
+      energy_full_files=( $bat/(energy|charge)_full(N) )
+      energy_full+="+ 0$(< ${energy_full_files[1]:-/dev/null})"
+      power_now_files=( $bat/(power|current)_now(N) )
+      power_now+="+ 0$(< ${power_now_files[1]:-/dev/null})"
       # get cumulative battery status (ignore if no status file exists)
-      local -a battery_status
-      battery_status=( $bat/status(N) )
-      [[ $(<${battery_status[1]:-/dev/null}) != Full && -n $(<${battery_status[1]:-/dev/null}) ]] \
+      battery_status_files=( $bat/status(N) )
+      local battery_status=$(<${battery_status_files[1]:-/dev/null})
+      [[ ${battery_status} != Full && -n ${battery_status} ]] \
         && battery_status_full=false
-      [[ $(<${battery_status[1]:-/dev/null}) == Charging ]] \
+      [[ ${battery_status} == Charging ]] \
         && battery_status_charging=true
+      [[ $(< ${power_now_files[1]:-/dev/null}) == 0 && ${battery_status} == (Charging|Discharging) ]] \
+        && battery_status_calculating=true
     done
 
     # replace values of varibales with evaluation of the sums
@@ -143,7 +147,7 @@ prompt_battery() {
       fi
       # format to h:mm
       tstring="$(($tstring/60)):${(l#2##0#)$(($tstring%60))}"
-    else
+    elif [[ $battery_status_calculating == true ]]; then
       tstring="..."
     fi
     [[ -n $tstring ]] && local remain=" ($tstring)"

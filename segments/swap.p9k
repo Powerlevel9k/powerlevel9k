@@ -31,10 +31,11 @@ prompt_swap() {
 
   if [[ "${__P9K_OS}" == "OSX" ]]; then
     local raw_swap_used
-    [[ "$(sysctl vm.swapusage)" =~ "used = ([0-9A-Z,.]+)" ]] && raw_swap_used="${match[1]}"
     typeset -F 2 swap_used
-    [[ "${raw_swap_used}" =~ "([0-9,.]+)" ]] && swap_used=${${match[1]}//,/.}
-    [[ "${raw_swap_used}" =~ "([A-Z]+)" ]] && base="${match[1]}"
+    if [[ "$(sysctl vm.swapusage)" =~ "used = ([0-9,.]+)([A-Z]+)" ]]; then
+      swap_used=${${match[1]}//,/.}
+      base="${match[2]}"
+    fi
   else
     local raw_data
     raw_data="$(<${ROOT_PREFIX}/proc/meminfo)"

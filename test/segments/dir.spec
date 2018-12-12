@@ -34,7 +34,8 @@ function testDirPathAbsoluteWorks() {
   assertEquals "%K{004} %F{000}~ %k%F{004}%f " "$(__p9k_build_left_prompt)"
 
   typeset -a _strategies
-  _strategies=( truncate_from_left truncate_from_right truncate_middle truncate_to_last truncate_to_first_and_last truncate_absolute truncate_to_unique truncate_with_folder_marker truncate_with_package_name )
+  # Do not check truncate_to_last
+  _strategies=( truncate_from_left truncate_from_right truncate_middle truncate_to_first_and_last truncate_absolute truncate_to_unique truncate_with_folder_marker truncate_with_package_name )
 
   for strategy in ${_strategies}; do
     local P9K_DIR_PATH_ABSOLUTE=true
