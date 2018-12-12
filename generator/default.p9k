@@ -160,7 +160,7 @@ function __p9k_right_prompt_segment() {
   [[ ${CURRENT_RIGHT_BG} == 'NONE' ]] || echo -n "${right_ws}" # print right whitespace of prev segment
   if [[ ${joined} == false ]] || [[ ${CURRENT_RIGHT_BG} == 'NONE' ]]; then
     if [[ "${bg}" != "${CURRENT_RIGHT_BG}" ]]; then
-      # Use the new BG color for the foreground with separator
+      # Use the new BG color for the foreground with separator 
       echo -n "%F${bg#%K}${__P9K_ICONS[RIGHT_SEGMENT_SEPARATOR]}"
     else
       # Middle segment with same color as previous segment
