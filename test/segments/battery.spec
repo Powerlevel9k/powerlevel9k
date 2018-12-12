@@ -151,7 +151,7 @@ function testBatterySegmentIfBatteryIsLowWhileUnknownOnLinux() {
   local __P9K_OS='Linux' # Fake Linux
   makeBatterySay "4" "Unknown"
 
-  assertEquals "%K{000} %F{001}🔋 %f%F{001}4%% " "$(prompt_battery left 1 false ${FOLDER})"
+  assertEquals "%K{000} %F{001}🔋%f %F{001}4%% " "$(prompt_battery left 1 false ${FOLDER})"
 }
 
 function testBatterySegmentIfBatteryIsNormalWhileDischargingOnLinux() {
@@ -172,7 +172,7 @@ function testBatterySegmentIfBatteryIsNormalWhileUnknownOnLinux() {
   local __P9K_OS='Linux' # Fake Linux
   makeBatterySay "98" "Unknown"
 
-  assertEquals "%K{000} %F{015}🔋 %f%F{015}98%% " "$(prompt_battery left 1 false ${FOLDER})"
+  assertEquals "%K{000} %F{015}🔋%f %F{015}98%% " "$(prompt_battery left 1 false ${FOLDER})"
 }
 
 function testBatterySegmentIfBatteryIsFullOnLinux() {
@@ -186,14 +186,14 @@ function testBatterySegmentIfBatteryNearlyFullButNotChargingOnLinux() {
   local __P9K_OS='Linux' # Fake Linux
   makeBatterySay "98" "Unknown" "0"
 
-  assertEquals "%K{000} %F{015}🔋 %f%F{015}98%% " "$(prompt_battery left 1 false ${FOLDER})"
+  assertEquals "%K{000} %F{015}🔋%f %F{015}98%% " "$(prompt_battery left 1 false ${FOLDER})"
 }
 
 function testBatterySegmentIfBatteryIsCalculatingOnLinux() {
   local __P9K_OS='Linux' # Fake Linux
   makeBatterySay "99" "Charging" "0"
 
-  assertEquals "%K{000} %F{003}🔋 %f%F{003}99%% (...) " "$(prompt_battery left 1 false ${FOLDER})"
+  assertEquals "%K{000} %F{003}🔋%f %F{003}99%% (...) " "$(prompt_battery left 1 false ${FOLDER})"
 }
 
 source shunit2/shunit2
