@@ -12,8 +12,15 @@ function setUp() {
 function testLcCtypeIsNotOverwrittenInDefaultMode() {
   local P9K_MODE="default"
   local LC_CTYPE="my-locale"
+  local __P9K_DIRECTORY="${PWD}"
+  source functions/colors.zsh
+
   # Load Powerlevel9k
   source functions/icons.zsh
+
+  for segment in segments/*.p9k; do
+    source "${segment}"
+  done
 
   assertEquals 'my-locale' "${LC_CTYPE}"
 }
@@ -21,8 +28,15 @@ function testLcCtypeIsNotOverwrittenInDefaultMode() {
 function testLcCtypeIsNotOverwrittenInAwesomePatchedMode() {
   local P9K_MODE="awesome-patched"
   local LC_CTYPE="my-locale"
+  local __P9K_DIRECTORY="${PWD}"
+  source functions/colors.zsh
+
   # Load Powerlevel9k
   source functions/icons.zsh
+
+  for segment in segments/*.p9k; do
+    source "${segment}"
+  done
 
   assertEquals 'my-locale' "${LC_CTYPE}"
 }
@@ -30,8 +44,15 @@ function testLcCtypeIsNotOverwrittenInAwesomePatchedMode() {
 function testLcCtypeIsNotOverwrittenInAwesomeFontconfigMode() {
   local P9K_MODE="awesome-fontconfig"
   local LC_CTYPE="my-locale"
+  local __P9K_DIRECTORY="${PWD}"
+  source functions/colors.zsh
+
   # Load Powerlevel9k
   source functions/icons.zsh
+
+  for segment in segments/*.p9k; do
+    source "${segment}"
+  done
 
   assertEquals 'my-locale' "${LC_CTYPE}"
 }
@@ -39,8 +60,15 @@ function testLcCtypeIsNotOverwrittenInAwesomeFontconfigMode() {
 function testLcCtypeIsNotOverwrittenInNerdfontFontconfigMode() {
   local P9K_MODE="nerdfont-fontconfig"
   local LC_CTYPE="my-locale"
+  local __P9K_DIRECTORY="${PWD}"
+  source functions/colors.zsh
+
   # Load Powerlevel9k
   source functions/icons.zsh
+
+  for segment in segments/*.p9k; do
+    source "${segment}"
+  done
 
   assertEquals 'my-locale' "${LC_CTYPE}"
 }
@@ -48,8 +76,15 @@ function testLcCtypeIsNotOverwrittenInNerdfontFontconfigMode() {
 function testLcCtypeIsNotOverwrittenInFlatMode() {
   local P9K_MODE="flat"
   local LC_CTYPE="my-locale"
+  local __P9K_DIRECTORY="${PWD}"
+  source functions/colors.zsh
+
   # Load Powerlevel9k
   source functions/icons.zsh
+
+  for segment in segments/*.p9k; do
+    source "${segment}"
+  done
 
   assertEquals 'my-locale' "${LC_CTYPE}"
 }
@@ -57,8 +92,15 @@ function testLcCtypeIsNotOverwrittenInFlatMode() {
 function testLcCtypeIsNotOverwrittenInCompatibleMode() {
   local P9K_MODE="compatible"
   local LC_CTYPE="my-locale"
+  local __P9K_DIRECTORY="${PWD}"
+  source functions/colors.zsh
+
   # Load Powerlevel9k
   source functions/icons.zsh
+
+  for segment in segments/*.p9k; do
+    source "${segment}"
+  done
 
   assertEquals 'my-locale' "${LC_CTYPE}"
 }
