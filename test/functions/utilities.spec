@@ -67,7 +67,7 @@ function testGetRelevantItemDoesNotReturnNotFoundItems() {
   local callback='[[ "$item" == "d" ]] && echo "found"'
 
   local result=$(p9k::get_relevant_item "$list" "$callback")
-  assertEquals '' '' # whats this ?
+  assertEquals '' "$result"
 
   unset list
 }

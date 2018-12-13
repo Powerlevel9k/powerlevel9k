@@ -79,7 +79,7 @@ function __p9k_left_prompt_segment() {
     fi
   else # First segment
 
-    # Custom symbol for left side of the first segment and 
+    # Custom symbol for left side of the first segment and
     # custom white space that follows it
     local first_symbol=""
     local first_ws="$__P9K_DATA[FIRST_WHITESPACE]"
