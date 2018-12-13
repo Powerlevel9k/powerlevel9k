@@ -227,37 +227,34 @@ function testFindingFirstDefinedOrNonEmptyVariableNyName() {
 
   local result=
 
-  assertEquals "$(p9k::find_first_defined var0 var1 var2)" "" # var1 value
-  assertEquals "$(p9k::find_first_defined -n var0 var1 var2)" "var1" # var1 name
+  assertEquals "" "$(p9k::find_first_defined var0 var1 var2)" # var1 value
+  assertEquals "var1" "$(p9k::find_first_defined -n var0 var1 var2)" # var1 name
 
-  assertEquals "$(p9k::find_first_non_empty var0 var1 var2)" "some value" # var2 value
-  assertEquals "$(p9k::find_first_non_empty -n var0 var1 var2)" "var2" # var2 name
+  assertEquals "some value" "$(p9k::find_first_non_empty var0 var1 var2)" # var2 value
+  assertEquals "var2" "$(p9k::find_first_non_empty -n var0 var1 var2)" # var2 name
 
   local var0=""
-  assertEquals "$(p9k::find_first_defined var0 var1 var2)" "" # var1 value
-  assertEquals "$(p9k::find_first_defined -n var0 var1 var2)" "var0" # var1 name
+  assertEquals "" "$(p9k::find_first_defined var0 var1 var2)" # var1 value
+  assertEquals "var0" "$(p9k::find_first_defined -n var0 var1 var2)" # var1 name
   var0="other value"
-  assertEquals "$(p9k::find_first_non_empty var0 var1 var2)" "other value" # var2 value
-  assertEquals "$(p9k::find_first_non_empty -n var0 var1 var2)" "var0" # var2 name
+  assertEquals "other value" "$(p9k::find_first_non_empty var0 var1 var2)" # var2 value
+  assertEquals "var0" "$(p9k::find_first_non_empty -n var0 var1 var2)" # var2 name
 
   function internal() {
     local var0="qwe"
-    assertEquals "$(p9k::find_first_defined var0 var1 var2)" "qwe" # var1 value
-    assertEquals "$(p9k::find_first_defined -n var0 var1 var2)" "var0" # var1 name
-    assertEquals "$(p9k::find_first_non_empty var0 var1 var2)" "qwe" # var2 value
-    assertEquals "$(p9k::find_first_non_empty -n var0 var1 var2)" "var0" # var2 name
+    assertEquals "qwe" "$(p9k::find_first_defined var0 var1 var2)" # var1 value
+    assertEquals "var0" "$(p9k::find_first_defined -n var0 var1 var2)" # var1 name
+    assertEquals "qwe" "$(p9k::find_first_non_empty var0 var1 var2)" # var2 value
+    assertEquals "var0" "$(p9k::find_first_non_empty -n var0 var1 var2)" # var2 name
   }
 
   internal
-
 }
 
 function testJoiningStrings() {
-
-  assertEquals "$(p9k::join_by _ hello there)" "hello_there"
-  assertEquals "$(p9k::join_by '-' one two three)" "one-two-three"
-  assertEquals "$(p9k::join_by '-' "" two three)" "two-three"
-
+  assertEquals "hello_there" "$(p9k::join_by _ hello there)"
+  assertEquals "one-two-three" "$(p9k::join_by '-' one two three)"
+  assertEquals "two-three" "$(p9k::join_by '-' "" two three)"
 }
 
 source shunit2/shunit2
