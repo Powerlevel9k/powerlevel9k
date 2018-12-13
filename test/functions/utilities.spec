@@ -255,6 +255,7 @@ function testJoiningStrings() {
   assertEquals "hello_there" "$(p9k::join_by _ hello there)"
   assertEquals "one-two-three" "$(p9k::join_by '-' one two three)"
   assertEquals "two-three" "$(p9k::join_by '-' "" two three)"
+  assertEquals $'\n'-xx "$(p9k::join_by '-' $'\n' 'xx')"
 }
 
 source shunit2/shunit2
