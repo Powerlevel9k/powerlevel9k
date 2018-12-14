@@ -361,9 +361,9 @@ function __p9k_print_deprecation_var_warning() {
 function p9k::find_first_defined() {
   local returnName
   while [ $# -ne 0 ]; do
-    if [[ "$1" == "-n" ]]; then 
+    if [[ "$1" == "-n" ]]; then
       returnName=true
-    elif [[ ! -z "${(P)1+x}" ]]; then 
+    elif [[ ! -z "${(P)1+x}" ]]; then
       [[ -n $returnName ]] && echo "$1" || echo "${(P)1}"
       break
     fi
@@ -385,28 +385,12 @@ function p9k::find_first_defined() {
 function p9k::find_first_non_empty() {
   local returnName
   while [ $# -ne 0 ]; do
-    if [[ "$1" == "-n" ]]; then 
+    if [[ "$1" == "-n" ]]; then
       returnName=true
-    elif [[ -n "${(P)1}" ]]; then 
+    elif [[ -n "${(P)1}" ]]; then
       [[ -n $returnName ]] && echo "$1" || echo "${(P)1}"
       break
     fi
     shift
   done
-}
-
-###############################################################
-# @description
-#   Joins supplied strings with specified separator.
-# @args
-#   $1 The separator to join strings with
-#   $* List of string to join.
-# @returns
-#   A joined string.
-##
-p9k::join_by() { 
-  local separator=$1
-  shift
-  local -a arr=($@)
-  echo ${(pj:$separator:)arr}
 }
