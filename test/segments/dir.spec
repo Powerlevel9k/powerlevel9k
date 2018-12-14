@@ -1,12 +1,13 @@
 #!/usr/bin/env zsh
-#vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
+# vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
 
 # Required for shunit2 to run correctly
 setopt shwordsplit
 SHUNIT_PARENT=$0
 
-function setUpOnce() {
+function oneTimeSetUp() {
   source functions/autoload/__p9k_upsearch
+  source ./test/performance/libperf.zsh
 }
 
 function setUp() {
@@ -45,6 +46,23 @@ function testDirPathAbsoluteWorks() {
     local P9K_DIR_PATH_ABSOLUTE=false
     assertEquals "${strategy} failed rendering relative dir" "%K{004} %F{000}~ %k%F{004}%f " "$(__p9k_build_left_prompt)"
   done
+
+  # For reasons unknown to me, performance tests must be pushed to the end
+  # because they leave the system in an inconsistent state.
+  samplePerformanceSilent "Dir Absolute" __p9k_build_left_prompt
+  
+  local P9K_DIR_PATH_ABSOLUTE=false
+  samplePerformanceSilent "Dir Relative" __p9k_build_left_prompt
+  
+  for strategy in ${_strategies}; do
+    local P9K_DIR_PATH_ABSOLUTE=true
+    P9K_DIR_SHORTEN_STRATEGY=${strategy}
+    samplePerformanceSilent "Dir Absolute $strategy" __p9k_build_left_prompt
+
+    local P9K_DIR_PATH_ABSOLUTE=false
+    samplePerformanceSilent "Dir Relative $strategy" __p9k_build_left_prompt
+  done
+
   cd -
 }
 
@@ -61,6 +79,7 @@ function testTruncateFoldersWorks() {
   cd $FOLDER
 
   assertEquals "%K{004} %F{000}…/12345678/123456789 %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  samplePerformanceSilent "Dir Truncate" __p9k_build_left_prompt
 
   cd -
   rm -fr /tmp/powerlevel9k-test
@@ -80,6 +99,7 @@ function testTruncateFolderWithHomeDirWorks() {
   cd ..
 
   assertEquals "%K{004} %F{000}~ %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  samplePerformanceSilent "Dir Truncate Home" __p9k_build_left_prompt
 
   rmdir $FOLDER
   cd ${CURRENT_DIR}
@@ -96,6 +116,7 @@ function testTruncationFromRightWorks() {
   cd $FOLDER
 
   assertEquals "%K{004} %F{000}/tmp/po…/1/12/123/12…/12…/12…/12…/12…/123456789 %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  samplePerformanceSilent "Dir Truncate Middle" __p9k_build_left_prompt
 
   cd -
   rm -fr /tmp/powerlevel9k-test
@@ -128,6 +149,7 @@ function testTruncationFromLeftWorks() {
   cd $FOLDER
 
   assertEquals "%K{004} %F{000}/tmp/…st/1/12/123/…34/…45/…56/…67/…78/123456789 %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  samplePerformanceSilent "Dir Truncate Right" __p9k_build_left_prompt
 
   cd -
   rm -fr /tmp/powerlevel9k-test
@@ -144,6 +166,7 @@ function testTruncateToLastWorks() {
   cd $FOLDER
 
   assertEquals "%K{004} %F{000}123456789 %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  samplePerformanceSilent "Dir Truncate Last" __p9k_build_left_prompt
 
   cd -
   rm -fr /tmp/powerlevel9k-test
@@ -160,6 +183,7 @@ function testTruncateToFirstAndLastWorks() {
   cd $FOLDER
 
   assertEquals "%K{004} %F{000}/tmp/powerlevel9k-test/…/…/…/…/…/…/…/12345678/123456789 %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  samplePerformanceSilent "Dir Truncate First Last" __p9k_build_left_prompt
 
   cd -
   rm -fr /tmp/powerlevel9k-test
@@ -176,6 +200,7 @@ function testTruncateAbsoluteWorks() {
   cd $FOLDER
 
   assertEquals "%K{004} %F{000}…89 %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  samplePerformanceSilent "Dir Truncate Absolute" __p9k_build_left_prompt
 
   cd -
   rm -fr /tmp/powerlevel9k-test

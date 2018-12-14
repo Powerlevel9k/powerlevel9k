@@ -1,9 +1,13 @@
 #!/usr/bin/env zsh
-#vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
+# vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
 
 # Required for shunit2 to run correctly
 setopt shwordsplit
 SHUNIT_PARENT=$0
+
+function oneTimeSetUp() {
+  source ./test/performance/libperf.zsh
+}
 
 function setUp() {
   export TERM="xterm-256color"
@@ -23,6 +27,7 @@ function testSshSegmentPrintsNothingIfNoSshConnection() {
   unset SSH_TTY
 
   assertEquals "%K{015} %F{000}world %k%F{015}%f " "$(__p9k_build_left_prompt)"
+  samplePerformanceSilent "SSH None" __p9k_build_left_prompt
 }
 
 function testSshSegmentWorksIfOnlySshClientIsSet() {
@@ -66,6 +71,7 @@ function testSshSegmentWorksIfAllNecessaryVariablesAreSet() {
   SSH_TTY='ssh-tty'
 
   assertEquals "%K{000} %F{003}ssh-icon %f%F{003}%k%F{000}%f " "$(__p9k_build_left_prompt)"
+  samplePerformanceSilent "SSH" __p9k_build_left_prompt
 
   unset SSH_TTY
   unset SSH_CLIENT

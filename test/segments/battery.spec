@@ -1,9 +1,13 @@
 #!/usr/bin/env zsh
-#vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
+# vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
 
 # Required for shunit2 to run correctly
 setopt shwordsplit
 SHUNIT_PARENT=$0
+
+function oneTimeSetUp() {
+  source ./test/performance/libperf.zsh
+}
 
 function setUp() {
   export TERM="xterm-256color"
@@ -91,6 +95,7 @@ function testBatterySegmentIfBatteryIsLowWhileDischargingOnOSX() {
  -InternalBattery-0 (id=1234567)	4%; discharging; 0:05 remaining present: true"
 
   assertEquals "%K{000} %F{001}🔋 %f%F{001}4%% (0:05) " "$(prompt_battery left 1 false ${FOLDER})"
+  samplePerformanceSilent "Battery Low (OSX)" prompt_battery left 1 false "${FOLDER}"
 }
 
 function testBatterySegmentIfBatteryIsLowWhileChargingOnOSX() {
@@ -123,6 +128,7 @@ function testBatterySegmentIfBatteryIsFullOnOSX() {
  -InternalBattery-0 (id=1234567)	99%; charged; 0:00 remaining present: true"
 
   assertEquals "%K{000} %F{002}🔋 %f%F{002}99%% " "$(prompt_battery left 1 false ${FOLDER})"
+  samplePerformanceSilent "Battery Full (OSX)" prompt_battery left 1 false "${FOLDER}"
 }
 
 function testBatterySegmentIfBatteryIsCalculatingOnOSX() {
@@ -138,6 +144,7 @@ function testBatterySegmentIfBatteryIsLowWhileDischargingOnLinux() {
   makeBatterySay "4" "Discharging"
 
   assertEquals "%K{000} %F{001}🔋 %f%F{001}4%% (0:05) " "$(prompt_battery left 1 false ${FOLDER})"
+  samplePerformanceSilent "Battery Low (Linux)" prompt_battery left 1 false "${FOLDER}"
 }
 
 function testBatterySegmentIfBatteryIsLowWhileChargingOnLinux() {
@@ -180,6 +187,7 @@ function testBatterySegmentIfBatteryIsFullOnLinux() {
   makeBatterySay "100" "Full"
 
   assertEquals "%K{000} %F{002}🔋 %f%F{002}100%% " "$(prompt_battery left 1 false ${FOLDER})"
+  samplePerformanceSilent "Battery Full (Linux)" prompt_battery left 1 false "${FOLDER}"
 }
 
 function testBatterySegmentIfBatteryNearlyFullButNotChargingOnLinux() {
@@ -187,6 +195,7 @@ function testBatterySegmentIfBatteryNearlyFullButNotChargingOnLinux() {
   makeBatterySay "98" "Unknown" "0"
 
   assertEquals "%K{000} %F{015}🔋 %f%F{015}98%% " "$(prompt_battery left 1 false ${FOLDER})"
+  samplePerformanceSilent "Battery Normal ACPI (Linux)" prompt_battery left 1 false "${FOLDER}"
 }
 
 function testBatterySegmentIfBatteryIsCalculatingOnLinux() {
@@ -194,6 +203,7 @@ function testBatterySegmentIfBatteryIsCalculatingOnLinux() {
   makeBatterySay "99" "Charging" "0"
 
   assertEquals "%K{000} %F{003}🔋 %f%F{003}99%% (...) " "$(prompt_battery left 1 false ${FOLDER})"
+  samplePerformanceSilent "Battery Calculating ACPI (Linux)" prompt_battery left 1 false "${FOLDER}"
 }
 
 source shunit2/shunit2

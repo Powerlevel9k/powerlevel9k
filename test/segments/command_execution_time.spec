@@ -1,9 +1,13 @@
 #!/usr/bin/env zsh
-#vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
+# vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
 
 # Required for shunit2 to run correctly
 setopt shwordsplit
 SHUNIT_PARENT=$0
+
+function oneTimeSetUp() {
+  source ./test/performance/libperf.zsh
+}
 
 function setUp() {
   export TERM="xterm-256color"
@@ -23,6 +27,7 @@ function testCommandExecutionTimeIsNotShownIfTimeIsBelowThreshold() {
   local _P9K_COMMAND_DURATION=2
 
   assertEquals "%K{015} %F{000}world %k%F{015}%f " "$(__p9k_build_left_prompt)"
+  samplePerformanceSilent "Command Execution Time None" __p9k_build_left_prompt
 }
 
 function testCommandExecutionTimeThresholdCouldBeChanged() {
@@ -32,6 +37,7 @@ function testCommandExecutionTimeThresholdCouldBeChanged() {
   local _P9K_COMMAND_DURATION=2.03
 
   assertEquals "%K{001} %F{226}Dur %f%F{226}2.03 %k%F{001}%f " "$(__p9k_build_left_prompt)"
+  samplePerformanceSilent "Command Execution Time" __p9k_build_left_prompt
 }
 
 function testCommandExecutionTimeThresholdCouldBeSetToZero() {
@@ -76,6 +82,7 @@ function testCommandExecutionTimeIsFormattedHumandReadbleForHourLongCommand() {
   local _P9K_COMMAND_DURATION=7200
 
   assertEquals "%K{001} %F{226}Dur %f%F{226}02:00:00 %k%F{001}%f " "$(__p9k_build_left_prompt)"
+  samplePerformanceSilent "Command Execution Time Long Formatted" __p9k_build_left_prompt
 }
 
 source shunit2/shunit2

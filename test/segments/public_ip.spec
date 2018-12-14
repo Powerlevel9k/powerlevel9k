@@ -1,9 +1,13 @@
 #!/usr/bin/env zsh
-#vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
+# vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
 
 # Required for shunit2 to run correctly
 setopt shwordsplit
 SHUNIT_PARENT=$0
+
+function oneTimeSetUp() {
+  source ./test/performance/libperf.zsh
+}
 
 function setUp() {
   export TERM="xterm-256color"
@@ -47,6 +51,7 @@ function testPublicIpSegmentPrintsNothingByDefaultIfHostIsNotAvailable() {
   alias dig='nodig'
 
   assertEquals "%K{015} %F{000}world %k%F{015}%f " "$(__p9k_build_left_prompt)"
+  samplePerformanceSilent "Public IP None" __p9k_build_left_prompt
 
   unalias dig
 }
@@ -61,6 +66,7 @@ function testPublicIpSegmentPrintsNoticeIfNotConnected() {
   alias dig='nodig'
 
   assertEquals "%K{000} %F{015}disconnected %k%F{000}%f " "$(__p9k_build_left_prompt)"
+  samplePerformanceSilent "Public IP Disconnected" __p9k_build_left_prompt
 
   unalias dig
 }
@@ -75,6 +81,7 @@ function testPublicIpSegmentWorksWithWget() {
   }
 
   assertEquals "%K{000} %F{015}wget 1.2.3.4 %k%F{000}%f " "$(__p9k_build_left_prompt)"
+  samplePerformanceSilent "Public IP wget" __p9k_build_left_prompt
 
   unfunction wget
   unalias dig
@@ -91,6 +98,7 @@ function testPublicIpSegmentUsesCurlAsFallbackMethodIfWgetIsNotAvailable() {
   }
 
   assertEquals "%K{000} %F{015}curl 1.2.3.4 %k%F{000}%f " "$(__p9k_build_left_prompt)"
+  samplePerformanceSilent "Public IP curl" __p9k_build_left_prompt
 
   unfunction curl
   unalias dig
@@ -108,6 +116,7 @@ function testPublicIpSegmentUsesDigAsFallbackMethodIfWgetAndCurlAreNotAvailable(
 
   # Load Powerlevel9k
   assertEquals "%K{000} %F{015}dig 1.2.3.4 %k%F{000}%f " "$(__p9k_build_left_prompt)"
+  samplePerformanceSilent "Public IP dig" __p9k_build_left_prompt
 
   unfunction dig
   unalias curl

@@ -1,9 +1,13 @@
 #!/usr/bin/env zsh
-#vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
+# vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
 
 # Required for shunit2 to run correctly
 setopt shwordsplit
 SHUNIT_PARENT=$0
+
+function oneTimeSetUp() {
+  source ./test/performance/libperf.zsh
+}
 
 function setUp() {
   export TERM="xterm-256color"
@@ -23,6 +27,7 @@ function testAnacondaSegmentPrintsNothingIfNoAnacondaPathIsSet() {
   unset CONDA_PREFIX
 
   assertEquals "%K{015} %F{000}world %k%F{015}%f " "$(__p9k_build_left_prompt)"
+  samplePerformanceSilent "Anaconda None" __p9k_build_left_prompt
 }
 
 function testAnacondaSegmentWorksIfOnlyAnacondaPathIsSet() {
@@ -65,6 +70,7 @@ function testAnacondaSegmentWorks() {
   local CONDA_PREFIX="test"
 
   assertEquals "%K{004} %F{000}icon-here %f%F{000}(tmptest) %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  samplePerformanceSilent "Anaconda" __p9k_build_left_prompt
 }
 
 source shunit2/shunit2

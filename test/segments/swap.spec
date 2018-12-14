@@ -1,9 +1,13 @@
 #!/usr/bin/env zsh
-#vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
+# vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
 
 # Required for shunit2 to run correctly
 setopt shwordsplit
 SHUNIT_PARENT=$0
+
+function oneTimeSetUp() {
+  source ./test/performance/libperf.zsh
+}
 
 function setUp() {
   export TERM="xterm-256color"
@@ -37,6 +41,7 @@ function testSwapSegmentWorksOnOsx() {
   local __P9K_OS="OSX" # Fake OSX
 
   assertEquals "%K{003} %F{000}SWP %f%F{000}1.58G " "$(prompt_swap left 1 false ${FOLDER})"
+  samplePerformanceSilent "Swap (OSX)" prompt_swap left 1 false "${FOLDER}"
 
   unfunction sysctl
 }
@@ -53,6 +58,7 @@ function testSwapSegmentWorksOnLinux() {
   local __P9K_OS="Linux" # Fake Linux
 
   assertEquals "%K{003} %F{000}SWP %f%F{000}0.95G " "$(prompt_swap left 1 false ${FOLDER})"
+  samplePerformanceSilent "Swap (Linux)" prompt_swap left 1 false "${FOLDER}"
 }
 
 source shunit2/shunit2

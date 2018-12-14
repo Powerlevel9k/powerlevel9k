@@ -1,3 +1,4 @@
 test-vm/.vagrant
 *.swp
 .idea
+test/performance/perf_log.csv

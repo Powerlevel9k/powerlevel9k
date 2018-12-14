@@ -1,9 +1,13 @@
 #!/usr/bin/env zsh
-#vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
+# vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
 
 # Required for shunit2 to run correctly
 setopt shwordsplit
 SHUNIT_PARENT=$0
+
+function oneTimeSetUp() {
+  source ./test/performance/libperf.zsh
+}
 
 function setUp() {
   export TERM="xterm-256color"
@@ -44,6 +48,7 @@ function testLoadSegmentWorksOnOsx() {
   local __P9K_OS="OSX" # Fake OSX
 
   assertEquals "%K{002} %F{000}L %f%F{000}1.38 " "$(prompt_load left 1 false ${FOLDER})"
+  samplePerformanceSilent "Load (OSX)" prompt_load left 1 false "${FOLDER}"
 
   unfunction sysctl
 }
@@ -64,6 +69,7 @@ function testLoadSegmentWorksOnBsd() {
   local __P9K_OS="BSD" # Fake BSD
 
   assertEquals "%K{002} %F{000}L %f%F{000}1.38 " "$(prompt_load left 1 false ${FOLDER})"
+  samplePerformanceSilent "Load (BSD)" prompt_load left 1 false "${FOLDER}"
 
   unfunction sysctl
 }
@@ -79,6 +85,7 @@ function testLoadSegmentWorksOnLinux() {
   local __P9K_OS="Linux" # Fake Linux
 
   assertEquals "%K{002} %F{000}L %f%F{000}1.38 " "$(prompt_load left 1 false ${FOLDER})"
+  samplePerformanceSilent "Load (Linux)" prompt_load left 1 false "${FOLDER}"
 
   unalias nproc
 }
@@ -133,6 +140,7 @@ function testLoadSegmentCriticalState() {
   local __P9K_OS="Linux" # Fake Linux
 
   assertEquals "%K{001} %F{000}L %f%F{000}2.81 " "$(prompt_load left 1 false ${FOLDER})"
+  samplePerformanceSilent "Load Critical" prompt_load left 1 false "${FOLDER}"
 
   unalias nproc
 }
