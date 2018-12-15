@@ -192,7 +192,7 @@ function testMercurialIconWorks() {
   # Load Powerlevel9k
   source ${P9K_HOME}/segments/vcs.p9k
 
-  assertEquals "%K{002} %F{000}HG-icon %f%F{000} default %k%F{002}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{002} %F{000}HG-icon%f %F{000} default %k%F{002}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testBookmarkIconWorks() {

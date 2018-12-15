@@ -79,7 +79,7 @@ function testSymfonyVersionSegmentWorks() {
     echo "Symfony version 3.1.4 - app/dev/debug"
   }
 
-  assertEquals "%K{240} %F{000}SF %f%F{000}3.1.4 %k%F{240}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{240} %F{000}SF%f %F{000}3.1.4 %k%F{240}%f " "$(__p9k_build_left_prompt)"
 
   unfunction php
 }
@@ -98,7 +98,7 @@ function testSymfonyVersionSegmentWorksInNestedFolder() {
   mkdir -p src/P9K/AppBundle
   cd src/P9K/AppBundle
 
-  assertEquals "%K{240} %F{000}SF %f%F{000}3.1.4 %k%F{240}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{240} %F{000}SF%f %F{000}3.1.4 %k%F{240}%f " "$(__p9k_build_left_prompt)"
 
   unfunction php
 }

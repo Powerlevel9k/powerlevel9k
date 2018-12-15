@@ -67,7 +67,7 @@ function testGetRelevantItemDoesNotReturnNotFoundItems() {
   local callback='[[ "$item" == "d" ]] && echo "found"'
 
   local result=$(p9k::get_relevant_item "$list" "$callback")
-  assertEquals '' ''
+  assertEquals '' "$result"
 
   unset list
 }
@@ -219,6 +219,36 @@ function testUpsearchWithFileGlobs() {
 
   cd "${OLDPWD}"
   rm -fr "/tmp/p9k-test"
+}
+
+function testFindingFirstDefinedOrNonEmptyVariableNyName() {
+  local var1=""
+  local var2="some value"
+
+  local result=
+
+  assertEquals "" "$(p9k::find_first_defined var0 var1 var2)" # var1 value
+  assertEquals "var1" "$(p9k::find_first_defined -n var0 var1 var2)" # var1 name
+
+  assertEquals "some value" "$(p9k::find_first_non_empty var0 var1 var2)" # var2 value
+  assertEquals "var2" "$(p9k::find_first_non_empty -n var0 var1 var2)" # var2 name
+
+  local var0=""
+  assertEquals "" "$(p9k::find_first_defined var0 var1 var2)" # var1 value
+  assertEquals "var0" "$(p9k::find_first_defined -n var0 var1 var2)" # var1 name
+  var0="other value"
+  assertEquals "other value" "$(p9k::find_first_non_empty var0 var1 var2)" # var2 value
+  assertEquals "var0" "$(p9k::find_first_non_empty -n var0 var1 var2)" # var2 name
+
+  function internal() {
+    local var0="qwe"
+    assertEquals "qwe" "$(p9k::find_first_defined var0 var1 var2)" # var1 value
+    assertEquals "var0" "$(p9k::find_first_defined -n var0 var1 var2)" # var1 name
+    assertEquals "qwe" "$(p9k::find_first_non_empty var0 var1 var2)" # var2 value
+    assertEquals "var0" "$(p9k::find_first_non_empty -n var0 var1 var2)" # var2 name
+  }
+
+  internal
 }
 
 source shunit2/shunit2

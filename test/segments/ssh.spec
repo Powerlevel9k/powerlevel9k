@@ -35,7 +35,7 @@ function testSshSegmentWorksIfOnlySshClientIsSet() {
   SSH_CLIENT='ssh-client'
   unset SSH_TTY
 
-  assertEquals "%K{000} %F{003}ssh-icon %f%F{003}%k%F{000}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{000} %F{003}ssh-icon%f %k%F{000}%f " "$(__p9k_build_left_prompt)"
 
   unset SSH_CLIENT
 }
@@ -50,7 +50,7 @@ function testSshSegmentWorksIfOnlySshTtyIsSet() {
   SSH_TTY='ssh-tty'
   unset SSH_CLIENT
 
-  assertEquals "%K{000} %F{003}ssh-icon %f%F{003}%k%F{000}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{000} %F{003}ssh-icon%f %k%F{000}%f " "$(__p9k_build_left_prompt)"
 
   unset SSH_TTY
 }
@@ -65,7 +65,7 @@ function testSshSegmentWorksIfAllNecessaryVariablesAreSet() {
   SSH_CLIENT='ssh-client'
   SSH_TTY='ssh-tty'
 
-  assertEquals "%K{000} %F{003}ssh-icon %f%F{003}%k%F{000}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{000} %F{003}ssh-icon%f %k%F{000}%f " "$(__p9k_build_left_prompt)"
 
   unset SSH_TTY
   unset SSH_CLIENT
