@@ -154,7 +154,7 @@ The segments that are currently available are:
   output of an arbitrary command.
 * [`command_execution_time`](segments/command_execution_time/README.md) - Display the time the current command took to execute.
 * [`todo`](http://todotxt.com/) - Shows the number of tasks in your todo.txt tasks file.
-* `detect_virt` - Virtualization detection with systemd
+* [`detect_virt`](segments/detect_virt/README.md) - Virtualization detection with systemd
 * `newline` - Continues the prompt on a new line.
 * `openfoam` - Shows the currently sourced [OpenFOAM](https://openfoam.org/) environment.
 * [`vagrant`](#vagrant) - Detects if you are in a folder with a running VM.
