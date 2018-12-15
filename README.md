@@ -87,8 +87,8 @@ The segments that are currently available are:
 **System Status Segments:**
 * [`background_jobs`](segments/background_jobs/README.md) - Indicator for background jobs.
 * [`battery`](segments/battery/README.md) - Current battery status.
-* [`date`](#date) - System date.
 * [`context`](segments/context/README.md) - Your username and host, conditionalized based on $USER and SSH status.
+* [`date`](segments/date/README.md) - System date.
 * [`dir`](segments/dir/README.md) - Your current working directory.
 * `dir_writable` - Displays a lock icon, if you do not have write permissions on the current folder.
 * [`disk_usage`](segments/disk_usage/README.md) - Disk usage of your current partition.
@@ -220,14 +220,6 @@ The command, above, gives you the wireless signal segment shown below:
 You can define as many custom segments as you wish. If you think you have
 a segment that others would find useful, please consider upstreaming it to the
 main theme distribution so that everyone can use it!
-
-##### date
-
-The `date` segment shows the current system date.
-
-| Variable | Default Value | Description |
-|----------|---------------|-------------|
-|`P9K_DATE_FORMAT`|`%D{%d.%m.%y}`|[ZSH time format](http://zsh.sourceforge.net/Doc/Release/Prompt-Expansion.html#Date-and-time) to use in this segment.|
 
 ##### newline
 
