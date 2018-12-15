@@ -144,7 +144,7 @@ The segments that are currently available are:
 **Cloud Segments:**
 * **AWS Segments:**
     * [`aws`](#aws) - The current AWS profile, if active.
-    * `aws_eb_env` - The current Elastic Beanstalk Environment.
+    * [`aws_eb_env`](segments/aws_eb_env/README.md) - The current Elastic Beanstalk Environment.
 * `docker_machine` - The current Docker Machine.
 * `kubecontext` - The current context of your `kubectl` configuration.
 * `dropbox` - Indicates Dropbox directory and syncing status using `dropbox-cli`
