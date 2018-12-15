@@ -93,7 +93,7 @@ The segments that are currently available are:
 * `dir_writable` - Displays a lock icon, if you do not have write permissions on the current folder.
 * [`disk_usage`](#disk_usage) - Disk usage of your current partition.
 * `history` - The command number for the current line.
-* [`host`](#host) - Your current host name
+* [`host`](segments/host/README.md) - Your current host name
 * [`ip`](segments/ip/README.md) - Shows the current IP address.
 * [`vpn_ip`](segments/vpn_ip/README.md) - Shows the current VPN IP address.
 * [`public_ip`](segments/public_ip/README.md) - Shows your public IP address.
@@ -366,27 +366,6 @@ The `disk_usage` segment will show the usage level of the partition that your cu
 |P9K_DISK_USAGE_WARNING_LEVEL|90|The usage level that triggers a warning state.|
 |P9K_DISK_USAGE_CRITICAL_LEVEL|95|The usage level that triggers a critical state.|
 |P9K_DISK_USAGE_PATH|`.` (working directory)|Set a path to use a fixed directory instead of the working 
-
-##### host
-
-The `host` segment will print the hostname.
-
-You can set the `P9K_HOST_TEMPLATE` variable to change how the hostname
-is displayed. See (ZSH Manual)[http://zsh.sourceforge.net/Doc/Release/Prompt-Expansion.html#Login-information]
-for details. The default is set to `%m` which will show the hostname up to the
-first `.`. You can set it to `%{N}m` where N is an integer to show that many
-segments of system hostname. Setting `N` to a negative integer will show that many
-segments from the end of the hostname.
-
-```
-P9K_HOST_TEMPLATE="%2m"
-```
-
-By default, LOCAL hosts will show the host icon and remote hosts will show the SSH icon. You can override them by setting
-```
-P9K_HOST_ICON="\uF109 "
-P9K_SSH_ICON="\uF489 "
-```
 
 ##### newline
 
