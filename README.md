@@ -91,7 +91,7 @@ The segments that are currently available are:
 * [`dir`](#dir) - Your current working directory.
 * [`context`](segments/context/README.md) - Your username and host, conditionalized based on $USER and SSH status.
 * `dir_writable` - Displays a lock icon, if you do not have write permissions on the current folder.
-* [`disk_usage`](#disk_usage) - Disk usage of your current partition.
+* [`disk_usage`](segments/disk_usage/README.md) - Disk usage of your current partition.
 * `history` - The command number for the current line.
 * [`host`](segments/host/README.md) - Your current host name
 * [`ip`](segments/ip/README.md) - Shows the current IP address.
@@ -314,17 +314,6 @@ You can also configure the `dir` segment to show when you are in a directory wit
 If you want to customize the last directory of the path, you can now set `P9K_DIR_PATH_HIGHLIGHT_FOREGROUND` to a custom color and/or `P9K_DIR_PATH_HIGHLIGHT_BOLD=true` to display that part in bold.
 
 You can also color the separator separately by setting the color using `P9K_DIR_PATH_SEPARATOR_FOREGROUND`.
-
-##### disk_usage
-
-The `disk_usage` segment will show the usage level of the partition that your current working directory (or a directory of your choice) resides in. It can be configured with the following variables.
-
-| Variable | Default Value | Description |
-|----------|---------------|-------------|
-|P9K_DISK_USAGE_ONLY_WARNING|false|Hide the segment except when usage levels have hit warning or critical levels.|
-|P9K_DISK_USAGE_WARNING_LEVEL|90|The usage level that triggers a warning state.|
-|P9K_DISK_USAGE_CRITICAL_LEVEL|95|The usage level that triggers a critical state.|
-|P9K_DISK_USAGE_PATH|`.` (working directory)|Set a path to use a fixed directory instead of the working 
 
 ##### newline
 
