@@ -104,7 +104,7 @@ The segments that are currently available are:
 * [`status`](#status) - The return code of the previous command.
 * `swap` - Prints the current swap size.
 * [`time`](#time) - System time.
-* [`user`](#user) - Your current username
+* [`user`](segments/user/README.md) - Your current username
 * [`vi_mode`](segments/vi_mode/README.md)- Your prompt's Vi editing mode (NORMAL|INSERT).
 * `ssh` - Indicates whether or not you are in an SSH session.
 
@@ -524,23 +524,6 @@ segment, as well:
 # Output time, date, and a symbol from the "Awesome Powerline Font" set
 P9K_TIME_FORMAT="%D{%H:%M:%S \uE868  %d.%m.%y}"
 ```
-##### user
-
-The `user` segment will print the username.
-
-You can also override the icons by setting:
-
-```
-P9K_USER_DEFAULT_ICON="\uF415" # 
-P9K_USER_ROOT_ICON="#"
-P9K_USER_SUDO_ICON=$'\uF09C' # 
-```
-
-| Variable | Default Value | Description |
-|----------|---------------|-------------|
-|`DEFAULT_USER`|None|Username to consider a "default context".|
-|`P9K_CONTEXT_ALWAYS_SHOW_USER`|`false`|Always print this segment.|
-|`P9K_USER_TEMPLATE`|`%n`|Default username prompt. Refer to the [ZSH Documentation](http://zsh.sourceforge.net/Doc/Release/Prompt-Expansion.html) for all possible expansions|
 
 ##### vagrant
 
