@@ -143,7 +143,7 @@ The segments that are currently available are:
 
 **Cloud Segments:**
 * **AWS Segments:**
-    * [`aws`](#aws) - The current AWS profile, if active.
+    * [`aws`](segments/aws/README.md) - The current AWS profile, if active.
     * [`aws_eb_env`](segments/aws_eb_env/README.md) - The current Elastic Beanstalk Environment.
 * `docker_machine` - The current Docker Machine.
 * `kubecontext` - The current context of your `kubectl` configuration.
@@ -160,17 +160,6 @@ The segments that are currently available are:
 * [`vagrant`](#vagrant) - Detects if you are in a folder with a running VM.
 
 --------------------------------------------------------------------------------
-
-##### aws
-
-If you would like to display the [current AWS
-profile](http://docs.aws.amazon.com/cli/latest/userguide/installing.html), add
-the `aws` segment to one of the prompts, and define `AWS_DEFAULT_PROFILE` in
-your `~/.zshrc`:
-
-| Variable | Default Value | Description |
-|----------|---------------|-------------|
-|`AWS_DEFAULT_PROFILE`|None|Your AWS profile name|
 
 ##### background_jobs
 
