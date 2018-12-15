@@ -103,7 +103,7 @@ The segments that are currently available are:
 * `root_indicator` - An indicator if the user has superuser status.
 * [`status`](#status) - The return code of the previous command.
 * `swap` - Prints the current swap size.
-* [`time`](#time) - System time.
+* [`time`](segments/time/README.md) - System time.
 * [`user`](segments/user/README.md) - Your current username
 * [`vi_mode`](segments/vi_mode/README.md)- Your prompt's Vi editing mode (NORMAL|INSERT).
 * `ssh` - Indicates whether or not you are in an SSH session.
@@ -506,24 +506,6 @@ This segment shows the return code of the last command.
 ##### symfony2_tests
 
 See [Unit Test Ratios](#unit-test-ratios), below.
-
-##### time
-
-| Variable | Default Value | Description |
-|----------|---------------|-------------|
-|`P9K_TIME_FORMAT`|`'H:M:S'`|ZSH time format to use in this segment.|
-
-As an example, if you wanted a reversed time format, you would use this:
-```zsh
-# Reversed time format
-P9K_TIME_FORMAT='%D{%S:%M:%H}'
-```
-If you are using an "Awesome Powerline Font", you can add a time symbol to this
-segment, as well:
-```zsh
-# Output time, date, and a symbol from the "Awesome Powerline Font" set
-P9K_TIME_FORMAT="%D{%H:%M:%S \uE868  %d.%m.%y}"
-```
 
 ##### vagrant
 
