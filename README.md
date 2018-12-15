@@ -152,7 +152,7 @@ The segments that are currently available are:
 **Other:**
 * [`custom_command`](#custom_command) - Create a custom segment to display the
   output of an arbitrary command.
-* [`command_execution_time`](#command_execution_time) - Display the time the current command took to execute.
+* [`command_execution_time`](segments/command_execution_time/README.md) - Display the time the current command took to execute.
 * [`todo`](http://todotxt.com/) - Shows the number of tasks in your todo.txt tasks file.
 * `detect_virt` - Virtualization detection with systemd
 * `newline` - Continues the prompt on a new line.
@@ -160,19 +160,6 @@ The segments that are currently available are:
 * [`vagrant`](#vagrant) - Detects if you are in a folder with a running VM.
 
 --------------------------------------------------------------------------------
-
-##### command_execution_time
-
-Display the time the previous command took to execute if the time is above
-`P9K_COMMAND_EXECUTION_TIME_THRESHOLD`. The time is formatted to be
-"human readable", and so scales the units based on the length of execution time.
-If you want more precision, just set the
-`P9K_COMMAND_EXECUTION_TIME_PRECISION` field.
-
-| Variable | Default Value | Description |
-|----------|---------------|-------------|
-|`P9K_COMMAND_EXECUTION_TIME_THRESHOLD`|3|Threshold above which to print this segment. Can be set to `0` to always print.|
-|`P9K_COMMAND_EXECUTION_TIME_PRECISION`|2|Number of digits to use in the fractional part of the time value.|
 
 ##### custom_command
 
