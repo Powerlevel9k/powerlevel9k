@@ -87,25 +87,25 @@ The segments that are currently available are:
 **System Status Segments:**
 * [`background_jobs`](segments/background_jobs/README.md) - Indicator for background jobs.
 * [`battery`](segments/battery/README.md) - Current battery status.
-* [`context`](#context) - Your username and host, conditionalized based on $USER and SSH status.
-* [`date`](#date) - System date.
-* [`dir`](#dir) - Your current working directory.
+* [`context`](segments/context/README.md) - Your username and host, conditionalized based on $USER and SSH status.
+* [`date`](segments/date/README.md) - System date.
+* [`dir`](segments/dir/README.md) - Your current working directory.
 * `dir_writable` - Displays a lock icon, if you do not have write permissions on the current folder.
-* [`disk_usage`](#disk_usage) - Disk usage of your current partition.
+* [`disk_usage`](segments/disk_usage/README.md) - Disk usage of your current partition.
 * `history` - The command number for the current line.
-* [`host`](#host) - Your current host name
-* [`ip`](#ip) - Shows the current IP address.
-* [`vpn_ip`](#vpn_ip) - Shows the current VPN IP address.
-* [`public_ip`](#public_ip) - Shows your public IP address.
-* [`load`](#load) - Your machine's load averages.
+* [`host`](segments/host/README.md) - Your current host name
+* [`ip`](segments/ip/README.md) - Shows the current IP address.
+* [`vpn_ip`](segments/vpn_ip/README.md) - Shows the current VPN IP address.
+* [`public_ip`](segments/public_ip/README.md) - Shows your public IP address.
+* [`load`](segments/load/README.md) - Your machine's load averages.
 * `os_icon` - Display a nice little icon, depending on your operating system.
 * `ram` - Show free RAM.
 * `root_indicator` - An indicator if the user has superuser status.
-* [`status`](#status) - The return code of the previous command.
+* [`status`](segments/status/README.md) - The return code of the previous command.
 * `swap` - Prints the current swap size.
-* [`time`](#time) - System time.
-* [`user`](#user) - Your current username
-* [`vi_mode`](#vi_mode)- Your prompt's Vi editing mode (NORMAL|INSERT).
+* [`time`](segments/time/README.md) - System time.
+* [`user`](segments/user/README.md) - Your current username
+* [`vi_mode`](segments/vi_mode/README.md)- Your prompt's Vi editing mode (NORMAL|INSERT).
 * `ssh` - Indicates whether or not you are in an SSH session.
 
 **Development Environment Segments:**
@@ -221,228 +221,6 @@ You can define as many custom segments as you wish. If you think you have
 a segment that others would find useful, please consider upstreaming it to the
 main theme distribution so that everyone can use it!
 
-##### context
-
-The `context` segment (user@host string) is conditional. By default, it will
-only print if you are not your 'normal' user (including if you are root), or if
-you are SSH'd to a remote host. `SUDO` and `REMOTE_SUDO` states are also available to show whether the current user or remote user has superuser privileges.
-
-To use this feature, make sure the `context` segment is enabled in your prompt
-elements (it is by default), and define a `DEFAULT_USER` in your `~/.zshrc`.
-
-You can customize the `context` segment. For example, you can make it to print the
-full hostname by setting
-
-```
-P9K_CONTEXT_TEMPLATE="%n@`hostname -f`"
-```
-
-You can set the `P9K_CONTEXT_HOST_DEPTH` variable to change how the
-hostname is displayed. See [ZSH Manual](http://zsh.sourceforge.net/Doc/Release/Prompt-Expansion.html#Login-information)
-for details. The default is set to %m which will show the hostname up to the first ‘.’
-You can set it to %{N}m where N is an integer to show that many segments of system
-hostname. Setting N to a negative integer will show that many segments from the
-end of the hostname.
-
-| Variable | Default Value | Description |
-|----------|---------------|-------------|
-|`DEFAULT_USER`|None|Username to consider a "default context" (you can also set `$USER`).|
-|`P9K_CONTEXT_ALWAYS_SHOW`|false|Always show this segment, including $USER and hostname.|
-|`P9K_CONTEXT_ALWAYS_SHOW_USER`|false|Always show the username, but conditionalize the hostname.|
-|`P9K_CONTEXT_TEMPLATE`|%n@%m|Default context prompt (username@machine). Refer to the [ZSH Documentation](http://zsh.sourceforge.net/Doc/Release/Prompt-Expansion.html) for all possible expansions, including deeper host depths.|
-
-This segment can have different states. They might help you to visualize your
-different privileges. Read more about styling with states [here](https://github.com/bhilburn/powerlevel9k/wiki/Stylizing-Your-Prompt#special-segment-colors).
-
-| State         | Meaning                                                  |
-|---------------|----------------------------------------------------------|
-| `DEFAULT`     | You are a normal user                                    |
-| `ROOT`        | You are the root user                                    |
-| `SUDO`        | You are using elevated rights                            |
-| `REMOTE_SUDO` | You are SSH'ed into the machine and have elevated rights |
-| `REMOTE`      | You are SSH'ed into the machine                          |
-
-##### date
-
-The `date` segment shows the current system date.
-
-| Variable | Default Value | Description |
-|----------|---------------|-------------|
-|`P9K_DATE_FORMAT`|`%D{%d.%m.%y}`|[ZSH time format](http://zsh.sourceforge.net/Doc/Release/Prompt-Expansion.html#Date-and-time) to use in this segment.|
-
-##### dir
-
-The `dir` segment shows the current working directory. When using the "Awesome
-Powerline" fonts, there are additional glyphs, as well:
-
-| `Compatible` | `Powerline` | `Awesome Powerline` | Situation
-|------------|-----------|-------------------|----------------------------
-| None       | None      | ![](https://cloud.githubusercontent.com/assets/1544760/12183451/40ec4016-b58f-11e5-9b9e-74e2b2f0b8b3.png) | At the root of your home folder |
-| None       | None      | ![](https://cloud.githubusercontent.com/assets/1544760/12369315/8a5d762c-bbf5-11e5-8a20-ca1179f48d6c.png) | Within a subfolder of your home directory |
-| None       | None      | ![](https://cloud.githubusercontent.com/assets/1544760/12183452/40f79286-b58f-11e5-9b8c-ed1343a07b08.png) | Outside of your home folder |
-| None       | None      | ⚙ | Within the `/etc` directory |
-
-To turn off these icons you could set these variables to an empty string.
-```zsh
-P9K_DIR_HOME_ICON=''
-P9K_DIR_HOME_SUBFOLDER_ICON=''
-P9K_FOLDER_ICON=''
-P9K_DIR_ETC_ICON=''
-```
-You can limit the output to a certain length by truncating long paths.
-Customizations available are:
-
-| Variable | Default Value | Description |
-|----------|---------------|-------------|
-|`P9K_DIR_PATH_ABSOLUTE`|None|If set to `true`, will use absolute paths instead of home folder abbreviation `~`|
-|`P9K_DIR_SHORTEN_LENGTH`|`2`|If your shorten strategy, below, is entire directories, this field determines how many directories to leave at the end. If your shorten strategy is by character count, this field determines how many characters to allow per directory string.|
-|`P9K_DIR_SHORTEN_STRATEGY`|None|How the directory strings should be truncated. See the table below for more informations.|
-|`P9K_DIR_SHORTEN_DELIMITER`|`..`|Delimiter to use in truncated strings. This can be any string you choose, including an empty string if you wish to have no delimiter.|
-
-| Strategy Name | Description |
-|---------------|-------------|
-|Default|Truncate whole directories from left. How many is defined by `P9K_DIR_SHORTEN_LENGTH`|
-|`truncate_absolute_chars`|Truncates an absolute number of characters from the left such that the number of characters that your path displays (with or without `P9K_DIR_SHORTEN_DELIMITER`) is no more than `P9K_DIR_SHORTEN_LENGTH` + the length of `P9K_DIR_SHORTEN_DELIMITER` |
-|`truncate_middle`|Truncates the middle part of a folder. E.g. you are in a folder named `~/MySuperProjects/AwesomeFiles/BoringOffice`, then it will truncated to `~/MyS..cts/Awe..les/BoringOffice`, if `P9K_DIR_SHORTEN_LENGTH=3` is also set (controls the amount of characters to be left).|
-|`truncate_from_right`|Just leaves the beginning of a folder name untouched. E.g. your folders will be truncated like so: "/ro../Pr../office". How many characters will be untouched is controlled by `P9K_DIR_SHORTEN_LENGTH`.|
-|`truncate_absolute`|Truncates everything exept the last few characters in the path. E.g. if you are in a folder named "~/Projects/powerlevel9k" and you have set `P9K_DIR_SHORTEN_LENGTH=3`, you will get "..l9k".|
-|`truncate_to_last`|Truncates everything before the last folder in the path.|
-|`truncate_to_first_and_last`|Truncate middle directories from the path. How many directories will be untouched is controlled by `P9K_DIR_SHORTEN_LENGTH`. E.g. if you are in a folder named `~/Projects/powerlevel9k` and you have set `P9K_DIR_SHORTEN_LENGTH=1`, you will get `~/../powerlevel9k`.||
-|`truncate_to_unique`|Parse all parent path components and truncate them to the shortest unique length. If you copy & paste the result to a shell, after hitting `TAB` it should expand to the original path unambiguously.|
-|`truncate_with_package_name`|Search for a `package.json` or `composer.json` and prints the `name` field to abbreviate the directory path. The precedence and/or files could be set by `P9K_DIR_PACKAGE_FILES=(package.json composer.json)`. If you have [jq](https://stedolan.github.io/jq/) installed, it will dramatically improve the speed of this strategy.|
-|`truncate_with_folder_marker`|Search for a file that is specified by `P9K_DIR_SHORTEN_FOLDER_MARKER` and truncate everything before that (if found, otherwise stop on $HOME and ROOT).|
-
-For example, if you wanted the truncation behavior of the `fish` shell, which
-truncates `/usr/share/plasma` to `/u/s/plasma`, you would use the following:
-```zsh
-P9K_DIR_SHORTEN_LENGTH=1
-P9K_DIR_SHORTEN_DELIMITER=""
-P9K_DIR_SHORTEN_STRATEGY="truncate_from_right"
-```
-In each case you have to specify the length you want to shorten the directory
-to. So in some cases `P9K_DIR_SHORTEN_LENGTH` means characters, in
-others whole directories.
-
-The `truncate_with_package_name` strategy gives your directory path relative to the root of your project.  For example, if you have a project inside `$HOME/projects/my-project` with a `package.json` that looks like:
-
-```json
-{
-  "name": "my-cool-project"
-}
-```
-
-The path shown would be `my-cool-project`.  If you navigate to `$HOME/projects/my-project/src`, then the path shown would be `my-cool-project/src`.  Please note that this currently looks for `.git` directory to determine the root of the project.
-
-If you want to customize the directory separator, you could set:
-```zsh
-# Double quotes are important here!
-P9K_DIR_PATH_SEPARATOR="%F{red} $(print_icon 'LEFT_SUBSEGMENT_SEPARATOR') %F{black}"
-```
-To omit the first character (usually a slash that gets replaced if you set `P9K_DIR_PATH_SEPARATOR`),
-you could set `P9K_DIR_OMIT_FIRST_CHARACTER=true`.
-
-You can also customize the leading tilde character when you are in `$HOME` using:
-```zsh
-# Double quotes are important here!
-P9K_DIR_HOME_FOLDER_ABBREVIATION="%F{red} $(print_icon 'DIR_HOME_ICON') %F{black}"
-```
-You can also configure the `dir` segment to show when you are in a directory without write permissions, using the variable below.
-
-| Variable | Default Value | Description |
-|----------|---------------|-------------|
-|`P9K_DIR_SHOW_WRITABLE`|`false`|If set to `true` and you are in a directory that you do not have write permissions for, this segment will display a lock icon and enter the `NOT_WRITABLE` state (which can be customized per [our usual process](https://github.com/bhilburn/powerlevel9k/wiki/Stylizing-Your-Prompt#segment-color-customization)). Note that this functionality is also available in a separate segment, `dir_writable`.|
-
-If you want to customize the last directory of the path, you can now set `P9K_DIR_PATH_HIGHLIGHT_FOREGROUND` to a custom color and/or `P9K_DIR_PATH_HIGHLIGHT_BOLD=true` to display that part in bold.
-
-You can also color the separator separately by setting the color using `P9K_DIR_PATH_SEPARATOR_FOREGROUND`.
-
-##### disk_usage
-
-The `disk_usage` segment will show the usage level of the partition that your current working directory (or a directory of your choice) resides in. It can be configured with the following variables.
-
-| Variable | Default Value | Description |
-|----------|---------------|-------------|
-|P9K_DISK_USAGE_ONLY_WARNING|false|Hide the segment except when usage levels have hit warning or critical levels.|
-|P9K_DISK_USAGE_WARNING_LEVEL|90|The usage level that triggers a warning state.|
-|P9K_DISK_USAGE_CRITICAL_LEVEL|95|The usage level that triggers a critical state.|
-|P9K_DISK_USAGE_PATH|`.` (working directory)|Set a path to use a fixed directory instead of the working 
-
-##### host
-
-The `host` segment will print the hostname.
-
-You can set the `P9K_HOST_TEMPLATE` variable to change how the hostname
-is displayed. See (ZSH Manual)[http://zsh.sourceforge.net/Doc/Release/Prompt-Expansion.html#Login-information]
-for details. The default is set to `%m` which will show the hostname up to the
-first `.`. You can set it to `%{N}m` where N is an integer to show that many
-segments of system hostname. Setting `N` to a negative integer will show that many
-segments from the end of the hostname.
-
-```
-P9K_HOST_TEMPLATE="%2m"
-```
-
-By default, LOCAL hosts will show the host icon and remote hosts will show the SSH icon. You can override them by setting
-```
-P9K_HOST_ICON="\uF109 "
-P9K_SSH_ICON="\uF489 "
-```
-
-
-##### ip
-
-This segment tries to examine all currently used network interfaces and prints
-the first address it finds.  In the case that this is not the right NIC, you can
-specify the correct network interface by setting:
-
-| Variable | Default Value | Description |
-|----------|---------------|-------------|
-|`P9K_IP_INTERFACE`|None|The NIC for which you wish to display the IP address. Example: `eth0`.|
-
-##### vpn_ip
-
-This segment tries to extract the VPN related IP addresses from nmcli, based on the NIC type:
-
-| Variable | Default Value | Description |
-|----------|---------------|-------------|
-|`P9K_VPN_IP_INTERFACE`|`tun`|The VPN interface.|
-
-##### public_ip
-
-This segment will display your public IP address. There are several methods of obtaining this
-information and by default it will try all of them starting with the most efficient. You can
-also specify which method you would like it to use. The methods available are dig using opendns,
-curl, or wget. The host used for wget and curl is http://ident.me by default but can be set to
-another host if you prefer.
-
-If you activate a VPN, the icon for this segment will change to the defined VPN icon.
-
-The public_ip segment will attempt to update your public IP address every 5 minutes by default(also
-configurable by the user). If you lose connection your cached IP address will be displayed until
-your timeout expires at which point every time your prompt is generated a new attempt will be made.
-Until an IP is successfully pulled the value of $P9K_PUBLIC_IP_NONE will be displayed for
-this segment. If this value is empty(the default)and $P9K_PUBLIC_IP_FILE is empty the
-segment will not be displayed.
-
-| Variable | Default Value | Description |
-|----------|---------------|-------------|
-|`P9K_PUBLIC_IP_FILE`|'/tmp/p9k_public_ip'|This is the file your public IP is cached in.|
-|`P9K_PUBLIC_IP_HOST`|'http://ident.me'|This is the default host to get your public IP.|
-|`P9K_PUBLIC_IP_TIMEOUT`|300|The amount of time in seconds between refreshing your cached IP.|
-|`P9K_PUBLIC_IP_METHODS`|(dig curl wget)| These methods in that order are used to refresh your IP.|
-|`P9K_PUBLIC_IP_NONE`|None|The string displayed when an IP was not obtained|
-
-##### load
-
-Displays one of your load averages with appropriate state coloring. The thresholds are:
-- `0.7 * NUM_CORES <`: critical
-- `0.5 * NUM_CORES <`: warning
-- `less`: normal
-
-| Variable | Default Value | Description |
-|----------|---------------|-------------|
-|`P9K_LOAD_WHICH`|5|Which average to show. Possible values: 1, 5 or 15|
-
 ##### newline
 
 Puts a newline in your prompt so you can continue using segments on the next
@@ -486,17 +264,6 @@ The `PYENV_VERSION` environment variable will be used if specified. Otherwise it
 
 See [Unit Test Ratios](#unit-test-ratios), below.
 
-##### status
-
-This segment shows the return code of the last command.
-
-| Variable | Default Value | Description |
-|----------|---------------|-------------|
-|`P9K_STATUS_CROSS`|`false`|Set to true if you wish not to show the error code when the last command returned an error and optionally hide this segment when the last command completed successfully by setting `P9K_STATUS_OK` to false.|
-|`P9K_STATUS_OK`|`true`|Set to true if you wish to show this segment when the last command completed successfully, false to hide it.|
-|`P9K_STATUS_SHOW_PIPESTATUS`|`true`|Set to true if you wish to show the exit status for all piped commands.|
-|`P9K_STATUS_HIDE_SIGNAME`|`false`|Set to true return the raw exit code (`1-255`).  When set to false, values over 128 are shown as `SIGNAME(-n)` (e.g. `KILL(-9)`)|
-
 ##### ram
 
 | Variable | Default Value | Description |
@@ -506,41 +273,6 @@ This segment shows the return code of the last command.
 ##### symfony2_tests
 
 See [Unit Test Ratios](#unit-test-ratios), below.
-
-##### time
-
-| Variable | Default Value | Description |
-|----------|---------------|-------------|
-|`P9K_TIME_FORMAT`|`'H:M:S'`|ZSH time format to use in this segment.|
-
-As an example, if you wanted a reversed time format, you would use this:
-```zsh
-# Reversed time format
-P9K_TIME_FORMAT='%D{%S:%M:%H}'
-```
-If you are using an "Awesome Powerline Font", you can add a time symbol to this
-segment, as well:
-```zsh
-# Output time, date, and a symbol from the "Awesome Powerline Font" set
-P9K_TIME_FORMAT="%D{%H:%M:%S \uE868  %d.%m.%y}"
-```
-##### user
-
-The `user` segment will print the username.
-
-You can also override the icons by setting:
-
-```
-P9K_USER_DEFAULT_ICON="\uF415" # 
-P9K_USER_ROOT_ICON="#"
-P9K_USER_SUDO_ICON=$'\uF09C' # 
-```
-
-| Variable | Default Value | Description |
-|----------|---------------|-------------|
-|`DEFAULT_USER`|None|Username to consider a "default context".|
-|`P9K_CONTEXT_ALWAYS_SHOW_USER`|`false`|Always print this segment.|
-|`P9K_USER_TEMPLATE`|`%n`|Default username prompt. Refer to the [ZSH Documentation](http://zsh.sourceforge.net/Doc/Release/Prompt-Expansion.html) for all possible expansions|
 
 ##### vagrant
 
@@ -618,21 +350,6 @@ P9K_VCS_SHORTEN_MIN_LENGTH=11
 P9K_VCS_DIR_SHORTEN_STRATEGY="truncate_from_right"
 P9K_VCS_DIR_SHORTEN_DELIMITER=".."
 ```
-
-##### vi_mode
-
-This segment shows ZSH's current input mode. Note that this is only useful if
-you are using the [ZSH Line Editor](http://zsh.sourceforge.net/Doc/Release/Zsh-Line-Editor.html)
-(VI mode).  You can enable this either by `.zshrc` configuration or using a plugin, like
-[Oh-My-Zsh's vi-mode plugin](https://github.com/robbyrussell/oh-my-zsh/blob/master/plugins/vi-mode/vi-mode.plugin.zsh).
-
-| Variable | Default Value | Description |
-|----------|---------------|-------------|
-|`P9K_VI_MODE_INSERT_STRING`|`"INSERT"`|String to display while in 'Insert' mode.|
-|`P9K_VI_MODE_COMMAND_STRING`|`"NORMAL"`|String to display while in 'Command' mode.|
-|`P9K_VI_MODE_SEARCH_STRING`|`"SEARCH"`|String to display while in 'Search' mode (requires the [vim-mode](https://github.com/softmoth/zsh-vim-mode) plugin).|
-
-To hide the segment entirely when in `INSERT` mode, set `P9K_VI_MODE_INSERT_STRING=''`
 
 #### Unit Test Ratios
 
