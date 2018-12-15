@@ -95,7 +95,7 @@ The segments that are currently available are:
 * `history` - The command number for the current line.
 * [`host`](#host) - Your current host name
 * [`ip`](#ip) - Shows the current IP address.
-* [`vpn_ip`](#vpn_ip) - Shows the current VPN IP address.
+* [`vpn_ip`](segments/vpn_ip/README.md) - Shows the current VPN IP address.
 * [`public_ip`](segments/public_ip/README.md) - Shows your public IP address.
 * [`load`](segments/load/README.md) - Your machine's load averages.
 * `os_icon` - Display a nice little icon, depending on your operating system.
@@ -398,14 +398,6 @@ specify the correct network interface by setting:
 | Variable | Default Value | Description |
 |----------|---------------|-------------|
 |`P9K_IP_INTERFACE`|None|The NIC for which you wish to display the IP address. Example: `eth0`.|
-
-##### vpn_ip
-
-This segment tries to extract the VPN related IP addresses from nmcli, based on the NIC type:
-
-| Variable | Default Value | Description |
-|----------|---------------|-------------|
-|`P9K_VPN_IP_INTERFACE`|`tun`|The VPN interface.|
 
 ##### newline
 
