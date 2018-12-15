@@ -87,9 +87,9 @@ The segments that are currently available are:
 **System Status Segments:**
 * [`background_jobs`](segments/background_jobs/README.md) - Indicator for background jobs.
 * [`battery`](segments/battery/README.md) - Current battery status.
-* [`context`](#context) - Your username and host, conditionalized based on $USER and SSH status.
 * [`date`](#date) - System date.
 * [`dir`](#dir) - Your current working directory.
+* [`context`](segments/context/README.md) - Your username and host, conditionalized based on $USER and SSH status.
 * `dir_writable` - Displays a lock icon, if you do not have write permissions on the current folder.
 * [`disk_usage`](#disk_usage) - Disk usage of your current partition.
 * `history` - The command number for the current line.
@@ -220,47 +220,6 @@ The command, above, gives you the wireless signal segment shown below:
 You can define as many custom segments as you wish. If you think you have
 a segment that others would find useful, please consider upstreaming it to the
 main theme distribution so that everyone can use it!
-
-##### context
-
-The `context` segment (user@host string) is conditional. By default, it will
-only print if you are not your 'normal' user (including if you are root), or if
-you are SSH'd to a remote host. `SUDO` and `REMOTE_SUDO` states are also available to show whether the current user or remote user has superuser privileges.
-
-To use this feature, make sure the `context` segment is enabled in your prompt
-elements (it is by default), and define a `DEFAULT_USER` in your `~/.zshrc`.
-
-You can customize the `context` segment. For example, you can make it to print the
-full hostname by setting
-
-```
-P9K_CONTEXT_TEMPLATE="%n@`hostname -f`"
-```
-
-You can set the `P9K_CONTEXT_HOST_DEPTH` variable to change how the
-hostname is displayed. See [ZSH Manual](http://zsh.sourceforge.net/Doc/Release/Prompt-Expansion.html#Login-information)
-for details. The default is set to %m which will show the hostname up to the first ‘.’
-You can set it to %{N}m where N is an integer to show that many segments of system
-hostname. Setting N to a negative integer will show that many segments from the
-end of the hostname.
-
-| Variable | Default Value | Description |
-|----------|---------------|-------------|
-|`DEFAULT_USER`|None|Username to consider a "default context" (you can also set `$USER`).|
-|`P9K_CONTEXT_ALWAYS_SHOW`|false|Always show this segment, including $USER and hostname.|
-|`P9K_CONTEXT_ALWAYS_SHOW_USER`|false|Always show the username, but conditionalize the hostname.|
-|`P9K_CONTEXT_TEMPLATE`|%n@%m|Default context prompt (username@machine). Refer to the [ZSH Documentation](http://zsh.sourceforge.net/Doc/Release/Prompt-Expansion.html) for all possible expansions, including deeper host depths.|
-
-This segment can have different states. They might help you to visualize your
-different privileges. Read more about styling with states [here](https://github.com/bhilburn/powerlevel9k/wiki/Stylizing-Your-Prompt#special-segment-colors).
-
-| State         | Meaning                                                  |
-|---------------|----------------------------------------------------------|
-| `DEFAULT`     | You are a normal user                                    |
-| `ROOT`        | You are the root user                                    |
-| `SUDO`        | You are using elevated rights                            |
-| `REMOTE_SUDO` | You are SSH'ed into the machine and have elevated rights |
-| `REMOTE`      | You are SSH'ed into the machine                          |
 
 ##### date
 
