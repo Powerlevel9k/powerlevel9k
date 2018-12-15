@@ -90,7 +90,7 @@ The segments that are currently available are:
 * [`context`](segments/context/README.md) - Your username and host, conditionalized based on $USER and SSH status.
 * [`date`](segments/date/README.md) - System date.
 * [`dir`](segments/dir/README.md) - Your current working directory.
-* `dir_writable` - Displays a lock icon, if you do not have write permissions on the current folder.
+* [`dir_writable`](segments/dir_writable/README.md) - Displays a lock icon, if you do not have write permissions on the current folder.
 * [`disk_usage`](segments/disk_usage/README.md) - Disk usage of your current partition.
 * `history` - The command number for the current line.
 * [`host`](segments/host/README.md) - Your current host name
