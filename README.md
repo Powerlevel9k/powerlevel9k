@@ -85,7 +85,7 @@ P9K_RIGHT_PROMPT_ELEMENTS=(status root_indicator background_jobs history time)
 The segments that are currently available are:
 
 **System Status Segments:**
-* [`background_jobs`](#background_jobs) - Indicator for background jobs.
+* [`background_jobs`](segments/background_jobs/README.md) - Indicator for background jobs.
 * [`battery`](#battery) - Current battery status.
 * [`context`](#context) - Your username and host, conditionalized based on $USER and SSH status.
 * [`date`](#date) - System date.
@@ -160,13 +160,6 @@ The segments that are currently available are:
 * [`vagrant`](#vagrant) - Detects if you are in a folder with a running VM.
 
 --------------------------------------------------------------------------------
-
-##### background_jobs
-
-| Variable | Default Value | Description |
-|----------|---------------|-------------|
-|`P9K_BACKGROUND_JOBS_VERBOSE`|`true`|If there is more than one background job, this segment will show the number of jobs. Set this to `false` to turn this feature off.|
-`P9K_BACKGROUND_JOBS_VERBOSE_ALWAYS`|`false`|Always show the jobs count (even if it's zero).|
 
 ##### battery
 
