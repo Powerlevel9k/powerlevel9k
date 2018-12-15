@@ -128,7 +128,7 @@ The segments that are currently available are:
     * [`anaconda`](segments/anaconda/README.md) - Your active [Anaconda](https://www.continuum.io/why-anaconda) environment.
     * `pyenv` - Your active python version as reported by the first word of [`pyenv version`](https://github.com/yyuu/pyenv). Note that the segment is not displayed if that word is _system_ i.e. the segment is inactive if you are using system python.
 * **Ruby Segments:**
-    * [`chruby`](#chruby) - Ruby environment information using `chruby` (if one is active).
+    * [`chruby`](segments/chruby/README.md) - Ruby environment information using `chruby` (if one is active).
     * [`rbenv`](#rbenv) - Ruby environment information using `rbenv` (if one is active).
     * [`rspec_stats`](#rspec_stats) - Show a ratio of test classes vs code classes for RSpec.
     * `rvm` - Ruby environment information using `$GEM_HOME` and `$MY_RUBY_HOME` (if one is active).
@@ -160,17 +160,6 @@ The segments that are currently available are:
 * [`vagrant`](#vagrant) - Detects if you are in a folder with a running VM.
 
 --------------------------------------------------------------------------------
-
-##### chruby
-
-This segment shows the version of Ruby being used when using `chruby` to change your current Ruby stack.
-
-It uses `$RUBY_ENGINE` and `$RUBY_VERSION` as set by `chruby`.
-
-| Variable | Default Value | Description |
-|----------|---------------|-------------|
-|`P9K_CHRUBY_SHOW_ENGINE`|true|Show the currently selected Ruby engine (e.g. `ruby`, `jruby`, `rbx`, etc)
-|`P9K_CHRUBY_SHOW_VERSION`|true|Shows the currently selected engine's version (e.g. `2.5.1`)
 
 ##### command_execution_time
 
