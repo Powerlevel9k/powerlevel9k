@@ -65,7 +65,7 @@ function testIpSegmentWorksOnOsxWithNoInterfaceSpecified() {
 
   local __P9K_OS='OSX' # Fake OSX
 
-  assertEquals "%K{006} %F{000}IP %f%F{000}1.2.3.4 %k%F{006}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{006} %F{000}IP%f %F{000}1.2.3.4 %k%F{006}%f " "$(__p9k_build_left_prompt)"
 
   unalias ipconfig
   unalias networksetup
@@ -118,7 +118,7 @@ function testIpSegmentWorksOnOsxWithMultipleInterfacesSpecified() {
 
   local __P9K_OS='OSX' # Fake OSX
 
-  assertEquals "%K{006} %F{000}IP %f%F{000}1.2.3.4 %k%F{006}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{006} %F{000}IP%f %F{000}1.2.3.4 %k%F{006}%f " "$(__p9k_build_left_prompt)"
 
   unfunction ipconfig
   unalias networksetup
@@ -132,7 +132,7 @@ function testIpSegmentWorksOnOsxWithInterfaceSpecified() {
 
   local __P9K_OS='OSX' # Fake OSX
 
-  assertEquals "%K{006} %F{000}IP %f%F{000}1.2.3.4 %k%F{006}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{006} %F{000}IP%f %F{000}1.2.3.4 %k%F{006}%f " "$(__p9k_build_left_prompt)"
 
   unalias ipconfig
 }
@@ -160,7 +160,7 @@ function testIpSegmentWorksOnLinuxWithNoInterfaceSpecified() {
 
   local __P9K_OS='Linux' # Fake Linux
 
-  assertEquals "%K{006} %F{000}IP %f%F{000}10.0.2.15 %k%F{006}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{006} %F{000}IP%f %F{000}10.0.2.15 %k%F{006}%f " "$(__p9k_build_left_prompt)"
 
   unfunction ip
 }
@@ -193,7 +193,7 @@ function testIpSegmentWorksOnLinuxWithMultipleInterfacesSpecified() {
 
   local __P9K_OS='Linux' # Fake Linux
 
-  assertEquals "%K{006} %F{000}IP %f%F{000}10.0.2.15 %k%F{006}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{006} %F{000}IP%f %F{000}10.0.2.15 %k%F{006}%f " "$(__p9k_build_left_prompt)"
 
   unfunction ip
 }
@@ -210,7 +210,7 @@ inet 10.0.2.15/24 brd 10.0.2.255 scope global eth0
 
   local __P9K_OS='Linux' # Fake Linux
 
-  assertEquals "%K{006} %F{000}IP %f%F{000}10.0.2.15 %k%F{006}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{006} %F{000}IP%f %F{000}10.0.2.15 %k%F{006}%f " "$(__p9k_build_left_prompt)"
 
   unfunction ip
 }

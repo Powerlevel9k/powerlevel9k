@@ -129,6 +129,32 @@ function p9k::register_segment() {
     __P9K_DATA[${STATEFUL_NAME}_VI]=${__P9K_DATA[${STATEFUL_NAME}_FG]}
   fi
 
+  # Left whitespace of left segments
+  __P9K_DATA[${STATEFUL_NAME}_LEFT_LEFT_WHITESPACE]=$(p9k::find_first_defined P9K_${STATEFUL_NAME}_LEFT_WHITESPACE \
+    P9K_LEFT_WHITESPACE_OF_LEFT_SEGMENTS P9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS)
+  # Middle whitespace of left segments
+  __P9K_DATA[${STATEFUL_NAME}_LEFT_MIDDLE_WHITESPACE]=$(p9k::find_first_defined P9K_${STATEFUL_NAME}_MIDDLE_WHITESPACE \
+    P9K_MIDDLE_WHITESPACE_OF_LEFT_SEGMENTS)
+  # Right whitespace of left segments
+  __P9K_DATA[${STATEFUL_NAME}_LEFT_RIGHT_WHITESPACE]=$(p9k::find_first_defined P9K_${STATEFUL_NAME}_RIGHT_WHITESPACE \
+    P9K_RIGHT_WHITESPACE_OF_LEFT_SEGMENTS P9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS)
+
+  # Left whitespace of right segments
+  __P9K_DATA[${STATEFUL_NAME}_RIGHT_LEFT_WHITESPACE]=$(p9k::find_first_defined P9K_${STATEFUL_NAME}_LEFT_WHITESPACE \
+    P9K_LEFT_WHITESPACE_OF_RIGHT_SEGMENTS P9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS)
+  # Middle whitespace of right segments
+  __P9K_DATA[${STATEFUL_NAME}_RIGHT_MIDDLE_WHITESPACE]=$(p9k::find_first_defined P9K_${STATEFUL_NAME}_MIDDLE_WHITESPACE \
+    P9K_MIDDLE_WHITESPACE_OF_RIGHT_SEGMENTS)
+  # Right whitespace of right segments
+  __P9K_DATA[${STATEFUL_NAME}_RIGHT_RIGHT_WHITESPACE]=$(p9k::find_first_defined P9K_${STATEFUL_NAME}_RIGHT_WHITESPACE \
+    P9K_RIGHT_WHITESPACE_OF_RIGHT_SEGMENTS P9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS)
+
+  # First and last whitespaces. This should always win over segment specific configuration
+  local first_ws="${__P9K_DATA[${STATEFUL_NAME}_LEFT_LEFT_WHITESPACE]}"
+  __P9K_DATA[FIRST_WHITESPACE]=$(p9k::find_first_defined P9K_LEFT_PROMPT_FIRST_SEGMENT_START_WHITESPACE first_ws)
+  local last_ws="${__P9K_DATA[${STATEFUL_NAME}_RIGHT_RIGHT_WHITESPACE]}"
+  __P9K_DATA[LAST_WHITESPACE]=$(p9k::find_first_defined P9K_RIGHT_PROMPT_LAST_SEGMENT_END_WHITESPACE last_ws)
+
   # Overwrite given bold directive by user defined variable for this segment.
   local BOLD_USER_VARIABLE="P9K_${STATEFUL_NAME}_BOLD"
   local BOLD="${(P)BOLD_USER_VARIABLE}"

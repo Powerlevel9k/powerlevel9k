@@ -59,7 +59,7 @@ function testVagrantSegmentSaysVmIsDownIfVirtualboxIsNotAvailableButVagrantFolde
   local PATH=/bin:/usr/bin
   mockVagrantFolder "some-id"
 
-  assertEquals "%K{001} %F{000}V %f%F{000}DOWN %K{015}%F{001} %F{000}world %k%F{015}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{001} %F{000}V%f %F{000}DOWN %K{015}%F{001} %F{000}world %k%F{015}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testVagrantSegmentWorksIfVmIsUp() {
@@ -69,7 +69,7 @@ function testVagrantSegmentWorksIfVmIsUp() {
   mockVBoxManage "${vagrantId}"
   mockVagrantFolder "${vagrantId}"
 
-  assertEquals "%K{002} %F{000}V %f%F{000}UP %k%F{002}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{002} %F{000}V%f %F{000}UP %k%F{002}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testVagrantSegmentWorksIfVmIsDown() {
@@ -79,7 +79,7 @@ function testVagrantSegmentWorksIfVmIsDown() {
   mockVBoxManage "${vagrantId}"
   mockVagrantFolder "another-vm-id"
 
-  assertEquals "%K{001} %F{000}V %f%F{000}DOWN %k%F{001}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{001} %F{000}V%f %F{000}DOWN %k%F{001}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testVagrantSegmentWorksIfVmIsUpFromWithinSubdir() {
@@ -92,7 +92,7 @@ function testVagrantSegmentWorksIfVmIsUpFromWithinSubdir() {
   mkdir -p "subfolder/1/2/3"
   cd subfolder/1/2/3
 
-  assertEquals "%K{002} %F{000}V %f%F{000}UP %k%F{002}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{002} %F{000}V%f %F{000}UP %k%F{002}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testVagrantSegmentWithChangedString() {
@@ -102,11 +102,11 @@ function testVagrantSegmentWithChangedString() {
   mockVagrantFolder "${vagrantId}"
 
   local P9K_VAGRANT_DOWN="Nope"
-  assertEquals "%K{001} %F{000}V %f%F{000}Nope %k%F{001}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{001} %F{000}V%f %F{000}Nope %k%F{001}%f " "$(__p9k_build_left_prompt)"
 
   mockVBoxManage "${vagrantId}"
   local P9K_VAGRANT_UP="Yep"
-  assertEquals "%K{002} %F{000}V %f%F{000}Yep %k%F{002}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{002} %F{000}V%f %F{000}Yep %k%F{002}%f " "$(__p9k_build_left_prompt)"
 }
 
 source shunit2/shunit2

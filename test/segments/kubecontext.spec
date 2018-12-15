@@ -71,7 +71,7 @@ function testKubeContext() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(kubecontext)
 
-  assertEquals "%K{004} %F{015}⎈ %f%F{015}minikube/default %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{005} %F{015}⎈ %f%F{015}minikube/default %k%F{005}%f " "$(__p9k_build_left_prompt)"
 
   unset P9K_LEFT_PROMPT_ELEMENTS
   unalias kubectl
@@ -81,7 +81,7 @@ function testKubeContextOtherNamespace() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(kubecontext)
 
-  assertEquals "%K{004} %F{015}⎈ %f%F{015}minikube/kube-system %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{005} %F{015}⎈ %f%F{015}minikube/kube-system %k%F{005}%f " "$(__p9k_build_left_prompt)"
 
   unset P9K_LEFT_PROMPT_ELEMENTS
   unalias kubectl
