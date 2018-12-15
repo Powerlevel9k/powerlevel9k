@@ -101,7 +101,7 @@ The segments that are currently available are:
 * `os_icon` - Display a nice little icon, depending on your operating system.
 * `ram` - Show free RAM.
 * `root_indicator` - An indicator if the user has superuser status.
-* [`status`](#status) - The return code of the previous command.
+* [`status`](segments/status/README.md) - The return code of the previous command.
 * `swap` - Prints the current swap size.
 * [`time`](segments/time/README.md) - System time.
 * [`user`](segments/user/README.md) - Your current username
@@ -485,17 +485,6 @@ The `PYENV_VERSION` environment variable will be used if specified. Otherwise it
 ##### rspec_stats
 
 See [Unit Test Ratios](#unit-test-ratios), below.
-
-##### status
-
-This segment shows the return code of the last command.
-
-| Variable | Default Value | Description |
-|----------|---------------|-------------|
-|`P9K_STATUS_CROSS`|`false`|Set to true if you wish not to show the error code when the last command returned an error and optionally hide this segment when the last command completed successfully by setting `P9K_STATUS_OK` to false.|
-|`P9K_STATUS_OK`|`true`|Set to true if you wish to show this segment when the last command completed successfully, false to hide it.|
-|`P9K_STATUS_SHOW_PIPESTATUS`|`true`|Set to true if you wish to show the exit status for all piped commands.|
-|`P9K_STATUS_HIDE_SIGNAME`|`false`|Set to true return the raw exit code (`1-255`).  When set to false, values over 128 are shown as `SIGNAME(-n)` (e.g. `KILL(-9)`)|
 
 ##### ram
 
