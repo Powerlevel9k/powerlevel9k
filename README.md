@@ -105,7 +105,7 @@ The segments that are currently available are:
 * `swap` - Prints the current swap size.
 * [`time`](#time) - System time.
 * [`user`](#user) - Your current username
-* [`vi_mode`](#vi_mode)- Your prompt's Vi editing mode (NORMAL|INSERT).
+* [`vi_mode`](segments/vi_mode/README.md)- Your prompt's Vi editing mode (NORMAL|INSERT).
 * `ssh` - Indicates whether or not you are in an SSH session.
 
 **Development Environment Segments:**
@@ -618,21 +618,6 @@ P9K_VCS_SHORTEN_MIN_LENGTH=11
 P9K_VCS_DIR_SHORTEN_STRATEGY="truncate_from_right"
 P9K_VCS_DIR_SHORTEN_DELIMITER=".."
 ```
-
-##### vi_mode
-
-This segment shows ZSH's current input mode. Note that this is only useful if
-you are using the [ZSH Line Editor](http://zsh.sourceforge.net/Doc/Release/Zsh-Line-Editor.html)
-(VI mode).  You can enable this either by `.zshrc` configuration or using a plugin, like
-[Oh-My-Zsh's vi-mode plugin](https://github.com/robbyrussell/oh-my-zsh/blob/master/plugins/vi-mode/vi-mode.plugin.zsh).
-
-| Variable | Default Value | Description |
-|----------|---------------|-------------|
-|`P9K_VI_MODE_INSERT_STRING`|`"INSERT"`|String to display while in 'Insert' mode.|
-|`P9K_VI_MODE_COMMAND_STRING`|`"NORMAL"`|String to display while in 'Command' mode.|
-|`P9K_VI_MODE_SEARCH_STRING`|`"SEARCH"`|String to display while in 'Search' mode (requires the [vim-mode](https://github.com/softmoth/zsh-vim-mode) plugin).|
-
-To hide the segment entirely when in `INSERT` mode, set `P9K_VI_MODE_INSERT_STRING=''`
 
 #### Unit Test Ratios
 
