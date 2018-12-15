@@ -94,7 +94,7 @@ The segments that are currently available are:
 * [`disk_usage`](#disk_usage) - Disk usage of your current partition.
 * `history` - The command number for the current line.
 * [`host`](#host) - Your current host name
-* [`ip`](#ip) - Shows the current IP address.
+* [`ip`](segments/ip/README.md) - Shows the current IP address.
 * [`vpn_ip`](segments/vpn_ip/README.md) - Shows the current VPN IP address.
 * [`public_ip`](segments/public_ip/README.md) - Shows your public IP address.
 * [`load`](segments/load/README.md) - Your machine's load averages.
@@ -387,17 +387,6 @@ By default, LOCAL hosts will show the host icon and remote hosts will show the S
 P9K_HOST_ICON="\uF109 "
 P9K_SSH_ICON="\uF489 "
 ```
-
-
-##### ip
-
-This segment tries to examine all currently used network interfaces and prints
-the first address it finds.  In the case that this is not the right NIC, you can
-specify the correct network interface by setting:
-
-| Variable | Default Value | Description |
-|----------|---------------|-------------|
-|`P9K_IP_INTERFACE`|None|The NIC for which you wish to display the IP address. Example: `eth0`.|
 
 ##### newline
 
