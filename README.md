@@ -116,7 +116,7 @@ The segments that are currently available are:
     * [`go_version`](segments/go_version/README.md) - Show the current GO version.
 * **Javascript / Node.js Segments:**
     * [`node_version`](segments/node_version/README.md) - Show the version number of the installed Node.js.
-    * `nodeenv` - [nodeenv](https://github.com/ekalinin/nodeenv) prompt for displaying node version and environment name.
+    * [`nodeenv`](segments/nodeenv/README.md) - [nodeenv](https://github.com/ekalinin/nodeenv) prompt for displaying node version and environment name.
     * `nvm` - Show the version of Node that is currently active, if it differs from the version used by NVM
 * **PHP Segments:**
     * `php_version` - Show the current PHP version.
