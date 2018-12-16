@@ -98,7 +98,7 @@ The segments that are currently available are:
 * [`vpn_ip`](segments/vpn_ip/README.md) - Shows the current VPN IP address.
 * [`public_ip`](segments/public_ip/README.md) - Shows your public IP address.
 * [`load`](segments/load/README.md) - Your machine's load averages.
-* `os_icon` - Display a nice little icon, depending on your operating system.
+* [`os_icon`](segments/os_icon/README.md) - Display a nice little icon, depending on your operating system.
 * [`ram`](segments/ram/README.md) - Show free RAM.
 * `root_indicator` - An indicator if the user has superuser status.
 * [`status`](segments/status/README.md) - The return code of the previous command.
