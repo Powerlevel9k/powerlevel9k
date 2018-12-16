@@ -119,7 +119,7 @@ The segments that are currently available are:
     * [`nodeenv`](segments/nodeenv/README.md) - [nodeenv](https://github.com/ekalinin/nodeenv) prompt for displaying node version and environment name.
     * [`nvm`](segments/nvm/README.md) - Show the version of Node that is currently active, if it differs from the version used by NVM
 * **PHP Segments:**
-    * `php_version` - Show the current PHP version.
+    * [`php_version`](segments/php_version/README.md) - Show the current PHP version.
     * [`laravel_version`](segments/laravel_version/README.md) - Show the current Laravel version.
     * [`symfony2_tests`](segments/symfony2_tests/README.md) - Show a ratio of test classes vs code classes for Symfony2.
     * `symfony2_version` - Show the current Symfony2 version, if you are in a Symfony2-Project dir.
