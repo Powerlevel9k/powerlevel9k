@@ -113,7 +113,7 @@ The segments that are currently available are:
 
 **Language Segments:**
 * **GoLang Segments:**
-    * `go_version` - Show the current GO version.
+    * [`go_version`](segments/go_version/README.md) - Show the current GO version.
 * **Javascript / Node.js Segments:**
     * `node_version` - Show the version number of the installed Node.js.
     * `nodeenv` - [nodeenv](https://github.com/ekalinin/nodeenv) prompt for displaying node version and environment name.
