@@ -135,7 +135,7 @@ The segments that are currently available are:
 * **Rust Segments:**
     * [`rust_version`](segments/rust_version/README.md) - Display the current rust version and [logo](https://www.rust-lang.org/logos/rust-logo-blk.svg).
 * **Swift Segments:**
-    * `swift_version` - Show the version number of the installed Swift.
+    * [`swift_version`](segments/swift_version/README.md) - Show the version number of the installed Swift.
 * **Java Segments:**
     * [`java_version`](segments/java_version/README.md) - Show the current Java version.
 * **Haskell Segments:**
