@@ -92,7 +92,7 @@ The segments that are currently available are:
 * [`dir`](segments/dir/README.md) - Your current working directory.
 * [`dir_writable`](segments/dir_writable/README.md) - Displays a lock icon, if you do not have write permissions on the current folder.
 * [`disk_usage`](segments/disk_usage/README.md) - Disk usage of your current partition.
-* `history` - The command number for the current line.
+* [`history`](segments/history/README.md) - The command number for the current line.
 * [`host`](segments/host/README.md) - Your current host name
 * [`ip`](segments/ip/README.md) - Shows the current IP address.
 * [`vpn_ip`](segments/vpn_ip/README.md) - Shows the current VPN IP address.
