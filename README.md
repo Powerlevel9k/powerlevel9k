@@ -100,7 +100,7 @@ The segments that are currently available are:
 * [`load`](segments/load/README.md) - Your machine's load averages.
 * [`os_icon`](segments/os_icon/README.md) - Display a nice little icon, depending on your operating system.
 * [`ram`](segments/ram/README.md) - Show free RAM.
-* `root_indicator` - An indicator if the user has superuser status.
+* [`root_indicator`](segments/root_indicator/README.md) - An indicator if the user has superuser status.
 * [`status`](segments/status/README.md) - The return code of the previous command.
 * `swap` - Prints the current swap size.
 * [`time`](segments/time/README.md) - System time.
