@@ -99,7 +99,7 @@ The segments that are currently available are:
 * [`public_ip`](segments/public_ip/README.md) - Shows your public IP address.
 * [`load`](segments/load/README.md) - Your machine's load averages.
 * `os_icon` - Display a nice little icon, depending on your operating system.
-* `ram` - Show free RAM.
+* [`ram`](segments/ram/README.md) - Show free RAM.
 * `root_indicator` - An indicator if the user has superuser status.
 * [`status`](segments/status/README.md) - The return code of the previous command.
 * `swap` - Prints the current swap size.
@@ -205,12 +205,6 @@ line. This allows you to use segments on both lines, unlike
 prompt itself.
 
 This only works on the left side.  On the right side it does nothing.
-
-##### ram
-
-| Variable | Default Value | Description |
-|----------|---------------|-------------|
-|`P9K_RAM_ELEMENTS`|Both|Specify `ram_free` or `swap_used` to only show one or the other rather than both.|
 
 #### Unit Test Ratios
 
