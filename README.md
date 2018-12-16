@@ -126,7 +126,7 @@ The segments that are currently available are:
 * **Python Segments:**
     * `virtualenv` - Your Python [VirtualEnv](https://virtualenv.pypa.io/en/latest/).
     * [`anaconda`](segments/anaconda/README.md) - Your active [Anaconda](https://www.continuum.io/why-anaconda) environment.
-    * `pyenv` - Your active python version as reported by the first word of [`pyenv version`](https://github.com/yyuu/pyenv). Note that the segment is not displayed if that word is _system_ i.e. the segment is inactive if you are using system python.
+    * [`pyenv`](segments/pyenv/README.md) - Your active python version as reported by the first word of [`pyenv version`](https://github.com/yyuu/pyenv). Note that the segment is not displayed if that word is _system_ i.e. the segment is inactive if you are using system python.
 * **Ruby Segments:**
     * [`chruby`](segments/chruby/README.md) - Ruby environment information using `chruby` (if one is active).
     * [`rbenv`](segments/rbenv/README.md) - Ruby environment information using `rbenv` (if one is active).
@@ -205,19 +205,6 @@ line. This allows you to use segments on both lines, unlike
 prompt itself.
 
 This only works on the left side.  On the right side it does nothing.
-
-##### pyenv
-
-This segment shows the version of Python being used when using `pyenv` to change your current Python stack.
-
-The `PYENV_VERSION` environment variable will be used if specified. Otherwise it figures out the version being used by taking the output of the `pyenv version-name` command.
-
-* If `pyenv` is not in $PATH, nothing will be shown.
-* If the current Python version is the same as the global Python version, nothing will be shown.
-
-| Variable | Default Value | Description |
-|----------|---------------|-------------|
-|`P9K_PYENV_PROMPT_ALWAYS_SHOW`|`false`|Set to true if you wish to show the pyenv segment even if the current Python version is the same as the global Python version|
 
 ##### ram
 
