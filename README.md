@@ -124,7 +124,7 @@ The segments that are currently available are:
     * [`symfony2_tests`](segments/symfony2_tests/README.md) - Show a ratio of test classes vs code classes for Symfony2.
     * [`symfony2_version`](segments/symfony2_version/README.md) - Show the current Symfony2 version, if you are in a Symfony2-Project dir.
 * **Python Segments:**
-    * `virtualenv` - Your Python [VirtualEnv](https://virtualenv.pypa.io/en/latest/).
+    * [`virtualenv`](segments/virtualenv/README.md) - Your Python [VirtualEnv](https://virtualenv.pypa.io/en/latest/).
     * [`anaconda`](segments/anaconda/README.md) - Your active [Anaconda](https://www.continuum.io/why-anaconda) environment.
     * [`pyenv`](segments/pyenv/README.md) - Your active python version as reported by the first word of [`pyenv version`](https://github.com/yyuu/pyenv). Note that the segment is not displayed if that word is _system_ i.e. the segment is inactive if you are using system python.
 * **Ruby Segments:**
