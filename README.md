@@ -156,7 +156,7 @@ The segments that are currently available are:
 * [`todo`](http://todotxt.com/) - Shows the number of tasks in your todo.txt tasks file.
 * [`detect_virt`](segments/detect_virt/README.md) - Virtualization detection with systemd
 * [`newline`](segments/newline/README.md) - Continues the prompt on a new line.
-* `openfoam` - Shows the currently sourced [OpenFOAM](https://openfoam.org/) environment.
+* [`openfoam`](segments/openfoam/README.md) - Shows the currently sourced [OpenFOAM](https://openfoam.org/) environment.
 * [`vagrant`](segments/vagrant/README.md) - Detects if you are in a folder with a running VM.
 
 --------------------------------------------------------------------------------
