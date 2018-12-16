@@ -20,7 +20,7 @@ function setUp() {
 
   # Load Powerlevel9k
   source ${P9K_HOME}/powerlevel9k.zsh-theme
-  source ${P9K_HOME}/segments/todo.p9k
+  source ${P9K_HOME}/segments/todo/todo.p9k
 }
 
 function tearDown() {

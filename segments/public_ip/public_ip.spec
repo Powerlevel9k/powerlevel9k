@@ -20,7 +20,7 @@ function setUp() {
 
   # Load Powerlevel9k
   source ${P9K_HOME}/powerlevel9k.zsh-theme
-  source ${P9K_HOME}/segments/public_ip.p9k
+  source ${P9K_HOME}/segments/public_ip/public_ip.p9k
 }
 
 function tearDown() {

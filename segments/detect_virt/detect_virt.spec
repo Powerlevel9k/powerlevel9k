@@ -9,7 +9,7 @@ function setUp() {
   export TERM="xterm-256color"
   # Load Powerlevel9k
   source powerlevel9k.zsh-theme
-  source segments/detect_virt.p9k
+  source segments/detect_virt/detect_virt.p9k
 }
 
 function testDetectVirtSegmentPrintsNothingIfSystemdIsNotAvailable() {

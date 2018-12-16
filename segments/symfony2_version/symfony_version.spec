@@ -17,7 +17,7 @@ function setUp() {
 
   # Load Powerlevel9k
   source ${P9K_HOME}/powerlevel9k.zsh-theme
-  source ${P9K_HOME}/segments/symfony2_version.p9k
+  source ${P9K_HOME}/segments/symfony2_version/symfony2_version.p9k
 }
 
 function tearDown() {

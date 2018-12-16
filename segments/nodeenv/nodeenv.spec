@@ -10,7 +10,7 @@ function setUp() {
 
   # Load Powerlevel9k
   source powerlevel9k.zsh-theme
-  source segments/nodeenv.p9k
+  source segments/nodeenv/nodeenv.p9k
 
   # Test specfic
   # unset all possible user specified variables

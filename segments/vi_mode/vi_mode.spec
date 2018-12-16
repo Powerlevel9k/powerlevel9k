@@ -15,7 +15,7 @@ function testViInsertModeWorks() {
   local KEYMAP='viins'
 
   # Load Powerlevel9k
-  source segments/vi_mode.p9k
+  source segments/vi_mode/vi_mode.p9k
 
   assertEquals "%K{000} %F{004}INSERT " "$(prompt_vi_mode left 1 false)"
 }
@@ -24,7 +24,7 @@ function testViInsertModeWorksWhenLabeledAsMain() {
   local KEYMAP='main'
 
   # Load Powerlevel9k
-  source segments/vi_mode.p9k
+  source segments/vi_mode/vi_mode.p9k
 
   assertEquals "%K{000} %F{004}INSERT " "$(prompt_vi_mode left 1 false)"
 }
@@ -33,7 +33,7 @@ function testViCommandModeWorks() {
   local KEYMAP='vicmd'
 
   # Load Powerlevel9k
-  source segments/vi_mode.p9k
+  source segments/vi_mode/vi_mode.p9k
 
   assertEquals "%K{000} %F{015}NORMAL " "$(prompt_vi_mode left 1 false)"
 }
@@ -42,7 +42,7 @@ function testViInsertModeStringIsCustomizable() {
   local KEYMAP='viins'
 
   # Load Powerlevel9k
-  source segments/vi_mode.p9k
+  source segments/vi_mode/vi_mode.p9k
 
   assertEquals "%K{000} %F{004}INSERT " "$(prompt_vi_mode left 1 false)"
 }

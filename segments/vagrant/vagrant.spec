@@ -10,7 +10,7 @@ function setUp() {
   __P9K_HOME="${PWD}"
   # Load Powerlevel9k
   source powerlevel9k.zsh-theme
-  source segments/vagrant.p9k
+  source segments/vagrant/vagrant.p9k
 
   # Test specific
   TEST_BASE_FOLDER=/tmp/powerlevel9k-test

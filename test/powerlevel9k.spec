@@ -10,7 +10,7 @@ function setUp() {
   # Load Powerlevel9k
   source powerlevel9k.zsh-theme
   source functions/*
-  source segments/dir.p9k
+  source segments/dir/dir.p9k
 
   # Unset mode, so that user settings
   # do not interfere with tests
@@ -39,7 +39,7 @@ function testTransitiveJoinedSegments() {
 function testJoiningWithConditionalSegment() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
   local P9K_LEFT_PROMPT_ELEMENTS=(dir background_jobs dir_joined)
-  source segments/background_jobs.p9k
+  source segments/background_jobs/background_jobs.p9k
   local jobs_running=0
   local jobs_suspended=0
 
@@ -54,7 +54,7 @@ function testDynamicColoringOfSegmentsWork() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
   local P9K_LEFT_PROMPT_ELEMENTS=(dir)
   local P9K_DIR_DEFAULT_BACKGROUND='red'
-  source segments/dir.p9k
+  source segments/dir/dir.p9k
 
   cd /tmp
 
@@ -68,7 +68,7 @@ function testDynamicColoringOfVisualIdentifiersWork() {
   local P9K_LEFT_PROMPT_ELEMENTS=(dir)
   local P9K_DIR_DEFAULT_ICON_COLOR='green'
   local P9K_DIR_DEFAULT_ICON="icon-here"
-  source segments/dir.p9k
+  source segments/dir/dir.p9k
 
   cd /tmp
 
@@ -84,7 +84,7 @@ function testColoringOfVisualIdentifiersDoesNotOverwriteColoringOfSegment() {
   local P9K_DIR_DEFAULT_FOREGROUND='red'
   local P9K_DIR_DEFAULT_BACKGROUND='yellow'
   local P9K_DIR_DEFAULT_ICON="icon-here"
-  source segments/dir.p9k
+  source segments/dir/dir.p9k
 
   # Re-Source the icons, as the P9K_MODE is directly
   # evaluated there.
@@ -101,7 +101,7 @@ function testOverwritingIconsWork() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
   local P9K_LEFT_PROMPT_ELEMENTS=(dir)
   local P9K_DIR_DEFAULT_ICON='icon-here'
-  source segments/dir.p9k
+  source segments/dir/dir.p9k
   #local testFolder=$(mktemp -d -p p9k)
   # Move testFolder under home folder
   #mv testFolder ~

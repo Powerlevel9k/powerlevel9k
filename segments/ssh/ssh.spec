@@ -16,7 +16,7 @@ function testSshSegmentPrintsNothingIfNoSshConnection() {
   P9K_LEFT_PROMPT_ELEMENTS=(ssh custom_world)
   local P9K_CUSTOM_WORLD='echo "world"'
   local P9K_SSH_ICON="ssh-icon"
-  source segments/ssh.p9k
+  source segments/ssh/ssh.p9k
   # Weak test: Emulate No SSH connection by unsetting
   # ${SSH_CLIENT} and $SSH_TTY
   unset SSH_CLIENT
@@ -29,7 +29,7 @@ function testSshSegmentWorksIfOnlySshClientIsSet() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(ssh)
   local P9K_SSH_ICON="ssh-icon"
-  source segments/ssh.p9k
+  source segments/ssh/ssh.p9k
   # Weak test: Emulate No SSH connection by unsetting
   # ${SSH_CLIENT} and $SSH_TTY
   SSH_CLIENT='ssh-client'
@@ -44,7 +44,7 @@ function testSshSegmentWorksIfOnlySshTtyIsSet() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(ssh)
   local P9K_SSH_ICON="ssh-icon"
-  source segments/ssh.p9k
+  source segments/ssh/ssh.p9k
   # Weak test: Emulate No SSH connection by unsetting
   # ${SSH_CLIENT} and $SSH_TTY
   SSH_TTY='ssh-tty'
@@ -59,7 +59,7 @@ function testSshSegmentWorksIfAllNecessaryVariablesAreSet() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(ssh)
   local P9K_SSH_ICON="ssh-icon"
-  source segments/ssh.p9k
+  source segments/ssh/ssh.p9k
   # Weak test: Emulate No SSH connection by unsetting
   # ${SSH_CLIENT} and $SSH_TTY
   SSH_CLIENT='ssh-client'

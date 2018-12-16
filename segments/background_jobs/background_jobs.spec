@@ -18,7 +18,7 @@ function testBackgroundJobsSegmentPrintsNothingWithoutBackgroundJobs() {
   local jobs_suspended=0
 
   # Load Powerlevel9k
-  source segments/background_jobs.p9k
+  source segments/background_jobs/background_jobs.p9k
 
   assertEquals "%K{015} %F{000}world %k%F{015}%f " "$(__p9k_build_left_prompt)"
 }
@@ -31,7 +31,7 @@ function testBackgroundJobsSegmentVerboseAlwaysPrintsZeroWithoutBackgroundJobs()
   local jobs_suspended=0
 
   # Load Powerlevel9k
-  source segments/background_jobs.p9k
+  source segments/background_jobs/background_jobs.p9k
 
   assertEquals "%K{003} %F{000}⚙%f %F{000}0 %k%F{003}%f " "$(__p9k_build_left_prompt)"
 }
@@ -44,7 +44,7 @@ function testBackgroundJobsSegmentWorksWithOneBackgroundJob() {
   local jobs_suspended=1
 
   # Load Powerlevel9k
-  source segments/background_jobs.p9k
+  source segments/background_jobs/background_jobs.p9k
   assertEquals "%K{003} %F{000}⚙%f %k%F{003}%f " "$(__p9k_build_left_prompt)"
 }
 
@@ -56,7 +56,7 @@ function testBackgroundJobsSegmentWorksWithMultipleBackgroundJobs() {
   local jobs_suspended=3
 
   # Load Powerlevel9k
-  source segments/background_jobs.p9k
+  source segments/background_jobs/background_jobs.p9k
 
   assertEquals "%K{003} %F{000}⚙%f %F{000}3 %k%F{003}%f " "$(__p9k_build_left_prompt)"
 }
@@ -69,7 +69,7 @@ function testBackgroundJobsSegmentWithVerboseMode() {
     local jobs_suspended=2
 
     # Load Powerlevel9k
-    source segments/background_jobs.p9k
+    source segments/background_jobs/background_jobs.p9k
 
     assertEquals "%K{003} %F{000}⚙%f %F{000}3 %k%F{003}%f " "$(__p9k_build_left_prompt)"
 }
@@ -83,7 +83,7 @@ function testBackgroundJobsSegmentWorksWithExpandedMode() {
   local jobs_suspended=2
 
   # Load Powerlevel9k
-  source segments/background_jobs.p9k
+  source segments/background_jobs/background_jobs.p9k
 
   assertEquals "%K{003} %F{000}⚙%f %F{000}1r 2s %k%F{003}%f " "$(__p9k_build_left_prompt)"
 }

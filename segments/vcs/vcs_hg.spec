@@ -41,7 +41,7 @@ function testColorOverridingForCleanStateWorks() {
   local P9K_VCS_CLEAN_BACKGROUND='white'
 
   # Load Powerlevel9k
-  source ${P9K_HOME}/segments/vcs.p9k
+  source ${P9K_HOME}/segments/vcs/vcs.p9k
 
   assertEquals "%K{015} %F{006} default %k%F{015}%f " "$(__p9k_build_left_prompt)"
 }
@@ -58,7 +58,7 @@ function testColorOverridingForModifiedStateWorks() {
   echo "test" > testfile
 
   # Load Powerlevel9k
-  source ${P9K_HOME}/segments/vcs.p9k
+  source ${P9K_HOME}/segments/vcs/vcs.p9k
 
   assertEquals "%K{003} %F{001} default ● %k%F{003}%f " "$(__p9k_build_left_prompt)"
 }
@@ -75,7 +75,7 @@ function testAddedFilesIconWorks() {
   hg add myfile.txt
 
   # Load Powerlevel9k
-  source ${P9K_HOME}/segments/vcs.p9k
+  source ${P9K_HOME}/segments/vcs/vcs.p9k
 
   assertEquals "%K{003} %F{000} default ● %k%F{003}%f " "$(__p9k_build_left_prompt)"
 }
@@ -93,7 +93,7 @@ function testTagIconWorks() {
   hg tag "v0.0.1"
 
   # Load Powerlevel9k
-  source ${P9K_HOME}/segments/vcs.p9k
+  source ${P9K_HOME}/segments/vcs/vcs.p9k
 
   assertEquals "%K{002} %F{000} default Tv0.0.1 %k%F{002}%f " "$(__p9k_build_left_prompt)"
 }
@@ -115,7 +115,7 @@ function testTagIconInDetachedHeadState() {
   local hash=$(hg id)
 
   # Load Powerlevel9k
-  source ${P9K_HOME}/segments/vcs.p9k
+  source ${P9K_HOME}/segments/vcs/vcs.p9k
 
   assertEquals "%K{002} %F{000} ${hash} Tv0.0.1 %k%F{002}%f " "$(__p9k_build_left_prompt)"
 }
@@ -138,7 +138,7 @@ function testActionHintWorks() {
   hg merge --tool internal:merge >/dev/null 2>&1
 
   # Load Powerlevel9k
-  source ${P9K_HOME}/segments/vcs.p9k
+  source ${P9K_HOME}/segments/vcs/vcs.p9k
 
   assertEquals "%K{003} %F{000} default %F{001}| merging%f %k%F{003}%f " "$(__p9k_build_left_prompt)"
 }
@@ -155,7 +155,7 @@ function testShorteningCommitHashWorks() {
   local hash=$(hg id | head -c ${P9K_VCS_CHANGESET_HASH_LENGTH})
 
   # Load Powerlevel9k
-  source ${P9K_HOME}/segments/vcs.p9k
+  source ${P9K_HOME}/segments/vcs/vcs.p9k
 
   # This test needs to call __p9k_vcs_init, where
   # the changeset is truncated.
@@ -175,7 +175,7 @@ function testShorteningCommitHashIsNotShownIfShowChangesetIsFalse() {
   hg commit -m "Add File" 1>/dev/null
 
   # Load Powerlevel9k
-  source ${P9K_HOME}/segments/vcs.p9k
+  source ${P9K_HOME}/segments/vcs/vcs.p9k
 
   # This test needs to call __p9k_vcs_init, where
   # the changeset is truncated.
@@ -190,7 +190,7 @@ function testMercurialIconWorks() {
   local P9K_VCS_HG_ICON='HG-icon'
 
   # Load Powerlevel9k
-  source ${P9K_HOME}/segments/vcs.p9k
+  source ${P9K_HOME}/segments/vcs/vcs.p9k
 
   assertEquals "%K{002} %F{000}HG-icon%f %F{000} default %k%F{002}%f " "$(__p9k_build_left_prompt)"
 }
@@ -202,7 +202,7 @@ function testBookmarkIconWorks() {
   hg bookmark "initial"
 
   # Load Powerlevel9k
-  source ${P9K_HOME}/segments/vcs.p9k
+  source ${P9K_HOME}/segments/vcs/vcs.p9k
 
   assertEquals "%K{002} %F{000} default Binitial %k%F{002}%f " "$(__p9k_build_left_prompt)"
 }

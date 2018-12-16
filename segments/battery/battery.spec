@@ -9,7 +9,7 @@ function setUp() {
   export TERM="xterm-256color"
   # Load Powerlevel9k
   source powerlevel9k.zsh-theme
-  source segments/battery.p9k
+  source segments/battery/battery.p9k
 
   P9K_HOME=$(pwd)
   ### Test specific

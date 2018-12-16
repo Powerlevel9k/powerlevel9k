@@ -13,7 +13,7 @@ function setUp() {
   # Load Powerlevel9k
   source powerlevel9k.zsh-theme
   # Load Stack project segment
-  source segments/stack_project.p9k
+  source segments/stack_project/stack_project.p9k
 }
 
 function tearDown(){

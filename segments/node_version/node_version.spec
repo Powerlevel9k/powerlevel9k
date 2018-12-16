@@ -9,7 +9,7 @@ function setUp() {
   export TERM="xterm-256color"
   # Load Powerlevel9k
   source powerlevel9k.zsh-theme
-  source segments/node_version.p9k
+  source segments/node_version/node_version.p9k
 }
 
 function testNodeVersionSegmentPrintsNothingWithoutNode() {

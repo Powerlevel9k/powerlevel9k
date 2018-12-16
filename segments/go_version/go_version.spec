@@ -9,7 +9,7 @@ function setUp() {
   export TERM="xterm-256color"
   # Load Powerlevel9k
   source powerlevel9k.zsh-theme
-  source segments/go_version.p9k
+  source segments/go_version/go_version.p9k
 }
 
 function mockGo() {

@@ -16,7 +16,7 @@ function testAnacondaSegmentPrintsNothingIfNoAnacondaPathIsSet() {
   P9K_LEFT_PROMPT_ELEMENTS=(anaconda custom_world)
 
   # Load Powerlevel9k
-  source segments/anaconda.p9k
+  source segments/anaconda/anaconda.p9k
 
   # Unset anacona variables
   unset CONDA_ENV_PATH
@@ -31,7 +31,7 @@ function testAnacondaSegmentWorksIfOnlyAnacondaPathIsSet() {
   local P9K_ANACONDA_ICON="icon-here"
 
   # Load Powerlevel9k
-  source segments/anaconda.p9k
+  source segments/anaconda/anaconda.p9k
 
   CONDA_ENV_PATH=/tmp
   unset CONDA_PREFIX
@@ -45,7 +45,7 @@ function testAnacondaSegmentWorksIfOnlyAnacondaPrefixIsSet() {
   local P9K_ANACONDA_ICON="icon-here"
 
   # Load Powerlevel9k
-  source segments/anaconda.p9k
+  source segments/anaconda/anaconda.p9k
 
   unset CONDA_ENV_PATH
   local CONDA_PREFIX="test"
@@ -59,7 +59,7 @@ function testAnacondaSegmentWorks() {
   local P9K_ANACONDA_ICON="icon-here"
 
   # Load Powerlevel9k
-  source segments/anaconda.p9k
+  source segments/anaconda/anaconda.p9k
 
   local CONDA_ENV_PATH=/tmp
   local CONDA_PREFIX="test"

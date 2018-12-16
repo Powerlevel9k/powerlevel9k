@@ -22,7 +22,7 @@ function setUp() {
 
   # Load Powerlevel9k
   source powerlevel9k.zsh-theme
-  source segments/context.p9k
+  source segments/context/context.p9k
 }
 
 function tearDown() {

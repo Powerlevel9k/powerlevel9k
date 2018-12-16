@@ -11,7 +11,7 @@ function setUp() {
   P9K_HOME=$(pwd)
   # Load Powerlevel9k
   source ${P9K_HOME}/powerlevel9k.zsh-theme
-  source ${P9K_HOME}/segments/load.p9k
+  source ${P9K_HOME}/segments/load/load.p9k
   ### Test specific
   # Create default folder and git init it.
   FOLDER=/tmp/powerlevel9k-test/load-test

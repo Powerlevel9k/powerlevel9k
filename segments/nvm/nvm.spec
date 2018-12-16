@@ -18,7 +18,7 @@ function setUp() {
   cd $FOLDER
   # Load Powerlevel9k
   source ${P9K_HOME}/powerlevel9k.zsh-theme
-  source ${P9K_HOME}/segments/nvm.p9k
+  source ${P9K_HOME}/segments/nvm/nvm.p9k
 }
 
 function tearDown() {

@@ -14,7 +14,7 @@ function setUp() {
   P9K_HOME="${PWD}"
   # Load Powerlevel9k
   source powerlevel9k.zsh-theme
-  source segments/dir.p9k
+  source segments/dir/dir.p9k
 }
 
 function tearDown() {
@@ -424,7 +424,7 @@ function testHomeFolderDetectionWorks() {
   P9K_LEFT_PROMPT_ELEMENTS=(dir)
   local P9K_DIR_HOME_ICON='home-icon'
   # re-source the segment to register updates
-  source segments/dir.p9k
+  source segments/dir/dir.p9k
 
   cd ~
   assertEquals "%K{004} %F{000}home-icon%f %F{000}~ %k%F{004}%f " "$(__p9k_build_left_prompt)"
@@ -437,7 +437,7 @@ function testHomeSubfolderDetectionWorks() {
   P9K_LEFT_PROMPT_ELEMENTS=(dir)
   local P9K_DIR_HOME_SUBFOLDER_ICON='sub-icon'
   # re-source the segment to register updates
-  source segments/dir.p9k
+  source segments/dir/dir.p9k
 
   local FOLDER=~/powerlevel9k-test
   mkdir $FOLDER
@@ -453,7 +453,7 @@ function testOtherFolderDetectionWorks() {
   P9K_LEFT_PROMPT_ELEMENTS=(dir)
   local P9K_DIR_DEFAULT_ICON='folder-icon'
   # re-source the segment to register updates
-  source segments/dir.p9k
+  source segments/dir/dir.p9k
 
   local FOLDER=/tmp/powerlevel9k-test
   mkdir $FOLDER
@@ -512,7 +512,7 @@ function testOmittingFirstCharacterWorks() {
   local P9K_DIR_OMIT_FIRST_CHARACTER=true
   local P9K_DIR_DEFAULT_ICON='folder-icon'
   # re-source the segment to register updates
-  source segments/dir.p9k
+  source segments/dir/dir.p9k
 
   cd /tmp
 
@@ -528,7 +528,7 @@ function testOmittingFirstCharacterWorksWithChangingPathSeparator() {
   local P9K_DIR_PATH_SEPARATOR='xXx'
   local P9K_DIR_DEFAULT_ICON='folder-icon'
   # re-source the segment to register updates
-  source segments/dir.p9k
+  source segments/dir/dir.p9k
 
   mkdir -p /tmp/powerlevel9k-test/1/2
   cd /tmp/powerlevel9k-test/1/2
