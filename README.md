@@ -121,7 +121,7 @@ The segments that are currently available are:
 * **PHP Segments:**
     * `php_version` - Show the current PHP version.
     * `laravel_version` - Show the current Laravel version.
-    * [`symfony2_tests`](#symfony2_tests) - Show a ratio of test classes vs code classes for Symfony2.
+    * [`symfony2_tests`](segments/symfony2_tests/README.md) - Show a ratio of test classes vs code classes for Symfony2.
     * `symfony2_version` - Show the current Symfony2 version, if you are in a Symfony2-Project dir.
 * **Python Segments:**
     * `virtualenv` - Your Python [VirtualEnv](https://virtualenv.pypa.io/en/latest/).
@@ -228,10 +228,6 @@ See [Unit Test Ratios](#unit-test-ratios), below.
 | Variable | Default Value | Description |
 |----------|---------------|-------------|
 |`P9K_RAM_ELEMENTS`|Both|Specify `ram_free` or `swap_used` to only show one or the other rather than both.|
-
-##### symfony2_tests
-
-See [Unit Test Ratios](#unit-test-ratios), below.
 
 #### Unit Test Ratios
 
