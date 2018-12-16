@@ -155,7 +155,7 @@ The segments that are currently available are:
 * [`command_execution_time`](segments/command_execution_time/README.md) - Display the time the current command took to execute.
 * [`todo`](http://todotxt.com/) - Shows the number of tasks in your todo.txt tasks file.
 * [`detect_virt`](segments/detect_virt/README.md) - Virtualization detection with systemd
-* `newline` - Continues the prompt on a new line.
+* [`newline`](segments/newline/README.md) - Continues the prompt on a new line.
 * `openfoam` - Shows the currently sourced [OpenFOAM](https://openfoam.org/) environment.
 * [`vagrant`](segments/vagrant/README.md) - Detects if you are in a folder with a running VM.
 
@@ -196,15 +196,6 @@ The command, above, gives you the wireless signal segment shown below:
 You can define as many custom segments as you wish. If you think you have
 a segment that others would find useful, please consider upstreaming it to the
 main theme distribution so that everyone can use it!
-
-##### newline
-
-Puts a newline in your prompt so you can continue using segments on the next
-line. This allows you to use segments on both lines, unlike
-`P9K_PROMPT_ON_NEWLINE`, which simply separates segments from the
-prompt itself.
-
-This only works on the left side.  On the right side it does nothing.
 
 #### Unit Test Ratios
 
