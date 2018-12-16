@@ -130,7 +130,7 @@ The segments that are currently available are:
 * **Ruby Segments:**
     * [`chruby`](segments/chruby/README.md) - Ruby environment information using `chruby` (if one is active).
     * [`rbenv`](segments/rbenv/README.md) - Ruby environment information using `rbenv` (if one is active).
-    * [`rspec_stats`](#rspec_stats) - Show a ratio of test classes vs code classes for RSpec.
+    * [`rspec_stats`](segments/rspec_stats/README.md) - Show a ratio of test classes vs code classes for RSpec.
     * `rvm` - Ruby environment information using `$GEM_HOME` and `$MY_RUBY_HOME` (if one is active).
 * **Rust Segments:**
     * `rust_version` - Display the current rust version and [logo](https://www.rust-lang.org/logos/rust-logo-blk.svg).
@@ -218,10 +218,6 @@ The `PYENV_VERSION` environment variable will be used if specified. Otherwise it
 | Variable | Default Value | Description |
 |----------|---------------|-------------|
 |`P9K_PYENV_PROMPT_ALWAYS_SHOW`|`false`|Set to true if you wish to show the pyenv segment even if the current Python version is the same as the global Python version|
-
-##### rspec_stats
-
-See [Unit Test Ratios](#unit-test-ratios), below.
 
 ##### ram
 
