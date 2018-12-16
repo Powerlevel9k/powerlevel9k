@@ -102,7 +102,7 @@ The segments that are currently available are:
 * [`ram`](segments/ram/README.md) - Show free RAM.
 * [`root_indicator`](segments/root_indicator/README.md) - An indicator if the user has superuser status.
 * [`status`](segments/status/README.md) - The return code of the previous command.
-* `swap` - Prints the current swap size.
+* [`swap`](segments/swap/README.md) - Prints the current swap size.
 * [`time`](segments/time/README.md) - System time.
 * [`user`](segments/user/README.md) - Your current username
 * [`vi_mode`](segments/vi_mode/README.md)- Your prompt's Vi editing mode (NORMAL|INSERT).
