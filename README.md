@@ -157,7 +157,7 @@ The segments that are currently available are:
 * [`detect_virt`](segments/detect_virt/README.md) - Virtualization detection with systemd
 * `newline` - Continues the prompt on a new line.
 * `openfoam` - Shows the currently sourced [OpenFOAM](https://openfoam.org/) environment.
-* [`vagrant`](#vagrant) - Detects if you are in a folder with a running VM.
+* [`vagrant`](segments/vagrant/README.md) - Detects if you are in a folder with a running VM.
 
 --------------------------------------------------------------------------------
 
@@ -249,18 +249,6 @@ See [Unit Test Ratios](#unit-test-ratios), below.
 ##### symfony2_tests
 
 See [Unit Test Ratios](#unit-test-ratios), below.
-
-##### vagrant
-
-This segment detects if you are in a folder with a running/stopped VM. If so,
-it displays `UP`, when VM is running or `DOWN` when VM is stopped.
-
-You can customize these strings with:
-
-| Variable           | Default Value | Description   |
-|--------------------|---------------|---------------|
-| `P9K_VAGRANT_UP`   | `UP`          | VM is running |
-| `P9K_VAGRANT_DOWN` | `DOWN`        | VM is stopped |
 
 #### Unit Test Ratios
 
