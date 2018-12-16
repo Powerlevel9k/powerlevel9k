@@ -137,7 +137,7 @@ The segments that are currently available are:
 * **Swift Segments:**
     * `swift_version` - Show the version number of the installed Swift.
 * **Java Segments:**
-    * `java_version` - Show the current Java version.
+    * [`java_version`](segments/java_version/README.md) - Show the current Java version.
 * **Haskell Segments:**
     * `stack_project` - Show if you are in a Haskell Stack project directory.
 
