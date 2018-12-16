@@ -153,7 +153,7 @@ The segments that are currently available are:
 * [`custom_command`](#custom_command) - Create a custom segment to display the
   output of an arbitrary command.
 * [`command_execution_time`](segments/command_execution_time/README.md) - Display the time the current command took to execute.
-* [`todo`](http://todotxt.com/) - Shows the number of tasks in your todo.txt tasks file.
+* [`todo`](segments/todo/README.md) - Shows the number of tasks in your [todo.txt](http://todotxt.com/) tasks file.
 * [`detect_virt`](segments/detect_virt/README.md) - Virtualization detection with systemd
 * [`newline`](segments/newline/README.md) - Continues the prompt on a new line.
 * [`openfoam`](segments/openfoam/README.md) - Shows the currently sourced [OpenFOAM](https://openfoam.org/) environment.
