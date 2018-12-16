@@ -197,15 +197,6 @@ You can define as many custom segments as you wish. If you think you have
 a segment that others would find useful, please consider upstreaming it to the
 main theme distribution so that everyone can use it!
 
-#### Unit Test Ratios
-
-The `symfony2_tests` and `rspec_stats` segments both show a ratio of "real"
-classes vs test classes in your source code. This is just a very simple ratio,
-and does not show your code coverage or any sophisticated stats. All this does
-is count your source files and test files, and calculate the ratio between them.
-Just enough to give you a quick overview about the test situation of the project
-you are dealing with.
-
 ### Disabling / Enabling Powerlevel9k
 
 You can disable P9k and return to a very basic prompt at any time simply by
