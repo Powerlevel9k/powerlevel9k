@@ -131,7 +131,7 @@ The segments that are currently available are:
     * [`chruby`](segments/chruby/README.md) - Ruby environment information using `chruby` (if one is active).
     * [`rbenv`](segments/rbenv/README.md) - Ruby environment information using `rbenv` (if one is active).
     * [`rspec_stats`](segments/rspec_stats/README.md) - Show a ratio of test classes vs code classes for RSpec.
-    * `rvm` - Ruby environment information using `$GEM_HOME` and `$MY_RUBY_HOME` (if one is active).
+    * [`rvm`](segments/rvm/README.md) - Ruby environment information using `$GEM_HOME` and `$MY_RUBY_HOME` (if one is active).
 * **Rust Segments:**
     * [`rust_version`](segments/rust_version/README.md) - Display the current rust version and [logo](https://www.rust-lang.org/logos/rust-logo-blk.svg).
 * **Swift Segments:**
