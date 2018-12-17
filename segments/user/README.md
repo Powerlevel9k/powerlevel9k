@@ -21,7 +21,8 @@ P9K_USER_SUDO_ICON=$'\uF09C' # 
 | Variable | Default Value | Description |
 |----------|---------------|-------------|
 |`DEFAULT_USER`|None|Username to consider a "default context".|
-|`P9K_CONTEXT_ALWAYS_SHOW_USER`|`false`|Always print this segment.|
+|`P9K_USER_ALWAYS_SHOW`|`false`|Always print this segment.|
+|`P9K_USER_ALWAYS_SHOW_USER`|`false`|Always print the username.|
 |`P9K_USER_TEMPLATE`|`%n`|Default username prompt. Refer to the [ZSH Documentation](http://zsh.sourceforge.net/Doc/Release/Prompt-Expansion.html) for all possible expansions|
 
 ### Color Customization
