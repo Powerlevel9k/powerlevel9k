@@ -22,3 +22,11 @@ Variable | Default Value | Description |
 | Variable | Default Value | Description |
 |----------|---------------|-------------|
 |`P9K_RBENV_PROMPT_ALWAYS_SHOW`|`false`|Set to true if you wish to show the rbenv segment even if the current Ruby version is the same as the global Ruby version|
+
+### Color Customization
+
+You can change the foreground and background color of this segment by setting
+```
+P9K_RBENV_FOREGROUND='red'
+P9K_RBENV_BACKGROUND='blue'
+```

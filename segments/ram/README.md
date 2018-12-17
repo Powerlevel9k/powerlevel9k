@@ -11,3 +11,11 @@ where you want to show this segment.
 | Variable | Default Value | Description |
 |----------|---------------|-------------|
 |`P9K_RAM_ELEMENTS`|Both|Specify `ram_free` or `swap_used` to only show one or the other rather than both.|
+
+### Color Customization
+
+You can change the foreground and background color of this segment by setting
+```
+P9K_RAM_FOREGROUND='red'
+P9K_RAM_BACKGROUND='blue'
+```

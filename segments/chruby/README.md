@@ -16,3 +16,11 @@ It uses `$RUBY_ENGINE` and `$RUBY_VERSION` as set by `chruby`.
 |----------|---------------|-------------|
 |`P9K_CHRUBY_SHOW_ENGINE`|true|Show the currently selected Ruby engine (e.g. `ruby`, `jruby`, `rbx`, etc)
 |`P9K_CHRUBY_SHOW_VERSION`|true|Shows the currently selected engine's version (e.g. `2.5.1`)
+
+### Color Customization
+
+You can change the foreground and background color of this segment by setting
+```
+P9K_CHRUBY_FOREGROUND='red'
+P9K_CHRUBY_BACKGROUND='blue'
+```

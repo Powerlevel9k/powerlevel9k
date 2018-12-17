@@ -18,3 +18,11 @@ The `PYENV_VERSION` environment variable will be used if specified. Otherwise it
 | Variable | Default Value | Description |
 |----------|---------------|-------------|
 |`P9K_PYENV_PROMPT_ALWAYS_SHOW`|`false`|Set to true if you wish to show the pyenv segment even if the current Python version is the same as the global Python version|
+
+### Color Customization
+
+You can change the foreground and background color of this segment by setting
+```
+P9K_PYENV_FOREGROUND='red'
+P9K_PYENV_BACKGROUND='blue'
+```

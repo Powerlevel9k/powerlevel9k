@@ -15,3 +15,11 @@ specify the correct network interface by setting:
 | Variable | Default Value | Description |
 |----------|---------------|-------------|
 |`P9K_IP_INTERFACE`|None|The NIC for which you wish to display the IP address. Example: `eth0`.|
+
+### Color Customization
+
+You can change the foreground and background color of this segment by setting
+```
+P9K_IP_FOREGROUND='red'
+P9K_IP_BACKGROUND='blue'
+```

@@ -23,3 +23,11 @@ segment, as well:
 # Output time, date, and a symbol from the "Awesome Powerline Font" set
 P9K_TIME_FORMAT="%D{%H:%M:%S \uE868  %d.%m.%y}"
 ```
+
+### Color Customization
+
+You can change the foreground and background color of this segment by setting
+```
+P9K_TIME_FOREGROUND='red'
+P9K_TIME_BACKGROUND='blue'
+```

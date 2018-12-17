@@ -30,3 +30,11 @@ segment will not be displayed.
 |`P9K_PUBLIC_IP_TIMEOUT`|300|The amount of time in seconds between refreshing your cached IP.|
 |`P9K_PUBLIC_IP_METHODS`|(dig curl wget)| These methods in that order are used to refresh your IP.|
 |`P9K_PUBLIC_IP_NONE`|None|The string displayed when an IP was not obtained|
+
+### Color Customization
+
+You can change the foreground and background color of this segment by setting
+```
+P9K_PUBLIC_IP_FOREGROUND='red'
+P9K_PUBLIC_IP_BACKGROUND='blue'
+```

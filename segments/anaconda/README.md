@@ -23,3 +23,11 @@ Special configuration variables:
 Additionally the following segment specific parameters can be used to customize
 it: `P9K_PYTHON_ICON`, `P9K_ANACONDA_BACKGROUND`, and
 `P9K_ANACONDA_FOREGROUND`.
+
+### Color Customization
+
+You can change the foreground and background color of this segment by setting
+```
+P9K_ANACONDA_FOREGROUND='red'
+P9K_ANACONDA_BACKGROUND='blue'
+```

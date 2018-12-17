@@ -13,3 +13,11 @@ This segment tries to extract the VPN related IP addresses from nmcli, based on 
 | Variable | Default Value | Description |
 |----------|---------------|-------------|
 |`P9K_VPN_IP_INTERFACE`|`tun`|The VPN interface.|
+
+### Color Customization
+
+You can change the foreground and background color of this segment by setting
+```
+P9K_VPN_IP_FOREGROUND='red'
+P9K_VPN_IP_BACKGROUND='blue'
+```

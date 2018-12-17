@@ -12,3 +12,11 @@ where you want to show this segment.
 |----------|---------------|-------------|
 |`P9K_BACKGROUND_JOBS_VERBOSE`|`true`|If there is more than one background job, this segment will show the number of jobs. Set this to `false` to turn this feature off.|
 `P9K_BACKGROUND_JOBS_VERBOSE_ALWAYS`|`false`|Always show the jobs count (even if it's zero).|
+
+### Color Customization
+
+You can change the foreground and background color of this segment by setting
+```
+P9K_BACKGROUND_JOBS_FOREGROUND='red'
+P9K_BACKGROUND_JOBS_BACKGROUND='blue'
+```

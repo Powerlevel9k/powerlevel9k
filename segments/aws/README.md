@@ -16,3 +16,11 @@ your `~/.zshrc`:
 | Variable | Default Value | Description |
 |----------|---------------|-------------|
 |`AWS_DEFAULT_PROFILE`|None|Your AWS profile name|
+
+### Color Customization
+
+You can change the foreground and background color of this segment by setting
+```
+P9K_AWS_FOREGROUND='red'
+P9K_AWS_BACKGROUND='blue'
+```

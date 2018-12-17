@@ -17,3 +17,11 @@ You can customize these strings with:
 |--------------------|---------------|---------------|
 | `P9K_VAGRANT_UP`   | `UP`          | VM is running |
 | `P9K_VAGRANT_DOWN` | `DOWN`        | VM is stopped |
+
+### Color Customization
+
+You can change the foreground and background color of this segment by setting
+```
+P9K_VAGRANT_FOREGROUND='red'
+P9K_VAGRANT_BACKGROUND='blue'
+```

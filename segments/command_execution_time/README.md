@@ -18,3 +18,11 @@ If you want more precision, just set the
 |----------|---------------|-------------|
 |`P9K_COMMAND_EXECUTION_TIME_THRESHOLD`|3|Threshold above which to print this segment. Can be set to `0` to always print.|
 |`P9K_COMMAND_EXECUTION_TIME_PRECISION`|2|Number of digits to use in the fractional part of the time value.|
+
+### Color Customization
+
+You can change the foreground and background color of this segment by setting
+```
+P9K_COMMAND_EXECUTION_TIME_FOREGROUND='red'
+P9K_COMMAND_EXECUTION_TIME_BACKGROUND='blue'
+```
