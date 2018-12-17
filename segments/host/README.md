@@ -23,8 +23,8 @@ P9K_HOST_TEMPLATE="%2m"
 
 By default, LOCAL hosts will show the host icon and remote hosts will show the SSH icon. You can override them by setting
 ```
-P9K_HOST_ICON="\uF109 "
-P9K_SSH_ICON="\uF489 "
+P9K_HOST_LOCAL_ICON="\uF109 "
+P9K_HOST_REMOTE_ICON="\uF489 "
 ```
 
 ### Color Customization
