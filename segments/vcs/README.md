@@ -71,6 +71,36 @@ P9K_VCS_DIR_SHORTEN_STRATEGY="truncate_from_right"
 P9K_VCS_DIR_SHORTEN_DELIMITER=".."
 ```
 
+### Advanced features
+
+Sometimes you want to deactivate certain features like stashes. This can be
+done by editing `P9K_VCS_GIT_HOOKS` and remove `git-stash` from that array.
+
+Git hooks (`P9K_VCS_GIT_HOOKS`):
+
+| Hook               | Description
+|--------------------|----------------------------------------------------|
+| vcs-detect-changes | General check for changed files and responsible for selecting a proper icon according to the remote url. |
+| git-untracked      | Check for untracked files. |
+| git-aheadbehind    | Check for commits ahead/behind the repo. This does not request changes from the remote repo. Only interacts with the local repo. |
+| git-stash          | Check for stashes. |
+| git-remotebranch   | Checks the remote branch, and displays it, if it differs from local branch name. |
+| git-gitdir         | Responsible to find out if we are in a clobbered checkout. |
+| git-tagname        | Get the tagname, if we are on a tag. |
+
+Mercurial hooks (`P9K_VCS_HG_HOOKS`):
+
+| Hook               | Description
+|--------------------|----------------------------------------------------|
+| vcs-detect-changes | General check for changed files and responsible for selecting a proper icon according to the remote url. |
+| hg-bookmarks       | Check for Mercurial Bookmarks. |
+
+SVN hooks (`P9K_VCS_SVN_HOOKS`):
+| Hook               | Description
+|--------------------|----------------------------------------------------|
+| vcs-detect-changes | General check for changed files and responsible for selecting a proper icon according to the remote url. |
+| svn-detect-changes | Check for staged/unstaged changes in your SVN checkout. |
+
 ### Color Customization
 
 You can change the foreground and background color of this segment by setting
