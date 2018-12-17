@@ -10,6 +10,23 @@ where you want to show this segment.
 
 See [Unit Test Ratios](#unit-test-ratios), below.
 
+### Color Customization
+
+You can change the foreground and background color of this segment by setting
+```
+# Tests Coverage Good
+P9K_SYMFONY2_TESTS_TEST_STATS_GOOD_FOREGROUND='red'
+P9K_SYMFONY2_TESTS_TEST_STATS_GOOD_BACKGROUND='blue'
+
+# Tests Coverage Average
+P9K_SYMFONY2_TESTS_TEST_STATS_AVG_FOREGROUND='red'
+P9K_SYMFONY2_TESTS_TEST_STATS_AVG_BACKGROUND='blue'
+
+# Tests Coverage Bad
+P9K_SYMFONY2_TESTS_TEST_STATS_BAD_FOREGROUND='red'
+P9K_SYMFONY2_TESTS_TEST_STATS_BAD_BACKGROUND='blue'
+```
+
 ## Quality of Test Ratios
 
 This segment shows a ratio of "real" classes vs test classes in your source

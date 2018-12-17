@@ -16,3 +16,20 @@ The `disk_usage` segment will show the usage level of the partition that your cu
 |P9K_DISK_USAGE_WARNING_LEVEL|90|The usage level that triggers a warning state.|
 |P9K_DISK_USAGE_CRITICAL_LEVEL|95|The usage level that triggers a critical state.|
 |P9K_DISK_USAGE_PATH|`.` (working directory)|Set a path to use a fixed directory instead of the working
+
+### Color Customization
+
+You can change the foreground and background color of this segment by setting
+```
+# Normal Disk Usage
+P9K_DISK_USAGE_NORMAL_FOREGROUND='red'
+P9K_DISK_USAGE_NORMAL_BACKGROUND='blue'
+
+# Disk Usage: Almost Full
+P9K_DISK_USAGE_WARNING_FOREGROUND='red'
+P9K_DISK_USAGE_WARNING_BACKGROUND='blue'
+
+# Disk Usage: Critically Full
+P9K_DISK_USAGE_CRITICAL_FOREGROUND='red'
+P9K_DISK_USAGE_CRITICAL_BACKGROUND='blue'
+```

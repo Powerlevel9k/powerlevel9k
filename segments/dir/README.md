@@ -91,3 +91,24 @@ You can also configure the `dir` segment to show when you are in a directory wit
 If you want to customize the last directory of the path, you can now set `P9K_DIR_PATH_HIGHLIGHT_FOREGROUND` to a custom color and/or `P9K_DIR_PATH_HIGHLIGHT_BOLD=true` to display that part in bold.
 
 You can also color the separator separately by setting the color using `P9K_DIR_PATH_SEPARATOR_FOREGROUND`.
+
+### Color Customization
+
+You can change the foreground and background color of this segment by setting
+```
+# General Directory Settings
+P9K_DIR_DEFAULT_FOREGROUND='red'
+P9K_DIR_DEFAULT_BACKGROUND='blue'
+
+# Home Folder Settings
+P9K_DIR_HOME_FOREGROUND='red'
+P9K_DIR_HOME_BACKGROUND='blue'
+
+# Home Subfolder Settings
+P9K_DIR_HOME_SUBFOLDER_FOREGROUND='red'
+P9K_DIR_HOME_SUBFOLDER_BACKGROUND='blue'
+
+# Etc Directory Settings
+P9K_DIR_ETC_FOREGROUND='red'
+P9K_DIR_ETC_BACKGROUND='blue'
+```

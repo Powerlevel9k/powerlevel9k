@@ -16,3 +16,16 @@ This segment shows the return code of the last command.
 |`P9K_STATUS_OK`|`true`|Set to true if you wish to show this segment when the last command completed successfully, false to hide it.|
 |`P9K_STATUS_SHOW_PIPESTATUS`|`true`|Set to true if you wish to show the exit status for all piped commands.|
 |`P9K_STATUS_HIDE_SIGNAME`|`false`|Set to true return the raw exit code (`1-255`).  When set to false, values over 128 are shown as `SIGNAME(-n)` (e.g. `KILL(-9)`)|
+
+### Color Customization
+
+You can change the foreground and background color of this segment by setting
+```
+# Status OK (in conjunction with P9K_STATUS_VERBOSE=true)
+P9K_STATUS_OK_FOREGROUND='red'
+P9K_STATUS_OK_BACKGROUND='blue'
+
+# Status Error
+P9K_STATUS_ERROR_FOREGROUND='red'
+P9K_STATUS_ERROR_BACKGROUND='blue'
+```

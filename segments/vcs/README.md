@@ -70,3 +70,24 @@ P9K_VCS_SHORTEN_MIN_LENGTH=11
 P9K_VCS_DIR_SHORTEN_STRATEGY="truncate_from_right"
 P9K_VCS_DIR_SHORTEN_DELIMITER=".."
 ```
+
+### Color Customization
+
+You can change the foreground and background color of this segment by setting
+```
+# Checkout Clean
+P9K_VCS_CLEAN_FOREGROUND='red'
+P9K_VCS_CLEAN_BACKGROUND='blue'
+
+# Checkout Contains Untracked Files
+P9K_VCS_UNTRACKED_FOREGROUND='red'
+P9K_VCS_UNTRACKED_BACKGROUND='blue'
+
+# Checkout Contains (Tracked) Modified Files
+P9K_VCS_MODIFIED_FOREGROUND='red'
+P9K_VCS_MODIFIED_BACKGROUND='blue'
+
+# Checkout Is Clobbered
+P9K_VCS_CLOBBERED_FOREGROUND='red'
+P9K_VCS_CLOBBERED_BACKGROUND='blue'
+```

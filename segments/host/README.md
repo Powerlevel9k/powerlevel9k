@@ -26,3 +26,16 @@ By default, LOCAL hosts will show the host icon and remote hosts will show the S
 P9K_HOST_ICON="\uF109 "
 P9K_SSH_ICON="\uF489 "
 ```
+
+### Color Customization
+
+You can change the foreground and background color of this segment by setting
+```
+# Local Host
+P9K_HOST_LOCAL_FOREGROUND='red'
+P9K_HOST_LOCAL_BACKGROUND='blue'
+
+# Remote Host
+P9K_HOST_REMOTE_FOREGROUND='red'
+P9K_HOST_REMOTE_BACKGROUND='blue'
+```

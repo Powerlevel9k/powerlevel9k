@@ -23,3 +23,28 @@ P9K_USER_SUDO_ICON=$'\uF09C' # 
 |`DEFAULT_USER`|None|Username to consider a "default context".|
 |`P9K_CONTEXT_ALWAYS_SHOW_USER`|`false`|Always print this segment.|
 |`P9K_USER_TEMPLATE`|`%n`|Default username prompt. Refer to the [ZSH Documentation](http://zsh.sourceforge.net/Doc/Release/Prompt-Expansion.html) for all possible expansions|
+
+### Color Customization
+
+You can change the foreground and background color of this segment by setting
+```
+# Default User
+P9K_USER_DEFAULT_FOREGROUND='red'
+P9K_USER_DEFAULT_BACKGROUND='blue'
+
+# Root User
+P9K_USER_ROOT_FOREGROUND='red'
+P9K_USER_ROOT_BACKGROUND='blue'
+
+# Sudo User
+P9K_USER_SUDO_FOREGROUND='red'
+P9K_USER_SUDO_BACKGROUND='blue'
+
+# Remote User
+P9K_USER_REMOTE_FOREGROUND='red'
+P9K_USER_REMOTE_BACKGROUND='blue'
+
+# Remote Sudo User
+P9K_USER_REMOTE_SUDO_FOREGROUND='red'
+P9K_USER_REMOTE_SUDO_BACKGROUND='blue'
+```

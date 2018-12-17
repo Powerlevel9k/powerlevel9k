@@ -46,3 +46,28 @@ different privileges. Read more about styling with states [here](https://github.
 | `SUDO`        | You are using elevated rights                            |
 | `REMOTE_SUDO` | You are SSH'ed into the machine and have elevated rights |
 | `REMOTE`      | You are SSH'ed into the machine                          |
+
+### Color Customization
+
+You can change the foreground and background color of this segment by setting
+```
+# Default User
+P9K_CONTEXT_DEFAULT_FOREGROUND='red'
+P9K_CONTEXT_DEFAULT_BACKGROUND='blue'
+
+# Root User
+P9K_CONTEXT_ROOT_FOREGROUND='red'
+P9K_CONTEXT_ROOT_BACKGROUND='blue'
+
+# Sudo User
+P9K_CONTEXT_SUDO_FOREGROUND='red'
+P9K_CONTEXT_SUDO_BACKGROUND='blue'
+
+# Remote User
+P9K_CONTEXT_REMOTE_FOREGROUND='red'
+P9K_CONTEXT_REMOTE_BACKGROUND='blue'
+
+# Remote Sudo User
+P9K_CONTEXT_REMOTE_SUDO_FOREGROUND='red'
+P9K_CONTEXT_REMOTE_SUDO_BACKGROUND='blue'
+```

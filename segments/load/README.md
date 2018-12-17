@@ -16,3 +16,20 @@ Displays one of your load averages with appropriate state coloring. The threshol
 | Variable | Default Value | Description |
 |----------|---------------|-------------|
 |`P9K_LOAD_WHICH`|5|Which average to show. Possible values: 1, 5 or 15|
+
+### Color Customization
+
+You can change the foreground and background color of this segment by setting
+```
+# Normal Load
+P9K_LOAD_NORMAL_FOREGROUND='red'
+P9K_LOAD_NORMAL_BACKGROUND='blue'
+
+# High Load
+P9K_LOAD_WARNING_FOREGROUND='red'
+P9K_LOAD_WARNING_BACKGROUND='blue'
+
+# Critical Load
+P9K_LOAD_CRITICAL_FOREGROUND='red'
+P9K_LOAD_CRITICAL_BACKGROUND='blue'
+```

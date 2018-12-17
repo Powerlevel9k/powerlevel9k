@@ -77,3 +77,24 @@ Some example settings:
 | Bright Colors  | `(red1 orangered1 darkorange orange1 gold1 yellow1 yellow2 greenyellow chartreuse1 chartreuse2 green1)`       |
 | Normal Colors  | `(red3 darkorange3 darkgoldenrod gold3 yellow3 chartreuse2 mediumspringgreen green3 green3 green4 darkgreen)` |
 | Subdued Colors | `(darkred orange4 yellow4 yellow4 chartreuse3 green3 green4 darkgreen)`                                       |
+
+### Color Customization
+
+You can change the foreground and background color of this segment by setting
+```
+# Battery Low
+P9K_BATTERY_LOW_FOREGROUND='red'
+P9K_BATTERY_LOW_BACKGROUND='blue'
+
+# Battery Charging
+P9K_BATTERY_CHARGING_FOREGROUND='red'
+P9K_BATTERY_CHARGING_BACKGROUND='blue'
+
+# Battery Charged
+P9K_BATTERY_CHARGED_FOREGROUND='red'
+P9K_BATTERY_CHARGED_BACKGROUND='blue'
+
+# Battery Disconnected
+P9K_BATTERY_DISCONNECTED_FOREGROUND='red'
+P9K_BATTERY_DISCONNECTED_BACKGROUND='blue'
+```
