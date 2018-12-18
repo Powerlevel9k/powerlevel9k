@@ -33,7 +33,7 @@ Customizations available are:
 |`P9K_DIR_PATH_ABSOLUTE`|None|If set to `true`, will use absolute paths instead of home folder abbreviation `~`|
 |`P9K_DIR_SHORTEN_LENGTH`|`2`|If your shorten strategy, below, is entire directories, this field determines how many directories to leave at the end. If your shorten strategy is by character count, this field determines how many characters to allow per directory string.|
 |`P9K_DIR_SHORTEN_STRATEGY`|None|How the directory strings should be truncated. See the table below for more informations.|
-|`P9K_DIR_SHORTEN_DELIMITER`|`..`|Delimiter to use in truncated strings. This can be any string you choose, including an empty string if you wish to have no delimiter.|
+|`P9K_DIR_SHORTEN_DELIMITER`|`…`|Delimiter to use in truncated strings. This can be any string you choose, including an empty string if you wish to have no delimiter.|
 
 | Strategy Name | Description |
 |---------------|-------------|
