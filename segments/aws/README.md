@@ -24,3 +24,8 @@ You can change the foreground and background color of this segment by setting
 P9K_AWS_FOREGROUND='red'
 P9K_AWS_BACKGROUND='blue'
 ```
+
+### Customize Icon
+
+The main Icon can be changed by setting `P9K_AWS_ICON="my_icon"`. To change the
+icon color only, set `P9K_AWS_ICON_COLOR="red"`.

@@ -20,10 +20,6 @@ Special configuration variables:
 |`P9K_ANACONDA_LEFT_DELIMITER`|"("|The left delimiter just before the environment name.|
 |`P9K_ANACONDA_RIGHT_DELIMITER`|")"|The right delimiter just after the environment name.|
 
-Additionally the following segment specific parameters can be used to customize
-it: `P9K_PYTHON_ICON`, `P9K_ANACONDA_BACKGROUND`, and
-`P9K_ANACONDA_FOREGROUND`.
-
 ### Color Customization
 
 You can change the foreground and background color of this segment by setting
@@ -31,3 +27,7 @@ You can change the foreground and background color of this segment by setting
 P9K_ANACONDA_FOREGROUND='red'
 P9K_ANACONDA_BACKGROUND='blue'
 ```
+
+### Customize Icon
+
+The main Icon can be changed by setting `P9K_ANACONDA_ICON="my_icon"`.
