@@ -78,7 +78,7 @@ prompt_battery() {
     # https://docs.microsoft.com/ru-ru/windows/desktop/CIMWin32Prov/win32-battery
 
     # skip empty lines AND empty values, leave only meaningful key=value pairs
-    local raw_data="$(wmic Path Win32_Battery Get /format:list | tr -d '\r' | sed -n '/=./p')"
+    local raw_data="$(${ROOT_PREFIX}wmic Path Win32_Battery Get /format:list | tr -d '\r' | sed -n '/=./p')"
 
     # type bat_percent: percent as int in range 0..100
     local bat_percent="$(echo "$raw_data" | grep "EstimatedChargeRemaining" | cut -d = -f 2)"
