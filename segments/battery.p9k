@@ -74,7 +74,7 @@ prompt_battery() {
     esac
   fi
 
-  if [[ "$OS" == 'Windows' ]]; then
+  if [[ "$__P9K_OS" == 'Windows' ]]; then
     # https://docs.microsoft.com/ru-ru/windows/desktop/CIMWin32Prov/win32-battery
 
     # skip empty lines AND empty values, leave only meaningful key=value pairs
