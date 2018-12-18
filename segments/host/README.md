@@ -39,3 +39,18 @@ P9K_HOST_LOCAL_BACKGROUND='blue'
 P9K_HOST_REMOTE_FOREGROUND='red'
 P9K_HOST_REMOTE_BACKGROUND='blue'
 ```
+
+### Customize Icon
+
+The main Icon of this segment depends on its state.
+It can be changed by setting:
+```
+P9K_HOST_LOCAL_ICON="my_icon"
+P9K_HOST_REMOTE_ICON="my_icon"
+```
+
+The Icon color accordingly:
+```
+P9K_HOST_LOCAL_ICON_COLOR="red"
+P9K_HOST_REMOTE_ICON_COLOR="red"
+```

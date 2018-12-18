@@ -27,6 +27,23 @@ P9K_SYMFONY2_TESTS_TEST_STATS_BAD_FOREGROUND='red'
 P9K_SYMFONY2_TESTS_TEST_STATS_BAD_BACKGROUND='blue'
 ```
 
+### Customize Icon
+
+The main Icon of this segment depends on its state.
+It can be changed by setting:
+```
+P9K_SYMFONY2_TESTS_TEST_STATS_GOOD_ICON="my_icon"
+P9K_SYMFONY2_TESTS_TEST_STATS_AVG_ICON="my_icon"
+P9K_SYMFONY2_TESTS_TEST_STATS_BAD_ICON="my_icon"
+```
+
+The Icon color accordingly:
+```
+P9K_SYMFONY2_TESTS_TEST_STATS_GOOD_ICON_COLOR="red"
+P9K_SYMFONY2_TESTS_TEST_STATS_AVG_ICON_COLOR="red"
+P9K_SYMFONY2_TESTS_TEST_STATS_BAD_ICON_COLOR="red"
+```
+
 ## Quality of Test Ratios
 
 This segment shows a ratio of "real" classes vs test classes in your source

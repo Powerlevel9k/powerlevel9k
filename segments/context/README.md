@@ -71,3 +71,22 @@ P9K_CONTEXT_REMOTE_BACKGROUND='blue'
 P9K_CONTEXT_REMOTE_SUDO_FOREGROUND='red'
 P9K_CONTEXT_REMOTE_SUDO_BACKGROUND='blue'
 ```
+
+### Customize Icon
+
+The main Icon of this segment depends on its state.
+It can be changed by setting:
+```
+P9K_CONTEXT_DEFAULT_ICON="my_icon"
+P9K_CONTEXT_ROOT_ICON="my_icon"
+P9K_CONTEXT_REMOTE_ICON="my_icon"
+P9K_CONTEXT_REMOTE_SUDO_ICON="my_icon"
+```
+
+The Icon color accordingly:
+```
+P9K_CONTEXT_DEFAULT_ICON_COLOR="red"
+P9K_CONTEXT_ROOT_ICON_COLOR="red"
+P9K_CONTEXT_REMOTE_ICON_COLOR="red"
+P9K_CONTEXT_REMOTE_SUDO_ICON_COLOR="red"
+```

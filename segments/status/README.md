@@ -29,3 +29,18 @@ P9K_STATUS_OK_BACKGROUND='blue'
 P9K_STATUS_ERROR_FOREGROUND='red'
 P9K_STATUS_ERROR_BACKGROUND='blue'
 ```
+
+### Customize Icon
+
+The main Icon of this segment depends on its state.
+It can be changed by setting:
+```
+P9K_STATUS_OK_ICON="my_icon"
+P9K_STATUS_ERROR_ICON="my_icon"
+```
+
+The Icon color accordingly:
+```
+P9K_STATUS_OK_ICON_COLOR="red"
+P9K_STATUS_ERROR_ICON_COLOR="red"
+```

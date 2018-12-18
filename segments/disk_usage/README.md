@@ -33,3 +33,20 @@ P9K_DISK_USAGE_WARNING_BACKGROUND='blue'
 P9K_DISK_USAGE_CRITICAL_FOREGROUND='red'
 P9K_DISK_USAGE_CRITICAL_BACKGROUND='blue'
 ```
+
+### Customize Icon
+
+The main Icon of this segment depends on its state.
+It can be changed by setting:
+```
+P9K_DISK_USAGE_NORMAL_ICON="my_icon"
+P9K_DISK_USAGE_WARNING_ICON="my_icon"
+P9K_DISK_USAGE_CRITICAL_ICON="my_icon"
+```
+
+The Icon color accordingly:
+```
+P9K_DISK_USAGE_NORMAL_ICON_COLOR="red"
+P9K_DISK_USAGE_WARNING_ICON_COLOR="red"
+P9K_DISK_USAGE_CRITICAL_ICON_COLOR="red"
+```

@@ -98,3 +98,22 @@ P9K_BATTERY_CHARGED_BACKGROUND='blue'
 P9K_BATTERY_DISCONNECTED_FOREGROUND='red'
 P9K_BATTERY_DISCONNECTED_BACKGROUND='blue'
 ```
+
+### Customize Icon
+
+The main Icon of this segment depends on its state.
+It can be changed by setting:
+```
+P9K_BATTERY_LOW_ICON="my_icon"
+P9K_BATTERY_CHARGING_ICON="my_icon"
+P9K_BATTERY_CHARGED_ICON="my_icon"
+P9K_BATTERY_DISCONNECTED_ICON="my_icon"
+```
+
+The Icon color accordingly:
+```
+P9K_BATTERY_LOW_ICON_COLOR="red"
+P9K_BATTERY_CHARGING_ICON_COLOR="red"
+P9K_BATTERY_CHARGED_ICON_COLOR="red"
+P9K_BATTERY_DISCONNECTED_ICON_COLOR="red"
+```

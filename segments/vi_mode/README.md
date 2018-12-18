@@ -33,3 +33,18 @@ P9K_VI_MODE_NORMAL_BACKGROUND='blue'
 P9K_VI_MODE_INSERT_FOREGROUND='red'
 P9K_VI_MODE_INSERT_BACKGROUND='blue'
 ```
+
+### Customize Icon
+
+The main Icon of this segment depends on its state.
+It can be changed by setting:
+```
+P9K_VI_MODE_NORMAL_ICON="my_icon"
+P9K_VI_MODE_INSERT_ICON="my_icon"
+```
+
+The Icon color accordingly:
+```
+P9K_VI_MODE_NORMAL_ICON_COLOR="red"
+P9K_VI_MODE_INSERT_ICON_COLOR="red"
+```
