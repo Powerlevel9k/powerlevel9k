@@ -88,7 +88,10 @@ prompt_battery() {
     if [[ "$minutes_remaining" =~ "[[:digit:]]+" ]]; then
       local hours=$(( minutes_remaining / 60 ))
       local minutes=$(( minutes_remaining % 60 ))
-      tstring="$hours:$minutes"
+
+      # Pad minutes with zeroes
+      minutes="${(l:2::0:)minutes}"
+      tstring="${hours}:${minutes}"
     fi
     local remain=" ($tstring)"
 
