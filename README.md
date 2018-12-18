@@ -13,7 +13,7 @@ others](https://github.com/bhilburn/powerlevel9k/wiki/Install-Instructions).
 Get more out of your terminal. Be a badass. Impress everyone in 'Screenshot Your
 Desktop' threads. Use powerlevel9k.
 
-![](http://bhilburn.org/content/images/2015/01/pl9k-improved.png)
+![](feature_intro.png)
 
 You can check out some other users' configurations in our wiki: [Show Off Your
 Config](https://github.com/bhilburn/powerlevel9k/wiki/Show-Off-Your-Config).
