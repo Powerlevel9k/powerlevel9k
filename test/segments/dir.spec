@@ -34,8 +34,8 @@ function testDirPathAbsoluteWorks() {
   assertEquals "%K{004} %F{000}~ %k%F{004}%f " "$(__p9k_build_left_prompt)"
 
   typeset -a _strategies
-  # Do not check truncate_to_last
-  _strategies=( truncate_from_left truncate_from_right truncate_middle truncate_to_first_and_last truncate_absolute truncate_to_unique truncate_with_folder_marker truncate_with_package_name )
+  # Do not check truncate_to_last and truncate_to_unique
+  _strategies=( truncate_from_left truncate_from_right truncate_middle truncate_to_first_and_last truncate_absolute truncate_with_folder_marker truncate_with_package_name )
 
   for strategy in ${_strategies}; do
     local P9K_DIR_PATH_ABSOLUTE=true
@@ -597,26 +597,70 @@ function testOmittingFirstCharacterWorksWithChangingPathSeparatorAndRightTruncat
 function testTruncateToUniqueWorks() {
   typeset -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(dir)
-  local P9K_DIR_OMIT_FIRST_CHARACTER=true
+  local P9K_DIR_OMIT_FIRST_CHARACTER=false
   local P9K_DIR_PATH_SEPARATOR='xXx'
-  local P9K_DIR_SHORTEN_LENGTH=2
   local P9K_DIR_SHORTEN_STRATEGY='truncate_to_unique'
+  local P9K_DIR_SHORTEN_LENGTH P9K_DIR_PATH_ABSOLUTE HOME
+  local staring_point="${PWD}"
 
   mkdir -p /tmp/powerlevel9k-test/adam/devl
-  mkdir -p /tmp/powerlevel9k-test/alice/devl
+  mkdir -p /tmp/powerlevel9k-test/alice/devl/ent
+  mkdir -p /tmp/powerlevel9k-test/alice/devl/ert
   mkdir -p /tmp/powerlevel9k-test/alice/docs
   mkdir -p /tmp/powerlevel9k-test/bob/docs
 
   # get unique name for tmp folder - on macOS, this is /private/tmp
   cd /tmp/powerlevel9k-test
-  local test_path=${$(__p9k_get_unique_path $PWD:A)//\//$P9K_DIR_PATH_SEPARATOR}
+  local test_path_short=${$(__p9k_get_unique_path $PWD:a)//\//$P9K_DIR_PATH_SEPARATOR}
+  local test_path_long=${${PWD:a}//\//$P9K_DIR_PATH_SEPARATOR}
   cd -
 
-  cd /tmp/powerlevel9k-test/alice/devl
+  HOME="/tmp/powerlevel9k-test/alice"
+  P9K_DIR_SHORTEN_LENGTH=0
+  P9K_DIR_PATH_ABSOLUTE=true
+  cd /
+  assertEquals "%K{004} %F{000}/ %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  cd /tmp/powerlevel9k-test/alice # $HOME
+  assertEquals "%K{004} %F{000}${test_path_short}xXxal %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  cd /tmp/powerlevel9k-test/alice/devl/ert
+  assertEquals "%K{004} %F{000}${test_path_short}xXxalxXxdexXxer %k%F{004}%f " "$(__p9k_build_left_prompt)"
 
-  assertEquals "%K{004} %F{000}${test_path}xXxalxXxde %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  P9K_DIR_PATH_ABSOLUTE=false
+  cd /
+  assertEquals "%K{004} %F{000}/ %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  cd /tmp/powerlevel9k-test/alice # $HOME
+  assertEquals "%K{004} %F{000}~ %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  cd /tmp/powerlevel9k-test/alice/devl/ert
+  assertEquals "%K{004} %F{000}~xXxdexXxer %k%F{004}%f " "$(__p9k_build_left_prompt)"
 
-  cd -
+  P9K_DIR_SHORTEN_LENGTH=3
+  P9K_DIR_PATH_ABSOLUTE=true
+  cd /
+  assertEquals "%K{004} %F{000}/ %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  cd /tmp/powerlevel9k-test/alice # $HOME
+  assertEquals "%K{004} %F{000}${test_path_long}xXxalice %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  cd /tmp/powerlevel9k-test/alice/devl/ert
+  assertEquals "%K{004} %F{000}${test_path_short}xXxalicexXxdevlxXxert %k%F{004}%f " "$(__p9k_build_left_prompt)"
+
+  P9K_DIR_PATH_ABSOLUTE=false
+  cd /
+  assertEquals "%K{004} %F{000}/ %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  cd /tmp/powerlevel9k-test/alice # $HOME
+  assertEquals "%K{004} %F{000}~ %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  cd /tmp/powerlevel9k-test/alice/devl/ert
+  assertEquals "%K{004} %F{000}~xXxdevlxXxert %k%F{004}%f " "$(__p9k_build_left_prompt)"
+
+  HOME=/tmp/powerlevel9k-test
+  P9K_DIR_SHORTEN_LENGTH=3
+  P9K_DIR_PATH_ABSOLUTE=true
+  cd /tmp/powerlevel9k-test/alice/devl/ert
+  assertEquals "%K{004} %F{000}${test_path_short}xXxalicexXxdevlxXxert %k%F{004}%f " "$(__p9k_build_left_prompt)"
+
+  P9K_DIR_PATH_ABSOLUTE=false
+  cd /tmp/powerlevel9k-test/alice/devl/ert
+  assertEquals "%K{004} %F{000}~xXxalicexXxdevlxXxert %k%F{004}%f " "$(__p9k_build_left_prompt)"
+
+  cd "${staring_point}"
   rm -fr /tmp/powerlevel9k-test
 }
 
