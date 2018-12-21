@@ -1,5 +1,7 @@
 # Background Jobs
 
+![](segment.png)
+
 ## Installation
 
 To use this segment, you need to activate it by adding `background_jobs` to your
