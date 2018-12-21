@@ -1,5 +1,7 @@
 # Command Execution Time
 
+![](segment.png)
+
 ## Installation
 
 To use this segment, you need to activate it by adding `command_execution_time` to your
