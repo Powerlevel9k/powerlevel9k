@@ -1,5 +1,7 @@
 # Detect Virtualization
 
+![](segment.png)
+
 ## Installation
 
 To use this segment, you need to activate it by adding `detect_virt` to your
