@@ -16,7 +16,7 @@
    id="svg8"
    inkscape:version="0.92.2 2405546, 2018-03-11"
    sodipodi:docname="segment.svg"
-   inkscape:export-filename="/home/dritter/Projekte/powerlevel9k/segments/aws_eb_env/segment.png"
+   inkscape:export-filename="/home/dritter/Projekte/powerlevel9k/segments/battery/segment.png"
    inkscape:export-xdpi="123"
    inkscape:export-ydpi="123">
   <defs
@@ -118,7 +118,7 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1.4"
-     inkscape:cx="-13.569414"
+     inkscape:cx="-205.35513"
      inkscape:cy="1095.4923"
      inkscape:document-units="mm"
      inkscape:current-layer="g1974"
@@ -175,27 +175,32 @@
            id="g1974"
            inkscape:export-xdpi="123"
            inkscape:export-ydpi="123">
-          <path
-             inkscape:export-ydpi="123"
+          <g
+             id="g3618"
              inkscape:export-xdpi="123"
-             style="opacity:1;fill:#19cb00;fill-opacity:1;stroke:none;stroke-width:0.17603815;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-             d="M 5.411822,9.7500388 H 40.01558 l 2.27445,2.6977832 -2.27445,2.697783 H 5.411822 l 2.27445,-2.697783 z"
-             id="path5215-3-3-3"
-             inkscape:connector-curvature="0"
-             sodipodi:nodetypes="ccccccc" />
-          <text
-             inkscape:export-ydpi="123.78439"
-             inkscape:export-xdpi="123.78439"
-             id="text7351-0"
-             y="13.93645"
-             x="9.5550785"
-             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.16982698px;line-height:1.25;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.10155749"
-             xml:space="preserve"><tspan
-               style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.16982698px;font-family:'Ubuntu Nerd Font';-inkscape-font-specification:'Ubuntu Nerd Font';fill:#000000;fill-opacity:1;stroke-width:0.10155749"
-               y="13.93645"
+             inkscape:export-ydpi="123">
+            <path
+               sodipodi:nodetypes="ccccccc"
+               inkscape:connector-curvature="0"
+               id="path5215-3-3-3"
+               d="M 5.411822,9.7500388 H 40.01558 l 2.27445,2.6977832 -2.27445,2.697783 H 5.411822 l 2.27445,-2.697783 z"
+               style="opacity:1;fill:#19cb00;fill-opacity:1;stroke:none;stroke-width:0.17603815;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+               inkscape:export-xdpi="123"
+               inkscape:export-ydpi="123" />
+            <text
+               xml:space="preserve"
+               style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.16982698px;line-height:1.25;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.10155749"
                x="9.5550785"
-               id="tspan7349-6"
-               sodipodi:role="line"> 100% (3:36)</tspan></text>
+               y="13.93645"
+               id="text7351-0"
+               inkscape:export-xdpi="123.78439"
+               inkscape:export-ydpi="123.78439"><tspan
+                 sodipodi:role="line"
+                 id="tspan7349-6"
+                 x="9.5550785"
+                 y="13.93645"
+                 style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.16982698px;font-family:'Ubuntu Nerd Font';-inkscape-font-specification:'Ubuntu Nerd Font';fill:#000000;fill-opacity:1;stroke-width:0.10155749"> 100% (3:36)</tspan></text>
+          </g>
         </g>
         <g
            id="g1969"
