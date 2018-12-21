@@ -1,5 +1,7 @@
 # Dir writable
 
+![](segment.png)
+
 ## Installation
 
 To use this segment, you need to activate it by adding `dir_writable` to your
