@@ -130,8 +130,9 @@ function testNewlineOnRpromptCanBeDisabled() {
 
   __p9k_prepare_prompts
 
+  local nl=$'\n'
   #               ╭─[39m[0m[49m[107m [30mworld [49m[97m[39m  ╰─ [1A[39m[0m[49m[97m[107m[30m rworld [00m[1B
-  local expected='╭─[39m[0m[49m[107m [30mworld [49m[97m[39m  ╰─ [1A[39m[0m[49m[97m[107m[30m rworld [00m[1B'
+  local expected="╭─[39m[0m[49m[107m [30mworld [49m[97m[39m ${nl}╰─ [1A[39m[0m[49m[97m[107m[30m rworld [00m[1B"
   local _real="$(print -P ${PROMPT}${RPROMPT})"
 
   # use this to debug output with special escape sequences
