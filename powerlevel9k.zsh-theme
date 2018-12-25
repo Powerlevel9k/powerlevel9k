@@ -311,6 +311,37 @@ prompt_anaconda() {
 }
 
 ################################################################
+# Gcloud active configuration
+
+prompt_gcloud() {
+  if [[ -f $HOME/.config/gcloud/active_config ]]; then
+    local gcloud_profile="$(cat ~/.config/gcloud/active_config)"
+    local bg_color="red"
+    local fg_color="white"
+
+    case "$gcloud_profile" in
+      *dev*)
+        bg_color="green"
+        fg_color="black"
+        ;;
+      *development*)
+        bg_color="green"
+        fg_color="black"
+        ;;
+      *)
+        bg_color="red"
+        fg_color="white"
+        ;;
+    esac
+
+    if [[ ! -z "$gcloud_profile" ]]; then
+      "$1_prompt_segment" "$0" "$2" $bg_color $fg_color "$gcloud_profile" 'GCLOUD_ICON'
+    fi
+
+  fi
+}
+
+################################################################
 # AWS Profile
 prompt_aws() {
   local aws_profile="${AWS_PROFILE:-$AWS_DEFAULT_PROFILE}"
