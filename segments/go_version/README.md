@@ -1,5 +1,7 @@
 # Go Version
 
+![](segment.png)
+
 ## Installation
 
 To use this segment, you need to activate it by adding `go_version` to your
