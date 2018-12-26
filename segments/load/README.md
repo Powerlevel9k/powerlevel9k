@@ -1,5 +1,7 @@
 # Load
 
+![](segement.png)
+
 ## Installation
 
 To use this segment, you need to activate it by adding `load` to your
