@@ -1,5 +1,7 @@
 # Disk Usage
 
+![](segment.png)
+
 ## Installation
 
 To use this segment, you need to activate it by adding `disk_usage` to your
