@@ -1,5 +1,7 @@
 # Java Version
 
+![](segment.png)
+
 ## Installation
 
 To use this segment, you need to activate it by adding `java_version` to your
