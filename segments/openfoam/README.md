@@ -1,4 +1,6 @@
-# OpenFOAM environmen
+# OpenFOAM environment
+
+![](segment.png)
 
 ## Installation
 
