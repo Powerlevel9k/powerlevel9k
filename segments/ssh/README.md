@@ -1,5 +1,7 @@
 # SSH
 
+![](segment.png)
+
 ## Installation
 
 To use this segment, you need to activate it by adding `ssh` to your
