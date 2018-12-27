@@ -1,5 +1,7 @@
 # PHP Version
 
+![](segment.png)
+
 ## Installation
 
 To use this segment, you need to activate it by adding `php_version` to your
