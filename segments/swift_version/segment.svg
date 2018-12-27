@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="210mm"
+   height="297mm"
+   viewBox="0 0 210 297"
+   version="1.1"
+   id="svg8"
+   inkscape:version="0.92.2 2405546, 2018-03-11"
+   sodipodi:docname="segment.svg"
+   inkscape:export-filename="/home/dritter/Projekte/powerlevel9k/segments/swift_version/segment.png"
+   inkscape:export-xdpi="123"
+   inkscape:export-ydpi="123">
+  <defs
+     id="defs2">
+    <marker
+       inkscape:stockid="DotS"
+       orient="auto"
+       refY="0.0"
+       refX="0.0"
+       id="DotS"
+       style="overflow:visible"
+       inkscape:isstock="true">
+      <path
+         id="path5305"
+         d="M -2.5,-1.0 C -2.5,1.7600000 -4.7400000,4.0 -7.5,4.0 C -10.260000,4.0 -12.5,1.7600000 -12.5,-1.0 C -12.5,-3.7600000 -10.260000,-6.0 -7.5,-6.0 C -4.7400000,-6.0 -2.5,-3.7600000 -2.5,-1.0 z "
+         style="fill-rule:evenodd;stroke:#f3f3f3;stroke-width:1pt;stroke-opacity:1;fill:#f3f3f3;fill-opacity:1"
+         transform="scale(0.2) translate(7.4, 1)" />
+    </marker>
+    <marker
+       inkscape:stockid="DotL"
+       orient="auto"
+       refY="0.0"
+       refX="0.0"
+       id="DotL"
+       style="overflow:visible"
+       inkscape:isstock="true">
+      <path
+         id="path5299"
+         d="M -2.5,-1.0 C -2.5,1.7600000 -4.7400000,4.0 -7.5,4.0 C -10.260000,4.0 -12.5,1.7600000 -12.5,-1.0 C -12.5,-3.7600000 -10.260000,-6.0 -7.5,-6.0 C -4.7400000,-6.0 -2.5,-3.7600000 -2.5,-1.0 z "
+         style="fill-rule:evenodd;stroke:#f3f3f3;stroke-width:1pt;stroke-opacity:1;fill:#f3f3f3;fill-opacity:1"
+         transform="scale(0.8) translate(7.4, 1)" />
+    </marker>
+    <marker
+       inkscape:stockid="DotS"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="DotS-6"
+       style="overflow:visible"
+       inkscape:isstock="true">
+      <path
+         inkscape:connector-curvature="0"
+         id="path5305-7"
+         d="m -2.5,-1 c 0,2.76 -2.24,5 -5,5 -2.76,0 -5,-2.24 -5,-5 0,-2.76 2.24,-5 5,-5 2.76,0 5,2.24 5,5 z"
+         style="fill:#f3f3f3;fill-opacity:1;fill-rule:evenodd;stroke:#f3f3f3;stroke-width:1.00000003pt;stroke-opacity:1"
+         transform="matrix(0.2,0,0,0.2,1.48,0.2)" />
+    </marker>
+    <marker
+       inkscape:stockid="DotS"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="DotS-62"
+       style="overflow:visible"
+       inkscape:isstock="true">
+      <path
+         inkscape:connector-curvature="0"
+         id="path5305-9"
+         d="m -2.5,-1 c 0,2.76 -2.24,5 -5,5 -2.76,0 -5,-2.24 -5,-5 0,-2.76 2.24,-5 5,-5 2.76,0 5,2.24 5,5 z"
+         style="fill:#f3f3f3;fill-opacity:1;fill-rule:evenodd;stroke:#f3f3f3;stroke-width:1.00000003pt;stroke-opacity:1"
+         transform="matrix(0.2,0,0,0.2,1.48,0.2)" />
+    </marker>
+    <marker
+       inkscape:stockid="DotS"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="DotS-6-4"
+       style="overflow:visible"
+       inkscape:isstock="true">
+      <path
+         inkscape:connector-curvature="0"
+         id="path5305-7-0"
+         d="m -2.5,-1 c 0,2.76 -2.24,5 -5,5 -2.76,0 -5,-2.24 -5,-5 0,-2.76 2.24,-5 5,-5 2.76,0 5,2.24 5,5 z"
+         style="fill:#f3f3f3;fill-opacity:1;fill-rule:evenodd;stroke:#f3f3f3;stroke-width:1.00000003pt;stroke-opacity:1"
+         transform="matrix(0.2,0,0,0.2,1.48,0.2)" />
+    </marker>
+    <marker
+       inkscape:stockid="DotS"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="DotS-6-4-4"
+       style="overflow:visible"
+       inkscape:isstock="true">
+      <path
+         inkscape:connector-curvature="0"
+         id="path5305-7-0-4"
+         d="m -2.5,-1 c 0,2.76 -2.24,5 -5,5 -2.76,0 -5,-2.24 -5,-5 0,-2.76 2.24,-5 5,-5 2.76,0 5,2.24 5,5 z"
+         style="fill:#f3f3f3;fill-opacity:1;fill-rule:evenodd;stroke:#f3f3f3;stroke-width:1.00000003pt;stroke-opacity:1"
+         transform="matrix(0.2,0,0,0.2,1.48,0.2)" />
+    </marker>
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="2.8"
+     inkscape:cx="135.02876"
+     inkscape:cy="1028.8297"
+     inkscape:document-units="mm"
+     inkscape:current-layer="g5431"
+     showgrid="false"
+     inkscape:window-width="1920"
+     inkscape:window-height="1015"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata5">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Ebene 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:10.58333302px;line-height:1.25;font-family:'Ubuntu Nerd Font';-inkscape-font-specification:'Ubuntu Nerd Font';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       x="9.0714283"
+       y="-35.052082"
+       id="text900"><tspan
+         sodipodi:role="line"
+         id="tspan898"
+         x="9.0714283"
+         y="-35.052082"
+         style="stroke-width:0.26458332">Fonts needed:</tspan><tspan
+         sodipodi:role="line"
+         x="9.0714283"
+         y="-21.822916"
+         style="stroke-width:0.26458332"
+         id="tspan902">- ubuntu</tspan><tspan
+         sodipodi:role="line"
+         x="9.0714283"
+         y="-8.59375"
+         style="stroke-width:0.26458332"
+         id="tspan904">- ubuntu Nerd Font</tspan></text>
+    <g
+       id="g1808">
+      <g
+         id="g1859"
+         inkscape:export-xdpi="123"
+         inkscape:export-ydpi="123">
+        <g
+           id="g2654"
+           inkscape:export-xdpi="123"
+           inkscape:export-ydpi="123">
+          <g
+             id="g2686"
+             inkscape:export-xdpi="123"
+             inkscape:export-ydpi="123">
+            <g
+               id="g2908"
+               inkscape:export-xdpi="123"
+               inkscape:export-ydpi="123">
+              <g
+                 id="g1659"
+                 inkscape:export-xdpi="123"
+                 inkscape:export-ydpi="123">
+                <g
+                   id="g1873"
+                   inkscape:export-xdpi="123"
+                   inkscape:export-ydpi="123"
+                   inkscape:export-filename="/home/dritter/Projekte/powerlevel9k/segments/java_version/segment.png">
+                  <g
+                     id="g1934"
+                     inkscape:export-xdpi="123"
+                     inkscape:export-ydpi="123">
+                    <g
+                       id="g2673"
+                       inkscape:export-xdpi="123"
+                       inkscape:export-ydpi="123"
+                       inkscape:export-filename="/home/dritter/Projekte/powerlevel9k/segments/nodeenv/segment.png">
+                      <g
+                         id="g2716"
+                         inkscape:export-xdpi="123"
+                         inkscape:export-ydpi="123">
+                        <g
+                           id="g2748"
+                           inkscape:export-xdpi="123"
+                           inkscape:export-ydpi="123">
+                          <g
+                             id="g2772"
+                             inkscape:export-xdpi="123"
+                             inkscape:export-ydpi="123">
+                            <g
+                               id="g2796"
+                               inkscape:export-xdpi="123"
+                               inkscape:export-ydpi="123">
+                              <g
+                                 id="g3653"
+                                 inkscape:export-xdpi="123"
+                                 inkscape:export-ydpi="123">
+                                <g
+                                   id="g3716"
+                                   inkscape:export-xdpi="123"
+                                   inkscape:export-ydpi="123">
+                                <g
+                                   id="g3740"
+                                   inkscape:export-xdpi="123"
+                                   inkscape:export-ydpi="123">
+                                <g
+                                   id="g3764">
+                                <g
+                                   id="g3843"
+                                   inkscape:export-xdpi="123"
+                                   inkscape:export-ydpi="123">
+                                <g
+                                   id="g5335"
+                                   inkscape:export-xdpi="123"
+                                   inkscape:export-ydpi="123">
+                                <g
+                                   id="g5359"
+                                   inkscape:export-xdpi="123"
+                                   inkscape:export-ydpi="123">
+                                <g
+                                   id="g5383"
+                                   inkscape:export-xdpi="123"
+                                   inkscape:export-ydpi="123">
+                                <g
+                                   id="g5407"
+                                   inkscape:export-xdpi="123"
+                                   inkscape:export-ydpi="123">
+                                <g
+                                   id="g5431"
+                                   inkscape:export-xdpi="123"
+                                   inkscape:export-ydpi="123">
+                                <g
+                                   id="g5455"
+                                   inkscape:export-xdpi="123"
+                                   inkscape:export-ydpi="123">
+                                <path
+                                   sodipodi:nodetypes="ccccccc"
+                                   inkscape:connector-curvature="0"
+                                   id="path5215-3-3-3-0-6-2"
+                                   d="M 6.3181294,5.4458337 H 23.459386 l 2.274448,2.697784 -2.274448,2.6977833 H 6.3181294 l 2.27445,-2.6977833 z"
+                                   style="opacity:1;fill:#cb1ed1;fill-opacity:1;stroke:none;stroke-width:0.17603815;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+                                   inkscape:export-xdpi="123"
+                                   inkscape:export-ydpi="123" />
+                                <text
+                                   xml:space="preserve"
+                                   style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.16982698px;line-height:1.25;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.10155749"
+                                   x="9.0316181"
+                                   y="9.5905476"
+                                   id="text7351-0-3-2-3"
+                                   inkscape:export-xdpi="123.78439"
+                                   inkscape:export-ydpi="123.78439"><tspan
+                                   sodipodi:role="line"
+                                   id="tspan7349-6-6-6-75"
+                                   x="9.0316181"
+                                   y="9.5905476"
+                                   style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.16982698px;font-family:'Ubuntu Nerd Font';-inkscape-font-specification:'Ubuntu Nerd Font';fill:#ffffff;fill-opacity:1;stroke-width:0.10155749"> 3.0.1</tspan></text>
+                                </g>
+                                </g>
+                                </g>
+                                </g>
+                                </g>
+                                </g>
+                                </g>
+                                </g>
+                                </g>
+                                </g>
+                              </g>
+                            </g>
+                          </g>
+                        </g>
+                      </g>
+                    </g>
+                  </g>
+                </g>
+              </g>
+            </g>
+          </g>
+        </g>
+      </g>
+    </g>
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer2"
+     inkscape:label="P9K_Logo" />
+</svg>

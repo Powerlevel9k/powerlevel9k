@@ -1,5 +1,7 @@
 # Swift Version
 
+![](segment.png)
+
 ## Installation
 
 To use this segment, you need to activate it by adding `swift_version` to your
