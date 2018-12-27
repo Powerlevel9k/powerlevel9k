@@ -1,5 +1,7 @@
 # OS icon
 
+![](segment.png)
+
 ## Installation
 
 To use this segment, you need to activate it by adding `os_icon` to your
