@@ -1,5 +1,7 @@
 # Rust Version
 
+![](segment.png)
+
 ## Installation
 
 To use this segment, you need to activate it by adding `rust_version` to your
