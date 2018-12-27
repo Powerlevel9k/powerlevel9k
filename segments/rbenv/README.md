@@ -1,5 +1,7 @@
 # Rbenv
 
+![](segment.png)
+
 ## Installation
 
 To use this segment, you need to activate it by adding `rbenv` to your
