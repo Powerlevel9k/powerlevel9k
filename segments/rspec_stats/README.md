@@ -1,5 +1,7 @@
 # Rspec Stats
 
+![](segment.png)
+
 ## Installation
 
 To use this segment, you need to activate it by adding `rspec_stats` to your
