@@ -1,5 +1,7 @@
 # Root indicator
 
+![](segment.png)
+
 ## Installation
 
 To use this segment, you need to activate it by adding `root_indicator` to your

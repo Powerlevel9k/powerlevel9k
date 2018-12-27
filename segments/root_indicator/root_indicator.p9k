@@ -11,7 +11,7 @@
   # Register segment
   # Parameters:
   #   segment_name  context  background  foreground  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
-  #                                                                       ⚡                                                              
+  #                                                                       ⚡                                                           
   p9k::register_segment "ROOT_INDICATOR" "" "${DEFAULT_COLOR}" "yellow"  $'\u26A1'  $'\uE801'  $'\uF201'  '\u'${CODEPOINT_OF_OCTICONS_ZAP}  $'\uF0E7'
 }
 
