@@ -1,5 +1,7 @@
 # Stack Project
 
+![](segment.png)
+
 ## Installation
 
 To use this segment, you need to activate it by adding `stack_project` to your
