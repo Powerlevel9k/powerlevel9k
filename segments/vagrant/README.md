@@ -1,5 +1,7 @@
 # Vagrant
 
+![](segment.png)
+
 ## Installation
 
 To use this segment, you need to activate it by adding `vagrant` to your
