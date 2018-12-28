@@ -1,5 +1,7 @@
 # Symfony Version
 
+![](segment.png)
+
 ## Installation
 
 To use this segment, you need to activate it by adding `symfony2_version` to your
