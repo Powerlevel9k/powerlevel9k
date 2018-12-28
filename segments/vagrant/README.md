@@ -24,8 +24,13 @@ You can customize these strings with:
 
 You can change the foreground and background color of this segment by setting
 ```
-P9K_VAGRANT_FOREGROUND='red'
-P9K_VAGRANT_BACKGROUND='blue'
+# VM is running
+P9K_VAGRANT_DOWN_FOREGROUND='green'
+P9K_VAGRANT_DOWN_BACKGROUND='magenta'
+
+# VM is turned off
+P9K_VAGRANT_DOWN_FOREGROUND='red'
+P9K_VAGRANT_DOWN_BACKGROUND='blue'
 ```
 
 ### Customize Icon
