@@ -1,5 +1,7 @@
 # Symfony2 Tests
 
+![](segment.png)
+
 ## Installation
 
 To use this segment, you need to activate it by adding `symfony2_tests` to your
