@@ -1,5 +1,7 @@
 # Vi Mode
 
+![](segment.png)
+
 ## Installation
 
 To use this segment, you need to activate it by adding `vi_mode` to your
