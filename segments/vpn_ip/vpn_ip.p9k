@@ -11,7 +11,7 @@
   # Register segment
   # Parameters:
   #   segment_name  context  background  foreground  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
-  #                                                                                                                  
+  #                                                                                                                          
   p9k::register_segment "VPN_IP" "" "cyan" "${DEFAULT_COLOR}"  '(vpn)'  '(vpn)'  $'\uF023'  '\u'${CODEPOINT_OF_AWESOME_LOCK}  $'\uF023'
 
   ################################################################

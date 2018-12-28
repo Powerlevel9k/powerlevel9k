@@ -1,5 +1,7 @@
 # VPN IP
 
+![](segment.png)
+
 ## Installation
 
 To use this segment, you need to activate it by adding `vpn_ip` to your
