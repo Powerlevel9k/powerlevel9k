@@ -1,5 +1,7 @@
 # Time
 
+![](segment.png)
+
 ## Installation
 
 To use this segment, you need to activate it by adding `time` to your
