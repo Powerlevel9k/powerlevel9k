@@ -87,9 +87,9 @@
   p9k::register_icon "VCS_BOOKMARK"          $'\u263F'   $'\uE87B'   $'\uF27B'   '\u'${CODEPOINT_OF_OCTICONS_BOOKMARK}             $'\uF461 '
   #                                                                                                                             
   p9k::register_icon "VCS_COMMIT"            ''          $'\uE821 '  $'\uF221 '  '\u'${CODEPOINT_OF_OCTICONS_GIT_COMMIT}' '        $'\uE729 '
-  #                                                                                                                             
+  #                                                                                                                             
   p9k::register_icon "VCS_CLOBBERED_FOLDER"  ''          $'\uE818'   $'\uF115'   '\u'${CODEPOINT_OF_AWESOME_FOLDER_O}              $'\uF115'
-  #                                          ✘           ✘           ✘                                                             
+  #                                          ✘           ✘           ✘                                                            
   p9k::register_icon "VCS_ERROR"             $'\u2718'   $'\u2718'   $'\u2718'   '\u'${CODEPOINT_OF_AWESOME_TIMES}                 $'\uF00D'
 
   # Hide branch icon if user wants it hidden
