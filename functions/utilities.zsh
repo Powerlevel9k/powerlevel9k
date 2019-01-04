@@ -9,9 +9,7 @@
 # Exits with 0 if a variable has been previously defined (even if empty)
 # Takes the name of a variable that should be checked.
 function defined() {
-  local varname="$1"
-
-  typeset -p "$varname" > /dev/null 2>&1
+  [[ ! -z "${(tP)1}" ]]
 }
 
 # Given the name of a variable and a default value, sets the variable
@@ -39,6 +37,7 @@ printSizeHumanReadable() {
 
   # if the base is not Bytes
   if [[ -n $2 ]]; then
+    local idx
     for idx in "${extension[@]}"; do
       if [[ "$2" == "$idx" ]]; then
         break
@@ -85,7 +84,7 @@ case $(uname) in
       OS='OSX'
       OS_ICON=$(print_icon 'APPLE_ICON')
       ;;
-    CYGWIN_NT-*)
+    CYGWIN_NT-* | MSYS_NT-*)
       OS='Windows'
       OS_ICON=$(print_icon 'WINDOWS_ICON')
       ;;
@@ -103,7 +102,67 @@ case $(uname) in
       ;;
     Linux)
       OS='Linux'
-      OS_ICON=$(print_icon 'LINUX_ICON')
+      os_release_id="$(grep -E '^ID=([a-zA-Z]*)' /etc/os-release | cut -d '=' -f 2)"
+      case "$os_release_id" in
+        *arch*)
+        OS_ICON=$(print_icon 'LINUX_ARCH_ICON')
+        ;;
+        *debian*)
+        OS_ICON=$(print_icon 'LINUX_DEBIAN_ICON')
+        ;;
+       *ubuntu*)
+        OS_ICON=$(print_icon 'LINUX_UBUNTU_ICON')
+        ;;
+       *elementary*)
+        OS_ICON=$(print_icon 'LINUX_ELEMENTARY_ICON')
+        ;;
+       *fedora*)
+        OS_ICON=$(print_icon 'LINUX_FEDORA_ICON')
+        ;;
+       *coreos*)
+        OS_ICON=$(print_icon 'LINUX_COREOS_ICON')
+        ;;
+       *gentoo*)
+        OS_ICON=$(print_icon 'LINUX_GENTOO_ICON')
+        ;;
+       *mageia*)
+        OS_ICON=$(print_icon 'LINUX_MAGEIA_ICON')
+        ;;
+       *centos*)
+        OS_ICON=$(print_icon 'LINUX_CENTOS_ICON')
+        ;;
+       *opensuse*|*tumbleweed*)
+        OS_ICON=$(print_icon 'LINUX_OPENSUSE_ICON')
+        ;;
+       *sabayon*)
+        OS_ICON=$(print_icon 'LINUX_SABAYON_ICON')
+        ;;
+       *slackware*)
+        OS_ICON=$(print_icon 'LINUX_SLACKWARE_ICON')
+        ;;
+       *linuxmint*)
+        OS_ICON=$(print_icon 'LINUX_MINT_ICON')
+        ;;
+       *alpine*)
+        OS_ICON=$(print_icon 'LINUX_ALPINE_ICON')
+        ;;
+       *aosc*)
+        OS_ICON=$(print_icon 'LINUX_AOSC_ICON')
+        ;;
+       *nixos*)
+        OS_ICON=$(print_icon 'LINUX_NIXOS_ICON')
+        ;;
+       *devuan*)
+        OS_ICON=$(print_icon 'LINUX_DEVUAN_ICON')
+        ;;
+       *manjaro*)
+        OS_ICON=$(print_icon 'LINUX_MANJARO_ICON')
+        ;;
+        *)
+        OS='Linux'
+        OS_ICON=$(print_icon 'LINUX_ICON')
+        ;;
+      esac
 
       # Check if we're running on Android
       case $(uname -o 2>/dev/null) in
@@ -210,6 +269,82 @@ function segmentShouldBeJoined() {
     return 0
   else
     return 1
+  fi
+}
+
+################################################################
+# Given a directory path, truncate it according to the settings.
+# Parameters:
+#   * $1 Path: string - the directory path to be truncated
+#   * $2 Length: integer - length to truncate to
+#   * $3 Delimiter: string - the delimiter to use
+#   * $4 From: string - "right" | "middle". If omited, assumes right.
+function truncatePath() {
+  # if the current path is not 1 character long (e.g. "/" or "~")
+  if (( ${#1} > 1 )); then
+    # convert $2 from string to integer
+    2=$(( $2 ))
+    # set $3 to "" if not defined
+    [[ -z $3 ]] && 3="" || 3=$(echo -n $3)
+    # set $4 to "right" if not defined
+    [[ -z $4 ]] && 4="right"
+    # create a variable for the truncated path.
+    local trunc_path
+    # if the path is in the home folder, add "~/" to the start otherwise "/"
+    [[ $1 == "~"* ]] && trunc_path='~/' || trunc_path='/'
+    # split the path into an array using "/" as the delimiter
+    local paths=$1
+    paths=(${(s:/:)${paths//"~\/"/}})
+    # declare locals for the directory being tested and its length
+    local test_dir test_dir_length
+    # do the needed truncation
+    case $4 in
+      right)
+        # include the delimiter length in the threshhold
+        local threshhold=$(( $2 + ${#3} ))
+        # loop through the paths
+        for (( i=1; i<${#paths}; i++ )); do
+          # get the current directory value
+          test_dir=$paths[$i]
+          test_dir_length=${#test_dir}
+          # only truncate if the resulting truncation will be shorter than
+          # the truncation + delimiter length and at least 3 characters
+          if (( $test_dir_length > $threshhold )) && (( $test_dir_length > 3 )); then
+            # use the first $2 characters and the delimiter
+            trunc_path+="${test_dir:0:$2}$3/"
+          else
+            # use the full path
+            trunc_path+="${test_dir}/"
+          fi
+        done
+      ;;
+      middle)
+        # we need double the length for start and end truncation + delimiter length
+        local threshhold=$(( $2 * 2 ))
+        # create a variable for the start of the end truncation
+        local last_pos
+        # loop through the paths
+        for (( i=1; i<${#paths}; i++ )); do
+          # get the current directory value
+          test_dir=$paths[$i]
+          test_dir_length=${#test_dir}
+          # only truncate if the resulting truncation will be shorter than
+          # the truncation + delimiter length
+          if (( $test_dir_length > $threshhold )); then
+            # use the first $2 characters, the delimiter and the last $2 characters
+            last_pos=$(( $test_dir_length - $2 ))
+            trunc_path+="${test_dir:0:$2}$3${test_dir:$last_pos:$test_dir_length}/"
+          else
+            # use the full path
+            trunc_path+="${test_dir}/"
+          fi
+        done
+      ;;
+    esac
+    # return the truncated path + the current directory
+    echo $trunc_path${1:t}
+  else # current path is 1 character long (e.g. "/" or "~")
+    echo $1
   fi
 }
 
