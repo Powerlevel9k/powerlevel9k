@@ -1366,7 +1366,7 @@ prompt_rspec_stats() {
 # Segment to display Ruby Version Manager information
 prompt_rvm() {
   local rvm_prompt
-  rvm_prompt=$(rvm-prompt)
+  rvm_prompt=$(rvm-prompt v p)
   if [ "$rvm_prompt" != "" ]; then
     "$1_prompt_segment" "$0" "$2" "240" "$DEFAULT_COLOR" "$rvm_prompt $(print_icon 'RUBY_ICON') "
   fi
