@@ -8,6 +8,13 @@ To use this segment, you need to activate it by adding `vcs` to your
 `P9K_LEFT_PROMPT_ELEMENTS` or `P9K_RIGHT_PROMPT_ELEMENTS` array, depending
 where you want to show this segment.
 
+## States
+
+This segment can have different states. You can customize the different states
+as you wish. Here is a quick overview:
+
+![](states.png)
+
 ## Configuration
 
 By default, the `vcs` segment will provide quite a bit of information. Further
