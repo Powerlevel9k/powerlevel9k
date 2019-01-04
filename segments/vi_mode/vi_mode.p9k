@@ -14,7 +14,7 @@
   p9k::register_segment  "VI_MODE" "NORMAL" "${DEFAULT_COLOR}" "white"  ''  ''  ''  ''  ''
   p9k::register_segment  "VI_MODE" "INSERT" "${DEFAULT_COLOR}" "blue"   ''  ''  ''  ''  ''
   p9k::register_segment  "VI_MODE" "SEARCH" "${DEFAULT_COLOR}" "purple" ''  ''  ''  ''  ''
-  p9k::register_segment  "VI_MODE" "VISUAL" "${DEFAULT_COLOR}" "orange" ''  ''  ''  ''  ''
+  p9k::register_segment  "VI_MODE" "VISUAL" "${DEFAULT_COLOR}" "orange1" ''  ''  ''  ''  ''
 
   ################################################################
   # Register segment default values
