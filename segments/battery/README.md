@@ -11,7 +11,7 @@ where you want to show this segment.
 ## Configuration
 
 The default settings for this segment will display your current battery status (fails gracefully on
-systems without a battery). It is supported on both OSX and Linux (note that it requires `acpi` on Linux).
+systems without a battery). It is supported on both OSX and Linux.
 
 | Variable | Default Value | Description |
 |----------|---------------|-------------|
