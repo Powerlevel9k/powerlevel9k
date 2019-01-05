@@ -105,6 +105,7 @@ Mercurial hooks (`P9K_VCS_HG_HOOKS`):
 | hg-bookmarks       | Check for Mercurial Bookmarks. |
 
 SVN hooks (`P9K_VCS_SVN_HOOKS`):
+
 | Hook               | Description
 |--------------------|----------------------------------------------------|
 | vcs-detect-changes | General check for changed files and responsible for selecting a proper icon according to the remote url. |
