@@ -22,10 +22,10 @@ it displays `UP`, when VM is running or `DOWN` when VM is stopped.
 
 You can customize these strings with:
 
-| Variable           | Default Value | Description   |
-|--------------------|---------------|---------------|
-| `P9K_VAGRANT_UP`   | `UP`          | VM is running |
-| `P9K_VAGRANT_DOWN` | `DOWN`        | VM is stopped |
+| Variable                  | Default Value | Description   |
+|---------------------------|---------------|---------------|
+| `P9K_VAGRANT_UP_STRING`   | `UP`          | VM is running |
+| `P9K_VAGRANT_DOWN_STRING` | `DOWN`        | VM is stopped |
 
 ### Color Customization
 
