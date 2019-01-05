@@ -223,13 +223,13 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="2.8"
-     inkscape:cx="372.5237"
+     inkscape:cx="276.63084"
      inkscape:cy="1015.9632"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
-     inkscape:window-width="3440"
-     inkscape:window-height="1381"
+     inkscape:window-width="1920"
+     inkscape:window-height="1015"
      inkscape:window-x="0"
      inkscape:window-y="0"
      inkscape:window-maximized="1" />
@@ -241,7 +241,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -258,78 +258,6 @@
        y="-0.14548607"
        inkscape:export-xdpi="123"
        inkscape:export-ydpi="123" />
-    <path
-       sodipodi:nodetypes="ccccccc"
-       inkscape:connector-curvature="0"
-       id="path5215"
-       d="M -32.091208,-88.753781 H 76.420214 l 10.58333,18.70887 -10.58333,18.70887 H -32.091208 l 10.58333,-18.70887 z"
-       style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
-    <path
-       sodipodi:nodetypes="ccccccc"
-       inkscape:connector-curvature="0"
-       id="path5215-6"
-       d="M 302.76265,-89.471738 H 194.25123 l -10.58333,18.70887 10.58333,18.70887 h 108.51142 l -10.58333,-18.70887 z"
-       style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:10.58333302px;line-height:1.25;font-family:'Ubuntu Nerd Font';-inkscape-font-specification:'Ubuntu Nerd Font';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
-       x="9.0714283"
-       y="-35.052082"
-       id="text900"><tspan
-         sodipodi:role="line"
-         id="tspan898"
-         x="9.0714283"
-         y="-35.052082"
-         style="stroke-width:0.26458332">Fonts needed:</tspan><tspan
-         sodipodi:role="line"
-         x="9.0714283"
-         y="-21.822916"
-         style="stroke-width:0.26458332"
-         id="tspan902">- ubuntu</tspan><tspan
-         sodipodi:role="line"
-         x="9.0714283"
-         y="-8.59375"
-         style="stroke-width:0.26458332"
-         id="tspan904">- ubuntu Nerd Font</tspan></text>
-    <path
-       sodipodi:nodetypes="ccccccc"
-       inkscape:connector-curvature="0"
-       id="path5215-3-3-3"
-       d="m 3.502414,7.229299 h 22.432924 l 2.27445,2.697784 -2.27445,2.697783 H 3.502414 l 2.27445,-2.697783 z"
-       style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.17603815;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.98617601px;line-height:1.25;font-family:'Noto Sans';-inkscape-font-specification:'Noto Sans';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.0996544"
-       x="6.9806895"
-       y="11.478258"
-       id="text7409-6"><tspan
-         sodipodi:role="line"
-         id="tspan7407-1"
-         x="6.9806895"
-         y="11.478258"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.16982698px;font-family:'Ubuntu Nerd Font';-inkscape-font-specification:'Ubuntu Nerd Font';stroke-width:0.0996544">NORMAL</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.27445078px;line-height:1.25;font-family:Ubuntu;-inkscape-font-specification:Ubuntu;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.05686127"
-       x="71.723953"
-       y="11.250054"
-       id="text11915-6-6"><tspan
-         sodipodi:role="line"
-         x="71.723953"
-         y="11.250054"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Ubuntu;-inkscape-font-specification:Ubuntu;fill:#ffffff;fill-opacity:1;stroke-width:0.05686127"
-         id="tspan11917-0-3">vi_mode is in  'normal' mode</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:2.27445078px;line-height:1.25;font-family:Ubuntu;-inkscape-font-specification:'Ubuntu Bold';letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.05686127"
-       x="32.061024"
-       y="10.72314"
-       id="text5234-5-6"><tspan
-         sodipodi:role="line"
-         id="tspan5232-4-9"
-         x="32.061024"
-         y="10.72314"
-         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:3.03260112px;font-family:Ubuntu;-inkscape-font-specification:'Ubuntu Bold';fill:#ffffff;fill-opacity:1;stroke-width:0.05686127">P9K_VI_MODE_NORMAL_</tspan></text>
     <g
        id="g1676"
        inkscape:export-xdpi="123"
@@ -557,6 +485,39 @@
         </g>
       </g>
     </g>
+    <path
+       sodipodi:nodetypes="ccccccc"
+       inkscape:connector-curvature="0"
+       id="path5215"
+       d="M -32.091208,-88.753781 H 76.420214 l 10.58333,18.70887 -10.58333,18.70887 H -32.091208 l 10.58333,-18.70887 z"
+       style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <path
+       sodipodi:nodetypes="ccccccc"
+       inkscape:connector-curvature="0"
+       id="path5215-6"
+       d="M 302.76265,-89.471738 H 194.25123 l -10.58333,18.70887 10.58333,18.70887 h 108.51142 l -10.58333,-18.70887 z"
+       style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:10.58333302px;line-height:1.25;font-family:'Ubuntu Nerd Font';-inkscape-font-specification:'Ubuntu Nerd Font';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       x="9.0714283"
+       y="-35.052082"
+       id="text900"><tspan
+         sodipodi:role="line"
+         id="tspan898"
+         x="9.0714283"
+         y="-35.052082"
+         style="stroke-width:0.26458332">Fonts needed:</tspan><tspan
+         sodipodi:role="line"
+         x="9.0714283"
+         y="-21.822916"
+         style="stroke-width:0.26458332"
+         id="tspan902">- ubuntu</tspan><tspan
+         sodipodi:role="line"
+         x="9.0714283"
+         y="-8.59375"
+         style="stroke-width:0.26458332"
+         id="tspan904">- ubuntu Nerd Font</tspan></text>
   </g>
   <g
      inkscape:groupmode="layer"
