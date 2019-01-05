@@ -42,5 +42,15 @@ P9K_VAGRANT_DOWN_BACKGROUND='blue'
 
 ### Customize Icon
 
-The main Icon can be changed by setting `P9K_VAGRANT_ICON="my_icon"`. To change the
-icon color only, set `P9K_VAGRANT_ICON_COLOR="red"`.
+The main Icon of this segment depends on its state.
+It can be changed by setting:
+```
+P9K_VAGRANT_UP_ICON="my_icon"
+P9K_VAGRANT_DOWN_ICON="my_icon"
+```
+
+The Icon color accordingly:
+```
+P9K_VAGRANT_UP_ICON_COLOR="red"
+P9K_VAGRANT_DOWN_ICON_COLOR="red"
+```
