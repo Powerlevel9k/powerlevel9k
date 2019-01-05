@@ -25,7 +25,7 @@ you are using the [ZSH Line Editor](http://zsh.sourceforge.net/Doc/Release/Zsh-L
 | Variable | Default Value | Description |
 |----------|---------------|-------------|
 |`P9K_VI_MODE_INSERT_STRING`|`"INSERT"`|String to display while in 'Insert' mode.|
-|`P9K_VI_MODE_COMMAND_STRING`|`"NORMAL"`|String to display while in 'Command' mode.|
+|`P9K_VI_MODE_NORMAL_STRING`|`"NORMAL"`|String to display while in 'Command' mode.|
 |`P9K_VI_MODE_SEARCH_STRING`|`"SEARCH"`|String to display while in 'Search' mode (requires the [vim-mode](https://github.com/softmoth/zsh-vim-mode) plugin).|
 |`P9K_VI_MODE_VISUAL_STRING`|`"VISUAL"`|String to display while in 'Visual' mode.|
 
