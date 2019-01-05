@@ -101,11 +101,11 @@ function testVagrantSegmentWithChangedString() {
   local vagrantId="xxx234"
   mockVagrantFolder "${vagrantId}"
 
-  local P9K_VAGRANT_DOWN="Nope"
+  local P9K_VAGRANT_DOWN_STRING="Nope"
   assertEquals "%K{001} %F{000}V%f %F{000}Nope %k%F{001}%f " "$(__p9k_build_left_prompt)"
 
   mockVBoxManage "${vagrantId}"
-  local P9K_VAGRANT_UP="Yep"
+  local P9K_VAGRANT_UP_STRING="Yep"
   assertEquals "%K{002} %F{000}V%f %F{000}Yep %k%F{002}%f " "$(__p9k_build_left_prompt)"
 }
 
