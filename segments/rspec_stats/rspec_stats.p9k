@@ -22,6 +22,6 @@ prompt_rspec_stats() {
     code_amount=$(ls -1 app/**/*.rb | wc -l)
     tests_amount=$(ls -1 spec/**/*.rb | wc -l)
 
-    build_test_stats "$1" "$0" "$2" "$code_amount" "$tests_amount" "RSpec" 'TEST_ICON'
+    build_test_stats "$1" "$0" "$2" "$code_amount" "$tests_amount" "RSpec"
   fi
 }
