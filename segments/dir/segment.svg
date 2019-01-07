@@ -16,7 +16,7 @@
    id="svg8"
    inkscape:version="0.92.2 2405546, 2018-03-11"
    sodipodi:docname="segment.svg"
-   inkscape:export-filename="/home/dritter/Projekte/powerlevel9k/segments/date/segment.png"
+   inkscape:export-filename="/home/dritter/Projekte/powerlevel9k/segments/dir/segment.png"
    inkscape:export-xdpi="123"
    inkscape:export-ydpi="123">
   <defs
@@ -118,7 +118,7 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1.4"
-     inkscape:cx="178.2163"
+     inkscape:cx="-13.569414"
      inkscape:cy="1095.4923"
      inkscape:document-units="mm"
      inkscape:current-layer="g2686"
@@ -136,7 +136,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -180,39 +180,13 @@
              inkscape:export-xdpi="123"
              inkscape:export-ydpi="123">
             <g
-               id="g2898"
+               id="g5899"
                inkscape:export-xdpi="123"
                inkscape:export-ydpi="123">
               <path
                  inkscape:export-ydpi="123"
                  inkscape:export-xdpi="123"
-                 style="opacity:1;fill:#00afff;fill-opacity:1;stroke:none;stroke-width:0.17603815;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-                 d="M 5.8396211,10.335815 H 39.914212 l 2.27445,2.697784 -2.27445,2.697783 H 5.8396211 l 2.27445,-2.697783 z"
-                 id="path5215-3-3-3-0-6"
-                 inkscape:connector-curvature="0"
-                 sodipodi:nodetypes="ccccccc" />
-              <text
-                 inkscape:export-ydpi="123.78439"
-                 inkscape:export-xdpi="123.78439"
-                 id="text7351-0-3-2"
-                 y="14.584774"
-                 x="9.2434807"
-                 style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.16982698px;line-height:1.25;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';letter-spacing:0px;word-spacing:0px;fill:#020200;fill-opacity:1;stroke:none;stroke-width:0.10155749"
-                 xml:space="preserve"><tspan
-                   style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.16982698px;font-family:'Ubuntu Nerd Font';-inkscape-font-specification:'Ubuntu Nerd Font';fill:#020200;fill-opacity:1;stroke-width:0.10155749"
-                   y="14.584774"
-                   x="9.2434807"
-                   id="tspan7349-6-6-6"
-                   sodipodi:role="line">  ~/subfolder</tspan></text>
-            </g>
-            <g
-               id="g2893"
-               inkscape:export-xdpi="123"
-               inkscape:export-ydpi="123">
-              <path
-                 inkscape:export-ydpi="123"
-                 inkscape:export-xdpi="123"
-                 style="opacity:1;fill:#00afff;fill-opacity:1;stroke:none;stroke-width:0.17603815;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+                 style="opacity:1;fill:#0d73cc;fill-opacity:1;stroke:none;stroke-width:0.17603815;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
                  d="M 5.8396211,4.9402489 H 20.335046 l 2.274448,2.697784 -2.274448,2.6977821 H 5.8396211 l 2.27445,-2.6977821 z"
                  id="path5215-3-3-3-0-6-1"
                  inkscape:connector-curvature="0"
@@ -230,58 +204,6 @@
                    x="9.2434807"
                    id="tspan7349-6-6-6-7"
                    sodipodi:role="line">  ~</tspan></text>
-            </g>
-            <g
-               id="g2903"
-               inkscape:export-xdpi="123"
-               inkscape:export-ydpi="123">
-              <path
-                 inkscape:export-ydpi="123"
-                 inkscape:export-xdpi="123"
-                 style="opacity:1;fill:#00afff;fill-opacity:1;stroke:none;stroke-width:0.17603815;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-                 d="m 5.83962,15.731382 h 32.487092 l 2.274448,2.697784 -2.274448,2.697783 H 5.83962 l 2.27445,-2.697783 z"
-                 id="path5215-3-3-3-0-6-9"
-                 inkscape:connector-curvature="0"
-                 sodipodi:nodetypes="ccccccc" />
-              <text
-                 inkscape:export-ydpi="123.78439"
-                 inkscape:export-xdpi="123.78439"
-                 id="text7351-0-3-2-2"
-                 y="19.980341"
-                 x="9.2434807"
-                 style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.16982698px;line-height:1.25;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';letter-spacing:0px;word-spacing:0px;fill:#020200;fill-opacity:1;stroke:none;stroke-width:0.10155749"
-                 xml:space="preserve"><tspan
-                   style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.16982698px;font-family:'Ubuntu Nerd Font';-inkscape-font-specification:'Ubuntu Nerd Font';fill:#020200;fill-opacity:1;stroke-width:0.10155749"
-                   y="19.980341"
-                   x="9.2434807"
-                   id="tspan7349-6-6-6-0"
-                   sodipodi:role="line">  /etc/conf.d</tspan></text>
-            </g>
-            <g
-               id="g2908"
-               inkscape:export-xdpi="123"
-               inkscape:export-ydpi="123">
-              <path
-                 inkscape:export-ydpi="123"
-                 inkscape:export-xdpi="123"
-                 style="opacity:1;fill:#00afff;fill-opacity:1;stroke:none;stroke-width:0.17603815;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-                 d="m 5.83962,21.126949 h 53.653759 l 2.274448,2.697784 -2.274448,2.697783 H 5.83962 l 2.27445,-2.697783 z"
-                 id="path5215-3-3-3-0-6-2"
-                 inkscape:connector-curvature="0"
-                 sodipodi:nodetypes="ccccccc" />
-              <text
-                 inkscape:export-ydpi="123.78439"
-                 inkscape:export-xdpi="123.78439"
-                 id="text7351-0-3-2-3"
-                 y="25.375908"
-                 x="9.2434807"
-                 style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.16982698px;line-height:1.25;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';letter-spacing:0px;word-spacing:0px;fill:#020200;fill-opacity:1;stroke:none;stroke-width:0.10155749"
-                 xml:space="preserve"><tspan
-                   style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.16982698px;font-family:'Ubuntu Nerd Font';-inkscape-font-specification:'Ubuntu Nerd Font';fill:#020200;fill-opacity:1;stroke-width:0.10155749"
-                   y="25.375908"
-                   x="9.2434807"
-                   id="tspan7349-6-6-6-75"
-                   sodipodi:role="line">  ~/folder_not_writable</tspan></text>
             </g>
           </g>
         </g>
