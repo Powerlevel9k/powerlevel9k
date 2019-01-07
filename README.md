@@ -118,6 +118,7 @@ The segments that are currently available are:
     * `node_version` - Show the version number of the installed Node.js.
     * `nodeenv` - [nodeenv](https://github.com/ekalinin/nodeenv) prompt for displaying node version and environment name.
     * `nvm` - Show the version of Node that is currently active, if it differs from the version used by NVM
+    * [`nodenv`](#nodenv) - Node environment information using `nodenv` (if one is active).
 * **PHP Segments:**
     * `php_version` - Show the current PHP version.
     * `laravel_version` - Show the current Laravel version.
@@ -577,6 +578,19 @@ Variable | Default Value | Description |
 | Variable | Default Value | Description |
 |----------|---------------|-------------|
 |`P9K_RBENV_PROMPT_ALWAYS_SHOW`|`false`|Set to true if you wish to show the rbenv segment even if the current Ruby version is the same as the global Ruby version|
+
+##### nodenv
+
+This segment shows the version of Node being used when using `nodenv` to change your current Node stack.
+
+It figures out the version being used by taking the output of the `nodenv version-name` command.
+
+* If `nodenv` is not in $PATH, nothing will be shown.
+* By default, if the current local Node version is the same as the global Node version, nothing will be shown. See the configuration variable, below, to modify this behavior.
+
+| Variable | Default Value | Description |
+|----------|---------------|-------------|
+|`P9K_NODENV_PROMPT_ALWAYS_SHOW`|`false`|Set to true if you wish to show the nodenv segment even if the current Node version is the same as the global Node version|
 
 ##### pyenv
 

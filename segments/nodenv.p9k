@@ -1,0 +1,41 @@
+# vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
+################################################################
+# @title powerlevel9k Segment - Node Environment
+# @source [powerlevel9k](https://github.com/bhilburn/powerlevel9k)
+##
+
+(){
+  # Set the right locale to protect special characters
+  local LC_ALL="" LC_CTYPE="en_US.UTF-8"
+  ################################################################
+  # Register segment
+  # Parameters:
+  #   segment_name  context  background  foreground  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
+  #                                                                                                                      
+  p9k::register_segment "NODENV" "" "green" "${DEFAULT_COLOR}"  ''  $'\uE847 '  $'\uF219 '  '\u'$CODEPOINT_OF_OCTICONS_NODE' '  $'\uF219 '
+
+  ################################################################
+  # Register segment default values
+  p9k::set_default P9K_NODENV_PROMPT_ALWAYS_SHOW false
+}
+
+################################################################
+# @description
+#   Display the current nodenv information.
+##
+# @args
+#   $1 string Alignment - left | right
+#   $2 integer Segment index
+#   $3 boolean Whether the segment should be joined
+##
+prompt_nodenv() {
+  if [[ -n "${NODENV_VERSION}" ]]; then
+    p9k::prepare_segment "$0" "" $1 "$2" $3 "${NODENV_VERSION}"
+  elif [ ${commands[nodenv]} ]; then
+    local nodenv_version_name="$(nodenv version-name)"
+    local nodenv_global="$(nodenv global)"
+    if [[ "${nodenv_version_name}" != "${nodenv_global}" || "${P9K_NODENV_PROMPT_ALWAYS_SHOW}" == "true" ]]; then
+      p9k::prepare_segment "$0" "" $1 "$2" $3 "${nodenv_version_name}"
+    fi
+  fi
+}
