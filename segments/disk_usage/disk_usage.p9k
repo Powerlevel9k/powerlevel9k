@@ -12,11 +12,11 @@
   # Parameters:
   #   segment_name  context  background  foreground  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
   #                                                                                                                                                       
-  p9k::register_segment "DISK_USAGE" "NORMAL"   "${DEFAULT_COLOR}"  "green1"            $'hdd '  $'\uE1AE '  $'\uF0A0 '  '\u'$CODEPOINT_OF_AWESOME_HDD_O' '  $'\uF0A0'
+  p9k::register_segment "DISK_USAGE" "NORMAL"   "${DEFAULT_COLOR}"  "green1"            'hdd '  $'\uE1AE '   $'\uF0A0 '  '\u'$CODEPOINT_OF_AWESOME_HDD_O' '  $'\uF0A0'
   #                                                                                                                                                       
-  p9k::register_segment "DISK_USAGE" "WARNING"  "yellow"            "${DEFAULT_COLOR}"  $'hdd '  $'\uE1AE '  $'\uF0A0 '  '\u'$CODEPOINT_OF_AWESOME_HDD_O' '  $'\uF0A0'
+  p9k::register_segment "DISK_USAGE" "WARNING"  "yellow"            "${DEFAULT_COLOR}"  'hdd '  $'\uE1AE '  $'\uF0A0 '  '\u'$CODEPOINT_OF_AWESOME_HDD_O' '  $'\uF0A0'
   #                                                                                                                                                       
-  p9k::register_segment "DISK_USAGE" "CRITICAL" "red"               "white"             $'hdd '  $'\uE1AE '  $'\uF0A0 '  '\u'$CODEPOINT_OF_AWESOME_HDD_O' '  $'\uF0A0'
+  p9k::register_segment "DISK_USAGE" "CRITICAL" "red"               "white"             'hdd '  $'\uE1AE '  $'\uF0A0 '  '\u'$CODEPOINT_OF_AWESOME_HDD_O' '  $'\uF0A0'
 
   ################################################################
   # Register segment default values
