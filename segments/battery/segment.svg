@@ -118,10 +118,10 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1.4"
-     inkscape:cx="-205.35513"
+     inkscape:cx="-111.42656"
      inkscape:cy="1095.4923"
      inkscape:document-units="mm"
-     inkscape:current-layer="g1974"
+     inkscape:current-layer="g1859"
      showgrid="false"
      inkscape:window-width="3440"
      inkscape:window-height="1381"
@@ -201,58 +201,6 @@
                  y="13.93645"
                  style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.16982698px;font-family:'Ubuntu Nerd Font';-inkscape-font-specification:'Ubuntu Nerd Font';fill:#000000;fill-opacity:1;stroke-width:0.10155749"> 100% (3:36)</tspan></text>
           </g>
-        </g>
-        <g
-           id="g1969"
-           inkscape:export-xdpi="123"
-           inkscape:export-ydpi="123">
-          <path
-             inkscape:export-ydpi="123"
-             inkscape:export-xdpi="123"
-             style="opacity:1;fill:#cecb00;fill-opacity:1;stroke:none;stroke-width:0.17603815;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-             d="m 5.411822,15.145605 h 31.957925 l 2.27445,2.697784 -2.27445,2.697783 H 5.411822 l 2.27445,-2.697783 z"
-             id="path5215-3-3-3-0"
-             inkscape:connector-curvature="0"
-             sodipodi:nodetypes="ccccccc" />
-          <text
-             inkscape:export-ydpi="123.78439"
-             inkscape:export-xdpi="123.78439"
-             id="text7351-0-3"
-             y="19.332016"
-             x="9.5550785"
-             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.16982698px;line-height:1.25;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.10155749"
-             xml:space="preserve"><tspan
-               style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.16982698px;font-family:'Ubuntu Nerd Font';-inkscape-font-specification:'Ubuntu Nerd Font';fill:#000000;fill-opacity:1;stroke-width:0.10155749"
-               y="19.332016"
-               x="9.5550785"
-               id="tspan7349-6-6"
-               sodipodi:role="line"> 50% (1:27)</tspan></text>
-        </g>
-        <g
-           id="g1964"
-           inkscape:export-xdpi="123"
-           inkscape:export-ydpi="123">
-          <path
-             inkscape:export-ydpi="123"
-             inkscape:export-xdpi="123"
-             style="opacity:1;fill:#cc0403;fill-opacity:1;stroke:none;stroke-width:0.17603815;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-             d="m 5.411822,20.541172 h 29.312092 l 2.27445,2.697784 -2.27445,2.697783 H 5.411822 l 2.27445,-2.697783 z"
-             id="path5215-3-3-3-0-6"
-             inkscape:connector-curvature="0"
-             sodipodi:nodetypes="ccccccc" />
-          <text
-             inkscape:export-ydpi="123.78439"
-             inkscape:export-xdpi="123.78439"
-             id="text7351-0-3-2"
-             y="24.727583"
-             x="9.5550785"
-             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.16982698px;line-height:1.25;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.10155749"
-             xml:space="preserve"><tspan
-               style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.16982698px;font-family:'Ubuntu Nerd Font';-inkscape-font-specification:'Ubuntu Nerd Font';fill:#000000;fill-opacity:1;stroke-width:0.10155749"
-               y="24.727583"
-               x="9.5550785"
-               id="tspan7349-6-6-6"
-               sodipodi:role="line"> 5% (0:05)</tspan></text>
         </g>
       </g>
     </g>
