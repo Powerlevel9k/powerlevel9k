@@ -34,6 +34,9 @@ P9K_DIR_HOME_SUBFOLDER_ICON=''
 P9K_FOLDER_ICON=''
 P9K_DIR_ETC_ICON=''
 ```
+
+### Truncation
+
 You can limit the output to a certain length by truncating long paths.
 Customizations available are:
 
@@ -43,6 +46,8 @@ Customizations available are:
 |`P9K_DIR_SHORTEN_LENGTH`|`2`|If your shorten strategy, below, is entire directories, this field determines how many directories to leave at the end. If your shorten strategy is by character count, this field determines how many characters to allow per directory string.|
 |`P9K_DIR_SHORTEN_STRATEGY`|None|How the directory strings should be truncated. See the table below for more informations.|
 |`P9K_DIR_SHORTEN_DELIMITER`|`…`|Delimiter to use in truncated strings. This can be any string you choose, including an empty string if you wish to have no delimiter.|
+
+![](truncation.png)
 
 | Strategy Name | Description |
 |---------------|-------------|

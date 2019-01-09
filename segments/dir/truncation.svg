@@ -1,0 +1,718 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="210mm"
+   height="297mm"
+   viewBox="0 0 210 297"
+   version="1.1"
+   id="svg8"
+   inkscape:version="0.92.2 2405546, 2018-03-11"
+   sodipodi:docname="truncation.svg">
+  <defs
+     id="defs2">
+    <marker
+       inkscape:stockid="DotS"
+       orient="auto"
+       refY="0.0"
+       refX="0.0"
+       id="DotS"
+       style="overflow:visible"
+       inkscape:isstock="true">
+      <path
+         id="path5305"
+         d="M -2.5,-1.0 C -2.5,1.7600000 -4.7400000,4.0 -7.5,4.0 C -10.260000,4.0 -12.5,1.7600000 -12.5,-1.0 C -12.5,-3.7600000 -10.260000,-6.0 -7.5,-6.0 C -4.7400000,-6.0 -2.5,-3.7600000 -2.5,-1.0 z "
+         style="fill-rule:evenodd;stroke:#f3f3f3;stroke-width:1pt;stroke-opacity:1;fill:#f3f3f3;fill-opacity:1"
+         transform="scale(0.2) translate(7.4, 1)" />
+    </marker>
+    <marker
+       inkscape:stockid="DotL"
+       orient="auto"
+       refY="0.0"
+       refX="0.0"
+       id="DotL"
+       style="overflow:visible"
+       inkscape:isstock="true">
+      <path
+         id="path5299"
+         d="M -2.5,-1.0 C -2.5,1.7600000 -4.7400000,4.0 -7.5,4.0 C -10.260000,4.0 -12.5,1.7600000 -12.5,-1.0 C -12.5,-3.7600000 -10.260000,-6.0 -7.5,-6.0 C -4.7400000,-6.0 -2.5,-3.7600000 -2.5,-1.0 z "
+         style="fill-rule:evenodd;stroke:#f3f3f3;stroke-width:1pt;stroke-opacity:1;fill:#f3f3f3;fill-opacity:1"
+         transform="scale(0.8) translate(7.4, 1)" />
+    </marker>
+    <marker
+       inkscape:stockid="DotS"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="DotS-6"
+       style="overflow:visible"
+       inkscape:isstock="true">
+      <path
+         inkscape:connector-curvature="0"
+         id="path5305-7"
+         d="m -2.5,-1 c 0,2.76 -2.24,5 -5,5 -2.76,0 -5,-2.24 -5,-5 0,-2.76 2.24,-5 5,-5 2.76,0 5,2.24 5,5 z"
+         style="fill:#f3f3f3;fill-opacity:1;fill-rule:evenodd;stroke:#f3f3f3;stroke-width:1.00000003pt;stroke-opacity:1"
+         transform="matrix(0.2,0,0,0.2,1.48,0.2)" />
+    </marker>
+    <marker
+       inkscape:stockid="DotS"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="DotS-62"
+       style="overflow:visible"
+       inkscape:isstock="true">
+      <path
+         inkscape:connector-curvature="0"
+         id="path5305-9"
+         d="m -2.5,-1 c 0,2.76 -2.24,5 -5,5 -2.76,0 -5,-2.24 -5,-5 0,-2.76 2.24,-5 5,-5 2.76,0 5,2.24 5,5 z"
+         style="fill:#f3f3f3;fill-opacity:1;fill-rule:evenodd;stroke:#f3f3f3;stroke-width:1.00000003pt;stroke-opacity:1"
+         transform="matrix(0.2,0,0,0.2,1.48,0.2)" />
+    </marker>
+    <marker
+       inkscape:stockid="DotS"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="DotS-6-4"
+       style="overflow:visible"
+       inkscape:isstock="true">
+      <path
+         inkscape:connector-curvature="0"
+         id="path5305-7-0"
+         d="m -2.5,-1 c 0,2.76 -2.24,5 -5,5 -2.76,0 -5,-2.24 -5,-5 0,-2.76 2.24,-5 5,-5 2.76,0 5,2.24 5,5 z"
+         style="fill:#f3f3f3;fill-opacity:1;fill-rule:evenodd;stroke:#f3f3f3;stroke-width:1.00000003pt;stroke-opacity:1"
+         transform="matrix(0.2,0,0,0.2,1.48,0.2)" />
+    </marker>
+    <marker
+       inkscape:stockid="DotS"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="DotS-6-4-4"
+       style="overflow:visible"
+       inkscape:isstock="true">
+      <path
+         inkscape:connector-curvature="0"
+         id="path5305-7-0-4"
+         d="m -2.5,-1 c 0,2.76 -2.24,5 -5,5 -2.76,0 -5,-2.24 -5,-5 0,-2.76 2.24,-5 5,-5 2.76,0 5,2.24 5,5 z"
+         style="fill:#f3f3f3;fill-opacity:1;fill-rule:evenodd;stroke:#f3f3f3;stroke-width:1.00000003pt;stroke-opacity:1"
+         transform="matrix(0.2,0,0,0.2,1.48,0.2)" />
+    </marker>
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="2.8"
+     inkscape:cx="246.28301"
+     inkscape:cy="973.10606"
+     inkscape:document-units="mm"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1920"
+     inkscape:window-height="1015"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata5">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Ebene 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <rect
+       style="fill:#012b35;fill-opacity:1;stroke:none;stroke-width:1.07576919;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect5213"
+       width="210.01999"
+       height="88.903687"
+       x="0.13496444"
+       y="-0.14548607"
+       inkscape:export-xdpi="123"
+       inkscape:export-ydpi="123" />
+    <path
+       sodipodi:nodetypes="ccccccc"
+       inkscape:connector-curvature="0"
+       id="path5215"
+       d="M -32.091208,-88.753781 H 76.420214 l 10.58333,18.70887 -10.58333,18.70887 H -32.091208 l 10.58333,-18.70887 z"
+       style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <path
+       sodipodi:nodetypes="ccccccc"
+       inkscape:connector-curvature="0"
+       id="path5215-6"
+       d="M 302.76265,-89.471738 H 194.25123 l -10.58333,18.70887 10.58333,18.70887 h 108.51142 l -10.58333,-18.70887 z"
+       style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:1;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:10.58333302px;line-height:1.25;font-family:'Ubuntu Nerd Font';-inkscape-font-specification:'Ubuntu Nerd Font';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+       x="9.0714283"
+       y="-35.052082"
+       id="text900"><tspan
+         sodipodi:role="line"
+         id="tspan898"
+         x="9.0714283"
+         y="-35.052082"
+         style="stroke-width:0.26458332">Fonts needed:</tspan><tspan
+         sodipodi:role="line"
+         x="9.0714283"
+         y="-21.822916"
+         style="stroke-width:0.26458332"
+         id="tspan902">- ubuntu</tspan><tspan
+         sodipodi:role="line"
+         x="9.0714283"
+         y="-8.59375"
+         style="stroke-width:0.26458332"
+         id="tspan904">- ubuntu Nerd Font</tspan></text>
+    <g
+       id="g13679"
+       inkscape:export-xdpi="123"
+       inkscape:export-ydpi="123">
+      <g
+         id="g13583">
+        <g
+           id="g12542"
+           transform="translate(0,6.9825358)">
+          <g
+             id="g9224">
+            <path
+               sodipodi:nodetypes="ccccccc"
+               inkscape:connector-curvature="0"
+               id="path5215-3-3-3-6"
+               d="m 10.268189,24.825688 h 47.832925 l 2.274448,2.697784 -2.274448,2.697783 H 10.268189 l 2.27445,-2.697783 z"
+               style="fill:#0d73cc;fill-opacity:1;stroke:none;stroke-width:0.17603815;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+            <text
+               xml:space="preserve"
+               style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.16982698px;line-height:1.25;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.10155749"
+               x="14.039795"
+               y="28.766079"
+               id="text7351-0-7"><tspan
+                 sodipodi:role="line"
+                 id="tspan7349-6-5"
+                 x="14.039795"
+                 y="28.766079"
+                 style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.16982698px;font-family:'Ubuntu Nerd Font';-inkscape-font-specification:'Ubuntu Nerd Font';stroke-width:0.10155749"> ~/tr…on/pr…ts/p9k</tspan></text>
+          </g>
+          <text
+             id="text11915-6"
+             y="28.195572"
+             x="63.855251"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.27445078px;line-height:1.25;font-family:Ubuntu;-inkscape-font-specification:Ubuntu;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.05686127"
+             xml:space="preserve"><tspan
+               id="tspan11917-2"
+               style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Ubuntu;-inkscape-font-specification:Ubuntu;fill:#ffffff;fill-opacity:1;stroke-width:0.05686127"
+               y="28.195572"
+               x="63.855251"
+               sodipodi:role="line">Truncate middle parts of folders</tspan></text>
+          <text
+             xml:space="preserve"
+             style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:2.27445078px;line-height:1.25;font-family:Ubuntu;-inkscape-font-specification:'Ubuntu Bold';letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.05686127"
+             x="103.69749"
+             y="28.419605"
+             id="text1497-4"><tspan
+               sodipodi:role="line"
+               id="tspan1495-7"
+               x="103.69749"
+               y="28.419605"
+               style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:3.03260112px;font-family:Ubuntu;-inkscape-font-specification:'Ubuntu Bold';fill:#ffffff;fill-opacity:1;stroke-width:0.05686127">truncate_middle</tspan></text>
+        </g>
+        <g
+           id="g12504"
+           transform="translate(0,14.17525)">
+          <g
+             id="g9214">
+            <path
+               sodipodi:nodetypes="ccccccc"
+               inkscape:connector-curvature="0"
+               id="path5215-3-3-3-7"
+               d="m 10.268189,37.95012 h 36.720424 l 2.274448,2.697784 -2.274448,2.697783 H 10.268189 l 2.27445,-2.697783 z"
+               style="fill:#0d73cc;fill-opacity:1;stroke:none;stroke-width:0.17603815;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+            <text
+               xml:space="preserve"
+               style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.16982698px;line-height:1.25;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.10155749"
+               x="14.039795"
+               y="41.890511"
+               id="text7351-0-0"><tspan
+                 sodipodi:role="line"
+                 id="tspan7349-6-9"
+                 x="14.039795"
+                 y="41.890511"
+                 style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.16982698px;font-family:'Ubuntu Nerd Font';-inkscape-font-specification:'Ubuntu Nerd Font';stroke-width:0.10155749"> ~/trunc/p/p9k</tspan></text>
+          </g>
+          <text
+             id="text11915-6-6-8"
+             y="41.320004"
+             x="63.468773"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.27445078px;line-height:1.25;font-family:Ubuntu;-inkscape-font-specification:Ubuntu;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.05686127"
+             xml:space="preserve"><tspan
+               id="tspan11917-2-1-7"
+               style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Ubuntu;-inkscape-font-specification:Ubuntu;fill:#ffffff;fill-opacity:1;stroke-width:0.05686127"
+               y="41.320004"
+               x="63.468773"
+               sodipodi:role="line">Truncate to unique folder names</tspan></text>
+          <text
+             xml:space="preserve"
+             style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:2.27445078px;line-height:1.25;font-family:Ubuntu;-inkscape-font-specification:'Ubuntu Bold';letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.05686127"
+             x="103.69749"
+             y="41.528873"
+             id="text1497-4-69"><tspan
+               sodipodi:role="line"
+               id="tspan1495-7-3"
+               x="103.69749"
+               y="41.528873"
+               style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:3.03260112px;font-family:Ubuntu;-inkscape-font-specification:'Ubuntu Bold';fill:#ffffff;fill-opacity:1;stroke-width:0.05686127">truncate_to_unique</tspan></text>
+        </g>
+        <g
+           id="g12494"
+           transform="translate(0,0.84064636)">
+          <g
+             id="g9209">
+            <path
+               sodipodi:nodetypes="ccccccc"
+               inkscape:connector-curvature="0"
+               id="path5215-3-3-3-7-2"
+               d="m 10.268189,44.51233 h 26.666257 l 2.274448,2.697784 -2.274448,2.697783 H 10.268189 l 2.27445,-2.697783 z"
+               style="fill:#0d73cc;fill-opacity:1;stroke:none;stroke-width:0.17603815;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+            <text
+               xml:space="preserve"
+               style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.16982698px;line-height:1.25;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.10155749"
+               x="14.039795"
+               y="48.452721"
+               id="text7351-0-0-0"><tspan
+                 sodipodi:role="line"
+                 id="tspan7349-6-9-2"
+                 x="14.039795"
+                 y="48.452721"
+                 style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.16982698px;font-family:'Ubuntu Nerd Font';-inkscape-font-specification:'Ubuntu Nerd Font';stroke-width:0.10155749"> ~/…/p9k</tspan></text>
+          </g>
+          <text
+             id="text11915-6-6-8-2"
+             y="48.077816"
+             x="57.689358"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.27445078px;line-height:1.25;font-family:Ubuntu;-inkscape-font-specification:Ubuntu;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.05686127"
+             xml:space="preserve"><tspan
+               id="tspan11917-2-1-7-2"
+               style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Ubuntu;-inkscape-font-specification:Ubuntu;fill:#ffffff;fill-opacity:1;stroke-width:0.05686127"
+               y="48.077816"
+               x="57.689358"
+               sodipodi:role="line">Truncate to first and last folder names</tspan></text>
+          <text
+             xml:space="preserve"
+             style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:2.27445078px;line-height:1.25;font-family:Ubuntu;-inkscape-font-specification:'Ubuntu Bold';letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.05686127"
+             x="103.69749"
+             y="48.106247"
+             id="text1497-4-69-7"><tspan
+               sodipodi:role="line"
+               id="tspan1495-7-3-4"
+               x="103.69749"
+               y="48.106247"
+               style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:3.03260112px;font-family:Ubuntu;-inkscape-font-specification:'Ubuntu Bold';fill:#ffffff;fill-opacity:1;stroke-width:0.05686127">truncate_to_first_and_last</tspan></text>
+        </g>
+        <g
+           id="g12484"
+           transform="translate(0,21.367947)">
+          <g
+             id="g10186">
+            <path
+               sodipodi:nodetypes="ccccccc"
+               inkscape:connector-curvature="0"
+               id="path5215-3-3-3-7-2-7"
+               d="m 10.268189,51.074538 h 30.370424 l 2.274448,2.697784 -2.274448,2.697783 H 10.268189 l 2.27445,-2.697783 z"
+               style="fill:#0d73cc;fill-opacity:1;stroke:none;stroke-width:0.17603815;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+            <text
+               xml:space="preserve"
+               style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.16982698px;line-height:1.25;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.10155749"
+               x="14.039795"
+               y="55.014931"
+               id="text7351-0-0-0-5"><tspan
+                 sodipodi:role="line"
+                 id="tspan7349-6-9-2-9"
+                 x="14.039795"
+                 y="55.014931"
+                 style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.16982698px;font-family:'Ubuntu Nerd Font';-inkscape-font-specification:'Ubuntu Nerd Font';stroke-width:0.10155749"> ~/…/p/p9k</tspan></text>
+          </g>
+          <text
+             xml:space="preserve"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.27445078px;line-height:1.25;font-family:Ubuntu;-inkscape-font-specification:Ubuntu;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.05686127"
+             x="45.048531"
+             y="54.448971"
+             id="text11915-6-6-8-8"><tspan
+               sodipodi:role="line"
+               x="45.048531"
+               y="54.448971"
+               style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Ubuntu;-inkscape-font-specification:Ubuntu;fill:#ffffff;fill-opacity:1;stroke-width:0.05686127"
+               id="tspan11917-2-1-7-9">Truncate to a folder marker (like a file or directory)</tspan></text>
+          <text
+             xml:space="preserve"
+             style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:2.27445078px;line-height:1.25;font-family:Ubuntu;-inkscape-font-specification:'Ubuntu Bold';letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.05686127"
+             x="103.69749"
+             y="54.668457"
+             id="text1497-4-69-7-5"><tspan
+               sodipodi:role="line"
+               id="tspan1495-7-3-4-2"
+               x="103.69749"
+               y="54.668457"
+               style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:3.03260112px;font-family:Ubuntu;-inkscape-font-specification:'Ubuntu Bold';fill:#ffffff;fill-opacity:1;stroke-width:0.05686127">truncate_with_folder_marker</tspan></text>
+        </g>
+        <g
+           id="g12514"
+           transform="translate(0,7.1921322)">
+          <text
+             id="text11915-6-6"
+             y="34.754936"
+             x="69.994492"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.27445078px;line-height:1.25;font-family:Ubuntu;-inkscape-font-specification:Ubuntu;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.05686127"
+             xml:space="preserve"><tspan
+               id="tspan11917-2-1"
+               style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Ubuntu;-inkscape-font-specification:Ubuntu;fill:#ffffff;fill-opacity:1;stroke-width:0.05686127"
+               y="34.754936"
+               x="69.994492"
+               sodipodi:role="line">Leave only the first letters</tspan></text>
+          <g
+             transform="translate(-0.340179,-27.718068)"
+             id="g12274">
+            <path
+               sodipodi:nodetypes="ccccccc"
+               inkscape:connector-curvature="0"
+               id="path5215-3-3-3-7-2-7-7"
+               d="m 10.608368,59.106532 h 39.366257 l 2.274448,2.697784 -2.274448,2.697783 H 10.608368 l 2.27445,-2.697783 z"
+               style="fill:#0d73cc;fill-opacity:1;stroke:none;stroke-width:0.17603815;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+            <text
+               xml:space="preserve"
+               style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.16982698px;line-height:1.25;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.10155749"
+               x="14.379973"
+               y="63.046925"
+               id="text7351-0-0-0-5-4"><tspan
+                 sodipodi:role="line"
+                 id="tspan7349-6-9-2-9-4"
+                 x="14.379973"
+                 y="63.046925"
+                 style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.16982698px;font-family:'Ubuntu Nerd Font';-inkscape-font-specification:'Ubuntu Nerd Font';stroke-width:0.10155749"> ~/tr…/pr…/p9k</tspan></text>
+          </g>
+          <text
+             xml:space="preserve"
+             style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:2.27445078px;line-height:1.25;font-family:Ubuntu;-inkscape-font-specification:'Ubuntu Bold';letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.05686127"
+             x="103.69749"
+             y="34.977833"
+             id="text1497-4-69-7-5-3"><tspan
+               sodipodi:role="line"
+               id="tspan1495-7-3-4-2-0"
+               x="103.69749"
+               y="34.977833"
+               style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:3.03260112px;font-family:Ubuntu;-inkscape-font-specification:'Ubuntu Bold';fill:#ffffff;fill-opacity:1;stroke-width:0.05686127">truncate_from_right</tspan></text>
+        </g>
+        <g
+           id="g12599"
+           transform="translate(0,-32.936751)">
+          <g
+             transform="translate(-8.504464,-0.3779762)"
+             id="g12314">
+            <path
+               sodipodi:nodetypes="ccccccc"
+               inkscape:connector-curvature="0"
+               id="path5215-3-3-3-7-2-7-7-6"
+               d="M 18.772653,58.35058 H 59.72641 l 2.274448,2.697784 -2.274448,2.697783 H 18.772653 l 2.27445,-2.697783 z"
+               style="fill:#0d73cc;fill-opacity:1;stroke:none;stroke-width:0.17603815;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+            <text
+               xml:space="preserve"
+               style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.16982698px;line-height:1.25;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.10155749"
+               x="22.544258"
+               y="62.290974"
+               id="text7351-0-0-0-5-4-4"><tspan
+                 sodipodi:role="line"
+                 id="tspan7349-6-9-2-9-4-9"
+                 x="22.544258"
+                 y="62.290974"
+                 style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.16982698px;font-family:'Ubuntu Nerd Font';-inkscape-font-specification:'Ubuntu Nerd Font';stroke-width:0.10155749"> ~/…on/…ts/p9k</tspan></text>
+          </g>
+          <text
+             xml:space="preserve"
+             style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:2.27445078px;line-height:1.25;font-family:Ubuntu;-inkscape-font-specification:'Ubuntu Bold';letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.05686127"
+             x="103.69749"
+             y="61.566521"
+             id="text1497-4-69-7-5-3-3"><tspan
+               sodipodi:role="line"
+               id="tspan1495-7-3-4-2-0-1"
+               x="103.69749"
+               y="61.566521"
+               style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:3.03260112px;font-family:Ubuntu;-inkscape-font-specification:'Ubuntu Bold';fill:#ffffff;fill-opacity:1;stroke-width:0.05686127">truncate_from_left</tspan></text>
+          <text
+             id="text11915-6-6-5"
+             y="61.339077"
+             x="70.527565"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.27445078px;line-height:1.25;font-family:Ubuntu;-inkscape-font-specification:Ubuntu;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.05686127"
+             xml:space="preserve"><tspan
+               id="tspan11917-2-1-0"
+               style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Ubuntu;-inkscape-font-specification:Ubuntu;fill:#ffffff;fill-opacity:1;stroke-width:0.05686127"
+               y="61.339077"
+               x="70.527565"
+               sodipodi:role="line">Leave only the last letters</tspan></text>
+        </g>
+        <g
+           id="g12552">
+          <g
+             id="g9229">
+            <path
+               sodipodi:nodetypes="ccccccc"
+               inkscape:connector-curvature="0"
+               id="path5215-3-3-3"
+               d="m 10.268189,18.263491 h 58.945425 l 2.274448,2.697784 -2.274448,2.697783 H 10.268189 l 2.27445,-2.697783 z"
+               style="fill:#0d73cc;fill-opacity:1;stroke:none;stroke-width:0.17603815;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+            <text
+               xml:space="preserve"
+               style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.16982698px;line-height:1.25;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.10155749"
+               x="14.039795"
+               y="22.203882"
+               id="text7351-0"><tspan
+                 sodipodi:role="line"
+                 id="tspan7349-6"
+                 x="14.039795"
+                 y="22.203882"
+                 style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.16982698px;font-family:'Ubuntu Nerd Font';-inkscape-font-specification:'Ubuntu Nerd Font';stroke-width:0.10155749"> ~/truncation/projects/p9k</tspan></text>
+          </g>
+          <text
+             xml:space="preserve"
+             style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:2.27445078px;line-height:1.25;font-family:Ubuntu;-inkscape-font-specification:'Ubuntu Bold';letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.05686127"
+             x="103.7824"
+             y="21.863474"
+             id="text1497"><tspan
+               sodipodi:role="line"
+               id="tspan1495"
+               x="103.7824"
+               y="21.863474"
+               style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:3.03260112px;font-family:Ubuntu;-inkscape-font-specification:'Ubuntu Bold';fill:#ffffff;fill-opacity:1;stroke-width:0.05686127">Strategy Name (P9K_DIR_SHORTEN_STRATEGY)</tspan></text>
+          <text
+             xml:space="preserve"
+             style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:2.27445078px;line-height:1.25;font-family:Ubuntu;-inkscape-font-specification:'Ubuntu Bold';letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.05686127"
+             x="88.066132"
+             y="22.116695"
+             id="text1497-48"><tspan
+               sodipodi:role="line"
+               id="tspan1495-71"
+               x="88.066132"
+               y="22.116695"
+               style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:3.03260112px;font-family:Ubuntu;-inkscape-font-specification:'Ubuntu Bold';fill:#ffffff;fill-opacity:1;stroke-width:0.05686127">Effect</tspan></text>
+        </g>
+        <g
+           id="g12611"
+           transform="translate(0,-6.9679696)">
+          <text
+             xml:space="preserve"
+             style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:2.27445078px;line-height:1.25;font-family:Ubuntu;-inkscape-font-specification:'Ubuntu Bold';letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.05686127"
+             x="103.69749"
+             y="76.231995"
+             id="text1497-4-69-7-5-3-7-6-8-4"><tspan
+               sodipodi:role="line"
+               id="tspan1495-7-3-4-2-0-8-8-4-9"
+               x="103.69749"
+               y="76.231995"
+               style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:3.03260112px;font-family:Ubuntu;-inkscape-font-specification:'Ubuntu Bold';fill:#ffffff;fill-opacity:1;stroke-width:0.05686127">truncate_to_last</tspan></text>
+          <text
+             id="text11915-6-6-5-91"
+             y="76.004547"
+             x="70.993439"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.27445078px;line-height:1.25;font-family:Ubuntu;-inkscape-font-specification:Ubuntu;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.05686127"
+             xml:space="preserve"><tspan
+               id="tspan11917-2-1-0-7"
+               style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Ubuntu;-inkscape-font-specification:Ubuntu;fill:#ffffff;fill-opacity:1;stroke-width:0.05686127"
+               y="76.004547"
+               x="70.993439"
+               sodipodi:role="line">Leave only the last folder</tspan></text>
+          <g
+             transform="translate(-10.621131,14.287498)"
+             id="g12314-7-2-6">
+            <g
+               transform="translate(2.116667)"
+               id="g12403-1">
+              <g
+                 id="g12435">
+                <path
+                   sodipodi:nodetypes="ccccccc"
+                   inkscape:connector-curvature="0"
+                   id="path5215-3-3-3-7-2-7-7-6-2-6-5"
+                   d="M 18.772653,58.35058 H 35.91391 l 2.274448,2.697784 -2.274448,2.697783 H 18.772653 l 2.27445,-2.697783 z"
+                   style="fill:#0d73cc;fill-opacity:1;stroke:none;stroke-width:0.17603815;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+                <text
+                   xml:space="preserve"
+                   style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.16982698px;line-height:1.25;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.10155749"
+                   x="22.544258"
+                   y="62.290974"
+                   id="text7351-0-0-0-5-4-4-7-1-9"><tspan
+                     sodipodi:role="line"
+                     id="tspan7349-6-9-2-9-4-9-2-0-4"
+                     x="22.544258"
+                     y="62.290974"
+                     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.16982698px;font-family:'Ubuntu Nerd Font';-inkscape-font-specification:'Ubuntu Nerd Font';stroke-width:0.10155749"> p9k</tspan></text>
+              </g>
+            </g>
+          </g>
+        </g>
+        <g
+           id="g12782"
+           transform="translate(0,-6.9435201)">
+          <text
+             xml:space="preserve"
+             style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:2.27445078px;line-height:1.25;font-family:Ubuntu;-inkscape-font-specification:'Ubuntu Bold';letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.05686127"
+             x="103.69749"
+             y="69.435173"
+             id="text1497-4-69-7-5-3-7-6"><tspan
+               sodipodi:role="line"
+               id="tspan1495-7-3-4-2-0-8-8"
+               x="103.69749"
+               y="69.435173"
+               style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:3.03260112px;font-family:Ubuntu;-inkscape-font-specification:'Ubuntu Bold';fill:#ffffff;fill-opacity:1;stroke-width:0.05686127">truncate_absolute</tspan></text>
+          <g
+             transform="translate(-10.621131,7.4906747)"
+             id="g12314-7-2">
+            <g
+               transform="translate(2.116667)"
+               id="g12403">
+              <path
+                 style="fill:#0d73cc;fill-opacity:1;stroke:none;stroke-width:0.17603815;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+                 d="m 18.772653,58.35058 h 22.96209 l 2.274448,2.697784 -2.274448,2.697783 h -22.96209 l 2.27445,-2.697783 z"
+                 id="path5215-3-3-3-7-2-7-7-6-2-6"
+                 inkscape:connector-curvature="0"
+                 sodipodi:nodetypes="ccccccc" />
+              <text
+                 id="text7351-0-0-0-5-4-4-7-1"
+                 y="62.290974"
+                 x="22.544258"
+                 style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.16982698px;line-height:1.25;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.10155749"
+                 xml:space="preserve"><tspan
+                   style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.16982698px;font-family:'Ubuntu Nerd Font';-inkscape-font-specification:'Ubuntu Nerd Font';stroke-width:0.10155749"
+                   y="62.290974"
+                   x="22.544258"
+                   id="tspan7349-6-9-2-9-4-9-2-0"
+                   sodipodi:role="line"> ~/…9k</tspan></text>
+            </g>
+          </g>
+          <text
+             id="text11915-6-6-5-9"
+             y="69.406738"
+             x="64.477173"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.27445078px;line-height:1.25;font-family:Ubuntu;-inkscape-font-specification:Ubuntu;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.05686127"
+             xml:space="preserve"><tspan
+               id="tspan11917-2-1-0-0"
+               style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Ubuntu;-inkscape-font-specification:Ubuntu;fill:#ffffff;fill-opacity:1;stroke-width:0.05686127"
+               y="69.406738"
+               x="64.477173"
+               sodipodi:role="line">Truncate to absolute characters</tspan></text>
+        </g>
+      </g>
+      <g
+         id="g13497">
+        <g
+           id="g11929"
+           transform="matrix(0.21490875,0,0,0.21490875,65.700793,-26.272169)">
+          <text
+             id="text5234"
+             y="142.44113"
+             x="-186.78041"
+             style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:10.58333302px;line-height:1.25;font-family:Ubuntu;-inkscape-font-specification:'Ubuntu Bold';letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+             xml:space="preserve"><tspan
+               style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:14.11111069px;font-family:Ubuntu;-inkscape-font-specification:'Ubuntu Bold';fill:#ffffff;fill-opacity:1;stroke-width:0.26458332"
+               y="142.44113"
+               x="-186.78041"
+               id="tspan5232"
+               sodipodi:role="line">Flexible Truncation</tspan></text>
+          <text
+             id="text11915"
+             y="158.55438"
+             x="-185.48506"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:10.58333302px;line-height:1.25;font-family:Ubuntu;-inkscape-font-specification:Ubuntu;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+             xml:space="preserve"><tspan
+               id="tspan11917"
+               style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Ubuntu;-inkscape-font-specification:Ubuntu;fill:#ffffff;fill-opacity:1;stroke-width:0.26458332"
+               y="158.55438"
+               x="-185.48506"
+               sodipodi:role="line">You can configure the dir segment to show the path only partially, just as you like.</tspan><tspan
+               style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Ubuntu;-inkscape-font-specification:Ubuntu;fill:#ffffff;fill-opacity:1;stroke-width:0.26458332"
+               y="171.78355"
+               x="-185.48506"
+               sodipodi:role="line"
+               id="tspan10351">The length of the truncation can be controlled via P9K_DIR_SHORTEN_LENGTH.</tspan><tspan
+               style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Ubuntu;-inkscape-font-specification:Ubuntu;fill:#ffffff;fill-opacity:1;stroke-width:0.26458332"
+               y="185.01271"
+               x="-185.48506"
+               sodipodi:role="line"
+               id="tspan10353">To change the delimiter, set P9K_DIR_SHORTEN_DELIMITER.</tspan></text>
+        </g>
+        <path
+           style="fill:none;stroke:#f3f3f3;stroke-width:0.18589607;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#DotS)"
+           d="M 30.130769,14.965476 26.398456,26.696792"
+           id="path5236"
+           inkscape:connector-curvature="0"
+           sodipodi:nodetypes="cc" />
+      </g>
+    </g>
+    <g
+       id="g12839">
+      <g
+         transform="translate(0,28.140327)"
+         id="g10186-1">
+        <path
+           sodipodi:nodetypes="ccccccc"
+           inkscape:connector-curvature="0"
+           id="path5215-3-3-3-7-2-7-1"
+           d="m 10.268189,51.074538 h 26.666257 l 2.274448,2.697784 -2.274448,2.697783 H 10.268189 l 2.27445,-2.697783 z"
+           style="fill:#0d73cc;fill-opacity:1;stroke:none;stroke-width:0.17603815;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+        <text
+           xml:space="preserve"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.16982698px;line-height:1.25;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.10155749"
+           x="14.039795"
+           y="55.014931"
+           id="text7351-0-0-0-5-5"><tspan
+             sodipodi:role="line"
+             id="tspan7349-6-9-2-9-9"
+             x="14.039795"
+             y="55.014931"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.16982698px;font-family:'Ubuntu Nerd Font';-inkscape-font-specification:'Ubuntu Nerd Font';stroke-width:0.10155749"> ~/…/Pkg</tspan></text>
+      </g>
+      <text
+         xml:space="preserve"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:2.27445078px;line-height:1.25;font-family:Ubuntu;-inkscape-font-specification:Ubuntu;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.05686127"
+         x="45.048531"
+         y="82.589294"
+         id="text11915-6-6-8-8-7"><tspan
+           sodipodi:role="line"
+           x="45.048531"
+           y="82.589294"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Ubuntu;-inkscape-font-specification:Ubuntu;fill:#ffffff;fill-opacity:1;stroke-width:0.05686127"
+           id="tspan11917-2-1-7-9-7">Truncate to *.json file and show the package name</tspan></text>
+      <text
+         xml:space="preserve"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:2.27445078px;line-height:1.25;font-family:Ubuntu;-inkscape-font-specification:'Ubuntu Bold';letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.05686127"
+         x="103.69749"
+         y="82.808784"
+         id="text1497-4-69-7-5-6"><tspan
+           sodipodi:role="line"
+           id="tspan1495-7-3-4-2-7"
+           x="103.69749"
+           y="82.808784"
+           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:3.03260112px;font-family:Ubuntu;-inkscape-font-specification:'Ubuntu Bold';fill:#ffffff;fill-opacity:1;stroke-width:0.05686127">truncate_with_package_name</tspan></text>
+    </g>
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer2"
+     inkscape:label="P9K_Logo" />
+</svg>
