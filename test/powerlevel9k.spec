@@ -18,6 +18,12 @@ function setUp() {
   # do not interfere with tests
 }
 
+function testUsingUnsetVariables() {
+  setopt local_options
+  set -u
+  __p9k_prepare_prompts
+}
+
 function testJoinedSegments() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
   local P9K_LEFT_PROMPT_ELEMENTS=(dir dir_joined)
