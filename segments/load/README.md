@@ -1,6 +1,6 @@
 # Load
 
-![](segement.png)
+![](segment.png)
 
 ## Installation
 
