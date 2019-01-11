@@ -1,0 +1,57 @@
+# vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
+################################################################
+# @title powerlevel9k Segment - Environment
+# @source [powerlevel9k](https://github.com/alexperegrina/powerlevel9k)
+##
+
+(){
+  # Set the right locale to protect special characters
+  local LC_ALL="" LC_CTYPE="en_US.UTF-8"
+  ################################################################
+  # Register segment
+  # Parameters:
+  #                     segment_name  context   background      foreground          Generic     Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
+  #                                                                                                                          
+  p9k::register_segment "ENVIRONMENT" "LOCAL"   "mediumorchid"  "${DEFAULT_COLOR}"  $'\uF108'   $'\uF108'   $'\uF108'   $'\uF108'  $'\uF108'
+  #                                                                                                                         
+  p9k::register_segment "ENVIRONMENT" "DEV"     "darkgreen"     "${DEFAULT_COLOR}"  $'\uF233'   $'\uF233'   $'\uF233'   $'\uF233'  $'\uF233'
+  #                                                                                                                         
+  p9k::register_segment "ENVIRONMENT" "TEST"    "darkorange"    "${DEFAULT_COLOR}"  $'\uF233'   $'\uF233'   $'\uF233'   $'\uF233'  $'\uF233'
+  #                                                                                                                         
+  p9k::register_segment "ENVIRONMENT" "PROD"    "red3"          "${DEFAULT_COLOR}"  $'\uF233'   $'\uF233'   $'\uF233'   $'\uF233'  $'\uF233'
+  #                                                                                                                         
+  p9k::register_segment "ENVIRONMENT" "OTHER"   "indianred1"    "${DEFAULT_COLOR}"  $'\uF0C2'   $'\uF0C2'   $'\uF0C2'   $'\uF0C2'  $'\uF0C2'
+
+  ################################################################
+  # Register segment default values
+  p9k::set_default P9K_ENVIRONMENT_KEY_LOCAL "local"
+  p9k::set_default P9K_ENVIRONMENT_KEY_DEV "dev"
+  p9k::set_default P9K_ENVIRONMENT_KEY_TEST "test"
+  p9k::set_default P9K_ENVIRONMENT_KEY_PROD "prod"
+
+  p9k::set_default P9K_ENVIRONMENT_VALUE_LOCAL "Local"
+  p9k::set_default P9K_ENVIRONMENT_VALUE_DEV "Dev"
+  p9k::set_default P9K_ENVIRONMENT_VALUE_TEST "Test"
+  p9k::set_default P9K_ENVIRONMENT_VALUE_PROD "Prod"
+}
+
+################################################################
+# @description
+#   Display environment from hostname.
+##
+# @args
+#   $1 string Alignment - left | right
+#   $2 integer Segment index
+#   $3 boolean Whether the segment should be joined
+# @note
+#   If ${DEFAULT_USER} is not set, this prompt segment will always print.
+##
+prompt_environment() {
+    echo "hola"
+    local alias = "POWERLEVEL9K_ENVIRONMENT_VALUE_"
+    local current_state="LOCAL"
+    local content=${alias}${current_state}
+    local environment=$(hostname -d)
+
+    p9k::prepare_segment "$0" ${current_state} $1 "$2" $3 "${content}"
+}
