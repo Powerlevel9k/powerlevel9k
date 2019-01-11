@@ -1155,6 +1155,8 @@ prompt_laravel_version() {
 ################################################################
 # Segment to display load
 set_default POWERLEVEL9K_LOAD_WHICH 5
+set_default POWERLEVEL9K_LOAD_WARNING 0.5
+set_default POWERLEVEL9K_LOAD_CRITICAL 0.7
 prompt_load() {
   local ROOT_PREFIX="${4}"
   # The load segment can have three different states
@@ -1199,9 +1201,9 @@ prompt_load() {
   # Replace comma
   load_avg=${load_avg//,/.}
 
-  if [[ "$load_avg" -gt $((${cores} * 0.7)) ]]; then
+  if [[ "$load_avg" -gt $((${cores} * $POWERLEVEL9K_LOAD_CRITICAL)) ]]; then
     current_state="critical"
-  elif [[ "$load_avg" -gt $((${cores} * 0.5)) ]]; then
+  elif [[ "$load_avg" -gt $((${cores} * $POWERLEVEL9K_LOAD_WARNING)) ]]; then
     current_state="warning"
   else
     current_state="normal"

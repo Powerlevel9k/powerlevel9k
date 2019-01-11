@@ -539,14 +539,17 @@ segment will not be displayed.
 
 ##### load
 
-Displays one of your load averages with appropriate state coloring. The thresholds are:
-- `0.7 * NUM_CORES <`: critical
-- `0.5 * NUM_CORES <`: warning
+Displays one of your load averages with appropriate state coloring. The thresholds are configurable. 
+
+- `POWERLEVEL9K_LOAD_CRITICAL` `0.7 * NUM_CORES <`: critical
+- `POWERLEVEL9K_LOAD_WARNING` `0.5 * NUM_CORES <`: warning
 - `less`: normal
 
 | Variable | Default Value | Description |
 |----------|---------------|-------------|
 |`POWERLEVEL9K_LOAD_WHICH`|5|Which average to show. Possible values: 1, 5 or 15|
+|`POWERLEVEL9K_LOAD_WARNING`|0.5|Warning multipler for load avg against # of cores. Possible values: 0-5.0|
+|`POWERLEVEL9K_LOAD_CRITICAL`|0.7|Critical multipler for load avg against # of cores. Possible values: 0-5.0|
 
 ##### newline
 
