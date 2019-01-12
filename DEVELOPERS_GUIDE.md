@@ -17,32 +17,7 @@ whole bunch of information to put in that variables. You can find
 
 This simple diagram may explain the invoking order better:
 
-```
-# Once on ZSH-Startup
-           +-----+
-           | Zsh |
-           +-----+
-              |
-              v
-+-----------------------------+
-| prompt_powerlevel9k_setup() |
-+-----------------------------+
-              |
-              v
-    +---------------------+    +------------+  +---------------------+
-    | build_left_prompt() |--->| prompt_*() |->| $1_prompt_segment() |
-    +---------------------+    +------------+  +---------------------+
-               ^                                         |
-               |                                         v
- +--------------------------------+                 +---------+     +-----------------+
- | powerlevel9k_prepare_prompts() |                 | $PROMPT |<····| Zsh (Rendering) |
- +--------------------------------+                 +---------+     +-----------------+
-                 ^
-                 |
-              +-----+
-              | Zsh | # On every Render
-              +-----+
-```
+![](p9k_flowchart.png)
 
 ##### Adding Segments
 
