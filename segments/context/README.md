@@ -46,7 +46,7 @@ end of the hostname.
 |`P9K_CONTEXT_TEMPLATE`|%n@%m|Default context prompt (username@machine). Refer to the [ZSH Documentation](http://zsh.sourceforge.net/Doc/Release/Prompt-Expansion.html) for all possible expansions, including deeper host depths.|
 
 This segment can have different states. They might help you to visualize your
-different privileges. Read more about styling with states [here](https://github.com/bhilburn/powerlevel9k/wiki/Stylizing-Your-Prompt#special-segment-colors).
+different privileges.
 
 | State         | Meaning                                                  |
 |---------------|----------------------------------------------------------|

@@ -105,7 +105,7 @@ You then need to select this theme in your `~/.zpreztorc`:
 
     zstyle ':prezto:module:prompt' theme 'powerlevel9k'
 
-Please note if you plan to set a `P9K_MODE` to use a specific font, [as described in this section of the Wiki](https://github.com/bhilburn/powerlevel9k/wiki/Install-Instructions#option-2-install-awesome-powerline-fonts), you must set the `MODE` **before** `prezto` is loaded.
+Please note if you plan to set a `P9K_MODE` to use a specific font, [as described in this section](#step-2-install-a-powerline-font), you must set the `MODE` **before** `prezto` is loaded.
 
 ### Option 4: Install for antigen
 

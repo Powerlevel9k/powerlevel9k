@@ -8,7 +8,7 @@ Fonts](https://github.com/powerline/fonts). It can be used with vanilla ZSH or
 ZSH frameworks such as [Oh-My-Zsh](https://github.com/robbyrussell/oh-my-zsh),
 [Prezto](https://github.com/sorin-ionescu/prezto),
 [Antigen](https://github.com/zsh-users/antigen), and [many
-others](https://github.com/bhilburn/powerlevel9k/wiki/Install-Instructions).
+others](INSTALL.md).
 
 Get more out of your terminal. Be a badass. Impress everyone in 'Screenshot Your
 Desktop' threads. Use powerlevel9k.
@@ -49,10 +49,10 @@ Be sure to also [check out the Wiki](https://github.com/bhilburn/powerlevel9k/wi
 There are two installation steps to go from a vanilla terminal to a PL9k
 terminal. Once you are done, you can optionally customize your prompt.
 
-[Installation Instructions](https://github.com/bhilburn/powerlevel9k/wiki/Install-Instructions)
+[Installation Instructions](INSTALL.md)
 
-1. [Install the Powerlevel9k Theme](https://github.com/bhilburn/powerlevel9k/wiki/Install-Instructions#step-1-install-powerlevel9k)
-2. [Install Powerline Fonts](https://github.com/bhilburn/powerlevel9k/wiki/Install-Instructions#step-2-install-a-powerline-font)
+1. [Install the Powerlevel9k Theme](INSTALL.md#step-1-install-powerlevel9k)
+2. [Install Powerline Fonts](INSTALL.md#step-2-install-a-powerline-font)
 
 No configuration is necessary post-installation if you like the default
 settings, but there are plenty of segment customization options available if you

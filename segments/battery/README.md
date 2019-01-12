@@ -29,9 +29,7 @@ systems without a battery). It is supported on both OSX and Linux.
 |`P9K_BATTERY_LOW_COLOR`|`"red"`|Color to indicate critically low charge level.|
 |`P9K_BATTERY_VERBOSE`|`true`|Display time remaining next to battery level.|
 
-Note that you can [modify the `_FOREGROUND`
-color](https://github.com/bhilburn/powerlevel9k/wiki/Stylizing-Your-Prompt#segment-color-customization)
-without affecting the icon color.
+Note that you can modify the `_FOREGROUND` color without affecting the icon color.
 
 You can also change the battery icon automatically depending on the battery
 level. This will override the default battery icon. In order to do this, you
