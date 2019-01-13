@@ -11,8 +11,8 @@
   # Register segment
   # Parameters:
   #   segment_name  context  background  foreground  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
-  #                                                                                             
-  p9k::register_segment "HISTORY" '' "grey50" "${DEFAULT_COLOR}"  ''  ''  $'\uE29A '  $'\uE29A '  $'\uE29A '
+  #                                                                                                                       
+  p9k::register_segment "HISTORY" '' "grey50" "${DEFAULT_COLOR}"  ''  $'\uE87E'  $'\uF1DA ' '\u'$CODEPOINT_OF_AWESOME_HISTORY $'\uF1DA '
 }
 
 ################################################################
