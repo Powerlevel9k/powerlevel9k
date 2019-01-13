@@ -33,7 +33,6 @@
 #   $5 string Code Amount
 #   $6 string Tests Amount
 #   $7 string Headline
-#   $8 string Icon
 ##
 # @note
 #   This function is called by prompt segments to display the information required.

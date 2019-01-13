@@ -15,7 +15,7 @@ function testDynamicColoringOfSegmentsWork() {
   local P9K_LEFT_PROMPT_ELEMENTS=(date)
   local P9K_DATE_ICON="date-icon"
   local P9K_DATE_BACKGROUND='red'
-  source segments/date.p9k
+  source segments/date/date.p9k
 
   assertEquals "%K{001} %F{000}date-icon%f %F{000}%D{%d.%m.%y} %k%F{001}%f " "$(__p9k_build_left_prompt)"
 }
@@ -24,7 +24,7 @@ function testDynamicColoringOfVisualIdentifiersWork() {
   local P9K_LEFT_PROMPT_ELEMENTS=(date)
   local P9K_DATE_ICON="date-icon"
   local P9K_DATE_ICON_COLOR='green'
-  source segments/date.p9k
+  source segments/date/date.p9k
 
   assertEquals "%K{015} %F{002}date-icon%f %F{000}%D{%d.%m.%y} %k%F{015}%f " "$(__p9k_build_left_prompt)"
 }
@@ -35,7 +35,7 @@ function testColoringOfVisualIdentifiersDoesNotOverwriteColoringOfSegment() {
   local P9K_DATE_ICON_COLOR='green'
   local P9K_DATE_FOREGROUND='red'
   local P9K_DATE_BACKGROUND='yellow'
-  source segments/date.p9k
+  source segments/date/date.p9k
 
   assertEquals "%K{003} %F{002}date-icon%f %F{001}%D{%d.%m.%y} %k%F{003}%f " "$(__p9k_build_left_prompt)"
 }
@@ -47,7 +47,7 @@ function testColorOverridingOfStatefulSegment() {
   local P9K_HOST_REMOTE_FOREGROUND='green'
   # Provoke state
   local SSH_CLIENT="x"
-  source segments/host.p9k
+  source segments/host/host.p9k
 
   assertEquals "%K{001} %F{002}ssh-icon%f %F{002}%m %k%F{001}%f " "$(__p9k_build_left_prompt)"
 }
