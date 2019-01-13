@@ -45,43 +45,103 @@ function tearDown() {
 # For mocking pmset on OSX this function takes one argument (the
 # content that pmset should echo).
 # For mocking the battery on Linux this function takes three
-# arguments: $1 capacity in %; $2 the battery status; $3 charging speed in %.
+# arguments:
+#   OSX:
+#   - $1 The Battery String
+#   Linux:
+#   - $1 capacity in %
+#   - $2 the battery status
+#   - $3 charging speed in %
+#   Windows:
+#   - $1 capacity in %
+#   - $2 Estimated Runtime
+#   - $3 Battery Status
 function makeBatterySay() {
   if [[ -z "${FOLDER}" ]]; then
     echo "Fake root path is not correctly set!"
     exit 1
   fi
-  # OSX
-  echo "#!/bin/sh" > $PMSET_PATH/pmset
-  echo "echo \"$1\"" >> $PMSET_PATH/pmset
-  chmod +x $PMSET_PATH/pmset
 
-  # Linux
-  local battery_status="$2"
-  echo "$battery_status" > $BATTERY_PATH/BAT0/status
-  echo "$battery_status" > $BATTERY_PATH/BAT1/status
-  echo "$battery_status" > $BATTERY_PATH/BAT2/status
-
-  local capacity="$1"
-  if [[ $capacity =~ ^[0-9]*$ ]]; then
-    echo "10000000" > $BATTERY_PATH/BAT0/energy_full
-    echo  "5000000" > $BATTERY_PATH/BAT1/charge_full
-    echo  "2500000" > $BATTERY_PATH/BAT2/energy_full
-    echo  "$((10000000*$capacity/100))" > $BATTERY_PATH/BAT0/energy_now
-    echo  "$(( 5000000*$capacity/100))" > $BATTERY_PATH/BAT1/energy_now
-    echo  "$(( 2500000*$capacity/100))" > $BATTERY_PATH/BAT2/charge_now
+  if [[ "${__P9K_OS}" == "OSX" ]]; then
+    # OSX
+    echo "#!/bin/sh" > $PMSET_PATH/pmset
+    echo "echo \"$1\"" >> $PMSET_PATH/pmset
+    chmod +x $PMSET_PATH/pmset
   fi
 
-  # charge or discharge
-  local charging_speed="${3:-100}"
-  if [[ $battery_status == (Charging|Discharging) ]]; then
-    echo  "$((5000000*$charging_speed/100))" > $BATTERY_PATH/BAT0/current_now
-    echo  "$((2500000*$charging_speed/100))" > $BATTERY_PATH/BAT1/power_now
-    echo                                 "0" > $BATTERY_PATH/BAT2/power_now
-  else
-    echo        "0" > $BATTERY_PATH/BAT0/current_now
-    echo        "0" > $BATTERY_PATH/BAT1/power_now
-    echo        "0" > $BATTERY_PATH/BAT2/power_now
+  if [[ "${__P9K_OS}" == "Linux" ]]; then
+    # Linux
+    local battery_status="$2"
+    echo "$battery_status" > $BATTERY_PATH/BAT0/status
+    echo "$battery_status" > $BATTERY_PATH/BAT1/status
+    echo "$battery_status" > $BATTERY_PATH/BAT2/status
+
+    local capacity="$1"
+    if [[ $capacity =~ ^[0-9]*$ ]]; then
+      echo "10000000" > $BATTERY_PATH/BAT0/energy_full
+      echo  "5000000" > $BATTERY_PATH/BAT1/charge_full
+      echo  "2500000" > $BATTERY_PATH/BAT2/energy_full
+      echo  "$((10000000*$capacity/100))" > $BATTERY_PATH/BAT0/energy_now
+      echo  "$(( 5000000*$capacity/100))" > $BATTERY_PATH/BAT1/energy_now
+      echo  "$(( 2500000*$capacity/100))" > $BATTERY_PATH/BAT2/charge_now
+    fi
+
+    # charge or discharge
+    local charging_speed="${3:-100}"
+    if [[ $battery_status == (Charging|Discharging) ]]; then
+      echo  "$((5000000*$charging_speed/100))" > $BATTERY_PATH/BAT0/current_now
+      echo  "$((2500000*$charging_speed/100))" > $BATTERY_PATH/BAT1/power_now
+      echo                                 "0" > $BATTERY_PATH/BAT2/power_now
+    else
+      echo        "0" > $BATTERY_PATH/BAT0/current_now
+      echo        "0" > $BATTERY_PATH/BAT1/power_now
+      echo        "0" > $BATTERY_PATH/BAT2/power_now
+    fi
+  fi
+
+  if [[ "${__P9K_OS}" == "Windows" ]]; then
+  # Windows
+cat <<EOL > ${PMSET_PATH}/wmic
+#!/bin/sh
+
+cat <<FILEEND
+Availability=3
+BatteryRechargeTime=
+BatteryStatus=${3}
+Caption=Internal Battery
+Chemistry=2
+ConfigManagerErrorCode=
+ConfigManagerUserConfig=
+CreationClassName=Win32_Battery
+Description=Internal Battery
+DesignCapacity=
+DesignVoltage=12261
+DeviceID= 1156SMP01AV421
+ErrorCleared=
+ErrorDescription=
+EstimatedChargeRemaining=${1}
+EstimatedRunTime=${2}
+ExpectedBatteryLife=
+ExpectedLife=
+FullChargeCapacity=
+InstallDate=
+LastErrorCode=
+MaxRechargeTime=
+Name=01AV421
+PNPDeviceID=
+PowerManagementCapabilities={1}
+PowerManagementSupported=FALSE
+SmartBatteryVersion=
+Status=OK
+StatusInfo=
+SystemCreationClassName=Win32_ComputerSystem
+SystemName=LAPTOP-B7L97D7T
+TimeOnBattery=
+TimeToFullCharge=
+FILEEND
+EOL
+  chmod +x ${PMSET_PATH}/wmic
+
   fi
 }
 
@@ -194,6 +254,55 @@ function testBatterySegmentIfBatteryIsCalculatingOnLinux() {
   makeBatterySay "99" "Charging" "0"
 
   assertEquals "%K{000} %F{003}🔋%f %F{003}99%% (...) " "$(prompt_battery left 1 false ${FOLDER})"
+}
+
+function testBatterySegmentIfBatteryIsLowWhileDischargingOnWindows() {
+  local __P9K_OS='Windows' # Fake Windows
+  makeBatterySay "4" "5" "4"
+
+  assertEquals "%K{000} %F{001}🔋%f %F{001}4%% (0:05) " "$(prompt_battery left 1 false ${FOLDER}/usr/bin/)"
+}
+
+function testBatterySegmentIfBatteryIsLowWhileChargingOnWindows() {
+  local __P9K_OS='Windows' # Fake Windows
+  makeBatterySay "4" "5" "7"
+
+  assertEquals "%K{000} %F{003}🔋%f %F{003}4%% (0:05) " "$(prompt_battery left 1 false ${FOLDER}/usr/bin/)"
+}
+
+function testBatterySegmentIfBatteryIsLowWhileUnknownOnWindows() {
+  local __P9K_OS='Windows' # Fake Windows
+  makeBatterySay "4" "Unknown" "5"
+
+  assertEquals "%K{000} %F{001}🔋%f %F{001}4%% (...) " "$(prompt_battery left 1 false ${FOLDER}/usr/bin/)"
+}
+
+function testBatterySegmentIfBatteryIsNormalWhileDischargingOnWindows() {
+  local __P9K_OS='Windows' # Fake Windows
+  makeBatterySay "98" "215" "1"
+
+  assertEquals "%K{000} %F{015}🔋%f %F{015}98%% (3:35) " "$(prompt_battery left 1 false ${FOLDER}/usr/bin/)"
+}
+
+function testBatterySegmentIfBatteryIsNormalWhileChargingOnWindows() {
+  local __P9K_OS='Windows' # Fake Windows
+  makeBatterySay "98" "298" "2"
+
+  assertEquals "%K{000} %F{003}🔋%f %F{003}98%% (4:58) " "$(prompt_battery left 1 false ${FOLDER}/usr/bin/)"
+}
+
+function testBatterySegmentIfBatteryIsFullOnWindows() {
+  local __P9K_OS='Windows' # Fake Windows
+  makeBatterySay "100" "181" "1"
+
+  assertEquals "%K{000} %F{015}🔋%f %F{015}100%% (3:01) " "$(prompt_battery left 1 false ${FOLDER}/usr/bin/)"
+}
+
+function testBatterySegmentIfBatteryIsCalculatingOnWindows() {
+  local __P9K_OS='Windows' # Fake Windows
+  makeBatterySay "99" "" "2"
+
+  assertEquals "%K{000} %F{003}🔋%f %F{003}99%% (...) " "$(prompt_battery left 1 false ${FOLDER}/usr/bin/)"
 }
 
 source shunit2/shunit2

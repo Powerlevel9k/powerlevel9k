@@ -74,6 +74,43 @@ prompt_battery() {
     esac
   fi
 
+  if [[ "$__P9K_OS" == 'Windows' ]]; then
+    # https://docs.microsoft.com/ru-ru/windows/desktop/CIMWin32Prov/win32-battery
+
+    # skip empty lines AND empty values, leave only meaningful key=value pairs
+    local raw_data="$(${ROOT_PREFIX}wmic Path Win32_Battery Get /format:list)"
+
+    # type bat_percent: percent as int in range 0..100
+    local bat_percent
+    [[ "${raw_data}" =~ "EstimatedChargeRemaining=([0-9]+)" ]] && bat_percent="${match[1]}"
+
+    local minutes_remaining
+    [[ "${raw_data}" =~ "EstimatedRunTime=([0-9]+)" ]] && minutes_remaining="${match[1]}"
+    local tstring="..."
+    if [[ "$minutes_remaining" =~ "[[:digit:]]+" ]]; then
+      local hours=$(( minutes_remaining / 60 ))
+      local minutes=$(( minutes_remaining % 60 ))
+
+      # Pad minutes with zeroes
+      minutes="${(l:2::0:)minutes}"
+      tstring="${hours}:${minutes}"
+    fi
+    local remain=" ($tstring)"
+
+    local current_state=''
+    local battery_status
+    [[ "${raw_data}" =~ "BatteryStatus=([0-9]+)" ]] && battery_status="${match[1]}"
+
+    case "$battery_status" in
+      1) current_state='disconnected';;
+      2) current_state='charging';;  # Unknown status, stats still may be available
+      3) current_state='charged';;
+      4 | 5) current_state='low';;
+      6 | 7 | 8 | 9 | 11) current_state='charging';;
+      10 | *) return;;
+    esac
+  fi
+
   if [[ "$__P9K_OS" == 'Linux' ]] || [[ "$__P9K_OS" == 'Android' ]]; then
     # needed if files or directory do not match globbing pattern
     local sysp="${ROOT_PREFIX}/sys/class/power_supply"

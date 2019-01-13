@@ -48,7 +48,7 @@ function __p9k_detect_os() {
       __P9K_OS_ID="$(uname -r)"
       [[ "$(which stat)" != "/usr/bin/stat" ]] && __P9K_OSX_COREUTILS=true || __P9K_OSX_COREUTILS=false
     ;;
-    CYGWIN_NT-* | MSYS_NT-*) __P9K_OS='Windows' ;;
+    CYGWIN_NT-* | MINGW32_NT-* | MINGW64_NT*) __P9K_OS='Windows' ;;
     FreeBSD | OpenBSD | DragonFly) __P9K_OS='BSD' ;;
     Linux)
       __P9K_OS='Linux'
