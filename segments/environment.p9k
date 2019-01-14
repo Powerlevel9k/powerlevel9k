@@ -33,6 +33,7 @@
   p9k::set_default P9K_ENVIRONMENT_VALUE_DEV "Dev"
   p9k::set_default P9K_ENVIRONMENT_VALUE_TEST "Test"
   p9k::set_default P9K_ENVIRONMENT_VALUE_PROD "Prod"
+  p9k::set_default P9K_ENVIRONMENT_VALUE_OTHER "Other"
 }
 
 ################################################################
@@ -44,14 +45,32 @@
 #   $2 integer Segment index
 #   $3 boolean Whether the segment should be joined
 # @note
-#   If ${DEFAULT_USER} is not set, this prompt segment will always print.
+#   You get the information of 'hostname'.
 ##
 prompt_environment() {
-    echo "hola"
-    local alias = "POWERLEVEL9K_ENVIRONMENT_VALUE_"
-    local current_state="LOCAL"
-    local content=${alias}${current_state}
-    local environment=$(hostname -d)
+    local default='other'
+    local alias="P9K_ENVIRONMENT_VALUE_"
+    local environment=${default}
 
-    p9k::prepare_segment "$0" ${current_state} $1 "$2" $3 "${content}"
+    if [[ "$__P9K_OS" == "OSX" ]]; then
+      environment=$(hostname -f | sed -e 's/^[^.]*\.//')
+    else
+      environment=$(hostname -d)
+    fi
+
+    if [[ "$P9K_ENVIRONMENT_KEY_LOCAL" == "$environment" ]]; then
+      current_state="LOCAL"
+    elif [[ "$P9K_ENVIRONMENT_KEY_DEV" == "$environment" ]]; then
+      current_state="DEV"
+    elif [[ "$P9K_ENVIRONMENT_KEY_TEST" == "$environment" ]]; then
+      current_state="TEST"
+    elif [[ "$P9K_ENVIRONMENT_KEY_PROD" == "$environment" ]]; then
+      current_state="PROD"
+    else
+      current_state=${default:u}
+    fi
+
+    local content=${alias}${current_state:u}
+
+    p9k::prepare_segment "$0" ${current_state} $1 "$2" $3 "${(P)content}"
 }
