@@ -107,6 +107,7 @@ The segments that are currently available are:
 * [`user`](#user) - Your current username
 * [`vi_mode`](#vi_mode)- Your prompt's Vi editing mode (NORMAL|INSERT).
 * `ssh` - Indicates whether or not you are in an SSH session.
+* [`environment`](#environment)- Your environment from hostname.
 
 **Development Environment Segments:**
 * [`vcs`](#vcs) - Information about this `git` or `hg` repository (if you are in one).
@@ -475,6 +476,43 @@ The `disk_usage` segment will show the usage level of the partition that your cu
 |P9K_DISK_USAGE_WARNING_LEVEL|90|The usage level that triggers a warning state.|
 |P9K_DISK_USAGE_CRITICAL_LEVEL|95|The usage level that triggers a critical state.|
 |P9K_DISK_USAGE_PATH|`.` (working directory)|Set a path to use a fixed directory instead of the working 
+
+##### environment
+
+The `environment` segment will print the environment from hostname.
+
+This segment has four configurable work environments that are obtained by looking at the hostname and taking the value after the first point. In case of obtaining not contemplated a special environment is assigned
+
+This segment can have different states. They might help you to visualize your
+different environments. Read more about styling with states [here](https://github.com/bhilburn/powerlevel9k/wiki/Stylizing-Your-Prompt#special-segment-colors).
+
+| State         | Meaning                                                   |
+|---------------|-----------------------------------------------------------|
+| `LOCAL`       | Local work environment                                    |
+| `DEV`         | Work environment development on a server                  |
+| `TEST`        | Work environment of testing on a server                   |
+| `PROD`        | Production environment on a server                        |
+| `OTHER`       | Non-controlled work environment, default value            |
+
+Each of the states is identified with a key. The key is compared to the environment obtained from the hostname and in this way the state is obtained. 
+`P9K_<name-of-segment>_KEY_<state> == $ENVIRONMENT` 
+
+| Variable | Default Value | Description |
+|----------|---------------|-------------|
+|P9K_ENVIRONMENT_KEY_LOCAL  |local  |key of the local environment|
+|P9K_ENVIRONMENT_KEY_DEV    |dev    |key of the development environment|
+|P9K_ENVIRONMENT_KEY_TEST   |test   |key of the testing environment|
+|P9K_ENVIRONMENT_KEY_PROD   |prod   |key of the production environment|
+
+Each of the states shows a text that is obtained from the variable `P9K_ <name-of-segment> _VALUE_ <state>` of each segment.
+
+| Variable | Default Value | Description |
+|----------|---------------|-------------|
+|P9K_ENVIRONMENT_VALUE_LOCAL|Local|Value of the local environment|
+|P9K_ENVIRONMENT_VALUE_DEV  |Dev|Value of the development environment|
+|P9K_ENVIRONMENT_VALUE_TEST |Test|Value of the testing environment|
+|P9K_ENVIRONMENT_VALUE_PROD |Prod|Value of the production environment|
+|P9K_ENVIRONMENT_VALUE_OTHER|Other|Value of the other environment|
 
 ##### host
 
