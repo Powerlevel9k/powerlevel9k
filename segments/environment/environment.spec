@@ -21,59 +21,61 @@ function setUp() {
 #   $1 string environment {local, dev, test, prod, other}
 #   $2 integer custom, custom=1 -> is custom, custom=0 -> default
 function mockHostname() {
-    local ret='fake'
+  local ret='fake'
 
-    case "$1" in
-    'local')
-        if [[ $2 == 1 ]]; then
-            ret='house'
-        else
-            ret='local'
-        fi
-    ;;
-    'dev')
-        if [[ $2 == 1 ]]; then
-            ret='develop'
-        else
-            ret='dev'
-        fi
-    ;;
-    'test')
-        if [[ $2 == 1 ]]; then
-            ret='testing'
-        else
-            ret='test'
-        fi
-    ;;
-    'prod')
-        if [[ $2 == 1 ]]; then
-            ret='production'
-        else
-            ret='prod'
-        fi
-    ;;
-    'other')
-        ret='fake'
-    ;;
-    esac
+  case "$1" in
+  'local')
+    if [[ $2 == 1 ]]; then
+      ret='house'
+    else
+      ret='local'
+    fi
+  ;;
+  'dev')
+    if [[ $2 == 1 ]]; then
+      ret='develop'
+    else
+      ret='dev'
+    fi
+  ;;
+  'test')
+    if [[ $2 == 1 ]]; then
+      ret='testing'
+    else
+      ret='test'
+    fi
+  ;;
+  'prod')
+    if [[ $2 == 1 ]]; then
+      ret='production'
+    else
+      ret='prod'
+    fi
+  ;;
+  'other')
+      ret='fake'
+  ;;
+  esac
 
-    echo $ret
+  echo $ret
+  return 0
 }
 
 # @args
 #   $1 string environment {local, dev, test, prod, other}
 #   $2 integer custom, custom=1 -> is custom, custom=0 -> default
 function mockHostnameCommand() {
-    local env="$1"
-    local custom=$2
-    local ret='func() {
-      local ret='$(mockHostname "$env" $custom)';
-      local alias="test";
-      [[ "$1" == "-t" ]] && ret=$alias.$ret;
-      echo $ret;
-    }; func'
+  local env="$1"
+  local custom=$2
+  local ret='func() {
+    local ret='$(mockHostname "$env" $custom)';
+    local alias="test";
+    [[ "$1" == "-t" ]] && ret=$alias.$ret;
+    echo $ret;
+  }; func'
 
-    echo $ret
+  echo $ret
+  return 0
 }
 
 # ================================ #
@@ -84,156 +86,173 @@ function mockHostnameCommand() {
 #   $1 string environment {local, dev, test, prod, other}
 #   $2 integer custom, custom=1 -> is custom, custom=0 -> default
 function getKey() {
-    local ret='other'
+  local ret='other'
 
-    case "$1" in
-    'local')
-        if [[ $2 == 1 ]]; then
-            ret='house'
-        else
-            ret='local'
-        fi
-    ;;
-    'dev')
-        if [[ $2 == 1 ]]; then
-            ret='develop'
-        else
-            ret='dev'
-        fi
-    ;;
-    'test')
-        if [[ $2 == 1 ]]; then
-            ret='testing'
-        else
-            ret='test'
-        fi
-    ;;
-    'prod')
-        if [[ $2 == 1 ]]; then
-            ret='production'
-        else
-            ret='prod'
-        fi
-    ;;
-    'other')
-        ret='other'
-    ;;
-    esac
+  case "$1" in
+  'local')
+    if [[ $2 == 1 ]]; then
+      ret='house'
+    else
+      ret='local'
+    fi
+  ;;
+  'dev')
+    if [[ $2 == 1 ]]; then
+      ret='develop'
+    else
+      ret='dev'
+    fi
+  ;;
+  'test')
+    if [[ $2 == 1 ]]; then
+      ret='testing'
+    else
+      ret='test'
+    fi
+  ;;
+  'prod')
+    if [[ $2 == 1 ]]; then
+      ret='production'
+    else
+      ret='prod'
+    fi
+  ;;
+  'other')
+      ret='other'
+  ;;
+  esac
 
-    echo $ret
+  echo $ret
+  return 0
 }
 
 # @args
 #   $1 string environment {local, dev, test, prod, other}
 #   $2 integer custom, custom=1 -> is custom, custom=0 -> default
 function getValue() {
-    local ret='other'
+  local ret='other'
 
-    case "$1" in
-    'local')
-        if [[ $2 == 1 ]]; then
-            ret='House'
-        else
-            ret='Local'
-        fi
-    ;;
-    'dev')
-        if [[ $2 == 1 ]]; then
-            ret='Develop'
-        else
-            ret='Dev'
-        fi
-    ;;
-    'test')
-        if [[ $2 == 1 ]]; then
-            ret='Testing'
-        else
-            ret='Test'
-        fi
-    ;;
-    'prod')
-        if [[ $2 == 1 ]]; then
-            ret='Production'
-        else
-            ret='Prod'
-        fi
-    ;;
-    'other')
-        if [[ $2 == 1 ]]; then
-            ret='Fake'
-        else
-            ret='Other'
-        fi
-    ;;
-    esac
+  case "$1" in
+  'local')
+    if [[ $2 == 1 ]]; then
+      ret='House'
+    else
+      ret='Local'
+    fi
+  ;;
+  'dev')
+    if [[ $2 == 1 ]]; then
+      ret='Develop'
+    else
+      ret='Dev'
+    fi
+  ;;
+  'test')
+    if [[ $2 == 1 ]]; then
+      ret='Testing'
+    else
+      ret='Test'
+    fi
+  ;;
+  'prod')
+    if [[ $2 == 1 ]]; then
+      ret='Production'
+    else
+      ret='Prod'
+    fi
+  ;;
+  'other')
+    if [[ $2 == 1 ]]; then
+      ret='Fake'
+    else
+      ret='Other'
+    fi
+  ;;
+  esac
 
-    echo $ret
+  echo $ret
+  return 0
 }
 
 # @args
 #   $1 string environment {local, dev, test, prod, other}
 function getColorBackground() {
-    case "$1" in
-    'local')
-        echo '074'
-    ;;
-    'dev')
-        echo '070'
-    ;;
-    'test')
-        echo '172'
-    ;;
-    'prod')
-        echo '196'
-    ;;
-    'other')
-        echo '203'
-    ;;
-    esac
+  local ret='203'
+
+  case "$1" in
+  'local')
+    ret='074'
+  ;;
+  'dev')
+    ret='070'
+  ;;
+  'test')
+    ret='172'
+  ;;
+  'prod')
+    ret='196'
+  ;;
+  'other')
+    ret='203'
+  ;;
+  esac
+
+  echo $ret
+  return 0
 }
 
 # @args
 #   $1 string environment {local, dev, test, prod, other}
 function getColorForeground() {
-    case "$1" in
-    'local')
-        echo '000'
-    ;;
-    'dev')
-        echo '000'
-    ;;
-    'test')
-        echo '000'
-    ;;
-    'prod')
-        echo '000'
-    ;;
-    'other')
-        echo '000'
-    ;;
-    esac
+  local ret='000'
+
+  case "$1" in
+  'local')
+    ret='000'
+  ;;
+  'dev')
+    ret='000'
+  ;;
+  'test')
+    ret='000'
+  ;;
+  'prod')
+    ret='000'
+  ;;
+  'other')
+    ret='000'
+  ;;
+  esac
+
+  echo $ret
+  return 0
 }
 
 # @args
 #   $1 string environment {local, dev, test, prod, other}
 function getIcon() {
-    case "$1" in
-    'local')
-        echo ''
-    ;;
-    'dev')
-        echo ''
-    ;;
-    'test')
-        echo ''
-    ;;
-    'prod')
-        echo ''
-    ;;
-    'other')
-        echo ''
-    ;;
-    esac
+  local ret='000'
+
+  case "$1" in
+  'local')
+    ret=''
+  ;;
+  'dev')
+    ret=''
+  ;;
+  'test')
+    ret=''
+  ;;
+  'prod')
+    ret=''
+  ;;
+  'other')
+    ret=''
+  ;;
+  esac
+
+  echo $ret
+  return 0
 }
 
 # @args
@@ -250,6 +269,7 @@ function getPrompAssert() {
   local ret="%K{$background} %F{$foreground}$icon%f %F{$foreground}$value %k%F{$background}%f "
 
   echo $ret
+  return 0
 }
 
 # ================================ #

@@ -48,29 +48,29 @@
 #   You get the information of 'hostname'.
 ##
 prompt_environment() {
-    local default='other'
-    local alias="P9K_ENVIRONMENT_VALUE_"
-    local environment=${default}
+  local default='other'
+  local alias="P9K_ENVIRONMENT_VALUE_"
+  local environment=${default}
 
-    if [[ "$__P9K_OS" == "OSX" ]]; then
-      environment=$(hostname -f | sed -e 's/^[^.]*\.//')
-    else
-      environment=$(hostname -d)
-    fi
+  if [[ "$__P9K_OS" == "OSX" ]]; then
+    environment=$(hostname -f | sed -e 's/^[^.]*\.//')
+  else
+    environment=$(hostname -d)
+  fi
 
-    if [[ "$P9K_ENVIRONMENT_KEY_LOCAL" == "$environment" ]]; then
-      current_state="LOCAL"
-    elif [[ "$P9K_ENVIRONMENT_KEY_DEV" == "$environment" ]]; then
-      current_state="DEV"
-    elif [[ "$P9K_ENVIRONMENT_KEY_TEST" == "$environment" ]]; then
-      current_state="TEST"
-    elif [[ "$P9K_ENVIRONMENT_KEY_PROD" == "$environment" ]]; then
-      current_state="PROD"
-    else
-      current_state=${default:u}
-    fi
+  if [[ "$P9K_ENVIRONMENT_KEY_LOCAL" == "$environment" ]]; then
+    current_state="LOCAL"
+  elif [[ "$P9K_ENVIRONMENT_KEY_DEV" == "$environment" ]]; then
+    current_state="DEV"
+  elif [[ "$P9K_ENVIRONMENT_KEY_TEST" == "$environment" ]]; then
+    current_state="TEST"
+  elif [[ "$P9K_ENVIRONMENT_KEY_PROD" == "$environment" ]]; then
+    current_state="PROD"
+  else
+    current_state=${default:u}
+  fi
 
-    local content=${alias}${current_state:u}
+  local content=${alias}${current_state:u}
 
-    p9k::prepare_segment "$0" ${current_state} $1 "$2" $3 "${(P)content}"
+  p9k::prepare_segment "$0" ${current_state} $1 "$2" $3 "${(P)content}"
 }
