@@ -11,6 +11,10 @@ function setUp() {
   # Test specific
   P9K_HOME=$(pwd)
   FOLDER=/tmp/powerlevel9k-test
+  local -a P9K_RIGHT_PROMPT_ELEMENTS
+  P9K_RIGHT_PROMPT_ELEMENTS=()
+  source "${P9K_HOME}/powerlevel9k.zsh-theme"
+  source "${P9K_HOME}/segments/disk_usage/disk_usage.p9k"
   mkdir -p $FOLDER
   cd $FOLDER
 }
@@ -37,9 +41,6 @@ function testDiskUsageSegmentWhenDiskIsAlmostFull() {
 /dev/disk1     487219288 471466944  15496344  97% /"
   }
 
-  # Load Powerlevel9k
-  source ${P9K_HOME}/powerlevel9k.zsh-theme
-
   assertEquals "%K{001} %F{015}hdd %f %F{015}97%% %k%F{001}%f " "$(__p9k_build_left_prompt)"
 
   unfunction df
@@ -53,9 +54,6 @@ function testDiskUsageSegmentWhenDiskIsVeryFull() {
 /dev/disk1     487219288 471466944  15496344  94% /"
   }
 
-  # Load Powerlevel9k
-  source ${P9K_HOME}/powerlevel9k.zsh-theme
-
   assertEquals "%K{003} %F{000}hdd %f %F{000}94%% %k%F{003}%f " "$(__p9k_build_left_prompt)"
 
   unfunction df
@@ -68,9 +66,6 @@ function testDiskUsageSegmentWhenDiskIsQuiteEmpty() {
       echo "Filesystem     1K-blocks      Used Available Use% Mounted on
 /dev/disk1     487219288 471466944  15496344  4% /"
   }
-
-  # Load Powerlevel9k
-  source ${P9K_HOME}/powerlevel9k.zsh-theme
 
   assertEquals "%K{000} %F{046}hdd %f %F{046}4%% %k%F{000}%f " "$(__p9k_build_left_prompt)"
 
@@ -102,9 +97,6 @@ function testDiskUsageSegmentWarningLevelCouldBeAdjusted() {
 /dev/disk1     487219288 471466944  15496344  11% /"
   }
 
-  # Load Powerlevel9k
-  source ${P9K_HOME}/powerlevel9k.zsh-theme
-
   assertEquals "%K{003} %F{000}hdd %f %F{000}11%% %k%F{003}%f " "$(__p9k_build_left_prompt)"
 
   unfunction df
@@ -119,9 +111,6 @@ function testDiskUsageSegmentCriticalLevelCouldBeAdjusted() {
     echo "Filesystem     1K-blocks      Used Available Use% Mounted on
 /dev/disk1     487219288 471466944  15496344  11% /"
   }
-
-  # Load Powerlevel9k
-  source ${P9K_HOME}/powerlevel9k.zsh-theme
 
   assertEquals "%K{001} %F{015}hdd %f %F{015}11%% %k%F{001}%f " "$(__p9k_build_left_prompt)"
 

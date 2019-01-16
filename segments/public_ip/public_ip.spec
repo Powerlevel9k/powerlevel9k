@@ -18,6 +18,8 @@ function setUp() {
   # interfere with the tests.
   P9K_PUBLIC_IP_FILE=$FOLDER/public_ip_file
 
+  local -a P9K_RIGHT_PROMPT_ELEMENTS
+  P9K_RIGHT_PROMPT_ELEMENTS=()
   # Load Powerlevel9k
   source ${P9K_HOME}/powerlevel9k.zsh-theme
   source ${P9K_HOME}/segments/public_ip/public_ip.p9k

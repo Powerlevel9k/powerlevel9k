@@ -10,6 +10,8 @@ function setUp() {
   # Backing up P9K_MODE and setting it to default
   BACKUP_P9K_MODE=$P9K_MODE
   P9K_MODE=default
+  local -a P9K_RIGHT_PROMPT_ELEMENTS
+  P9K_RIGHT_PROMPT_ELEMENTS=()
   # Load Powerlevel9k
   source powerlevel9k.zsh-theme
   # Load Stack project segment

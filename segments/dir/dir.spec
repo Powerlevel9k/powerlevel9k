@@ -12,6 +12,8 @@ function setUpOnce() {
 function setUp() {
   export TERM="xterm-256color"
   P9K_HOME="${PWD}"
+  local -a P9K_RIGHT_PROMPT_ELEMENTS
+  P9K_RIGHT_PROMPT_ELEMENTS=()
   # Load Powerlevel9k
   source powerlevel9k.zsh-theme
   source segments/dir/dir.p9k
@@ -240,9 +242,6 @@ function testTruncateWithFolderMarkerInHome() {
   local BASEFOLDER=/tmp/powerlevel9k-test
   local SAVED_HOME=$HOME
   HOME=$BASEFOLDER
-
-  # Load Powerlevel9k
-  source ${P9K_HOME}/powerlevel9k.zsh-theme
 
   local FOLDER=$BASEFOLDER/1/12/123/1234/12345/123456/1234567
   mkdir -p $FOLDER

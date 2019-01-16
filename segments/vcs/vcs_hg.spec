@@ -19,6 +19,8 @@ function setUp() {
 
   hg init 1>/dev/null
 
+  local -a P9K_RIGHT_PROMPT_ELEMENTS
+  P9K_RIGHT_PROMPT_ELEMENTS=()
   # Load Powerlevel9k
   source ${P9K_HOME}/powerlevel9k.zsh-theme
 }

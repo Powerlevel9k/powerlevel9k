@@ -7,7 +7,9 @@ SHUNIT_PARENT=$0
 
 function setUp() {
   export TERM="xterm-256color"
-
+  local -a P9K_RIGHT_PROMPT_ELEMENTS
+  P9K_RIGHT_PROMPT_ELEMENTS=()
+  
   # Test specific settings
   OLD_DEFAULT_USER=$DEFAULT_USER
   unset DEFAULT_USER

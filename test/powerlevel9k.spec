@@ -7,6 +7,8 @@ SHUNIT_PARENT=$0
 
 function setUp() {
   export TERM="xterm-256color"
+  local -a P9K_RIGHT_PROMPT_ELEMENTS
+  P9K_RIGHT_PROMPT_ELEMENTS=()
   # Load Powerlevel9k
   source powerlevel9k.zsh-theme
   source functions/*
@@ -29,6 +31,7 @@ function testJoinedSegments() {
 function testTransitiveJoinedSegments() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
   local P9K_LEFT_PROMPT_ELEMENTS=(dir root_indicator_joined dir_joined)
+  source segments/root_indicator/root_indicator.p9k
   cd /tmp
 
   assertEquals "%K{004} %F{000}/tmp %F{000}/tmp %k%F{004}%f " "$(__p9k_build_left_prompt)"
@@ -142,7 +145,7 @@ function testNewlineOnRpromptCanBeDisabled() {
   # set +vx;
 
   assertEquals "$expected" "$_real"
-  
+
 }
 
 source shunit2/shunit2
