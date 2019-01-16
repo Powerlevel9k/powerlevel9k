@@ -11,16 +11,16 @@
   # Register segment
   # Parameters:
   #                     segment_name  context   background      foreground          Generic     Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
-  #                                                                                                                          
-  p9k::register_segment "ENVIRONMENT" "LOCAL"   "skyblue3"  "${DEFAULT_COLOR}"  $'\uF108'   $'\uF108'   $'\uF108'   $'\uF108'  $'\uF108'
-  #                                                                                                                         
-  p9k::register_segment "ENVIRONMENT" "DEV"     "chartreuse3"     "${DEFAULT_COLOR}"  $'\uF233'   $'\uF233'   $'\uF233'   $'\uF233'  $'\uF233'
-  #                                                                                                                         
-  p9k::register_segment "ENVIRONMENT" "TEST"    "orange3"    "${DEFAULT_COLOR}"  $'\uF233'   $'\uF233'   $'\uF233'   $'\uF233'  $'\uF233'
-  #                                                                                                                         
-  p9k::register_segment "ENVIRONMENT" "PROD"    "red1"          "${DEFAULT_COLOR}"  $'\uF233'   $'\uF233'   $'\uF233'   $'\uF233'  $'\uF233'
-  #                                                                                                                         
-  p9k::register_segment "ENVIRONMENT" "OTHER"   "indianred1"    "${DEFAULT_COLOR}"  $'\uF0C2'   $'\uF0C2'   $'\uF0C2'   $'\uF0C2'  $'\uF0C2'
+#                                                                                                                   
+  p9k::register_segment "ENVIRONMENT" "LOCAL"   "skyblue3"      "black"  $'\uF108'   $'\uF108'   $'\uF108'   $'\uF108'  $'\uF108'
+  #                                                                                                                  
+  p9k::register_segment "ENVIRONMENT" "DEV"     "chartreuse3"   "black"  $'\uF233'   $'\uF233'   $'\uF233'   $'\uF233'  $'\uF233'
+  #                                                                                                                  
+  p9k::register_segment "ENVIRONMENT" "TEST"    "orange3"       "black"  $'\uF233'   $'\uF233'   $'\uF233'   $'\uF233'  $'\uF233'
+  #                                                                                                                  
+  p9k::register_segment "ENVIRONMENT" "PROD"    "red1"          "black"  $'\uF233'   $'\uF233'   $'\uF233'   $'\uF233'  $'\uF233'
+  #                                                                                                                  
+  p9k::register_segment "ENVIRONMENT" "OTHER"   "indianred1"    "black"  $'\uF0C2'   $'\uF0C2'   $'\uF0C2'   $'\uF0C2'  $'\uF0C2'
 
   ################################################################
   # Register segment default values
