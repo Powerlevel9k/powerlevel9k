@@ -9,7 +9,7 @@ function setUp() {
   export TERM="xterm-256color"
   # Load Powerlevel9k
   source powerlevel9k.zsh-theme
-  source segments/environment.p9k
+  source segments/environment/environment.p9k
 }
 
 # ================================ #
