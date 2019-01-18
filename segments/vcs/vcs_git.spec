@@ -18,7 +18,7 @@ function setUp() {
 
   # Prevent the use of system or user specific gitconfig
   OLD_HOME="$HOME"
-  HOME="$(dirname ${FOLDER})"
+  HOME="${FOLDER:h}"
   OLD_GIT_CONFIG_NOSYSTEM="$GIT_CONFIG_NOSYSTEM"
   GIT_CONFIG_NOSYSTEM=true
 
