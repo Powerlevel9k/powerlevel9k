@@ -347,19 +347,12 @@ function testBranchNameTruncatingShortenLength() {
   local P9K_VCS_SHORTEN_STRATEGY="truncate_from_right"
   source ${P9K_HOME}/powerlevel9k.zsh-theme
 
-  FOLDER=/tmp/powerlevel9k-test/vcs-test
-  mkdir -p $FOLDER
-  cd $FOLDER
-  git init 1>/dev/null
   touch testfile
 
   assertEquals "%K{002} %F{000}?%f %F{000} master ? %k%F{002}%f " "$(__p9k_build_left_prompt)"
 
   local P9K_VCS_SHORTEN_LENGTH=3
   assertEquals "%K{002} %F{000}?%f %F{000} mas… ? %k%F{002}%f " "$(__p9k_build_left_prompt)"
-
-  cd -
-  rm -fr /tmp/powerlevel9k-test
 }
 
 function testBranchNameTruncatingMinLength() {
@@ -370,10 +363,6 @@ function testBranchNameTruncatingMinLength() {
   local P9K_VCS_SHORTEN_STRATEGY="truncate_from_right"
   source ${P9K_HOME}/powerlevel9k.zsh-theme
 
-  FOLDER=/tmp/powerlevel9k-test/vcs-test
-  mkdir -p $FOLDER
-  cd $FOLDER
-  git init 1>/dev/null
   touch testfile
 
   assertEquals "%K{002} %F{000}?%f %F{000} master ? %k%F{002}%f " "$(__p9k_build_left_prompt)"
@@ -381,9 +370,6 @@ function testBranchNameTruncatingMinLength() {
   local P9K_VCS_SHORTEN_MIN_LENGTH=7
 
   assertEquals "%K{002} %F{000}?%f %F{000} master ? %k%F{002}%f " "$(__p9k_build_left_prompt)"
-
-  cd -
-  rm -fr /tmp/powerlevel9k-test
 }
 
 function testBranchNameTruncatingShortenStrategy() {
@@ -394,10 +380,6 @@ function testBranchNameTruncatingShortenStrategy() {
   local P9K_VCS_SHORTEN_STRATEGY="truncate_from_right"
   source ${P9K_HOME}/powerlevel9k.zsh-theme
 
-  FOLDER=/tmp/powerlevel9k-test/vcs-test
-  mkdir -p $FOLDER
-  cd $FOLDER
-  git init 1>/dev/null
   touch testfile
 
   assertEquals "%K{002} %F{000}?%f %F{000} mas… ? %k%F{002}%f " "$(__p9k_build_left_prompt)"
@@ -405,9 +387,6 @@ function testBranchNameTruncatingShortenStrategy() {
   local P9K_VCS_SHORTEN_STRATEGY="truncate_middle"
 
   assertEquals "%K{002} %F{000}?%f %F{000} mas…ter ? %k%F{002}%f " "$(__p9k_build_left_prompt)"
-
-  cd -
-  rm -fr /tmp/powerlevel9k-test
 }
 
 function testRemoteBranchNameIdenticalToTag() {
@@ -433,8 +412,6 @@ function testRemoteBranchNameIdenticalToTag() {
   git checkout test 1>/dev/null 2>&1
 
   assertEquals "%K{002} %F{000} test test %k%F{002}%f " "$(__p9k_build_left_prompt)"
-
-  cd -
 }
 
 function testAlwaysShowRemoteBranch() {
@@ -454,8 +431,6 @@ function testAlwaysShowRemoteBranch() {
 
   local P9K_VCS_GIT_ALWAYS_SHOW_REMOTE_BRANCH='false'
   assertEquals "%K{002} %F{000} master %k%F{002}%f " "$(__p9k_build_left_prompt)"
-
-  cd -
 }
 
 function testGitDirClobber() {
@@ -491,7 +466,6 @@ function testGitDirClobber() {
 
   assertEquals "%K{001} %F{000}✘ clob /tmp/powerlevel9k-test/test-dotfiles  master ✚ ? %k%F{001}%f " "$(__p9k_build_left_prompt)"
 
-  cd -
   unset GIT_DIR
   unset GIT_WORK_TREE
 }
