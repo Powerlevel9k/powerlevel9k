@@ -32,6 +32,90 @@
     <marker
        inkscape:isstock="true"
        style="overflow:visible;"
+       id="marker29462"
+       refX="0.0"
+       refY="0.0"
+       orient="auto"
+       inkscape:stockid="Arrow1Mend">
+      <path
+         transform="scale(0.4) rotate(180) translate(10,0)"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt;stroke-opacity:1;fill:#000000;fill-opacity:1"
+         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
+         id="path29460" />
+    </marker>
+    <marker
+       inkscape:isstock="true"
+       style="overflow:visible;"
+       id="marker29118"
+       refX="0.0"
+       refY="0.0"
+       orient="auto"
+       inkscape:stockid="Arrow1Mend">
+      <path
+         transform="scale(0.4) rotate(180) translate(10,0)"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt;stroke-opacity:1;fill:#000000;fill-opacity:1"
+         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
+         id="path29116" />
+    </marker>
+    <marker
+       inkscape:isstock="true"
+       style="overflow:visible;"
+       id="marker26572"
+       refX="0.0"
+       refY="0.0"
+       orient="auto"
+       inkscape:stockid="Arrow1Mend">
+      <path
+         transform="scale(0.4) rotate(180) translate(10,0)"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt;stroke-opacity:1;fill:#000000;fill-opacity:1"
+         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
+         id="path26570" />
+    </marker>
+    <marker
+       inkscape:isstock="true"
+       style="overflow:visible;"
+       id="marker26568"
+       refX="0.0"
+       refY="0.0"
+       orient="auto"
+       inkscape:stockid="Arrow1Mend">
+      <path
+         transform="scale(0.4) rotate(180) translate(10,0)"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt;stroke-opacity:1;fill:#000000;fill-opacity:1"
+         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
+         id="path26566" />
+    </marker>
+    <marker
+       inkscape:isstock="true"
+       style="overflow:visible;"
+       id="marker24364"
+       refX="0.0"
+       refY="0.0"
+       orient="auto"
+       inkscape:stockid="Arrow1Mend">
+      <path
+         transform="scale(0.4) rotate(180) translate(10,0)"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt;stroke-opacity:1;fill:#000000;fill-opacity:1"
+         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
+         id="path24362" />
+    </marker>
+    <marker
+       inkscape:isstock="true"
+       style="overflow:visible;"
+       id="marker24020"
+       refX="0.0"
+       refY="0.0"
+       orient="auto"
+       inkscape:stockid="Arrow1Mend">
+      <path
+         transform="scale(0.4) rotate(180) translate(10,0)"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt;stroke-opacity:1;fill:#000000;fill-opacity:1"
+         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
+         id="path24018" />
+    </marker>
+    <marker
+       inkscape:isstock="true"
+       style="overflow:visible;"
        id="marker19668"
        refX="0.0"
        refY="0.0"
@@ -882,8 +966,8 @@
      id="namedview368"
      showgrid="false"
      inkscape:zoom="1.4142136"
-     inkscape:cx="436.71183"
-     inkscape:cy="261.5405"
+     inkscape:cx="453.47713"
+     inkscape:cy="627.47836"
      inkscape:window-x="0"
      inkscape:window-y="0"
      inkscape:window-maximized="1"
@@ -891,140 +975,35 @@
      inkscape:connector-spacing="15"
      inkscape:snap-midpoints="true" />
   <path
-     style="fill:none;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#marker19668);stroke-miterlimit:10;stroke-dasharray:none"
-     d="m 435.6455,700.2124 h -155.905 v 56.693"
-     id="path19658"
-     inkscape:connector-curvature="0" />
-  <path
-     style="fill:none;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#marker18992);stroke-miterlimit:10;stroke-dasharray:none"
-     d="m 435.6455,265.5674 h -155.905 v 56.692"
-     id="path18982"
-     inkscape:connector-curvature="0" />
-  <path
-     style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker17806)"
-     d="m 553.7555,360.0544 v 18.898"
-     id="path17796"
-     inkscape:connector-type="polyline"
-     inkscape:connector-curvature="0"
-     inkscape:connection-start="#g20924"
-     inkscape:connection-end="#g20237" />
-  <path
-     style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker17462)"
-     d="m 553.756,643.5194 0,18.89816"
-     id="path17280"
-     inkscape:connector-type="polyline"
-     inkscape:connector-curvature="0"
-     inkscape:connection-start="#g20949"
-     inkscape:connection-end="#g21006" />
-  <path
-     style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker17458)"
-     d="m 553.75575,738.00732 -1.3e-4,18.89808"
-     id="path17282"
-     inkscape:connector-type="polyline"
-     inkscape:connector-curvature="0"
-     inkscape:connection-start="#g21006"
-     inkscape:connection-end="#g21011" />
-  <path
-     style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker17108)"
-     d="m 553.7555,794.7004 v 18.898"
-     id="path17066"
+     style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker26572)"
+     d="m 397.8495,133.2829 h 76.34536 v 37.796"
+     id="path26556"
      inkscape:connector-type="orthogonal"
      inkscape:connector-curvature="0"
-     inkscape:connection-start="#g21011"
-     inkscape:connection-end="#g21031" />
+     inkscape:connection-start="#g20970"
+     inkscape:connection-end="#g26388"
+     inkscape:export-xdpi="123"
+     inkscape:export-ydpi="123" />
   <path
-     style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker17104)"
-     d="m 435.6455,832.4959 h -37.796"
-     id="path17068"
+     style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker24020)"
+     d="M -42.478242,665.31525 169.21301,780.03565"
+     id="path24010"
      inkscape:connector-type="polyline"
      inkscape:connector-curvature="0"
-     inkscape:connection-start="#g21031"
-     inkscape:connection-end="#g21021" />
-  <path
-     style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker17096)"
-     d="m 279.7395,851.3934 v 18.898"
-     id="path17070"
-     inkscape:connector-type="polyline"
-     inkscape:connector-curvature="0"
-     inkscape:connection-start="#g21021"
-     inkscape:connection-end="#g21026" />
-  <path
-     style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker17092)"
-     d="m 279.7395,908.0864 v 18.898"
-     id="path17072"
-     inkscape:connector-type="polyline"
-     inkscape:connector-curvature="0"
-     inkscape:connection-start="#g21026"
-     inkscape:connection-end="#g21036" />
+     inkscape:connection-start="#g20939"
+     inkscape:connection-end="#g21041"
+     inkscape:export-xdpi="123"
+     inkscape:export-ydpi="123" />
   <path
      style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker17112)"
-     d="m 279.73967,964.7794 1.6e-4,18.903"
+     d="M 449.80858,608.50166 228.46163,780.03565"
      id="path17074"
      inkscape:connector-type="polyline"
      inkscape:connector-curvature="0"
      inkscape:connection-start="#g21036"
-     inkscape:connection-end="#g21041" />
-  <path
-     style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker17100)"
-     d="m 279.7395,794.7004 v 18.898"
-     id="path17076"
-     inkscape:connector-type="polyline"
-     inkscape:connector-curvature="0"
-     inkscape:connection-start="#g21016"
-     inkscape:connection-end="#g21021" />
-  <path
-     style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker14904)"
-     d="m 397.8495,624.6219 h 37.79725"
-     id="path14710"
-     inkscape:connector-type="orthogonal"
-     inkscape:connector-curvature="0"
-     inkscape:connection-start="#g20944"
-     inkscape:connection-end="#g20949" />
-  <path
-     style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker14888)"
-     d="m 279.7395,586.8264 v 18.898"
-     id="path14708"
-     inkscape:connector-type="orthogonal"
-     inkscape:connector-curvature="0"
-     inkscape:connection-start="#g20939"
-     inkscape:connection-end="#g20944" />
-  <path
-     style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker14892)"
-     d="m 279.7395,530.1334 v 18.898"
-     id="path14706"
-     inkscape:connector-type="orthogonal"
-     inkscape:connector-curvature="0"
-     inkscape:connection-start="#g20934"
-     inkscape:connection-end="#g20939" />
-  <path
-     style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker14896)"
-     d="m 279.7395,473.4404 v 18.898"
-     id="path14704"
-     inkscape:connector-type="orthogonal"
-     inkscape:connector-curvature="0"
-     inkscape:connection-start="#g20929"
-     inkscape:connection-end="#g20934" />
-  <path
-     style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker14900)"
-     d="m 279.7395,416.7474 v 18.898"
-     id="path14702"
-     inkscape:connector-type="orthogonal"
-     inkscape:connector-curvature="0"
-     inkscape:connection-start="#g20914"
-     inkscape:connection-end="#g20929" />
-  <path
-     style="fill:none;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:10;stroke-dasharray:2, 4;stroke-dashoffset:0;marker-end:url(#marker7705)"
-     d="M 397.8505,454.5434 H 686.60068 V 265.68864 H 667.5088"
-     id="path7695"
-     inkscape:connector-curvature="0" />
-  <path
-     style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker3143)"
-     d="m 279.7395,152.1804 v 18.898"
-     id="path1128"
-     inkscape:connector-type="polyline"
-     inkscape:connector-curvature="0"
-     inkscape:connection-start="#g20970"
-     inkscape:connection-end="#g20965" />
+     inkscape:connection-end="#g21041"
+     inkscape:export-xdpi="123"
+     inkscape:export-ydpi="123" />
   <path
      style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker2469)"
      d="m 123.8345,133.28326 37.795,-9e-5"
@@ -1032,7 +1011,9 @@
      inkscape:connector-type="polyline"
      inkscape:connector-curvature="0"
      inkscape:connection-start="#g20975"
-     inkscape:connection-end="#g20970" />
+     inkscape:connection-end="#g20970"
+     inkscape:export-xdpi="123"
+     inkscape:export-ydpi="123" />
   <path
      style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker1961)"
      d="m 435.6455,76.80597 -37.796,-0.05214"
@@ -1040,7 +1021,9 @@
      inkscape:connector-type="polyline"
      inkscape:connector-curvature="0"
      inkscape:connection-start="#g20985"
-     inkscape:connection-end="#g20980" />
+     inkscape:connection-end="#g20980"
+     inkscape:export-xdpi="123"
+     inkscape:export-ydpi="123" />
   <path
      style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker1399)"
      d="m 123.8345,19.8979 h 37.795"
@@ -1048,303 +1031,127 @@
      inkscape:connector-type="polyline"
      inkscape:connector-curvature="0"
      inkscape:connection-start="#g21000"
-     inkscape:connection-end="#g20995" />
-  <path
-     style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker2934)"
-     d="m 553.756,208.8744 0,18.89716"
-     id="path2240"
-     inkscape:connector-type="polyline"
-     inkscape:connector-curvature="0"
-     inkscape:connection-start="#g20960"
-     inkscape:connection-end="#g20955" />
-  <path
-     style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker2592)"
-     d="M 553.756,303.36224 V 322.2594"
-     id="path1124"
-     inkscape:connector-type="orthogonal"
-     inkscape:connector-curvature="0"
-     inkscape:connection-start="#g20955"
-     inkscape:connection-end="#g20924" />
-  <path
-     style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker1904)"
-     d="m 397.8495,189.97612 37.79654,6e-5"
-     id="path1894"
-     inkscape:connector-type="polyline"
-     inkscape:connector-curvature="0"
-     inkscape:connection-start="#g20965"
-     inkscape:connection-end="#g20960" />
-  <path
-     style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker21053)"
-     d="m 435.6455,397.8499 h -37.796"
-     id="path21043"
-     inkscape:connector-type="polyline"
-     inkscape:connector-curvature="0"
-     inkscape:connection-start="#g20237"
-     inkscape:connection-end="#g20914" />
-  <path
-     style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker21397)"
-     d="m 279.7395,360.0544 v 18.898"
-     id="path21387"
-     inkscape:connector-type="polyline"
-     inkscape:connector-curvature="0"
-     inkscape:connection-start="#g20919"
-     inkscape:connection-end="#g20914" />
-  <path
-     fill="none"
-     d="M549.7515 725.8904h42.709v37.795h-42.709z"
-     id="path2" />
-  <path
-     fill="none"
-     d="M549.7515 291.2454h42.709v37.795h-42.709z"
-     id="path6" />
+     inkscape:connection-end="#g20995"
+     inkscape:export-xdpi="123"
+     inkscape:export-ydpi="123" />
   <path
      fill="none"
      d="M123.8345 19.8974h37.795"
-     id="path22" />
+     id="path22"
+     inkscape:export-xdpi="123"
+     inkscape:export-ydpi="123" />
   <path
      fill="none"
      d="M.9995 120.6854c0-3.479 2.821-6.3 6.3-6.3h110.236c1.671 0 3.273.664 4.454 1.845a6.303 6.303 0 0 1 1.845 4.455v25.197c0 3.478-2.82 6.299-6.299 6.299H7.2995c-3.479 0-6.3-2.821-6.3-6.299v-25.197z"
-     id="path28" />
+     id="path28"
+     inkscape:export-xdpi="123"
+     inkscape:export-ydpi="123" />
   <path
      fill="none"
      d="M161.6295 114.3854h236.22v37.795h-236.22z"
-     id="path34" />
+     id="path34"
+     inkscape:export-xdpi="123"
+     inkscape:export-ydpi="123" />
   <path
      fill="none"
      d="M123.8345 133.2834h37.795"
-     id="path40" />
+     id="path40"
+     inkscape:export-xdpi="123"
+     inkscape:export-ydpi="123" />
   <path
      fill="none"
      d="M161.6295 171.0784h236.22v37.795h-236.22z"
-     id="path46" />
-  <path
-     fill="none"
-     d="M279.7405 152.1814v18.897"
-     id="path52" />
-  <path
-     fill="none"
-     d="M397.8505 189.9764h37.795"
-     id="path58" />
-  <path
-     fill="none"
-     d="M435.6455 265.5674l118.11-37.796 118.111 37.796-118.111 37.795-118.11-37.795z"
-     id="path64" />
-  <path
-     fill="none"
-     d="M435.6455 322.2594h236.22v37.795h-236.22z"
-     id="path70" />
-  <path
-     fill="none"
-     d="M161.6295 322.2594h236.22v37.795h-236.22z"
-     id="path76" />
-  <path
-     fill="none"
-     d="M161.6295 378.9524h236.22v37.795h-236.22z"
-     id="path82" />
-  <path
-     fill="none"
-     d="M553.7555 303.3624v18.897"
-     id="path88" />
-  <path
-     fill="none"
-     d="M435.6455 265.5674h-155.905v56.692"
-     id="path94" />
-  <path
-     fill="none"
-     d="M279.7405 360.0554v18.897"
-     id="path100" />
-  <path
-     fill="none"
-     d="M279.7405 416.7484v18.897"
-     id="path106" />
+     id="path46"
+     inkscape:export-xdpi="123"
+     inkscape:export-ydpi="123" />
   <path
      fill="none"
      d="M161.6295 989.9724c0-3.48 2.821-6.29 6.3-6.29h223.622c1.67 0 3.272.66 4.454 1.84a6.2896 6.2896 0 0 1 1.845 4.45v25.2c0 3.48-2.82 6.3-6.299 6.3h-223.622c-3.479 0-6.3-2.82-6.3-6.3v-25.2z"
-     id="path112" />
-  <path
-     fill="none"
-     d="M415.4145 693.3194h42.709v37.795h-42.709z"
-     id="path118" />
+     id="path112"
+     inkscape:export-xdpi="123"
+     inkscape:export-ydpi="123" />
   <path
      fill="none"
      d="M161.6295 76.5904h-99.212v37.795"
-     id="path122" />
+     id="path122"
+     inkscape:export-xdpi="123"
+     inkscape:export-ydpi="123" />
   <path
      d="M 161.30948,76.5583 H 62.70955 v 34.55015"
      id="path124"
      style="fill:none;stroke:#000000;stroke-width:2;stroke-dasharray:2,4;marker-end:url(#Arrow1Mend);stroke-miterlimit:10;stroke-dashoffset:0"
-     inkscape:connector-curvature="0" />
-  <path
-     fill="none"
-     d="M435.6455 378.9524h236.22v37.795h-236.22z"
-     id="path128" />
-  <path
-     fill="none"
-     d="M161.6295 492.3384h236.22v37.795h-236.22z"
-     id="path134" />
-  <path
-     fill="none"
-     d="M553.7555 360.0554v18.897"
-     id="path140" />
-  <path
-     fill="none"
-     d="M435.6455 397.8504h-37.795"
-     id="path146" />
+     inkscape:connector-curvature="0"
+     inkscape:export-xdpi="123"
+     inkscape:export-ydpi="123" />
   <path
      fill="none"
      d="M397.7885 19.8974h37.858"
-     id="path158" />
-  <path
-     fill="none"
-     d="M161.6295 435.6454h236.22v37.795h-236.22z"
-     id="path164" />
-  <path
-     fill="none"
-     d="M415.4145 258.6734h42.709v37.795h-42.709z"
-     id="path170" />
-  <path
-     fill="none"
-     d="M161.6295 549.0314h236.22v37.795h-236.22z"
-     id="path174" />
-  <path
-     fill="none"
-     d="M279.7405 530.1344v18.897"
-     id="path180" />
+     id="path158"
+     inkscape:export-xdpi="123"
+     inkscape:export-ydpi="123" />
   <path
      fill="none"
      d="M435.6455 58.0714h236.22v37.795h-236.22z"
-     id="path186" />
+     id="path186"
+     inkscape:export-xdpi="123"
+     inkscape:export-ydpi="123" />
   <path
      fill="none"
      d="M435.6455 76.9684l-37.795-.378"
-     id="path192" />
+     id="path192"
+     inkscape:export-xdpi="123"
+     inkscape:export-ydpi="123" />
   <path
      fill="none"
      d="M435.6455 19.8974l47.244-18.897h141.733l47.244 18.897-47.244 18.898h-141.733l-47.244-18.898z"
-     id="path198" />
+     id="path198"
+     inkscape:export-xdpi="123"
+     inkscape:export-ydpi="123" />
   <path
      fill="none"
      d="M553.7555 38.7954v19.276"
-     id="path204" />
+     id="path204"
+     inkscape:export-xdpi="123"
+     inkscape:export-ydpi="123" />
   <path
      d="m 553.77586,39.679191 -0.1183,16.409833"
      id="path206"
      inkscape:connector-curvature="0"
      style="fill:none;stroke:#000000;stroke-width:2;stroke-miterlimit:10;stroke-dasharray:none;marker-end:url(#marker2875)"
-     sodipodi:nodetypes="cc" />
+     sodipodi:nodetypes="cc"
+     inkscape:export-xdpi="123"
+     inkscape:export-ydpi="123" />
   <path
      fill="none"
      d="M671.8665 76.9684h25v-57.071h-24.937"
-     id="path210" />
+     id="path210"
+     inkscape:export-xdpi="123"
+     inkscape:export-ydpi="123" />
   <path
      d="m 671.8665,76.9684 h 19 v -57.071 h -18.937"
      id="path212"
      style="fill:none;stroke:#000000;stroke-width:2;stroke-dasharray:2,4;marker-end:url(#marker2793);stroke-miterlimit:10;stroke-dashoffset:0"
      inkscape:connector-curvature="0"
-     sodipodi:nodetypes="cccc" />
-  <path
-     fill="none"
-     d="M435.6455 189.9764l47.244-18.898h141.733l47.244 18.898-47.244 18.898h-141.733l-47.244-18.898z"
-     id="path216" />
-  <path
-     fill="none"
-     d="M397.8505 454.5434h299.017v-264.567h-25.001"
-     id="path228" />
-  <path
-     fill="none"
-     d="M279.7405 473.4414v18.897"
-     id="path234" />
-  <path
-     fill="none"
-     d="M161.6295 605.7244h236.22v37.795h-236.22z"
-     id="path240" />
-  <path
-     fill="none"
-     d="M435.6455 700.2124l118.11-37.795 118.111 37.795-118.111 37.795-118.11-37.795z"
-     id="path246" />
-  <path
-     fill="none"
-     d="M435.6455 756.9054h236.22v37.795h-236.22z"
-     id="path252" />
-  <path
-     fill="none"
-     d="M161.6295 756.9054h236.22v37.795h-236.22z"
-     id="path258" />
-  <path
-     fill="none"
-     d="M161.6295 813.5984h236.22v37.795h-236.22z"
-     id="path264" />
-  <path
-     fill="none"
-     d="M553.7555 738.0084v18.897"
-     id="path270" />
-  <path
-     fill="none"
-     d="M435.6455 700.2124h-155.905v56.693"
-     id="path276" />
-  <path
-     fill="none"
-     d="M279.7405 794.7004v18.898"
-     id="path282" />
-  <path
-     fill="none"
-     d="M279.7405 851.3934v18.898"
-     id="path288" />
-  <path
-     fill="none"
-     d="M435.6455 813.5984h236.22v37.795h-236.22z"
-     id="path294" />
-  <path
-     fill="none"
-     d="M161.6295 926.9844h236.22v37.795h-236.22z"
-     id="path300" />
-  <path
-     fill="none"
-     d="M553.7555 794.7004v18.898"
-     id="path306" />
-  <path
-     fill="none"
-     d="M435.6455 832.4964h-37.795"
-     id="path312" />
-  <path
-     fill="none"
-     d="M161.6295 870.2914h236.22v37.795h-236.22z"
-     id="path318" />
-  <path
-     fill="none"
-     d="M435.6455 624.6224l47.244-18.898h141.733l47.244 18.898-47.244 18.897h-141.733l-47.244-18.897z"
-     id="path324" />
-  <path
-     fill="none"
-     d="M553.7555 643.5194v18.898"
-     id="path330" />
-  <path
-     fill="none"
-     d="M397.8505 889.1894h299.017v-264.567h-25.001"
-     id="path336" />
-  <path
-     fill="none"
-     d="M279.7405 908.0864v18.898"
-     id="path342" />
-  <path
-     fill="none"
-     d="M397.8505 624.6224h37.795"
-     id="path348" />
-  <path
-     fill="none"
-     d="M279.7405 586.8264v18.898"
-     id="path354" />
+     sodipodi:nodetypes="cccc"
+     inkscape:export-xdpi="123"
+     inkscape:export-ydpi="123" />
   <path
      fill="none"
      d="M279.7405 964.7794v18.903"
-     id="path360" />
+     id="path360"
+     inkscape:export-xdpi="123"
+     inkscape:export-ydpi="123" />
   <path
      style="fill:none"
      inkscape:connector-curvature="0"
      d="m 0.9995,7.2994 c 0,-3.479 2.821,-6.299 6.3,-6.299 h 110.236 c 1.671,0 3.273,0.663 4.454,1.845 a 6.299,6.299 0 0 1 1.845,4.454 v 25.197 c 0,3.479 -2.82,6.299 -6.299,6.299 H 7.2995 c -3.479,0 -6.3,-2.82 -6.3,-6.299 z"
-     id="path10" />
+     id="path10"
+     inkscape:export-xdpi="123"
+     inkscape:export-ydpi="123" />
   <g
-     id="g21000">
+     id="g21000"
+     inkscape:export-xdpi="123"
+     inkscape:export-ydpi="123">
     <path
        id="path12"
        d="m 0.9995,7.2994 c 0,-3.479 2.821,-6.299 6.3,-6.299 h 110.236 c 1.671,0 3.273,0.663 4.454,1.845 a 6.299,6.299 0 0 1 1.845,4.454 v 25.197 c 0,3.479 -2.82,6.299 -6.299,6.299 H 7.2995 c -3.479,0 -6.3,-2.82 -6.3,-6.299 z"
@@ -1366,9 +1173,13 @@
      style="fill:none"
      inkscape:connector-curvature="0"
      d="m 161.6295,1.0004 h 236.159 v 37.795 h -236.159 z"
-     id="path16" />
+     id="path16"
+     inkscape:export-xdpi="123"
+     inkscape:export-ydpi="123" />
   <g
-     id="g20995">
+     id="g20995"
+     inkscape:export-xdpi="123"
+     inkscape:export-ydpi="123">
     <path
        id="path18"
        d="m 161.6295,1.0004 h 236.159 v 37.795 h -236.159 z"
@@ -1387,26 +1198,9 @@
          sodipodi:role="line">__p9k_load_segments()</tspan></text>
   </g>
   <g
-     id="g20944">
-    <path
-       id="path242"
-       d="m 161.6295,605.7244 h 236.22 v 37.795 h -236.22 z"
-       inkscape:connector-curvature="0"
-       style="fill:#ffffff;stroke:#000000;stroke-width:2;fill-opacity:1" />
-    <text
-       id="text1181-3-7"
-       y="628.98523"
-       x="186.78514"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14.05762386px;line-height:1.25;font-family:'Ubuntu Nerd Font';-inkscape-font-specification:'Ubuntu Nerd Font';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.35144064"
-       xml:space="preserve"><tspan
-         style="font-size:14.66666698px;stroke-width:0.35144064"
-         y="628.98523"
-         x="186.78514"
-         id="tspan1179-6-5"
-         sodipodi:role="line">__p9k_build_right_prompt()</tspan></text>
-  </g>
-  <g
-     id="g20990">
+     id="g20990"
+     inkscape:export-xdpi="123"
+     inkscape:export-ydpi="123">
     <path
        id="path200"
        d="m 435.6455,19.8974 47.244,-18.897 h 141.733 l 47.244,18.897 -47.244,18.898 h -141.733 z"
@@ -1425,7 +1219,9 @@
          sodipodi:role="line">For each segment</tspan></text>
   </g>
   <g
-     id="g20985">
+     id="g20985"
+     inkscape:export-xdpi="123"
+     inkscape:export-ydpi="123">
     <path
        id="path188"
        d="m 435.6455,58.0714 h 236.22 v 37.795 h -236.22 z"
@@ -1444,7 +1240,9 @@
          sodipodi:role="line">p9k::register_segment()</tspan></text>
   </g>
   <g
-     id="g20980">
+     id="g20980"
+     inkscape:export-xdpi="123"
+     inkscape:export-ydpi="123">
     <path
        id="path36-3"
        d="m 161.6295,57.693401 h 236.22 v 37.795 h -236.22 z"
@@ -1463,7 +1261,9 @@
          sodipodi:role="line">prompt_powerlevel9k_setup()</tspan></text>
   </g>
   <g
-     id="g20970">
+     id="g20970"
+     inkscape:export-xdpi="123"
+     inkscape:export-ydpi="123">
     <path
        id="path36"
        d="m 161.6295,114.3854 h 236.22 v 37.795 h -236.22 z"
@@ -1482,26 +1282,9 @@
          sodipodi:role="line">__p9k_prepare_prompts()</tspan></text>
   </g>
   <g
-     id="g20965">
-    <path
-       id="path48"
-       d="m 161.6295,171.0784 h 236.22 v 37.795 h -236.22 z"
-       inkscape:connector-curvature="0"
-       style="fill:#ffffff;stroke:#000000;stroke-width:2;fill-opacity:1" />
-    <text
-       id="text1181-3-7-9"
-       y="194.36124"
-       x="190.96744"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14.05762386px;line-height:1.25;font-family:'Ubuntu Nerd Font';-inkscape-font-specification:'Ubuntu Nerd Font';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.35144064"
-       xml:space="preserve"><tspan
-         style="font-size:14.66666698px;stroke-width:0.35144064"
-         y="194.36124"
-         x="190.96744"
-         id="tspan1179-6-5-3"
-         sodipodi:role="line">__p9k_build_left_prompt()</tspan></text>
-  </g>
-  <g
-     id="g20975">
+     id="g20975"
+     inkscape:export-xdpi="123"
+     inkscape:export-ydpi="123">
     <path
        id="path30"
        d="m 0.9995,120.6854 c 0,-3.479 2.821,-6.3 6.3,-6.3 h 110.236 c 1.671,0 3.273,0.664 4.454,1.845 a 6.303,6.303 0 0 1 1.845,4.455 v 25.197 c 0,3.478 -2.82,6.299 -6.299,6.299 H 7.2995 c -3.479,0 -6.3,-2.821 -6.3,-6.299 z"
@@ -1520,212 +1303,327 @@
          sodipodi:role="line">On ZSH render</tspan></text>
   </g>
   <g
-     id="g20960">
+     id="g21041"
+     transform="translate(-75.660425,-203.64675)"
+     inkscape:export-xdpi="123"
+     inkscape:export-ydpi="123">
     <path
-       id="path218"
-       d="m 435.6455,189.9764 47.244,-18.898 h 141.733 l 47.244,18.898 -47.244,18.898 h -141.733 z"
+       id="path114"
+       d="m 161.6295,989.9724 c 0,-3.48 2.821,-6.29 6.3,-6.29 h 223.622 c 1.67,0 3.272,0.66 4.454,1.84 a 6.2896,6.2896 0 0 1 1.845,4.45 v 25.2 c 0,3.48 -2.82,6.3 -6.299,6.3 h -223.622 c -3.479,0 -6.3,-2.82 -6.3,-6.3 z"
        inkscape:connector-curvature="0"
        style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2" />
     <text
-       id="text1181-3-7-26"
-       y="194.28841"
-       x="494.19214"
+       id="text1181-3-7-32-5-54"
+       y="1006.9114"
+       x="209.12401"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14.05762386px;line-height:1.25;font-family:'Ubuntu Nerd Font';-inkscape-font-specification:'Ubuntu Nerd Font';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.35144064"
        xml:space="preserve"><tspan
          style="font-size:14.66666698px;stroke-width:0.35144064"
-         y="194.28841"
-         x="494.19214"
-         id="tspan1179-6-5-1"
-         sodipodi:role="line">For each segment</tspan></text>
+         y="1006.9114"
+         x="209.12401"
+         id="tspan1179-6-5-061-5-74"
+         sodipodi:role="line">ZSH renders prompts</tspan></text>
   </g>
+  <path
+     style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker1785)"
+     d="m 397.7885,19.8979 h 37.85825"
+     id="path1743"
+     inkscape:connector-type="polyline"
+     inkscape:connector-curvature="0"
+     inkscape:connection-start="#g20995"
+     inkscape:connection-end="#g20990"
+     inkscape:export-xdpi="123"
+     inkscape:export-ydpi="123" />
+  <path
+     style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker26568)"
+     d="m 474.19486,208.8739 v 40.57326"
+     id="path26558"
+     inkscape:connector-type="orthogonal"
+     inkscape:connector-curvature="0"
+     inkscape:connection-start="#g26388"
+     inkscape:connection-end="#g20944"
+     inkscape:export-xdpi="123"
+     inkscape:export-ydpi="123" />
+  <path
+     style="fill:none;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker19668)"
+     d="m 630.09986,343.93466 h -155.905 v 56.693"
+     id="path19658"
+     inkscape:connector-curvature="0"
+     inkscape:export-xdpi="123"
+     inkscape:export-ydpi="123" />
+  <path
+     style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker17462)"
+     d="m 748.21036,287.24166 0,18.89816"
+     id="path17280"
+     inkscape:connector-type="polyline"
+     inkscape:connector-curvature="0"
+     inkscape:connection-start="#g20949"
+     inkscape:connection-end="#g21006"
+     inkscape:export-xdpi="123"
+     inkscape:export-ydpi="123" />
+  <path
+     style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker17458)"
+     d="m 748.21011,381.72958 -1.3e-4,18.89808"
+     id="path17282"
+     inkscape:connector-type="polyline"
+     inkscape:connector-curvature="0"
+     inkscape:connection-start="#g21006"
+     inkscape:connection-end="#g21011"
+     inkscape:export-xdpi="123"
+     inkscape:export-ydpi="123" />
+  <path
+     style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker17108)"
+     d="m 748.20986,438.42266 v 18.898"
+     id="path17066"
+     inkscape:connector-type="orthogonal"
+     inkscape:connector-curvature="0"
+     inkscape:connection-start="#g21011"
+     inkscape:connection-end="#g21031"
+     inkscape:export-xdpi="123"
+     inkscape:export-ydpi="123" />
+  <path
+     style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker17104)"
+     d="m 630.09986,476.21816 -37.796,0"
+     id="path17068"
+     inkscape:connector-type="polyline"
+     inkscape:connector-curvature="0"
+     inkscape:connection-start="#g21031"
+     inkscape:connection-end="#g21021"
+     inkscape:export-xdpi="123"
+     inkscape:export-ydpi="123" />
+  <path
+     style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker17096)"
+     d="m 474.19386,495.11566 v 18.898"
+     id="path17070"
+     inkscape:connector-type="polyline"
+     inkscape:connector-curvature="0"
+     inkscape:connection-start="#g21021"
+     inkscape:connection-end="#g21026"
+     inkscape:export-xdpi="123"
+     inkscape:export-ydpi="123" />
+  <path
+     style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker17092)"
+     d="m 474.19386,551.80866 v 18.898"
+     id="path17072"
+     inkscape:connector-type="polyline"
+     inkscape:connector-curvature="0"
+     inkscape:connection-start="#g21026"
+     inkscape:connection-end="#g21036"
+     inkscape:export-xdpi="123"
+     inkscape:export-ydpi="123" />
+  <path
+     style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker17100)"
+     d="m 474.19386,438.42266 v 18.898"
+     id="path17076"
+     inkscape:connector-type="polyline"
+     inkscape:connector-curvature="0"
+     inkscape:connection-start="#g21016"
+     inkscape:connection-end="#g21021"
+     inkscape:export-xdpi="123"
+     inkscape:export-ydpi="123" />
+  <path
+     style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker14904)"
+     d="m 592.30486,268.34466 h 37.795"
+     id="path14710"
+     inkscape:connector-type="orthogonal"
+     inkscape:connector-curvature="0"
+     inkscape:connection-start="#g20944"
+     inkscape:connection-end="#g20949"
+     inkscape:export-xdpi="123"
+     inkscape:export-ydpi="123" />
+  <path
+     d="m 744.20586,369.61266 h 42.709 v 37.795 h -42.709 z"
+     id="path2"
+     inkscape:connector-curvature="0"
+     style="fill:none"
+     inkscape:export-xdpi="123"
+     inkscape:export-ydpi="123" />
+  <path
+     style="fill:none"
+     inkscape:connector-curvature="0"
+     d="m 397.8505,189.9764 h 37.795"
+     id="path58"
+     inkscape:export-xdpi="123"
+     inkscape:export-ydpi="123" />
+  <path
+     d="m 609.86886,337.04166 h 42.709 v 37.795 h -42.709 z"
+     id="path118"
+     inkscape:connector-curvature="0"
+     style="fill:none"
+     inkscape:export-xdpi="123"
+     inkscape:export-ydpi="123" />
+  <path
+     style="fill:none"
+     inkscape:connector-curvature="0"
+     d="m 435.6455,189.9764 47.244,-18.898 h 141.733 l 47.244,18.898 -47.244,18.898 h -141.733 z"
+     id="path216"
+     inkscape:export-xdpi="123"
+     inkscape:export-ydpi="123" />
+  <path
+     style="fill:none"
+     inkscape:connector-curvature="0"
+     d="m 397.8505,454.5434 h 299.017 v -264.567 h -25.001"
+     id="path228"
+     inkscape:export-xdpi="123"
+     inkscape:export-ydpi="123" />
+  <path
+     d="m 630.09986,343.93466 118.11,-37.795 118.111,37.795 -118.111,37.795 z"
+     id="path246"
+     inkscape:connector-curvature="0"
+     style="fill:none"
+     inkscape:export-xdpi="123"
+     inkscape:export-ydpi="123" />
+  <path
+     d="m 630.09986,400.62766 h 236.22 v 37.795 h -236.22 z"
+     id="path252"
+     inkscape:connector-curvature="0"
+     style="fill:none"
+     inkscape:export-xdpi="123"
+     inkscape:export-ydpi="123" />
+  <path
+     d="m 356.08386,400.62766 h 236.22 v 37.795 h -236.22 z"
+     id="path258"
+     inkscape:connector-curvature="0"
+     style="fill:none"
+     inkscape:export-xdpi="123"
+     inkscape:export-ydpi="123" />
+  <path
+     d="m 356.08386,457.32066 h 236.22 v 37.795 h -236.22 z"
+     id="path264"
+     inkscape:connector-curvature="0"
+     style="fill:none"
+     inkscape:export-xdpi="123"
+     inkscape:export-ydpi="123" />
+  <path
+     d="m 748.20986,381.73066 v 18.897"
+     id="path270"
+     inkscape:connector-curvature="0"
+     style="fill:none"
+     inkscape:export-xdpi="123"
+     inkscape:export-ydpi="123" />
+  <path
+     d="m 630.09986,343.93466 h -155.905 v 56.693"
+     id="path276"
+     inkscape:connector-curvature="0"
+     style="fill:none"
+     inkscape:export-xdpi="123"
+     inkscape:export-ydpi="123" />
+  <path
+     d="m 474.19486,438.42266 v 18.898"
+     id="path282"
+     inkscape:connector-curvature="0"
+     style="fill:none"
+     inkscape:export-xdpi="123"
+     inkscape:export-ydpi="123" />
+  <path
+     d="m 474.19486,495.11566 v 18.898"
+     id="path288"
+     inkscape:connector-curvature="0"
+     style="fill:none"
+     inkscape:export-xdpi="123"
+     inkscape:export-ydpi="123" />
+  <path
+     d="m 630.09986,457.32066 h 236.22 v 37.795 h -236.22 z"
+     id="path294"
+     inkscape:connector-curvature="0"
+     style="fill:none"
+     inkscape:export-xdpi="123"
+     inkscape:export-ydpi="123" />
+  <path
+     d="m 356.08386,570.70666 h 236.22 v 37.795 h -236.22 z"
+     id="path300"
+     inkscape:connector-curvature="0"
+     style="fill:none"
+     inkscape:export-xdpi="123"
+     inkscape:export-ydpi="123" />
+  <path
+     d="m 748.20986,438.42266 v 18.898"
+     id="path306"
+     inkscape:connector-curvature="0"
+     style="fill:none"
+     inkscape:export-xdpi="123"
+     inkscape:export-ydpi="123" />
+  <path
+     d="m 630.09986,476.21866 h -37.795"
+     id="path312"
+     inkscape:connector-curvature="0"
+     style="fill:none"
+     inkscape:export-xdpi="123"
+     inkscape:export-ydpi="123" />
+  <path
+     d="m 356.08386,514.01366 h 236.22 v 37.795 h -236.22 z"
+     id="path318"
+     inkscape:connector-curvature="0"
+     style="fill:none"
+     inkscape:export-xdpi="123"
+     inkscape:export-ydpi="123" />
+  <path
+     d="m 630.09986,268.34466 47.244,-18.898 h 141.733 l 47.244,18.898 -47.244,18.897 h -141.733 z"
+     id="path324"
+     inkscape:connector-curvature="0"
+     style="fill:none"
+     inkscape:export-xdpi="123"
+     inkscape:export-ydpi="123" />
+  <path
+     d="m 748.20986,287.24166 v 18.898"
+     id="path330"
+     inkscape:connector-curvature="0"
+     style="fill:none"
+     inkscape:export-xdpi="123"
+     inkscape:export-ydpi="123" />
+  <path
+     d="m 592.30486,532.91166 h 299.017 v -264.567 h -25.001"
+     id="path336"
+     inkscape:connector-curvature="0"
+     style="fill:none"
+     inkscape:export-xdpi="123"
+     inkscape:export-ydpi="123" />
+  <path
+     d="m 474.19486,551.80866 v 18.898"
+     id="path342"
+     inkscape:connector-curvature="0"
+     style="fill:none"
+     inkscape:export-xdpi="123"
+     inkscape:export-ydpi="123" />
+  <path
+     d="m 592.30486,268.34466 h 37.795"
+     id="path348"
+     inkscape:connector-curvature="0"
+     style="fill:none"
+     inkscape:export-xdpi="123"
+     inkscape:export-ydpi="123" />
   <g
-     id="g20955">
+     id="g20944"
+     transform="translate(194.45536,-356.27724)"
+     inkscape:export-xdpi="123"
+     inkscape:export-ydpi="123">
     <path
-       style="fill:#ffffff;fill-opacity:1"
-       id="path66"
-       d="M435.6455 265.5674l118.11-37.796 118.111 37.796-118.111 37.795-118.11-37.795z"
-       stroke-width="2"
-       stroke="#000"
-       fill="none" />
-    <text
-       id="text1181-3-7-8"
-       y="260.24289"
-       x="525.48657"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14.05762386px;line-height:1.25;font-family:'Ubuntu Nerd Font';-inkscape-font-specification:'Ubuntu Nerd Font';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.35144064"
-       xml:space="preserve"><tspan
-         style="font-size:14.66666698px;stroke-width:0.35144064"
-         y="260.24289"
-         x="525.48657"
-         id="tspan1179-6-5-7"
-         sodipodi:role="line">Custom</tspan><tspan
-         id="tspan7288"
-         style="font-size:14.66666698px;stroke-width:0.35144064"
-         y="278.57623"
-         x="525.48657"
-         sodipodi:role="line">prompt?</tspan></text>
-  </g>
-  <g
-     id="g20919">
-    <path
-       id="path78"
-       d="m 161.6295,322.2594 h 236.22 v 37.795 h -236.22 z"
-       inkscape:connector-curvature="0"
-       style="fill:#ffffff;stroke:#000000;stroke-width:2;fill-opacity:1" />
-    <text
-       id="text1181-3-7-92"
-       y="345.54224"
-       x="213.78372"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14.05762386px;line-height:1.25;font-family:'Ubuntu Nerd Font';-inkscape-font-specification:'Ubuntu Nerd Font';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.35144064"
-       xml:space="preserve"><tspan
-         style="font-size:14.66666698px;stroke-width:0.35144064"
-         y="345.54224"
-         x="213.78372"
-         id="tspan1179-6-5-02"
-         sodipodi:role="line">prompt_$element()</tspan></text>
-  </g>
-  <g
-     id="g20914">
-    <path
-       id="path84"
-       d="m 161.6295,378.9524 h 236.22 v 37.795 h -236.22 z"
+       id="path242"
+       d="m 161.6295,605.7244 h 236.22 v 37.795 h -236.22 z"
        inkscape:connector-curvature="0"
        style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2" />
     <text
-       id="text1181-3-7-3"
-       y="402.21323"
-       x="199.36055"
+       id="text1181-3-7"
+       y="628.98523"
+       x="186.78514"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14.05762386px;line-height:1.25;font-family:'Ubuntu Nerd Font';-inkscape-font-specification:'Ubuntu Nerd Font';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.35144064"
        xml:space="preserve"><tspan
          style="font-size:14.66666698px;stroke-width:0.35144064"
-         y="402.21323"
-         x="199.36055"
-         id="tspan1179-6-5-75"
-         sodipodi:role="line">p9k::prepare_segment()</tspan></text>
+         y="628.98523"
+         x="186.78514"
+         id="tspan1179-6-5"
+         sodipodi:role="line">__p9k_build_right_prompt()</tspan></text>
   </g>
   <g
-     id="g20929">
-    <path
-       id="path166"
-       d="m 161.6295,435.6454 h 236.22 v 37.795 h -236.22 z"
-       inkscape:connector-curvature="0"
-       style="fill:#ffffff;stroke:#000000;stroke-width:2;fill-opacity:1" />
-    <text
-       id="text1181-3-7-922"
-       y="458.90622"
-       x="178.52081"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14.05762386px;line-height:1.25;font-family:'Ubuntu Nerd Font';-inkscape-font-specification:'Ubuntu Nerd Font';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.35144064"
-       xml:space="preserve"><tspan
-         style="font-size:14.66666698px;stroke-width:0.35144064"
-         y="458.90622"
-         x="178.52081"
-         id="tspan1179-6-5-8"
-         sodipodi:role="line">__p9k_left_prompt_segment()</tspan></text>
-  </g>
-  <g
-     id="g20934">
-    <path
-       id="path136"
-       d="m 161.6295,492.3384 h 236.22 v 37.795 h -236.22 z"
-       inkscape:connector-curvature="0"
-       style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2" />
-    <text
-       id="text1181-3-7-97"
-       y="515.62122"
-       x="195.06378"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14.05762386px;line-height:1.25;font-family:'Ubuntu Nerd Font';-inkscape-font-specification:'Ubuntu Nerd Font';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.35144064"
-       xml:space="preserve"><tspan
-         style="font-size:14.66666698px;stroke-width:0.35144064"
-         y="515.62122"
-         x="195.06378"
-         id="tspan1179-6-5-36"
-         sodipodi:role="line">__p9k_left_prompt_end()</tspan></text>
-  </g>
-  <g
-     id="g20939">
-    <path
-       id="path176"
-       d="m 161.6295,549.0314 h 236.22 v 37.795 h -236.22 z"
-       inkscape:connector-curvature="0"
-       style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2" />
-    <text
-       id="text1181-3-7-12"
-       y="572.82025"
-       x="245.60341"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14.05762386px;line-height:1.25;font-family:'Ubuntu Nerd Font';-inkscape-font-specification:'Ubuntu Nerd Font';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.35144064"
-       xml:space="preserve"><tspan
-         style="font-size:14.66666698px;stroke-width:0.35144064"
-         y="572.82025"
-         x="245.60341"
-         id="tspan1179-6-5-93"
-         sodipodi:role="line">$PROMPT</tspan></text>
-  </g>
-  <g
-     id="g20924">
-    <path
-       id="path72"
-       d="m 435.6455,322.2594 h 236.22 v 37.795 h -236.22 z"
-       inkscape:connector-curvature="0"
-       style="fill:#ffffff;stroke:#000000;stroke-width:2;fill-opacity:1" />
-    <text
-       id="text1181-3-7-19"
-       y="345.54224"
-       x="472.8324"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14.05762386px;line-height:1.25;font-family:'Ubuntu Nerd Font';-inkscape-font-specification:'Ubuntu Nerd Font';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.35144064"
-       xml:space="preserve"><tspan
-         style="font-size:14.66666698px;stroke-width:0.35144064"
-         y="345.54224"
-         x="472.8324"
-         id="tspan1179-6-5-4"
-         sodipodi:role="line">__p9k_prompt_custom()</tspan></text>
-  </g>
-  <g
-     id="g20237">
-    <path
-       id="path130"
-       d="m 435.6455,378.9524 h 236.22 v 37.795 h -236.22 z"
-       inkscape:connector-curvature="0"
-       style="fill:#ffffff;stroke:#000000;stroke-width:2;fill-opacity:1" />
-    <text
-       id="text1181-3-7-78"
-       y="402.21323"
-       x="473.60571"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14.05762386px;line-height:1.25;font-family:'Ubuntu Nerd Font';-inkscape-font-specification:'Ubuntu Nerd Font';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.35144064"
-       xml:space="preserve"><tspan
-         style="font-size:14.66666698px;stroke-width:0.35144064"
-         y="402.21323"
-         x="473.60571"
-         id="tspan1179-6-5-45"
-         sodipodi:role="line">p9k::register_segment()</tspan></text>
-  </g>
-  <text
-     xml:space="preserve"
-     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14.05762386px;line-height:1.25;font-family:'Ubuntu Nerd Font';-inkscape-font-specification:'Ubuntu Nerd Font';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.35144064"
-     x="415.96335"
-     y="293.99615"
-     id="text1181-3-7-0"><tspan
-       sodipodi:role="line"
-       id="tspan1179-6-5-361"
-       x="415.96335"
-       y="293.99615"
-       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:14.66666698px;font-family:'Ubuntu Nerd Font';-inkscape-font-specification:'Ubuntu Nerd Font Bold';stroke-width:0.35144064">No</tspan></text>
-  <text
-     xml:space="preserve"
-     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14.05762386px;line-height:1.25;font-family:'Ubuntu Nerd Font';-inkscape-font-specification:'Ubuntu Nerd Font';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.35144064"
-     x="563.01917"
-     y="313.5264"
-     id="text1181-3-7-0-0"><tspan
-       sodipodi:role="line"
-       id="tspan1179-6-5-361-6"
-       x="563.01917"
-       y="313.5264"
-       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:14.66666698px;font-family:'Ubuntu Nerd Font';-inkscape-font-specification:'Ubuntu Nerd Font Bold';stroke-width:0.35144064">Yes</tspan></text>
-  <g
-     id="g20949">
+     id="g20949"
+     transform="translate(194.45436,-356.27774)"
+     inkscape:export-xdpi="123"
+     inkscape:export-ydpi="123">
     <path
        id="path326"
        d="m 435.6455,624.6224 47.244,-18.898 h 141.733 l 47.244,18.898 -47.244,18.897 h -141.733 z"
        inkscape:connector-curvature="0"
-       style="fill:#ffffff;stroke:#000000;stroke-width:2;fill-opacity:1" />
+       style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2" />
     <text
        id="text1181-3-7-32"
        y="628.9339"
@@ -1741,21 +1639,26 @@
   <text
      xml:space="preserve"
      style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14.05762386px;line-height:1.25;font-family:'Ubuntu Nerd Font';-inkscape-font-specification:'Ubuntu Nerd Font';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.35144064"
-     x="416.31689"
-     y="714.88721"
-     id="text1181-3-7-32-5"><tspan
+     x="610.77124"
+     y="358.60947"
+     id="text1181-3-7-32-5"
+     inkscape:export-xdpi="123"
+     inkscape:export-ydpi="123"><tspan
        sodipodi:role="line"
        id="tspan1179-6-5-061-5"
-       x="416.31689"
-       y="714.88721"
+       x="610.77124"
+       y="358.60947"
        style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:14.66666698px;font-family:'Ubuntu Nerd Font';-inkscape-font-specification:'Ubuntu Nerd Font Bold';stroke-width:0.35144064">No</tspan></text>
   <g
-     id="g21006">
+     id="g21006"
+     transform="translate(194.45436,-356.27774)"
+     inkscape:export-xdpi="123"
+     inkscape:export-ydpi="123">
     <path
        id="path248"
        d="m 435.6455,700.2124 118.11,-37.795 118.111,37.795 -118.111,37.795 z"
        inkscape:connector-curvature="0"
-       style="fill:#ffffff;stroke:#000000;stroke-width:2;fill-opacity:1" />
+       style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2" />
     <text
        id="text1181-3-7-32-5-4"
        y="694.88843"
@@ -1774,12 +1677,15 @@
          sodipodi:role="line">prompt?</tspan></text>
   </g>
   <g
-     id="g21016">
+     id="g21016"
+     transform="translate(194.45436,-356.27774)"
+     inkscape:export-xdpi="123"
+     inkscape:export-ydpi="123">
     <path
        id="path260"
        d="m 161.6295,756.9054 h 236.22 v 37.795 h -236.22 z"
        inkscape:connector-curvature="0"
-       style="fill:#ffffff;stroke:#000000;stroke-width:2;fill-opacity:1" />
+       style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2" />
     <text
        id="text1181-3-7-32-5-6"
        y="780.18823"
@@ -1793,12 +1699,15 @@
          sodipodi:role="line">prompt_$element()</tspan></text>
   </g>
   <g
-     id="g21021">
+     id="g21021"
+     transform="translate(194.45436,-356.27774)"
+     inkscape:export-xdpi="123"
+     inkscape:export-ydpi="123">
     <path
        id="path266"
        d="m 161.6295,813.5984 h 236.22 v 37.795 h -236.22 z"
        inkscape:connector-curvature="0"
-       style="fill:#ffffff;stroke:#000000;stroke-width:2;fill-opacity:1" />
+       style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2" />
     <text
        id="text1181-3-7-32-5-69"
        y="836.85925"
@@ -1812,12 +1721,15 @@
          sodipodi:role="line">p9k::prepare_segment()</tspan></text>
   </g>
   <g
-     id="g21026">
+     id="g21026"
+     transform="translate(194.45436,-356.27774)"
+     inkscape:export-xdpi="123"
+     inkscape:export-ydpi="123">
     <path
        id="path320"
        d="m 161.6295,870.2914 h 236.22 v 37.795 h -236.22 z"
        inkscape:connector-curvature="0"
-       style="fill:#ffffff;stroke:#000000;stroke-width:2;fill-opacity:1" />
+       style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2" />
     <text
        id="text1181-3-7-32-5-7"
        y="893.55225"
@@ -1831,12 +1743,15 @@
          sodipodi:role="line">__p9k_right_prompt_segment()</tspan></text>
   </g>
   <g
-     id="g21036">
+     id="g21036"
+     transform="translate(194.45436,-356.27774)"
+     inkscape:export-xdpi="123"
+     inkscape:export-ydpi="123">
     <path
        id="path302"
        d="m 161.6295,926.9844 h 236.22 v 37.795 h -236.22 z"
        inkscape:connector-curvature="0"
-       style="fill:#ffffff;stroke:#000000;stroke-width:2;fill-opacity:1" />
+       style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2" />
     <text
        id="text1181-3-7-32-5-5"
        y="950.77325"
@@ -1850,31 +1765,15 @@
          sodipodi:role="line">$RPROMPT</tspan></text>
   </g>
   <g
-     id="g21041">
-    <path
-       id="path114"
-       d="m 161.6295,989.9724 c 0,-3.48 2.821,-6.29 6.3,-6.29 h 223.622 c 1.67,0 3.272,0.66 4.454,1.84 a 6.2896,6.2896 0 0 1 1.845,4.45 v 25.2 c 0,3.48 -2.82,6.3 -6.299,6.3 h -223.622 c -3.479,0 -6.3,-2.82 -6.3,-6.3 z"
-       inkscape:connector-curvature="0"
-       style="fill:#ffffff;stroke:#000000;stroke-width:2;fill-opacity:1" />
-    <text
-       id="text1181-3-7-32-5-54"
-       y="1006.9114"
-       x="209.12401"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14.05762386px;line-height:1.25;font-family:'Ubuntu Nerd Font';-inkscape-font-specification:'Ubuntu Nerd Font';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.35144064"
-       xml:space="preserve"><tspan
-         style="font-size:14.66666698px;stroke-width:0.35144064"
-         y="1006.9114"
-         x="209.12401"
-         id="tspan1179-6-5-061-5-74"
-         sodipodi:role="line">ZSH renders prompts</tspan></text>
-  </g>
-  <g
-     id="g21011">
+     id="g21011"
+     transform="translate(194.45436,-356.27774)"
+     inkscape:export-xdpi="123"
+     inkscape:export-ydpi="123">
     <path
        id="path254"
        d="m 435.6455,756.9054 h 236.22 v 37.795 h -236.22 z"
        inkscape:connector-curvature="0"
-       style="fill:#ffffff;stroke:#000000;stroke-width:2;fill-opacity:1" />
+       style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2" />
     <text
        id="text1181-3-7-32-5-43"
        y="780.18823"
@@ -1888,12 +1787,15 @@
          sodipodi:role="line">__p9k_prompt_custom()</tspan></text>
   </g>
   <g
-     id="g21031">
+     id="g21031"
+     transform="translate(194.45436,-356.27774)"
+     inkscape:export-xdpi="123"
+     inkscape:export-ydpi="123">
     <path
        id="path296"
        d="m 435.6455,813.5984 h 236.22 v 37.795 h -236.22 z"
        inkscape:connector-curvature="0"
-       style="fill:#ffffff;stroke:#000000;stroke-width:2;fill-opacity:1" />
+       style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2" />
     <text
        id="text1181-3-7-32-5-78"
        y="836.85925"
@@ -1909,33 +1811,498 @@
   <text
      xml:space="preserve"
      style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14.05762386px;line-height:1.25;font-family:'Ubuntu Nerd Font';-inkscape-font-specification:'Ubuntu Nerd Font';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.35144064"
-     x="560.81842"
-     y="750.17242"
-     id="text1181-3-7-32-5-8"><tspan
+     x="755.27277"
+     y="393.89468"
+     id="text1181-3-7-32-5-8"
+     inkscape:export-xdpi="123"
+     inkscape:export-ydpi="123"><tspan
        sodipodi:role="line"
        id="tspan1179-6-5-061-5-8"
-       x="560.81842"
-       y="750.17242"
+       x="755.27277"
+       y="393.89468"
        style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:14.66666698px;font-family:'Ubuntu Nerd Font';-inkscape-font-specification:'Ubuntu Nerd Font Bold';stroke-width:0.35144064">Yes</tspan></text>
   <path
-     style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-     d="m 279.7395,341.1569 v 0"
-     id="path24937"
-     inkscape:connector-type="polyline"
-     inkscape:connector-curvature="0"
-     inkscape:connection-start="#g20919"
-     inkscape:connection-end="#g20919" />
-  <path
-     style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker1785)"
-     d="m 397.7885,19.8979 h 37.85825"
-     id="path1743"
-     inkscape:connector-type="polyline"
-     inkscape:connector-curvature="0"
-     inkscape:connection-start="#g20995"
-     inkscape:connection-end="#g20990" />
-  <path
      style="fill:none;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:2, 4;stroke-dashoffset:0;stroke-opacity:1;marker-end:url(#marker7705-3)"
-     d="M 400.11732,889.1894 H 688.8675 V 700.33464 h -19.09188"
+     d="M 594.57168,532.91166 H 883.32186 V 344.0569 h -19.09188"
      id="path7695-7"
-     inkscape:connector-curvature="0" />
+     inkscape:connector-curvature="0"
+     inkscape:export-xdpi="123"
+     inkscape:export-ydpi="123" />
+  <g
+     id="g26388"
+     transform="translate(-60.66314)"
+     inkscape:export-xdpi="123"
+     inkscape:export-ydpi="123">
+    <path
+       id="path242-3"
+       d="m 416.748,171.0789 h 236.22 v 37.795 h -236.22 z"
+       inkscape:connector-curvature="0"
+       style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2" />
+    <text
+       id="text1181-3-7-5"
+       y="194.31039"
+       x="451.55533"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14.05762386px;line-height:1.25;font-family:'Ubuntu Nerd Font';-inkscape-font-specification:'Ubuntu Nerd Font';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.35144064"
+       xml:space="preserve"><tspan
+         style="font-size:14.66666698px;stroke-width:0.35144064"
+         y="194.31039"
+         x="451.55533"
+         id="tspan1179-6-5-6"
+         sodipodi:role="line">__p9k_unsafe_RPROMPT</tspan></text>
+  </g>
+  <path
+     style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker29118)"
+     d="m 279.7395,152.1804 v 37.796 H 40.76058"
+     id="path29108"
+     inkscape:connector-type="orthogonal"
+     inkscape:connector-curvature="0"
+     inkscape:connection-start="#g20970"
+     inkscape:connection-end="#g29106"
+     inkscape:export-xdpi="123"
+     inkscape:export-ydpi="123" />
+  <g
+     id="g31035"
+     inkscape:export-xdpi="123"
+     inkscape:export-ydpi="123">
+    <path
+       inkscape:connection-end="#g20965"
+       inkscape:connection-start="#g29106"
+       inkscape:connector-curvature="0"
+       inkscape:connector-type="orthogonal"
+       id="path29452"
+       d="m -77.34942,208.8739 v 40.69385"
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker29462)" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path18982"
+       d="m 78.556576,344.05625 h -155.905 v 56.692"
+       style="fill:none;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker18992)" />
+    <path
+       inkscape:connection-end="#g20237"
+       inkscape:connection-start="#g20924"
+       inkscape:connector-curvature="0"
+       inkscape:connector-type="orthogonal"
+       id="path17796"
+       d="m 196.66658,438.54325 v 18.898"
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker17806)" />
+    <path
+       inkscape:connection-end="#g20939"
+       inkscape:connection-start="#g20934"
+       inkscape:connector-curvature="0"
+       inkscape:connector-type="orthogonal"
+       id="path14706"
+       d="m -77.34942,608.62225 v 18.898"
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker14892)" />
+    <path
+       inkscape:connection-end="#g20934"
+       inkscape:connection-start="#g20929"
+       inkscape:connector-curvature="0"
+       inkscape:connector-type="orthogonal"
+       id="path14704"
+       d="m -77.34942,551.92925 v 18.898"
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker14896)" />
+    <path
+       inkscape:connection-end="#g20929"
+       inkscape:connection-start="#g20914"
+       inkscape:connector-curvature="0"
+       inkscape:connector-type="orthogonal"
+       id="path14702"
+       d="m -77.34942,495.23625 v 18.898"
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker14900)" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path7695"
+       d="M 40.761576,533.03225 H 329.51176 V 344.17749 h -19.09188"
+       style="fill:none;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:2, 4;stroke-dashoffset:0;stroke-opacity:1;marker-end:url(#marker7705)" />
+    <path
+       inkscape:connection-end="#g20955"
+       inkscape:connection-start="#g20960"
+       inkscape:connector-curvature="0"
+       inkscape:connector-type="orthogonal"
+       id="path2240"
+       d="m 196.66708,287.36325 v 18.89716"
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker2934)" />
+    <path
+       inkscape:connection-end="#g20924"
+       inkscape:connection-start="#g20955"
+       inkscape:connector-curvature="0"
+       inkscape:connector-type="orthogonal"
+       id="path1124"
+       d="m 196.66708,381.85109 v 18.89716"
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker2592)" />
+    <path
+       inkscape:connection-end="#g20960"
+       inkscape:connection-start="#g20965"
+       inkscape:connector-curvature="0"
+       inkscape:connector-type="orthogonal"
+       id="path1894"
+       d="m 40.76058,268.46525 h 37.796"
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker1904)" />
+    <path
+       inkscape:connection-end="#g20914"
+       inkscape:connection-start="#g20237"
+       inkscape:connector-curvature="0"
+       inkscape:connector-type="polyline"
+       id="path21043"
+       d="m 78.55658,476.33875 h -37.796"
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker21053)" />
+    <path
+       inkscape:connection-end="#g20914"
+       inkscape:connection-start="#g20919"
+       inkscape:connector-curvature="0"
+       inkscape:connector-type="polyline"
+       id="path21387"
+       d="m -77.34942,438.54325 v 18.898"
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker21397)" />
+    <path
+       style="fill:none"
+       inkscape:connector-curvature="0"
+       id="path6"
+       d="m 192.66258,369.73425 h 42.709 v 37.795 h -42.709 z" />
+    <path
+       style="fill:none"
+       inkscape:connector-curvature="0"
+       id="path64"
+       d="m 78.556576,344.05625 118.110004,-37.796 118.111,37.796 -118.111,37.795 z" />
+    <path
+       style="fill:none"
+       inkscape:connector-curvature="0"
+       id="path70"
+       d="M 78.556576,400.74825 H 314.77658 v 37.795 H 78.556576 Z" />
+    <path
+       style="fill:none"
+       inkscape:connector-curvature="0"
+       id="path76"
+       d="M -195.45942,400.74825 H 40.760576 v 37.795 H -195.45942 Z" />
+    <path
+       style="fill:none"
+       inkscape:connector-curvature="0"
+       id="path82"
+       d="M -195.45942,457.44125 H 40.760576 v 37.795 H -195.45942 Z" />
+    <path
+       style="fill:none"
+       inkscape:connector-curvature="0"
+       id="path88"
+       d="m 196.66658,381.85125 v 18.897" />
+    <path
+       style="fill:none"
+       inkscape:connector-curvature="0"
+       id="path94"
+       d="m 78.556576,344.05625 h -155.905 v 56.692" />
+    <path
+       style="fill:none"
+       inkscape:connector-curvature="0"
+       id="path100"
+       d="m -77.348424,438.54425 v 18.897" />
+    <path
+       style="fill:none"
+       inkscape:connector-curvature="0"
+       id="path106"
+       d="m -77.348424,495.23725 v 18.897" />
+    <path
+       style="fill:none"
+       inkscape:connector-curvature="0"
+       id="path128"
+       d="M 78.556576,457.44125 H 314.77658 v 37.795 H 78.556576 Z" />
+    <path
+       style="fill:none"
+       inkscape:connector-curvature="0"
+       id="path134"
+       d="M -195.45942,570.82725 H 40.760576 v 37.795 H -195.45942 Z" />
+    <path
+       style="fill:none"
+       inkscape:connector-curvature="0"
+       id="path140"
+       d="m 196.66658,438.54425 v 18.897" />
+    <path
+       style="fill:none"
+       inkscape:connector-curvature="0"
+       id="path146"
+       d="m 78.556576,476.33925 h -37.795" />
+    <path
+       style="fill:none"
+       inkscape:connector-curvature="0"
+       id="path164"
+       d="M -195.45942,514.13425 H 40.760576 v 37.795 H -195.45942 Z" />
+    <path
+       style="fill:none"
+       inkscape:connector-curvature="0"
+       id="path170"
+       d="m 58.325576,337.16225 h 42.709004 v 37.795 H 58.325576 Z" />
+    <path
+       style="fill:none"
+       inkscape:connector-curvature="0"
+       id="path174"
+       d="M -195.45942,627.52025 H 40.760576 v 37.795 H -195.45942 Z" />
+    <path
+       style="fill:none"
+       inkscape:connector-curvature="0"
+       id="path180"
+       d="m -77.348424,608.62325 v 18.897" />
+    <path
+       style="fill:none"
+       inkscape:connector-curvature="0"
+       id="path234"
+       d="m -77.348424,551.93025 v 18.897" />
+    <path
+       id="path354"
+       d="m 279.7405,586.8264 v 18.898"
+       inkscape:connector-curvature="0"
+       style="fill:none" />
+    <g
+       transform="translate(-357.08892,78.489353)"
+       id="g20965">
+      <path
+         style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2"
+         inkscape:connector-curvature="0"
+         d="m 161.6295,171.0784 h 236.22 v 37.795 h -236.22 z"
+         id="path48" />
+      <text
+         xml:space="preserve"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14.05762386px;line-height:1.25;font-family:'Ubuntu Nerd Font';-inkscape-font-specification:'Ubuntu Nerd Font';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.35144064"
+         x="190.96744"
+         y="194.36124"
+         id="text1181-3-7-9"><tspan
+           sodipodi:role="line"
+           id="tspan1179-6-5-3"
+           x="190.96744"
+           y="194.36124"
+           style="font-size:14.66666698px;stroke-width:0.35144064">__p9k_build_left_prompt()</tspan></text>
+    </g>
+    <g
+       transform="translate(-357.08892,78.488853)"
+       id="g20960">
+      <path
+         style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2"
+         inkscape:connector-curvature="0"
+         d="m 435.6455,189.9764 47.244,-18.898 h 141.733 l 47.244,18.898 -47.244,18.898 h -141.733 z"
+         id="path218" />
+      <text
+         xml:space="preserve"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14.05762386px;line-height:1.25;font-family:'Ubuntu Nerd Font';-inkscape-font-specification:'Ubuntu Nerd Font';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.35144064"
+         x="494.19214"
+         y="194.28841"
+         id="text1181-3-7-26"><tspan
+           sodipodi:role="line"
+           id="tspan1179-6-5-1"
+           x="494.19214"
+           y="194.28841"
+           style="font-size:14.66666698px;stroke-width:0.35144064">For each segment</tspan></text>
+    </g>
+    <g
+       transform="translate(-357.08892,78.488853)"
+       id="g20955">
+      <path
+         inkscape:connector-curvature="0"
+         d="m 435.6455,265.5674 118.11,-37.796 118.111,37.796 -118.111,37.795 z"
+         id="path66"
+         style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2" />
+      <text
+         xml:space="preserve"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14.05762386px;line-height:1.25;font-family:'Ubuntu Nerd Font';-inkscape-font-specification:'Ubuntu Nerd Font';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.35144064"
+         x="525.48657"
+         y="260.24289"
+         id="text1181-3-7-8"><tspan
+           sodipodi:role="line"
+           id="tspan1179-6-5-7"
+           x="525.48657"
+           y="260.24289"
+           style="font-size:14.66666698px;stroke-width:0.35144064">Custom</tspan><tspan
+           sodipodi:role="line"
+           x="525.48657"
+           y="278.57623"
+           style="font-size:14.66666698px;stroke-width:0.35144064"
+           id="tspan7288">prompt?</tspan></text>
+    </g>
+    <g
+       transform="translate(-357.08892,78.488853)"
+       id="g20919">
+      <path
+         style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2"
+         inkscape:connector-curvature="0"
+         d="m 161.6295,322.2594 h 236.22 v 37.795 h -236.22 z"
+         id="path78" />
+      <text
+         xml:space="preserve"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14.05762386px;line-height:1.25;font-family:'Ubuntu Nerd Font';-inkscape-font-specification:'Ubuntu Nerd Font';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.35144064"
+         x="213.78372"
+         y="345.54224"
+         id="text1181-3-7-92"><tspan
+           sodipodi:role="line"
+           id="tspan1179-6-5-02"
+           x="213.78372"
+           y="345.54224"
+           style="font-size:14.66666698px;stroke-width:0.35144064">prompt_$element()</tspan></text>
+    </g>
+    <g
+       transform="translate(-357.08892,78.488853)"
+       id="g20914">
+      <path
+         style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2"
+         inkscape:connector-curvature="0"
+         d="m 161.6295,378.9524 h 236.22 v 37.795 h -236.22 z"
+         id="path84" />
+      <text
+         xml:space="preserve"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14.05762386px;line-height:1.25;font-family:'Ubuntu Nerd Font';-inkscape-font-specification:'Ubuntu Nerd Font';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.35144064"
+         x="199.36055"
+         y="402.21323"
+         id="text1181-3-7-3"><tspan
+           sodipodi:role="line"
+           id="tspan1179-6-5-75"
+           x="199.36055"
+           y="402.21323"
+           style="font-size:14.66666698px;stroke-width:0.35144064">p9k::prepare_segment()</tspan></text>
+    </g>
+    <g
+       transform="translate(-357.08892,78.488853)"
+       id="g20929">
+      <path
+         style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2"
+         inkscape:connector-curvature="0"
+         d="m 161.6295,435.6454 h 236.22 v 37.795 h -236.22 z"
+         id="path166" />
+      <text
+         xml:space="preserve"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14.05762386px;line-height:1.25;font-family:'Ubuntu Nerd Font';-inkscape-font-specification:'Ubuntu Nerd Font';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.35144064"
+         x="178.52081"
+         y="458.90622"
+         id="text1181-3-7-922"><tspan
+           sodipodi:role="line"
+           id="tspan1179-6-5-8"
+           x="178.52081"
+           y="458.90622"
+           style="font-size:14.66666698px;stroke-width:0.35144064">__p9k_left_prompt_segment()</tspan></text>
+    </g>
+    <g
+       transform="translate(-357.08892,78.488853)"
+       id="g20934">
+      <path
+         style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2"
+         inkscape:connector-curvature="0"
+         d="m 161.6295,492.3384 h 236.22 v 37.795 h -236.22 z"
+         id="path136" />
+      <text
+         xml:space="preserve"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14.05762386px;line-height:1.25;font-family:'Ubuntu Nerd Font';-inkscape-font-specification:'Ubuntu Nerd Font';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.35144064"
+         x="195.06378"
+         y="515.62122"
+         id="text1181-3-7-97"><tspan
+           sodipodi:role="line"
+           id="tspan1179-6-5-36"
+           x="195.06378"
+           y="515.62122"
+           style="font-size:14.66666698px;stroke-width:0.35144064">__p9k_left_prompt_end()</tspan></text>
+    </g>
+    <g
+       transform="translate(-357.08892,78.488853)"
+       id="g20939">
+      <path
+         style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2"
+         inkscape:connector-curvature="0"
+         d="m 161.6295,549.0314 h 236.22 v 37.795 h -236.22 z"
+         id="path176" />
+      <text
+         xml:space="preserve"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14.05762386px;line-height:1.25;font-family:'Ubuntu Nerd Font';-inkscape-font-specification:'Ubuntu Nerd Font';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.35144064"
+         x="245.60341"
+         y="572.82025"
+         id="text1181-3-7-12"><tspan
+           sodipodi:role="line"
+           id="tspan1179-6-5-93"
+           x="245.60341"
+           y="572.82025"
+           style="font-size:14.66666698px;stroke-width:0.35144064">$PROMPT</tspan></text>
+    </g>
+    <g
+       transform="translate(-357.08892,78.488853)"
+       id="g20924">
+      <path
+         style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2"
+         inkscape:connector-curvature="0"
+         d="m 435.6455,322.2594 h 236.22 v 37.795 h -236.22 z"
+         id="path72" />
+      <text
+         xml:space="preserve"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14.05762386px;line-height:1.25;font-family:'Ubuntu Nerd Font';-inkscape-font-specification:'Ubuntu Nerd Font';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.35144064"
+         x="472.8324"
+         y="345.54224"
+         id="text1181-3-7-19"><tspan
+           sodipodi:role="line"
+           id="tspan1179-6-5-4"
+           x="472.8324"
+           y="345.54224"
+           style="font-size:14.66666698px;stroke-width:0.35144064">__p9k_prompt_custom()</tspan></text>
+    </g>
+    <g
+       transform="translate(-357.08892,78.488853)"
+       id="g20237">
+      <path
+         style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2"
+         inkscape:connector-curvature="0"
+         d="m 435.6455,378.9524 h 236.22 v 37.795 h -236.22 z"
+         id="path130" />
+      <text
+         xml:space="preserve"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14.05762386px;line-height:1.25;font-family:'Ubuntu Nerd Font';-inkscape-font-specification:'Ubuntu Nerd Font';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.35144064"
+         x="473.60571"
+         y="402.21323"
+         id="text1181-3-7-78"><tspan
+           sodipodi:role="line"
+           id="tspan1179-6-5-45"
+           x="473.60571"
+           y="402.21323"
+           style="font-size:14.66666698px;stroke-width:0.35144064">p9k::register_segment()</tspan></text>
+    </g>
+    <text
+       id="text1181-3-7-0"
+       y="372.48502"
+       x="58.874424"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14.05762386px;line-height:1.25;font-family:'Ubuntu Nerd Font';-inkscape-font-specification:'Ubuntu Nerd Font';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.35144064"
+       xml:space="preserve"><tspan
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:14.66666698px;font-family:'Ubuntu Nerd Font';-inkscape-font-specification:'Ubuntu Nerd Font Bold';stroke-width:0.35144064"
+         y="372.48502"
+         x="58.874424"
+         id="tspan1179-6-5-361"
+         sodipodi:role="line">No</tspan></text>
+    <text
+       id="text1181-3-7-0-0"
+       y="392.01526"
+       x="205.93024"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14.05762386px;line-height:1.25;font-family:'Ubuntu Nerd Font';-inkscape-font-specification:'Ubuntu Nerd Font';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.35144064"
+       xml:space="preserve"><tspan
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:14.66666698px;font-family:'Ubuntu Nerd Font';-inkscape-font-specification:'Ubuntu Nerd Font Bold';stroke-width:0.35144064"
+         y="392.01526"
+         x="205.93024"
+         id="tspan1179-6-5-361-6"
+         sodipodi:role="line">Yes</tspan></text>
+    <path
+       inkscape:connection-end="#g20919"
+       inkscape:connection-start="#g20919"
+       inkscape:connector-curvature="0"
+       inkscape:connector-type="polyline"
+       id="path24937"
+       d="m -77.34942,419.64575 v 0"
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    <g
+       transform="translate(2.55365,0.65529)"
+       id="g29106">
+      <path
+         style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:2"
+         inkscape:connector-curvature="0"
+         d="m -198.01307,170.42361 h 236.22 v 37.795 h -236.22 z"
+         id="path242-3-9" />
+      <text
+         xml:space="preserve"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14.05762386px;line-height:1.25;font-family:'Ubuntu Nerd Font';-inkscape-font-specification:'Ubuntu Nerd Font';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.35144064"
+         x="-158.59375"
+         y="193.65511"
+         id="text1181-3-7-5-1"><tspan
+           sodipodi:role="line"
+           id="tspan1179-6-5-6-2"
+           x="-158.59375"
+           y="193.65511"
+           style="font-size:14.66666698px;stroke-width:0.35144064">__p9k_unsafe_PROMPT</tspan></text>
+    </g>
+  </g>
 </svg>
