@@ -16,6 +16,12 @@ function setUp() {
   cd $FOLDER
   P9K_MODE=default
 
+  # Prevent the use of system or user specific gitconfig
+  OLD_HOME="$HOME"
+  HOME="$(dirname ${FOLDER})"
+  OLD_GIT_CONFIG_NOSYSTEM="$GIT_CONFIG_NOSYSTEM"
+  GIT_CONFIG_NOSYSTEM=true
+
   # Set username and email
   OLD_GIT_AUTHOR_NAME=$GIT_AUTHOR_NAME
   GIT_AUTHOR_NAME="Testing Tester"
@@ -58,6 +64,12 @@ function tearDown() {
   if [[ "${GIT_AUTHOR_EMAIL_SET_BY_TEST}" == "true" ]]; then
     git config --global --unset user.email
   fi
+
+  # Back to original home and use
+  HOME="$OLD_HOME"
+  unset OLD_HOME
+  GIT_CONFIG_NOSYSTEM="$OLD_GIT_CONFIG_NOSYSTEM"
+  unset OLD_GIT_CONFIG_NOSYSTEM
 
   # Go back to powerlevel9k folder
   cd "${P9K_HOME}"
