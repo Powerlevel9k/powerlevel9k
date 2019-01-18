@@ -259,7 +259,7 @@ function testActionHintWorks() {
   cd ../vcs-test2
   echo "yy" >> i-am-modified.txt
   git commit -a -m "Provoke conflict" &>/dev/null
-  git pull &>/dev/null
+  git pull --no-ff  &>/dev/null
 
   assertEquals "%K{003} %F{000} master %F{001}| merge 1/1 ↑1 ↓1%f %k%F{003}%f " "$(__p9k_build_left_prompt)"
 }
@@ -556,7 +556,7 @@ function testDetectingUntrackedFilesInNestedSubmodulesWork() {
   git submodule add "${submodulePath}" 2>/dev/null
   git commit -m "Add submodule" 1>/dev/null
 
-  git submodule update --init --recursive 2>/dev/null
+  git submodule update --init --recursive &>/dev/null
 
   cd submodule/subsubmodule
   # Create untracked file
