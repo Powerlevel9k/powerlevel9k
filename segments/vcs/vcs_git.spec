@@ -20,6 +20,12 @@ function setUp() {
   cd $FOLDER
   P9K_MODE=default
 
+  # Prevent the use of system or user specific gitconfig
+  OLD_HOME="$HOME"
+  HOME="${FOLDER:h}"
+  OLD_GIT_CONFIG_NOSYSTEM="$GIT_CONFIG_NOSYSTEM"
+  GIT_CONFIG_NOSYSTEM=true
+
   # Set username and email
   OLD_GIT_AUTHOR_NAME=$GIT_AUTHOR_NAME
   GIT_AUTHOR_NAME="Testing Tester"
@@ -62,6 +68,12 @@ function tearDown() {
   if [[ "${GIT_AUTHOR_EMAIL_SET_BY_TEST}" == "true" ]]; then
     git config --global --unset user.email
   fi
+
+  # Back to original home and use
+  HOME="$OLD_HOME"
+  unset OLD_HOME
+  GIT_CONFIG_NOSYSTEM="$OLD_GIT_CONFIG_NOSYSTEM"
+  unset OLD_GIT_CONFIG_NOSYSTEM
 
   # Go back to powerlevel9k folder
   cd "${P9K_HOME}"
@@ -263,7 +275,7 @@ function testActionHintWorks() {
   cd ../vcs-test2
   echo "yy" >> i-am-modified.txt
   git commit -a -m "Provoke conflict" &>/dev/null
-  git pull &>/dev/null
+  git pull --no-ff  &>/dev/null
 
   assertEquals "%K{003} %F{000} master %F{001}| merge 1/1 ↑1 ↓1%f %k%F{003}%f " "$(__p9k_build_left_prompt)"
 }
@@ -351,19 +363,12 @@ function testBranchNameTruncatingShortenLength() {
   local P9K_VCS_SHORTEN_STRATEGY="truncate_from_right"
   source "${P9K_HOME}/segments/vcs/vcs.p9k"
 
-  FOLDER=/tmp/powerlevel9k-test/vcs-test
-  mkdir -p $FOLDER
-  cd $FOLDER
-  git init 1>/dev/null
   touch testfile
 
   assertEquals "%K{002} %F{000}?%f %F{000} master ? %k%F{002}%f " "$(__p9k_build_left_prompt)"
 
   local P9K_VCS_SHORTEN_LENGTH=3
   assertEquals "%K{002} %F{000}?%f %F{000} mas… ? %k%F{002}%f " "$(__p9k_build_left_prompt)"
-
-  cd -
-  rm -fr /tmp/powerlevel9k-test
 }
 
 function testBranchNameTruncatingMinLength() {
@@ -374,10 +379,6 @@ function testBranchNameTruncatingMinLength() {
   local P9K_VCS_SHORTEN_STRATEGY="truncate_from_right"
   source "${P9K_HOME}/segments/vcs/vcs.p9k"
 
-  FOLDER=/tmp/powerlevel9k-test/vcs-test
-  mkdir -p $FOLDER
-  cd $FOLDER
-  git init 1>/dev/null
   touch testfile
 
   assertEquals "%K{002} %F{000}?%f %F{000} master ? %k%F{002}%f " "$(__p9k_build_left_prompt)"
@@ -385,9 +386,6 @@ function testBranchNameTruncatingMinLength() {
   local P9K_VCS_SHORTEN_MIN_LENGTH=7
 
   assertEquals "%K{002} %F{000}?%f %F{000} master ? %k%F{002}%f " "$(__p9k_build_left_prompt)"
-
-  cd -
-  rm -fr /tmp/powerlevel9k-test
 }
 
 function testBranchNameTruncatingShortenStrategy() {
@@ -398,10 +396,6 @@ function testBranchNameTruncatingShortenStrategy() {
   local P9K_VCS_SHORTEN_STRATEGY="truncate_from_right"
   source "${P9K_HOME}/segments/vcs/vcs.p9k"
 
-  FOLDER=/tmp/powerlevel9k-test/vcs-test
-  mkdir -p $FOLDER
-  cd $FOLDER
-  git init 1>/dev/null
   touch testfile
 
   assertEquals "%K{002} %F{000}?%f %F{000} mas… ? %k%F{002}%f " "$(__p9k_build_left_prompt)"
@@ -409,9 +403,6 @@ function testBranchNameTruncatingShortenStrategy() {
   local P9K_VCS_SHORTEN_STRATEGY="truncate_middle"
 
   assertEquals "%K{002} %F{000}?%f %F{000} mas…ter ? %k%F{002}%f " "$(__p9k_build_left_prompt)"
-
-  cd -
-  rm -fr /tmp/powerlevel9k-test
 }
 
 function testRemoteBranchNameIdenticalToTag() {
@@ -437,8 +428,6 @@ function testRemoteBranchNameIdenticalToTag() {
   git checkout test 1>/dev/null 2>&1
 
   assertEquals "%K{002} %F{000} test test %k%F{002}%f " "$(__p9k_build_left_prompt)"
-
-  cd -
 }
 
 function testAlwaysShowRemoteBranch() {
@@ -458,8 +447,6 @@ function testAlwaysShowRemoteBranch() {
 
   local P9K_VCS_GIT_ALWAYS_SHOW_REMOTE_BRANCH='false'
   assertEquals "%K{002} %F{000} master %k%F{002}%f " "$(__p9k_build_left_prompt)"
-
-  cd -
 }
 
 function testGitDirClobber() {
@@ -495,7 +482,6 @@ function testGitDirClobber() {
 
   assertEquals "%K{001} %F{000}✘ clob /tmp/powerlevel9k-test/test-dotfiles  master ✚ ? %k%F{001}%f " "$(__p9k_build_left_prompt)"
 
-  cd -
   unset GIT_DIR
   unset GIT_WORK_TREE
 }
@@ -585,7 +571,7 @@ function testDetectingUntrackedFilesInNestedSubmodulesWork() {
   git submodule add "${submodulePath}" 2>/dev/null
   git commit -m "Add submodule" 1>/dev/null
 
-  git submodule update --init --recursive 2>/dev/null
+  git submodule update --init --recursive &>/dev/null
 
   cd submodule/subsubmodule
   # Create untracked file
