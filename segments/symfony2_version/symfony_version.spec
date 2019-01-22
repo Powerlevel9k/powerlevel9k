@@ -15,6 +15,8 @@ function setUp() {
   mkdir -p "${FOLDER}"
   cd $FOLDER
 
+  local -a P9K_RIGHT_PROMPT_ELEMENTS
+  P9K_RIGHT_PROMPT_ELEMENTS=()
   # Load Powerlevel9k
   source ${P9K_HOME}/powerlevel9k.zsh-theme
   source ${P9K_HOME}/segments/symfony2_version/symfony2_version.p9k

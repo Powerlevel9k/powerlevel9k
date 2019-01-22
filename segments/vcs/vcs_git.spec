@@ -7,8 +7,12 @@ SHUNIT_PARENT=$0
 
 function setUp() {
   export TERM="xterm-256color"
+  local -a P9K_RIGHT_PROMPT_ELEMENTS
+  P9K_RIGHT_PROMPT_ELEMENTS=()
 
   P9K_HOME=$(pwd)
+  source "${P9K_HOME}/powerlevel9k.zsh-theme"
+
   ### Test specific
   # Create default folder and git init it.
   FOLDER=/tmp/powerlevel9k-test/vcs-test
@@ -73,7 +77,7 @@ function testColorOverridingForCleanStateWorks() {
   P9K_LEFT_PROMPT_ELEMENTS=(vcs)
   local P9K_VCS_CLEAN_FOREGROUND='cyan'
   local P9K_VCS_CLEAN_BACKGROUND='white'
-  source ${P9K_HOME}/powerlevel9k.zsh-theme
+  source "${P9K_HOME}/segments/vcs/vcs.p9k"
 
   assertEquals "%K{015} %F{006} master %k%F{015}%f " "$(__p9k_build_left_prompt)"
 }
@@ -83,7 +87,7 @@ function testColorOverridingForModifiedStateWorks() {
   P9K_LEFT_PROMPT_ELEMENTS=(vcs)
   local P9K_VCS_MODIFIED_FOREGROUND='red'
   local P9K_VCS_MODIFIED_BACKGROUND='yellow'
-  source ${P9K_HOME}/powerlevel9k.zsh-theme
+  source "${P9K_HOME}/segments/vcs/vcs.p9k"
 
   touch testfile
   git add testfile
@@ -98,7 +102,7 @@ function testColorOverridingForUntrackedStateWorks() {
   P9K_LEFT_PROMPT_ELEMENTS=(vcs)
   local P9K_VCS_UNTRACKED_FOREGROUND='cyan'
   local P9K_VCS_UNTRACKED_BACKGROUND='yellow'
-  source ${P9K_HOME}/powerlevel9k.zsh-theme
+  source "${P9K_HOME}/segments/vcs/vcs.p9k"
 
   touch testfile
 
@@ -108,7 +112,7 @@ function testColorOverridingForUntrackedStateWorks() {
 function testGitIconWorks() {
   local P9K_LEFT_PROMPT_ELEMENTS=(vcs)
   local P9K_VCS_GIT_ICON='Git-icon'
-  source ${P9K_HOME}/powerlevel9k.zsh-theme
+  source "${P9K_HOME}/segments/vcs/vcs.p9k"
 
   assertEquals "%K{002} %F{000}Git-icon%f %F{000} master %k%F{002}%f " "$(__p9k_build_left_prompt)"
 }
@@ -117,7 +121,7 @@ function testGitlabIconWorks() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(vcs)
   local P9K_VCS_GIT_GITLAB_ICON='GL-icon'
-  source ${P9K_HOME}/powerlevel9k.zsh-theme
+  source "${P9K_HOME}/segments/vcs/vcs.p9k"
 
   # Add a GitLab project as remote origin. This is
   # sufficient to show the GitLab-specific icon.
@@ -130,7 +134,7 @@ function testBitbucketIconWorks() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(vcs)
   local P9K_VCS_GIT_BITBUCKET_ICON='BB-icon'
-  source ${P9K_HOME}/powerlevel9k.zsh-theme
+  source "${P9K_HOME}/segments/vcs/vcs.p9k"
 
   # Add a BitBucket project as remote origin. This is
   # sufficient to show the BitBucket-specific icon.
@@ -143,7 +147,7 @@ function testGitHubIconWorks() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(vcs)
   local P9K_VCS_GIT_GITHUB_ICON='GH-icon'
-  source ${P9K_HOME}/powerlevel9k.zsh-theme
+  source "${P9K_HOME}/segments/vcs/vcs.p9k"
 
   # Add a GitHub project as remote origin. This is
   # sufficient to show the GitHub-specific icon.
@@ -155,7 +159,7 @@ function testGitHubIconWorks() {
 function testUntrackedFilesIconWorks() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(vcs)
-  source ${P9K_HOME}/powerlevel9k.zsh-theme
+  source "${P9K_HOME}/segments/vcs/vcs.p9k"
 
   # Create untracked file
   touch "i-am-untracked.txt"
@@ -167,7 +171,7 @@ function testStagedFilesIconWorks() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(vcs)
   local P9K_VCS_STAGED_ICON='+'
-  source ${P9K_HOME}/powerlevel9k.zsh-theme
+  source "${P9K_HOME}/segments/vcs/vcs.p9k"
 
   # Create staged file
   touch "i-am-added.txt"
@@ -183,7 +187,7 @@ function testUnstagedFilesIconWorks() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(vcs)
   local P9K_VCS_UNSTAGED_ICON='M'
-  source ${P9K_HOME}/powerlevel9k.zsh-theme
+  source "${P9K_HOME}/segments/vcs/vcs.p9k"
 
   # Create unstaged (modified, but not added to index) file
   touch "i-am-modified.txt"
@@ -198,7 +202,7 @@ function testStashIconWorks() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(vcs)
   local P9K_VCS_STASH_ICON='S'
-  source ${P9K_HOME}/powerlevel9k.zsh-theme
+  source "${P9K_HOME}/segments/vcs/vcs.p9k"
 
   # Create modified file
   touch "i-am-modified.txt"
@@ -214,7 +218,7 @@ function testTagIconWorks() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(vcs)
   local P9K_VCS_TAG_ICON='T'
-  source ${P9K_HOME}/powerlevel9k.zsh-theme
+  source "${P9K_HOME}/segments/vcs/vcs.p9k"
 
   touch "file.txt"
   git add file.txt
@@ -228,7 +232,7 @@ function testTagIconInDetachedHeadState() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(vcs)
   local P9K_VCS_TAG_ICON='T'
-  source ${P9K_HOME}/powerlevel9k.zsh-theme
+  source "${P9K_HOME}/segments/vcs/vcs.p9k"
 
   touch "file.txt"
   git add file.txt
@@ -246,7 +250,7 @@ function testTagIconInDetachedHeadState() {
 function testActionHintWorks() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(vcs)
-  source ${P9K_HOME}/powerlevel9k.zsh-theme
+  source "${P9K_HOME}/segments/vcs/vcs.p9k"
 
   touch "i-am-modified.txt"
   git add i-am-modified.txt
@@ -268,7 +272,7 @@ function testIncomingHintWorks() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(vcs)
   local P9K_VCS_INCOMING_CHANGES_ICON='I'
-  source ${P9K_HOME}/powerlevel9k.zsh-theme
+  source "${P9K_HOME}/segments/vcs/vcs.p9k"
 
   touch "i-am-modified.txt"
   git add i-am-modified.txt
@@ -288,7 +292,7 @@ function testOutgoingHintWorks() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(vcs)
   local P9K_VCS_OUTGOING_CHANGES_ICON='O'
-  source ${P9K_HOME}/powerlevel9k.zsh-theme
+  source "${P9K_HOME}/segments/vcs/vcs.p9k"
 
   touch "i-am-modified.txt"
   git add i-am-modified.txt
@@ -309,7 +313,7 @@ function testShorteningCommitHashWorks() {
   P9K_LEFT_PROMPT_ELEMENTS=(vcs)
   local P9K_VCS_SHOW_CHANGESET=true
   local P9K_VCS_CHANGESET_HASH_LENGTH='4'
-  source ${P9K_HOME}/powerlevel9k.zsh-theme
+  source "${P9K_HOME}/segments/vcs/vcs.p9k"
 
   touch "file.txt"
   git add file.txt
@@ -327,7 +331,7 @@ function testShorteningCommitHashIsNotShownIfShowChangesetIsFalse() {
   P9K_LEFT_PROMPT_ELEMENTS=(vcs)
   local P9K_VCS_SHOW_CHANGESET=false
   local P9K_VCS_CHANGESET_HASH_LENGTH='4'
-  source ${P9K_HOME}/powerlevel9k.zsh-theme
+  source "${P9K_HOME}/segments/vcs/vcs.p9k"
 
   touch "file.txt"
   git add file.txt
@@ -345,7 +349,7 @@ function testBranchNameTruncatingShortenLength() {
   local P9K_VCS_SHORTEN_LENGTH=6
   local P9K_VCS_SHORTEN_MIN_LENGTH=3
   local P9K_VCS_SHORTEN_STRATEGY="truncate_from_right"
-  source ${P9K_HOME}/powerlevel9k.zsh-theme
+  source "${P9K_HOME}/segments/vcs/vcs.p9k"
 
   FOLDER=/tmp/powerlevel9k-test/vcs-test
   mkdir -p $FOLDER
@@ -368,7 +372,7 @@ function testBranchNameTruncatingMinLength() {
   local P9K_VCS_SHORTEN_LENGTH=3
   local P9K_VCS_SHORTEN_MIN_LENGTH=6
   local P9K_VCS_SHORTEN_STRATEGY="truncate_from_right"
-  source ${P9K_HOME}/powerlevel9k.zsh-theme
+  source "${P9K_HOME}/segments/vcs/vcs.p9k"
 
   FOLDER=/tmp/powerlevel9k-test/vcs-test
   mkdir -p $FOLDER
@@ -392,7 +396,7 @@ function testBranchNameTruncatingShortenStrategy() {
   local P9K_VCS_SHORTEN_LENGTH=3
   local P9K_VCS_SHORTEN_MIN_LENGTH=3
   local P9K_VCS_SHORTEN_STRATEGY="truncate_from_right"
-  source ${P9K_HOME}/powerlevel9k.zsh-theme
+  source "${P9K_HOME}/segments/vcs/vcs.p9k"
 
   FOLDER=/tmp/powerlevel9k-test/vcs-test
   mkdir -p $FOLDER
@@ -414,7 +418,7 @@ function testRemoteBranchNameIdenticalToTag() {
   # This tests the fix from #941
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(vcs)
-  source ${P9K_HOME}/powerlevel9k.zsh-theme
+  source "${P9K_HOME}/segments/vcs/vcs.p9k"
 
   echo "test" > test.txt
   git add test.txt 1>/dev/null
@@ -441,7 +445,7 @@ function testAlwaysShowRemoteBranch() {
   P9K_LEFT_PROMPT_ELEMENTS=(vcs)
   local P9K_VCS_GIT_ALWAYS_SHOW_REMOTE_BRANCH='true'
   local P9K_VCS_HIDE_TAGS='true'
-  source ${P9K_HOME}/powerlevel9k.zsh-theme
+  source "${P9K_HOME}/segments/vcs/vcs.p9k"
 
   echo "test" > test.txt
   git add . 1>/dev/null
@@ -463,7 +467,7 @@ function testGitDirClobber() {
   local P9K_VCS_GIT_ALWAYS_SHOW_REMOTE_BRANCH='true'
   local P9K_VCS_HIDE_TAGS='true'
   local P9K_VCS_CLOBBERED_FOLDER_ICON="clob"
-  source ${P9K_HOME}/powerlevel9k.zsh-theme
+  source "${P9K_HOME}/segments/vcs/vcs.p9k"
 
   echo "xxx" > xxx.txt
   git add . 1>/dev/null
@@ -501,6 +505,7 @@ function testDetectingUntrackedFilesInSubmodulesWork() {
   P9K_LEFT_PROMPT_ELEMENTS=(vcs)
   local P9K_VCS_SHOW_SUBMODULE_DIRTY="true"
   unset P9K_VCS_UNTRACKED_BACKGROUND
+  source "${P9K_HOME}/segments/vcs/vcs.p9k"
 
   mkdir ../submodule
   cd ../submodule
@@ -520,8 +525,6 @@ function testDetectingUntrackedFilesInSubmodulesWork() {
   touch "i-am-untracked.txt"
   cd -
 
-  source ${P9K_HOME}/powerlevel9k.zsh-theme
-
   assertEquals "%K{002} %F{000}?%f %F{000} master ? %k%F{002}%f " "$(__p9k_build_left_prompt)"
 }
 
@@ -530,6 +533,7 @@ function testDetectinUntrackedFilesInMainRepoWithDirtySubmodulesWork() {
   P9K_LEFT_PROMPT_ELEMENTS=(vcs)
   local P9K_VCS_SHOW_SUBMODULE_DIRTY="true"
   unset P9K_VCS_UNTRACKED_BACKGROUND
+  source "${P9K_HOME}/segments/vcs/vcs.p9k"
 
   mkdir ../submodule
   cd ../submodule
@@ -546,8 +550,6 @@ function testDetectinUntrackedFilesInMainRepoWithDirtySubmodulesWork() {
   # Create untracked file
   touch "i-am-untracked.txt"
 
-  source ${P9K_HOME}/powerlevel9k.zsh-theme
-
   assertEquals "%K{002} %F{000}?%f %F{000} master ? %k%F{002}%f " "$(__p9k_build_left_prompt)"
 }
 
@@ -556,6 +558,7 @@ function testDetectingUntrackedFilesInNestedSubmodulesWork() {
   P9K_LEFT_PROMPT_ELEMENTS=(vcs)
   local P9K_VCS_SHOW_SUBMODULE_DIRTY="true"
   unset P9K_VCS_UNTRACKED_BACKGROUND
+  source "${P9K_HOME}/segments/vcs/vcs.p9k"
 
   local mainRepo="${PWD}"
 
@@ -589,8 +592,6 @@ function testDetectingUntrackedFilesInNestedSubmodulesWork() {
   touch "i-am-untracked.txt"
   cd -
 
-  source ${P9K_HOME}/powerlevel9k.zsh-theme
-
   assertEquals "%K{002} %F{000}?%f %F{000} master ? %k%F{002}%f " "$(__p9k_build_left_prompt)"
 }
 
@@ -599,6 +600,7 @@ function testDetectingUntrackedFilesInCleanSubdirectoryWorks() {
   P9K_LEFT_PROMPT_ELEMENTS=(vcs)
   local P9K_VCS_SHOW_SUBMODULE_DIRTY="true"
   unset P9K_VCS_UNTRACKED_BACKGROUND
+  source "${P9K_HOME}/segments/vcs/vcs.p9k"
 
   mkdir clean-folder
   touch clean-folder/file.txt
@@ -612,14 +614,13 @@ function testDetectingUntrackedFilesInCleanSubdirectoryWorks() {
   touch dirty-folder/new-file.txt
   cd clean-folder
 
-  source ${P9K_HOME}/powerlevel9k.zsh-theme
-
   assertEquals "%K{002} %F{000}?%f %F{000} master ? %k%F{002}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testBranchNameScriptingVulnerability() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(vcs)
+  source "${P9K_HOME}/segments/vcs/vcs.p9k"
   echo "#!/bin/sh\n\necho 'hacked'\n" > evil_script.sh
   chmod +x evil_script.sh
 
@@ -635,6 +636,7 @@ function testGitSubmoduleWorks() {
   P9K_LEFT_PROMPT_ELEMENTS=(vcs)
   local P9K_VCS_SHOW_SUBMODULE_DIRTY="true"
   unset P9K_VCS_UNTRACKED_BACKGROUND
+  source "${P9K_HOME}/segments/vcs/vcs.p9k"
 
   mkdir ../submodule
   cd ../submodule
@@ -649,8 +651,6 @@ function testGitSubmoduleWorks() {
   git commit -m "Add submodule" 1>/dev/null
 
   cd submodule
-
-  source "${P9K_HOME}/powerlevel9k.zsh-theme"
 
   local result="$(__p9k_build_left_prompt 2>&1)"
   [[ "$result" =~ ".*(is outside repository)+" ]] && return 1

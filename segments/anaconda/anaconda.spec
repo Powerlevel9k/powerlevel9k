@@ -14,6 +14,8 @@ function testAnacondaSegmentPrintsNothingIfNoAnacondaPathIsSet() {
   local P9K_CUSTOM_WORLD='echo world'
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(anaconda custom_world)
+  local -a P9K_RIGHT_PROMPT_ELEMENTS
+  P9K_RIGHT_PROMPT_ELEMENTS=()
 
   # Load Powerlevel9k
   source segments/anaconda/anaconda.p9k

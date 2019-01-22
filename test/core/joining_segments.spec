@@ -7,12 +7,13 @@ SHUNIT_PARENT=$0
 
 function setUp() {
   export TERM="xterm-256color"
+  local -a P9K_RIGHT_PROMPT_ELEMENTS
+  P9K_RIGHT_PROMPT_ELEMENTS=()
   # Load Powerlevel9k
   source powerlevel9k.zsh-theme
 }
 
 function testLeftNormalSegmentsShouldNotBeJoined() {
-  local -a P9K_LEFT_PROMPT_ELEMENTS
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(custom_world1 custom_world2 custom_world3 custom_world4_joined custom_world5 custom_world6)
   local P9K_CUSTOM_WORLD1="echo world1"
@@ -27,7 +28,6 @@ function testLeftNormalSegmentsShouldNotBeJoined() {
 
 function testLeftJoinedSegments() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
-  local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(custom_world1 custom_world2_joined)
   local P9K_CUSTOM_WORLD1="echo world1"
   local P9K_CUSTOM_WORLD2="echo world2"
@@ -36,7 +36,6 @@ function testLeftJoinedSegments() {
 }
 
 function testLeftTransitiveJoinedSegments() {
-  local -a P9K_LEFT_PROMPT_ELEMENTS
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(custom_world1 custom_world2_joined custom_world3_joined)
   local P9K_CUSTOM_WORLD1="echo world1"
@@ -47,7 +46,6 @@ function testLeftTransitiveJoinedSegments() {
 }
 
 function testLeftTransitiveJoiningWithConditionalJoinedSegment() {
-  local -a P9K_LEFT_PROMPT_ELEMENTS
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(custom_world1 custom_world2_joined custom_world3_joined custom_world4_joined)
   local P9K_CUSTOM_WORLD1="echo world1"
@@ -60,7 +58,6 @@ function testLeftTransitiveJoiningWithConditionalJoinedSegment() {
 
 function testLeftPromotingSegmentWithConditionalPredecessor() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
-  local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(custom_world1 custom_world2 custom_world3_joined)
   local P9K_CUSTOM_WORLD1="echo world1"
   local P9K_CUSTOM_WORLD2="echo " # Print nothing to simulate unmet conditions
@@ -70,7 +67,6 @@ function testLeftPromotingSegmentWithConditionalPredecessor() {
 }
 
 function testLeftPromotingSegmentWithJoinedConditionalPredecessor() {
-  local -a P9K_LEFT_PROMPT_ELEMENTS
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(custom_world1 custom_world2 custom_world3_joined custom_world4_joined)
   local P9K_CUSTOM_WORLD1="echo world1"
@@ -82,7 +78,6 @@ function testLeftPromotingSegmentWithJoinedConditionalPredecessor() {
 }
 
 function testLeftPromotingSegmentWithDeepJoinedConditionalPredecessor() {
-  local -a P9K_LEFT_PROMPT_ELEMENTS
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(custom_world1 custom_world2 custom_world3_joined custom_world4_joined custom_world5_joined custom_world6_joined)
   local P9K_CUSTOM_WORLD1="echo world1"
@@ -96,7 +91,6 @@ function testLeftPromotingSegmentWithDeepJoinedConditionalPredecessor() {
 }
 
 function testLeftJoiningBuiltinSegmentWorks() {
-  local -a P9K_LEFT_PROMPT_ELEMENTS
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(php_version php_version_joined)
   alias php="echo PHP 1.2.3 "

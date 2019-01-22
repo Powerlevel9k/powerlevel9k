@@ -9,6 +9,8 @@ function setUp() {
   export TERM="xterm-256color"
 
   P9K_HOME=$(pwd)
+  local -a P9K_RIGHT_PROMPT_ELEMENTS
+  P9K_RIGHT_PROMPT_ELEMENTS=()
   # Load Powerlevel9k
   source ${P9K_HOME}/powerlevel9k.zsh-theme
   source ${P9K_HOME}/segments/load/load.p9k

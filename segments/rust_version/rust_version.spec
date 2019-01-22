@@ -14,6 +14,8 @@ function setUp() {
   PATH="${RUST_TEST_FOLDER}:${PATH}"
 
   export TERM="xterm-256color"
+  local -a P9K_RIGHT_PROMPT_ELEMENTS
+  P9K_RIGHT_PROMPT_ELEMENTS=()
   # Load Powerlevel9k
   source powerlevel9k.zsh-theme
   source segments/rust_version/rust_version.p9k
