@@ -29,6 +29,7 @@ env:
   matrix:
     # Use _ZSH_VERSION since if ZSH_VERSION is present, travis cacher thinks it
     # is running in zsh and tries to use zsh specific functions.
+    - _ZSH_VERSION=5.7
     - _ZSH_VERSION=5.6.2
     - _ZSH_VERSION=5.6.1
     - _ZSH_VERSION=5.6
