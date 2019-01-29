@@ -314,7 +314,7 @@ function __p9k_build_left_prompt() {
 # @noargs
 ##
 function __p9k_build_right_prompt() {
-  [[ ${P9K_RIGHT_PROMPT_ELEMENTS[1]} == "" ]] && return
+  [[ ${P9K_RIGHT_PROMPT_ELEMENTS[1]:-} == "" ]] && return
   local index=1
   local element joined
   for element in "${P9K_RIGHT_PROMPT_ELEMENTS[@]}"; do
@@ -386,7 +386,7 @@ function __p9k_prepare_prompts() {
 
   local LC_ALL="" LC_CTYPE="en_US.UTF-8" # Set the right locale to protect special characters
 
-  if [[ "$P9K_PROMPT_ON_NEWLINE" == true ]]; then
+  if [[ "${P9K_PROMPT_ON_NEWLINE:-}" == true ]]; then
     __p9k_unsafe_PROMPT="${__P9K_ICONS[MULTILINE_FIRST_PROMPT_PREFIX]}%f%b%k$(__p9k_build_left_prompt)
 ${__P9K_ICONS[MULTILINE_LAST_PROMPT_PREFIX]}"
     if [[ "$P9K_RPROMPT_ON_NEWLINE" != true ]]; then
@@ -407,19 +407,19 @@ ${__P9K_ICONS[MULTILINE_LAST_PROMPT_PREFIX]}"
     RPROMPT_SUFFIX=''
   fi
 
-  if [[ "$P9K_DISABLE_RPROMPT" != true ]]; then
+  if [[ "${P9K_DISABLE_RPROMPT:-}" != true ]]; then
     __p9k_unsafe_RPROMPT="${RPROMPT_PREFIX}%f%b%k$(__p9k_build_right_prompt)%{${reset_color}%}${RPROMPT_SUFFIX}"
     RPROMPT='$__p9k_unsafe_RPROMPT'
   fi
 
   # Allow iTerm integration to work
-  [[ ${ITERM_SHELL_INTEGRATION_INSTALLED} == "Yes" ]] \
+  [[ "${ITERM_SHELL_INTEGRATION_INSTALLED:-}" == "Yes" ]] \
     && __p9k_unsafe_PROMPT="%{$(iterm2_prompt_mark)%}$__p9k_unsafe_PROMPT"
 
 local NEWLINE='
 '
 
-  if [[ $P9K_PROMPT_ADD_NEWLINE == true ]]; then
+  if [[ "${P9K_PROMPT_ADD_NEWLINE:-}" == true ]]; then
     NEWLINES=""
     repeat ${P9K_PROMPT_ADD_NEWLINE_COUNT:-1} { NEWLINES+=${NEWLINE} }
     __p9k_unsafe_PROMPT="$NEWLINES$__p9k_unsafe_PROMPT"

@@ -20,7 +20,7 @@ prompt_newline() {
   [[ "$1" == "right" ]] && return
 
   local newline=$'\n'
-  [[ "$P9K_PROMPT_ON_NEWLINE" == true ]] \
+  [[ "${P9K_PROMPT_ON_NEWLINE:-}" == true ]] \
       && newline="${newline}${__P9K_ICONS[MULTILINE_NEWLINE_PROMPT_PREFIX]}"
 
   p9k::prepare_segment "$0" "" $1 "$2" $3 "${newline}" "[[ true ]]" "" "%k"
