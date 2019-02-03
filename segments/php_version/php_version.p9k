@@ -11,8 +11,8 @@
   # Register segment
   # Parameters:
   #   segment_name  context  background  foreground  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
-  #                                                                                              
-  p9k::register_segment "PHP_VERSION" "" "fuchsia" "grey93"  'PHP'  $'\uF457'  $'\uF457'  $'\uF457'  $'\uE73D'
+  #                                                                                           
+  p9k::register_segment "PHP_VERSION" "" "fuchsia" "grey93"  'PHP'  'PHP'  $'\uE63D'  "${CODEPOINT_OF_DEVICONS_PHP}"  $'\uE73D'
 }
 
 ################################################################
