@@ -39,13 +39,13 @@ add-zsh-hook precmd __p9k_background_jobs
 ##
 prompt_background_jobs() {
   local jobs_print=""
-  local total_jobs=$(( ${jobs_running} + ${jobs_suspended} ))
+  local -r total_jobs=$(( jobs_running + jobs_suspended ))
 
   if [[ "${(L)P9K_BACKGROUND_JOBS_VERBOSE}" == "true" || "${(L)P9K_BACKGROUND_JOBS_VERBOSE_ALWAYS}" == "true" ]]; then
     jobs_print=0
     if (( ${total_jobs} > 0 )); then
       if [[ "${(L)P9K_BACKGROUND_JOBS_EXPANDED}" == "true" ]]; then
-        jobs_print="${jobs_running}r ${jobs_suspended}s"
+        jobs_print="${jobs_running:-0}r ${jobs_suspended:-0}s"
       else
         jobs_print="${total_jobs}"
       fi
