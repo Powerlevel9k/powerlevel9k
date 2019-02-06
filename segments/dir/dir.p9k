@@ -147,6 +147,7 @@ prompt_dir() {
         # subdirectory path as a substring of the current directory's path from 0
         # to the length of the package path's string
         subdirectory_path=$(__p9k_truncate_path "${current_path:${#${(S%%)package_path//$~zero/}}}" $P9K_DIR_SHORTEN_LENGTH $P9K_DIR_SHORTEN_DELIMITER)
+        [ -n "${subdirectory_path}" ] && subdirectory_path[1]=${P9K_DIR_SHORTEN_PKG_SEPARATOR-/}
 
         local pkgFile="unknown"
         for file in "${P9K_DIR_PACKAGE_FILES[@]}"; do
