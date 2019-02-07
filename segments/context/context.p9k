@@ -40,12 +40,15 @@
 prompt_context() {
   local current_state="DEFAULT"
   local content=""
-  local me=$(whoami)
 
-  if [[ "${P9K_CONTEXT_ALWAYS_SHOW:-}" == true ]] || [[ "${me}" != "${DEFAULT_USER:-}" ]] || [[ -n "${SSH_CLIENT:-}" || -n "${SSH_TTY:-}" ]]; then
-    content="${P9K_CONTEXT_TEMPLATE}"
+  if [[ "${P9K_CONTEXT_ALWAYS_SHOW:-}" == true ]] || [[ "${USER}" != "${DEFAULT_USER:-}" ]] || [[ -n "${SSH_CLIENT:-}" || -n "${SSH_TTY:-}" ]]; then
+    if [[ "${USER}" == "${DEFAULT_USER:-}" ]]; then
+      content="${P9K_CONTEXT_TEMPLATE_DEFAULT_USER-${P9K_CONTEXT_TEMPLATE}}"
+    else
+      content="${P9K_CONTEXT_TEMPLATE}"
+    fi
   elif [[ "$P9K_CONTEXT_ALWAYS_SHOW_USER" == true ]]; then
-    content="${me}"
+    content="${USER}"
   else
     return
   fi

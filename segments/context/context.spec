@@ -78,6 +78,18 @@ function testOverridingContextTemplate() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(context)
   local P9K_CONTEXT_TEMPLATE=xx
+  local P9K_CONTEXT_TEMPLATE_DEFAULT_USER=zz
+
+  assertEquals "%K{000} %F{003}xx %k%F{000}%f " "$(__p9k_build_left_prompt)"
+}
+
+function testOverridingContextTemplateForDefaultUser() {
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(context)
+  local P9K_CONTEXT_TEMPLATE=zz
+  local P9K_CONTEXT_TEMPLATE_DEFAULT_USER=xx
+  local P9K_CONTEXT_ALWAYS_SHOW=true
+  local DEFAULT_USER=$(whoami)
 
   assertEquals "%K{000} %F{003}xx %k%F{000}%f " "$(__p9k_build_left_prompt)"
 }
