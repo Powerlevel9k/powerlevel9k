@@ -193,6 +193,22 @@ p9k::defined P9K_RIGHT_PROMPT_ELEMENTS || P9K_RIGHT_PROMPT_ELEMENTS=(status root
 # Load Prompt Segment Definitions
 ################################################################
 
+function __p9k_polyfill_segment_tags() {
+  # Replace old "custom_" elements with new Tag syntax.
+  # This is done via the internal ZSH regex engine.
+  # #b enables pattern matching
+  # ? is any character
+  # ## is one or more
+  P9K_LEFT_PROMPT_ELEMENTS=("${(@)P9K_LEFT_PROMPT_ELEMENTS//(#b)custom_(?##)/${match[1]}::custom}")
+  P9K_LEFT_PROMPT_ELEMENTS=("${(@)P9K_LEFT_PROMPT_ELEMENTS//(#b)(?##)_joined/${match[1]}::joined}")
+
+  P9K_RIGHT_PROMPT_ELEMENTS=("${(@)P9K_RIGHT_PROMPT_ELEMENTS//(#b)custom_(?##)/${match[1]}::custom}")
+  P9K_RIGHT_PROMPT_ELEMENTS=("${(@)P9K_RIGHT_PROMPT_ELEMENTS//(#b)(?##)_joined/${match[1]}::joined}")
+
+  # echo $P9K_LEFT_PROMPT_ELEMENTS
+}
+__p9k_polyfill_segment_tags
+
 p9k::set_default P9K_CUSTOM_SEGMENT_LOCATION "$HOME/.config/powerlevel9k/segments"
 # load only the segments that are being used!
 function __p9k_load_segments() {
