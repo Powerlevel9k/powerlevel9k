@@ -212,13 +212,16 @@ __p9k_polyfill_segment_tags
 p9k::set_default P9K_CUSTOM_SEGMENT_LOCATION "$HOME/.config/powerlevel9k/segments"
 # load only the segments that are being used!
 function __p9k_load_segments() {
-  local segment
-  for segment in ${P9K_LEFT_PROMPT_ELEMENTS} ${P9K_RIGHT_PROMPT_ELEMENTS}; do
-    # Remove joined information
-    segment=${segment%_joined}
+  local segment raw_segment
+  for raw_segment in ${P9K_LEFT_PROMPT_ELEMENTS} ${P9K_RIGHT_PROMPT_ELEMENTS}; do
+    local -a segment_meta
+    # Split by double-colon
+    segment_meta=(${(s.::.)raw_segment})
+    # First value is always segment name
+    segment=${segment_meta[1]}
 
     # Custom segments must be loaded by user
-    if [[ $segment[0,7] =~ "custom_" ]]; then
+    if [[ ${segment_meta[(r)custom]} == "custom" ]]; then
       continue
     fi
     # check if the file exists as a core segment
