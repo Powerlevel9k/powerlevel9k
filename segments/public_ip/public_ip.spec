@@ -41,7 +41,7 @@ function tearDown() {
 
 function testPublicIpSegmentPrintsNothingByDefaultIfHostIsNotAvailable() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
-  P9K_LEFT_PROMPT_ELEMENTS=(public_ip custom_world)
+  P9K_LEFT_PROMPT_ELEMENTS=(public_ip world::custom)
   local P9K_PUBLIC_IP_HOST='http://unknown.xyz'
   local P9K_CUSTOM_WORLD='echo world'
   # We need to overwrite dig, as this is a fallback method that

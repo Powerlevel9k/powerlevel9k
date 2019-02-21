@@ -16,7 +16,7 @@ function setUp() {
 
 function testCustomDirectOutputSegment() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
-  P9K_LEFT_PROMPT_ELEMENTS=(custom_world)
+  P9K_LEFT_PROMPT_ELEMENTS=(world::custom)
   local P9K_CUSTOM_WORLD="echo world"
 
   assertEquals "%K{015} %F{000}world %k%F{015}%f " "$(__p9k_build_left_prompt)"
@@ -24,7 +24,7 @@ function testCustomDirectOutputSegment() {
 
 function testCustomClosureSegment() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
-  P9K_LEFT_PROMPT_ELEMENTS=(custom_world)
+  P9K_LEFT_PROMPT_ELEMENTS=(world::custom)
   function p9k_hello_world() {
     echo "world"
   }
@@ -35,7 +35,7 @@ function testCustomClosureSegment() {
 
 function testSettingBackgroundForCustomSegment() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
-  P9K_LEFT_PROMPT_ELEMENTS=(custom_world)
+  P9K_LEFT_PROMPT_ELEMENTS=(world::custom)
   local P9K_CUSTOM_WORLD="echo world"
   local P9K_CUSTOM_WORLD_BACKGROUND="yellow"
 
@@ -44,7 +44,7 @@ function testSettingBackgroundForCustomSegment() {
 
 function testSettingForegroundForCustomSegment() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
-  P9K_LEFT_PROMPT_ELEMENTS=(custom_world)
+  P9K_LEFT_PROMPT_ELEMENTS=(world::custom)
   local P9K_CUSTOM_WORLD="echo world"
   local P9K_CUSTOM_WORLD_FOREGROUND="red"
 
@@ -53,7 +53,7 @@ function testSettingForegroundForCustomSegment() {
 
 function testSettingVisualIdentifierForCustomSegment() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
-  P9K_LEFT_PROMPT_ELEMENTS=(custom_world)
+  P9K_LEFT_PROMPT_ELEMENTS=(world::custom)
   local P9K_CUSTOM_WORLD="echo world"
   local P9K_CUSTOM_WORLD_ICON="hw"
 
@@ -62,7 +62,7 @@ function testSettingVisualIdentifierForCustomSegment() {
 
 function testSettingVisualIdentifierForegroundColorForCustomSegment() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
-  P9K_LEFT_PROMPT_ELEMENTS=(custom_world)
+  P9K_LEFT_PROMPT_ELEMENTS=(world::custom)
   local P9K_CUSTOM_WORLD="echo world"
   local P9K_CUSTOM_WORLD_ICON="hw"
   local P9K_CUSTOM_WORLD_ICON_COLOR="red"

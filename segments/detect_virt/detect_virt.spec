@@ -16,7 +16,7 @@ function setUp() {
 
 function testDetectVirtSegmentPrintsNothingIfSystemdIsNotAvailable() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
-  P9K_LEFT_PROMPT_ELEMENTS=(detect_virt custom_world)
+  P9K_LEFT_PROMPT_ELEMENTS=(detect_virt world::custom)
   local P9K_CUSTOM_WORLD='echo world'
   alias systemd-detect-virt="novirt"
 

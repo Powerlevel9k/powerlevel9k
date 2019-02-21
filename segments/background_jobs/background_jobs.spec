@@ -15,7 +15,7 @@ function setUp() {
 function testBackgroundJobsSegmentPrintsNothingWithoutBackgroundJobs() {
   local P9K_CUSTOM_WORLD='echo world'
   local -a P9K_LEFT_PROMPT_ELEMENTS
-  P9K_LEFT_PROMPT_ELEMENTS=(background_jobs custom_world)
+  P9K_LEFT_PROMPT_ELEMENTS=(background_jobs world::custom)
   local jobs_running=0
   local jobs_suspended=0
 

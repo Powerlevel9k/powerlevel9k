@@ -33,7 +33,7 @@ function tearDown() {
 
 function testSymfonyVersionSegmentPrintsNothingIfPhpIsNotAvailable() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
-  P9K_LEFT_PROMPT_ELEMENTS=(symfony2_version custom_world)
+  P9K_LEFT_PROMPT_ELEMENTS=(symfony2_version world::custom)
   local P9K_CUSTOM_WORLD='echo world'
   alias php="nophp"
 
@@ -44,7 +44,7 @@ function testSymfonyVersionSegmentPrintsNothingIfPhpIsNotAvailable() {
 
 function testSymfonyVersionSegmentPrintsNothingIfSymfonyIsNotAvailable() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
-  P9K_LEFT_PROMPT_ELEMENTS=(symfony2_version custom_world)
+  P9K_LEFT_PROMPT_ELEMENTS=(symfony2_version world::custom)
   # "Symfony" is not a command, but rather a framework.
   # To sucessfully execute this test, we just need to
   # navigate into a folder that does not contain symfony.
@@ -55,7 +55,7 @@ function testSymfonyVersionSegmentPrintsNothingIfSymfonyIsNotAvailable() {
 
 function testSymfonyVersionPrintsNothingIfPhpThrowsAnError() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
-  P9K_LEFT_PROMPT_ELEMENTS=(symfony2_version custom_world)
+  P9K_LEFT_PROMPT_ELEMENTS=(symfony2_version world::custom)
   local P9K_CUSTOM_WORLD='echo world'
   mkdir app
   touch app/AppKernel.php

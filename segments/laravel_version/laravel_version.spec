@@ -44,7 +44,7 @@ function testLaravelVersionSegmentIfArtisanIsNotAvailable() {
   local P9K_CUSTOM_WORLD='echo world'
   local P9K_LARAVEL_VERSION_ICON='x'
   local -a P9K_LEFT_PROMPT_ELEMENTS
-  P9K_LEFT_PROMPT_ELEMENTS=(custom_world laravel_version)
+  P9K_LEFT_PROMPT_ELEMENTS=(world::custom laravel_version)
   source segments/laravel_version/laravel_version.p9k
 
   assertEquals "%K{015} %F{000}world %k%F{015}%f " "$(__p9k_build_left_prompt)"
@@ -57,7 +57,7 @@ function testLaravelVersionSegmentPrintsNothingIfPhpIsNotAvailable() {
   local P9K_CUSTOM_WORLD='echo world'
   local P9K_LARAVEL_VERSION_ICON='x'
   local -a P9K_LEFT_PROMPT_ELEMENTS
-  P9K_LEFT_PROMPT_ELEMENTS=(custom_world laravel_version)
+  P9K_LEFT_PROMPT_ELEMENTS=(world::custom laravel_version)
   source segments/laravel_version/laravel_version.p9k
 
   assertEquals "%K{015} %F{000}world %k%F{015}%f " "$(__p9k_build_left_prompt)"

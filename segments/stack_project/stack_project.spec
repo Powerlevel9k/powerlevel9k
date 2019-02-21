@@ -73,7 +73,7 @@ function testStackProjectSegmentNoStackYaml() {
 
   local P9K_CUSTOM_WORLD='echo world'
   local -a P9K_LEFT_PROMPT_ELEMENTS
-  P9K_LEFT_PROMPT_ELEMENTS=(custom_world stack_project)
+  P9K_LEFT_PROMPT_ELEMENTS=(world::custom stack_project)
 
   assertEquals "%K{015} %F{000}world %k%F{015}%f " "$(__p9k_build_left_prompt)"
 
@@ -85,7 +85,7 @@ function testStackProjectSegmentIfStackIsNotAvailable() {
   alias stack=mockNoStackVersion
   local P9K_CUSTOM_WORLD='echo world'
   local -a P9K_LEFT_PROMPT_ELEMENTS
-  P9K_LEFT_PROMPT_ELEMENTS=(custom_world stack_project)
+  P9K_LEFT_PROMPT_ELEMENTS=(world::custom stack_project)
 
   assertEquals "%K{015} %F{000}world %k%F{015}%f " "$(__p9k_build_left_prompt)"
 
@@ -96,7 +96,7 @@ function testStackProjectSegmentPrintsNothingIfStackIsNotAvailable() {
   alias stack=noStack
   local P9K_CUSTOM_WORLD='echo world'
   local -a P9K_LEFT_PROMPT_ELEMENTS
-  P9K_LEFT_PROMPT_ELEMENTS=(custom_world stack_project)
+  P9K_LEFT_PROMPT_ELEMENTS=(world::custom stack_project)
 
   assertEquals "%K{015} %F{000}world %k%F{015}%f " "$(__p9k_build_left_prompt)"
 

@@ -15,7 +15,7 @@ function setUp() {
 
 function testSshSegmentPrintsNothingIfNoSshConnection() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
-  P9K_LEFT_PROMPT_ELEMENTS=(ssh custom_world)
+  P9K_LEFT_PROMPT_ELEMENTS=(ssh world::custom)
   local P9K_CUSTOM_WORLD='echo "world"'
   local P9K_SSH_ICON="ssh-icon"
   source segments/ssh/ssh.p9k

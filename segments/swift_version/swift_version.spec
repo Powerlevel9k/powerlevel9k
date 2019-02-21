@@ -33,7 +33,7 @@ function tearDown() {
 
 function testSwiftSegmentPrintsNothingIfSwiftIsNotAvailable() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
-  P9K_LEFT_PROMPT_ELEMENTS=(swift_version custom_world)
+  P9K_LEFT_PROMPT_ELEMENTS=(swift_version world::custom)
   local P9K_CUSTOM_WORLD='echo world'
   alias swift="noswift"
 

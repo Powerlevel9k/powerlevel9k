@@ -16,7 +16,7 @@ function setUp() {
 
 function testPhpVersionSegmentPrintsNothingIfPhpIsNotAvailable() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
-  P9K_LEFT_PROMPT_ELEMENTS=(php_version custom_world)
+  P9K_LEFT_PROMPT_ELEMENTS=(php_version world::custom)
   local P9K_CUSTOM_WORLD='echo world'
   alias php="nophp"
 

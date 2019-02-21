@@ -55,7 +55,7 @@ function testColorOverridingOfStatefulSegment() {
 }
 
 function testColorOverridingOfCustomSegment() {
-  local P9K_LEFT_PROMPT_ELEMENTS=(custom_world)
+  local P9K_LEFT_PROMPT_ELEMENTS=(world::custom)
   local P9K_CUSTOM_WORLD='echo world'
   local P9K_CUSTOM_WORLD_ICON='CW'
   local P9K_CUSTOM_WORLD_ICON_COLOR='green'
