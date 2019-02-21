@@ -284,20 +284,21 @@ function __p9k_prompt_custom() {
 function __p9k_build_left_prompt() {
   [[ ${P9K_LEFT_PROMPT_ELEMENTS[1]} == "" ]] && return
   local index=1
-  local element joined
-  for element in "${P9K_LEFT_PROMPT_ELEMENTS[@]}"; do
+  local raw_segment joined
+  for raw_segment in "${P9K_LEFT_PROMPT_ELEMENTS[@]}"; do
+    local -a segment_meta
+    # Split by double-colon
+    segment_meta=(${(s.::.)raw_segment})
+    local segment="$segment_meta[1]"
     # Check if segment should be joined
-    [[ "${element[-7,-1]}" == '_joined' ]] && joined=true || joined=false
-
-    # Remove joined information in direct calls
-    element="${element%_joined}"
+    [[ ${segment_meta[(r)joined]} == "joined" ]] && joined=true || joined=false
 
     # Check if it is a custom command, otherwise interpet it as
     # a prompt.
-    if [[ $element[0,7] =~ "custom_" ]]; then
-      "__p9k_prompt_custom" "left" "$index" ${joined} $element[8,-1]
+    if [[ ${segment_meta[(r)custom]} == "custom" ]]; then
+      "__p9k_prompt_custom" "left" "$index" ${joined} $segment
     else
-      "prompt_$element" "left" "$index" $joined
+      "prompt_${segment}" "left" "$index" $joined
     fi
 
     index=$((index + 1))
@@ -316,19 +317,20 @@ function __p9k_build_left_prompt() {
 function __p9k_build_right_prompt() {
   [[ ${P9K_RIGHT_PROMPT_ELEMENTS[1]:-} == "" ]] && return
   local index=1
-  local element joined
-  for element in "${P9K_RIGHT_PROMPT_ELEMENTS[@]}"; do
+  local raw_segment joined
+  for raw_segment in "${P9K_RIGHT_PROMPT_ELEMENTS[@]}"; do
+    local -a segment_meta
+    # Split by double-colon
+    segment_meta=(${(s.::.)raw_segment})
+    local segment="$segment_meta[1]"
     # Check if segment should be joined
-    [[ "${element[-7,-1]}" == '_joined' ]] && joined=true || joined=false
-
-    # Remove joined information in direct calls
-    element="${element%_joined}"
+    [[ ${segment_meta[(r)joined]} == "joined" ]] && joined=true || joined=false
 
     # Check if it is a custom command, otherwise interpet it as a prompt.
-    if [[ $element[0,7] =~ "custom_" ]]; then
-      "__p9k_prompt_custom" "right" "$index" ${joined} $element[8,-1]
+    if [[ ${segment_meta[(r)custom]} == "custom" ]]; then
+      "__p9k_prompt_custom" "right" "$index" ${joined} $segment
     else
-      "prompt_$element" "right" "$index" $joined
+      "prompt_${segment}" "right" "$index" $joined
     fi
 
     index=$((index + 1))
