@@ -199,11 +199,12 @@ function __p9k_polyfill_segment_tags() {
   # #b enables pattern matching
   # ? is any character
   # ## is one or more
+  # S Flag for non-greedy matching
   P9K_LEFT_PROMPT_ELEMENTS=("${(@)P9K_LEFT_PROMPT_ELEMENTS//(#b)custom_(?##)/${match[1]}::custom}")
-  P9K_LEFT_PROMPT_ELEMENTS=("${(@)P9K_LEFT_PROMPT_ELEMENTS//(#b)(?##)_joined/${match[1]}::joined}")
+  P9K_LEFT_PROMPT_ELEMENTS=("${(@S)P9K_LEFT_PROMPT_ELEMENTS//(#b)(?##)_joined/${match[1]}::joined}")
 
   P9K_RIGHT_PROMPT_ELEMENTS=("${(@)P9K_RIGHT_PROMPT_ELEMENTS//(#b)custom_(?##)/${match[1]}::custom}")
-  P9K_RIGHT_PROMPT_ELEMENTS=("${(@)P9K_RIGHT_PROMPT_ELEMENTS//(#b)(?##)_joined/${match[1]}::joined}")
+  P9K_RIGHT_PROMPT_ELEMENTS=("${(@S)P9K_RIGHT_PROMPT_ELEMENTS//(#b)(?##)_joined/${match[1]}::joined}")
 
   # echo $P9K_LEFT_PROMPT_ELEMENTS
 }
