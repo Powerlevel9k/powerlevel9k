@@ -34,9 +34,9 @@ local -a elements
 elements=(${=3})
 
 local raw_current_segment=${elements[$current_index]}
-local current_segment="${(s.::.)raw_current_segment}"
+local -a current_segment=(${(s.::.)raw_current_segment})
 local joined=false
-if [[ ${current_segment[(r)joined]} == 'joined' ]]; then
+if [[ "${current_segment[(r)joined]}" == 'joined' ]]; then
   joined=true
   # promote segment to a full one, if the predecessing full segment
   # was conditional. So this can only be the case for segments that
@@ -49,11 +49,11 @@ if [[ ${current_segment[(r)joined]} == 'joined' ]]; then
     local examined_index=$((current_index - 1))
     while (( ${examined_index} > ${last_segment_index} )); do
       local raw_previous_segment=${elements[$examined_index]}
-      local previous_segment="${(s.::.)raw_previous_segment}"
+      local -a previous_segment=(${(s.::.)raw_previous_segment})
       # If one of the examined segments is not joined, then we know
       # that the current segment should not be joined, as the target
       # segment is the wrong one.
-      if [[ ${previous_segment[(r)joined]} != 'joined' ]]; then
+      if [[ "${previous_segment[(r)joined]}" != 'joined' ]]; then
         joined=false
         break
       fi

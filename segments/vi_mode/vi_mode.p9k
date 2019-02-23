@@ -88,11 +88,12 @@ function rebuild_vi_mode {
           current_state="INSERT"
           ;;
       esac
-      local raw_element element joined=false
+      local raw_element joined=false
+      local -a element
       local vi_mode="P9K_VI_${current_state}_MODE_STRING"
       for (( i = 0; i <= ${#P9K_LEFT_PROMPT_ELEMENTS}; i++ )); do
         raw_element="${(L)P9K_LEFT_PROMPT_ELEMENTS[$i]}"
-        element="${(s.::.)raw_element}"
+        element=(${(s.::.)raw_element})
         if [[ "${element[1]}" == "vi_mode" ]]; then
           [[ "${element[(r)joined]}" == 'joined' ]] && joined=true
           __p9k_async_callback "" "0" "VI_MODE_${current_state}·|·left·|·${i}·|·${joined}·|·${(P)vi_mode}·|·$__P9K_ICONS[VI_MODE_${current_state}]" "0" "0"
@@ -101,7 +102,7 @@ function rebuild_vi_mode {
       done
       for (( i = 0; i <= ${#P9K_RIGHT_PROMPT_ELEMENTS}; i++ )); do
         raw_element="${(L)P9K_RIGHT_PROMPT_ELEMENTS[$i]}"
-        element="${(s.::.)raw_element}"
+        element=(${(s.::.)raw_element})
         if [[ "${element[1]}" == "vi_mode" ]]; then
           [[ "${element[(r)joined]}" == 'joined' ]] && joined=true
           __p9k_async_callback "" "0" "VI_MODE_${current_state}·|·right·|·${i}·|·${joined}·|·${(P)vi_mode}·|·$__P9K_ICONS[VI_MODE_${current_state}]" "0" "0"
