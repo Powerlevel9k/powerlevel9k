@@ -291,11 +291,11 @@ function __p9k_build_left_prompt() {
     segment_meta=(${(s.::.)raw_segment})
     local segment="$segment_meta[1]"
     # Check if segment should be joined
-    [[ ${segment_meta[(r)joined]} == "joined" ]] && joined=true || joined=false
+    [[ "${segment_meta[(ie)joined]}" -le "${#segment_meta}" ]] && joined=true || joined=false
 
     # Check if it is a custom command, otherwise interpet it as
     # a prompt.
-    if [[ ${segment_meta[(r)custom]} == "custom" ]]; then
+    if [[ "${segment_meta[(ie)custom]}" -le "${#segment_meta}" ]]; then
       "__p9k_prompt_custom" "left" "$index" ${joined} $segment
     else
       "prompt_${segment}" "left" "$index" $joined
@@ -324,7 +324,7 @@ function __p9k_build_right_prompt() {
     segment_meta=(${(s.::.)raw_segment})
     local segment="$segment_meta[1]"
     # Check if segment should be joined
-    [[ ${segment_meta[(r)joined]} == "joined" ]] && joined=true || joined=false
+    [[ "${segment_meta[(ie)joined]}" -le "${#segment_meta}" ]] && joined=true || joined=false
 
     # Check if it is a custom command, otherwise interpet it as a prompt.
     if [[ ${segment_meta[(r)custom]} == "custom" ]]; then
