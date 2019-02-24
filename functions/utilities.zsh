@@ -221,6 +221,25 @@ function p9k::set_default() {
 
 ###############################################################
 # @description
+#   Tests if a segment is tagged as given tag.
+##
+# @args
+#   $1 string The tag to test
+#   $2 array The segments tags
+##
+# @returns
+#   0 if the segment contains the tag
+##
+function p9k::segment_is_tagged_as() {
+  local tag="${1}"
+  # All following parameters
+  local segment_meta=($@[2,-1])
+
+  [[ "${segment_meta[(i)${tag}]}" -le "${#segment_meta}" ]]
+}
+
+###############################################################
+# @description
 #   Converts large memory values into a human-readable unit (e.g., bytes --> GB)
 ##
 # @args

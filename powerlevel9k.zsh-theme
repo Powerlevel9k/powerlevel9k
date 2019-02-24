@@ -222,7 +222,7 @@ function __p9k_load_segments() {
     segment=${segment_meta[1]}
 
     # Custom segments must be loaded by user
-    if [[ ${segment_meta[(r)custom]} == "custom" ]]; then
+    if p9k::segment_is_tagged_as "custom" "${segment_meta}"; then
       continue
     fi
     # check if the file exists as a core segment

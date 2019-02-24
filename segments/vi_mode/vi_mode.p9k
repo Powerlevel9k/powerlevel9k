@@ -95,7 +95,7 @@ function rebuild_vi_mode {
         raw_element="${(L)P9K_LEFT_PROMPT_ELEMENTS[$i]}"
         element=(${(s.::.)raw_element})
         if [[ "${element[1]}" == "vi_mode" ]]; then
-          [[ "${element[(ie)joined]}" -le "${#element}" ]] && joined=true
+          p9k::segment_is_tagged_as "joined" "${element}" && joined=true
           __p9k_async_callback "" "0" "VI_MODE_${current_state}·|·left·|·${i}·|·${joined}·|·${(P)vi_mode}·|·$__P9K_ICONS[VI_MODE_${current_state}]" "0" "0"
           break
         fi
@@ -104,7 +104,7 @@ function rebuild_vi_mode {
         raw_element="${(L)P9K_RIGHT_PROMPT_ELEMENTS[$i]}"
         element=(${(s.::.)raw_element})
         if [[ "${element[1]}" == "vi_mode" ]]; then
-          [[ "${element[(ie)joined]}" -le "${#element}" ]] && joined=true
+          p9k::segment_is_tagged_as "joined" "${element}" && joined=true
           __p9k_async_callback "" "0" "VI_MODE_${current_state}·|·right·|·${i}·|·${joined}·|·${(P)vi_mode}·|·$__P9K_ICONS[VI_MODE_${current_state}]" "0" "0"
           break
         fi
