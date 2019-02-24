@@ -233,7 +233,7 @@ function p9k::set_default() {
 function p9k::segment_is_tagged_as() {
   local tag="${1}"
   # All following parameters
-  local segment_meta=($@[2,-1])
+  local segment_meta=(${=@[2,-1]})
 
   [[ "${segment_meta[(i)${tag}]}" -le "${#segment_meta}" ]]
 }
