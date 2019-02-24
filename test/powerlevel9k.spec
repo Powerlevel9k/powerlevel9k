@@ -132,7 +132,7 @@ function testNewlineOnRpromptCanBeDisabled() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
   local P9K_LEFT_PROMPT_ELEMENTS=(world::custom)
   local -a P9K_RIGHT_PROMPT_ELEMENTS
-  local P9K_RIGHT_PROMPT_ELEMENTS=(custom_rworld)
+  local P9K_RIGHT_PROMPT_ELEMENTS=(rworld::custom)
 
   __p9k_prepare_prompts
 
