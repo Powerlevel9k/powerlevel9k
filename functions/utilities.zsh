@@ -193,7 +193,7 @@ __p9k_update_environment_vars
 #   0 if the variable has been defined (even when empty).
 ##
 function p9k::defined() {
-  [[ ! -z "${(tP)1}" ]]
+  [[ ! -z "${(tP)1:-}" ]]
 }
 
 ###############################################################
