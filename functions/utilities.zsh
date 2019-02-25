@@ -235,7 +235,7 @@ function p9k::segment_is_tagged_as() {
   # All following parameters
   local segment_meta=(${=@[2,-1]})
 
-  [[ "${segment_meta[(i)${tag}]}" -le "${#segment_meta}" ]]
+  [[ "${segment_meta[(re)${tag}]:-}" == "${tag}" ]]
 }
 
 ###############################################################
