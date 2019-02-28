@@ -173,14 +173,7 @@ __p9k_print_deprecation_var_warning deprecated_variables
 # Choose the generator
 ################################################################
 
-case "${(L)P9K_GENERATOR}" in
-  "zsh-async")
-    source "${__P9K_DIRECTORY}/generator/zsh-async.p9k"
-  ;;
-  *)
-    source "${__P9K_DIRECTORY}/generator/default.p9k"
-  ;;
-esac
+source "${__P9K_DIRECTORY}/generator/default.p9k"
 
 ################################################################
 # Set default prompt segments

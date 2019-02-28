@@ -43,7 +43,6 @@
 #   $3 boolean Whether the segment should be joined
 ##
 prompt_dir() {
-  [[ $P9K_GENERATOR == "zsh-async" && -n $4 ]] && cd $4
   local -a paths
   # using ${PWD} instead of "$(print -P '%~')" to allow use of P9K_DIR_PATH_ABSOLUTE
   local current_path=${PWD} # WAS: local current_path="$(print -P '%~')"
