@@ -207,6 +207,7 @@ p9k::set_default P9K_CUSTOM_SEGMENT_LOCATION "$HOME/.config/powerlevel9k/segment
 # load only the segments that are being used!
 function __p9k_load_segments() {
   local segment raw_segment
+  local load_async=false
   for raw_segment in ${P9K_LEFT_PROMPT_ELEMENTS} ${P9K_RIGHT_PROMPT_ELEMENTS}; do
     local -a segment_meta
     # Split by double-colon
@@ -237,7 +238,20 @@ function __p9k_load_segments() {
         P9K_PROMPT_ELEMENTS=("${(@)P9K_PROMPT_ELEMENTS:#${segment}}")
       fi
     fi
+
+    p9k::segment_is_tagged_as "async" "${segment_meta}" && load_async=true
   done
+
+  # Load Async libs at last, because before initializing
+  # ZSH-Async, all functions must be defined.
+  if ${load_async}; then
+      zsh_async_initialized=true
+      # TODO: ZSH-ASYNC Path configurable!
+      source ${__P9K_DIRECTORY}/zsh-async/async.zsh
+      async_init
+      async_start_worker "__p9k_async_worker" -n
+      async_register_callback "__p9k_async_worker" "__p9k_async_callback"
+    fi
 }
 __p9k_load_segments
 
