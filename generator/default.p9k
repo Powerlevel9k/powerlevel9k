@@ -34,6 +34,9 @@
 # right-left but reads the opposite, this isn't necessary for the other side.
 CURRENT_BG='NONE'
 
+# Global segment cache
+typeset -gAh __p9k_segment_cache
+
 p9k::set_default last_left_element_index 1
 p9k::set_default P9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS " "
 p9k::set_default P9K_MIDDLE_WHITESPACE_OF_LEFT_SEGMENTS " "
@@ -196,8 +199,8 @@ function __p9k_right_prompt_segment() {
 
 ################################################################
 # @description
-#   This function wraps `__p9k_left_prompt_segment` and `__p9k_right_prompt_segment`
-#   (for compatibility with the async generator).
+#   This function returns all information about the segment in
+#   serialized form.
 ##
 # @args
 #   $1 string Name of the function that was originally invoked (mandatory)
@@ -227,13 +230,8 @@ function p9k::prepare_segment() {
       [[ -z "${SEGMENT_ICON}" ]] && SEGMENT_ICON=$(echo ${8})
     fi
 
-    # Background overide
-    [[ -n "${9}" ]] && __P9K_DATA[${STATEFUL_NAME}_BG]="${9}"
-
-    # Foreground overide
-    [[ -n "${10}" ]] && __P9K_DATA[${STATEFUL_NAME}_FG]="${10}"
-
-    "__p9k_${3}_prompt_segment" "${STATEFUL_NAME}" "${4}" "${5}" "${6}" "${SEGMENT_ICON}"
+    # Return the data to the main process, delimited with "·|·"
+    echo "${STATEFUL_NAME}·|·${3}·|·${4}·|·${5}·|·${6}·|·${SEGMENT_ICON}"
   fi
 }
 
@@ -253,7 +251,7 @@ CURRENT_BG='NONE'
 #   the output in a segment.
 ##
 # @args
-#   $1 string Left|Right
+#   $1 string left|right
 #   $2 integer Segment index
 #   $3 boolean Whether the segment should be joined
 #   $4 string Custom segment name
@@ -265,8 +263,8 @@ function __p9k_prompt_custom() {
 
   p9k::register_segment "${STATEFUL_NAME}" "" "white" "black"
 
-  if [[ -n ${segment_content} ]]; then
-    p9k::prepare_segment "${STATEFUL_NAME}" "" "$1" $2 $3 "$segment_content"
+  if [[ -n "${segment_content}" ]]; then
+    p9k::prepare_segment "${STATEFUL_NAME}" "" "${1}" "${2}" "${3}" "${segment_content}"
   fi
 }
 
@@ -281,68 +279,164 @@ function __p9k_prompt_custom() {
 ##
 # @noargs
 ##
-function __p9k_build_left_prompt() {
-  [[ ${P9K_LEFT_PROMPT_ELEMENTS[1]} == "" ]] && return
+function __p9k_build_segment_cache() {
+  local alignment="${1}"
+  local segments_var="P9K_${(U)alignment}_PROMPT_ELEMENTS"
+  local -a segments=(${(P)segments_var})
+  [[ ${#segments} == 0 ]] && return
+
   local index=1
   local raw_segment joined
-  for raw_segment in "${P9K_LEFT_PROMPT_ELEMENTS[@]}"; do
+  for raw_segment in "${(@)segments}"; do
     local -a segment_meta
     # Split by double-colon
     segment_meta=(${(s.::.)raw_segment})
     local segment="$segment_meta[1]"
     # Check if segment should be joined
     p9k::segment_is_tagged_as "joined" "${segment_meta}" && joined=true || joined=false
+
+    local async=false
+    p9k::segment_is_tagged_as "async" "${segment_meta}" && async=true
 
     # Check if it is a custom command, otherwise interpet it as
     # a prompt.
-    if p9k::segment_is_tagged_as "custom" "${segment_meta}"; then
-      "__p9k_prompt_custom" "left" "$index" ${joined} $segment
+    local custom=false
+    p9k::segment_is_tagged_as "custom" "${segment_meta}" && custom=true
+
+    if ${custom} && ${async}; then
+      async_job "__p9k_async_worker" "__p9k_prompt_custom" "${alignment}" "${index}" "${joined}" "${segment}"
+
+      # Placeholder
+      __p9k_segment_cache["${alignment}::${index}"]="${segment}·|·${alignment}·|·${index}·|·${joined}·|·…·|·"
+      # __p9k_render
+    elif ${custom}; then
+      __p9k_segment_cache["${alignment}::${index}"]=$("__p9k_prompt_custom" "${alignment}" "${index}" "${joined}" "${segment}")
+      # __p9k_render
+    elif ${async}; then
+      async_job "__p9k_async_worker" "prompt_${segment}" "${alignment}" "${index}" "${joined}"
+
+      # Placeholder
+      __p9k_segment_cache["${alignment}::${index}"]="${segment}·|·${alignment}·|·${index}·|·${joined}·|·…·|·"
+      # __p9k_render
     else
-      "prompt_${segment}" "left" "$index" $joined
+      # TODO: Skip computation if cache is fresh for some segments?
+      __p9k_segment_cache["${alignment}::${index}"]=$("prompt_${segment}" "${alignment}" "$index" "${joined}")
+      # __p9k_render
     fi
 
     index=$((index + 1))
   done
-
-  __p9k_left_prompt_end
+  __p9k_render
 }
 
-###############################################################
-# @description
-#   This function loops through the right prompt elements and calls
-#   the related segment functions.
-##
-# @noargs
-##
-function __p9k_build_right_prompt() {
-  [[ ${P9K_RIGHT_PROMPT_ELEMENTS[1]:-} == "" ]] && return
-  local index=1
-  local raw_segment joined
-  for raw_segment in "${P9K_RIGHT_PROMPT_ELEMENTS[@]}"; do
-    local -a segment_meta
-    # Split by double-colon
-    segment_meta=(${(s.::.)raw_segment})
-    local segment="$segment_meta[1]"
-    # Check if segment should be joined
-    p9k::segment_is_tagged_as "joined" "${segment_meta}" && joined=true || joined=false
+# Exchange result of prompt_<segment> function in the cache and
+# trigger re-rendering of prompt.
+function __p9k_async_callback() {
+  local JOB="${1}" CODE="${2}" RAW_SEGMENT_DATA="${3}" EXEC_TIME="${4}" ERR="${5}"
 
-    # Check if it is a custom command, otherwise interpet it as a prompt.
-    if p9k::segment_is_tagged_as "custom" "${segment_meta}"; then
-      "__p9k_prompt_custom" "right" "$index" ${joined} $segment
-    else
-      "prompt_${segment}" "right" "$index" $joined
-    fi
+  # Exit early, if ${RAW_SEGMENT_DATA} is empty
+  if [[ -z "${RAW_SEGMENT_DATA}" ]]; then
+    return
+  fi
 
-    index=$((index + 1))
+  # split ${RAW_SEGMENT_DATA} into an array - see https://unix.stackexchange.com/a/28873
+  local segment_meta=("${(@s:·|·:)RAW_SEGMENT_DATA}") # split on delimiter "·|·" (@s:<delim>:)
+  local cache_key="${segment_meta[2]}::${segment_meta[3]}"
+  __p9k_segment_cache[${cache_key}]="${RAW_SEGMENT_DATA}"
+
+  # Trigger re-rendering
+  __p9k_render "true"
+}
+
+# P9K Render function.
+# Goes through cache and renders each entry.
+# Parameters:
+#   $1 - boolean True if rendered through ZLE widget (in async mode)
+function __p9k_render() {
+  # Resets
+  local LAST_LEFT_BACKGROUND='NONE'
+  local LAST_RIGHT_BACKGROUND='NONE'
+  PROMPT=''
+  RPROMPT=''
+  # __p9k_unsafe must be a global variable, because we set
+  # PROMPT='$__p9k_unsafe[left]', so without letting ZSH
+  # expand this value (single quotes). This is a workaround
+  # to avoid double expansion of the contents of the PROMPT.
+  typeset -gAh __p9k_unsafe=()
+
+  # Process Cache
+  for data in "${(@v)__p9k_segment_cache}"; do
+    [[ -z "${data}" ]] && continue
+
+    local segment_meta=("${(@s:·|·:)data}")
+    local alignment="${segment_meta[2]}"
+    __p9k_unsafe[${alignment}]="$__p9k_unsafe[${alignment}]"$("__p9k_${alignment}_prompt_segment" "${segment_meta[1]}" "${segment_meta[3]}" "${segment_meta[4]}" "${segment_meta[5]}" "${segment_meta[6]}")
   done
 
+  # Render End of left prompt
+  __p9k_unsafe[left]="${__p9k_unsafe[left]}$(__p9k_left_prompt_end)"
+
+  # Render End of right prompt
   # last whitespace with last segments right symbol, if any
   local last_symbol
   if p9k::defined "P9K_RIGHT_PROMPT_LAST_SEGMENT_END_SYMBOL"; then
     last_symbol="%K{none}%F${CURRENT_RIGHT_BG#%K}${P9K_RIGHT_PROMPT_LAST_SEGMENT_END_SYMBOL}"
   fi
+  __p9k_unsafe[right]="${__p9k_unsafe[right]}${__P9K_DATA[LAST_WHITESPACE]}${last_symbol}"
 
-  echo -n "${__P9K_DATA[LAST_WHITESPACE]}${last_symbol}"
+  # Render actual PROMPTS
+  local LC_ALL="" LC_CTYPE="en_US.UTF-8" # Set the right locale to protect special characters
+
+  if [[ "${P9K_PROMPT_ON_NEWLINE:-}" == true ]]; then
+    __p9k_unsafe[left]="${__P9K_ICONS[MULTILINE_FIRST_PROMPT_PREFIX]}%f%b%k${__p9k_unsafe[left]}
+${__P9K_ICONS[MULTILINE_LAST_PROMPT_PREFIX]}"
+    if [[ "$P9K_RPROMPT_ON_NEWLINE" != true ]]; then
+      # The right prompt should be on the same line as the first line of the left
+      # prompt. To do so, there is just a quite ugly workaround: Before zsh draws
+      # the RPROMPT, we advise it, to go one line up. At the end of RPROMPT, we
+      # advise it to go one line down. See:
+      # http://superuser.com/questions/357107/zsh-right-justify-in-ps1
+      RPROMPT_PREFIX='%{'$'\e[1A''%}' # one line up
+      RPROMPT_SUFFIX='%{'$'\e[1B''%}' # one line down
+    else
+      RPROMPT_PREFIX=''
+      RPROMPT_SUFFIX=''
+    fi
+  else
+    __p9k_unsafe[left]="%f%b%k${__p9k_unsafe[left]}"
+    RPROMPT_PREFIX=''
+    RPROMPT_SUFFIX=''
+  fi
+
+  if [[ "${P9K_DISABLE_RPROMPT:-}" != true ]]; then
+    __p9k_unsafe[right]="${RPROMPT_PREFIX}%f%b%k${__p9k_unsafe[right]}%{${reset_color}%}${RPROMPT_SUFFIX}"
+    RPROMPT='${__p9k_unsafe[right]}'
+  fi
+
+  # Allow iTerm integration to work
+  [[ "${ITERM_SHELL_INTEGRATION_INSTALLED:-}" == "Yes" ]] \
+    && __p9k_unsafe[left]="%{$(iterm2_prompt_mark)%}${__p9k_unsafe[left]}"
+
+local NEWLINE='
+'
+
+  if [[ "${P9K_PROMPT_ADD_NEWLINE:-}" == true ]]; then
+    NEWLINES=""
+    repeat ${P9K_PROMPT_ADD_NEWLINE_COUNT:-1} { NEWLINES+=${NEWLINE} }
+    __p9k_unsafe[left]="$NEWLINES${__p9k_unsafe[left]}"
+  fi
+
+  # By evaluating $__p9k_unsafe[left] here in __p9k_render we avoid
+  # the evaluation of $PROMPT being interrupted.
+  # For security $PROMPT is never set directly. This way the prompt render is
+  # forced to evaluate the variable and the contents of $__p9k_unsafe[left]
+  # are never executed. The same applies to $RPROMPT.
+  PROMPT='${__p9k_unsafe[left]}'
+
+  # About .reset-promt see:
+  # https://github.com/sorin-ionescu/prezto/issues/1026
+  # https://github.com/zsh-users/zsh-autosuggestions/issues/107#issuecomment-183824034
+  [[ "${1}" == "true" ]] && zle .reset-prompt
 }
 
 ###############################################################
@@ -386,53 +480,11 @@ function __p9k_prepare_prompts() {
   # Reset start time
   _P9K_TIMER_START=0x7FFFFFFF
 
-  local LC_ALL="" LC_CTYPE="en_US.UTF-8" # Set the right locale to protect special characters
+  # stop any running async jobs
+  async_flush_jobs "__p9k_async_worker"
 
-  if [[ "${P9K_PROMPT_ON_NEWLINE:-}" == true ]]; then
-    __p9k_unsafe_PROMPT="${__P9K_ICONS[MULTILINE_FIRST_PROMPT_PREFIX]}%f%b%k$(__p9k_build_left_prompt)
-${__P9K_ICONS[MULTILINE_LAST_PROMPT_PREFIX]}"
-    if [[ "$P9K_RPROMPT_ON_NEWLINE" != true ]]; then
-      # The right prompt should be on the same line as the first line of the left
-      # prompt. To do so, there is just a quite ugly workaround: Before zsh draws
-      # the RPROMPT, we advise it, to go one line up. At the end of RPROMPT, we
-      # advise it to go one line down. See:
-      # http://superuser.com/questions/357107/zsh-right-justify-in-ps1
-      RPROMPT_PREFIX='%{'$'\e[1A''%}' # one line up
-      RPROMPT_SUFFIX='%{'$'\e[1B''%}' # one line down
-    else
-      RPROMPT_PREFIX=''
-      RPROMPT_SUFFIX=''
-    fi
-  else
-    __p9k_unsafe_PROMPT="%f%b%k$(__p9k_build_left_prompt)"
-    RPROMPT_PREFIX=''
-    RPROMPT_SUFFIX=''
-  fi
-
-  if [[ "${P9K_DISABLE_RPROMPT:-}" != true ]]; then
-    __p9k_unsafe_RPROMPT="${RPROMPT_PREFIX}%f%b%k$(__p9k_build_right_prompt)%{${reset_color}%}${RPROMPT_SUFFIX}"
-    RPROMPT='$__p9k_unsafe_RPROMPT'
-  fi
-
-  # Allow iTerm integration to work
-  [[ "${ITERM_SHELL_INTEGRATION_INSTALLED:-}" == "Yes" ]] \
-    && __p9k_unsafe_PROMPT="%{$(iterm2_prompt_mark)%}$__p9k_unsafe_PROMPT"
-
-local NEWLINE='
-'
-
-  if [[ "${P9K_PROMPT_ADD_NEWLINE:-}" == true ]]; then
-    NEWLINES=""
-    repeat ${P9K_PROMPT_ADD_NEWLINE_COUNT:-1} { NEWLINES+=${NEWLINE} }
-    __p9k_unsafe_PROMPT="$NEWLINES$__p9k_unsafe_PROMPT"
-  fi
-
-  # By evaluating $__p9k_unsafe_PROMPT here in __p9k_prepare_prompts we avoid
-  # the evaluation of $PROMPT being interrupted.
-  # For security $PROMPT is never set directly. This way the prompt render is
-  # forced to evaluate the variable and the contents of $__p9k_unsafe_PROMPT
-  # are never executed. The same applies to $RPROMPT.
-  PROMPT='$__p9k_unsafe_PROMPT'
+  __p9k_build_segment_cache "left"
+  __p9k_build_segment_cache "right"
 }
 
 p9k::set_default P9K_IGNORE_TERM_COLORS false
