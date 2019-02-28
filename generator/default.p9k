@@ -482,6 +482,8 @@ function __p9k_prepare_prompts() {
 
   # stop any running async jobs
   async_flush_jobs "__p9k_async_worker"
+  # Update the current working directory of the async worker.
+  async_worker_eval "__p9k_async_worker" builtin cd -q $PWD
 
   __p9k_build_segment_cache "left"
   __p9k_build_segment_cache "right"
