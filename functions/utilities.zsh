@@ -48,11 +48,12 @@ function __p9k_detect_os() {
       __P9K_OS_ID="$(uname -r)"
       [[ "$(which stat)" != "/usr/bin/stat" ]] && __P9K_OSX_COREUTILS=true || __P9K_OSX_COREUTILS=false
     ;;
-    CYGWIN_NT-* | MSYS_NT-*) __P9K_OS='Windows' ;;
+    CYGWIN_NT-* | MINGW32_NT-* | MINGW64_NT*) __P9K_OS='Windows' ;;
     FreeBSD | OpenBSD | DragonFly) __P9K_OS='BSD' ;;
     Linux)
       __P9K_OS='Linux'
-      [[ ${(f)"$((</etc/os-release) 2>/dev/null)"} =~ "ID=([A-Za-z]+)" ]] && __P9K_OS_ID="${match[1]}"
+      local os_release=$((</etc/os-release) 2>/dev/null)
+      [[ ${(f)os_release} =~ "ID=([A-Za-z]+)" ]] && __P9K_OS_ID="${match[1]}"
       case $(uname -o 2>/dev/null) in
         Android) __P9K_OS='Android' ;;
       esac
@@ -192,7 +193,7 @@ __p9k_update_environment_vars
 #   0 if the variable has been defined (even when empty).
 ##
 function p9k::defined() {
-  [[ ! -z "${(tP)1}" ]]
+  [[ ! -z "${(tP)1:-}" ]]
 }
 
 ###############################################################
@@ -341,5 +342,55 @@ function __p9k_print_deprecation_var_warning() {
         print -P "%F{yellow}Warning!%f The '%F{cyan}$key%f' variable is deprecated. This could not be updated to '%F{red}${raw_deprecated_variables[$key]}%f' for you. For more information, have a look at the CHANGELOG.md."
       fi
     fi
+  done
+}
+
+###############################################################
+# @description
+#   Takes a list of variable names and returns the value of the 
+#   the first defined one, even if it's an empty string. Useful
+#   for cases when users can define variables that should take 
+#   priority even if they are empty.
+# @args
+#   $1 optional flag '-n' as first argument will make function to 
+#   return variable name instead of it's value.
+#   $* List of variable names.
+# @returns
+#   First defined variable value, or it's name if '-n' is passed.
+##
+function p9k::find_first_defined() {
+  local returnName
+  while [ $# -ne 0 ]; do
+    if [[ "$1" == "-n" ]]; then
+      returnName=true
+    elif [[ ! -z "${(P)1+x}" ]]; then
+      [[ -n $returnName ]] && echo "$1" || echo "${(P)1}"
+      break
+    fi
+    shift
+  done
+}
+
+###############################################################
+# @description
+#   Takes a list of variable names and returns the value of the 
+#   the first non empty one. 
+# @args
+#   $1 optional flag '-n' as first argument will make function to 
+#   return variable name instead of it's value.
+#   $* List of variable names.
+# @returns
+#   First non empty variable value, or it's name if '-n' is passed.
+##
+function p9k::find_first_non_empty() {
+  local returnName
+  while [ $# -ne 0 ]; do
+    if [[ "$1" == "-n" ]]; then
+      returnName=true
+    elif [[ -n "${(P)1}" ]]; then
+      [[ -n $returnName ]] && echo "$1" || echo "${(P)1}"
+      break
+    fi
+    shift
   done
 }

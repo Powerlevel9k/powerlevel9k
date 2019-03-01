@@ -7,13 +7,21 @@ SHUNIT_PARENT=$0
 
 function setUp() {
   export TERM="xterm-256color"
+  local -a P9K_RIGHT_PROMPT_ELEMENTS
+  P9K_RIGHT_PROMPT_ELEMENTS=()
   # Load Powerlevel9k
   source powerlevel9k.zsh-theme
   source functions/*
-  source segments/dir.p9k
+  source segments/dir/dir.p9k
 
   # Unset mode, so that user settings
   # do not interfere with tests
+}
+
+function testUsingUnsetVariables() {
+  setopt local_options
+  set -u
+  __p9k_prepare_prompts
 }
 
 function testJoinedSegments() {
@@ -29,6 +37,7 @@ function testJoinedSegments() {
 function testTransitiveJoinedSegments() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
   local P9K_LEFT_PROMPT_ELEMENTS=(dir root_indicator_joined dir_joined)
+  source segments/root_indicator/root_indicator.p9k
   cd /tmp
 
   assertEquals "%K{004} %F{000}/tmp %F{000}/tmp %k%F{004}%f " "$(__p9k_build_left_prompt)"
@@ -39,7 +48,7 @@ function testTransitiveJoinedSegments() {
 function testJoiningWithConditionalSegment() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
   local P9K_LEFT_PROMPT_ELEMENTS=(dir background_jobs dir_joined)
-  source segments/background_jobs.p9k
+  source segments/background_jobs/background_jobs.p9k
   local jobs_running=0
   local jobs_suspended=0
 
@@ -54,7 +63,7 @@ function testDynamicColoringOfSegmentsWork() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
   local P9K_LEFT_PROMPT_ELEMENTS=(dir)
   local P9K_DIR_DEFAULT_BACKGROUND='red'
-  source segments/dir.p9k
+  source segments/dir/dir.p9k
 
   cd /tmp
 
@@ -68,11 +77,11 @@ function testDynamicColoringOfVisualIdentifiersWork() {
   local P9K_LEFT_PROMPT_ELEMENTS=(dir)
   local P9K_DIR_DEFAULT_ICON_COLOR='green'
   local P9K_DIR_DEFAULT_ICON="icon-here"
-  source segments/dir.p9k
+  source segments/dir/dir.p9k
 
   cd /tmp
 
-  assertEquals "%K{004} %F{002}icon-here %f%F{000}/tmp %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{004} %F{002}icon-here%f %F{000}/tmp %k%F{004}%f " "$(__p9k_build_left_prompt)"
 
   cd -
 }
@@ -84,7 +93,7 @@ function testColoringOfVisualIdentifiersDoesNotOverwriteColoringOfSegment() {
   local P9K_DIR_DEFAULT_FOREGROUND='red'
   local P9K_DIR_DEFAULT_BACKGROUND='yellow'
   local P9K_DIR_DEFAULT_ICON="icon-here"
-  source segments/dir.p9k
+  source segments/dir/dir.p9k
 
   # Re-Source the icons, as the P9K_MODE is directly
   # evaluated there.
@@ -92,7 +101,7 @@ function testColoringOfVisualIdentifiersDoesNotOverwriteColoringOfSegment() {
 
   cd /tmp
 
-  assertEquals "%K{003} %F{002}icon-here %f%F{001}/tmp %k%F{003}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{003} %F{002}icon-here%f %F{001}/tmp %k%F{003}%f " "$(__p9k_build_left_prompt)"
 
   cd -
 }
@@ -101,7 +110,7 @@ function testOverwritingIconsWork() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
   local P9K_LEFT_PROMPT_ELEMENTS=(dir)
   local P9K_DIR_DEFAULT_ICON='icon-here'
-  source segments/dir.p9k
+  source segments/dir/dir.p9k
   #local testFolder=$(mktemp -d -p p9k)
   # Move testFolder under home folder
   #mv testFolder ~
@@ -109,7 +118,7 @@ function testOverwritingIconsWork() {
   #cd ~/$testFolder
 
   cd /tmp
-  assertEquals "%K{004} %F{000}icon-here %f%F{000}/tmp %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{004} %F{000}icon-here%f %F{000}/tmp %k%F{004}%f " "$(__p9k_build_left_prompt)"
 
   cd -
   # rm -fr ~/$testFolder
@@ -126,8 +135,23 @@ function testNewlineOnRpromptCanBeDisabled() {
   local P9K_RIGHT_PROMPT_ELEMENTS=(custom_rworld)
 
   __p9k_prepare_prompts
-  #             ╭─[39m[0m[49m[107m [30mworld [49m[97m[39m  ╰─ [1A[39m[0m[49m[97m[107m[30m rworld [30m [00m[1B
-  assertEquals '╭─[39m[0m[49m[107m [30mworld [49m[97m[39m  ╰─ [1A[39m[0m[49m[97m[107m[30m rworld [30m [00m[1B' "$(print -P ${PROMPT}${RPROMPT})"
+
+  local nl=$'\n'
+  #               ╭─[39m[0m[49m[107m [30mworld [49m[97m[39m  ╰─ [1A[39m[0m[49m[97m[107m[30m rworld [00m[1B
+  local expected="╭─[39m[0m[49m[107m [30mworld [49m[97m[39m ${nl}╰─ [1A[39m[0m[49m[97m[107m[30m rworld [00m[1B"
+  local _real="$(print -P ${PROMPT}${RPROMPT})"
+
+  # use this to debug output with special escape sequences
+  # new lines for escape codes that move output one line above
+  # set -vx;
+  # echo "\n__1__\n"
+  # echo "\n__${expected}__\n"
+  # echo "\n__2__\n"
+  # echo "\n__${_real}__\n"
+  # echo "\n__3__\n"
+  # set +vx;
+
+  assertEquals "$expected" "$_real"
 
 }
 

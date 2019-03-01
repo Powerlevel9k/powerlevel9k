@@ -2,7 +2,7 @@ Thank you so much for opening a PR for P9k! Many of our best features and segmen
 
 To help you make the best PR, here are some guidelines:
 
-  - The `master` branch is our *stable* branch, and the `next` branch is our development branch. If you are submitting a bug fix, please file your PR against `master`. If it is a new feature, enhancement, segment, or something similar, please submit it against `next`. For more information, please see our [Developer's Guide](https://github.com/bhilburn/powerlevel9k/wiki/Developer's-Guide).
+  - The `master` branch is our *stable* branch, and the `next` branch is our development branch. If you are submitting a bug fix, please file your PR against `master`. If it is a new feature, enhancement, segment, or something similar, please submit it against `next`. For more information, please see our [Developer's Guide](https://github.com/bhilburn/powerlevel9k/blob/next/DEVELOPERS_GUIDE.md).
   - We maintain unit tests for segments and features in the `test` directory. Please add unit tests for anything new you have developed! If you aren't sure how to do this, go ahead and file your PR and ask for help!
   - For running manual tests in different environments, we have Vagrant and Docker configurations. Please see the [Test README](https://github.com/bhilburn/powerlevel9k/blob/next/TESTS.md) and make sure your new feature is working as expected!
   - If your PR requires user configuration, please make sure that it includes an update to the README describing this.

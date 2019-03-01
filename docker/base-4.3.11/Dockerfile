@@ -4,7 +4,7 @@ RUN \
   yum install -y \
   curl \
   git \
-  zsh \
+  zsh-4.3.11 \
   mercurial \
   subversion \
   golang \
