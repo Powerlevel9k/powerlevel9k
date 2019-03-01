@@ -59,6 +59,20 @@ function testJoiningWithConditionalSegment() {
   cd -
 }
 
+function testTaggingSegments() {
+  local -a configured_segments=(s1 s2::a s3::b s4::a::b s5::b::a s6)
+  local -a tagged_segments=(s2 s4 s5)
+
+  for segment in ${configured_segments}; do
+    local -a segment_meta=("${(s.::.)segment}")
+    local segment_name="${segment_meta[1]}"
+    if p9k::segment_is_tagged_as "a" "${segment_meta}"; then
+      [[ -z "${tagged_segments[(r)${segment_name}]}" ]] && \
+          fail "Segment ${segment_name} should be recognised to be tagged."
+    fi
+  done
+}
+
 function testDynamicColoringOfSegmentsWork() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
   local P9K_LEFT_PROMPT_ELEMENTS=(dir)
