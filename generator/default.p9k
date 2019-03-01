@@ -211,8 +211,6 @@ function __p9k_right_prompt_segment() {
 #   $6 string Content of the segment
 #   $7 string The condition - if the segment should be shown (gets evaluated)
 #   $8 string Visual identifier overide - *must* be a named icon string
-#   $9 string Background overide
-#   $10 string Foreground overide
 ##
 function p9k::prepare_segment() {
   local STATEFUL_NAME="${${(U)1}#PROMPT_}"
@@ -227,7 +225,7 @@ function p9k::prepare_segment() {
       # check if it is a named icon
       SEGMENT_ICON=${__P9K_ICONS[${8}]}
       # otherwise use it literally
-      [[ -z "${SEGMENT_ICON}" ]] && SEGMENT_ICON=$(echo ${8})
+      [[ -z "${SEGMENT_ICON}" ]] && SEGMENT_ICON="${8}"
     fi
 
     # Return the data to the main process, delimited with "·|·"
