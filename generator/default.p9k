@@ -301,24 +301,26 @@ function __p9k_build_segment_cache() {
     local custom=false
     p9k::segment_is_tagged_as "custom" "${segment_meta}" && custom=true
 
+    local cache_key="${alignment}::${index}"
+
     if ${custom} && ${async}; then
       async_job "__p9k_async_worker" "__p9k_prompt_custom" "${alignment}" "${index}" "${joined}" "${segment}"
 
       # Placeholder
-      __p9k_segment_cache["${alignment}::${index}"]="${segment}·|·${alignment}·|·${index}·|·${joined}·|·…·|·"
+      __p9k_segment_cache["${cache_key}"]="${segment}·|·${alignment}·|·${index}·|·${joined}·|·…·|··|·true"
       # __p9k_render
     elif ${custom}; then
-      __p9k_segment_cache["${alignment}::${index}"]=$("__p9k_prompt_custom" "${alignment}" "${index}" "${joined}" "${segment}")
+      __p9k_segment_cache["${cache_key}"]=$("__p9k_prompt_custom" "${alignment}" "${index}" "${joined}" "${segment}")
       # __p9k_render
     elif ${async}; then
       async_job "__p9k_async_worker" "prompt_${segment}" "${alignment}" "${index}" "${joined}"
 
       # Placeholder
-      __p9k_segment_cache["${alignment}::${index}"]="${segment}·|·${alignment}·|·${index}·|·${joined}·|·…·|·"
+      __p9k_segment_cache["${cache_key}"]="${segment}·|·${alignment}·|·${index}·|·${joined}·|·…·|··|·true"
       # __p9k_render
     else
       # TODO: Skip computation if cache is fresh for some segments?
-      __p9k_segment_cache["${alignment}::${index}"]=$("prompt_${segment}" "${alignment}" "$index" "${joined}")
+      __p9k_segment_cache["${cache_key}"]=$("prompt_${segment}" "${alignment}" "$index" "${joined}")
       # __p9k_render
     fi
 
@@ -340,7 +342,7 @@ function __p9k_async_callback() {
   # split ${RAW_SEGMENT_DATA} into an array - see https://unix.stackexchange.com/a/28873
   local segment_meta=("${(@s:·|·:)RAW_SEGMENT_DATA}") # split on delimiter "·|·" (@s:<delim>:)
   local cache_key="${segment_meta[2]}::${segment_meta[3]}"
-  __p9k_segment_cache[${cache_key}]="${RAW_SEGMENT_DATA}"
+  __p9k_segment_cache["${cache_key}"]="${RAW_SEGMENT_DATA}"
 
   # Trigger re-rendering
   __p9k_render "true"
