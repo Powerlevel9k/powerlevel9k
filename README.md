@@ -95,6 +95,9 @@ name. `dir` becomes `dir::tag1::tag2`. The order of tags does not matter.
 | `joined` | This causes the current segment to be joined with the previous one. So no segment separator will be printed between the two segments. |
 | `custom` | Use this tag, if you want to add the output of an arbitrary command as [Custom Segment](#custom_segments). |
 
+Caveat: All double colons will be interpreted as tags, so if your original segment
+name contains `::`, that would probably not work.
+
 #### Available Prompt Segments
 The segments that are currently available are:
 
