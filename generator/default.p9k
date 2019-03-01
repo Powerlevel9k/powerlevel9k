@@ -365,7 +365,7 @@ function __p9k_render() {
   typeset -gAh __p9k_unsafe=()
 
   # Process Cache
-  for data in "${(@v)__p9k_segment_cache}"; do
+  for data in "${(Oa@v)__p9k_segment_cache}"; do
     [[ -z "${data}" ]] && continue
 
     local segment_meta=("${(@s:·|·:)data}")
