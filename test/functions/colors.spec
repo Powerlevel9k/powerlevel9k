@@ -11,32 +11,40 @@ function setUp() {
 }
 
 function testGetColorCodeWithAnsiForegroundColor() {
-  assertEquals '002' "$(getColorCode 'green')"
+  assertEquals '002' "$(p9k::get_color_code 'green')"
 }
 
 function testGetColorCodeWithAnsiBackgroundColor() {
-  assertEquals '002' "$(getColorCode 'bg-green')"
+  assertEquals '002' "$(p9k::get_color_code 'bg-green')"
 }
 
 function testGetColorCodeWithNumericalColor() {
-  assertEquals '002' "$(getColorCode '002')"
+  assertEquals '002' "$(p9k::get_color_code '002')"
 }
 
 function testIsSameColorComparesAnsiForegroundAndNumericalColorCorrectly() {
-  assertTrue "isSameColor 'green' '002'"
+  assertTrue "p9k::is_same_color 'green' '002'"
 }
 
 function testIsSameColorComparesAnsiBackgroundAndNumericalColorCorrectly() {
-  assertTrue "isSameColor 'bg-green' '002'"
+  assertTrue "p9k::is_same_color 'bg-green' '002'"
 }
 
-function testIsSameColorComparesNumericalBackgroundAndNumericalColorCorrectly() {
-  assertTrue "isSameColor '010' '2'"
-}
+function testIsSameColorComparesShortCodesCorrectly() {
+  assertTrue "p9k::is_same_color '002' '2'"}
 
 function testIsSameColorDoesNotYieldNotEqualColorsTruthy() {
-  assertFalse "isSameColor 'green' '003'"
+  assertFalse "p9k::is_same_color 'green' '003'"
 }
 
+function testBrightColorsWork() {
+  # We had some code in the past that equalized bright colors
+  # with normal ones. This code is now gone, and this test should
+  # ensure that all input channels for bright colors are handled
+  # correctly.
+  assertTrue "p9k::is_same_color 'lightcyan' '014'"
+  assertEquals '014' "$(p9k::get_color_code 'lightcyan')"
+  assertEquals '014' "$(p9k::get_color 'lightcyan')"
+}
 
-source shunit2/source/2.1/src/shunit2
+source shunit2/shunit2
