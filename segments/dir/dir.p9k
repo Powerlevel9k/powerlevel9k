@@ -135,6 +135,7 @@ prompt_dir() {
         local -a markedFolders
         markedFolders=( $(__p9k_upsearch "(${(j:|:)P9K_DIR_PACKAGE_FILES})") )
         local package_path="${markedFolders[1]}"
+        [[ ${(L)P9K_DIR_PATH_ABSOLUTE} != "true" ]] && package_path=${package_path//$HOME/"~"}
 
         # Replace the shortest possible match of the marked folder from
         # the current path. Remove the amount of characters up to the
