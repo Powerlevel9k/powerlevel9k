@@ -36,7 +36,7 @@ function testJoinedSegments() {
 
 function testTransitiveJoinedSegments() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
-  local P9K_LEFT_PROMPT_ELEMENTS=(dir root_indicator::joined dir::joined)
+  P9K_LEFT_PROMPT_ELEMENTS=(dir root_indicator::joined dir::joined)
   source segments/root_indicator/root_indicator.p9k
   cd /tmp
 
@@ -47,7 +47,7 @@ function testTransitiveJoinedSegments() {
 
 function testJoiningWithConditionalSegment() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
-  local P9K_LEFT_PROMPT_ELEMENTS=(dir background_jobs dir::joined)
+  P9K_LEFT_PROMPT_ELEMENTS=(dir background_jobs dir::joined)
   source segments/background_jobs/background_jobs.p9k
   local jobs_running=0
   local jobs_suspended=0
@@ -74,7 +74,7 @@ function testDynamicColoringOfSegmentsWork() {
 
 function testDynamicColoringOfVisualIdentifiersWork() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
-  local P9K_LEFT_PROMPT_ELEMENTS=(dir)
+  P9K_LEFT_PROMPT_ELEMENTS=(dir)
   local P9K_DIR_DEFAULT_ICON_COLOR='green'
   local P9K_DIR_DEFAULT_ICON="icon-here"
   source segments/dir/dir.p9k
@@ -88,7 +88,7 @@ function testDynamicColoringOfVisualIdentifiersWork() {
 
 function testColoringOfVisualIdentifiersDoesNotOverwriteColoringOfSegment() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
-  local P9K_LEFT_PROMPT_ELEMENTS=(dir)
+  P9K_LEFT_PROMPT_ELEMENTS=(dir)
   local P9K_DIR_DEFAULT_ICON_COLOR='green'
   local P9K_DIR_DEFAULT_FOREGROUND='red'
   local P9K_DIR_DEFAULT_BACKGROUND='yellow'
@@ -108,7 +108,7 @@ function testColoringOfVisualIdentifiersDoesNotOverwriteColoringOfSegment() {
 
 function testOverwritingIconsWork() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
-  local P9K_LEFT_PROMPT_ELEMENTS=(dir)
+  P9K_LEFT_PROMPT_ELEMENTS=(dir)
   local P9K_DIR_DEFAULT_ICON='icon-here'
   source segments/dir/dir.p9k
   #local testFolder=$(mktemp -d -p p9k)
@@ -130,9 +130,9 @@ function testNewlineOnRpromptCanBeDisabled() {
   local P9K_CUSTOM_WORLD='echo world'
   local P9K_CUSTOM_RWORLD='echo rworld'
   local -a P9K_LEFT_PROMPT_ELEMENTS
-  local P9K_LEFT_PROMPT_ELEMENTS=(world::custom)
+  P9K_LEFT_PROMPT_ELEMENTS=(world::custom)
   local -a P9K_RIGHT_PROMPT_ELEMENTS
-  local P9K_RIGHT_PROMPT_ELEMENTS=(rworld::custom)
+  P9K_RIGHT_PROMPT_ELEMENTS=(rworld::custom)
 
   __p9k_prepare_prompts
 
