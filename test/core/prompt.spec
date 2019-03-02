@@ -47,7 +47,7 @@ function testSegmentOnRightSide() {
   __p9k_prepare_prompts
 
   local _actual=$(stripEsc "${(e)RPROMPT}")
-  assertEquals "%f%b%k%F{015}%K{015}%F{000} world1 %F{000}%K{015}%F{000} world2 %{<Esc>00m%" "${_actual}"
+  assertEquals "%{%}%f%b%k%F{015}%K{015}%F{000} world1 %F{000}%K{015}%F{000} world2 %{<Esc>00m%}%{%" "${_actual}"
 }
 
 function testDisablingRightPrompt() {

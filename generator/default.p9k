@@ -395,16 +395,16 @@ ${__P9K_ICONS[MULTILINE_LAST_PROMPT_PREFIX]}"
       # the RPROMPT, we advise it, to go one line up. At the end of RPROMPT, we
       # advise it to go one line down. See:
       # http://superuser.com/questions/357107/zsh-right-justify-in-ps1
-      RPROMPT_PREFIX='%{'$'\e[1A'$P9K_RPROMPT_PREFIX'%}' # one line up
-      RPROMPT_SUFFIX='%{'$P9K_RPROMPT_SUFFIX$'\e[1B''%}' # one line down
+      RPROMPT_PREFIX='%{'$'\e[1A'${P9K_RPROMPT_PREFIX:-}'%}' # one line up
+      RPROMPT_SUFFIX='%{'${P9K_RPROMPT_SUFFIX:-}$'\e[1B''%}' # one line down
     else
-      RPROMPT_PREFIX='%{'$P9K_RPROMPT_PREFIX'%}'
-      RPROMPT_SUFFIX='%{'$P9K_RPROMPT_SUFFIX'%}'
+      RPROMPT_PREFIX='%{'${P9K_RPROMPT_PREFIX:-}'%}'
+      RPROMPT_SUFFIX='%{'${P9K_RPROMPT_SUFFIX:-}'%}'
     fi
   else
     __p9k_unsafe_PROMPT="%f%b%k$(__p9k_build_left_prompt)"
-    RPROMPT_PREFIX='%{'$P9K_RPROMPT_PREFIX'%}'
-    RPROMPT_SUFFIX='%{'$P9K_RPROMPT_SUFFIX'%}'
+    RPROMPT_PREFIX='%{'${P9K_RPROMPT_PREFIX:-}'%}'
+    RPROMPT_SUFFIX='%{'${P9K_RPROMPT_SUFFIX:-}'%}'
   fi
 
   if [[ "${P9K_DISABLE_RPROMPT:-}" != true ]]; then
