@@ -54,6 +54,7 @@ p9k::set_default P9K_MIDDLE_WHITESPACE_OF_LEFT_SEGMENTS " "
 #   $5 string Visual identifier (must be a key of the icons array)
 ##
 function __p9k_left_prompt_segment() {
+  local result
   local STATEFUL_NAME="${1}"
   local current_index="${2}"
   # Check if the segment should be joined with the previous one
@@ -74,13 +75,13 @@ function __p9k_left_prompt_segment() {
 
   if [[ ${CURRENT_BG} != 'NONE' ]]; then # not first segment
     if [[ "${bg}" != "${CURRENT_BG}" ]]; then # background colors are different
-      echo -n "${bg}%F${CURRENT_BG#%K}"
-      [[ ${joined} == false ]] && echo -n "$__P9K_ICONS[LEFT_SEGMENT_SEPARATOR]${left_ws}"
+      result+="${bg}%F${CURRENT_BG#%K}"
+      [[ ${joined} == false ]] && result+="$__P9K_ICONS[LEFT_SEGMENT_SEPARATOR]${left_ws}"
     else # background colors are the same
       # Middle segment with same color as previous segment
       # We take the current foreground color as color for our
       # subsegment. This should have enough contrast.
-      [[ ${joined} == false ]] && echo -n "$__P9K_ICONS[LEFT_SUBSEGMENT_SEPARATOR]${left_ws}"
+      [[ ${joined} == false ]] && result+="$__P9K_ICONS[LEFT_SUBSEGMENT_SEPARATOR]${left_ws}"
     fi
   else # First segment
 
@@ -92,7 +93,7 @@ function __p9k_left_prompt_segment() {
       first_symbol="%K{${CURRENT_BG}}%F${bg#%K}$P9K_LEFT_PROMPT_FIRST_SEGMENT_START_SYMBOL"
     fi
 
-    echo -n "${first_symbol}${bg}${first_ws}"
+    result+="${first_symbol}${bg}${first_ws}"
   fi
 
   # Print the visual identifier and content if any
@@ -100,10 +101,12 @@ function __p9k_left_prompt_segment() {
   [[ -n "${SEGMENT_ICON}" ]] && visual_identifier="$__P9K_DATA[${STATEFUL_NAME}_VI]${SEGMENT_ICON}%f"
   [[ -n "${content}" ]] && content="${fg}${content}"
   [[ -n "${visual_identifier}" && -n "${content}" ]] && visual_identifier="${visual_identifier}${middle_ws}"
-  echo -n "${visual_identifier}${content}${right_ws}"
+  result+="${visual_identifier}${content}${right_ws}"
 
   CURRENT_BG=$bg
   last_left_element_index=$current_index
+
+  __p9k_unsafe[left]+="${result}"
 }
 
 ################################################################
@@ -113,13 +116,16 @@ function __p9k_left_prompt_segment() {
 # @noargs
 ##
 function __p9k_left_prompt_end() {
+  local result
   if [[ -n ${CURRENT_BG} ]]; then
-    echo -n "%k%F${CURRENT_BG#%K}${__P9K_ICONS[LEFT_SEGMENT_SEPARATOR]}"
+    result+="%k%F${CURRENT_BG#%K}${__P9K_ICONS[LEFT_SEGMENT_SEPARATOR]}"
   else
-    echo -n "%k"
+    result+="%k"
   fi
-  echo -n "%f${__P9K_ICONS[LEFT_SEGMENT_END_SEPARATOR]}"
+  result+="%f${__P9K_ICONS[LEFT_SEGMENT_END_SEPARATOR]}"
   CURRENT_BG=''
+
+  __p9k_unsafe[left]+="${result}"
 }
 
 p9k::set_default last_right_element_index 1
@@ -141,6 +147,7 @@ p9k::set_default P9K_MIDDLE_WHITESPACE_OF_RIGHT_SEGMENTS " "
 #   No ending for the right prompt segment is needed (unlike the left prompt, above).
 ##
 function __p9k_right_prompt_segment() {
+  local result
   local STATEFUL_NAME="${1}"
   local current_index="${2}"
   # Check if the segment should be joined with the previous one
@@ -161,20 +168,20 @@ function __p9k_right_prompt_segment() {
   local right_ws="$__P9K_DATA[${last_right_element_stateful_name}_RIGHT_RIGHT_WHITESPACE]"
 
   # If CURRENT_RIGHT_BG is "NONE", we are the first right segment.
-  [[ ${CURRENT_RIGHT_BG} == 'NONE' ]] || echo -n "${right_ws}" # print right whitespace of prev segment
+  [[ ${CURRENT_RIGHT_BG} == 'NONE' ]] || result+="${right_ws}" # print right whitespace of prev segment
   if [[ ${joined} == false ]] || [[ ${CURRENT_RIGHT_BG} == 'NONE' ]]; then
     if [[ "${bg}" != "${CURRENT_RIGHT_BG}" ]]; then
       # Use the new BG color for the foreground with separator
-      echo -n "%F${bg#%K}${__P9K_ICONS[RIGHT_SEGMENT_SEPARATOR]}"
+      result+="%F${bg#%K}${__P9K_ICONS[RIGHT_SEGMENT_SEPARATOR]}"
     else
       # Middle segment with same color as previous segment
       # We take the current foreground color as color for our
       # subsegment. This should have enough contrast.
-      echo -n "${fg}${__P9K_ICONS[RIGHT_SUBSEGMENT_SEPARATOR]}"
+      result+="${fg}${__P9K_ICONS[RIGHT_SUBSEGMENT_SEPARATOR]}"
     fi
   fi
 
-  echo -n "${bg}${fg}"
+  result+="${bg}${fg}"
 
   local visual_identifier
   if [[ -n "${SEGMENT_ICON}" ]]; then
@@ -186,15 +193,17 @@ function __p9k_right_prompt_segment() {
   fi
 
   # Print whitespace only if segment is not joined or first right segment
-  [[ ${joined} == false ]] || [[ "${CURRENT_RIGHT_BG}" == "NONE" ]] && echo -n "${left_ws}"
+  [[ ${joined} == false ]] || [[ "${CURRENT_RIGHT_BG}" == "NONE" ]] && result+="${left_ws}"
   # Print segment content and icon, if any
   [[ "${(L)P9K_RPROMPT_ICON_LEFT}" != "true" ]] \
-    && echo -n "${content}${visual_identifier}" \
-    || echo -n "${visual_identifier}${fg}${content}"
+    && result+="${content}${visual_identifier}" \
+    || result+="${visual_identifier}${fg}${content}"
 
   CURRENT_RIGHT_BG=${bg}
   last_right_element_index=${current_index}
   last_right_element_stateful_name=${STATEFUL_NAME}
+
+  __p9k_unsafe[right]+="${result}"
 }
 
 ################################################################
@@ -360,11 +369,11 @@ function __p9k_render() {
 
     local segment_meta=("${(@s:·|·:)data}")
     local alignment="${segment_meta[2]}"
-    __p9k_unsafe[${alignment}]+=$("__p9k_${alignment}_prompt_segment" "${segment_meta[1]}" "${segment_meta[3]}" "${segment_meta[4]}" "${segment_meta[5]}" "${segment_meta[6]}")
+    __p9k_${alignment}_prompt_segment "${segment_meta[1]}" "${segment_meta[3]}" "${segment_meta[4]}" "${segment_meta[5]}" "${segment_meta[6]}"
   done
 
   # Render End of left prompt
-  __p9k_unsafe[left]+="$(__p9k_left_prompt_end)"
+  __p9k_left_prompt_end
 
   # Render End of right prompt
   # last whitespace with last segments right symbol, if any
