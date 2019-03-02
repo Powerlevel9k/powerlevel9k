@@ -226,7 +226,10 @@ function p9k::prepare_segment() {
   [[ -n "${2}" ]] && STATEFUL_NAME="${STATEFUL_NAME}_${(U)2}"
 
   # Precompile condition.
-  if __p9k_segment_should_be_printed "${STATEFUL_NAME}" "${7}" "${6}"; then
+  local shouldPrint=false
+  __p9k_segment_should_be_printed "${STATEFUL_NAME}" "${7}" "${6}" && shouldPrint=true
+
+  if ${shouldPrint}; then
     local SEGMENT_ICON
     if [[ -z "${8}" ]]; then
       SEGMENT_ICON=${__P9K_ICONS[${STATEFUL_NAME}]}
@@ -236,10 +239,10 @@ function p9k::prepare_segment() {
       # otherwise use it literally
       [[ -z "${SEGMENT_ICON}" ]] && SEGMENT_ICON="${8}"
     fi
-
-    # Return the data to the main process, delimited with "·|·"
-    echo "${STATEFUL_NAME}·|·${3}·|·${4}·|·${5}·|·${6}·|·${SEGMENT_ICON}"
   fi
+
+  # Return the data to the main process, delimited with "·|·"
+  echo "${STATEFUL_NAME}·|·${3}·|·${4}·|·${5}·|·${6}·|·${SEGMENT_ICON}·|·${shouldPrint}"
 }
 
 ################################################################
@@ -353,8 +356,8 @@ function __p9k_async_callback() {
 #   $1 - boolean True if rendered through ZLE widget (in async mode)
 function __p9k_render() {
   # Resets
-  local LAST_LEFT_BACKGROUND='NONE'
-  local LAST_RIGHT_BACKGROUND='NONE'
+  CURRENT_BG='NONE'
+  CURRENT_RIGHT_BG='NONE'
   PROMPT=''
   RPROMPT=''
   # __p9k_unsafe must be a global variable, because we set
@@ -368,6 +371,8 @@ function __p9k_render() {
     [[ -z "${data}" ]] && continue
 
     local segment_meta=("${(@s:·|·:)data}")
+    [[ "${segment_meta[7]}" == "false" ]] && continue # Segment should not be printed
+
     local alignment="${segment_meta[2]}"
     __p9k_${alignment}_prompt_segment "${segment_meta[1]}" "${segment_meta[3]}" "${segment_meta[4]}" "${segment_meta[5]}" "${segment_meta[6]}"
   done
