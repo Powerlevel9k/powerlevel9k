@@ -33,6 +33,8 @@
 # when building the left-hand prompt. Because the RPROMPT is created from
 # right-left but reads the opposite, this isn't necessary for the other side.
 CURRENT_BG='NONE'
+# `CURRENT_RIGHT_BG` does the same for the right-hand prompt.
+CURRENT_RIGHT_BG='NONE'
 
 # Global segment cache
 typeset -gAh __p9k_segment_cache
@@ -119,8 +121,6 @@ function __p9k_left_prompt_end() {
   echo -n "%f${__P9K_ICONS[LEFT_SEGMENT_END_SEPARATOR]}"
   CURRENT_BG=''
 }
-
-CURRENT_RIGHT_BG='NONE'
 
 p9k::set_default last_right_element_index 1
 p9k::set_default last_right_element_stateful_name ""
