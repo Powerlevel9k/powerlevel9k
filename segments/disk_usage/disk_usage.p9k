@@ -45,17 +45,18 @@ prompt_disk_usage() {
         current_state='critical'
     fi
   else
+    current_state='normal'
     if [[ "$P9K_DISK_USAGE_ONLY_WARNING" == true ]]; then
         current_state=''
-        return
+        # Avoid printing the prompty, by setting $disk_usage
+        # to empty string, so the condition is not fulfilled.
+        disk_usage=''
     fi
-    current_state='normal'
   fi
 
   local message="${disk_usage}%%"
 
   # Draw the prompt_segment
-  if [[ -n ${disk_usage} ]]; then
-    p9k::prepare_segment "$0" "${current_state}" $1 "$2" $3 "$message"
-  fi
+  p9k::prepare_segment "$0" "${current_state}" $1 "$2" $3 "$message" \
+      "[[ -n \"${disk_usage}\" ]]"
 }

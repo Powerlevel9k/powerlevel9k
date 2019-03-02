@@ -27,7 +27,5 @@
 prompt_rvm() {
   local version_and_gemset=${rvm_env_string/ruby-}
 
-  if [[ -n "$version_and_gemset" ]]; then
-    p9k::prepare_segment "$0" "" $1 "$2" $3 "$version_and_gemset"
-  fi
+  p9k::prepare_segment "$0" "" $1 "$2" $3 "$version_and_gemset"
 }

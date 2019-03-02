@@ -29,5 +29,6 @@ prompt_detect_virt() {
   if [[ "$virt" == "none" ]]; then
     [[ "$(ls -di / | grep -o 2)" != "2" ]] && virt="chroot"
   fi
-  [[ -n "${virt}" ]] && p9k::prepare_segment "$0" "" $1 "$2" $3 "$virt"
+
+  p9k::prepare_segment "$0" "" $1 "$2" $3 "$virt"
 }

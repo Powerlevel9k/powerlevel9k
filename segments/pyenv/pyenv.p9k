@@ -41,8 +41,8 @@ prompt_pyenv() {
     if [[ -f "${pyenv_root}/version" ]]; then
       pyenv_global="$(pyenv version-file-read ${pyenv_root}/version)"
     fi
-    if [[ "${pyenv_version_name}" != "${pyenv_global}" || "${P9K_PYENV_PROMPT_ALWAYS_SHOW}" == "true" ]]; then
-      p9k::prepare_segment "$0" "" $1 "$2" $3 "${pyenv_version_name}"
-    fi
   fi
+
+  p9k::prepare_segment "$0" "" $1 "$2" $3 "${pyenv_version_name}" \
+      "[[ \"${pyenv_version_name}\" != \"${pyenv_global}\" || \"${P9K_PYENV_PROMPT_ALWAYS_SHOW}\" == \"true\" ]]"
 }

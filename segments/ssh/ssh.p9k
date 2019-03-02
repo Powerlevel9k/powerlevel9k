@@ -25,7 +25,6 @@
 #   $3 boolean Whether the segment should be joined
 ##
 prompt_ssh() {
-  if [[ -n "$SSH_CLIENT" ]] || [[ -n "$SSH_TTY" ]]; then
-    p9k::prepare_segment "$0" "" $1 "$2" $3 "" "[[ true ]]"
-  fi
+  p9k::prepare_segment "$0" "" $1 "$2" $3 "" \
+      "[[ -n \"${SSH_CLIENT}\" ]] || [[ -n \"${SSH_TTY}\" ]]"
 }

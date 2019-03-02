@@ -41,7 +41,6 @@ prompt_vagrant() {
     done
   done
 
-  if [[ "${current_state}" != "NOT_FOUND" ]]; then
-    p9k::prepare_segment "$0" ${current_state} $1 "$2" $3 "${current_string}"
-  fi
+  p9k::prepare_segment "$0" ${current_state} $1 "$2" $3 "${current_string}" \
+      "[[ \"${current_state}\" != \"NOT_FOUND\" ]]"
 }

@@ -105,6 +105,7 @@ prompt_public_ip() {
         break
       done
     fi
-    p9k::prepare_segment "$0" "" $1 "$2" $3 "${public_ip}" "" "$icon"
   fi
+
+  p9k::prepare_segment "$0" "" $1 "$2" $3 "${public_ip}" "" "$icon"
 }

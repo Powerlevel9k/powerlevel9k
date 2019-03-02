@@ -34,8 +34,8 @@ prompt_rbenv() {
   elif [ ${commands[rbenv]} ]; then
     local rbenv_version_name="$(rbenv version-name)"
     local rbenv_global="$(rbenv global)"
-    if [[ "${rbenv_version_name}" != "${rbenv_global}" || "${P9K_RBENV_PROMPT_ALWAYS_SHOW}" == "true" ]]; then
-      p9k::prepare_segment "$0" "" $1 "$2" $3 "${rbenv_version_name}"
-    fi
   fi
+
+  p9k::prepare_segment "$0" "" $1 "$2" $3 "${rbenv_version_name}" \
+      "[[ \"${rbenv_version_name}\" != \"${rbenv_global}\" || \"${P9K_RBENV_PROMPT_ALWAYS_SHOW}\" == \"true\" ]]"
 }

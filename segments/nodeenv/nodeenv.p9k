@@ -25,8 +25,8 @@
 #   $3 boolean Whether the segment should be joined
 ##
 prompt_nodeenv() {
-  if [[ -n "${NODE_VIRTUAL_ENV}" && "$NODE_VIRTUAL_ENV_DISABLE_PROMPT" != true ]]; then
-    local info="$(node -v)[${NODE_VIRTUAL_ENV:t}]"
-    p9k::prepare_segment "$0" "" $1 "$2" $3 "$info"
-  fi
+  local info="$(node -v)[${NODE_VIRTUAL_ENV:t}]"
+
+  p9k::prepare_segment "$0" "" $1 "$2" $3 "$info" \
+      "[[ -n \"${NODE_VIRTUAL_ENV}\" && \"${NODE_VIRTUAL_ENV_DISABLE_PROMPT}\" != \"true\" ]]"
 }

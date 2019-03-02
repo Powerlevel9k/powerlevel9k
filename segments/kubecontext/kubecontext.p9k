@@ -26,6 +26,7 @@
 ##
 prompt_kubecontext() {
   local kubectl_version="$(kubectl version --client 2>/dev/null)"
+  local k8s_final_text=""
 
   if [[ -n "$kubectl_version" ]]; then
     # Get the current Kuberenetes context
@@ -36,8 +37,6 @@ prompt_kubecontext() {
       cur_namespace="default"
     fi
 
-    local k8s_final_text=""
-
     if [[ "$cur_ctx" == "$cur_namespace" ]]; then
       # No reason to print out the same identificator twice
       k8s_final_text="$cur_ctx"
@@ -45,6 +44,7 @@ prompt_kubecontext() {
       k8s_final_text="$cur_ctx/$cur_namespace"
     fi
 
-    p9k::prepare_segment "$0" "" $1 "$2" $3 "$k8s_final_text"
   fi
+
+  p9k::prepare_segment "$0" "" $1 "$2" $3 "$k8s_final_text"
 }

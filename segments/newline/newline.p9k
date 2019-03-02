@@ -17,13 +17,14 @@
 #   This is not an actual prompt segment, it is just a workaround to allow more newlines in your prompt.
 ##
 prompt_newline() {
-  [[ "$1" == "right" ]] && return
-
   local newline=$'\n'
   [[ "${P9K_PROMPT_ON_NEWLINE:-}" == true ]] \
       && newline="${newline}${__P9K_ICONS[MULTILINE_NEWLINE_PROMPT_PREFIX]}"
 
-  p9k::prepare_segment "$0" "" $1 "$2" $3 "${newline}" "[[ true ]]" "" "%k"
+  p9k::prepare_segment "$0" "" $1 "$2" $3 "${newline}" \
+      "[[ \"${1}\" == \"left\" ]]" \
+      "" \
+      "%k"
   # Reset color variable, so that next segment starts as first
   CURRENT_BG="NONE"
 }

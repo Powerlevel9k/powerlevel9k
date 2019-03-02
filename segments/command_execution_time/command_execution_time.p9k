@@ -53,7 +53,6 @@ prompt_command_execution_time() {
     humanReadableDuration=$_P9K_COMMAND_DURATION
   fi
 
-  if (( _P9K_COMMAND_DURATION >= P9K_COMMAND_EXECUTION_TIME_THRESHOLD )); then
-    p9k::prepare_segment "$0" "" $1 "$2" $3 "${humanReadableDuration}"
-  fi
+  p9k::prepare_segment "$0" "" $1 "$2" $3 "${humanReadableDuration}" \
+      "(( _P9K_COMMAND_DURATION >= P9K_COMMAND_EXECUTION_TIME_THRESHOLD ))"
 }

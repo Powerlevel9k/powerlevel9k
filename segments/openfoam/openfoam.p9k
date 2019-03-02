@@ -27,9 +27,12 @@
 prompt_openfoam() {
   local wm_project_version="$WM_PROJECT_VERSION"
   local wm_fork="$WM_FORK"
+  local content
   if [[ -n "$wm_project_version" ]] &&  [[ -z "$wm_fork" ]] ; then
-    p9k::prepare_segment "$0" "" $1 "$2" $3 "OF: ${wm_project_version:t}"
+    content="OF: ${wm_project_version:t}"
   elif [[ -n "$wm_project_version" ]] && [[ -n "$wm_fork" ]] ; then
-    p9k::prepare_segment "$0" "" $1 "$2" $3 "F-X: ${wm_project_version:t}"
+    content="F-X: ${wm_project_version:t}"
   fi
+
+  p9k::prepare_segment "$0" "" $1 "$2" $3 "${content}"
 }

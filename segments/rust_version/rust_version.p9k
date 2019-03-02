@@ -32,7 +32,5 @@ prompt_rust_version() {
   # whitespace. This way we'll end up with only the version.
   rust_version=${${rust_version/rustc /}%% *}
 
-  if [[ -n "$rust_version" ]]; then
-    p9k::prepare_segment "$0" "" $1 "$2" $3 "$rust_version"
-  fi
+  p9k::prepare_segment "$0" "" $1 "$2" $3 "$rust_version"
 }

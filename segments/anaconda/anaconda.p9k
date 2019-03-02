@@ -33,7 +33,7 @@ prompt_anaconda() {
   # Depending on the conda version, either might be set. This
   # variant works even if both are set.
   local _path=$CONDA_ENV_PATH$CONDA_PREFIX
-  if ! [ -z "$_path" ]; then
-    p9k::prepare_segment "$0" "" $1 "$2" $3 "$P9K_ANACONDA_LEFT_DELIMITER${_path:t}$P9K_ANACONDA_RIGHT_DELIMITER"
-  fi
+
+  p9k::prepare_segment "$0" "" $1 "$2" $3 "$P9K_ANACONDA_LEFT_DELIMITER${_path:t}$P9K_ANACONDA_RIGHT_DELIMITER" \
+      "[[ -n \"${_path}\" ]]"
 }

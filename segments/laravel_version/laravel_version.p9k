@@ -26,10 +26,10 @@
 ##
 prompt_laravel_version() {
   local laravel_version="$(php artisan --version 2> /dev/null)"
-  if [[ -n "${laravel_version}" && "${laravel_version}" =~ "Laravel Framework" ]]; then
-    # Strip out everything but the version
-    laravel_version="${laravel_version//Laravel Framework /}"
 
-    p9k::prepare_segment "${0}" "" "${1}" "${2}" "${3}" "${laravel_version}"
-  fi
+  # Strip out everything but the version
+  laravel_version="${laravel_version//Laravel Framework /}"
+
+  p9k::prepare_segment "${0}" "" "${1}" "${2}" "${3}" "${laravel_version}" \
+      "[[ -n \"${laravel_version}\" && \"${laravel_version}\" =~ \"Laravel Framework\" ]]"
 }
