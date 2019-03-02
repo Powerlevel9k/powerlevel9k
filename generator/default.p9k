@@ -370,11 +370,11 @@ function __p9k_render() {
 
     local segment_meta=("${(@s:·|·:)data}")
     local alignment="${segment_meta[2]}"
-    __p9k_unsafe[${alignment}]="$__p9k_unsafe[${alignment}]"$("__p9k_${alignment}_prompt_segment" "${segment_meta[1]}" "${segment_meta[3]}" "${segment_meta[4]}" "${segment_meta[5]}" "${segment_meta[6]}")
+    __p9k_unsafe[${alignment}]+=$("__p9k_${alignment}_prompt_segment" "${segment_meta[1]}" "${segment_meta[3]}" "${segment_meta[4]}" "${segment_meta[5]}" "${segment_meta[6]}")
   done
 
   # Render End of left prompt
-  __p9k_unsafe[left]="${__p9k_unsafe[left]}$(__p9k_left_prompt_end)"
+  __p9k_unsafe[left]+="$(__p9k_left_prompt_end)"
 
   # Render End of right prompt
   # last whitespace with last segments right symbol, if any
@@ -382,7 +382,7 @@ function __p9k_render() {
   if p9k::defined "P9K_RIGHT_PROMPT_LAST_SEGMENT_END_SYMBOL"; then
     last_symbol="%K{none}%F${CURRENT_RIGHT_BG#%K}${P9K_RIGHT_PROMPT_LAST_SEGMENT_END_SYMBOL}"
   fi
-  __p9k_unsafe[right]="${__p9k_unsafe[right]}${__P9K_DATA[LAST_WHITESPACE]}${last_symbol}"
+  __p9k_unsafe[right]+="${__P9K_DATA[LAST_WHITESPACE]}${last_symbol}"
 
   # Render actual PROMPTS
   local LC_ALL="" LC_CTYPE="en_US.UTF-8" # Set the right locale to protect special characters
