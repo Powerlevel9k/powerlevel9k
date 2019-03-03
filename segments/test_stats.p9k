@@ -8,31 +8,19 @@
 #   for the rspec_stats.p9k and symfony_tests segments.
 ##
 
-(){
-  # Set the right locale to protect special characters
-  local LC_ALL="" LC_CTYPE="en_US.UTF-8"
-  ################################################################
-  # Register segment
-  # Parameters:
-  #   segment_name  context  background  foreground  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
-  #                                                                                                                                
-  p9k::register_segment "TEST_STATS" "GOOD" "cyan"   "${DEFAULT_COLOR}"   ''  $'\uE891'  $'\uF291'  '\u'${CODEPOINT_OF_AWESOME_BUG}  $'\uF188'
-  p9k::register_segment "TEST_STATS" "AVG"  "yellow" "${DEFAULT_COLOR}"   ''  $'\uE891'  $'\uF291'  '\u'${CODEPOINT_OF_AWESOME_BUG}  $'\uF188'
-  p9k::register_segment "TEST_STATS" "BAD"  "red"    "${DEFAULT_COLOR}"   ''  $'\uE891'  $'\uF291'  '\u'${CODEPOINT_OF_AWESOME_BUG}  $'\uF188'
-}
-
 ################################################################
 # @description
 #   Show a ratio of tests vs code.
 ##
 # @args
-#   $1 string of the calling segment
+#   $1 string name of the calling segment
 #   $2 string Alignment - left | right
 #   $3 integer Index
 #   $4 bool Whether the segment should be joined
 #   $5 string Code Amount
 #   $6 string Tests Amount
 #   $7 string Headline
+#   $8 string condition
 ##
 # @note
 #   This function is called by prompt segments to display the information required.
@@ -50,5 +38,5 @@ build_test_stats() {
   (( ratio >= 50 && ratio < 75 )) && current_state="AVG"
   (( ratio < 50 )) && current_state="BAD"
 
-  p9k::prepare_segment "$1" "${current_state}" "$2" $3 $4 "$headline: $ratio%%"
+  p9k::prepare_segment "$1" "${current_state}" "$2" $3 $4 "$headline: $ratio%%" "${8}"
 }
