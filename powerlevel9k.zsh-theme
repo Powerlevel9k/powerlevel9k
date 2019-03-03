@@ -24,6 +24,8 @@
 # Define the version number. This will make it easier to support as users can report this with tickets.
 readonly P9K_VERSION="0.7.0"
 
+typeset -gAh __p9k_config
+
 ## Turn on for Debugging
 # PS4='%s%f%b%k%F{blue}%{λ%}%L %F{240}%N:%i%(?.. %F{red}%?) %1(_.%F{yellow}%-1_ .)%s%f%b%k '
 # zstyle ':vcs_info:*+*:*' debug true
@@ -245,7 +247,7 @@ function __p9k_load_segments() {
   # Load Async libs at last, because before initializing
   # ZSH-Async, all functions must be defined.
   if ${load_async}; then
-      zsh_async_initialized=true
+      __p9k_config[async]=true
       # TODO: ZSH-ASYNC Path configurable!
       source ${__P9K_DIRECTORY}/zsh-async/async.zsh
       async_init
