@@ -48,7 +48,7 @@ prompt_disk_usage() {
     current_state='normal'
     if [[ "$P9K_DISK_USAGE_ONLY_WARNING" == true ]]; then
         current_state=''
-        # Avoid printing the prompty, by setting $disk_usage
+        # Avoid printing the prompt, by setting $disk_usage
         # to empty string, so the condition is not fulfilled.
         disk_usage=''
     fi
