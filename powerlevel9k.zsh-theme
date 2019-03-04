@@ -223,10 +223,19 @@ function __p9k_load_segments() {
       # store as single string, separated by whitespace.
       __P9K_DATA[${alignment}_segments]+="${segment} "
 
+      # Cache segments
+      for tag in ${segment_meta[2,-1]}; do
+        __P9K_DATA[${tag}_segments]+="${segment} "
+
+        # Special Case: Remember that async lib should be loaded
+        [[ "${tag}" == "async" ]] && load_async=true
+      done
+
       # Custom segments must be loaded by user
-      if p9k::segment_is_tagged_as "custom" "${segment_meta}"; then
+      if p9k::segment_is_tagged_as "custom" "${segment}"; then
         continue
       fi
+
       # check if the file exists as a core segment
       if [[ -f ${__P9K_DIRECTORY}/segments/${segment}/${segment}.p9k ]]; then
         source "${__P9K_DIRECTORY}/segments/${segment}/${segment}.p9k" 2>&1
@@ -246,8 +255,6 @@ function __p9k_load_segments() {
           P9K_PROMPT_ELEMENTS=("${(@)P9K_PROMPT_ELEMENTS:#${segment}}")
         fi
       fi
-
-      p9k::segment_is_tagged_as "async" "${segment_meta}" && load_async=true
     done
   done
 

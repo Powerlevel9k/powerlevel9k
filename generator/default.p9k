@@ -289,20 +289,18 @@ function __p9k_build_segment_cache() {
   local index=1
   local raw_segment joined
   for raw_segment in "${(@)segments}"; do
-    local -a segment_meta
-    # Split by double-colon
-    segment_meta=(${(s.::.)raw_segment})
-    local segment="$segment_meta[1]"
+    # Cut off after double colon
+    local segment="${raw_segment%%::*}"
     # Check if segment should be joined
-    p9k::segment_is_tagged_as "joined" "${segment_meta}" && joined=true || joined=false
+    p9k::segment_is_tagged_as "joined" "${segment}" && joined=true || joined=false
 
     local async=false
-    p9k::segment_is_tagged_as "async" "${segment_meta}" && async=true
+    p9k::segment_is_tagged_as "async" "${segment}" && async=true
 
     # Check if it is a custom command, otherwise interpet it as
     # a prompt.
     local custom=false
-    p9k::segment_is_tagged_as "custom" "${segment_meta}" && custom=true
+    p9k::segment_is_tagged_as "custom" "${segment}" && custom=true
 
     local cache_key="${alignment}::${index}"
 

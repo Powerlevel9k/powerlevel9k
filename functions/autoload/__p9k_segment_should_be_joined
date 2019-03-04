@@ -34,7 +34,7 @@ local -a elements
 elements=(${=3})
 
 local raw_current_segment=${elements[$current_index]}
-local -a current_segment=(${(s.::.)raw_current_segment})
+local current_segment=${raw_current_segment%%::*}
 local joined=false
 if p9k::segment_is_tagged_as "joined" "${current_segment}"; then
   joined=true
@@ -49,7 +49,7 @@ if p9k::segment_is_tagged_as "joined" "${current_segment}"; then
     local examined_index=$((current_index - 1))
     while (( ${examined_index} > ${last_segment_index} )); do
       local raw_previous_segment=${elements[$examined_index]}
-      local -a previous_segment=(${(s.::.)raw_previous_segment})
+      local previous_segment=${raw_previous_segment%%::*}
       # If one of the examined segments is not joined, then we know
       # that the current segment should not be joined, as the target
       # segment is the wrong one.
