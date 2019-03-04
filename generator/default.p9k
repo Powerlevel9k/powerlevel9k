@@ -277,7 +277,8 @@ function __p9k_prompt_custom() {
 #   This function loops through the left prompt elements and calls
 #   the related segment functions.
 ##
-# @noargs
+# @args
+#   $1 string left|right
 ##
 function __p9k_build_segment_cache() {
   local alignment="${1}"
@@ -344,8 +345,16 @@ function __p9k_refresh_cache_item() {
   __p9k_segment_cache["${segment_meta[2]}::${segment_meta[3]}"]="${1}"
 }
 
-# Exchange result of prompt_<segment> function in the cache and
-# trigger re-rendering of prompt.
+###############################################################
+# @description
+#   Exchange result of prompt_<segment> function in the cache and
+#   trigger re-rendering of prompt.
+##
+# @args
+#   $1 string The name of the async job
+#   $2
+#   $3 string The payload. In our case the segment data.
+##
 function __p9k_async_callback() {
   local JOB="${1}" CODE="${2}" RAW_SEGMENT_DATA="${3}" EXEC_TIME="${4}" ERR="${5}"
 
@@ -363,10 +372,14 @@ function __p9k_async_callback() {
   __p9k_render "true"
 }
 
-# P9K Render function.
-# Goes through cache and renders each entry.
-# Parameters:
+###############################################################
+# @description
+#   P9K Render function.
+#   Goes through cache and renders each entry.
+##
+# @args
 #   $1 - boolean True if rendered through ZLE widget (in async mode)
+##
 function __p9k_render() {
   # Resets
   CURRENT_BG='NONE'
