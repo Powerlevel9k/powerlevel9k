@@ -210,38 +210,45 @@ p9k::set_default P9K_CUSTOM_SEGMENT_LOCATION "$HOME/.config/powerlevel9k/segment
 function __p9k_load_segments() {
   local segment raw_segment
   local load_async=false
-  for raw_segment in ${P9K_LEFT_PROMPT_ELEMENTS} ${P9K_RIGHT_PROMPT_ELEMENTS}; do
-    local -a segment_meta
-    # Split by double-colon
-    segment_meta=(${(s.::.)raw_segment})
-    # First value is always segment name
-    segment=${segment_meta[1]}
+  for alignment in left right; do
+    local segmentsVariable="P9K_${(U)alignment}_PROMPT_ELEMENTS"
+    for raw_segment in ${(P)segmentsVariable}; do
+      local -a segment_meta
+      # Split by double-colon
+      segment_meta=(${(s.::.)raw_segment})
+      # First value is always segment name
+      segment=${segment_meta[1]}
 
-    # Custom segments must be loaded by user
-    if p9k::segment_is_tagged_as "custom" "${segment_meta}"; then
-      continue
-    fi
-    # check if the file exists as a core segment
-    if [[ -f ${__P9K_DIRECTORY}/segments/${segment}/${segment}.p9k ]]; then
-      source "${__P9K_DIRECTORY}/segments/${segment}/${segment}.p9k" 2>&1
-    else
-      # check if the file exists as a custom segment
-      if [[ -f "${P9K_CUSTOM_SEGMENT_LOCATION}/${segment}/${segment}.p9k" ]]; then
-        # This is not muted, as we want to show if there are issues with
-        # his custom segments.
-        source "${P9K_CUSTOM_SEGMENT_LOCATION}/${segment}/${segment}.p9k"
-      else
-        # file not found!
-        # If this happens, we remove the segment from the configured elements,
-        # so that we avoid printing errors over and over.
-        print -P "%F{yellow}Warning!%f The '%F{cyan}${segment}%f' segment was not found. Removing it from the prompt."
-        P9K_LEFT_PROMPT_ELEMENTS=("${(@)P9K_LEFT_PROMPT_ELEMENTS:#${segment}}")
-        P9K_RIGHT_PROMPT_ELEMENTS=("${(@)P9K_RIGHT_PROMPT_ELEMENTS:#${segment}}")
-        P9K_PROMPT_ELEMENTS=("${(@)P9K_PROMPT_ELEMENTS:#${segment}}")
+      # Cache configured segments! As nested arrays are not really possible,
+      # store as single string, separated by whitespace.
+      __p9k_config[${alignment}_segments]+="${segment} "
+
+      # Custom segments must be loaded by user
+      if p9k::segment_is_tagged_as "custom" "${segment_meta}"; then
+        continue
       fi
-    fi
+      # check if the file exists as a core segment
+      if [[ -f ${__P9K_DIRECTORY}/segments/${segment}/${segment}.p9k ]]; then
+        source "${__P9K_DIRECTORY}/segments/${segment}/${segment}.p9k" 2>&1
+      else
+        # check if the file exists as a custom segment
+        if [[ -f "${P9K_CUSTOM_SEGMENT_LOCATION}/${segment}/${segment}.p9k" ]]; then
+          # This is not muted, as we want to show if there are issues with
+          # his custom segments.
+          source "${P9K_CUSTOM_SEGMENT_LOCATION}/${segment}/${segment}.p9k"
+        else
+          # file not found!
+          # If this happens, we remove the segment from the configured elements,
+          # so that we avoid printing errors over and over.
+          print -P "%F{yellow}Warning!%f The '%F{cyan}${segment}%f' segment was not found. Removing it from the prompt."
+          P9K_LEFT_PROMPT_ELEMENTS=("${(@)P9K_LEFT_PROMPT_ELEMENTS:#${segment}}")
+          P9K_RIGHT_PROMPT_ELEMENTS=("${(@)P9K_RIGHT_PROMPT_ELEMENTS:#${segment}}")
+          P9K_PROMPT_ELEMENTS=("${(@)P9K_PROMPT_ELEMENTS:#${segment}}")
+        fi
+      fi
 
-    p9k::segment_is_tagged_as "async" "${segment_meta}" && load_async=true
+      p9k::segment_is_tagged_as "async" "${segment_meta}" && load_async=true
+    done
   done
 
   # Load Async libs at last, because before initializing

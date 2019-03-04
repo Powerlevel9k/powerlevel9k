@@ -251,4 +251,10 @@ function testFindingFirstDefinedOrNonEmptyVariableNyName() {
   internal
 }
 
+function testFindInArrayFindsAllOccurrencesInArray() {
+  local -a XX=(aa bb cc aa xx zz ay ya aa tt)
+
+  assertEquals "1 4 9" "$(p9k::find_in_array "aa" "${XX}")"
+}
+
 source shunit2/shunit2

@@ -331,6 +331,19 @@ function __p9k_build_segment_cache() {
   __p9k_render
 }
 
+###############################################################
+# @description
+#   Refresh a single item in the cache
+##
+# @args
+#   $1 string The serialized segment data
+##
+function __p9k_refresh_cache_item() {
+  local -a segment_meta=("${(@s:·|·:)1}")
+
+  __p9k_segment_cache["${segment_meta[2]}::${segment_meta[3]}"]="${1}"
+}
+
 # Exchange result of prompt_<segment> function in the cache and
 # trigger re-rendering of prompt.
 function __p9k_async_callback() {
@@ -370,7 +383,7 @@ function __p9k_render() {
   for data in "${(Oa@v)__p9k_segment_cache}"; do
     [[ -z "${data}" ]] && continue
 
-    local segment_meta=("${(@s:·|·:)data}")
+    local -a segment_meta=("${(@s:·|·:)data}")
     [[ "${segment_meta[7]}" == "false" ]] && continue # Segment should not be printed
 
     local alignment="${segment_meta[2]}"

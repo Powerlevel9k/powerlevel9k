@@ -233,7 +233,7 @@ function p9k::set_default() {
 function p9k::segment_is_tagged_as() {
   local tag="${1}"
   # All following parameters
-  local segment_meta=(${=@[2,-1]})
+  local -a segment_meta=(${=@[2,-1]})
 
   [[ "${segment_meta[(re)${tag}]:-}" == "${tag}" ]]
 }
@@ -305,6 +305,42 @@ function p9k::get_relevant_item() {
       break;
     fi
   done
+}
+
+###############################################################
+# @description
+#   Refresh a single item in the cache
+##
+# @args
+#   $1 string The item to search for (needle)
+#   $2 array The array to search in (haystack)
+##
+function p9k::find_in_array() {
+  local needle="${1}"
+  local -a haystack=(${=@[2,-1]})
+
+  local -a occurrences
+  local haystack_size=${#haystack}
+  local searchFrom=1
+
+  while true; do
+    # Array Expansion:
+    #   i: First index of $needle
+    #   e: Use string comparison, instead of pattern matching
+    #   n: Give us the nth match. This is done, because we only
+    #      can search for the first, or the last index.
+    var="haystack[(n:${searchFrom}:ie)${needle}]"
+    lastIndex=${(P)var}
+
+    if (( ${lastIndex} > ${haystack_size} )); then
+      # Exit condition: The last index is larger than the entire array
+      break
+    fi
+    occurrences+=${lastIndex}
+    searchFrom=$((searchFrom + 1))
+  done
+
+  echo "${(j: :)occurrences}"
 }
 
 # Combine the PROMPT_ELEMENTS
