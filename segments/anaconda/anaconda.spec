@@ -23,8 +23,9 @@ function testAnacondaSegmentPrintsNothingIfNoAnacondaPathIsSet() {
   # Unset anacona variables
   unset CONDA_ENV_PATH
   unset CONDA_PREFIX
+  __p9k_build_segment_cache "left"
 
-  assertEquals "%K{015} %F{000}world %k%F{015}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{015} %F{000}world %k%F{015}%f " "${__p9k_unsafe[left]}"
 }
 
 function testAnacondaSegmentWorksIfOnlyAnacondaPathIsSet() {
@@ -37,8 +38,9 @@ function testAnacondaSegmentWorksIfOnlyAnacondaPathIsSet() {
 
   CONDA_ENV_PATH=/tmp
   unset CONDA_PREFIX
+  __p9k_build_segment_cache "left"
 
-  assertEquals "%K{004} %F{000}icon-here%f %F{000}(tmp) %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{004} %F{000}icon-here%f %F{000}(tmp) %k%F{004}%f " "${__p9k_unsafe[left]}"
 }
 
 function testAnacondaSegmentWorksIfOnlyAnacondaPrefixIsSet() {
@@ -51,8 +53,9 @@ function testAnacondaSegmentWorksIfOnlyAnacondaPrefixIsSet() {
 
   unset CONDA_ENV_PATH
   local CONDA_PREFIX="test"
+  __p9k_build_segment_cache "left"
 
-  assertEquals "%K{004} %F{000}icon-here%f %F{000}(test) %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{004} %F{000}icon-here%f %F{000}(test) %k%F{004}%f " "${__p9k_unsafe[left]}"
 }
 
 function testAnacondaSegmentWorks() {
@@ -65,8 +68,9 @@ function testAnacondaSegmentWorks() {
 
   local CONDA_ENV_PATH=/tmp
   local CONDA_PREFIX="test"
+  __p9k_build_segment_cache "left"
 
-  assertEquals "%K{004} %F{000}icon-here%f %F{000}(tmptest) %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{004} %F{000}icon-here%f %F{000}(tmptest) %k%F{004}%f " "${__p9k_unsafe[left]}"
 }
 
 source shunit2/shunit2

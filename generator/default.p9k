@@ -510,7 +510,7 @@ function __p9k_prepare_prompts() {
   # Reset start time
   _P9K_TIMER_START=0x7FFFFFFF
 
-  if [[ "${__p9k_config[async]}" == "true" ]]; then
+  if [[ "${__P9K_DATA[async]}" == "true" ]]; then
     # stop any running async jobs
     async_flush_jobs "__p9k_async_worker"
     # Update the current working directory of the async worker.

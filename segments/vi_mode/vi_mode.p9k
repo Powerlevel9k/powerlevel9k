@@ -67,7 +67,7 @@ prompt_vi_mode() {
 function rebuildViMode() {
   # Re-Init segment
   for alignment in left right; do
-    for index in $(p9k::find_in_array "vi_mode" "${__p9k_config[${alignment}_segments]}"); do
+    for index in $(p9k::find_in_array "vi_mode" "${__P9K_DATA[${alignment}_segments]}"); do
       local joined=false
       local segmentMetaVar="P9K_${alignment}_PROMPT_ELEMENTS[${index}]"
       p9k::segment_is_tagged_as "joined" ${(s.::.)${(P)segmentMetaVar}} && joined=true

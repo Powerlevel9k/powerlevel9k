@@ -24,7 +24,7 @@
 # Define the version number. This will make it easier to support as users can report this with tickets.
 readonly P9K_VERSION="0.7.0"
 
-typeset -gAh __p9k_config
+typeset -gAH __P9K_DATA
 
 ## Turn on for Debugging
 # PS4='%s%f%b%k%F{blue}%{λ%}%L %F{240}%N:%i%(?.. %F{red}%?) %1(_.%F{yellow}%-1_ .)%s%f%b%k '
@@ -221,7 +221,7 @@ function __p9k_load_segments() {
 
       # Cache configured segments! As nested arrays are not really possible,
       # store as single string, separated by whitespace.
-      __p9k_config[${alignment}_segments]+="${segment} "
+      __P9K_DATA[${alignment}_segments]+="${segment} "
 
       # Custom segments must be loaded by user
       if p9k::segment_is_tagged_as "custom" "${segment_meta}"; then
@@ -254,7 +254,7 @@ function __p9k_load_segments() {
   # Load Async libs at last, because before initializing
   # ZSH-Async, all functions must be defined.
   if ${load_async}; then
-      __p9k_config[async]=true
+      __P9K_DATA[async]=true
       # TODO: ZSH-ASYNC Path configurable!
       source ${__P9K_DIRECTORY}/zsh-async/async.zsh
       async_init
