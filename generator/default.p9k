@@ -357,7 +357,7 @@ function __p9k_refresh_cache_item() {
 #   $6 has next result in buffer (0 = buffer empty, 1 = yes)
 ##
 function __p9k_async_callback() {
-  local JOB="${1}" CODE="${2}" RAW_SEGMENT_DATA="${3}" EXEC_TIME="${4}" ERR="${5}"
+  local JOB="${1}" CODE="${2}" RAW_SEGMENT_DATA="${3}" EXEC_TIME="${4}" ERR="${5}" NEXT_BUFFER="${6}"
 
   # Exit early, if ${RAW_SEGMENT_DATA} is empty
   if [[ -z "${RAW_SEGMENT_DATA}" ]]; then
@@ -369,8 +369,8 @@ function __p9k_async_callback() {
   local cache_key="${segment_meta[2]}::${segment_meta[3]}"
   __p9k_segment_cache["${cache_key}"]="${RAW_SEGMENT_DATA}"
 
-  # Trigger re-rendering
-  __p9k_render "true"
+  # Trigger re-rendering if we do not wait for other jobs
+  [[ "${NEXT_BUFFER}" == "0" ]] && __p9k_render "true"
 }
 
 ###############################################################
