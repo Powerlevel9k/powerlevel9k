@@ -349,9 +349,12 @@ function __p9k_refresh_cache_item() {
 #   trigger re-rendering of prompt.
 ##
 # @args
-#   $1 string The name of the async job
-#   $2
-#   $3 string The payload. In our case the segment data.
+#   # $1 job name, e.g. the function passed to async_job
+#   $2 return code
+#   $3 resulting (stdout) output from job execution
+#   $4 execution time, floating point e.g. 0.0076138973 seconds
+#   $5 resulting (stderr) error output from job execution
+#   $6 has next result in buffer (0 = buffer empty, 1 = yes)
 ##
 function __p9k_async_callback() {
   local JOB="${1}" CODE="${2}" RAW_SEGMENT_DATA="${3}" EXEC_TIME="${4}" ERR="${5}"
