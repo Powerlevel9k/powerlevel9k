@@ -359,6 +359,13 @@ function __p9k_refresh_cache_item() {
 function __p9k_async_callback() {
   local JOB="${1}" CODE="${2}" RAW_SEGMENT_DATA="${3}" EXEC_TIME="${4}" ERR="${5}" NEXT_BUFFER="${6}"
 
+  # ignore the async evals used to alter worker environment
+  if [[ "${JOB}" == "[async/eval]" ]] || \
+     [[ "${JOB}" == ";" ]] || \
+     [[ "${JOB}" == "[async]" ]]; then
+    return
+  fi
+
   # Exit early, if ${RAW_SEGMENT_DATA} is empty
   if [[ -z "${RAW_SEGMENT_DATA}" ]]; then
     return
