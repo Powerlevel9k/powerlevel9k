@@ -221,6 +221,7 @@ function __p9k_right_prompt_segment() {
 #   $7 string The condition - if the segment should be shown (gets evaluated)
 #   $8 string Visual identifier overide - *must* be a named icon string
 ##
+__P9K_SINGLE_SEGMENT_RESULT
 function p9k::prepare_segment() {
   local STATEFUL_NAME="${${(U)1}#PROMPT_}"
   [[ -n "${2}" ]] && STATEFUL_NAME="${STATEFUL_NAME}_${(U)2}"
@@ -241,8 +242,7 @@ function p9k::prepare_segment() {
     fi
   fi
 
-  # Return the data to the main process, delimited with "·|·"
-  echo "${STATEFUL_NAME}·|·${3}·|·${4}·|·${5}·|·${6}·|·${SEGMENT_ICON}·|·${shouldPrint}"
+  __P9K_SINGLE_SEGMENT_RESULT="${STATEFUL_NAME}·|·${3}·|·${4}·|·${5}·|·${6}·|·${SEGMENT_ICON}·|·${shouldPrint}"
 }
 
 ################################################################
@@ -266,6 +266,23 @@ function __p9k_prompt_custom() {
   if [[ -n "${segment_content}" ]]; then
     p9k::prepare_segment "${STATEFUL_NAME}" "" "${1}" "${2}" "${3}" "${segment_content}"
   fi
+}
+
+###############################################################
+# @description
+#   Takes the result of the segments computation and echos it,
+#   so that ZSH-Async can grab it.
+##
+# @args
+#   $1 string The command to execute
+#   $* Parameters for the command
+##
+function __p9k_async_wrapper() {
+  local command="${1}"
+  shift
+  ${command} "$@"
+
+  echo "${__P9K_SINGLE_SEGMENT_RESULT}"
 }
 
 ################################################################
@@ -305,24 +322,22 @@ function __p9k_build_segment_cache() {
     local cache_key="${alignment}::${index}"
 
     if ${custom} && ${async}; then
-      async_job "__p9k_async_worker" "__p9k_prompt_custom" "${alignment}" "${index}" "${joined}" "${segment}"
+      async_job "__p9k_async_worker" "__p9k_async_wrapper" "__p9k_prompt_custom" "${alignment}" "${index}" "${joined}" "${segment}"
 
       # Placeholder
       __p9k_segment_cache["${cache_key}"]="${segment}·|·${alignment}·|·${index}·|·${joined}·|·…·|··|·true"
-      # __p9k_render
     elif ${custom}; then
-      __p9k_segment_cache["${cache_key}"]=$("__p9k_prompt_custom" "${alignment}" "${index}" "${joined}" "${segment}")
-      # __p9k_render
+      __p9k_prompt_custom "${alignment}" "${index}" "${joined}" "${segment}"
+      __p9k_segment_cache["${cache_key}"]="${__P9K_SINGLE_SEGMENT_RESULT}"
     elif ${async}; then
-      async_job "__p9k_async_worker" "prompt_${segment}" "${alignment}" "${index}" "${joined}"
+      async_job "__p9k_async_worker" "__p9k_async_wrapper" "prompt_${segment}" "${alignment}" "${index}" "${joined}"
 
       # Placeholder
       __p9k_segment_cache["${cache_key}"]="${segment}·|·${alignment}·|·${index}·|·${joined}·|·…·|··|·true"
-      # __p9k_render
     else
       # TODO: Skip computation if cache is fresh for some segments?
-      __p9k_segment_cache["${cache_key}"]=$("prompt_${segment}" "${alignment}" "$index" "${joined}")
-      # __p9k_render
+      prompt_${segment} "${alignment}" "$index" "${joined}"
+      __p9k_segment_cache["${cache_key}"]="${__P9K_SINGLE_SEGMENT_RESULT}"
     fi
 
     index=$((index + 1))
