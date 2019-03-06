@@ -189,6 +189,7 @@ p9k::defined P9K_RIGHT_PROMPT_ELEMENTS || P9K_RIGHT_PROMPT_ELEMENTS=(status root
 ################################################################
 
 function __p9k_polyfill_segment_tags() {
+  setopt localoptions extended_glob
   # Replace old "custom_" elements with new Tag syntax.
   # This is done via the internal ZSH regex engine.
   # #b enables pattern matching
