@@ -1321,13 +1321,19 @@ prompt_root_indicator() {
 # Segment to display Rust version number
 prompt_rust_version() {
   local rust_version
+  local is_rust_dir
   rust_version=$(command rustc --version 2>/dev/null)
   # Remove "rustc " (including the whitespace) from the beginning
   # of the version string and remove everything after the next
   # whitespace. This way we'll end up with only the version.
   rust_version=${${rust_version/rustc /}%% *}
 
-  if [[ -n "$rust_version" ]]; then
+  # Attempts to retrieve project package id, writing `error:...`
+  # if Cargo.toml is not found in this dir or parent dirs
+  is_rust_dir=$(command cargo pkid 2>&1 | cut -c 1)
+
+  # If we have a rust version AND we're in a rust project folder (or subfolder)
+  if [[ -n "$rust_version" && "$is_rust_dir" != "e" ]]; then
     "$1_prompt_segment" "$0" "$2" "darkorange" "$DEFAULT_COLOR" "$rust_version" 'RUST_ICON'
   fi
 }
