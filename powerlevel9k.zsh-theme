@@ -1330,7 +1330,7 @@ prompt_rust_version() {
 
   # Attempts to retrieve project package id, writing `error:...`
   # if Cargo.toml is not found in this dir or parent dirs
-  is_rust_dir=$(command cargo pkid 2>&1 | cut -c 1)
+  is_rust_dir=$(command cargo pkgid 2>&1 | cut -c 1)
 
   # If we have a rust version AND we're in a rust project folder (or subfolder)
   if [[ -n "$rust_version" && "$is_rust_dir" != "e" ]]; then
