@@ -172,6 +172,14 @@ prompt_dir() {
     esac
   fi
 
+  # fall back to other strategy because the truncate_with_package_name or
+  # truncate_with_folder_marker did not work
+  if [[ ${#P9K_DIR_SHORTEN_STRATEGY_FALLBACK} > 0 && -z "${packageName}" && -z ${shortenedFolder} ]]; then
+    P9K_DIR_SHORTEN_STRATEGY=${P9K_DIR_SHORTEN_STRATEGY_FALLBACK[1]} \
+      P9K_DIR_SHORTEN_STRATEGY_FALLBACK=($P9K_DIR_SHORTEN_STRATEGY_FALLBACK[2,-1]) prompt_dir $@
+    return
+  fi
+
   # save state of path for highlighting and bold options
   local path_opt=$current_path
 
