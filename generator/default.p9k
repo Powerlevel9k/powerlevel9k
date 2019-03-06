@@ -221,7 +221,7 @@ function __p9k_right_prompt_segment() {
 #   $7 string The condition - if the segment should be shown (gets evaluated)
 #   $8 string Visual identifier overide - *must* be a named icon string
 ##
-__P9K_SINGLE_SEGMENT_RESULT
+__P9K_SINGLE_SEGMENT_RESULT=''
 function p9k::prepare_segment() {
   local STATEFUL_NAME="${${(U)1}#PROMPT_}"
   [[ -n "${2}" ]] && STATEFUL_NAME="${STATEFUL_NAME}_${(U)2}"
