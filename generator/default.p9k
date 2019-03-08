@@ -221,7 +221,7 @@ function __p9k_right_prompt_segment() {
 #   $7 string The condition - if the segment should be shown (gets evaluated)
 #   $8 string Visual identifier overide - *must* be a named icon string
 ##
-__P9K_SINGLE_SEGMENT_RESULT=''
+__P9K_DATA[SEGMENT_RESULT]=''
 function p9k::prepare_segment() {
   local STATEFUL_NAME="${${(U)1}#PROMPT_}"
   [[ -n "${2}" ]] && STATEFUL_NAME="${STATEFUL_NAME}_${(U)2}"
@@ -242,7 +242,7 @@ function p9k::prepare_segment() {
     fi
   fi
 
-  __P9K_SINGLE_SEGMENT_RESULT="${STATEFUL_NAME}·|·${3}·|·${4}·|·${5}·|·${6}·|·${SEGMENT_ICON}·|·${shouldPrint}"
+  __P9K_DATA[SEGMENT_RESULT]="${STATEFUL_NAME}·|·${3}·|·${4}·|·${5}·|·${6}·|·${SEGMENT_ICON}·|·${shouldPrint}"
 }
 
 ################################################################
@@ -282,7 +282,7 @@ function __p9k_async_wrapper() {
   shift
   ${command} "$@"
 
-  echo "${__P9K_SINGLE_SEGMENT_RESULT}"
+  echo "${__P9K_DATA[SEGMENT_RESULT]}"
 }
 
 ################################################################
@@ -328,7 +328,7 @@ function __p9k_build_segment_cache() {
       __p9k_segment_cache["${cache_key}"]="${segment}·|·${alignment}·|·${index}·|·${joined}·|·…·|··|·true"
     elif ${custom}; then
       __p9k_prompt_custom "${alignment}" "${index}" "${joined}" "${segment}"
-      __p9k_segment_cache["${cache_key}"]="${__P9K_SINGLE_SEGMENT_RESULT}"
+      __p9k_segment_cache["${cache_key}"]="${__P9K_DATA[SEGMENT_RESULT]}"
     elif ${async}; then
       async_job "__p9k_async_worker" "__p9k_async_wrapper" "prompt_${segment}" "${alignment}" "${index}" "${joined}"
 
@@ -337,7 +337,7 @@ function __p9k_build_segment_cache() {
     else
       # TODO: Skip computation if cache is fresh for some segments?
       prompt_${segment} "${alignment}" "$index" "${joined}"
-      __p9k_segment_cache["${cache_key}"]="${__P9K_SINGLE_SEGMENT_RESULT}"
+      __p9k_segment_cache["${cache_key}"]="${__P9K_DATA[SEGMENT_RESULT]}"
     fi
 
     index=$((index + 1))
