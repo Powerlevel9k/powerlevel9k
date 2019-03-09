@@ -323,7 +323,7 @@ prompt_aws() {
 ################################################################
 # Current Elastic Beanstalk environment
 prompt_aws_eb_env() {
-  local eb_env=$(grep environment .elasticbeanstalk/config.yml 2> /dev/null | awk '{print $2}')
+  local eb_env=$(grep --color=never environment .elasticbeanstalk/config.yml 2> /dev/null | awk '{print $2}')
 
   if [[ -n "$eb_env" ]]; then
     "$1_prompt_segment" "$0" "$2" black green "$eb_env" 'AWS_EB_ICON'
@@ -431,7 +431,7 @@ prompt_battery() {
     # obtain battery information from system
     local raw_data="$(${ROOT_PREFIX}/usr/bin/pmset -g batt | awk 'FNR==2{print}')"
     # return if there is no battery on system
-    [[ -z $(echo $raw_data | grep "InternalBattery") ]] && return
+    [[ -z $(echo $raw_data | grep --color=never "InternalBattery") ]] && return
 
     # Time remaining on battery operation (charging/discharging)
     local tstring=$(echo $raw_data | awk -F ';' '{print $3}' | awk '{print $1}')
@@ -440,7 +440,7 @@ prompt_battery() {
 
     # percent of battery charged
     typeset -i 10 bat_percent
-    bat_percent=$(echo $raw_data | grep -o '[0-9]*%' | sed 's/%//')
+    bat_percent=$(echo $raw_data | grep --color=never -o '[0-9]*%' | sed 's/%//')
 
     local remain=""
     # Logic for string output
@@ -932,7 +932,7 @@ prompt_dir() {
 
         local packageName=$(jq '.name' ${pkgFile} 2> /dev/null \
           || node -e 'console.log(require(process.argv[1]).name);' ${pkgFile} 2>/dev/null \
-          || cat "${pkgFile}" 2> /dev/null | grep -m 1 "\"name\"" | awk -F ':' '{print $2}' | awk -F '"' '{print $2}' 2>/dev/null \
+          || cat "${pkgFile}" 2> /dev/null | grep --color=never -m 1 "\"name\"" | awk -F ':' '{print $2}' | awk -F '"' '{print $2}' 2>/dev/null \
           )
         if [[ -n "${packageName}" ]]; then
           # Instead of printing out the full path, print out the name of the package
@@ -1077,7 +1077,7 @@ prompt_history() {
 prompt_detect_virt() {
   local virt=$(systemd-detect-virt 2> /dev/null)
   if [[ "$virt" == "none" ]]; then
-    if [[ "$(ls -di / | grep -o 2)" != "2" ]]; then
+    if [[ "$(ls -di / | grep --color=never -o 2)" != "2" ]]; then
       virt="chroot"
     fi
   fi
@@ -1166,7 +1166,7 @@ prompt_load() {
 
   case "$OS" in
     OSX|BSD)
-      load_avg=$(sysctl vm.loadavg | grep -o -E '[0-9]+(\.|,)[0-9]+' | sed -n ${load_select}p)
+      load_avg=$(sysctl vm.loadavg | grep --color=never -o -E '[0-9]+(\.|,)[0-9]+' | sed -n ${load_select}p)
       if [[ "$OS" == "OSX" ]]; then
         cores=$(sysctl -n hw.logicalcpu)
       else
@@ -1236,7 +1236,7 @@ prompt_os_icon() {
 # Segment to display PHP version number
 prompt_php_version() {
   local php_version
-  php_version=$(php -v 2>&1 | grep -oe "^PHP\s*[0-9.]*")
+  php_version=$(php -v 2>&1 | grep --color=never -oe "^PHP\s*[0-9.]*")
 
   if [[ -n "$php_version" ]]; then
     "$1_prompt_segment" "$0" "$2" "fuchsia" "grey93" "$php_version"
@@ -1252,15 +1252,15 @@ prompt_ram() {
   if [[ "$OS" == "OSX" ]]; then
     # Available = Free + Inactive
     # See https://support.apple.com/en-us/HT201538
-    ramfree=$(vm_stat | grep "Pages free" | grep -o -E '[0-9]+')
-    ramfree=$((ramfree + $(vm_stat | grep "Pages inactive" | grep -o -E '[0-9]+')))
+    ramfree=$(vm_stat | grep --color=never "Pages free" | grep --color=never -o -E '[0-9]+')
+    ramfree=$((ramfree + $(vm_stat | grep --color=never "Pages inactive" | grep --color=never -o -E '[0-9]+')))
     # Convert pages into Bytes
     ramfree=$(( ramfree * 4096 ))
   else
     if [[ "$OS" == "BSD" ]]; then
-      ramfree=$(grep 'avail memory' ${ROOT_PREFIX}/var/run/dmesg.boot | awk '{print $4}')
+      ramfree=$(grep --color=never 'avail memory' ${ROOT_PREFIX}/var/run/dmesg.boot | awk '{print $4}')
     else
-      ramfree=$(grep -o -E "MemAvailable:\s+[0-9]+" ${ROOT_PREFIX}/proc/meminfo | grep -o -E "[0-9]+")
+      ramfree=$(grep --color=never -o -E "MemAvailable:\s+[0-9]+" ${ROOT_PREFIX}/proc/meminfo | grep --color=never -o -E "[0-9]+")
       base='K'
     fi
   fi
@@ -1433,17 +1433,17 @@ prompt_swap() {
 
   if [[ "$OS" == "OSX" ]]; then
     local raw_swap_used
-    raw_swap_used=$(sysctl vm.swapusage | grep -o "used\s*=\s*[0-9,.A-Z]*" | grep -o "[0-9,.A-Z]*$")
+    raw_swap_used=$(sysctl vm.swapusage | grep --color=never -o "used\s*=\s*[0-9,.A-Z]*" | grep --color=never -o "[0-9,.A-Z]*$")
 
     typeset -F 2 swap_used
-    swap_used=${$(echo $raw_swap_used | grep -o "[0-9,.]*")//,/.}
+    swap_used=${$(echo $raw_swap_used | grep --color=never -o "[0-9,.]*")//,/.}
     # Replace comma
     swap_used=${swap_used//,/.}
 
-    base=$(echo "$raw_swap_used" | grep -o "[A-Z]*$")
+    base=$(echo "$raw_swap_used" | grep --color=never -o "[A-Z]*$")
   else
-    swap_total=$(grep -o -E "SwapTotal:\s+[0-9]+" ${ROOT_PREFIX}/proc/meminfo | grep -o -E "[0-9]+")
-    swap_free=$(grep -o -E "SwapFree:\s+[0-9]+" ${ROOT_PREFIX}/proc/meminfo | grep -o -E "[0-9]+")
+    swap_total=$(grep --color=never -o -E "SwapTotal:\s+[0-9]+" ${ROOT_PREFIX}/proc/meminfo | grep --color=never -o -E "[0-9]+")
+    swap_free=$(grep --color=never -o -E "SwapFree:\s+[0-9]+" ${ROOT_PREFIX}/proc/meminfo | grep --color=never -o -E "[0-9]+")
     swap_used=$(( swap_total - swap_free ))
     base='K'
   fi
@@ -1456,8 +1456,8 @@ prompt_swap() {
 prompt_symfony2_tests() {
   if [[ (-d src && -d app && -f app/AppKernel.php) ]]; then
     local code_amount tests_amount
-    code_amount=$(ls -1 src/**/*.php | grep -vc Tests)
-    tests_amount=$(ls -1 src/**/*.php | grep -c Tests)
+    code_amount=$(ls -1 src/**/*.php | grep --color=never -vc Tests)
+    tests_amount=$(ls -1 src/**/*.php | grep --color=never -c Tests)
 
     build_test_stats "$1" "$0" "$2" "$code_amount" "$tests_amount" "SF2" 'TEST_ICON'
   fi
@@ -1468,7 +1468,7 @@ prompt_symfony2_tests() {
 prompt_symfony2_version() {
   if [[ -f app/bootstrap.php.cache ]]; then
     local symfony2_version
-    symfony2_version=$(grep " VERSION " app/bootstrap.php.cache | sed -e 's/[^.0-9]*//g')
+    symfony2_version=$(grep --color=never " VERSION " app/bootstrap.php.cache | sed -e 's/[^.0-9]*//g')
     "$1_prompt_segment" "$0" "$2" "grey35" "$DEFAULT_COLOR" "$symfony2_version" 'SYMFONY_ICON'
   fi
 }
@@ -1509,7 +1509,7 @@ prompt_date() {
 # todo.sh: shows the number of tasks in your todo.sh file
 prompt_todo() {
   if $(hash todo.sh 2>&-); then
-    count=$(todo.sh ls | egrep "TODO: [0-9]+ of ([0-9]+) tasks shown" | awk '{ print $4 }')
+    count=$(todo.sh ls | egrep --color=never "TODO: [0-9]+ of ([0-9]+) tasks shown" | awk '{ print $4 }')
     if [[ "$count" = <-> ]]; then
       "$1_prompt_segment" "$0" "$2" "grey50" "$DEFAULT_COLOR" "$count" 'TODO_ICON'
     fi
@@ -1674,7 +1674,7 @@ prompt_openfoam() {
 # Segment to display Swift version
 prompt_swift_version() {
   # Get the first number as this is probably the "main" version number..
-  local swift_version=$(swift --version 2>/dev/null | grep -o -E "[0-9.]+" | head -n 1)
+  local swift_version=$(swift --version 2>/dev/null | grep --color=never -o -E "[0-9.]+" | head -n 1)
   [[ -z "${swift_version}" ]] && return
 
   "$1_prompt_segment" "$0" "$2" "magenta" "white" "${swift_version}" 'SWIFT_ICON'
