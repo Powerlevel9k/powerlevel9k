@@ -92,7 +92,7 @@ function __p9k_left_prompt_segment() {
 
   # Print the visual identifier and content if any
   local visual_identifier
-  [[ -n "${SEGMENT_ICON}" ]] && visual_identifier="$__P9K_DATA[${STATEFUL_NAME}_VI]${SEGMENT_ICON}%f"
+  [[ -n "${SEGMENT_ICON}" ]] && visual_identifier="$__P9K_DATA[${STATEFUL_NAME}_VI]${SEGMENT_ICON}"
   [[ -n "${content}" ]] && content="${fg}${content}"
   [[ -n "${visual_identifier}" && -n "${content}" ]] && visual_identifier="${visual_identifier}${middle_ws}"
   echo -n "${visual_identifier}${content}${right_ws}"

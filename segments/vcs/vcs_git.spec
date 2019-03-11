@@ -118,7 +118,7 @@ function testColorOverridingForUntrackedStateWorks() {
 
   touch testfile
 
-  assertEquals "%K{003} %F{006}?%f %F{006} master ? %k%F{003}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{003} %F{006}? %F{006} master ? %k%F{003}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testGitIconWorks() {
@@ -126,7 +126,7 @@ function testGitIconWorks() {
   local P9K_VCS_GIT_ICON='Git-icon'
   source "${P9K_HOME}/segments/vcs/vcs.p9k"
 
-  assertEquals "%K{002} %F{000}Git-icon%f %F{000} master %k%F{002}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{002} %F{000}Git-icon %F{000} master %k%F{002}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testGitlabIconWorks() {
@@ -139,7 +139,7 @@ function testGitlabIconWorks() {
   # sufficient to show the GitLab-specific icon.
   git remote add origin https://gitlab.com/dritter/gitlab-test-project.git
 
-  assertEquals "%K{002} %F{000}GL-icon%f %F{000} master %k%F{002}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{002} %F{000}GL-icon %F{000} master %k%F{002}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testBitbucketIconWorks() {
@@ -152,7 +152,7 @@ function testBitbucketIconWorks() {
   # sufficient to show the BitBucket-specific icon.
   git remote add origin https://dritter@bitbucket.org/dritter/dr-test.git
 
-  assertEquals "%K{002} %F{000}BB-icon%f %F{000} master %k%F{002}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{002} %F{000}BB-icon %F{000} master %k%F{002}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testGitHubIconWorks() {
@@ -165,7 +165,7 @@ function testGitHubIconWorks() {
   # sufficient to show the GitHub-specific icon.
   git remote add origin https://github.com/dritter/test.git
 
-  assertEquals "%K{002} %F{000}GH-icon%f %F{000} master %k%F{002}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{002} %F{000}GH-icon %F{000} master %k%F{002}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testUntrackedFilesIconWorks() {
@@ -176,7 +176,7 @@ function testUntrackedFilesIconWorks() {
   # Create untracked file
   touch "i-am-untracked.txt"
 
-  assertEquals "%K{002} %F{000}?%f %F{000} master ? %k%F{002}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{002} %F{000}? %F{000} master ? %k%F{002}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testStagedFilesIconWorks() {
@@ -365,10 +365,10 @@ function testBranchNameTruncatingShortenLength() {
 
   touch testfile
 
-  assertEquals "%K{002} %F{000}?%f %F{000} master ? %k%F{002}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{002} %F{000}? %F{000} master ? %k%F{002}%f " "$(__p9k_build_left_prompt)"
 
   local P9K_VCS_SHORTEN_LENGTH=3
-  assertEquals "%K{002} %F{000}?%f %F{000} mas… ? %k%F{002}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{002} %F{000}? %F{000} mas… ? %k%F{002}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testBranchNameTruncatingMinLength() {
@@ -381,11 +381,11 @@ function testBranchNameTruncatingMinLength() {
 
   touch testfile
 
-  assertEquals "%K{002} %F{000}?%f %F{000} master ? %k%F{002}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{002} %F{000}? %F{000} master ? %k%F{002}%f " "$(__p9k_build_left_prompt)"
 
   local P9K_VCS_SHORTEN_MIN_LENGTH=7
 
-  assertEquals "%K{002} %F{000}?%f %F{000} master ? %k%F{002}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{002} %F{000}? %F{000} master ? %k%F{002}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testBranchNameTruncatingShortenStrategy() {
@@ -398,11 +398,11 @@ function testBranchNameTruncatingShortenStrategy() {
 
   touch testfile
 
-  assertEquals "%K{002} %F{000}?%f %F{000} mas… ? %k%F{002}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{002} %F{000}? %F{000} mas… ? %k%F{002}%f " "$(__p9k_build_left_prompt)"
 
   local P9K_VCS_SHORTEN_STRATEGY="truncate_middle"
 
-  assertEquals "%K{002} %F{000}?%f %F{000} mas…ter ? %k%F{002}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{002} %F{000}? %F{000} mas…ter ? %k%F{002}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testRemoteBranchNameIdenticalToTag() {
@@ -511,7 +511,7 @@ function testDetectingUntrackedFilesInSubmodulesWork() {
   touch "i-am-untracked.txt"
   cd -
 
-  assertEquals "%K{002} %F{000}?%f %F{000} master ? %k%F{002}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{002} %F{000}? %F{000} master ? %k%F{002}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testDetectinUntrackedFilesInMainRepoWithDirtySubmodulesWork() {
@@ -536,7 +536,7 @@ function testDetectinUntrackedFilesInMainRepoWithDirtySubmodulesWork() {
   # Create untracked file
   touch "i-am-untracked.txt"
 
-  assertEquals "%K{002} %F{000}?%f %F{000} master ? %k%F{002}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{002} %F{000}? %F{000} master ? %k%F{002}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testDetectingUntrackedFilesInNestedSubmodulesWork() {
@@ -578,7 +578,7 @@ function testDetectingUntrackedFilesInNestedSubmodulesWork() {
   touch "i-am-untracked.txt"
   cd -
 
-  assertEquals "%K{002} %F{000}?%f %F{000} master ? %k%F{002}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{002} %F{000}? %F{000} master ? %k%F{002}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testDetectingUntrackedFilesInCleanSubdirectoryWorks() {
@@ -600,7 +600,7 @@ function testDetectingUntrackedFilesInCleanSubdirectoryWorks() {
   touch dirty-folder/new-file.txt
   cd clean-folder
 
-  assertEquals "%K{002} %F{000}?%f %F{000} master ? %k%F{002}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{002} %F{000}? %F{000} master ? %k%F{002}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testBranchNameScriptingVulnerability() {

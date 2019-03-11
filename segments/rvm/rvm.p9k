@@ -25,9 +25,11 @@
 #   $3 boolean Whether the segment should be joined
 ##
 prompt_rvm() {
-  local version_and_gemset=${rvm_env_string/ruby-}
+  if [ $commands[rvm-prompt] ]; then
+    local version_and_gemset=${$(rvm-prompt v p)/ruby-}
 
-  if [[ -n "$version_and_gemset" ]]; then
-    p9k::prepare_segment "$0" "" $1 "$2" $3 "$version_and_gemset"
+    if [[ -n "$version_and_gemset" ]]; then
+      p9k::prepare_segment "$0" "" $1 "$2" $3 "$version_and_gemset"
+    fi
   fi
 }

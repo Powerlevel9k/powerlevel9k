@@ -32,6 +32,7 @@
 #   $1 string Alignment - left | right
 #   $2 integer Segment index
 #   $3 boolean Whether the segment should be joined
+#   $4 Root Prefix: string - Root prefix for testing purposes
 ##
 prompt_battery() {
   local ROOT_PREFIX="${4}"

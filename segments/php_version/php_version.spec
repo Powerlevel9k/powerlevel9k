@@ -33,7 +33,7 @@ Copyright (c) 1997-2016 The PHP Group
 Zend Engine v2.6.0, Copyright (c) 1998-2016 Zend Technologies
 '"
 
-  assertEquals "%K{013} %F{255}PHP%f %F{255}5.6.27 %k%F{013}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{013} %F{255}PHP %F{255}5.6.27 %k%F{013}%f " "$(__p9k_build_left_prompt)"
 
   unalias php
 }

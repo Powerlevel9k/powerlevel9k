@@ -27,11 +27,13 @@
 #   $1 string Alignment - left | right
 #   $2 integer Segment index
 #   $3 boolean Whether the segment should be joined
+#   $4 Root Prefix: string - Root prefix for testing purposes
 ##
 prompt_vpn_ip() {
-  for vpn_iface in $(/sbin/ifconfig | grep -e ^"$P9K_VPN_IP_INTERFACE" | cut -d":" -f1)
-  do
-    ip=$(/sbin/ifconfig "$vpn_iface" | grep -o "inet\s.*" | cut -d' ' -f2)
+  local ROOT_PREFIX="${4}"
+  local ip=$(p9k::parseIp "${P9K_VPN_IP_INTERFACE}" "${ROOT_PREFIX}")
+
+  if [[ -n "${ip}" ]]; then
     p9k::prepare_segment "$0" "" $1 "$2" $3 "$ip"
-  done
+  fi
 }
