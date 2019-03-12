@@ -28,22 +28,22 @@
 #   Only prints the segment if different than the default value.
 ##
 prompt_nvm() {
-  local node_version nvm_default is_system
-  is_system=false
-  (( $+functions[nvm_version] )) || return
+  local node_version
+  local is_system=false
 
-  node_version=$(nvm_version current)
-  [[ -z "${node_version}" || ${node_version} == "none" ]] && return
-  if [[ "$node_version" == "system" ]]; then
-    node_version="$($(nvm which system) --version)"
-    is_system=true
+  node_version=$(nvm_version current 2>/dev/null)
+  if [[ -n "${node_version}" && ${node_version} != "none" ]]; then
+    if [[ "$node_version" == "system" ]]; then
+      node_version="$($(nvm which system) --version)"
+      is_system=true
+    fi
+    
+    local nvm_default=$(nvm_version default)
+    [[ "$node_version" == "$nvm_default" ]] && node_version=""
+
+    [[ "${node_version}" =~ "^v([0-9.]+)" ]] && node_version="${match[1]}"
+    [[ "$is_system" == true ]] && node_version="$node_version system"
   fi
-  
-  nvm_default=$(nvm_version default)
-  [[ "$node_version" =~ "$nvm_default" ]] && return
-
-  [[ "${node_version}" =~ "^v([0-9.]+)" ]] && node_version="${match[1]}"
-  [[ "$is_system" == true ]] && node_version="$node_version system"
 
   p9k::prepare_segment "$0" "" $1 "$2" $3 "$node_version"
 }
