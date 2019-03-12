@@ -284,10 +284,7 @@ function __p9k_prompt_custom() {
   local segment_content="$(eval ${(P)command})"
 
   p9k::register_segment "${STATEFUL_NAME}" "" "white" "black"
-
-  if [[ -n "${segment_content}" ]]; then
-    p9k::prepare_segment "${STATEFUL_NAME}" "" "${1}" "${2}" "${3}" "${segment_content}"
-  fi
+  p9k::prepare_segment "${STATEFUL_NAME}" "" "${1}" "${2}" "${3}" "${segment_content}"
 }
 
 ###############################################################
