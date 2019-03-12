@@ -234,6 +234,11 @@ function __p9k_load_segments() {
 
       # Custom segments must be loaded by user
       if p9k::segment_is_tagged_as "custom" "${segment}"; then
+        local STATEFUL_NAME="CUSTOM_${${(U)segment}}"
+        local command="P9K_${STATEFUL_NAME}"
+
+        p9k::register_segment "${STATEFUL_NAME}" "" "white" "black"
+
         continue
       fi
 
