@@ -45,7 +45,9 @@ prompt_battery() {
     # use only second line
     raw_data=${raw_data[2]}
     # return if there is no battery on system
-    [[ ! $raw_data =~ "InternalBattery" ]] && return
+    [[ ! $raw_data =~ "InternalBattery" ]] && \
+        p9k::segment_no_print "${0}" "" "${1}" "${2}" "${3}" && \
+        return
 
     # Time remaining on battery operation (charging/discharging)
     local tstring=${${(s: :)${${(s:; :)raw_data}[3]}}[1]}
@@ -107,7 +109,7 @@ prompt_battery() {
       3) current_state='charged';;
       4 | 5) current_state='low';;
       6 | 7 | 8 | 9 | 11) current_state='charging';;
-      10 | *) return;;
+      10 | *) p9k::segment_no_print "${0}" "${(U)current_state}" "${1}" "${2}" "${3}" && return;;
     esac
   fi
 
@@ -116,7 +118,7 @@ prompt_battery() {
     local sysp="${ROOT_PREFIX}/sys/class/power_supply"
     local -a bats
     bats=( $sysp/(BAT*|battery)(N) )
-    [[ ${#bats} == 0 ]] && return
+    [[ ${#bats} == 0 ]] && p9k::segment_no_print "${0}" "${(U)current_state}" "${1}" "${2}" "${3}" && return
 
     local energy_now="0"
     local energy_full="0"
@@ -192,7 +194,7 @@ prompt_battery() {
 
   # return if P9K_BATTERY_HIDE_ABOVE_THRESHOLD is set and the battery percentage is greater or equal
   if p9k::defined P9K_BATTERY_HIDE_ABOVE_THRESHOLD && [[ "${bat_percent}" -ge $P9K_BATTERY_HIDE_ABOVE_THRESHOLD ]]; then
-    return
+    p9k::segment_no_print "${0}" "${(U)current_state}" "${1}" "${2}" "${3}" && return
   fi
 
   local message

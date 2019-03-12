@@ -247,6 +247,28 @@ function p9k::prepare_segment() {
 
 ################################################################
 # @description
+#   Helper function to enable early exit for segments.
+##
+# @args
+#   $1 string Name of the function that was originally invoked (mandatory)
+#   $2 string State of the segment
+#   $3 string Alignment (left|right)
+#   $4 integer Index of the segment
+#   $5 bool Whether the segment should be joined
+##
+function p9k::segment_no_print() {
+  local STATEFUL_NAME="${${(U)1}#PROMPT_}"
+  [[ -n "${2}" ]] && STATEFUL_NAME="${STATEFUL_NAME}_${(U)2}"
+
+  local alignment="${3}"
+  local index="${4}"
+  local joined="${5}"
+
+  __P9K_DATA[SEGMENT_RESULT]="${STATEFUL_NAME}·|·${alignment}·|·${index}·|·${joined}·|··|··|·false"
+}
+
+################################################################
+# @description
 #   The `custom` prompt provides a way for users to invoke commands and display
 #   the output in a segment.
 ##
