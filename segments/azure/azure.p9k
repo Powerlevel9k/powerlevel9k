@@ -28,7 +28,7 @@
 ##
 prompt_azure() {
   if [ $commands[az] ]; then
-    local az_account="$(az account show | python -c 'import sys, json; print json.load(sys.stdin)["name"]')"
+    local az_account="$(az account show --query name -o tsv)"
     if [[ -n "$az_account" ]]; then
       p9k::prepare_segment "$0" "" $1 "$2" $3 "${az_account}"
     fi
