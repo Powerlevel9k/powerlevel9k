@@ -28,5 +28,5 @@ prompt_nodeenv() {
   local info="$(node -v)[${NODE_VIRTUAL_ENV:t}]"
 
   p9k::prepare_segment "$0" "" $1 "$2" $3 "$info" \
-      "[[ -n \"${NODE_VIRTUAL_ENV}\" && \"${NODE_VIRTUAL_ENV_DISABLE_PROMPT}\" != \"true\" ]]"
+      "[[ -n \"${NODE_VIRTUAL_ENV}\" ]]"
 }

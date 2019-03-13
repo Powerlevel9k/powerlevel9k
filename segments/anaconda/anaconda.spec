@@ -40,7 +40,7 @@ function testAnacondaSegmentWorksIfOnlyAnacondaPathIsSet() {
   unset CONDA_PREFIX
   __p9k_build_segment_cache "left"
 
-  assertEquals "%K{004} %F{000}icon-here%f %F{000}(tmp) %k%F{004}%f " "${__p9k_unsafe[left]}"
+  assertEquals "%K{004} %F{000}icon-here %F{000}(tmp) %k%F{004}%f " "${__p9k_unsafe[left]}"
 }
 
 function testAnacondaSegmentWorksIfOnlyAnacondaPrefixIsSet() {
@@ -55,7 +55,7 @@ function testAnacondaSegmentWorksIfOnlyAnacondaPrefixIsSet() {
   local CONDA_PREFIX="test"
   __p9k_build_segment_cache "left"
 
-  assertEquals "%K{004} %F{000}icon-here%f %F{000}(test) %k%F{004}%f " "${__p9k_unsafe[left]}"
+  assertEquals "%K{004} %F{000}icon-here %F{000}(test) %k%F{004}%f " "${__p9k_unsafe[left]}"
 }
 
 function testAnacondaSegmentWorks() {
@@ -70,7 +70,7 @@ function testAnacondaSegmentWorks() {
   local CONDA_PREFIX="test"
   __p9k_build_segment_cache "left"
 
-  assertEquals "%K{004} %F{000}icon-here%f %F{000}(tmptest) %k%F{004}%f " "${__p9k_unsafe[left]}"
+  assertEquals "%K{004} %F{000}icon-here %F{000}(tmptest) %k%F{004}%f " "${__p9k_unsafe[left]}"
 }
 
 source shunit2/shunit2

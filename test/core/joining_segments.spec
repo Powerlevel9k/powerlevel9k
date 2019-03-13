@@ -96,7 +96,7 @@ function testLeftJoiningBuiltinSegmentWorks() {
   alias php="echo PHP 1.2.3 "
   source segments/php_version/php_version.p9k
 
-  assertEquals "%K{013} %F{255}PHP%f %F{255}1.2.3 %F{255}PHP%f %F{255}1.2.3 %k%F{013}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{013} %F{255}PHP %F{255}1.2.3 %F{255}PHP %F{255}1.2.3 %k%F{013}%f " "$(__p9k_build_left_prompt)"
 
   unalias php
 }

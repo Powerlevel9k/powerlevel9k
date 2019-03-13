@@ -22,3 +22,8 @@ P9K_NODEENV_BACKGROUND='blue'
 
 The main Icon can be changed by setting `P9K_NODEENV_ICON="my_icon"`. To change the
 icon color only, set `P9K_NODEENV_ICON_COLOR="red"`.
+
+### Caveat
+
+To avoid Nodeenvs activate command from interfering with Powerlevel9k, you should
+set `NODE_VIRTUAL_ENV_DISABLE_PROMPT=1` in your `~/.zshrc`.

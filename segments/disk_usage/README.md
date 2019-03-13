@@ -21,10 +21,10 @@ The `disk_usage` segment will show the usage level of the partition that your cu
 
 | Variable | Default Value | Description |
 |----------|---------------|-------------|
-|P9K_DISK_USAGE_ONLY_WARNING|false|Hide the segment except when usage levels have hit warning or critical levels.|
-|P9K_DISK_USAGE_WARNING_LEVEL|90|The usage level that triggers a warning state.|
-|P9K_DISK_USAGE_CRITICAL_LEVEL|95|The usage level that triggers a critical state.|
-|P9K_DISK_USAGE_PATH|`.` (working directory)|Set a path to use a fixed directory instead of the working
+|`P9K_DISK_USAGE_ONLY_WARNING`|false|Hide the segment except when usage levels have hit warning or critical levels.|
+|`P9K_DISK_USAGE_WARNING_LEVEL`|90|The usage level that triggers a warning state.|
+|`P9K_DISK_USAGE_CRITICAL_LEVEL`|95|The usage level that triggers a critical state.|
+|`P9K_DISK_USAGE_PATH`|`.` (working directory)|Set a path to use a fixed directory instead of the working
 
 ### Color Customization
 

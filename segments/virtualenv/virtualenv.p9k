@@ -28,6 +28,5 @@
 #   [virtualenv (Python)](https://virtualenv.pypa.io/en/latest/)
 #   for more information.
 prompt_virtualenv() {
-  p9k::prepare_segment "$0" "" $1 "$2" $3 "${VIRTUAL_ENV:t}" \
-      "[[ -n \"${VIRTUAL_ENV}\" && \"${VIRTUAL_ENV_DISABLE_PROMPT}\" != \"true\" ]]"
+  p9k::prepare_segment "$0" "" $1 "$2" $3 "${VIRTUAL_ENV:t}"
 }
