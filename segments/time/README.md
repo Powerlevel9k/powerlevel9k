@@ -13,6 +13,8 @@ where you want to show this segment.
 | Variable | Default Value | Description |
 |----------|---------------|-------------|
 |`P9K_TIME_FORMAT`|`'H:M:S'`|ZSH time format to use in this segment.|
+|`P9K_TIME_REALTIME`|`false`|Enabling this option will update your prompt every `P9K_TIME_REALTIME_DELAY` seconds to display the current time. Note: This will trigger a `.reset-prompt` and can lead to side effects like history getting "stuck" or suggestions disappearing. |
+|`P9K_TIME_REALTIME_DELAY`|`60`|This only takes effect if `P9K_TIME_REALTIME` is `true` and is used to set the delay between updates.|
 
 As an example, if you wanted a reversed time format, you would use this:
 ```zsh
