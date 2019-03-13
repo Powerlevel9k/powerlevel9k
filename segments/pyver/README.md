@@ -10,7 +10,7 @@ where you want to show this segment.
 
 ## Configuration
 
-This segment shows the version of Python being currently used when calling `python`
+Similar to the `pyenv` segment, this segment shows the version of Python being currently used when calling `python`, without the use of any external python module
 
 * If the current Python version is the same as the global Python version, nothing will be shown.
 
