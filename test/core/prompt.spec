@@ -163,7 +163,7 @@ function testCustomWhitespaceOfSegments() {
   local P9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS="_[R]_"
   local P9K_MIDDLE_WHITESPACE_OF_RIGHT_SEGMENTS="_[M]_"
 
-  assertEquals "%K{015}_[L]_%F{000}{1}%f_[M]_%F{000}world1_[L]__[L]_%F{000}world2_[L]__[L]_%F{000}{3}%f_[M]_%F{000}world3_[L]_%k%F{015}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{015}_[L]_%F{000}{1}_[M]_%F{000}world1_[L]__[L]_%F{000}world2_[L]__[L]_%F{000}{3}_[M]_%F{000}world3_[L]_%k%F{015}%f " "$(__p9k_build_left_prompt)"
   assertEquals "%F{015}%K{015}%F{000}_[R]_world1_[M]_%F{000}{1}%f_[R]_%F{000}%K{015}%F{000}_[R]_world2_[R]_%F{000}%K{015}%F{000}_[R]_world3_[M]_%F{000}{3}%f_[R]" "$(stripEsc "$(__p9k_build_right_prompt)")"
 }
 
@@ -189,7 +189,7 @@ function testCustomWhitespaceOfLeftAndRightSegments() {
   local P9K_MIDDLE_WHITESPACE_OF_RIGHT_SEGMENTS="_[RM]_"
   local P9K_RIGHT_WHITESPACE_OF_RIGHT_SEGMENTS="_[RR]_"
 
-  assertEquals "%K{015}_[LL]_%F{000}{1}%f_[LM]_%F{000}world1_[LR]__[LL]_%F{000}world2_[LR]__[LL]_%F{000}{3}%f_[LM]_%F{000}world3_[LR]_%k%F{015}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{015}_[LL]_%F{000}{1}_[LM]_%F{000}world1_[LR]__[LL]_%F{000}world2_[LR]__[LL]_%F{000}{3}_[LM]_%F{000}world3_[LR]_%k%F{015}%f " "$(__p9k_build_left_prompt)"
   assertEquals "%F{015}%K{015}%F{000}_[RL]_world1_[RM]_%F{000}{1}%f_[RR]_%F{000}%K{015}%F{000}_[RL]_world2_[RR]_%F{000}%K{015}%F{000}_[RL]_world3_[RM]_%F{000}{3}%f_[RR]" "$(stripEsc "$(__p9k_build_right_prompt)")"
 }
 
@@ -219,7 +219,7 @@ function testCustomWhitespaceOfCustomSegments() {
   local P9K_CUSTOM_WORLD3_MIDDLE_WHITESPACE="_[M3]_"
   local P9K_CUSTOM_WORLD3_RIGHT_WHITESPACE="_[R3]_"
 
-  assertEquals "%K{015}_[L1]_%F{000}{1}%f_[M1]_%F{000}world1_[R1]__[L2]_%F{000}world2_[R2]__[L3]_%F{000}{3}%f_[M3]_%F{000}world3_[R3]_%k%F{015}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{015}_[L1]_%F{000}{1}_[M1]_%F{000}world1_[R1]__[L2]_%F{000}world2_[R2]__[L3]_%F{000}{3}_[M3]_%F{000}world3_[R3]_%k%F{015}%f " "$(__p9k_build_left_prompt)"
   assertEquals "%F{015}%K{015}%F{000}_[L1]_world1_[M1]_%F{000}{1}%f_[R1]_%F{000}%K{015}%F{000}_[L2]_world2_[R2]_%F{000}%K{015}%F{000}_[L3]_world3_[M3]_%F{000}{3}%f_[R3]" "$(stripEsc "$(__p9k_build_right_prompt)")"
 }
 

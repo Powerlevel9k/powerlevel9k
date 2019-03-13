@@ -28,6 +28,7 @@ systems without a battery). It is supported on both OSX and Linux.
 |`P9K_BATTERY_LOW_THRESHOLD`|`10`|Threshold to consider battery level critical.|
 |`P9K_BATTERY_LOW_COLOR`|`"red"`|Color to indicate critically low charge level.|
 |`P9K_BATTERY_VERBOSE`|`true`|Display time remaining next to battery level.|
+|`P9K_BATTERY_HIDE_ABOVE_THRESHOLD`|`unset`|Threshold from which the battery segment should not be displayed.|
 
 Note that you can modify the `_FOREGROUND` color without affecting the icon color.
 
