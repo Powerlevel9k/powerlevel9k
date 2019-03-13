@@ -7,7 +7,6 @@
 #   This file contains some color-functions for powerlevel9k.
 ##
 
-typeset -gAh __P9K_COLORS
 # https://jonasjacek.github.io/colors/
 # use color names by default to allow dark/light themes to adjust colors based on names
 # http://plumbum.readthedocs.io/en/latest/colors.html

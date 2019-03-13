@@ -213,10 +213,25 @@ function p9k::defined() {
 #   for scalar values.
 ##
 function p9k::set_default() {
-  local varname="$1"
-  local default_value="$2"
+  emulate -L zsh
+  local -a flags=(-g)
+  while true; do
+    case $1 in
+      --) shift; break;;
+      -*) flags+=$1; shift;;
+      *) break;
+    esac
+  done
 
-  p9k::defined "$varname" || typeset -g "$varname"="$default_value"
+  local varname=$1
+  shift
+  if [[ -n ${(tP)varname} ]]; then
+    typeset $flags $varname
+  elif [[ "$flags" == *[aA]* ]]; then
+    eval "typeset ${(@q)flags} ${(q)varname}=(${(qq)@})"
+  else
+    typeset $flags $varname="$*"
+  fi
 }
 
 ###############################################################
