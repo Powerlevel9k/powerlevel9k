@@ -1,0 +1,42 @@
+# vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
+################################################################
+# @title powerlevel9k Segment - Python Version
+# @source [powerlevel9k](https://github.com/bhilburn/powerlevel9k)
+##
+
+(){
+  # Set the right locale to protect special characters
+  local LC_ALL="" LC_CTYPE="en_US.UTF-8"
+  ################################################################
+  # Register segment
+  # Parameters:
+  #   segment_name  context  background  foreground  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
+  #                                                                               🐍          
+  p9k::register_segment "PYVER" "" "blue" "$DEFAULT_COLOR" ''  $'\uE63C'  $'\uE63C'  $'\U1F40D'  $'\uE73C '
+
+  ################################################################
+  # Register segment default values
+  p9k::set_default P9K_PYVER_PROMPT_ALWAYS_SHOW false
+}
+
+################################################################
+# @description
+#   Display the current active python version (with restrictions).
+##
+# @args
+#   $1 string Alignment - left | right
+#   $2 integer Segment index
+#   $3 boolean Whether the segment should be joined
+##
+prompt_pyver() {
+  local python_version_local="$(python -c 'import sys; version=sys.version_info[:3]; print("{0}.{1}.{2}".format(*version))' | cut -d$'\n' -f1)"
+  local python_version_global="$(/usr/local/bin/python -c 'import sys; version=sys.version_info[:3]; print("{0}.{1}.{2}".format(*version))' | cut -d$'\n' -f1)"
+
+  if [[ "$python_version_local" != "$python_version_global" ]]; then
+     # "__p9k_$1_prompt_segment" "$0" "$2" "blue" "$DEFAULT_COLOR" "$python_version_local" 'PYTHON_ICON'
+      p9k::prepare_segment "$0" "" $1 "$2" $3 "${python_version_local}"
+    elif [[ "${P9K_PYVER_PROMPT_ALWAYS_SHOW}" == true ]]; then
+      # "__p9k_$1_prompt_segment" "$0" "$2" "blue" "$DEFAULT_COLOR" "$python_version_local" 'PYTHON_ICON'
+      p9k::prepare_segment "$0" "" $1 "$2" $3 "${python_version_local}"
+  fi
+}
