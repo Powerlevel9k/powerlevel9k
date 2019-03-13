@@ -33,10 +33,10 @@ prompt_pyver() {
   local python_version_global="$(/usr/local/bin/python -c 'import sys; version=sys.version_info[:3]; print("{0}.{1}.{2}".format(*version))' | cut -d$'\n' -f1)"
 
   if [[ "$python_version_local" != "$python_version_global" ]]; then
-     # "__p9k_$1_prompt_segment" "$0" "$2" "blue" "$DEFAULT_COLOR" "$python_version_local" 'PYTHON_ICON'
-      p9k::prepare_segment "$0" "" $1 "$2" $3 "${python_version_local}"
-    elif [[ "${P9K_PYVER_PROMPT_ALWAYS_SHOW}" == true ]]; then
-      # "__p9k_$1_prompt_segment" "$0" "$2" "blue" "$DEFAULT_COLOR" "$python_version_local" 'PYTHON_ICON'
-      p9k::prepare_segment "$0" "" $1 "$2" $3 "${python_version_local}"
+    # "__p9k_$1_prompt_segment" "$0" "$2" "blue" "$DEFAULT_COLOR" "$python_version_local" 'PYTHON_ICON'
+    p9k::prepare_segment "$0" "" $1 "$2" $3 "${python_version_local}"
+  elif [[ "${P9K_PYVER_PROMPT_ALWAYS_SHOW}" == true ]]; then
+    # "__p9k_$1_prompt_segment" "$0" "$2" "blue" "$DEFAULT_COLOR" "$python_version_local" 'PYTHON_ICON'
+    p9k::prepare_segment "$0" "" $1 "$2" $3 "${python_version_local}"
   fi
 }
