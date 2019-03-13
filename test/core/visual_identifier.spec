@@ -21,7 +21,7 @@ function testOverwritingIconsWork() {
   local P9K_CUSTOM_WORLD1='echo world1'
   local P9K_CUSTOM_WORLD1_ICON='icon-here'
 
-  assertEquals "%K{015} %F{000}icon-here%f %F{000}world1 %k%F{015}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{015} %F{000}icon-here %F{000}world1 %k%F{015}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testVisualIdentifierAppearsBeforeSegmentContentOnLeftSegments() {
@@ -31,7 +31,7 @@ function testVisualIdentifierAppearsBeforeSegmentContentOnLeftSegments() {
   local P9K_CUSTOM_WORLD1='echo world1'
   local P9K_CUSTOM_WORLD1_ICON='icon-here'
 
-  assertEquals "%K{015} %F{000}icon-here%f %F{000}world1 %k%F{015}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{015} %F{000}icon-here %F{000}world1 %k%F{015}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testVisualIdentifierAppearsAfterSegmentContentOnRightSegments() {
@@ -60,7 +60,7 @@ function testVisualIdentifierWorksWithUnicodeIcon() {
   local P9K_CUSTOM_WORLD1='echo world1'
   local P9K_CUSTOM_WORLD1_ICON='\u2714'
 
-  assertEquals "%K{015} %F{000}✔%f %F{000}world1 %k%F{015}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{015} %F{000}✔ %F{000}world1 %k%F{015}%f " "$(__p9k_build_left_prompt)"
 }
 
 source shunit2/shunit2

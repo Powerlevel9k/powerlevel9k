@@ -50,7 +50,7 @@ function testNvmSegmentWorksWithoutHavingADefaultAlias() {
     [[ ${1} == 'current' ]] && echo 'v4.6.0' || echo 'v1.4.0'
   }
 
-  assertEquals "%K{005} %F{000}⬢%f %F{000}4.6.0 %k%F{005}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{005} %F{000}⬢ %F{000}4.6.0 %k%F{005}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testNvmSegmentPrintsNothingWhenOnDefaultVersion() {
@@ -82,7 +82,7 @@ function testNvmSegmentAppendsSystemWhenUsingSystem() {
     [[ ${1} == 'current' ]] && echo 'system' || echo 'v1.4.0'
   }
 
-  assertEquals "%K{005} %F{000}⬢%f %F{000}11.3.0 system %k%F{005}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{005} %F{000}⬢ %F{000}11.3.0 system %k%F{005}%f " "$(__p9k_build_left_prompt)"
 }
 
 source shunit2/shunit2
