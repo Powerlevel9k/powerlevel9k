@@ -10,6 +10,7 @@ where you want to show this segment.
 
 | Variable | Default Value | Description |
 |----------|---------------|-------------|
+|`P9K_VARIABLE_NAME`|`LANG`|Change this to set the variable to read from|
 |`P9K_VARIABLE_SHOW_NAME`|`false`|Set to true if you wish to show the name of the variable|
 
 ### Color Customization

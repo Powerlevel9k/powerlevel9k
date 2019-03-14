@@ -107,6 +107,7 @@ The segments that are currently available are:
 * [`user`](segments/user/README.md) - Your current username
 * [`vi_mode`](segments/vi_mode/README.md)- Your prompt's Vi editing mode (NORMAL|INSERT).
 * [`ssh`](segments/ssh/README.md) - Indicates whether or not you are in an SSH session.
+* [`variable`](segments/variable/README.md) - Displays the value of a given variable.
 
 **Development Environment Segments:**
 * [`vcs`](segments/vcs/README.md) - Information about this `git` or `hg` repository (if you are in one).
