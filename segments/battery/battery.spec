@@ -7,6 +7,8 @@ SHUNIT_PARENT=$0
 
 function setUp() {
   export TERM="xterm-256color"
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=()
   local -a P9K_RIGHT_PROMPT_ELEMENTS
   P9K_RIGHT_PROMPT_ELEMENTS=()
   # Load Powerlevel9k
@@ -42,6 +44,9 @@ function tearDown() {
   unset BATTERY_PATH
   unset FOLDER
   unset P9K_HOME
+
+  # Reset redeclaration of p9k::prepare_segment
+  __p9k_reset_prepare_segment
 }
 
 # Mock Battery
@@ -153,6 +158,8 @@ function testBatterySegmentIfBatteryIsLowWhileDischargingOnOSX() {
   makeBatterySay "Now drawing from 'Battery Power'
  -InternalBattery-0 (id=1234567)	4%; discharging; 0:05 remaining present: true"
 
+ __p9k_make_prepare_segment_print "left" "1"
+
   assertEquals "%K{000} %F{001}🔋 %F{001}4%% (0:05) " "$(prompt_battery left 1 false ${FOLDER})"
 }
 
@@ -160,6 +167,8 @@ function testBatterySegmentIfBatteryIsLowWhileChargingOnOSX() {
   local __P9K_OS='OSX' # Fake OSX
   makeBatterySay "Now drawing from 'Battery Power'
  -InternalBattery-0 (id=1234567)	4%; charging; 0:05 remaining present: true"
+
+ __p9k_make_prepare_segment_print "left" "1"
 
   assertEquals "%K{000} %F{003}🔋 %F{003}4%% (0:05) " "$(prompt_battery left 1 false ${FOLDER})"
 }
@@ -169,6 +178,8 @@ function testBatterySegmentIfBatteryIsNormalWhileDischargingOnOSX() {
   makeBatterySay "Now drawing from 'Battery Power'
  -InternalBattery-0 (id=1234567)	98%; discharging; 3:57 remaining present: true"
 
+ __p9k_make_prepare_segment_print "left" "1"
+
   assertEquals "%K{000} %F{015}🔋 %F{015}98%% (3:57) " "$(prompt_battery left 1 false ${FOLDER})"
 }
 
@@ -176,6 +187,8 @@ function testBatterySegmentIfBatteryIsNormalWhileChargingOnOSX() {
   local __P9K_OS='OSX' # Fake OSX
   makeBatterySay "Now drawing from 'Battery Power'
  -InternalBattery-0 (id=1234567)	98%; charging; 3:57 remaining present: true"
+
+ __p9k_make_prepare_segment_print "left" "1"
 
   assertEquals "%K{000} %F{003}🔋 %F{003}98%% (3:57) " "$(prompt_battery left 1 false ${FOLDER})"
 }
@@ -185,6 +198,8 @@ function testBatterySegmentIfBatteryIsFullOnOSX() {
   makeBatterySay "Now drawing from 'AC Power'
  -InternalBattery-0 (id=1234567)	99%; charged; 0:00 remaining present: true"
 
+ __p9k_make_prepare_segment_print "left" "1"
+
   assertEquals "%K{000} %F{002}🔋 %F{002}99%% " "$(prompt_battery left 1 false ${FOLDER})"
 }
 
@@ -193,12 +208,16 @@ function testBatterySegmentIfBatteryIsCalculatingOnOSX() {
   makeBatterySay "Now drawing from 'Battery Power'
  -InternalBattery-0 (id=1234567)	99%; discharging; (no estimate) present: true"
 
+ __p9k_make_prepare_segment_print "left" "1"
+
   assertEquals "%K{000} %F{015}🔋 %F{015}99%% (...) " "$(prompt_battery left 1 false ${FOLDER})"
 }
 
 function testBatterySegmentIfBatteryIsLowWhileDischargingOnLinux() {
   local __P9K_OS='Linux' # Fake Linux
   makeBatterySay "4" "Discharging"
+
+  __p9k_make_prepare_segment_print "left" "1"
 
   assertEquals "%K{000} %F{001}🔋 %F{001}4%% (0:05) " "$(prompt_battery left 1 false ${FOLDER})"
 }
@@ -207,12 +226,16 @@ function testBatterySegmentIfBatteryIsLowWhileChargingOnLinux() {
   local __P9K_OS='Linux' # Fake Linux
   makeBatterySay "4" "Charging"
 
+  __p9k_make_prepare_segment_print "left" "1"
+
   assertEquals "%K{000} %F{003}🔋 %F{003}4%% (2:14) " "$(prompt_battery left 1 false ${FOLDER})"
 }
 
 function testBatterySegmentIfBatteryIsLowWhileUnknownOnLinux() {
   local __P9K_OS='Linux' # Fake Linux
   makeBatterySay "4" "Unknown"
+
+  __p9k_make_prepare_segment_print "left" "1"
 
   assertEquals "%K{000} %F{001}🔋 %F{001}4%% " "$(prompt_battery left 1 false ${FOLDER})"
 }
@@ -221,12 +244,16 @@ function testBatterySegmentIfBatteryIsNormalWhileDischargingOnLinux() {
   local __P9K_OS='Linux' # Fake Linux
   makeBatterySay "98" "Discharging"
 
+  __p9k_make_prepare_segment_print "left" "1"
+
   assertEquals "%K{000} %F{015}🔋 %F{015}98%% (2:17) " "$(prompt_battery left 1 false ${FOLDER})"
 }
 
 function testBatterySegmentIfBatteryIsNormalWhileChargingOnLinux() {
   local __P9K_OS='Linux' # Fake Linux
   makeBatterySay "98" "Charging"
+
+  __p9k_make_prepare_segment_print "left" "1"
 
   assertEquals "%K{000} %F{003}🔋 %F{003}98%% (0:02) " "$(prompt_battery left 1 false ${FOLDER})"
 }
@@ -235,12 +262,16 @@ function testBatterySegmentIfBatteryIsNormalWhileUnknownOnLinux() {
   local __P9K_OS='Linux' # Fake Linux
   makeBatterySay "98" "Unknown"
 
+  __p9k_make_prepare_segment_print "left" "1"
+
   assertEquals "%K{000} %F{015}🔋 %F{015}98%% " "$(prompt_battery left 1 false ${FOLDER})"
 }
 
 function testBatterySegmentIfBatteryIsFullOnLinux() {
   local __P9K_OS='Linux' # Fake Linux
   makeBatterySay "100" "Full"
+
+  __p9k_make_prepare_segment_print "left" "1"
 
   assertEquals "%K{000} %F{002}🔋 %F{002}100%% " "$(prompt_battery left 1 false ${FOLDER})"
 }
@@ -249,12 +280,16 @@ function testBatterySegmentIfBatteryNearlyFullButNotChargingOnLinux() {
   local __P9K_OS='Linux' # Fake Linux
   makeBatterySay "98" "Unknown" "0"
 
+  __p9k_make_prepare_segment_print "left" "1"
+
   assertEquals "%K{000} %F{015}🔋 %F{015}98%% " "$(prompt_battery left 1 false ${FOLDER})"
 }
 
 function testBatterySegmentIfBatteryIsCalculatingOnLinux() {
   local __P9K_OS='Linux' # Fake Linux
   makeBatterySay "99" "Charging" "0"
+
+  __p9k_make_prepare_segment_print "left" "1"
 
   assertEquals "%K{000} %F{003}🔋 %F{003}99%% (...) " "$(prompt_battery left 1 false ${FOLDER})"
 }
@@ -263,12 +298,16 @@ function testBatterySegmentIfBatteryIsLowWhileDischargingOnWindows() {
   local __P9K_OS='Windows' # Fake Windows
   makeBatterySay "4" "5" "4"
 
+  __p9k_make_prepare_segment_print "left" "1"
+
   assertEquals "%K{000} %F{001}🔋 %F{001}4%% (0:05) " "$(prompt_battery left 1 false ${FOLDER}/usr/bin/)"
 }
 
 function testBatterySegmentIfBatteryIsLowWhileChargingOnWindows() {
   local __P9K_OS='Windows' # Fake Windows
   makeBatterySay "4" "5" "7"
+
+  __p9k_make_prepare_segment_print "left" "1"
 
   assertEquals "%K{000} %F{003}🔋 %F{003}4%% (0:05) " "$(prompt_battery left 1 false ${FOLDER}/usr/bin/)"
 }
@@ -277,12 +316,16 @@ function testBatterySegmentIfBatteryIsLowWhileUnknownOnWindows() {
   local __P9K_OS='Windows' # Fake Windows
   makeBatterySay "4" "Unknown" "5"
 
+  __p9k_make_prepare_segment_print "left" "1"
+
   assertEquals "%K{000} %F{001}🔋 %F{001}4%% (...) " "$(prompt_battery left 1 false ${FOLDER}/usr/bin/)"
 }
 
 function testBatterySegmentIfBatteryIsNormalWhileDischargingOnWindows() {
   local __P9K_OS='Windows' # Fake Windows
   makeBatterySay "98" "215" "1"
+
+  __p9k_make_prepare_segment_print "left" "1"
 
   assertEquals "%K{000} %F{015}🔋 %F{015}98%% (3:35) " "$(prompt_battery left 1 false ${FOLDER}/usr/bin/)"
 }
@@ -291,6 +334,8 @@ function testBatterySegmentIfBatteryIsNormalWhileChargingOnWindows() {
   local __P9K_OS='Windows' # Fake Windows
   makeBatterySay "98" "298" "2"
 
+  __p9k_make_prepare_segment_print "left" "1"
+
   assertEquals "%K{000} %F{003}🔋 %F{003}98%% (4:58) " "$(prompt_battery left 1 false ${FOLDER}/usr/bin/)"
 }
 
@@ -298,12 +343,16 @@ function testBatterySegmentIfBatteryIsFullOnWindows() {
   local __P9K_OS='Windows' # Fake Windows
   makeBatterySay "100" "181" "1"
 
+  __p9k_make_prepare_segment_print "left" "1"
+
   assertEquals "%K{000} %F{015}🔋 %F{015}100%% (3:01) " "$(prompt_battery left 1 false ${FOLDER}/usr/bin/)"
 }
 
 function testBatterySegmentIfBatteryIsCalculatingOnWindows() {
   local __P9K_OS='Windows' # Fake Windows
   makeBatterySay "99" "" "2"
+
+  __p9k_make_prepare_segment_print "left" "1"
 
   assertEquals "%K{000} %F{003}🔋 %F{003}99%% (...) " "$(prompt_battery left 1 false ${FOLDER}/usr/bin/)"
 }

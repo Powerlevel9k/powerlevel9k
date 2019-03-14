@@ -8,9 +8,15 @@ SHUNIT_PARENT=$0
 function setUp() {
   export TERM="xterm-256color"
 
-  P9K_HOME=$(pwd)
   local -a P9K_RIGHT_PROMPT_ELEMENTS
   P9K_RIGHT_PROMPT_ELEMENTS=()
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=()
+
+  P9K_HOME=$(pwd)
+  # Load Powerlevel9k
+  source ${P9K_HOME}/powerlevel9k.zsh-theme
+  source ${P9K_HOME}/segments/load/load.p9k
 
   ### Test specific
   source test/helper/build_prompt_wrapper.sh
@@ -27,7 +33,10 @@ function tearDown() {
   rm -fr "${FOLDER}"
   # At least remove test folder completely
   rm -fr /tmp/powerlevel9k-test
-  }
+
+  # Reset redeclaration of p9k::prepare_segment
+  __p9k_reset_prepare_segment
+}
 
 function testLoadSegmentWorksOnOsx() {
   sysctl() {
@@ -41,7 +50,7 @@ function testLoadSegmentWorksOnOsx() {
   }
 
   local P9K_LOAD_WHICH=1
-
+  __p9k_make_prepare_segment_print "left" "1"
   local __P9K_OS="OSX" # Fake OSX
 
   assertEquals "%K{002} %F{000}L %F{000}1.38 " "$(prompt_load left 1 false ${FOLDER})"
@@ -61,7 +70,7 @@ function testLoadSegmentWorksOnBsd() {
   }
 
   local P9K_LOAD_WHICH=1
-
+  __p9k_make_prepare_segment_print "left" "1"
   local __P9K_OS="BSD" # Fake BSD
 
   assertEquals "%K{002} %F{000}L %F{000}1.38 " "$(prompt_load left 1 false ${FOLDER})"
@@ -76,7 +85,7 @@ function testLoadSegmentWorksOnLinux() {
 
   alias nproc="echo 4"
   local P9K_LOAD_WHICH=1
-
+  __p9k_make_prepare_segment_print "left" "1"
   local __P9K_OS="Linux" # Fake Linux
 
   assertEquals "%K{002} %F{000}L %F{000}1.38 " "$(prompt_load left 1 false ${FOLDER})"
@@ -94,7 +103,7 @@ function testLoadSegmentNormalState() {
 
   alias nproc="echo 4"
   local P9K_LOAD_WHICH=1
-
+  __p9k_make_prepare_segment_print "left" "1"
   local __P9K_OS="Linux" # Fake Linux
 
   assertEquals "%K{002} %F{000}L %F{000}1.00 " "$(prompt_load left 1 false ${FOLDER})"
@@ -112,7 +121,7 @@ function testLoadSegmentWarningState() {
 
   alias nproc="echo 4"
   local P9K_LOAD_WHICH=1
-
+  __p9k_make_prepare_segment_print "left" "1"
   local __P9K_OS="Linux" # Fake Linux
 
   assertEquals "%K{003} %F{000}L %F{000}2.01 " "$(prompt_load left 1 false ${FOLDER})"
@@ -130,7 +139,7 @@ function testLoadSegmentCriticalState() {
 
   alias nproc="echo 4"
   local P9K_LOAD_WHICH=1
-
+  __p9k_make_prepare_segment_print "left" "1"
   local __P9K_OS="Linux" # Fake Linux
 
   assertEquals "%K{001} %F{000}L %F{000}2.81 " "$(prompt_load left 1 false ${FOLDER})"
