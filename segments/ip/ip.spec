@@ -9,6 +9,7 @@ function setUp() {
   export TERM="xterm-256color"
 
   # Test specific
+  source test/helper/build_prompt_wrapper.sh
   P9K_HOME=$(pwd)
   FOLDER=/tmp/powerlevel9k-test
   mkdir -p $FOLDER

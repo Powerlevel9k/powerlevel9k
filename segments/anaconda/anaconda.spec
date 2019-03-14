@@ -7,7 +7,8 @@ SHUNIT_PARENT=$0
 
 function setUp() {
   export TERM="xterm-256color"
-  source powerlevel9k.zsh-theme
+
+  source test/helper/build_prompt_wrapper.sh
 }
 
 function testAnacondaSegmentPrintsNothingIfNoAnacondaPathIsSet() {
@@ -18,14 +19,13 @@ function testAnacondaSegmentPrintsNothingIfNoAnacondaPathIsSet() {
   P9K_RIGHT_PROMPT_ELEMENTS=()
 
   # Load Powerlevel9k
-  source segments/anaconda/anaconda.p9k
+  source powerlevel9k.zsh-theme
 
   # Unset anacona variables
   unset CONDA_ENV_PATH
   unset CONDA_PREFIX
-  __p9k_build_segment_cache "left"
 
-  assertEquals "%K{015} %F{000}world %k%F{015}%f " "${__p9k_unsafe[left]}"
+  assertEquals "%K{015} %F{000}world %k%F{015}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testAnacondaSegmentWorksIfOnlyAnacondaPathIsSet() {
@@ -34,13 +34,12 @@ function testAnacondaSegmentWorksIfOnlyAnacondaPathIsSet() {
   local P9K_ANACONDA_ICON="icon-here"
 
   # Load Powerlevel9k
-  source segments/anaconda/anaconda.p9k
+  source powerlevel9k.zsh-theme
 
   CONDA_ENV_PATH=/tmp
   unset CONDA_PREFIX
-  __p9k_build_segment_cache "left"
 
-  assertEquals "%K{004} %F{000}icon-here %F{000}(tmp) %k%F{004}%f " "${__p9k_unsafe[left]}"
+  assertEquals "%K{004} %F{000}icon-here %F{000}(tmp) %k%F{004}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testAnacondaSegmentWorksIfOnlyAnacondaPrefixIsSet() {
@@ -49,13 +48,12 @@ function testAnacondaSegmentWorksIfOnlyAnacondaPrefixIsSet() {
   local P9K_ANACONDA_ICON="icon-here"
 
   # Load Powerlevel9k
-  source segments/anaconda/anaconda.p9k
+  source powerlevel9k.zsh-theme
 
   unset CONDA_ENV_PATH
   local CONDA_PREFIX="test"
-  __p9k_build_segment_cache "left"
 
-  assertEquals "%K{004} %F{000}icon-here %F{000}(test) %k%F{004}%f " "${__p9k_unsafe[left]}"
+  assertEquals "%K{004} %F{000}icon-here %F{000}(test) %k%F{004}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testAnacondaSegmentWorks() {
@@ -64,13 +62,12 @@ function testAnacondaSegmentWorks() {
   local P9K_ANACONDA_ICON="icon-here"
 
   # Load Powerlevel9k
-  source segments/anaconda/anaconda.p9k
+  source powerlevel9k.zsh-theme
 
   local CONDA_ENV_PATH=/tmp
   local CONDA_PREFIX="test"
-  __p9k_build_segment_cache "left"
 
-  assertEquals "%K{004} %F{000}icon-here %F{000}(tmptest) %k%F{004}%f " "${__p9k_unsafe[left]}"
+  assertEquals "%K{004} %F{000}icon-here %F{000}(tmptest) %k%F{004}%f " "$(__p9k_build_left_prompt)"
 }
 
 source shunit2/shunit2

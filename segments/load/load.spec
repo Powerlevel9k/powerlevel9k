@@ -11,10 +11,9 @@ function setUp() {
   P9K_HOME=$(pwd)
   local -a P9K_RIGHT_PROMPT_ELEMENTS
   P9K_RIGHT_PROMPT_ELEMENTS=()
-  # Load Powerlevel9k
-  source ${P9K_HOME}/powerlevel9k.zsh-theme
-  source ${P9K_HOME}/segments/load/load.p9k
+
   ### Test specific
+  source test/helper/build_prompt_wrapper.sh
   # Create default folder and git init it.
   FOLDER=/tmp/powerlevel9k-test/load-test
   mkdir -p "${FOLDER}"

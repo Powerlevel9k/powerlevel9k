@@ -10,7 +10,11 @@ function setUp() {
   local -a P9K_RIGHT_PROMPT_ELEMENTS
   P9K_RIGHT_PROMPT_ELEMENTS=()
 
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(vcs)
+
   P9K_HOME=$(pwd)
+  source "${P9K_HOME}/test/helper/build_prompt_wrapper.sh"
   source "${P9K_HOME}/powerlevel9k.zsh-theme"
 
   ### Test specific

@@ -22,9 +22,7 @@ function setUp() {
   OLD_SSH_TTY=$SSH_TTY
   unset SSH_TTY
 
-  # Load Powerlevel9k
-  source powerlevel9k.zsh-theme
-  source segments/context/context.p9k
+  source test/helper/build_prompt_wrapper.sh
 }
 
 function tearDown() {
@@ -48,6 +46,9 @@ function testContextSegmentDoesNotGetRenderedWithDefaultUser() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(context world::custom)
 
+  # Load Powerlevel9k
+  source powerlevel9k.zsh-theme
+
   assertEquals "%K{015} %F{000}world %k%F{015}%f " "$(__p9k_build_left_prompt)"
 }
 
@@ -56,12 +57,18 @@ function testContextSegmentDoesGetRenderedWhenSshConnectionIsOpen() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(context)
 
+  # Load Powerlevel9k
+  source powerlevel9k.zsh-theme
+
   assertEquals "%K{000} %F{003}%n@%m %k%F{000}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testContextSegmentWithForeignUser() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(context)
+
+  # Load Powerlevel9k
+  source powerlevel9k.zsh-theme
 
   assertEquals "%K{000} %F{003}%n@%m %k%F{000}%f " "$(__p9k_build_left_prompt)"
 }
@@ -71,6 +78,9 @@ function testContextSegmentWithRootUser() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(context)
 
+  # Load Powerlevel9k
+  source powerlevel9k.zsh-theme
+
   assertEquals "%K{000} %F{003}%n@%m %k%F{000}%f " "$(__p9k_build_left_prompt)"
 }
 
@@ -78,6 +88,9 @@ function testOverridingContextTemplate() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(context)
   local P9K_CONTEXT_TEMPLATE=xx
+
+  # Load Powerlevel9k
+  source powerlevel9k.zsh-theme
 
   assertEquals "%K{000} %F{003}xx %k%F{000}%f " "$(__p9k_build_left_prompt)"
 }
@@ -88,6 +101,9 @@ function testContextSegmentIsShownIfDefaultUserIsSetWhenForced() {
   local P9K_CONTEXT_ALWAYS_SHOW=true
   local DEFAULT_USER=$(whoami)
 
+  # Load Powerlevel9k
+  source powerlevel9k.zsh-theme
+
   assertEquals "%K{000} %F{003}%n@%m %k%F{000}%f " "$(__p9k_build_left_prompt)"
 }
 
@@ -96,6 +112,9 @@ function testContextSegmentIsShownIfForced() {
   P9K_LEFT_PROMPT_ELEMENTS=(context)
   local P9K_CONTEXT_ALWAYS_SHOW_USER=true
   local DEFAULT_USER=$(whoami)
+
+  # Load Powerlevel9k
+  source powerlevel9k.zsh-theme
 
   assertEquals "%K{000} %F{003}$(whoami) %k%F{000}%f " "$(__p9k_build_left_prompt)"
 }

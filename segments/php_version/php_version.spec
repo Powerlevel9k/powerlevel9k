@@ -9,9 +9,8 @@ function setUp() {
   export TERM="xterm-256color"
   local -a P9K_RIGHT_PROMPT_ELEMENTS
   P9K_RIGHT_PROMPT_ELEMENTS=()
-  # Load Powerlevel9k
-  source powerlevel9k.zsh-theme
-  source segments/php_version/php_version.p9k
+
+  source test/helper/build_prompt_wrapper.sh
 }
 
 function testPhpVersionSegmentPrintsNothingIfPhpIsNotAvailable() {
@@ -19,6 +18,9 @@ function testPhpVersionSegmentPrintsNothingIfPhpIsNotAvailable() {
   P9K_LEFT_PROMPT_ELEMENTS=(php_version world::custom)
   local P9K_CUSTOM_WORLD='echo world'
   alias php="nophp"
+
+  # Load Powerlevel9k
+  source ${P9K_HOME}/powerlevel9k.zsh-theme
 
   assertEquals "%K{015} %F{000}world %k%F{015}%f " "$(__p9k_build_left_prompt)"
 
@@ -32,6 +34,9 @@ function testPhpVersionSegmentWorks() {
 Copyright (c) 1997-2016 The PHP Group
 Zend Engine v2.6.0, Copyright (c) 1998-2016 Zend Technologies
 '"
+
+  # Load Powerlevel9k
+  source ${P9K_HOME}/powerlevel9k.zsh-theme
 
   assertEquals "%K{013} %F{255}PHP %F{255}5.6.27 %k%F{013}%f " "$(__p9k_build_left_prompt)"
 

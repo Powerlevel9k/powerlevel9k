@@ -9,9 +9,8 @@ function setUp() {
   export TERM="xterm-256color"
   local -a P9K_RIGHT_PROMPT_ELEMENTS
   P9K_RIGHT_PROMPT_ELEMENTS=()
-  # Load Powerlevel9k
-  source powerlevel9k.zsh-theme
-  source segments/kubecontext/kubecontext.p9k
+
+  source test/helper/build_prompt_wrapper.sh
 }
 
 function mockKubectl() {
@@ -73,9 +72,11 @@ function testKubeContext() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(kubecontext)
 
+  # Load Powerlevel9k
+  source powerlevel9k.zsh-theme
+
   assertEquals "%K{004} %F{015}⎈ %F{015}minikube/default %k%F{004}%f " "$(__p9k_build_left_prompt)"
 
-  unset P9K_LEFT_PROMPT_ELEMENTS
   unalias kubectl
 }
 function testKubeContextOtherNamespace() {
@@ -83,21 +84,24 @@ function testKubeContextOtherNamespace() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(kubecontext)
 
+  # Load Powerlevel9k
+  source powerlevel9k.zsh-theme
+
   assertEquals "%K{004} %F{015}⎈ %F{015}minikube/kube-system %k%F{004}%f " "$(__p9k_build_left_prompt)"
 
-  unset P9K_LEFT_PROMPT_ELEMENTS
   unalias kubectl
 }
 function testKubeContextPrintsNothingIfKubectlNotAvailable() {
   alias kubectl=noKubectl
-  P9K_CUSTOM_WORLD='echo world'
+  local P9K_CUSTOM_WORLD='echo world'
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(world::custom kubecontext)
 
+  # Load Powerlevel9k
+  source powerlevel9k.zsh-theme
+
   assertEquals "%K{015} %F{000}world %k%F{015}%f " "$(__p9k_build_left_prompt)"
 
-  unset P9K_LEFT_PROMPT_ELEMENTS
-  unset P9K_CUSTOM_WORLD
   unalias kubectl
 }
 

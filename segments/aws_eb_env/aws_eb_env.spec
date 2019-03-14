@@ -9,7 +9,7 @@ function setUp() {
   export TERM="xterm-256color"
   local -a P9K_RIGHT_PROMPT_ELEMENTS
   P9K_RIGHT_PROMPT_ELEMENTS=()
-  source powerlevel9k.zsh-theme
+  source test/helper/build_prompt_wrapper.sh
 }
 
 function testAwsEbEnvSegmentPrintsNothingIfNoElasticBeanstalkEnvironmentIsSet() {
@@ -18,7 +18,7 @@ function testAwsEbEnvSegmentPrintsNothingIfNoElasticBeanstalkEnvironmentIsSet() 
   P9K_LEFT_PROMPT_ELEMENTS=(aws_eb_env world::custom)
 
   # Load Powerlevel9k
-  source segments/aws_eb_env/aws_eb_env.p9k
+  source powerlevel9k.zsh-theme
 
   assertEquals "%K{015} %F{000}world %k%F{015}%f " "$(__p9k_build_left_prompt)"
 }
@@ -28,7 +28,7 @@ function testAwsEbEnvSegmentWorksIfElasticBeanstalkEnvironmentIsSet() {
   P9K_LEFT_PROMPT_ELEMENTS=(aws_eb_env)
 
   # Load Powerlevel9k
-  source segments/aws_eb_env/aws_eb_env.p9k
+  source powerlevel9k.zsh-theme
 
   mkdir -p /tmp/powerlevel9k-test/.elasticbeanstalk
   echo "test:\n    environment: test" > /tmp/powerlevel9k-test/.elasticbeanstalk/config.yml
@@ -48,7 +48,7 @@ function testAwsEbEnvSegmentWorksIfElasticBeanstalkEnvironmentIsSetInParentDirec
   P9K_LEFT_PROMPT_ELEMENTS=(aws_eb_env)
 
   # Load Powerlevel9k
-  source segments/aws_eb_env/aws_eb_env.p9k
+  source powerlevel9k.zsh-theme
 
   mkdir -p /tmp/powerlevel9k-test/.elasticbeanstalk
   mkdir -p /tmp/powerlevel9k-test/1/12/123/1234/12345

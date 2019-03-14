@@ -10,6 +10,7 @@ function setUp() {
   local -a P9K_RIGHT_PROMPT_ELEMENTS
   P9K_RIGHT_PROMPT_ELEMENTS=()
   # Load Powerlevel9k
+  source test/helper/build_prompt_wrapper.sh
   source powerlevel9k.zsh-theme
   source segments/battery/battery.p9k
 

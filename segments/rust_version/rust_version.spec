@@ -16,9 +16,8 @@ function setUp() {
   export TERM="xterm-256color"
   local -a P9K_RIGHT_PROMPT_ELEMENTS
   P9K_RIGHT_PROMPT_ELEMENTS=()
-  # Load Powerlevel9k
-  source powerlevel9k.zsh-theme
-  source segments/rust_version/rust_version.p9k
+
+  source test/helper/build_prompt_wrapper.sh
 }
 
 function tearDown() {
@@ -36,6 +35,9 @@ function testRust() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(rust_version)
 
+  # Load Powerlevel9k
+  source powerlevel9k.zsh-theme
+
   assertEquals "%K{208} %F{000}Rust %F{000}0.4.1a-alpha %k%F{208}%f " "$(__p9k_build_left_prompt)"
 }
 
@@ -44,6 +46,9 @@ function testRustPrintsNothingIfRustIsNotAvailable() {
   P9K_CUSTOM_WORLD='echo world'
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(world::custom rust_version)
+
+  # Load Powerlevel9k
+  source powerlevel9k.zsh-theme
 
   assertEquals "%K{015} %F{000}world %k%F{015}%f " "$(__p9k_build_left_prompt)"
 

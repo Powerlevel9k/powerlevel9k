@@ -17,9 +17,8 @@ function setUp() {
 
   local -a P9K_RIGHT_PROMPT_ELEMENTS
   P9K_RIGHT_PROMPT_ELEMENTS=()
-  # Load Powerlevel9k
-  source ${P9K_HOME}/powerlevel9k.zsh-theme
-  source ${P9K_HOME}/segments/ram/ram.p9k
+
+  source ${P9K_HOME}/test/helper/build_prompt_wrapper.sh
 }
 
 function tearDown() {

@@ -18,9 +18,8 @@ function setUp() {
   cd $FOLDER
   local -a P9K_RIGHT_PROMPT_ELEMENTS
   P9K_RIGHT_PROMPT_ELEMENTS=()
-  # Load Powerlevel9k
-  source ${P9K_HOME}/powerlevel9k.zsh-theme
-  source ${P9K_HOME}/segments/nvm/nvm.p9k
+
+  source test/helper/build_prompt_wrapper.sh
 }
 
 function tearDown() {
@@ -39,6 +38,9 @@ function testNvmSegmentPrintsNothingIfNvmIsNotAvailable() {
   P9K_LEFT_PROMPT_ELEMENTS=(nvm world::custom)
   local P9K_CUSTOM_WORLD='echo world'
 
+  # Load Powerlevel9k
+  source ${P9K_HOME}/powerlevel9k.zsh-theme
+
   assertEquals "%K{015} %F{000}world %k%F{015}%f " "$(__p9k_build_left_prompt)"
 }
 
@@ -49,6 +51,9 @@ function testNvmSegmentWorksWithoutHavingADefaultAlias() {
   function nvm_version() {
     [[ ${1} == 'current' ]] && echo 'v4.6.0' || echo 'v1.4.0'
   }
+
+  # Load Powerlevel9k
+  source ${P9K_HOME}/powerlevel9k.zsh-theme
 
   assertEquals "%K{005} %F{000}⬢ %F{000}4.6.0 %k%F{005}%f " "$(__p9k_build_left_prompt)"
 }
@@ -61,6 +66,9 @@ function testNvmSegmentPrintsNothingWhenOnDefaultVersion() {
   function nvm_version() {
     [[ ${1} == 'current' ]] && echo 'v4.6.0' || echo 'v4.6.0'
   }
+
+  # Load Powerlevel9k
+  source ${P9K_HOME}/powerlevel9k.zsh-theme
 
   assertEquals "%K{015} %F{000}world %k%F{015}%f " "$(__p9k_build_left_prompt)"
 }
@@ -81,6 +89,9 @@ function testNvmSegmentAppendsSystemWhenUsingSystem() {
   function nvm_version() {
     [[ ${1} == 'current' ]] && echo 'system' || echo 'v1.4.0'
   }
+
+  # Load Powerlevel9k
+  source ${P9K_HOME}/powerlevel9k.zsh-theme
 
   assertEquals "%K{005} %F{000}⬢ %F{000}11.3.0 system %k%F{005}%f " "$(__p9k_build_left_prompt)"
 }
