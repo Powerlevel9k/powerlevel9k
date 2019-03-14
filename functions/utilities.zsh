@@ -461,7 +461,7 @@ function p9k::reset_prompt() {
     if [[ "${p9kVariableName}" != "P9K_VERSION" ]]; then
       unset $p9kVariableName;
     fi
-  done < <(setopt ; set | egrep -i "^p9k_")
+  done < <(setopt ; set | egrep --color=never -i "^p9k_")
    
   source "${__P9K_DIRECTORY}/functions/defaults.zsh"
 }
