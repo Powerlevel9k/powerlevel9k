@@ -84,5 +84,6 @@ prompt_status() {
     current_state="OK"
   fi
 
-  p9k::prepare_segment "$0" "${current_state}" $1 "$2" $3  "${content}" "[[ true ]]"
+  p9k::prepare_segment "$0" "${current_state}" $1 "$2" $3  "${content}" \
+      "[[ \"${P9K_STATUS_VERBOSE}\" == \"true\" || \"${current_state}\" != \"OK\" ]]"
 }
