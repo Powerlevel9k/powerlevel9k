@@ -19,6 +19,7 @@
   p9k::set_default P9K_TIME_FORMAT "%D{%H:%M:%S}"
   p9k::set_default P9K_TIME_REALTIME false
   p9k::set_default P9K_TIME_REALTIME_DELAY 60
+  p9k::set_default P9K_TIME_RESET_ON_EXEC false
 
   ################################################################
   # Register handler for realtime prompt resets
@@ -56,6 +57,18 @@
       unset -f __p9k_on_timer
     fi
     rm -f "$fifo"
+  fi
+
+  ################################################################
+  # Bind the enter key to redraw the prompt (this will update the time)
+  if [[ $P9K_TIME_RESET_ON_EXEC == true ]]; then
+    __p9k_renew_prompt_accept_line() {
+      zle .reset-prompt
+      zle accept-line
+    }
+    zle -N __p9k_renew_prompt_accept_line
+    bindkey "^M" __p9k_renew_prompt_accept_line
+    ZSH_AUTOSUGGEST_CLEAR_WIDGETS+=__p9k_renew_prompt_accept_line
   fi
 }
 
