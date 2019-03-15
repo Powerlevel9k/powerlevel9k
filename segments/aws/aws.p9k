@@ -13,6 +13,7 @@
   #   segment_name  context  background  foreground  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
   #                                                                                                        
   p9k::register_segment 'AWS' '' red white 'AWS:'  $'\uE895'  $'\uF270'  '\u'${CODEPOINT_OF_AWESOME_AMAZON}  $'\uF270'
+  p9k::set_default P9K_AWS_DELIMITER "|"
 }
 
 ################################################################
@@ -41,9 +42,7 @@ prompt_aws() {
   fi
 
   if [[ -n "$aws_region" ]]; then
-    local aws_delimiter="${P9K_AWS_DELIMITER:-/}"
-  else
-    local aws_delimiter=""
+    local aws_delimiter="${P9K_AWS_DELIMITER:-|}"
   fi
 
   if [[ -n "$aws_profile" ]]; then
