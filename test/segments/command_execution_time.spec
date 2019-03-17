@@ -72,7 +72,7 @@ function testCommandExecutionTimePrecisionCouldBeSetToZero() {
   # Override payload
   local _P9K_COMMAND_DURATION=23.5001
 
-  assertEquals "%K{001} %F{226}Dur %F{226}23s %k%F{001}%f " "$(build_left_prompt)"
+  assertEquals "%K{001} %F{226}Dur %F{226}24s %k%F{001}%f " "$(build_left_prompt)"
 }
 
 function testCommandExecutionTimeIsFormattedHumandReadbleForMinuteLongCommand() {
