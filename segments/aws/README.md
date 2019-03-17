@@ -21,7 +21,7 @@ the `aws` segment to one of the prompts, and define `P9K_AWS_DEFAULT_PROFILE`
 |`AWS_DEFAULT_REGION`|None|Your AWS region|
 |`P9K_AWS_INCLUDE_PROFILE`|None|Show the current profile even if unset (`default`).|
 |`P9K_AWS_INCLUDE_REGION`|None|Show the current region, either from environment variable or awscli.|
-|`P9K_AWS_DELIMITER`|`|`|Delimiter to use between the AWS profile and region. This can be any string you choose, including an empty string if you wish to have no delimiter.|
+|`P9K_AWS_DELIMITER`|`\|`|Delimiter to use between the AWS profile and region. This can be any string you choose, including an empty string if you wish to have no delimiter.|
 
 ### Color Customization
 
