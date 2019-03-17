@@ -745,16 +745,8 @@ prompt_command_execution_time() {
   elif (( _P9K_COMMAND_DURATION > 60 )); then
     humanReadableDuration=$(TZ=GMT; strftime '%M:%S' $(( int(rint(_P9K_COMMAND_DURATION)) )))
   else
-    # If the command executed in seconds, print as float.
-    # Convert to float
-    if [[ "${POWERLEVEL9K_COMMAND_EXECUTION_TIME_PRECISION}" == "0" ]]; then
-      # If user does not want microseconds, then we need to convert
-      # the duration to an integer.
-      typeset -i humanReadableDuration
-    else
-      typeset -F ${POWERLEVEL9K_COMMAND_EXECUTION_TIME_PRECISION} humanReadableDuration
-    fi
-    humanReadableDuration=$_P9K_COMMAND_DURATION
+    # If the command executed in seconds, round to desired precision and append "s"
+      humanReadableDuration=$(printf %.${POWERLEVEL9K_COMMAND_EXECUTION_TIME_PRECISION}f%s $_P9K_COMMAND_DURATION s)
   fi
 
   if (( _P9K_COMMAND_DURATION >= POWERLEVEL9K_COMMAND_EXECUTION_TIME_THRESHOLD )); then
