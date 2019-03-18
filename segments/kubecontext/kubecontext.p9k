@@ -13,6 +13,7 @@
   #   segment_name  context  background  foreground  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
   #                                                        ⎈          ⎈         ⎈         ⎈         ⎈
   p9k::register_segment "KUBECONTEXT" "" "blue" "white" $'\u2388'  $'\u2388'  $'\u2388'  $'\u2388'  $'\u2388'
+  p9k::set_default P9K_KUBECONTEXT_DELIMITER "|"
 }
 
 ################################################################
@@ -42,7 +43,7 @@ prompt_kubecontext() {
       # No reason to print out the same identificator twice
       k8s_final_text="$cur_ctx"
     else
-      k8s_final_text="$cur_ctx/$cur_namespace"
+      k8s_final_text="$cur_ctx$P9K_KUBECONTEXT_DELIMITER$cur_namespace"
     fi
 
     p9k::prepare_segment "$0" "" $1 "$2" $3 "$k8s_final_text"

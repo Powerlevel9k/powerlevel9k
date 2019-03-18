@@ -10,6 +10,10 @@ where you want to show this segment.
 
 ## Configuration
 
+
+| Variable | Default Value | Description |
+|----------|---------------|-------------|
+|`P9K_KUBECONTEXT_DELIMITER`|`\|`|Delimiter to use between the kubernetes context and namespace. This can be any string you choose, including an empty string if you wish to have no delimiter.|
 ### Color Customization
 
 You can change the foreground and background color of this segment by setting
