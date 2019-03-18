@@ -10,6 +10,16 @@ where you want to show this segment.
 
 ## Configuration
 
+### Segment Display
+
+By default, this segment is always shown. You can also choose to have it 
+displayed only when inside of a Node project by setting
+```
+P9K_NODE_VERSION_PROJECT_ONLY=true
+```
+The current directory and its ancestors will be searched for a `project.json` 
+file, and the segment will only be displayed if one is located before `/`.
+
 ### Color Customization
 
 You can change the foreground and background color of this segment by setting
