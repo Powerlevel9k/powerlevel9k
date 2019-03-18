@@ -236,6 +236,32 @@ function p9k::set_default() {
 
 ###############################################################
 # @description
+#   This function expands the given parameter. This has to be
+#   done, as some people write P9K_DIR_PATH_SEPARATOR='\uNNNN'
+#   instead of P9K_DIR_PATH_SEPARATOR=$'\uNNNN'.
+##
+# @args
+#   $1 string The value to be expanded
+##
+# @returns
+#   Nothing.
+##
+function p9k::expand() {
+  (( $+parameters[$1] )) || return
+  local -a ts=("${=$(typeset -p $1)}")
+  shift ts
+  local x
+  for x in "${ts[@]}"; do
+    [[ $x == -* ]] || break
+    # Don't change readonly variables. Ideally, we shouldn't modify any variables at all,
+    # but for now this will do.
+    [[ $x == -*r* ]] && return
+  done
+  typeset -g $1=${(g::)${(P)1}}
+}
+
+###############################################################
+# @description
 #   Converts large memory values into a human-readable unit (e.g., bytes --> GB)
 ##
 # @args
