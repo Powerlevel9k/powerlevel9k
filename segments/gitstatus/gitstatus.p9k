@@ -113,10 +113,6 @@ prompt_gitstatus() {
 
   (( VCS_STATUS_STASHES > 0 )) && segment_content+=("${__P9K_ICONS[GITSTATUS_STASH]}${VCS_STATUS_STASHES}")
 
-  if [[ -n "${VCS_STATUS_REMOTE_BRANCH}" && "${VCS_STATUS_REMOTE_BRANCH}" != "${VCS_STATUS_LOCAL_BRANCH}" ]]; then
-    segment_content+=("/${VCS_STATUS_REMOTE_BRANCH}")
-  fi
-
   [[ -n "${VCS_STATUS_TAG}" ]] && segment_content+=("${__P9K_ICONS[GITSTATUS_TAG]}${VCS_STATUS_TAG}")
 
   if (( VCS_STATUS_COMMITS_AHEAD > 0 )); then
