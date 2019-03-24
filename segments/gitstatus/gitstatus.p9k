@@ -1,0 +1,142 @@
+# vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
+################################################################
+# @title powerlevel9k Segment - Date
+# @source [powerlevel9k](https://github.com/bhilburn/powerlevel9k)
+##
+
+(){
+  # Set the right locale to protect special characters
+  local LC_ALL="" LC_CTYPE="en_US.UTF-8"
+
+  ################################################################
+  # Register segment helper icons
+  # Parameters:
+  #   name_of_icon  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
+  #                                          ●                                                                                  
+  p9k::register_icon "GITSTATUS_UNSTAGED"          $'\u25CF'   $'\uE17C'   $'\uF06A'   '\u'${CODEPOINT_OF_AWESOME_EXCLAMATION_CIRCLE}    $'\uF06A'
+#   #                                          ?                                                                                  
+#   p9k::register_icon "GITSTATUS_UNTRACKED"         '?'         $'\uE16C'   $'\uF059'   '\u'${CODEPOINT_OF_AWESOME_QUESTION_CIRCLE}       $'\uF059'
+  #                                          ✚                                                                                  
+  p9k::register_icon "GITSTATUS_STAGED"            $'\u271A'   $'\uE168'   $'\uF055'   '\u'${CODEPOINT_OF_AWESOME_PLUS_CIRCLE}           $'\uF055'
+  #                                          ⍟                                                                                  
+  p9k::register_icon "GITSTATUS_STASH"             $'\u235F'   $'\uE133 '  $'\uF01C '  '\u'${CODEPOINT_OF_AWESOME_INBOX}' '              $'\uF01C '
+  #                                          ↓                                                                                  
+  p9k::register_icon "GITSTATUS_INCOMING_CHANGES"  $'\u2193'   $'\uE131 '  $'\uF01A '  '\u'${CODEPOINT_OF_AWESOME_ARROW_CIRCLE_DOWN}' '  $'\uF01A '
+  #                                          ↑                                                                                  
+  p9k::register_icon "GITSTATUS_OUTGOING_CHANGES"  $'\u2191'   $'\uE132 '  $'\uF01B '  '\u'${CODEPOINT_OF_AWESOME_ARROW_CIRCLE_UP}' '    $'\uF01B '
+  #                                                                                                                             
+  p9k::register_icon "GITSTATUS_TAG"               ''          $'\uE817 '  $'\uF217 '  '\u'${CODEPOINT_OF_AWESOME_TAG}' '                $'\uF02B '
+  #                                                                                                                             
+  p9k::register_icon "GITSTATUS_COMMIT"            ''          $'\uE821 '  $'\uF221 '  '\u'${CODEPOINT_OF_OCTICONS_GIT_COMMIT}' '        $'\uE729 '
+
+  # Hide branch icon if user wants it hidden
+  if [[ "${P9K_GITSTATUS_HIDE_BRANCH_ICON}" != true ]]; then
+    if [[ ${P9K_MODE} != 'compatible' ]]; then
+      #                                                                                                                         
+      p9k::register_icon "GITSTATUS_BRANCH"        $'\uE0A0 '  $'\uE220 '  $'\uF126 '  '\u'${CODEPOINT_OF_OCTICONS_GIT_BRANCH}' '        $'\uF126 '
+    else
+      #                                                                                                                         
+      p9k::register_icon "GITSTATUS_BRANCH"        "@ "        $'\uE220 '  $'\uF126 '  '\u'${CODEPOINT_OF_OCTICONS_GIT_BRANCH}' '        $'\uF126 '
+    fi
+  fi
+
+  #                                          →           →          →                                                            
+  p9k::register_icon "GITSTATUS_REMOTE_BRANCH"     $'\u2192'   $'\u2192'   $'\u2192'   '\u'${CODEPOINT_OF_OCTICONS_REPO_PUSH}            $'\uE728 '
+  #                                                                                                                             
+  p9k::register_icon "GITSTATUS_GIT"               ''          $'\uE20E '  $'\uF1D3 '  '\u'${CODEPOINT_OF_AWESOME_GIT}' '                $'\uF1D3 '
+  #                                                                                                                              
+  p9k::register_icon "GITSTATUS_GIT_GITHUB"        ''          $'\uE20E '  $'\uF113 '  '\u'${CODEPOINT_OF_AWESOME_GITHUB_ALT}' '         $'\uF113 '
+  #                                                                                                                              
+  p9k::register_icon "GITSTATUS_GIT_BITBUCKET"     ''          $'\uE20E '  $'\uF171 '  '\u'${CODEPOINT_OF_AWESOME_BITBUCKET}' '          $'\uE703 '
+  #                                                                                                                              
+  p9k::register_icon "GITSTATUS_GIT_GITLAB"        ''          $'\uE20E '  $'\uF296 '  '\u'${CODEPOINT_OF_AWESOME_GITLAB}' '             $'\uF296 '
+
+  ################################################################
+  # Define the actual segment
+  ################################################################
+
+  ################################################################
+  # Register segment
+  # Parameters:
+  #   segment_name  context  background  foreground  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
+  p9k::register_segment  "GITSTATUS" "CLEAN"     "green"  "${DEFAULT_COLOR}" ''  ''  ''  ''  ''
+  p9k::register_segment  "GITSTATUS" "MODIFIED"  "yellow" "${DEFAULT_COLOR}" ''  ''  ''  ''  ''
+  p9k::register_segment  "GITSTATUS" "UNTRACKED" "green"  "${DEFAULT_COLOR}" '?' $'\uE16C' $'\uF059' '\u'${CODEPOINT_OF_AWESOME_QUESTION_CIRCLE} $'\uF059'
+
+  ################################################################
+  # Register segment default values
+  p9k::set_default P9K_GITSTATUS_MAX_INDEX_SIZE_DIRTY "4096"
+  p9k::set_default P9K_GITSTATUS_MAX_SYNC_LATENCY_SECONDS "5"
+  p9k::set_default P9K_GITSTATUS_SHOW_CHANGESET false
+  p9k::set_default P9K_GITSTATUS_CHANGESET_HASH_LENGTH 8
+  p9k::set_default P9K_GITSTATUS_ALWAYS_SHOW_REMOTE_BRANCH false
+}
+
+## Start the gitstatus daemon
+source ${P9K_GITSTATUS_DIR:-${_P9K_INSTALLATION_DIR}/gitstatus}/gitstatus.plugin.zsh
+gitstatus_start -m ${P9K_GITSTATUS_MAX_INDEX_SIZE_DIRTY} P9K
+
+################################################################
+# @description
+#   Displays the status of your git checkout.
+##
+# @args
+#   $1 string Alignment - left | right
+#   $2 integer Segment index
+#   $3 boolean Whether the segment should be joined
+##
+prompt_gitstatus() {
+  gitstatus_query -t $P9K_GITSTATUS_MAX_SYNC_LATENCY_SECONDS P9K 2>/dev/null
+
+  # Print nothing, if we are not in a repo, or if the gitstatus daemon sends a timeout
+  [[ -z "${VCS_STATUS_RESULT}" || "${VCS_STATUS_RESULT}" =~ "norepo-" || "${VCS_STATUS_RESULT}" == "tmout" ]] && return
+
+  local current_state="CLEAN"
+  typeset -ah segment_content
+  if [[ "${P9K_GITSTATUS_SHOW_CHANGESET}" == "true" ]]; then
+    segment_content+=("${__P9K_ICONS[GITSTATUS_COMMIT]}${VCS_STATUS_COMMIT[0,$P9K_GITSTATUS_CHANGESET_HASH_LENGTH]}")
+  fi
+  segment_content+=("${__P9K_ICONS[GITSTATUS_BRANCH]}${VCS_STATUS_LOCAL_BRANCH}")
+
+  local remote="${VCS_STATUS_REMOTE_BRANCH// /}"
+  if [[ -n "${remote}" \
+      && ( \
+        "${P9K_GITSTATUS_ALWAYS_SHOW_REMOTE_BRANCH}" == 'true' \
+        || "${remote#*/}" != "${VCS_STATUS_LOCAL_BRANCH#heads/}" \
+      ) ]]; then
+      segment_content+=("${__P9K_ICONS[GITSTATUS_REMOTE_BRANCH]}${remote}")
+  fi
+
+  (( VCS_STATUS_HAS_UNTRACKED )) && current_state="UNTRACKED" && segment_content+=("${__P9K_ICONS[GITSTATUS_UNTRACKED]}")
+  (( VCS_STATUS_HAS_STAGED )) && current_state="MODIFIED" && segment_content+=("${__P9K_ICONS[GITSTATUS_STAGED]}")
+  (( VCS_STATUS_HAS_UNSTAGED )) && current_state="MODIFIED" segment_content+=("${__P9K_ICONS[GITSTATUS_UNSTAGED]}")
+
+  (( VCS_STATUS_STASHES > 0 )) && segment_content+=("${__P9K_ICONS[GITSTATUS_STASH]}${VCS_STATUS_STASHES}")
+
+  if [[ -n "${VCS_STATUS_REMOTE_BRANCH}" && "${VCS_STATUS_REMOTE_BRANCH}" != "${VCS_STATUS_LOCAL_BRANCH}" ]]; then
+    segment_content+=("/${VCS_STATUS_REMOTE_BRANCH}")
+  fi
+
+  [[ -n "${VCS_STATUS_TAG}" ]] && segment_content+=("${__P9K_ICONS[GITSTATUS_TAG]}${VCS_STATUS_TAG}")
+
+  if (( VCS_STATUS_COMMITS_AHEAD > 0 )); then
+    segment_content+=("${__P9K_ICONS[GITSTATUS_OUTGOING_CHANGES]}${VCS_STATUS_COMMITS_AHEAD}")
+  fi
+
+  if (( VCS_STATUS_COMMITS_BEHIND > 0 )); then
+    segment_content+=("${__P9K_ICONS[GITSTATUS_INCOMING_CHANGES]}${VCS_STATUS_COMMITS_BEHIND}")
+  fi
+
+  local visual_identifier="${__P9K_ICONS[GITSTATUS_GIT]}"
+  if [[ "$VCS_STATUS_REMOTE_URL" =~ "github" ]] then
+    visual_identifier=${__P9K_ICONS[GITSTATUS_GIT_GITHUB]}
+  elif [[ "$VCS_STATUS_REMOTE_URL" =~ "bitbucket" ]] then
+    visual_identifier=${__P9K_ICONS[GITSTATUS_GIT_BITBUCKET]}
+  elif [[ "$VCS_STATUS_REMOTE_URL" =~ "stash" ]] then
+    visual_identifier=${__P9K_ICONS[GITSTATUS_GIT_BITBUCKET]}
+  elif [[ "$VCS_STATUS_REMOTE_URL" =~ "gitlab" ]] then
+    visual_identifier=${__P9K_ICONS[GITSTATUS_GIT_GITLAB]}
+  fi
+
+  p9k::prepare_segment "${0}" "${current_state}" "${1}" "${2}" "${3}" "${(j: :)segment_content}" "" "${visual_identifier}"
+}
