@@ -119,6 +119,20 @@
   p9k::register_icon "VCS_SVN"               ''          '(svn) '    '(svn) '    '(svn) '                                          $'\uE72D '
 
   ################################################################
+  # Define the actual segment
+  ################################################################
+
+  ################################################################
+  # Register segment
+  # Parameters:
+  #   segment_name  context  background  foreground  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
+  p9k::register_segment  "VCS" "CLEAN"     "green"  "${DEFAULT_COLOR}" ''  ''  ''  ''  ''
+  p9k::register_segment  "VCS" "MODIFIED"  "yellow" "${DEFAULT_COLOR}" ''  ''  ''  ''  ''
+  #                                                                                                                                     
+  p9k::register_segment  "VCS" "UNTRACKED" "green"  "${DEFAULT_COLOR}" '?' $'\uE16C' $'\uF059' '\u'${CODEPOINT_OF_AWESOME_QUESTION_CIRCLE} $'\uF059'
+  p9k::register_segment  "VCS" "CLOBBERED" "red"    "${DEFAULT_COLOR}" ''  ''  ''  ''  ''
+
+  ################################################################
   # Register segment default values
   p9k::set_default P9K_VCS_ACTIONFORMAT_FOREGROUND "red"
   p9k::set_default P9K_VCS_HIDE_TAGS false
@@ -126,6 +140,7 @@
   p9k::set_default P9K_VCS_DIR_SHORTEN_DELIMITER $'\U2026'
   p9k::set_default P9K_VCS_SHOW_SUBMODULE_DIRTY true
   p9k::set_default P9K_VCS_GIT_ALWAYS_SHOW_REMOTE_BRANCH false
+  p9k::set_default P9K_VCS_SHOW_CHANGESET false
 }
 
 function +vi-git-untracked() {
@@ -394,20 +409,6 @@ __p9k_vcs_init() {
     zstyle ':vcs_info:*' get-revision true
   fi
 }
-
-################################################################
-# Define the actual segment
-################################################################
-
-################################################################
-# Register segment
-# Parameters:
-#   segment_name  context  background  foreground  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
-p9k::register_segment  "VCS" "CLEAN"     "green"  "${DEFAULT_COLOR}" ''  ''  ''  ''  ''
-p9k::register_segment  "VCS" "MODIFIED"  "yellow" "${DEFAULT_COLOR}" ''  ''  ''  ''  ''
-#                                                                                                                                     
-p9k::register_segment  "VCS" "UNTRACKED" "green"  "${DEFAULT_COLOR}" '?' $'\uE16C' $'\uF059' '\u'${CODEPOINT_OF_AWESOME_QUESTION_CIRCLE} $'\uF059'
-p9k::register_segment  "VCS" "CLOBBERED" "red"    "${DEFAULT_COLOR}" ''  ''  ''  ''  ''
 
 ################################################################
 # @description
