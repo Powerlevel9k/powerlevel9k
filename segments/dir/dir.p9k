@@ -172,6 +172,11 @@ prompt_dir() {
     esac
   fi
 
+  # We are escaping % with %% here, to protect directories that contain a percent sign.
+  # This has to be done manually, because just quoting does not work (with the quoting
+  # flag "(q)").
+  current_path="${current_path//\%/%%}"
+
   # save state of path for highlighting and bold options
   local path_opt=$current_path
 
