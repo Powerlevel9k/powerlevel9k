@@ -93,7 +93,7 @@ prompt_gitstatus() {
 
   local current_state="CLEAN"
   typeset -ah segment_content
-  if [[ "${P9K_GITSTATUS_SHOW_CHANGESET}" == "true" ]]; then
+  if [[ "${P9K_GITSTATUS_SHOW_CHANGESET}" == "true" ]] && (( #VCS_STATUS_COMMIT )); then
     segment_content+=("${__P9K_ICONS[GITSTATUS_COMMIT]}${VCS_STATUS_COMMIT[0,$P9K_GITSTATUS_CHANGESET_HASH_LENGTH]}")
   fi
   local localBranch="${VCS_STATUS_LOCAL_BRANCH}"
