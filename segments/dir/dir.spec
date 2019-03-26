@@ -484,6 +484,11 @@ function testHomeFolderAbbreviation() {
 
   local dir=$PWD
 
+  local BASEFOLDER=/tmp/p9ktest
+  local SAVED_HOME="${HOME}"
+  HOME="${BASEFOLDER}"
+  mkdir -p "$HOME"
+
   cd ~/
   # default
   local P9K_DIR_HOME_FOLDER_ABBREVIATION='~'
@@ -502,6 +507,14 @@ function testHomeFolderAbbreviation() {
   local P9K_DIR_HOME_FOLDER_ABBREVIATION='qQq'
   assertEquals "%K{004} %F{000}/tmp %k%F{004}%f " "$(__p9k_build_left_prompt)"
 
+  # Make a directory named tilde directly under HOME
+  mkdir ~/~
+  cd ~/~
+  local P9K_DIR_HOME_FOLDER_ABBREVIATION='qQq'
+  assertEquals "%K{004} %F{000}qQq/~ %k%F{004}%f " "$(__p9k_build_left_prompt)"
+
+  HOME="${SAVED_HOME}"
+  rm -fr $BASEFOLDER
   cd "$dir"
 }
 
