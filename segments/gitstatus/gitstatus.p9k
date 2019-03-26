@@ -142,5 +142,5 @@ prompt_gitstatus() {
     visual_identifier=${__P9K_ICONS[GITSTATUS_GIT_GITLAB]}
   fi
 
-  p9k::prepare_segment "${0}" "${current_state}" "${1}" "${2}" "${3}" "${(j: :)segment_content}" "" "${visual_identifier}"
+  p9k::prepare_segment "${0}" "${current_state}" "${1}" "${2}" "${3}" "${(j: :)segment_content//\%/%%}" "" "${visual_identifier}"
 }
