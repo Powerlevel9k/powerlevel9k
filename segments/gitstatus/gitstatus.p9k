@@ -30,7 +30,7 @@
   p9k::register_icon "GITSTATUS_COMMIT"            ''          $'\uE821 '  $'\uF221 '  '\u'${CODEPOINT_OF_OCTICONS_GIT_COMMIT}' '        $'\uE729 '
 
   # Hide branch icon if user wants it hidden
-  if [[ "${P9K_GITSTATUS_HIDE_BRANCH_ICON}" != true ]]; then
+  if [[ "${P9K_GITSTATUS_HIDE_BRANCH_ICON:-}" != "true" ]]; then
     if [[ ${P9K_MODE} != 'compatible' ]]; then
       #                                                                                                                         
       p9k::register_icon "GITSTATUS_BRANCH"        $'\uE0A0 '  $'\uE220 '  $'\uF126 '  '\u'${CODEPOINT_OF_OCTICONS_GIT_BRANCH}' '        $'\uF126 '
@@ -70,6 +70,7 @@
   p9k::set_default P9K_GITSTATUS_SHOW_CHANGESET false
   p9k::set_default P9K_GITSTATUS_CHANGESET_HASH_LENGTH 8
   p9k::set_default P9K_GITSTATUS_ALWAYS_SHOW_REMOTE_BRANCH false
+  p9k::set_default P9K_GITSTATUS_HIDE_BRANCH_ICON false
 }
 
 ## Start the gitstatus daemon
