@@ -71,6 +71,7 @@
   p9k::set_default P9K_GITSTATUS_CHANGESET_HASH_LENGTH 8
   p9k::set_default P9K_GITSTATUS_ALWAYS_SHOW_REMOTE_BRANCH false
   p9k::set_default P9K_GITSTATUS_HIDE_BRANCH_ICON false
+  p9k::set_default P9K_GITSTATUS_ACTIONFORMAT_FOREGROUND "001"
 }
 
 ## Start the gitstatus daemon
@@ -126,6 +127,9 @@ prompt_gitstatus() {
   if (( VCS_STATUS_COMMITS_BEHIND > 0 )); then
     segment_content+=("${__P9K_ICONS[GITSTATUS_INCOMING_CHANGES]}${VCS_STATUS_COMMITS_BEHIND}")
   fi
+
+  local currentForegroundColorVar=P9K_GITSTATUS_${current_state}_FOREGROUND
+  (( #VCS_STATUS_ACTION )) && segment_content+=("%F{$P9K_GITSTATUS_ACTIONFORMAT_FOREGROUND}| ${VCS_STATUS_ACTION}%f%F{${(P)currentForegroundColorVar}}")
 
   local visual_identifier="${__P9K_ICONS[GITSTATUS_GIT]}"
   if [[ "$VCS_STATUS_REMOTE_URL" =~ "github" ]] then
