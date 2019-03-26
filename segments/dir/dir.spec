@@ -781,4 +781,79 @@ function testDirHomeTruncationWorksOnlyAtTheBeginning() {
   HOME="${SAVED_HOME}"
 }
 
+function testDirSegmentWithDirectoryThatContainsFormattingInstructions() {
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(dir)
+
+  local BASEFOLDER=/tmp/p9ktest
+  local FOLDER=${BASEFOLDER}/\'%E%K{red}\'
+  local SAVED_HOME="${HOME}"
+  HOME="${BASEFOLDER}"
+
+  mkdir -p $FOLDER
+  cd $FOLDER
+  assertEquals "%K{004} %F{000}~/'%%E%%K{red}' %k%F{004}%f " "$(__p9k_build_left_prompt)"
+
+  cd -
+  rm -fr $BASEFOLDER
+  HOME="${SAVED_HOME}"
+}
+
+function testDirSegmentWithDirectoryNamedTilde() {
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(dir)
+
+  local BASEFOLDER=/tmp/p9ktest
+  local FOLDER=${BASEFOLDER}/\~/\~
+  local SAVED_HOME="${HOME}"
+  HOME="${BASEFOLDER}"
+
+  mkdir -p $FOLDER
+  cd $FOLDER
+  assertEquals "%K{004} %F{000}~/~/~ %k%F{004}%f " "$(__p9k_build_left_prompt)"
+
+  cd -
+  rm -fr $BASEFOLDER
+  HOME="${SAVED_HOME}"
+}
+
+function testDirSegmentWithDirectoryNamedTildeOmittingFirstCharacter() {
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(dir)
+  local P9K_DIR_OMIT_FIRST_CHARACTER=true
+
+  local BASEFOLDER=/tmp/p9ktest
+  local FOLDER=${BASEFOLDER}/\~
+  local SAVED_HOME="${HOME}"
+  HOME="${BASEFOLDER}"
+
+  mkdir -p $FOLDER
+  cd $FOLDER
+  assertEquals "%K{004} %F{000}/~ %k%F{004}%f " "$(__p9k_build_left_prompt)"
+
+  cd -
+  rm -fr $BASEFOLDER
+  HOME="${SAVED_HOME}"
+}
+
+function testDirSegmentWithDirectoryNamedTildeOmittingFirstCharacterInBoldMode() {
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(dir)
+  local P9K_DIR_OMIT_FIRST_CHARACTER=true
+  local P9K_DIR_PATH_HIGHLIGHT_BOLD=true
+
+  local BASEFOLDER=/tmp/p9ktest
+  local FOLDER=${BASEFOLDER}/\~
+  local SAVED_HOME="${HOME}"
+  HOME="${BASEFOLDER}"
+
+  mkdir -p $FOLDER
+  cd $FOLDER
+  assertEquals "%K{004} %F{000}/%B~%b %k%F{004}%f " "$(__p9k_build_left_prompt)"
+
+  cd -
+  rm -fr $BASEFOLDER
+  HOME="${SAVED_HOME}"
+}
+
 source shunit2/shunit2
