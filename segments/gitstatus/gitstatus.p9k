@@ -105,7 +105,7 @@ prompt_gitstatus() {
   [[ -z "$localBranch" && -z "$remoteBranch" && "${VCS_STATUS_RESULT}" != 'tout' ]] \
       && segment_content+=("${__P9K_ICONS[GITSTATUS_BRANCH]}(detached)")
 
-  [[ "${VCS_STATUS_RESULT}" == 'tout' ]] && segment_content+=('(timeout)')
+  [[ "${VCS_STATUS_RESULT}" == 'tout' ]] && segment_content+=('(gitstatus timeout)')
 
   if [[ -n "${remoteBranch}" \
       && ( \

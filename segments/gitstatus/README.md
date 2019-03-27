@@ -22,6 +22,13 @@ as you wish. Here is a quick overview:
 
 ![](states.png)
 
+## Troubleshooting
+
+If you get the message `gitstatus timeout`, the gitstatus daemon was not able
+to analyze the repository fast enough. This should not happen very often. In
+case it does anyway, you can increase the timeout by setting `P9K_GITSTATUS_MAX_SYNC_LATENCY_SECONDS`.
+The default is 5 seconds.
+
 ## Configuration
 
 The `gitstatus` segment will shows the status of your git repo. For customization,
