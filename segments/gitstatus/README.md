@@ -53,7 +53,7 @@ from the [Installation](../../README.md#Installation) section.
 | None         |  None               | ![icon_git](https://cloud.githubusercontent.com/assets/1544760/7976092/b5909f80-0a76-11e5-9950-1438b9d72465.gif) | Repository is a git repository
 
 You can get a full list of icons used in your terminal by calling
-`show_icons_variables`. It prints out a list of variables you can
+`show_defined_icons`. It prints out a list of variables you can
 set to overwrite every icon.
 
 ### Color Customization
