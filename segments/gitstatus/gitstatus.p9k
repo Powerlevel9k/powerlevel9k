@@ -112,9 +112,9 @@ prompt_gitstatus() {
       segment_content+=("${__P9K_ICONS[GITSTATUS_REMOTE_BRANCH]}${remoteBranch//\%/%%}")
   fi
 
-  (( VCS_STATUS_HAS_UNTRACKED )) && current_state="UNTRACKED" && segment_content+=("${__P9K_ICONS[GITSTATUS_UNTRACKED]}")
-  (( VCS_STATUS_HAS_STAGED )) && current_state="MODIFIED" && segment_content+=("${__P9K_ICONS[GITSTATUS_STAGED]}")
-  (( VCS_STATUS_HAS_UNSTAGED )) && current_state="MODIFIED" segment_content+=("${__P9K_ICONS[GITSTATUS_UNSTAGED]}")
+  (( VCS_STATUS_HAS_UNTRACKED >= 1 )) && current_state="UNTRACKED" && segment_content+=("${__P9K_ICONS[GITSTATUS_UNTRACKED]}")
+  (( VCS_STATUS_HAS_STAGED >= 1 )) && current_state="MODIFIED" && segment_content+=("${__P9K_ICONS[GITSTATUS_STAGED]}")
+  (( VCS_STATUS_HAS_UNSTAGED >= 1 )) && current_state="MODIFIED" segment_content+=("${__P9K_ICONS[GITSTATUS_UNSTAGED]}")
 
   (( VCS_STATUS_STASHES > 0 )) && segment_content+=("${__P9K_ICONS[GITSTATUS_STASH]}${VCS_STATUS_STASHES}")
 
