@@ -100,7 +100,7 @@ prompt_gitstatus() {
   fi
   local localBranch="${VCS_STATUS_LOCAL_BRANCH}"
   local remoteBranch="${VCS_STATUS_REMOTE_BRANCH}"
-  [[ -n "$localBranch" ]] && segment_content+=("${__P9K_ICONS[GITSTATUS_BRANCH]}${localBranch}")
+  [[ -n "$localBranch" ]] && segment_content+=("${__P9K_ICONS[GITSTATUS_BRANCH]}${localBranch//\%/%%}")
   # If no local branch and no remote branch was detected, we are probably in detached mode.
   [[ -z "$localBranch" && -z "$remoteBranch" ]] && segment_content+=("${__P9K_ICONS[GITSTATUS_BRANCH]}(detached)")
 
@@ -109,7 +109,7 @@ prompt_gitstatus() {
         "${P9K_GITSTATUS_ALWAYS_SHOW_REMOTE_BRANCH}" == 'true' \
         || "${remoteBranch#*/}" != "${VCS_STATUS_LOCAL_BRANCH#heads/}" \
       ) ]]; then
-      segment_content+=("${__P9K_ICONS[GITSTATUS_REMOTE_BRANCH]}${remoteBranch}")
+      segment_content+=("${__P9K_ICONS[GITSTATUS_REMOTE_BRANCH]}${remoteBranch//\%/%%}")
   fi
 
   (( VCS_STATUS_HAS_UNTRACKED )) && current_state="UNTRACKED" && segment_content+=("${__P9K_ICONS[GITSTATUS_UNTRACKED]}")
@@ -118,7 +118,7 @@ prompt_gitstatus() {
 
   (( VCS_STATUS_STASHES > 0 )) && segment_content+=("${__P9K_ICONS[GITSTATUS_STASH]}${VCS_STATUS_STASHES}")
 
-  [[ -n "${VCS_STATUS_TAG}" ]] && segment_content+=("${__P9K_ICONS[GITSTATUS_TAG]}${VCS_STATUS_TAG}")
+  [[ -n "${VCS_STATUS_TAG}" ]] && segment_content+=("${__P9K_ICONS[GITSTATUS_TAG]}${VCS_STATUS_TAG//\%/%%}")
 
   if (( VCS_STATUS_COMMITS_AHEAD > 0 )); then
     segment_content+=("${__P9K_ICONS[GITSTATUS_OUTGOING_CHANGES]}${VCS_STATUS_COMMITS_AHEAD}")
@@ -142,5 +142,5 @@ prompt_gitstatus() {
     visual_identifier=${__P9K_ICONS[GITSTATUS_GIT_GITLAB]}
   fi
 
-  p9k::prepare_segment "${0}" "${current_state}" "${1}" "${2}" "${3}" "${(j: :)segment_content//\%/%%}" "" "${visual_identifier}"
+  p9k::prepare_segment "${0}" "${current_state}" "${1}" "${2}" "${3}" "${(j: :)segment_content}" "" "${visual_identifier}"
 }
