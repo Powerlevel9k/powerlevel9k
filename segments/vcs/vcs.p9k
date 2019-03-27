@@ -423,7 +423,6 @@ p9k::register_segment  "VCS" "CLOBBERED" "red"    "${DEFAULT_COLOR}" ''  ''  '' 
 #   ${3} boolean Whether the segment should be joined
 ##
 prompt_vcs() {
-  [[ ${P9K_GENERATOR} == "zsh-async" && -n ${4} ]] && cd ${4}
   VCS_WORKDIR_CLOBBERED=false
   VCS_WORKDIR_DIRTY=false
   VCS_WORKDIR_HALF_DIRTY=false
