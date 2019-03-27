@@ -359,6 +359,20 @@ function __p9k_preexec() {
   _P9K_TIMER_START=${EPOCHREALTIME}
 }
 
+##############################################################
+# @description
+#   This function is a hook that is run before __p9k_prepare_prompts.
+#   If sets the return value(s) that is/are used in prompt_status.
+#   Since we need to get the return value of the last command, this hook
+#   has to be run before __p9k_prepare_prompts does.
+##
+# @noargs
+##
+function __p9k_save_retvals() {
+  RETVAL=$?
+  RETVALS=( "$pipestatus[@]" )
+}
+
 p9k::set_default P9K_PROMPT_ADD_NEWLINE false
 ###############################################################
 # @description
@@ -369,14 +383,6 @@ p9k::set_default P9K_PROMPT_ADD_NEWLINE false
 # @noargs
 ##
 function __p9k_prepare_prompts() {
-  # Return values. These need to be global, because
-  # they are used in prompt_status. Also, we need
-  # to get the return value of the last command at
-  # very first in this function. Do not move the
-  # lines down, otherwise the last command is not
-  # what you expected it to be.
-  RETVAL=$?
-  RETVALS=( "$pipestatus[@]" )
   local RPROMPT_PREFIX RPROMPT_SUFFIX
 
   _P9K_COMMAND_DURATION=$((EPOCHREALTIME - _P9K_TIMER_START))
@@ -520,6 +526,7 @@ function prompt_powerlevel9k_setup() {
   autoload -Uz add-zsh-hook
 
   # prepare prompts
+  add-zsh-hook precmd __p9k_save_retvals
   add-zsh-hook precmd __p9k_prepare_prompts
   add-zsh-hook preexec __p9k_preexec
 
