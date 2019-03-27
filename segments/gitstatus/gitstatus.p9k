@@ -88,7 +88,7 @@ gitstatus_start -m ${P9K_GITSTATUS_MAX_INDEX_SIZE_DIRTY} P9K
 #   $3 boolean Whether the segment should be joined
 ##
 prompt_gitstatus() {
-  gitstatus_query -t $P9K_GITSTATUS_MAX_SYNC_LATENCY_SECONDS P9K 2>/dev/null
+  gitstatus_query -d ${${GIT_DIR:a}:-$PWD} -t $P9K_GITSTATUS_MAX_SYNC_LATENCY_SECONDS P9K 2>/dev/null
 
   # Print nothing, if we are not in a repo, or if the gitstatus daemon sends a timeout
   [[ -z "${VCS_STATUS_RESULT}" || "${VCS_STATUS_RESULT}" =~ "norepo-" || "${VCS_STATUS_RESULT}" == "tmout" ]] && return
