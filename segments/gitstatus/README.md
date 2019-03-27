@@ -12,6 +12,9 @@ To use this segment, you need to activate it by adding `gitstatus` to your
 `P9K_LEFT_PROMPT_ELEMENTS` or `P9K_RIGHT_PROMPT_ELEMENTS` array, depending
 where you want to show this segment.
 
+Additionally, you need to install [gitstatus](https://github.com/romkatv/gitstatus) on your own, and point
+`P9K_GITSTATUS_DIR` to the directory where `gitstatus.plugin.zsh` file lies.
+
 ## States
 
 This segment can have different states. You can customize the different states
