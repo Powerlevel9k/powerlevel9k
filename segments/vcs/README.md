@@ -37,7 +37,7 @@ customization is provided via:
 
 The `vcs` segment uses various symbols to tell you the state of your repository.
 These symbols depend on your installed font and selected `P9K_MODE`
-from the [Installation](#Installation) section above.
+from the [Installation](../../README.md#Installation) section.
 
 | `Compatible` | `Powerline` | `Awesome Powerline` | Explanation
 |--------------|---------------------|-------------------|--------------------------
