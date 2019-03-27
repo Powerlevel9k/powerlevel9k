@@ -110,7 +110,7 @@ prompt_gitstatus() {
   if [[ -n "${remoteBranch}" \
       && ( \
         "${P9K_GITSTATUS_ALWAYS_SHOW_REMOTE_BRANCH}" == 'true' \
-        || "${remoteBranch#*/}" != "${VCS_STATUS_LOCAL_BRANCH#heads/}" \
+        || "${remoteBranch}" != "${VCS_STATUS_LOCAL_BRANCH}" \
       ) ]]; then
       segment_content+=("${__P9K_ICONS[GITSTATUS_REMOTE_BRANCH]}${remoteBranch//\%/%%}")
   fi
