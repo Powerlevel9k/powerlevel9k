@@ -33,7 +33,6 @@ customization is provided via:
 |`P9K_VCS_ACTIONFORMAT_FOREGROUND`|`red`|The color of the foreground font during actions (e.g., `REBASE`).|
 |`P9K_VCS_GIT_ALWAYS_SHOW_REMOTE_BRANCH`|`false`|Set to true If you would to always see the remote branch.|
 
-
 ### vcs symbols
 
 The `vcs` segment uses various symbols to tell you the state of your repository.
