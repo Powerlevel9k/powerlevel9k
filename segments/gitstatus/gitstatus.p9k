@@ -65,7 +65,7 @@
 
   ################################################################
   # Register segment default values
-  p9k::set_default P9K_GITSTATUS_MAX_INDEX_SIZE_DIRTY "4096"
+  p9k::set_default P9K_GITSTATUS_MAX_INDEX_SIZE_DIRTY "-1"
   p9k::set_default P9K_GITSTATUS_MAX_SYNC_LATENCY_SECONDS "5"
   p9k::set_default P9K_GITSTATUS_SHOW_CHANGESET false
   p9k::set_default P9K_GITSTATUS_CHANGESET_HASH_LENGTH 8
