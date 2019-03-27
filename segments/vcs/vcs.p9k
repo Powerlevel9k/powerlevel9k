@@ -187,7 +187,7 @@ function +vi-git-remotebranch() {
     fi
   fi
 
-  hook_com[branch]="${__P9K_ICONS[VCS_BRANCH]}${hook_com[branch]}"
+  hook_com[branch]="${__P9K_ICONS[VCS_BRANCH]}${hook_com[branch]//\%/%%}"
   # Always show the remote
   #if [[ -n ${remote} ]] ; then
   # Only show the remote if it differs from the local
@@ -196,7 +196,7 @@ function +vi-git-remotebranch() {
         "${P9K_VCS_GIT_ALWAYS_SHOW_REMOTE_BRANCH}" == 'true' \
         || "${remote#*/}" != "${branch_name#heads/}" \
       ) ]]; then
-    hook_com[branch]+="${__P9K_ICONS[VCS_REMOTE_BRANCH]}${remote// /}"
+    hook_com[branch]+="${__P9K_ICONS[VCS_REMOTE_BRANCH]}${${remote// /}//\%/%%}"
   fi
 }
 
@@ -240,10 +240,10 @@ function +vi-git-tagname() {
         # string.
         local revision
         revision=$(command git rev-list -n 1 --abbrev-commit --abbrev=${P9K_VCS_INTERNAL_HASH_LENGTH} HEAD)
-        hook_com[branch]="${__P9K_ICONS[VCS_BRANCH]}${revision} ${__P9K_ICONS[VCS_TAG]}${tag}"
+        hook_com[branch]="${__P9K_ICONS[VCS_BRANCH]}${revision} ${__P9K_ICONS[VCS_TAG]}${tag//\%/%%}"
       else
         # We are on both a tag and a branch; print both by appending the tag name.
-        hook_com[branch]+=" ${__P9K_ICONS[VCS_TAG]}${tag}"
+        hook_com[branch]+=" ${__P9K_ICONS[VCS_TAG]}${tag//\%/%%}"
       fi
     fi
   fi
@@ -316,6 +316,10 @@ function +vi-svn-detect-changes() {
   unset svn_status
 }
 
+function +vi-hg-branch() {
+  hook_com[branch]="${hook_com[branch]//\%/%%}"
+}
+
 ################################################################
 # @description
 #   Initializes the VCS segment by setting the required ZSH options.
@@ -369,7 +373,7 @@ __p9k_vcs_init() {
   #   :vcs_info:vcs-string+hook-name:user-context:repo-root-name
   p9k::defined P9K_VCS_GIT_HOOKS || P9K_VCS_GIT_HOOKS=(vcs-detect-changes git-untracked git-aheadbehind git-stash git-remotebranch git-gitdir git-tagname)
   zstyle ':vcs_info:git*+set-message:*' hooks ${P9K_VCS_GIT_HOOKS}
-  p9k::defined P9K_VCS_HG_HOOKS || P9K_VCS_HG_HOOKS=(vcs-detect-changes)
+  p9k::defined P9K_VCS_HG_HOOKS || P9K_VCS_HG_HOOKS=(vcs-detect-changes hg-branch)
   zstyle ':vcs_info:hg*+set-message:*' hooks ${P9K_VCS_HG_HOOKS}
   p9k::defined P9K_VCS_SVN_HOOKS || P9K_VCS_SVN_HOOKS=(vcs-detect-changes svn-detect-changes)
   zstyle ':vcs_info:svn*+set-message:*' hooks ${P9K_VCS_SVN_HOOKS}
@@ -427,7 +431,7 @@ prompt_vcs() {
 
   # Actually invoke vcs_info manually to gather all information.
   vcs_info
-  local vcs_prompt="${vcs_info_msg_0_//\%/%%}"
+  local vcs_prompt="${vcs_info_msg_0_}"
 
   if [[ -n "${vcs_prompt}" ]]; then
     if [[ "${VCS_WORKDIR_CLOBBERED}" == true ]]; then
