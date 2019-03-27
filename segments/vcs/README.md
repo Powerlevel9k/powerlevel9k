@@ -102,6 +102,7 @@ Mercurial hooks (`P9K_VCS_HG_HOOKS`):
 | Hook               | Description
 |--------------------|----------------------------------------------------|
 | vcs-detect-changes | General check for changed files and responsible for selecting a proper icon according to the remote url. |
+| hg-branch          | Escape special characters in branch name. |
 | hg-bookmarks       | Check for Mercurial Bookmarks. |
 
 SVN hooks (`P9K_VCS_SVN_HOOKS`):
