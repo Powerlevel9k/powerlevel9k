@@ -45,11 +45,11 @@
   #                                                                                                                             
   p9k::register_icon "GITSTATUS_GIT"               ''          $'\uE20E '  $'\uF1D3 '  '\u'${CODEPOINT_OF_AWESOME_GIT}' '                $'\uF1D3 '
   #                                                                                                                              
-  p9k::register_icon "GITSTATUS_GIT_GITHUB"        ''          $'\uE20E '  $'\uF113 '  '\u'${CODEPOINT_OF_AWESOME_GITHUB_ALT}' '         $'\uF113 '
+  p9k::register_icon "GITSTATUS_GITHUB"        ''          $'\uE20E '  $'\uF113 '  '\u'${CODEPOINT_OF_AWESOME_GITHUB_ALT}' '         $'\uF113 '
   #                                                                                                                              
-  p9k::register_icon "GITSTATUS_GIT_BITBUCKET"     ''          $'\uE20E '  $'\uF171 '  '\u'${CODEPOINT_OF_AWESOME_BITBUCKET}' '          $'\uE703 '
+  p9k::register_icon "GITSTATUS_BITBUCKET"     ''          $'\uE20E '  $'\uF171 '  '\u'${CODEPOINT_OF_AWESOME_BITBUCKET}' '          $'\uE703 '
   #                                                                                                                              
-  p9k::register_icon "GITSTATUS_GIT_GITLAB"        ''          $'\uE20E '  $'\uF296 '  '\u'${CODEPOINT_OF_AWESOME_GITLAB}' '             $'\uF296 '
+  p9k::register_icon "GITSTATUS_GITLAB"        ''          $'\uE20E '  $'\uF296 '  '\u'${CODEPOINT_OF_AWESOME_GITLAB}' '             $'\uF296 '
 
   ################################################################
   # Define the actual segment
@@ -133,13 +133,13 @@ prompt_gitstatus() {
 
   local visual_identifier="${__P9K_ICONS[GITSTATUS_GIT]}"
   if [[ "$VCS_STATUS_REMOTE_URL" =~ "github" ]] then
-    visual_identifier=${__P9K_ICONS[GITSTATUS_GIT_GITHUB]}
+    visual_identifier=${__P9K_ICONS[GITSTATUS_GITHUB]}
   elif [[ "$VCS_STATUS_REMOTE_URL" =~ "bitbucket" ]] then
-    visual_identifier=${__P9K_ICONS[GITSTATUS_GIT_BITBUCKET]}
+    visual_identifier=${__P9K_ICONS[GITSTATUS_BITBUCKET]}
   elif [[ "$VCS_STATUS_REMOTE_URL" =~ "stash" ]] then
-    visual_identifier=${__P9K_ICONS[GITSTATUS_GIT_BITBUCKET]}
+    visual_identifier=${__P9K_ICONS[GITSTATUS_BITBUCKET]}
   elif [[ "$VCS_STATUS_REMOTE_URL" =~ "gitlab" ]] then
-    visual_identifier=${__P9K_ICONS[GITSTATUS_GIT_GITLAB]}
+    visual_identifier=${__P9K_ICONS[GITSTATUS_GITLAB]}
   fi
 
   p9k::prepare_segment "${0}" "${current_state}" "${1}" "${2}" "${3}" "${(j: :)segment_content}" "" "${visual_identifier}"
