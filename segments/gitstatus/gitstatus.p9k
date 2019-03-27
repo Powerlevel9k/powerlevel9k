@@ -91,7 +91,7 @@ prompt_gitstatus() {
   gitstatus_query -d ${${GIT_DIR:a}:-$PWD} -t $P9K_GITSTATUS_MAX_SYNC_LATENCY_SECONDS P9K 2>/dev/null
 
   # Print nothing, if we are not in a repo, or if the gitstatus daemon sends a timeout
-  [[ -z "${VCS_STATUS_RESULT}" || "${VCS_STATUS_RESULT}" =~ "norepo-" || "${VCS_STATUS_RESULT}" == "tmout" ]] && return
+  [[ ! "${VCS_STATUS_RESULT}" =~ "ok-*" && "${VCS_STATUS_RESULT}" != 'tout' ]] && return
 
   local current_state="CLEAN"
   typeset -ah segment_content
@@ -102,7 +102,10 @@ prompt_gitstatus() {
   local remoteBranch="${VCS_STATUS_REMOTE_BRANCH}"
   [[ -n "$localBranch" ]] && segment_content+=("${__P9K_ICONS[GITSTATUS_BRANCH]}${localBranch//\%/%%}")
   # If no local branch and no remote branch was detected, we are probably in detached mode.
-  [[ -z "$localBranch" && -z "$remoteBranch" ]] && segment_content+=("${__P9K_ICONS[GITSTATUS_BRANCH]}(detached)")
+  [[ -z "$localBranch" && -z "$remoteBranch" && "${VCS_STATUS_RESULT}" != 'tout' ]] \
+      && segment_content+=("${__P9K_ICONS[GITSTATUS_BRANCH]}(detached)")
+
+  [[ "${VCS_STATUS_RESULT}" == 'tout' ]] && segment_content+=('(timeout)')
 
   if [[ -n "${remoteBranch}" \
       && ( \
