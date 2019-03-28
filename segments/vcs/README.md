@@ -33,12 +33,11 @@ customization is provided via:
 |`P9K_VCS_ACTIONFORMAT_FOREGROUND`|`red`|The color of the foreground font during actions (e.g., `REBASE`).|
 |`P9K_VCS_GIT_ALWAYS_SHOW_REMOTE_BRANCH`|`false`|Set to true If you would to always see the remote branch.|
 
-
 ### vcs symbols
 
 The `vcs` segment uses various symbols to tell you the state of your repository.
 These symbols depend on your installed font and selected `P9K_MODE`
-from the [Installation](#Installation) section above.
+from the [Installation](../../README.md#Installation) section.
 
 | `Compatible` | `Powerline` | `Awesome Powerline` | Explanation
 |--------------|---------------------|-------------------|--------------------------
@@ -54,6 +53,10 @@ from the [Installation](#Installation) section above.
 | None         |  None               | ![icon_commit](https://cloud.githubusercontent.com/assets/1544760/7976088/b58f4e50-0a76-11e5-9e70-86450d937030.gif)2c3705 | The current commit hash. Here "2c3705"
 | None         |  None               | ![icon_git](https://cloud.githubusercontent.com/assets/1544760/7976092/b5909f80-0a76-11e5-9950-1438b9d72465.gif) | Repository is a git repository
 | None         |  None               | ![icon_mercurial](https://cloud.githubusercontent.com/assets/1544760/7976090/b5908da6-0a76-11e5-8c91-452b6e73f631.gif) | Repository is a Mercurial repository
+
+You can get a full list of icons used in your terminal by calling
+`show_defined_icons`. It prints out a list of variables you can
+set to overwrite every icon.
 
 ### vcs truncation
 
@@ -102,6 +105,7 @@ Mercurial hooks (`P9K_VCS_HG_HOOKS`):
 | Hook               | Description
 |--------------------|----------------------------------------------------|
 | vcs-detect-changes | General check for changed files and responsible for selecting a proper icon according to the remote url. |
+| hg-branch          | Escape special characters in branch name. |
 | hg-bookmarks       | Check for Mercurial Bookmarks. |
 
 SVN hooks (`P9K_VCS_SVN_HOOKS`):

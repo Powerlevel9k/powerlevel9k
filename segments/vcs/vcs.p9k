@@ -119,6 +119,20 @@
   p9k::register_icon "VCS_SVN"               ''          '(svn) '    '(svn) '    '(svn) '                                          $'\uE72D '
 
   ################################################################
+  # Define the actual segment
+  ################################################################
+
+  ################################################################
+  # Register segment
+  # Parameters:
+  #   segment_name  context  background  foreground  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
+  p9k::register_segment  "VCS" "CLEAN"     "green"  "${DEFAULT_COLOR}" ''  ''  ''  ''  ''
+  p9k::register_segment  "VCS" "MODIFIED"  "yellow" "${DEFAULT_COLOR}" ''  ''  ''  ''  ''
+  #                                                                                                                                     
+  p9k::register_segment  "VCS" "UNTRACKED" "green"  "${DEFAULT_COLOR}" '?' $'\uE16C' $'\uF059' '\u'${CODEPOINT_OF_AWESOME_QUESTION_CIRCLE} $'\uF059'
+  p9k::register_segment  "VCS" "CLOBBERED" "red"    "${DEFAULT_COLOR}" ''  ''  ''  ''  ''
+
+  ################################################################
   # Register segment default values
   p9k::set_default P9K_VCS_ACTIONFORMAT_FOREGROUND "red"
   p9k::set_default P9K_VCS_HIDE_TAGS false
@@ -126,6 +140,7 @@
   p9k::set_default P9K_VCS_DIR_SHORTEN_DELIMITER $'\U2026'
   p9k::set_default P9K_VCS_SHOW_SUBMODULE_DIRTY true
   p9k::set_default P9K_VCS_GIT_ALWAYS_SHOW_REMOTE_BRANCH false
+  p9k::set_default P9K_VCS_SHOW_CHANGESET false
 }
 
 function +vi-git-untracked() {
@@ -187,7 +202,7 @@ function +vi-git-remotebranch() {
     fi
   fi
 
-  hook_com[branch]="${__P9K_ICONS[VCS_BRANCH]}${hook_com[branch]}"
+  hook_com[branch]="${__P9K_ICONS[VCS_BRANCH]}${hook_com[branch]//\%/%%}"
   # Always show the remote
   #if [[ -n ${remote} ]] ; then
   # Only show the remote if it differs from the local
@@ -196,7 +211,7 @@ function +vi-git-remotebranch() {
         "${P9K_VCS_GIT_ALWAYS_SHOW_REMOTE_BRANCH}" == 'true' \
         || "${remote#*/}" != "${branch_name#heads/}" \
       ) ]]; then
-    hook_com[branch]+="${__P9K_ICONS[VCS_REMOTE_BRANCH]}${remote// /}"
+    hook_com[branch]+="${__P9K_ICONS[VCS_REMOTE_BRANCH]}${${remote// /}//\%/%%}"
   fi
 }
 
@@ -240,10 +255,10 @@ function +vi-git-tagname() {
         # string.
         local revision
         revision=$(command git rev-list -n 1 --abbrev-commit --abbrev=${P9K_VCS_INTERNAL_HASH_LENGTH} HEAD)
-        hook_com[branch]="${__P9K_ICONS[VCS_BRANCH]}${revision} ${__P9K_ICONS[VCS_TAG]}${tag}"
+        hook_com[branch]="${__P9K_ICONS[VCS_BRANCH]}${revision} ${__P9K_ICONS[VCS_TAG]}${tag//\%/%%}"
       else
         # We are on both a tag and a branch; print both by appending the tag name.
-        hook_com[branch]+=" ${__P9K_ICONS[VCS_TAG]}${tag}"
+        hook_com[branch]+=" ${__P9K_ICONS[VCS_TAG]}${tag//\%/%%}"
       fi
     fi
   fi
@@ -316,6 +331,10 @@ function +vi-svn-detect-changes() {
   unset svn_status
 }
 
+function +vi-hg-branch() {
+  hook_com[branch]="${hook_com[branch]//\%/%%}"
+}
+
 ################################################################
 # @description
 #   Initializes the VCS segment by setting the required ZSH options.
@@ -369,7 +388,7 @@ __p9k_vcs_init() {
   #   :vcs_info:vcs-string+hook-name:user-context:repo-root-name
   p9k::defined P9K_VCS_GIT_HOOKS || P9K_VCS_GIT_HOOKS=(vcs-detect-changes git-untracked git-aheadbehind git-stash git-remotebranch git-gitdir git-tagname)
   zstyle ':vcs_info:git*+set-message:*' hooks ${P9K_VCS_GIT_HOOKS}
-  p9k::defined P9K_VCS_HG_HOOKS || P9K_VCS_HG_HOOKS=(vcs-detect-changes)
+  p9k::defined P9K_VCS_HG_HOOKS || P9K_VCS_HG_HOOKS=(vcs-detect-changes hg-branch)
   zstyle ':vcs_info:hg*+set-message:*' hooks ${P9K_VCS_HG_HOOKS}
   p9k::defined P9K_VCS_SVN_HOOKS || P9K_VCS_SVN_HOOKS=(vcs-detect-changes svn-detect-changes)
   zstyle ':vcs_info:svn*+set-message:*' hooks ${P9K_VCS_SVN_HOOKS}
@@ -396,20 +415,6 @@ __p9k_vcs_init() {
 }
 
 ################################################################
-# Define the actual segment
-################################################################
-
-################################################################
-# Register segment
-# Parameters:
-#   segment_name  context  background  foreground  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
-p9k::register_segment  "VCS" "CLEAN"     "green"  "${DEFAULT_COLOR}" ''  ''  ''  ''  ''
-p9k::register_segment  "VCS" "MODIFIED"  "yellow" "${DEFAULT_COLOR}" ''  ''  ''  ''  ''
-#                                                                                                                                     
-p9k::register_segment  "VCS" "UNTRACKED" "green"  "${DEFAULT_COLOR}" '?' $'\uE16C' $'\uF059' '\u'${CODEPOINT_OF_AWESOME_QUESTION_CIRCLE} $'\uF059'
-p9k::register_segment  "VCS" "CLOBBERED" "red"    "${DEFAULT_COLOR}" ''  ''  ''  ''  ''
-
-################################################################
 # @description
 #   Display the current VCS information.
 ##
@@ -419,7 +424,6 @@ p9k::register_segment  "VCS" "CLOBBERED" "red"    "${DEFAULT_COLOR}" ''  ''  '' 
 #   ${3} boolean Whether the segment should be joined
 ##
 prompt_vcs() {
-  [[ ${P9K_GENERATOR} == "zsh-async" && -n ${4} ]] && cd ${4}
   VCS_WORKDIR_CLOBBERED=false
   VCS_WORKDIR_DIRTY=false
   VCS_WORKDIR_HALF_DIRTY=false

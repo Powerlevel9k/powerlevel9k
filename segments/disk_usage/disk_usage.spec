@@ -28,9 +28,6 @@ function tearDown() {
   rm -fr /tmp/powerlevel9k-test
   unset FOLDER
   unset P9K_HOME
-
-  # Remove IP cache file
-  rm -f ${P9K_PUBLIC_IP_FILE}
 }
 
 function testDiskUsageSegmentWhenDiskIsAlmostFull() {
