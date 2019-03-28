@@ -109,7 +109,7 @@ The segments that are currently available are:
 * [`ssh`](segments/ssh/README.md) - Indicates whether or not you are in an SSH session.
 
 **Development Environment Segments:**
-* [`gitstatus`](segments/gitstatus/README.md) - Information about this `git` (if you are in one).
+* [`gitstatus`](segments/gitstatus/README.md) - Information about this `git` repository (if you are in one).
 * [`vcs`](segments/vcs/README.md) - Information about this `git` or `hg` repository (if you are in one).
 
 **Language Segments:**
