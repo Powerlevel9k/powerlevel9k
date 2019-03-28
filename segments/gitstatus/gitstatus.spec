@@ -41,7 +41,7 @@ function testGitstatusRemoteBranchIsDisplayedIfLocalAndRemoteDiffer() {
   P9K_LEFT_PROMPT_ELEMENTS=(gitstatus)
   source "${P9K_HOME}/segments/gitstatus/gitstatus.p9k"
   
-  local VCS_STATUS_RESULT="repo-sync"
+  local VCS_STATUS_RESULT="ok-sync"
   local VCS_STATUS_LOCAL_BRANCH='master'
   local VCS_STATUS_REMOTE_BRANCH='remotes/somebody/master'
 
@@ -53,9 +53,9 @@ function testGitstatusRemoteBranchIsHiddenIfLocalAndRemoteAreEqual() {
   P9K_LEFT_PROMPT_ELEMENTS=(gitstatus)
   source "${P9K_HOME}/segments/gitstatus/gitstatus.p9k"
   
-  local VCS_STATUS_RESULT="repo-sync"
+  local VCS_STATUS_RESULT="ok-sync"
   local VCS_STATUS_LOCAL_BRANCH='master'
-  local VCS_STATUS_REMOTE_BRANCH='origin/master'
+  local VCS_STATUS_REMOTE_BRANCH='master'
 
   assertEquals "%K{002} %F{000} master %k%F{002}%f " "$(__p9k_build_left_prompt)"
 }
@@ -65,7 +65,7 @@ function testGitstatusActionformat() {
   P9K_LEFT_PROMPT_ELEMENTS=(gitstatus)
   source "${P9K_HOME}/segments/gitstatus/gitstatus.p9k"
   
-  local VCS_STATUS_RESULT="repo-sync"
+  local VCS_STATUS_RESULT="ok-sync"
   local VCS_STATUS_LOCAL_BRANCH='%E%K{blue}'
   local VCS_STATUS_ACTION="merge"
 
@@ -77,7 +77,7 @@ function testNoPercentEscapesLeak() {
   P9K_LEFT_PROMPT_ELEMENTS=(gitstatus)
   source "${P9K_HOME}/segments/gitstatus/gitstatus.p9k"
   
-  local VCS_STATUS_RESULT="repo-sync"
+  local VCS_STATUS_RESULT="ok-sync"
   local VCS_STATUS_LOCAL_BRANCH='%E%K{red}'
 
   assertEquals "%K{002} %F{000} %%E%%K{red} %k%F{002}%f " "$(__p9k_build_left_prompt)"
@@ -87,7 +87,7 @@ function testGitstatusVisualIdentifier() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(gitstatus)
 
-  local VCS_STATUS_RESULT="repo-sync"
+  local VCS_STATUS_RESULT="ok-sync"
   local VCS_STATUS_LOCAL_BRANCH="master"
 
   local P9K_GITSTATUS_GIT_ICON='Git-icon'
