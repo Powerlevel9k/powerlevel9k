@@ -484,6 +484,11 @@ function testHomeFolderAbbreviation() {
 
   local dir=$PWD
 
+  local BASEFOLDER=/tmp/p9ktest
+  local SAVED_HOME="${HOME}"
+  HOME="${BASEFOLDER}"
+  mkdir -p "$HOME"
+
   cd ~/
   # default
   local P9K_DIR_HOME_FOLDER_ABBREVIATION='~'
@@ -502,6 +507,14 @@ function testHomeFolderAbbreviation() {
   local P9K_DIR_HOME_FOLDER_ABBREVIATION='qQq'
   assertEquals "%K{004} %F{000}/tmp %k%F{004}%f " "$(__p9k_build_left_prompt)"
 
+  # Make a directory named tilde directly under HOME
+  mkdir ~/~
+  cd ~/~
+  local P9K_DIR_HOME_FOLDER_ABBREVIATION='qQq'
+  assertEquals "%K{004} %F{000}qQq/~ %k%F{004}%f " "$(__p9k_build_left_prompt)"
+
+  HOME="${SAVED_HOME}"
+  rm -fr $BASEFOLDER
   cd "$dir"
 }
 
@@ -778,6 +791,81 @@ function testDirHomeTruncationWorksOnlyAtTheBeginning() {
 
   cd -
   rm -fr $FOLDER
+  HOME="${SAVED_HOME}"
+}
+
+function testDirSegmentWithDirectoryThatContainsFormattingInstructions() {
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(dir)
+
+  local BASEFOLDER=/tmp/p9ktest
+  local FOLDER=${BASEFOLDER}/\'%E%K{red}\'
+  local SAVED_HOME="${HOME}"
+  HOME="${BASEFOLDER}"
+
+  mkdir -p $FOLDER
+  cd $FOLDER
+  assertEquals "%K{004} %F{000}~/'%%E%%K{red}' %k%F{004}%f " "$(__p9k_build_left_prompt)"
+
+  cd -
+  rm -fr $BASEFOLDER
+  HOME="${SAVED_HOME}"
+}
+
+function testDirSegmentWithDirectoryNamedTilde() {
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(dir)
+
+  local BASEFOLDER=/tmp/p9ktest
+  local FOLDER=${BASEFOLDER}/\~/\~
+  local SAVED_HOME="${HOME}"
+  HOME="${BASEFOLDER}"
+
+  mkdir -p $FOLDER
+  cd $FOLDER
+  assertEquals "%K{004} %F{000}~/~/~ %k%F{004}%f " "$(__p9k_build_left_prompt)"
+
+  cd -
+  rm -fr $BASEFOLDER
+  HOME="${SAVED_HOME}"
+}
+
+function testDirSegmentWithDirectoryNamedTildeOmittingFirstCharacter() {
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(dir)
+  local P9K_DIR_OMIT_FIRST_CHARACTER=true
+
+  local BASEFOLDER=/tmp/p9ktest
+  local FOLDER=${BASEFOLDER}/\~
+  local SAVED_HOME="${HOME}"
+  HOME="${BASEFOLDER}"
+
+  mkdir -p $FOLDER
+  cd $FOLDER
+  assertEquals "%K{004} %F{000}/~ %k%F{004}%f " "$(__p9k_build_left_prompt)"
+
+  cd -
+  rm -fr $BASEFOLDER
+  HOME="${SAVED_HOME}"
+}
+
+function testDirSegmentWithDirectoryNamedTildeOmittingFirstCharacterInBoldMode() {
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(dir)
+  local P9K_DIR_OMIT_FIRST_CHARACTER=true
+  local P9K_DIR_PATH_HIGHLIGHT_BOLD=true
+
+  local BASEFOLDER=/tmp/p9ktest
+  local FOLDER=${BASEFOLDER}/\~
+  local SAVED_HOME="${HOME}"
+  HOME="${BASEFOLDER}"
+
+  mkdir -p $FOLDER
+  cd $FOLDER
+  assertEquals "%K{004} %F{000}/%B~%b %k%F{004}%f " "$(__p9k_build_left_prompt)"
+
+  cd -
+  rm -fr $BASEFOLDER
   HOME="${SAVED_HOME}"
 }
 
