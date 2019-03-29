@@ -182,8 +182,9 @@ function __p9k_right_prompt_segment() {
       || visual_identifier="${visual_identifier}${middle_ws}"
   fi
 
-  # Print whitespace only if segment is not joined or first right segment
-  [[ ${joined} == false ]] || [[ "${CURRENT_RIGHT_BG}" == "NONE" ]] && echo -n "${left_ws}"
+  # Print whitespace only if segment is not joined or first right segment,
+  # however, avoid double-printing whitespace if ${content} is empty
+  [[ ${joined} == false ]] || [[ "${CURRENT_RIGHT_BG}" == "NONE" ]] && [[ -n "${content}" ]] && echo -n "${left_ws}"
   # Print segment content and icon, if any
   [[ "${(L)P9K_RPROMPT_ICON_LEFT}" != "true" ]] \
     && echo -n "${content}${visual_identifier}" \
