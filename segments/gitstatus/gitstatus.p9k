@@ -100,6 +100,9 @@ prompt_gitstatus() {
   fi
   local localBranch="${VCS_STATUS_LOCAL_BRANCH}"
   local remoteBranch="${VCS_STATUS_REMOTE_BRANCH}"
+  # Strip origin from remote name
+  local remoteName="${VCS_STATUS_REMOTE_NAME/origin/}"
+  [[ -n "${remoteName}" && -n "${localBranch}" ]] && localBranch="${remoteName}/${localBranch}"
   [[ -n "$localBranch" ]] && segment_content+=("${__P9K_ICONS[GITSTATUS_BRANCH]}${localBranch//\%/%%}")
   # If no local branch and no remote branch was detected, we are probably in detached mode.
   [[ -z "$localBranch" && -z "$remoteBranch" && "${VCS_STATUS_RESULT}" != 'tout' ]] \
