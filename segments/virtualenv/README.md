@@ -10,6 +10,13 @@ where you want to show this segment.
 
 ## Configuration
 
+### Option to read python of virtualenv version
+
+You can read just in front of the virtual environment name, the python version for this environment by setting
+```
+POWERLEVEL9K_VIRTUALENV_SHOW_VERSION=true
+```
+
 ### Color Customization
 
 You can change the foreground and background color of this segment by setting
