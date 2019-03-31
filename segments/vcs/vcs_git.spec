@@ -7,14 +7,14 @@ SHUNIT_PARENT=$0
 
 function oneTimeSetUp() {
   # must be done before any setup
-  ORIGINAL_GIT_AUTHOR_NAME="$(git config --global user.name)"
-  ORIGINAL_GIT_AUTHOR_EMAIL="$(git config --global user.email)"
+  ORIGINAL_GIT_AUTHOR_NAME="$(git config --global user.name || true)"
+  ORIGINAL_GIT_AUTHOR_EMAIL="$(git config --global user.email || true)"
 }
 
 function oneTimeTearDown() {
   # must be done after last tear down to check if tests messed with user config
-  assertEquals "$(git config --global user.name)" "$ORIGINAL_GIT_AUTHOR_NAME"
-  assertEquals "$(git config --global user.email)" "$ORIGINAL_GIT_AUTHOR_EMAIL"
+  assertEquals "$(git config --global user.name || true)" "$ORIGINAL_GIT_AUTHOR_NAME"
+  assertEquals "$(git config --global user.email || true)" "$ORIGINAL_GIT_AUTHOR_EMAIL"
   echo testIfUserConfigWasMessedWith
   unset ORIGINAL_GIT_AUTHOR_NAME
   unset ORIGINAL_GIT_AUTHOR_EMAIL
@@ -42,11 +42,11 @@ function setUp() {
   GIT_CONFIG_NOSYSTEM=true
 
   # Set username and email
-  GIT_AUTHOR_NAME="Testing Tester"
-  GIT_AUTHOR_EMAIL="test@powerlevel9k.theme"
-  git config --global user.name "${GIT_AUTHOR_NAME}"
-  git config --global user.email "${GIT_AUTHOR_EMAIL}"
-
+  cat << EOF > "$HOME/.gitconfig"
+[user]
+  name = Testing Tester
+  email = test@powerlevel9k.theme
+EOF
   # Initialize FOLDER as git repository
   git init 1>/dev/null
 }
