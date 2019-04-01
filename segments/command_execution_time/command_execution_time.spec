@@ -33,7 +33,7 @@ function testCommandExecutionTimeThresholdCouldBeChanged() {
   source powerlevel9k.zsh-theme
 
   local _P9K_COMMAND_DURATION=2.03
-  assertEquals "%K{001} %F{226}Dur %F{226}2.03 %k%F{001}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{001} %F{226}Dur %F{226}2.03s %k%F{001}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testCommandExecutionTimeThresholdCouldBeSetToZero() {
@@ -45,7 +45,7 @@ function testCommandExecutionTimeThresholdCouldBeSetToZero() {
   source powerlevel9k.zsh-theme
 
   local _P9K_COMMAND_DURATION=0.03
-  assertEquals "%K{001} %F{226}Dur %F{226}0.03 %k%F{001}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{001} %F{226}Dur %F{226}0.03s %k%F{001}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testCommandExecutionTimePrecisionCouldBeChanged() {
@@ -58,7 +58,7 @@ function testCommandExecutionTimePrecisionCouldBeChanged() {
   source powerlevel9k.zsh-theme
 
   local _P9K_COMMAND_DURATION=0.0001
-  assertEquals "%K{001} %F{226}Dur %F{226}0.0001 %k%F{001}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{001} %F{226}Dur %F{226}0.0001s %k%F{001}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testCommandExecutionTimePrecisionCouldBeSetToZero() {
@@ -70,7 +70,7 @@ function testCommandExecutionTimePrecisionCouldBeSetToZero() {
   source powerlevel9k.zsh-theme
 
   local _P9K_COMMAND_DURATION=23.5001
-  assertEquals "%K{001} %F{226}Dur %F{226}23 %k%F{001}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{001} %F{226}Dur %F{226}23s %k%F{001}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testCommandExecutionTimeIsFormattedHumandReadbleForMinuteLongCommand() {

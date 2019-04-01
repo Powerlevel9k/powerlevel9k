@@ -648,4 +648,20 @@ function testGitSubmoduleWorks() {
   assertEquals "%K{002} %F{000} master %k%F{002}%f " "$result"
 }
 
+function testVcsSegmentDoesNotLeakPercentEscapesInGitRepo() {
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(vcs)
+  source "${P9K_HOME}/segments/vcs/vcs.p9k"
+
+  # Make dummy commit
+  echo "bla" > bla.txt
+  git add bla.txt >/dev/null
+  git commit -m "Initial Commit" >/dev/null
+
+  git checkout -b '%E%K{red}' 2>/dev/null
+  git tag '%E%F{blue}' >/dev/null
+
+  assertEquals "%K{002} %F{000} %%E%%K{red} %%E%%F{blue} %k%F{002}%f " "$(__p9k_build_left_prompt)"
+}
+
 source shunit2/shunit2

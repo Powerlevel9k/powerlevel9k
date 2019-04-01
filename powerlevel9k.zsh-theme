@@ -258,7 +258,6 @@ function __p9k_load_segments() {
           print -P "%F{yellow}Warning!%f The '%F{cyan}${segment}%f' segment was not found. Removing it from the prompt."
           P9K_LEFT_PROMPT_ELEMENTS=("${(@)P9K_LEFT_PROMPT_ELEMENTS:#${segment}}")
           P9K_RIGHT_PROMPT_ELEMENTS=("${(@)P9K_RIGHT_PROMPT_ELEMENTS:#${segment}}")
-          P9K_PROMPT_ELEMENTS=("${(@)P9K_PROMPT_ELEMENTS:#${segment}}")
         fi
       fi
     done

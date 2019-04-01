@@ -192,8 +192,9 @@ function __p9k_right_prompt_segment() {
       || visual_identifier="${visual_identifier}${middle_ws}"
   fi
 
-  # Print whitespace only if segment is not joined or first right segment
-  [[ ${joined} == false ]] || [[ "${CURRENT_RIGHT_BG}" == "NONE" ]] && result+="${left_ws}"
+  # Print whitespace only if segment is not joined or first right segment,
+  # however, avoid double-printing whitespace if ${content} is empty
+  [[ ${joined} == false ]] || [[ "${CURRENT_RIGHT_BG}" == "NONE" ]] && [[ -n "${content}" ]] && result+="${left_ws}"
   # Print segment content and icon, if any
   [[ "${(L)P9K_RPROMPT_ICON_LEFT}" != "true" ]] \
     && result+="${content}${visual_identifier}" \
@@ -526,6 +527,20 @@ function __p9k_preexec() {
   _P9K_TIMER_START=${EPOCHREALTIME}
 }
 
+##############################################################
+# @description
+#   This function is a hook that is run before __p9k_prepare_prompts.
+#   If sets the return value(s) that is/are used in prompt_status.
+#   Since we need to get the return value of the last command, this hook
+#   has to be run before __p9k_prepare_prompts does.
+##
+# @noargs
+##
+function __p9k_save_retvals() {
+  RETVAL=$?
+  RETVALS=( "$pipestatus[@]" )
+}
+
 p9k::set_default P9K_PROMPT_ADD_NEWLINE false
 ###############################################################
 # @description
@@ -536,14 +551,6 @@ p9k::set_default P9K_PROMPT_ADD_NEWLINE false
 # @noargs
 ##
 function __p9k_prepare_prompts() {
-  # Return values. These need to be global, because
-  # they are used in prompt_status. Also, we need
-  # to get the return value of the last command at
-  # very first in this function. Do not move the
-  # lines down, otherwise the last command is not
-  # what you expected it to be.
-  RETVAL=$?
-  RETVALS=( "$pipestatus[@]" )
   local RPROMPT_PREFIX RPROMPT_SUFFIX
 
   _P9K_COMMAND_DURATION=$((EPOCHREALTIME - _P9K_TIMER_START))
@@ -629,11 +636,9 @@ function prompt_powerlevel9k_setup() {
 
   if ! p9k::defined P9K_LEFT_PROMPT_ELEMENTS; then
     P9K_LEFT_PROMPT_ELEMENTS=(context dir vcs)
-    P9K_PROMPT_ELEMENTS=("${P9K_LEFT_PROMPT_ELEMENTS[@]}" "${P9K_RIGHT_PROMPT_ELEMENTS[@]}")
   fi
   if ! p9k::defined P9K_RIGHT_PROMPT_ELEMENTS; then
     P9K_RIGHT_PROMPT_ELEMENTS=(status root_indicator background_jobs history time)
-    P9K_PROMPT_ELEMENTS=("${P9K_LEFT_PROMPT_ELEMENTS[@]}" "${P9K_RIGHT_PROMPT_ELEMENTS[@]}")
   fi
 
   # initialize colors
@@ -649,6 +654,7 @@ function prompt_powerlevel9k_setup() {
   autoload -Uz add-zsh-hook
 
   # prepare prompts
+  add-zsh-hook precmd __p9k_save_retvals
   add-zsh-hook precmd __p9k_prepare_prompts
   add-zsh-hook preexec __p9k_preexec
 

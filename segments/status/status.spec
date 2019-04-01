@@ -101,7 +101,7 @@ function testStatusSegmentIntegrated() {
   # Load Powerlevel9k
   source powerlevel9k.zsh-theme
 
-  false; __p9k_prepare_prompts
+  false; __p9k_save_retvals; __p9k_prepare_prompts
 
   assertEquals "%f%b%k%K{000} %F{001}✘ %k%F{000}%f " "${(e)PROMPT}"
 }

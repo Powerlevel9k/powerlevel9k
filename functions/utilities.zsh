@@ -343,22 +343,6 @@ function p9k::find_in_array() {
   echo "${(j: :)occurrences}"
 }
 
-# Combine the PROMPT_ELEMENTS
-typeset -gU P9K_PROMPT_ELEMENTS
-P9K_PROMPT_ELEMENTS=("${P9K_LEFT_PROMPT_ELEMENTS[@]}" "${P9K_RIGHT_PROMPT_ELEMENTS[@]}")
-
-###############################################################
-# @description
-#   Determine if the passed segment is used in either the LEFT or
-#   RIGHT prompt arrays.
-##
-# @args
-#   $1 string The segment to be tested.
-##
-function p9k::segment_in_use() {
-  [[ -n "${P9K_PROMPT_ELEMENTS[(r)$1]}" ]] && return 0 || return 1
-}
-
 ###############################################################
 # @description
 #   Print a deprecation warning if an old segment is in use.

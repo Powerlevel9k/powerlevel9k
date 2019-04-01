@@ -32,4 +32,5 @@ P9K_ANACONDA_BACKGROUND='blue'
 
 ### Customize Icon
 
-The main Icon can be changed by setting `P9K_ANACONDA_ICON="my_icon"`.
+The main Icon can be changed by setting `P9K_ANACONDA_ICON="my_icon"`. To change the
+icon color only, set `P9K_ANACONDA_ICON_COLOR="red"`.
