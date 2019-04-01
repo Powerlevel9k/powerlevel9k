@@ -292,7 +292,7 @@ function +vi-vcs-detect-changes() {
   fi
 }
 
-function +vi-vcs-remote-icon() {
+function +vi-vcs-icon() {
   local remote
   if [[ "${hook_com[vcs]}" == "git" ]]; then
     remote=$(command git ls-remote --get-url 2> /dev/null)
@@ -389,11 +389,11 @@ __p9k_vcs_init() {
   # Hooks are places in vcs_info where you can run your own code. That code can communicate with the code that called it and through that, change the system’s behaviour.
   # For configuration, hooks change the style context:
   #   :vcs_info:vcs-string+hook-name:user-context:repo-root-name
-  p9k::defined P9K_VCS_GIT_HOOKS || P9K_VCS_GIT_HOOKS=(vcs-detect-changes vcs-remote-icon git-untracked git-aheadbehind git-stash git-remotebranch git-gitdir git-tagname)
+  p9k::defined P9K_VCS_GIT_HOOKS || P9K_VCS_GIT_HOOKS=(vcs-detect-changes vcs-icon git-untracked git-aheadbehind git-stash git-remotebranch git-gitdir git-tagname)
   zstyle ':vcs_info:git*+set-message:*' hooks ${P9K_VCS_GIT_HOOKS}
-  p9k::defined P9K_VCS_HG_HOOKS || P9K_VCS_HG_HOOKS=(vcs-detect-changes vcs-remote-icon hg-branch)
+  p9k::defined P9K_VCS_HG_HOOKS || P9K_VCS_HG_HOOKS=(vcs-detect-changes vcs-icon hg-branch)
   zstyle ':vcs_info:hg*+set-message:*' hooks ${P9K_VCS_HG_HOOKS}
-  p9k::defined P9K_VCS_SVN_HOOKS || P9K_VCS_SVN_HOOKS=(vcs-detect-changes vcs-remote-icon svn-detect-changes)
+  p9k::defined P9K_VCS_SVN_HOOKS || P9K_VCS_SVN_HOOKS=(vcs-detect-changes vcs-icon svn-detect-changes)
   zstyle ':vcs_info:svn*+set-message:*' hooks ${P9K_VCS_SVN_HOOKS}
 
   # For Hg, only show the branch name
