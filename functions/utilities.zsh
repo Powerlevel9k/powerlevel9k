@@ -288,10 +288,6 @@ function p9k::get_relevant_item() {
   done
 }
 
-# Combine the PROMPT_ELEMENTS
-typeset -gU P9K_PROMPT_ELEMENTS
-P9K_PROMPT_ELEMENTS=("${P9K_LEFT_PROMPT_ELEMENTS[@]}" "${P9K_RIGHT_PROMPT_ELEMENTS[@]}")
-
 ###############################################################
 # @description
 #   Determine if the passed segment is used in either the LEFT or

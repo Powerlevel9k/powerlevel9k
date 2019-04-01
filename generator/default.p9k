@@ -507,11 +507,9 @@ function prompt_powerlevel9k_setup() {
 
   if ! p9k::defined P9K_LEFT_PROMPT_ELEMENTS; then
     P9K_LEFT_PROMPT_ELEMENTS=(context dir vcs)
-    P9K_PROMPT_ELEMENTS=("${P9K_LEFT_PROMPT_ELEMENTS[@]}" "${P9K_RIGHT_PROMPT_ELEMENTS[@]}")
   fi
   if ! p9k::defined P9K_RIGHT_PROMPT_ELEMENTS; then
     P9K_RIGHT_PROMPT_ELEMENTS=(status root_indicator background_jobs history time)
-    P9K_PROMPT_ELEMENTS=("${P9K_LEFT_PROMPT_ELEMENTS[@]}" "${P9K_RIGHT_PROMPT_ELEMENTS[@]}")
   fi
 
   # initialize colors
