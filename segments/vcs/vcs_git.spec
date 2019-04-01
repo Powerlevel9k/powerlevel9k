@@ -5,6 +5,21 @@
 setopt shwordsplit
 SHUNIT_PARENT=$0
 
+function oneTimeSetUp() {
+  # must be done before any setup
+  ORIGINAL_GIT_AUTHOR_NAME="$(git config --global user.name || true)"
+  ORIGINAL_GIT_AUTHOR_EMAIL="$(git config --global user.email || true)"
+}
+
+function oneTimeTearDown() {
+  # must be done after last tear down to check if tests messed with user config
+  assertEquals "$(git config --global user.name || true)" "$ORIGINAL_GIT_AUTHOR_NAME"
+  assertEquals "$(git config --global user.email || true)" "$ORIGINAL_GIT_AUTHOR_EMAIL"
+  echo testIfUserConfigWasMessedWith
+  unset ORIGINAL_GIT_AUTHOR_NAME
+  unset ORIGINAL_GIT_AUTHOR_EMAIL
+}
+
 function setUp() {
   export TERM="xterm-256color"
   local -a P9K_RIGHT_PROMPT_ELEMENTS
@@ -27,48 +42,16 @@ function setUp() {
   GIT_CONFIG_NOSYSTEM=true
 
   # Set username and email
-  OLD_GIT_AUTHOR_NAME=$GIT_AUTHOR_NAME
-  GIT_AUTHOR_NAME="Testing Tester"
-  OLD_GIT_AUTHOR_EMAIL=$GIT_AUTHOR_EMAIL
-  GIT_AUTHOR_EMAIL="test@powerlevel9k.theme"
-
-  # Set default username if not already set!
-  if [[ -z $(git config user.name) ]]; then
-    GIT_AUTHOR_NAME_SET_BY_TEST=true
-    git config --global user.name "${GIT_AUTHOR_NAME}"
-  fi
-  # Set default email if not already set!
-  if [[ -z $(git config user.email) ]]; then
-    GIT_AUTHOR_EMAIL_SET_BY_TEST=true
-    git config --global user.email "${GIT_AUTHOR_EMAIL}"
-  fi
-
+  cat << EOF > "$HOME/.gitconfig"
+[user]
+  name = Testing Tester
+  email = test@powerlevel9k.theme
+EOF
   # Initialize FOLDER as git repository
   git init 1>/dev/null
 }
 
 function tearDown() {
-  if [[ -n "${OLD_GIT_AUTHOR_NAME}" ]]; then
-    GIT_AUTHOR_NAME=$OLD_GIT_AUTHOR
-    unset OLD_GIT_AUTHOR_NAME
-  else
-    unset GIT_AUTHOR_NAME
-  fi
-
-  if [[ -n "${OLD_GIT_AUTHOR_EMAIL}" ]]; then
-    GIT_AUTHOR_EMAIL=$OLD_GIT_AUTHOR_EMAIL
-    unset OLD_GIT_AUTHOR_EMAIL
-  else
-    unset GIT_AUTHOR_EMAIL
-  fi
-
-  if [[ "${GIT_AUTHOR_NAME_SET_BY_TEST}" == "true" ]]; then
-    git config --global --unset user.name
-  fi
-  if [[ "${GIT_AUTHOR_EMAIL_SET_BY_TEST}" == "true" ]]; then
-    git config --global --unset user.email
-  fi
-
   # Back to original home and use
   HOME="$OLD_HOME"
   unset OLD_HOME
