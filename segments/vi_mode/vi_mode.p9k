@@ -47,16 +47,27 @@
 ##
 prompt_vi_mode() {
   local current_state
+  local vi_mode_string
   typeset -gAH vi_states
   case "${VIM_MODE_KEYMAP:-$KEYMAP}" in
-    vicmd)        current_state="NORMAL" ;;
-    vivis)        current_state="VISUAL" ;;
-    isearch)      current_state="SEARCH" ;;
-    main|viins|*) current_state="INSERT" ;;
+    vicmd)
+      current_state="NORMAL"
+      vi_mode_string="${P9K_VI_MODE_NORMAL_STRING}"
+      ;;
+    vivis)
+      current_state="VISUAL"
+      vi_mode_string="${P9K_VI_MODE_VISUAL_STRING}"
+      ;;
+    isearch)
+      current_state="SEARCH"
+      vi_mode_string="${P9K_VI_MODE_SEARCH_STRING}"
+      ;;
+    main|viins|*)
+      current_state="INSERT"
+      vi_mode_string="${P9K_VI_MODE_INSERT_STRING}"
+      ;;
   esac
 
-  local vi_mode="P9K_VI_MODE_${current_state}_STRING"
-  local vi_mode_string="${(P)vi_mode}"
   # NOTE: The display test at the end of the next line ensures that the segment_state is displayed if an icon is defined
   #       even if the string is set to an empty string. This allows you to define and use icons for this segment instead
   #       of the default text string and also bypasses the ugly icon as content string. As a bonus, you can set both!
