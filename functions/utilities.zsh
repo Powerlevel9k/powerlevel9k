@@ -345,6 +345,21 @@ function p9k::find_in_array() {
 
 ###############################################################
 # @description
+#   Determine if the passed segment is used in either the LEFT or
+#   RIGHT prompt arrays.
+##
+# @args
+#   $1 string The segment to be tested.
+##
+function p9k::segment_in_use() {
+  local segment="${1}"
+  local -a segments=(${=__P9K_DATA[left_segments]:-} ${=__P9K_DATA[right_segments]:-})
+
+  [[ "${segments[(re)${segment}]:-}" == "${segment}" ]]
+}
+
+###############################################################
+# @description
 #   Print a deprecation warning if an old segment is in use.
 # @args
 #   $1 associative-array An associative array that contains the
