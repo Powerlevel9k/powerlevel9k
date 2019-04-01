@@ -301,7 +301,7 @@ function +vi-vcs-icon() {
     remote=$(command hg paths default)
     vcs_segment_icon=${__P9K_ICONS[VCS_HG]}
   elif [[ "${hook_com[vcs]}" == "svn" ]]; then
-    remote="${svninfo[URL]}"
+    remote="${svninfo[URL]}" # Set by VCS_INFO
     vcs_segment_icon=${__P9K_ICONS[VCS_SVN]}
   fi
 
