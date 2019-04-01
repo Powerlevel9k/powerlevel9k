@@ -80,9 +80,10 @@ function rebuildViMode() {
   for alignment in left right; do
     for index in $(p9k::find_in_array "vi_mode" "${__P9K_DATA[${alignment}_segments]}"); do
       local joined=false
-      local segmentMetaVar="P9K_${alignment}_PROMPT_ELEMENTS[${index}]"
+      local segmentMetaVar="P9K_${(U)alignment}_PROMPT_ELEMENTS[${index}]"
       p9k::segment_is_tagged_as "joined" ${${(P)segmentMetaVar}%%::*} && joined=true
-      __p9k_refresh_cache_item $(prompt_vi_mode "${alignment}" "${index}" "${joined}")
+      prompt_vi_mode "${alignment}" "${index}" "${joined}"
+      __p9k_refresh_cache_item "${__P9K_DATA[SEGMENT_RESULT]}"
     done
   done
 
