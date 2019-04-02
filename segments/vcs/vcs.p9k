@@ -285,31 +285,34 @@ function +vi-hg-bookmarks() {
 }
 
 function +vi-vcs-detect-changes() {
-  if [[ "${hook_com[vcs]}" == "git" ]]; then
-
-    local remote=$(command git ls-remote --get-url 2> /dev/null)
-    if [[ "$remote" =~ "github" ]] then
-      vcs_segment_icon=${__P9K_ICONS[VCS_GIT_GITHUB]}
-    elif [[ "$remote" =~ "bitbucket" ]] then
-      vcs_segment_icon=${__P9K_ICONS[VCS_GIT_BITBUCKET]}
-    elif [[ "$remote" =~ "stash" ]] then
-      vcs_segment_icon=${__P9K_ICONS[VCS_GIT_BITBUCKET]}
-    elif [[ "$remote" =~ "gitlab" ]] then
-      vcs_segment_icon=${__P9K_ICONS[VCS_GIT_GITLAB]}
-    else
-      vcs_segment_icon=${__P9K_ICONS[VCS_GIT]}
-    fi
-
-  elif [[ "${hook_com[vcs]}" == "hg" ]]; then
-    vcs_segment_icon=${__P9K_ICONS[VCS_HG]}
-  elif [[ "${hook_com[vcs]}" == "svn" ]]; then
-    vcs_segment_icon=${__P9K_ICONS[VCS_SVN]}
-  fi
-
   if [[ -n "${hook_com[staged]}" ]] || [[ -n "${hook_com[unstaged]}" ]]; then
     VCS_WORKDIR_DIRTY=true
   else
     VCS_WORKDIR_DIRTY=false
+  fi
+}
+
+function +vi-vcs-icon() {
+  local remote
+  if [[ "${hook_com[vcs]}" == "git" ]]; then
+    remote=$(command git ls-remote --get-url 2> /dev/null)
+    vcs_segment_icon=${__P9K_ICONS[VCS_GIT]}
+  elif [[ "${hook_com[vcs]}" == "hg" ]]; then
+    remote=$(command hg paths default)
+    vcs_segment_icon=${__P9K_ICONS[VCS_HG]}
+  elif [[ "${hook_com[vcs]}" == "svn" ]]; then
+    remote="${svninfo[URL]}" # Set by VCS_INFO
+    vcs_segment_icon=${__P9K_ICONS[VCS_SVN]}
+  fi
+
+  if [[ "$remote" =~ "github" ]] then
+    vcs_segment_icon=${__P9K_ICONS[VCS_GIT_GITHUB]}
+  elif [[ "$remote" =~ "bitbucket" ]] then
+    vcs_segment_icon=${__P9K_ICONS[VCS_GIT_BITBUCKET]}
+  elif [[ "$remote" =~ "stash" ]] then
+    vcs_segment_icon=${__P9K_ICONS[VCS_GIT_BITBUCKET]}
+  elif [[ "$remote" =~ "gitlab" ]] then
+    vcs_segment_icon=${__P9K_ICONS[VCS_GIT_GITLAB]}
   fi
 }
 
@@ -386,11 +389,11 @@ __p9k_vcs_init() {
   # Hooks are places in vcs_info where you can run your own code. That code can communicate with the code that called it and through that, change the system’s behaviour.
   # For configuration, hooks change the style context:
   #   :vcs_info:vcs-string+hook-name:user-context:repo-root-name
-  p9k::defined P9K_VCS_GIT_HOOKS || P9K_VCS_GIT_HOOKS=(vcs-detect-changes git-untracked git-aheadbehind git-stash git-remotebranch git-gitdir git-tagname)
+  p9k::defined P9K_VCS_GIT_HOOKS || P9K_VCS_GIT_HOOKS=(vcs-detect-changes vcs-icon git-untracked git-aheadbehind git-stash git-remotebranch git-gitdir git-tagname)
   zstyle ':vcs_info:git*+set-message:*' hooks ${P9K_VCS_GIT_HOOKS}
-  p9k::defined P9K_VCS_HG_HOOKS || P9K_VCS_HG_HOOKS=(vcs-detect-changes hg-branch)
+  p9k::defined P9K_VCS_HG_HOOKS || P9K_VCS_HG_HOOKS=(vcs-detect-changes vcs-icon hg-branch)
   zstyle ':vcs_info:hg*+set-message:*' hooks ${P9K_VCS_HG_HOOKS}
-  p9k::defined P9K_VCS_SVN_HOOKS || P9K_VCS_SVN_HOOKS=(vcs-detect-changes svn-detect-changes)
+  p9k::defined P9K_VCS_SVN_HOOKS || P9K_VCS_SVN_HOOKS=(vcs-detect-changes vcs-icon svn-detect-changes)
   zstyle ':vcs_info:svn*+set-message:*' hooks ${P9K_VCS_SVN_HOOKS}
 
   # For Hg, only show the branch name
