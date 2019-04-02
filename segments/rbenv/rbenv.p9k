@@ -16,7 +16,7 @@
 
   ################################################################
   # Register segment default values
-  p9k::set_default P9K_RBENV_ALWAYS false
+  p9k::set_default P9K_RBENV_PROMPT_ALWAYS_SHOW false
 }
 
 ################################################################
