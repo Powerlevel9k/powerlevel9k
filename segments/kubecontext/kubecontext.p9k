@@ -45,6 +45,11 @@ prompt_kubecontext() {
       k8s_final_text="$cur_ctx/$cur_namespace"
     fi
 
+    # Extract cluster name and namespace from AWS ARN, if enabled.
+    if [[ "$P9K_KUBECONTEXT_STRIPEKS" == true ]]; then
+      k8s_final_text="$(echo $k8s_final_text | cut -d':' -f 6 | sed 's/cluster\/*//')"
+    fi
+
     p9k::prepare_segment "$0" "" $1 "$2" $3 "$k8s_final_text"
   fi
 }

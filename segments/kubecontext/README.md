@@ -22,3 +22,10 @@ P9K_KUBECONTEXT_BACKGROUND='blue'
 
 The main Icon can be changed by setting `P9K_KUBECONTEXT_ICON="my_icon"`. To change the
 icon color only, set `P9K_KUBECONTEXT_ICON_COLOR="red"`.
+
+### Strip Cluster and Namespace from AWS ARN (If using EKS)
+
+You may extract the clutser name and namespace from the AWS ARN that is supplied when you use an EKS cluster. This is useful when you really just want to see the cluster name and do not want the full ARN.
+```
+P9K_KUBECONTEXT_STRIPEKS=true
+```
