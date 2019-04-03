@@ -14,6 +14,9 @@
   #                                                                                                                      
   p9k::register_segment "RBENV" "" "red" "${DEFAULT_COLOR}"  ''  $'\uE847 '  $'\uF219 '  '\u'$CODEPOINT_OF_OCTICONS_RUBY' '  $'\uF219 '
 
+  #                                 ✘          ✘         ✘                                             
+  p9k::register_icon "RBENV_ERROR"  $'\u2718'  $'\u2718'  $'\u2718'  '\u'${CODEPOINT_OF_AWESOME_TIMES}  $'\uF00D'
+
   ################################################################
   # Register segment default values
   p9k::set_default P9K_RBENV_ALWAYS false
@@ -32,7 +35,7 @@ prompt_rbenv() {
   if [[ -n "${RBENV_VERSION}" ]]; then
     p9k::prepare_segment "$0" "" $1 "$2" $3 "${RBENV_VERSION}"
   elif [ ${commands[rbenv]} ]; then
-    local rbenv_version_name="$(rbenv version-name 2>/dev/null || echo -n "${__P9K_ICONS[STATUS_ERROR]}" && rbenv local 2>/dev/null)"
+    local rbenv_version_name="$(rbenv version-name 2>/dev/null || echo -n "${__P9K_ICONS[RBENV_ERROR]}" && rbenv local 2>/dev/null)"
     local rbenv_global="$(rbenv global)"
     if [[ "${rbenv_version_name}" != "${rbenv_global}" || "${P9K_RBENV_PROMPT_ALWAYS_SHOW}" == "true" ]]; then
       p9k::prepare_segment "$0" "" $1 "$2" $3 "${rbenv_version_name}"
