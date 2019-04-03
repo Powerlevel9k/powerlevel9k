@@ -19,15 +19,6 @@
   p9k::set_default P9K_BACKGROUND_JOBS_EXPANDED false
 }
 
-__p9k_background_jobs() {
-  # See https://unix.stackexchange.com/questions/68571/show-jobs-count-only-if-it-is-more-than-0
-  jobs_running=${(M)#${jobstates%%:*}:#running}
-  jobs_suspended=${(M)#${jobstates%%:*}:#suspended}
-}
-
-# initialize hooks
-autoload -Uz add-zsh-hook
-add-zsh-hook precmd __p9k_background_jobs
 ################################################################
 # @description
 #   Displays the number of background jobs with an icon.
@@ -38,20 +29,23 @@ add-zsh-hook precmd __p9k_background_jobs
 #   $3 boolean Whether the segment should be joined
 ##
 prompt_background_jobs() {
-  local jobs_print=""
-  local -r total_jobs=$(( jobs_running + jobs_suspended ))
+  local raw_jobs=( "${(@f)$(command jobs -l)}" )
+  local -a suspended=( "${(@M)raw_jobs:#*suspended*}" )
+  local -a running=( "${(@M)raw_jobs:#*running*}" )
+  local suspended_count=${#suspended}
+  local running_count=${#running}
+  local jobs_total=$(( suspended_count + running_count ))
+  local segment_content="${jobs_total}"
 
   if [[ "${(L)P9K_BACKGROUND_JOBS_VERBOSE}" == "true" || "${(L)P9K_BACKGROUND_JOBS_VERBOSE_ALWAYS}" == "true" ]]; then
-    jobs_print=0
-    if (( ${total_jobs} > 0 )); then
-      if [[ "${(L)P9K_BACKGROUND_JOBS_EXPANDED}" == "true" ]]; then
-        jobs_print="${jobs_running:-0}r ${jobs_suspended:-0}s"
-      else
-        jobs_print="${total_jobs}"
-      fi
+    if [[ "${(L)P9K_BACKGROUND_JOBS_EXPANDED}" == "true" ]]; then
+      segment_content="${running_count}r ${suspended_count}s"
     fi
+  elif (( jobs_total == 1 )); then
+    # Show only the icon, if P9K_BACKGROUND_JOBS_VERBOSE is not set and there is only one background job
+    segment_content=""
   fi
 
-  p9k::prepare_segment "$0" "" $1 "$2" $3 "${jobs_print}" \
-      "[[ ${(L)P9K_BACKGROUND_JOBS_VERBOSE_ALWAYS} == true ]] || (( ${total_jobs} > 0 ))"
+  p9k::prepare_segment "$0" "" $1 "$2" $3 "${segment_content}" \
+      "[[ ${(L)P9K_BACKGROUND_JOBS_VERBOSE_ALWAYS} == true ]] || (( ${jobs_total} > 0 ))"
 }
