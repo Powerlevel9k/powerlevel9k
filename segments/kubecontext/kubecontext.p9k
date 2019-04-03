@@ -38,7 +38,8 @@ prompt_kubecontext() {
 
     # Extract cluster name and namespace from AWS ARN, if enabled.
     if [[ "$P9K_KUBECONTEXT_STRIPEKS" == true ]]; then
-      cur_ctx="$(echo $cur_ctx | cut -d':' -f 6 | sed 's/cluster\/*//')"
+      cur_ctx=${cur_ctx#*:*:*:*:*:} 
+      cur_ctx=${cur_ctx:8}
     fi
 
     local k8s_final_text=""
