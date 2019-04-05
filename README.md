@@ -733,6 +733,11 @@ To hide the segment entirely when in `INSERT` mode, set `POWERLEVEL9K_VI_INSERT_
 This segment shows your Python [VirtualEnv](https://virtualenv.pypa.io/en/latest/). To avoid
 VirtualEnvs activate command from interfering with Powerlevel9k, you should set
 `VIRTUAL_ENV_DISABLE_PROMPT=1` in your `~/.zshrc`.
+You can use the option:
+```
+POWERLEVEL9K_VIRTUALENV_SHOW_VERSION=true
+```
+to show the current Python version of the active environment
 
 #### Unit Test Ratios
 

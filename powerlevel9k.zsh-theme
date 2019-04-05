@@ -1630,13 +1630,15 @@ prompt_vi_mode() {
 # More information on virtualenv (Python):
 # https://virtualenv.pypa.io/en/latest/
 prompt_virtualenv() {
-  local virtualenv_path="$VIRTUAL_ENV"
-
-  # Early exit; $virtualenv_path must always be set.
-  [[ -z "$virtualenv_path" ]] && return
-
-  "$1_prompt_segment" "$0" "$2" "blue" "$DEFAULT_COLOR" "${virtualenv_path:t}" 'PYTHON_ICON'
-}
++  if [[ -n "$VIRTUAL_ENV" ]]; then
++    if [[ "$POWERLEVEL9K_VIRTUALENV_SHOW_VERSION" == true ]]; then
++      local python_version=$(python -V | awk '{print $2}') 
++      "$1_prompt_segment" "$0" "$2" "blue" "$DEFAULT_COLOR" "${python_version} ${${VIRTUAL_ENV:t}//\%/%%}" 'PYTHON_ICON'
+     else
++      "$1_prompt_segment" "$0" "$2" "blue" "$DEFAULT_COLOR" "${${VIRTUAL_ENV:t}//\%/%%}" 'PYTHON_ICON'
+     fi
++  fi
+ }
 
 ################################################################
 # Segment to display pyenv information
