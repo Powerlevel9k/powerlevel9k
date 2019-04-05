@@ -1630,14 +1630,14 @@ prompt_vi_mode() {
 # More information on virtualenv (Python):
 # https://virtualenv.pypa.io/en/latest/
 prompt_virtualenv() {
-+  if [[ -n "$VIRTUAL_ENV" ]]; then
-+    if [[ "$POWERLEVEL9K_VIRTUALENV_SHOW_VERSION" == true ]]; then
-+      local python_version=$(python -V | awk '{print $2}') 
-+      "$1_prompt_segment" "$0" "$2" "blue" "$DEFAULT_COLOR" "${python_version} ${${VIRTUAL_ENV:t}//\%/%%}" 'PYTHON_ICON'
+  if [[ -n "$VIRTUAL_ENV" ]]; then
+    if [[ "$POWERLEVEL9K_VIRTUALENV_SHOW_VERSION" == true ]]; then
+     local python_version=$(python -V | awk '{print $2}') 
+       "$1_prompt_segment" "$0" "$2" "blue" "$DEFAULT_COLOR" "${python_version} ${${VIRTUAL_ENV:t}//\%/%%}" 'PYTHON_ICON'
      else
-+      "$1_prompt_segment" "$0" "$2" "blue" "$DEFAULT_COLOR" "${${VIRTUAL_ENV:t}//\%/%%}" 'PYTHON_ICON'
-     fi
-+  fi
+       "$1_prompt_segment" "$0" "$2" "blue" "$DEFAULT_COLOR" "${${VIRTUAL_ENV:t}//\%/%%}" 'PYTHON_ICON'
+    fi
+   fi
  }
 
 ################################################################
