@@ -10,6 +10,18 @@ where you want to show this segment.
 
 ## Configuration
 
+This segment shows the version of Go installed.
+
+It figures out the version being used by taking the output of the `go version` command.
+
+* If `go` is not in $PATH, nothing will be shown.
+* By default, if the current Go version is only shown while inside your GOPATH. See the configuration variable, below, to modify this behavior.
+
+| Variable | Default Value | Description |
+|----------|---------------|-------------|
+|`P9K_GO_VERSION_PROMPT_ALWAYS_SHOW` |`false`|Set to true if you wish to show the go_version segment even if you're not inside your GOPATH.                                  |
+
+
 ### Color Customization
 
 You can change the foreground and background color of this segment by setting
