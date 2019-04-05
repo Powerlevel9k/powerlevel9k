@@ -112,6 +112,9 @@ case $(uname) in
         *debian*)
         OS_ICON=$(print_icon 'LINUX_DEBIAN_ICON')
         ;;
+        *raspbian*)
+        OS_ICON=$(print_icon 'LINUX_RASPBIAN_ICON')
+        ;;
        *ubuntu*)
         OS_ICON=$(print_icon 'LINUX_UBUNTU_ICON')
         ;;
