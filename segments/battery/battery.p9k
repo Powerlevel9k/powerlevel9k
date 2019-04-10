@@ -210,8 +210,8 @@ prompt_battery() {
   if [[ -n "$P9K_BATTERY_STAGES" ]]; then
     segment=$(( 100.0 / (${#P9K_BATTERY_STAGES} - 1 ) ))
     if [[ ${segment} > 1 ]]; then
-      offset=$(( (${bat_percent} / $segment) ))
-      overideIcon="${P9K_BATTERY_STAGES[((offset + 1))]}"
+      offset=$(( (${bat_percent} / $segment) + 1 ))
+      overideIcon="${P9K_BATTERY_STAGES[$offset]}"
     fi
   fi
 
