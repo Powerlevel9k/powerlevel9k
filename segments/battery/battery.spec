@@ -307,4 +307,46 @@ function testBatterySegmentIfBatteryIsCalculatingOnWindows() {
   assertEquals "%K{000} %F{003}🔋 %F{003}99%% (...) " "$(prompt_battery left 1 false ${FOLDER}/usr/bin/)"
 }
 
+function testBatteryStagesString() {
+  # as long as the percentages is ok (other tests),
+  # the P9K_BATTERY_STAGES tests should be independent of OS type
+  local __P9K_OS='Linux'
+  P9K_BATTERY_STAGES="abcde"
+
+  makeBatterySay "1" "Charging"
+  assertEquals "%K{000} %F{003}a %F{003}1%% (2:18) " "$(prompt_battery left 1 false ${FOLDER})"
+
+  makeBatterySay "26" "Charging"
+  assertEquals "%K{000} %F{003}b %F{003}26%% (1:43) " "$(prompt_battery left 1 false ${FOLDER})"
+
+  makeBatterySay "52" "Charging"
+  assertEquals "%K{000} %F{003}c %F{003}52%% (1:07) " "$(prompt_battery left 1 false ${FOLDER})"
+
+  makeBatterySay "99" "Charging"
+  assertEquals "%K{000} %F{003}d %F{003}99%% (0:01) " "$(prompt_battery left 1 false ${FOLDER})"
+
+  makeBatterySay "100" "Full"
+  assertEquals "%K{000} %F{002}e %F{002}100%% " "$(prompt_battery left 1 false ${FOLDER})"
+}
+
+function testBatteryStagesArray() {
+  local __P9K_OS='Linux'
+  P9K_BATTERY_STAGES=("charge!" "low" "med" "high" "full")
+
+  makeBatterySay "1" "Charging"
+  assertEquals "%K{000} %F{003}charge! %F{003}1%% (2:18) " "$(prompt_battery left 1 false ${FOLDER})"
+
+  makeBatterySay "26" "Charging"
+  assertEquals "%K{000} %F{003}low %F{003}26%% (1:43) " "$(prompt_battery left 1 false ${FOLDER})"
+
+  makeBatterySay "52" "Charging"
+  assertEquals "%K{000} %F{003}med %F{003}52%% (1:07) " "$(prompt_battery left 1 false ${FOLDER})"
+
+  makeBatterySay "99" "Charging"
+  assertEquals "%K{000} %F{003}high %F{003}99%% (0:01) " "$(prompt_battery left 1 false ${FOLDER})"
+
+  makeBatterySay "100" "Full"
+  assertEquals "%K{000} %F{002}full %F{002}100%% " "$(prompt_battery left 1 false ${FOLDER})"
+}
+
 source shunit2/shunit2
