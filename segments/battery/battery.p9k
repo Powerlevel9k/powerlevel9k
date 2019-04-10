@@ -211,8 +211,7 @@ prompt_battery() {
     segment=$(( 100.0 / (${#P9K_BATTERY_STAGES} - 1 ) ))
     if [[ ${segment} > 1 ]]; then
       offset=$(( (${bat_percent} / $segment) ))
-      # check if the stages are in an array or a string
-      [[ "${(t)P9K_BATTERY_STAGES}" =~ "array" ]] && overideIcon="$P9K_BATTERY_STAGES[$offset]" || overideIcon="${P9K_BATTERY_STAGES:$offset:1}"
+      overideIcon="${P9K_BATTERY_STAGES[((offset + 1))]}"
     fi
   fi
 
