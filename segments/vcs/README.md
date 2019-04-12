@@ -67,8 +67,8 @@ Customizations available are:
 |----------|---------------|-------------|
 |`P9K_VCS_SHORTEN_LENGTH`|None|This field determines how many characters to show.|
 |`P9K_VCS_SHORTEN_MIN_LENGTH`|None|This field determines minimum branch length. Branch name will be truncated if its length greater than this field.|
-|`P9K_VCS_DIR_SHORTEN_STRATEGY`|None|This field determines how branch name should be truncated. See the table below for more information.|
-|`P9K_DIR_SHORTEN_DELIMITER`|`...`|Delimiter to use in truncated strings. This can be any string you choose, including an empty string if you wish to have no delimiter.|
+|`P9K_VCS_SHORTEN_STRATEGY`|None|This field determines how branch name should be truncated. See the table below for more information.|
+|`P9K_VCS_SHORTEN_DELIMITER`|`...`|Delimiter to use in truncated strings. This can be any string you choose, including an empty string if you wish to have no delimiter.|
 
 | Strategy Name | Description |
 |---------------|-------------|
@@ -79,8 +79,8 @@ For example, if you want to truncate `1234-super_super_long_branch_name` to `123
 ```zsh
 P9K_VCS_SHORTEN_LENGTH=4
 P9K_VCS_SHORTEN_MIN_LENGTH=11
-P9K_VCS_DIR_SHORTEN_STRATEGY="truncate_from_right"
-P9K_VCS_DIR_SHORTEN_DELIMITER=".."
+P9K_VCS_SHORTEN_STRATEGY="truncate_from_right"
+P9K_VCS_SHORTEN_DELIMITER=".."
 ```
 
 ### Advanced features
