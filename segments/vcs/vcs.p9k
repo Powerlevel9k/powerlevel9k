@@ -137,10 +137,17 @@
   p9k::set_default P9K_VCS_ACTIONFORMAT_FOREGROUND "red"
   p9k::set_default P9K_VCS_HIDE_TAGS false
   p9k::set_default P9K_VCS_INTERNAL_HASH_LENGTH "8" # Default: Just display the first 8 characters of our changeset-ID.
-  p9k::set_default P9K_VCS_DIR_SHORTEN_DELIMITER $'\U2026'
+  p9k::set_default P9K_VCS_SHORTEN_DELIMITER $'\u2026'
   p9k::set_default P9K_VCS_SHOW_SUBMODULE_DIRTY true
   p9k::set_default P9K_VCS_GIT_ALWAYS_SHOW_REMOTE_BRANCH false
   p9k::set_default P9K_VCS_SHOW_CHANGESET false
+}
+
+typeset -gAH __P9K_VCS_DATA
+function +vi-git-gather-data() {
+  __P9K_VCS_DATA[branch]="${hook_com[branch]//\%/%%}"
+  # Reset the branch name for a fresh start.
+  hook_com[branch]=''
 }
 
 function +vi-git-untracked() {
@@ -168,48 +175,47 @@ function +vi-git-aheadbehind() {
   local -a gitstatus
 
   # for git prior to 1.7
-  # ahead=$(command git rev-list origin/${hook_com[branch]}..HEAD | wc -l)
-  ahead=$(command git rev-list --count "${hook_com[branch]}"@{upstream}..HEAD 2>/dev/null)
+  # ahead=$(command git rev-list origin/${__P9K_VCS_DATA[branch]}..HEAD | wc -l)
+  ahead=$(command git rev-list --count "${__P9K_VCS_DATA[branch]}"@{upstream}..HEAD 2>/dev/null)
   (( ahead )) && gitstatus+=( " ${__P9K_ICONS[VCS_OUTGOING_CHANGES]}${ahead// /}" )
 
   # for git prior to 1.7
-  # behind=$(command git rev-list HEAD..origin/${hook_com[branch]} | wc -l)
-  behind=$(command git rev-list --count HEAD.."${hook_com[branch]}"@{upstream} 2>/dev/null)
+  # behind=$(command git rev-list HEAD..origin/${__P9K_VCS_DATA[branch]} | wc -l)
+  behind=$(command git rev-list --count HEAD.."${__P9K_VCS_DATA[branch]}"@{upstream} 2>/dev/null)
   (( behind )) && gitstatus+=( " ${__P9K_ICONS[VCS_INCOMING_CHANGES]}${behind// /}" )
 
   hook_com[misc]+=${(j::)gitstatus}
 }
 
-function +vi-git-remotebranch() {
-  local remote
-  local branch_name="${hook_com[branch]}"
+function +vi-git-branch() {
+  local branch="${__P9K_VCS_DATA[branch]}"
 
-  # Are we on a remote-tracking branch?
-  remote=${$(command git rev-parse --verify HEAD@{upstream} --symbolic-full-name 2>/dev/null)/refs\/(remotes|heads)\/}
-
+  # Truncate the branch name, if it is too long
   if [[ -n "$P9K_VCS_SHORTEN_LENGTH" ]] && [[ -n "$P9K_VCS_SHORTEN_MIN_LENGTH" ]]; then
-    p9k::set_default P9K_VCS_SHORTEN_DELIMITER $'\u2026'
-
-    if [ ${#hook_com[branch]} -gt ${P9K_VCS_SHORTEN_MIN_LENGTH} ] && [ ${#hook_com[branch]} -gt ${P9K_VCS_SHORTEN_LENGTH} ]; then
+    if [ ${#__P9K_VCS_DATA[branch]} -gt ${P9K_VCS_SHORTEN_MIN_LENGTH} ] && [ ${#__P9K_VCS_DATA[branch]} -gt ${P9K_VCS_SHORTEN_LENGTH} ]; then
       case "$P9K_VCS_SHORTEN_STRATEGY" in
         truncate_middle)
-          hook_com[branch]="${branch_name:0:$P9K_VCS_SHORTEN_LENGTH}${P9K_VCS_SHORTEN_DELIMITER}${branch_name: -$P9K_VCS_SHORTEN_LENGTH}"
+          branch="${__P9K_VCS_DATA[branch]:0:$P9K_VCS_SHORTEN_LENGTH}${P9K_VCS_SHORTEN_DELIMITER}${__P9K_VCS_DATA[branch]: -$P9K_VCS_SHORTEN_LENGTH}"
         ;;
         truncate_from_right)
-          hook_com[branch]="${branch_name:0:$P9K_VCS_SHORTEN_LENGTH}${P9K_VCS_SHORTEN_DELIMITER}"
+          branch="${__P9K_VCS_DATA[branch]:0:$P9K_VCS_SHORTEN_LENGTH}${P9K_VCS_SHORTEN_DELIMITER}"
         ;;
       esac
     fi
   fi
 
-  hook_com[branch]="${__P9K_ICONS[VCS_BRANCH]}${hook_com[branch]//\%/%%}"
-  # Always show the remote
-  #if [[ -n ${remote} ]] ; then
+  hook_com[branch]+="${__P9K_ICONS[VCS_BRANCH]}${branch}"
+}
+
+function +vi-git-remotebranch() {
+  # Are we on a remote-tracking branch?
+  local remote=${$(command git rev-parse --verify HEAD@{upstream} --symbolic-full-name 2>/dev/null)/refs\/(remotes|heads)\/}
+
   # Only show the remote if it differs from the local
   if [[ -n ${remote} \
       && ( \
         "${P9K_VCS_GIT_ALWAYS_SHOW_REMOTE_BRANCH}" == 'true' \
-        || "${remote#*/}" != "${branch_name#heads/}" \
+        || "${remote#*/}" != "${__P9K_VCS_DATA[branch]#heads/}" \
       ) ]]; then
     hook_com[branch]+="${__P9K_ICONS[VCS_REMOTE_BRANCH]}${${remote// /}//\%/%%}"
   fi
@@ -389,7 +395,7 @@ __p9k_vcs_init() {
   # Hooks are places in vcs_info where you can run your own code. That code can communicate with the code that called it and through that, change the system’s behaviour.
   # For configuration, hooks change the style context:
   #   :vcs_info:vcs-string+hook-name:user-context:repo-root-name
-  p9k::defined P9K_VCS_GIT_HOOKS || P9K_VCS_GIT_HOOKS=(vcs-detect-changes vcs-icon git-untracked git-aheadbehind git-stash git-remotebranch git-gitdir git-tagname)
+  p9k::defined P9K_VCS_GIT_HOOKS || P9K_VCS_GIT_HOOKS=(vcs-detect-changes vcs-icon git-gather-data git-untracked git-aheadbehind git-stash git-branch git-remotebranch git-gitdir git-tagname)
   zstyle ':vcs_info:git*+set-message:*' hooks ${P9K_VCS_GIT_HOOKS}
   p9k::defined P9K_VCS_HG_HOOKS || P9K_VCS_HG_HOOKS=(vcs-detect-changes vcs-icon hg-branch)
   zstyle ':vcs_info:hg*+set-message:*' hooks ${P9K_VCS_HG_HOOKS}
