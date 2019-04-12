@@ -426,7 +426,7 @@ function testAlwaysShowRemoteBranch() {
   git clone . ../vcs-test2 1>/dev/null 2>&1
   cd ../vcs-test2
 
-  assertEquals "%K{002} %F{000} master→origin/master %k%F{002}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{002} %F{000} master→master@origin %k%F{002}%f " "$(__p9k_build_left_prompt)"
 
   local P9K_VCS_GIT_ALWAYS_SHOW_REMOTE_BRANCH='false'
   assertEquals "%K{002} %F{000} master %k%F{002}%f " "$(__p9k_build_left_prompt)"

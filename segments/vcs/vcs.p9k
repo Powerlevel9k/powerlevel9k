@@ -138,6 +138,7 @@
   p9k::set_default P9K_VCS_HIDE_TAGS false
   p9k::set_default P9K_VCS_INTERNAL_HASH_LENGTH "8" # Default: Just display the first 8 characters of our changeset-ID.
   p9k::set_default P9K_VCS_SHORTEN_DELIMITER $'\u2026'
+  p9k::set_default P9K_VCS_REMOTE_DELIMITER "@"
   p9k::set_default P9K_VCS_SHOW_SUBMODULE_DIRTY true
   p9k::set_default P9K_VCS_GIT_ALWAYS_SHOW_REMOTE_BRANCH false
   p9k::set_default P9K_VCS_SHOW_CHANGESET false
@@ -217,7 +218,11 @@ function +vi-git-remotebranch() {
         "${P9K_VCS_GIT_ALWAYS_SHOW_REMOTE_BRANCH}" == 'true' \
         || "${remote#*/}" != "${__P9K_VCS_DATA[branch]#heads/}" \
       ) ]]; then
-    hook_com[branch]+="${__P9K_ICONS[VCS_REMOTE_BRANCH]}${${remote// /}//\%/%%}"
+    local remote_name=$(command git config branch.${__P9K_VCS_DATA[branch]#heads/}.remote)
+    # Remote Branch is the remote branch name, without the remote name.
+    # Additionally, remove trailing whitespace and escape percent signs.
+    local remote_branch=${${${remote#${remote_name}/}// /}//\%/%%}
+    hook_com[branch]+="${__P9K_ICONS[VCS_REMOTE_BRANCH]}${remote_branch}${P9K_VCS_REMOTE_DELIMITER}${remote_name}"
   fi
 }
 
