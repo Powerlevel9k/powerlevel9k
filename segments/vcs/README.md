@@ -32,6 +32,7 @@ customization is provided via:
 |`P9K_VCS_SVN_HOOKS`|`(vcs-detect-changes svn-detect-changes)`|Layout of the segment for SVN repositories.|
 |`P9K_VCS_ACTIONFORMAT_FOREGROUND`|`red`|The color of the foreground font during actions (e.g., `REBASE`).|
 |`P9K_VCS_GIT_ALWAYS_SHOW_REMOTE_BRANCH`|`false`|Set to true If you would to always see the remote branch.|
+|`P9K_VCS_REMOTE_DELIMITER`|`@`|This delimits the remote name from the remote branch. E.g. `master@origin`.|
 
 ### vcs symbols
 
