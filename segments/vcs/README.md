@@ -27,7 +27,7 @@ customization is provided via:
 |`P9K_VCS_CHANGESET_HASH_LENGTH`|`12`|How many characters of the hash / changeset to display in the segment.|
 |`P9K_VCS_SHOW_SUBMODULE_DIRTY`|`true`|Set to `false` to not reflect submodule status in the top-level repository prompt.|
 |`P9K_VCS_HIDE_TAGS`|`false`|Set to `true` to stop tags being displayed in the segment.|
-|`P9K_VCS_GIT_HOOKS`|`(vcs-detect-changes vcs-icon git-untracked git-aheadbehind git-stash git-remotebranch git-gitdir git-tagname)`|Layout of the segment for git repositories.|
+|`P9K_VCS_GIT_HOOKS`|`(vcs-detect-changes vcs-icon git-gather-data git-untracked git-aheadbehind git-stash git-branch git-remotebranch git-gitdir git-tagname)`|Layout of the segment for git repositories.|
 |`P9K_VCS_HG_HOOKS`|`(vcs-detect-changes)`|Layout of the segment for Mercurial repositories.|
 |`P9K_VCS_SVN_HOOKS`|`(vcs-detect-changes svn-detect-changes)`|Layout of the segment for SVN repositories.|
 |`P9K_VCS_ACTIONFORMAT_FOREGROUND`|`red`|The color of the foreground font during actions (e.g., `REBASE`).|
@@ -94,9 +94,11 @@ Git hooks (`P9K_VCS_GIT_HOOKS`):
 |--------------------|----------------------------------------------------|
 | vcs-detect-changes | General check for changed files and responsible for selecting a proper icon according to the remote url. |
 | vcs-icon | Detects the icon base on the remote url. E.g. shows the Github icon for a repository cloned from Github. If no remote given, it uses the default icon from `P9K_VCS_GIT_ICON`. |
+| git-gather-data    | Internal hook, that saves the branch name in an internal array. Necessary for showing the local/remote branch. |
 | git-untracked      | Check for untracked files. |
 | git-aheadbehind    | Check for commits ahead/behind the repo. This does not request changes from the remote repo. Only interacts with the local repo. |
 | git-stash          | Check for stashes. |
+| git-branch         | Display the local branch and truncates it, if configured. |
 | git-remotebranch   | Checks the remote branch, and displays it, if it differs from local branch name. |
 | git-gitdir         | Responsible to find out if we are in a clobbered checkout. |
 | git-tagname        | Get the tagname, if we are on a tag. |
