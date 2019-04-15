@@ -62,7 +62,7 @@ prompt_status() {
 
     for ec in "${(@)RETVALS[2,-1]}"; do
       ec_text="${ec_text}|$(exit_code_or_status "$ec")"
-      ec_sum=$(( $ec_sum + $ec ))
+      ec_sum=$(( ${ec_sum:-0} + ${ec:-0} ))
     done
   else
     # We use RETVAL instead of the right-most RETVALS item because
