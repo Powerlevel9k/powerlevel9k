@@ -141,6 +141,8 @@ The segments that are currently available are:
     * [`java_version`](segments/java_version/README.md) - Show the current Java version.
 * **Haskell Segments:**
     * [`stack_project`](segments/stack_project/README.md) - Show if you are in a Haskell Stack project directory.
+* **Terraform Segments:**
+    * [`terraform`](segments/terraform/README.md) - Display the selected terraform workspace.
 
 **Cloud Segments:**
 * **AWS Segments:**
