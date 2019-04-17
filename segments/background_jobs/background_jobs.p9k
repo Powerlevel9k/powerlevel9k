@@ -29,7 +29,14 @@
 #   $3 boolean Whether the segment should be joined
 ##
 prompt_background_jobs() {
-  local raw_jobs=( "${(@f)$(command jobs -l)}" )
+  local jobs_total=${#$(jobs -l)}
+
+  p9k::prepare_segment "$0" "" $1 "$2" $3 "$(prompt_background_jobs_callback)" \
+      "[[ ${(L)P9K_BACKGROUND_JOBS_VERBOSE_ALWAYS} == true ]] || (( ${jobs_total} > 0 ))"
+}
+
+prompt_background_jobs_callback() {
+  local raw_jobs=( "${(@f)$(jobs -l)}" )
   local -a suspended=( "${(@M)raw_jobs:#*suspended*}" )
   local -a running=( "${(@M)raw_jobs:#*running*}" )
   local suspended_count=${#suspended}
@@ -46,6 +53,5 @@ prompt_background_jobs() {
     segment_content=""
   fi
 
-  p9k::prepare_segment "$0" "" $1 "$2" $3 "${segment_content}" \
-      "[[ ${(L)P9K_BACKGROUND_JOBS_VERBOSE_ALWAYS} == true ]] || (( ${jobs_total} > 0 ))"
+  echo "${segment_content}"
 }
