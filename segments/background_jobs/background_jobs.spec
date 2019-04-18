@@ -29,6 +29,7 @@ function tearDown() {
 
   unset FOLDER
   unset P9K_HOME
+  unalias jobs
 }
 
 function makeJobsSay() {
@@ -52,6 +53,7 @@ function makeJobsSay() {
 EOF
 
   chmod +x ${FOLDER}/bin/jobs
+  alias jobs=${FOLDER}/bin/jobs
 }
 
 function testBackgroundJobsSegmentPrintsNothingWithoutBackgroundJobs() {
