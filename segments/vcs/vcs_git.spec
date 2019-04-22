@@ -415,7 +415,7 @@ function testRemoteBranchNameIdenticalToTag() {
 
 function testAlwaysShowRemoteBranch() {
   P9K_LEFT_PROMPT_ELEMENTS=(vcs)
-  local P9K_VCS_GIT_ALWAYS_SHOW_REMOTE_BRANCH='true'
+  local P9K_VCS_GIT_ALWAYS_SHOW_REMOTE_BRANCH='false'
   local P9K_VCS_HIDE_TAGS='true'
   source "${P9K_HOME}/segments/vcs/vcs.p9k"
 
@@ -426,10 +426,14 @@ function testAlwaysShowRemoteBranch() {
   git clone . ../vcs-test2 1>/dev/null 2>&1
   cd ../vcs-test2
 
-  assertEquals "%K{002} %F{000} master→master@origin %k%F{002}%f " "$(__p9k_build_left_prompt)"
-
-  local P9K_VCS_GIT_ALWAYS_SHOW_REMOTE_BRANCH='false'
   assertEquals "%K{002} %F{000} master %k%F{002}%f " "$(__p9k_build_left_prompt)"
+
+  git remote rename origin some/remote
+  local P9K_VCS_GIT_ALWAYS_SHOW_REMOTE_BRANCH='true'
+  assertEquals "%K{002} %F{000} master→master@some/remote %k%F{002}%f " "$(__p9k_build_left_prompt)"
+
+  git branch -m master new/ref/master
+  assertEquals "%K{002} %F{000} new/ref/master→master@some/remote %k%F{002}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testGitDirClobber() {
