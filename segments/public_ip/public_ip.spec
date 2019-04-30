@@ -99,11 +99,29 @@ function testPublicIpSegmentUsesCurlAsFallbackMethodIfWgetIsNotAvailable() {
   unalias wget
 }
 
-function testPublicIpSegmentUsesDigAsFallbackMethodIfWgetAndCurlAreNotAvailable() {
+function testPublicIpSegmentUsesKdigAsFallbackMethodIfWgetAndCurlAreNotAvailable() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(public_ip)
   alias curl='nocurl'
   alias wget='nowget'
+  kdig() {
+    echo "kdig 1.2.3.4"
+  }
+
+  # Load Powerlevel9k
+  assertEquals "%K{000} %F{015}kdig 1.2.3.4 %k%F{000}%f " "$(__p9k_build_left_prompt)"
+
+  unfunction kdig
+  unalias curl
+  unalias wget
+}
+
+function testPublicIpSegmentUsesDigAsFallbackMethodIfKdigAndWgetAndCurlAreNotAvailable() {
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(public_ip)
+  alias curl='nocurl'
+  alias wget='nowget'
+  alias kdig='nokdig'
   dig() {
     echo "dig 1.2.3.4"
   }
@@ -112,6 +130,7 @@ function testPublicIpSegmentUsesDigAsFallbackMethodIfWgetAndCurlAreNotAvailable(
   assertEquals "%K{000} %F{015}dig 1.2.3.4 %k%F{000}%f " "$(__p9k_build_left_prompt)"
 
   unfunction dig
+  unalias kdig
   unalias curl
   unalias wget
 }

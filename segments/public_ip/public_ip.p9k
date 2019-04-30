@@ -27,7 +27,7 @@
   p9k::set_default P9K_PUBLIC_IP_NONE ""
   p9k::set_default P9K_PUBLIC_IP_FILE "/tmp/p9k_public_ip"
   p9k::set_default P9K_PUBLIC_IP_HOST "http://ident.me"
-  p9k::defined P9K_PUBLIC_IP_METHODS || P9K_PUBLIC_IP_METHODS=(dig curl wget)
+  p9k::defined P9K_PUBLIC_IP_METHODS || P9K_PUBLIC_IP_METHODS=(dig kdig curl wget)
 }
 
 # On macOS, stat is in /usr/bin/stat. However, if gnu utils are installed, this won't work.
@@ -69,6 +69,10 @@ prompt_public_ip() {
       case ${method} in
         'dig')
             fresh_ip="$(dig +time=1 +tries=1 +short myip.opendns.com @resolver1.opendns.com 2> /dev/null)"
+            [[ "$fresh_ip" =~ ^\; ]] && unset fresh_ip
+          ;;
+        'kdig')
+            fresh_ip="$(kdig +timeout=1 +retry=1 +short myip.opendns.com @resolver1.opendns.com 2> /dev/null)"
             [[ "$fresh_ip" =~ ^\; ]] && unset fresh_ip
           ;;
         'curl')
