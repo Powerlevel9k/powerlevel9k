@@ -56,9 +56,14 @@ function __p9k_left_prompt_segment() {
   [[ "${3}" == "true" ]] \
       && __p9k_segment_should_be_joined ${current_index} ${last_left_element_index} "$P9K_LEFT_PROMPT_ELEMENTS" && joined=true
   local content
+  local SEGMENT_ICON
   # Support for bold segment
-  [[ -n ${4} ]] && [[ $__P9K_DATA[${STATEFUL_NAME}_BD] == true ]] && content="%B${4}%b" || content="${4}"
-  local SEGMENT_ICON="${5}"
+  [[ -n "${4}" ]] && [[ $__P9K_DATA[${STATEFUL_NAME}_BD] == true ]] \
+    && content="%B${4}%b" \
+    || content="${4}"
+  [[ -n "${5}" ]] && [[ $__P9K_DATA[${STATEFUL_NAME}_ICON_BD] == true ]] \
+    && SEGMENT_ICON="%B${5}%b" \
+    || SEGMENT_ICON="${5}"
 
   local bg=$__P9K_DATA[${STATEFUL_NAME}_BG]
   local fg=$__P9K_DATA[${STATEFUL_NAME}_FG]
@@ -144,9 +149,14 @@ function __p9k_right_prompt_segment() {
   local joined=false
   [[ "${3}" == "true" ]] && __p9k_segment_should_be_joined ${current_index} ${last_right_element_index} "$P9K_RIGHT_PROMPT_ELEMENTS" && joined=true
   local content
+  local SEGMENT_ICON
   # Support for bold segment
-  [[ -n "${4}" ]] && [[ $__P9K_DATA[${STATEFUL_NAME}_BD] == true ]] && content="%B${4}%b" || content="${4}"
-  local SEGMENT_ICON="${5}"
+  [[ -n "${4}" ]] && [[ $__P9K_DATA[${STATEFUL_NAME}_BD] == true ]] \
+    && content="%B${4}%b" \
+    || content="${4}"
+  [[ -n "${5}" ]] && [[ $__P9K_DATA[${STATEFUL_NAME}_ICON_BD] == true ]] \
+    && SEGMENT_ICON="%B${5}%b" \
+    || SEGMENT_ICON="${5}"
 
   local bg=$__P9K_DATA[${STATEFUL_NAME}_BG]
   local fg=$__P9K_DATA[${STATEFUL_NAME}_FG]

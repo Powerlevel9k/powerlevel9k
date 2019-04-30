@@ -159,6 +159,9 @@ function p9k::register_segment() {
   local BOLD_USER_VARIABLE="P9K_${STATEFUL_NAME}_BOLD"
   local BOLD="${(P)BOLD_USER_VARIABLE}"
   [[ -z "${BOLD}" ]] || __P9K_DATA[${STATEFUL_NAME}_BD]=true
+  local BOLD_ICON_USER_VARIABLE="P9K_${STATEFUL_NAME}_ICON_BOLD"
+  local BOLD_ICON="${(P)BOLD_ICON_USER_VARIABLE}"
+  [[ -z "${BOLD_ICON}" ]] || __P9K_DATA[${STATEFUL_NAME}_ICON_BD]=true
 }
 
 (){
