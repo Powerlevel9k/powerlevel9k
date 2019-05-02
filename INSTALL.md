@@ -38,7 +38,7 @@ Oh-My-Zsh, Prezto, Antigen, Zgen, Antibody, ZPM and ZIM. Some Distributions like
 
 To enable Powerlevel9k theme for your user type:
 
-`echo 'source /usr/share/zsh-theme-powerlevel9k/powerlevel9k.zsh-theme' >> ~/.zshrc`
+`echo 'source /usr/share/zsh-theme-powerlevel9k/powerlevel9k.zsh-theme' >>! ~/.zshrc`
 
 ### NixOS
 
@@ -70,7 +70,7 @@ If you want to load powerlevel9k in your zsh simply add the following line to yo
 
 Alternatively you can run this command to append the line to your .zshrc
 
-  echo "source /usr/local/opt/powerlevel9k@0.6.3/powerlevel9k.zsh-theme" >> ~/.zshrc
+  echo "source /usr/local/opt/powerlevel9k@0.6.3/powerlevel9k.zsh-theme" >>! ~/.zshrc
 ```
 
 ### Option 1: Install for Vanilla ZSH
@@ -79,7 +79,7 @@ If you just use a vanilla ZSH install, simply clone this repository and
 reference it in your `~/.zshrc`:
 
     $ git clone https://github.com/bhilburn/powerlevel9k.git ~/powerlevel9k
-    $ echo 'source  ~/powerlevel9k/powerlevel9k.zsh-theme' >> ~/.zshrc
+    $ echo 'source  ~/powerlevel9k/powerlevel9k.zsh-theme' >>! ~/.zshrc
 
 ### Option 2: Install for Oh-My-ZSH
 

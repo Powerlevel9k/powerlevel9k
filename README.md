@@ -17,6 +17,8 @@ Desktop' threads. Use powerlevel9k.
 
 You can check out some other users' configurations in our wiki: [Show Off Your
 Config](https://github.com/bhilburn/powerlevel9k/wiki/Show-Off-Your-Config).
+Bare in mind that the configurations might be for older versions of powerlevel9k
+and might not work properly with the latest version of powerlevel9k.
 
 There are a number of Powerline ZSH themes available, now. The developers of
 this theme focus on four primary goals:
@@ -30,23 +32,22 @@ this theme focus on four primary goals:
 4. Optimize the code for execution speed as much as possible. A snappy terminal
    is a happy terminal.
 
-Powerlevel9k can be used to create both very useful and beautiful terminal environments:
-
-![](https://camo.githubusercontent.com/b5d7eb49a30bfe6bdb5706fa3c9be95fe8e5956e/687474703a2f2f67696679752e636f6d2f696d616765732f70396b6e65772e676966)
+Powerlevel9k can be used to create both very useful and beautiful terminal environments.
 
 ### Table of Contents
 
 1. [Installation](#installation)
 2. [Customization](#prompt-customization)
-    1. [Stylizing Your Prompt](https://github.com/bhilburn/powerlevel9k/wiki/Stylizing-Your-Prompt)
-    2. [Customizing Prompt Segments](#customizing-prompt-segments)
+    1. [Customizing Prompt Segments](#customizing-prompt-segments)
+    2. [Stylizing Your Prompt](#stylizing-Your-Prompt)
     3. [Available Prompt Segments](#available-prompt-segments)
+    4. [Custom Prompt Segements](#custom-prompt-segements)
 3. [Troubleshooting](https://github.com/bhilburn/powerlevel9k/wiki/Troubleshooting)
 
 Be sure to also [check out the Wiki](https://github.com/bhilburn/powerlevel9k/wiki)!
 
 ### Installation
-There are two installation steps to go from a vanilla terminal to a PL9k
+There are two installation steps to go from a vanilla terminal to a P9K
 terminal. Once you are done, you can optionally customize your prompt.
 
 [Installation Instructions](INSTALL.md)
@@ -60,13 +61,12 @@ are interested.
 
 ### Prompt Customization
 
-Be sure to check out the wiki page on the additional prompt customization
-options, including color and icon settings: [Stylizing Your Prompt](https://github.com/bhilburn/powerlevel9k/wiki/Stylizing-Your-Prompt)
-
 #### Customizing Prompt Segments
+
 Customizing your prompt is easy! Select the segments you want to have displayed,
 and then assign them to either the left or right prompt by adding the following
-variables to your `~/.zshrc`.
+variables to your `~/.zshrc`. Make sure to do this before you source/load P9K
+since only the segments will be loaded you need.
 
 | Variable | Default Value | Description |
 |----------|---------------|-------------|
@@ -75,12 +75,41 @@ variables to your `~/.zshrc`.
 
 
 The table above shows the default values, so if you wanted to set these
-variables manually, you would put the following in
-your `~/.zshrc`:
+variables manually, you would put the following in your `~/.zshrc`:
 ```zsh
 P9K_LEFT_PROMPT_ELEMENTS=(context dir vcs)
 P9K_RIGHT_PROMPT_ELEMENTS=(status root_indicator background_jobs history time)
 ```
+
+#### Stylizing Your Prompt
+
+Please read the linked secions for deatails but here is the TL;DR and some examples:
+```
+# standard customizations
+#P9K_<segment>_[<state>_][BACKGROUND|FOREGROUND|BOLD|ICON[_BOLD|_COLOR]]
+# examples
+P9K_DATE_BACKGROUND=fff8e7         # color background of stateless segment "date"
+P9K_CONTEXT_DEFAULT_FOREGROUND=133 # set foreground color for segment "context" state "default"
+P9K_DOCKER_MACHINE_BOLD            # make stateless segment "docker_machine" bold
+P9K_DATE_ICON=time                 # icon for stateless segement "time"
+P9K_DIR_HOME_ICON=B                # icon for stateful segement "dir" state "HOME"
+P9K_DIR_HOME_ICON_COLOR=red        # color stateful segment icon
+P9K_DIR_HOME_ICON_BOLD=true        # make icon bold (only if font supports it)
+```
+Please refer to the segment's documentation for segement specific stuff.
+
+1. [Double-Lined Prompt](STYLIZING.md#double-lined-prompt)
+2. [Adding Newline Before Each Prompt](STYLIZING.md#adding-newline-before-each-rompt)
+3. [Disable Right Prompt](STYLIZING.md#disable-right-prompt)
+4. [Light Color Theme](STYLIZING.md#light-color-theme)
+5. [Segment Color Customization](STYLIZING.md#segment-color-customization)
+5. [Special Segment Colors](STYLIZING.md#special-segment-colors)
+6. [Test Terminal Colors](STYLIZING.md#test-terminal-colors)
+7. [Changing the Prompt](STYLIZING.md#changing-the-prompt)
+8. [Icons of Segments](STYLIZING.md#icons-of-segments)
+9. [Icon Customization](STYLIZING.md#icon-customization)
+10. [Glue Segments Together](STYLIZING.md#glue-segments-together)
+
 #### Available Prompt Segments
 The segments that are currently available are:
 
@@ -151,7 +180,7 @@ The segments that are currently available are:
 * [`dropbox`](segments/dropbox/README.md) - Indicates Dropbox directory and syncing status using `dropbox-cli`
 
 **Other:**
-* [`custom_command`](#custom_command) - Create a custom segment to display the
+* [`custom_*`](segments/custom/README.md) - Create a custom segment to display the
   output of an arbitrary command.
 * [`command_execution_time`](segments/command_execution_time/README.md) - Display the time the current command took to execute.
 * [`todo`](segments/todo/README.md) - Shows the number of tasks in your [todo.txt](http://todotxt.com/) tasks file.
@@ -160,43 +189,14 @@ The segments that are currently available are:
 * [`openfoam`](segments/openfoam/README.md) - Shows the currently sourced [OpenFOAM](https://openfoam.org/) environment.
 * [`vagrant`](segments/vagrant/README.md) - Detects if you are in a folder with a running VM.
 
---------------------------------------------------------------------------------
+#### Custom Prompt Segments
 
-##### custom_command
+The `custom_*` segment allows you to turn the output of a custom command into
+a prompt segment. As an example you could create a custom segment
+`custom_wifi_signal` if you wanted to display your WiFi signal strength.
+You can take a look at [how to create a custom segment
+here](segments/custom/README.md).
 
-The `custom_...` segment allows you to turn the output of a custom command into
-a prompt segment. As an example, if you wanted to create a custom segment to
-display your WiFi signal strength, you might define a custom segment called
-`custom_wifi_signal` like this:
-```zsh
-P9K_LEFT_PROMPT_ELEMENTS=(context time battery dir vcs virtualenv custom_wifi_signal)
-P9K_CUSTOM_WIFI_SIGNAL="echo signal: \$(nmcli device wifi | grep yes | awk '{print \$8}')"
-P9K_CUSTOM_WIFI_SIGNAL_BACKGROUND="blue"
-P9K_CUSTOM_WIFI_SIGNAL_FOREGROUND="yellow"
-```
-If you prefer, you can also define the function in your `.zshrc` rather than
-putting it in-line with the variable export, as shown above. Just don't forget
-to invoke your function from your segment! Example code that achieves the same
-result as the above:
-```zsh
-zsh_wifi_signal(){
-    local signal=$(nmcli device wifi | grep yes | awk '{print $8}')
-    local color='%F{yellow}'
-    [[ $signal -gt 75 ]] && color='%F{green}'
-    [[ $signal -lt 50 ]] && color='%F{red}'
-    echo -n "%{$color%}\uf230  $signal%{%f%}" # \uf230 is 
-}
-
-P9K_CUSTOM_WIFI_SIGNAL="zsh_wifi_signal"
-P9K_LEFT_PROMPT_ELEMENTS=(context time battery dir vcs virtualenv custom_wifi_signal)
-```
-The command, above, gives you the wireless signal segment shown below:
-
-![signal](http://i.imgur.com/hviMATC.png)
-
-You can define as many custom segments as you wish. If you think you have
-a segment that others would find useful, please consider upstreaming it to the
-main theme distribution so that everyone can use it!
 
 ### Disabling / Enabling Powerlevel9k
 
@@ -221,6 +221,14 @@ portion of the wiki to get going.
 
 [The Wiki also has a ton of other useful
 information!](https://github.com/bhilburn/powerlevel9k/wiki)
+
+### Contributing
+
+Would you like to contribute? We would love that! Please feel free
+to open a Pull Request.  
+For further information please see our [developers
+guide](DEVELOPERS_GUIDE.md), [styleguide](STYLEGUIDE.md) and how we write
+[tests](TESTS.md).
 
 ### License
 
