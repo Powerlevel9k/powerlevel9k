@@ -430,10 +430,10 @@ function testAlwaysShowRemoteBranch() {
 
   git remote rename origin some/remote
   local P9K_VCS_GIT_ALWAYS_SHOW_REMOTE_BRANCH='true'
-  assertEquals "%K{002} %F{000} master→master@some/remote %k%F{002}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{002} %F{000} some/remote:master→master %k%F{002}%f " "$(__p9k_build_left_prompt)"
 
   git branch -m master new/ref/master
-  assertEquals "%K{002} %F{000} new/ref/master→master@some/remote %k%F{002}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{002} %F{000} some/remote:master→new/ref/master %k%F{002}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testGitDirClobber() {

@@ -138,7 +138,7 @@
   p9k::set_default P9K_VCS_HIDE_TAGS false
   p9k::set_default P9K_VCS_INTERNAL_HASH_LENGTH "8" # Default: Just display the first 8 characters of our changeset-ID.
   p9k::set_default P9K_VCS_SHORTEN_DELIMITER $'\u2026'
-  p9k::set_default P9K_VCS_REMOTE_DELIMITER "@"
+  p9k::set_default P9K_VCS_REMOTE_DELIMITER ":"
   p9k::set_default P9K_VCS_SHOW_SUBMODULE_DIRTY true
   p9k::set_default P9K_VCS_GIT_ALWAYS_SHOW_REMOTE_BRANCH false
   p9k::set_default P9K_VCS_SHOW_CHANGESET false
@@ -188,6 +188,10 @@ function +vi-git-aheadbehind() {
   hook_com[misc]+=${(j::)gitstatus}
 }
 
+function +vi-git-branch-icon() {
+  hook_com[branch]+="${__P9K_ICONS[VCS_BRANCH]}"
+}
+
 function +vi-git-branch() {
   local branch="${__P9K_VCS_DATA[branch]}"
 
@@ -205,7 +209,7 @@ function +vi-git-branch() {
     fi
   fi
 
-  hook_com[branch]+="${__P9K_ICONS[VCS_BRANCH]}${branch}"
+  hook_com[branch]+="${branch}"
 }
 
 function +vi-git-remotebranch() {
@@ -222,7 +226,7 @@ function +vi-git-remotebranch() {
     # Remote Branch is the remote branch name, without the remote name.
     # Additionally, remove trailing whitespace and escape percent signs.
     local remote_branch=${${${remote#${remote_name}/}// /}//\%/%%}
-    hook_com[branch]+="${__P9K_ICONS[VCS_REMOTE_BRANCH]}${remote_branch}${P9K_VCS_REMOTE_DELIMITER}${remote_name}"
+    hook_com[branch]+="${remote_name}${P9K_VCS_REMOTE_DELIMITER}${remote_branch}${__P9K_ICONS[VCS_REMOTE_BRANCH]}"
   fi
 }
 
@@ -400,7 +404,7 @@ __p9k_vcs_init() {
   # Hooks are places in vcs_info where you can run your own code. That code can communicate with the code that called it and through that, change the system’s behaviour.
   # For configuration, hooks change the style context:
   #   :vcs_info:vcs-string+hook-name:user-context:repo-root-name
-  p9k::defined P9K_VCS_GIT_HOOKS || P9K_VCS_GIT_HOOKS=(vcs-detect-changes vcs-icon git-gather-data git-untracked git-aheadbehind git-stash git-branch git-remotebranch git-gitdir git-tagname)
+  p9k::defined P9K_VCS_GIT_HOOKS || P9K_VCS_GIT_HOOKS=(vcs-detect-changes vcs-icon git-gather-data git-untracked git-aheadbehind git-stash git-branch-icon git-remotebranch git-branch git-gitdir git-tagname)
   zstyle ':vcs_info:git*+set-message:*' hooks ${P9K_VCS_GIT_HOOKS}
   p9k::defined P9K_VCS_HG_HOOKS || P9K_VCS_HG_HOOKS=(vcs-detect-changes vcs-icon hg-branch)
   zstyle ':vcs_info:hg*+set-message:*' hooks ${P9K_VCS_HG_HOOKS}
