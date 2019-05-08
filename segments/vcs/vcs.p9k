@@ -226,7 +226,7 @@ function +vi-git-remotebranch() {
     # Remote Branch is the remote branch name, without the remote name.
     # Additionally, remove trailing whitespace and escape percent signs.
     local remote_branch=${${${remote#${remote_name}/}// /}//\%/%%}
-    hook_com[branch]+="${remote_name}${P9K_VCS_REMOTE_DELIMITER}${remote_branch}${__P9K_ICONS[VCS_REMOTE_BRANCH]}"
+    hook_com[branch]+="${__P9K_ICONS[VCS_REMOTE_BRANCH]}${remote_name}${P9K_VCS_REMOTE_DELIMITER}${remote_branch}"
   fi
 }
 
@@ -404,7 +404,7 @@ __p9k_vcs_init() {
   # Hooks are places in vcs_info where you can run your own code. That code can communicate with the code that called it and through that, change the system’s behaviour.
   # For configuration, hooks change the style context:
   #   :vcs_info:vcs-string+hook-name:user-context:repo-root-name
-  p9k::defined P9K_VCS_GIT_HOOKS || P9K_VCS_GIT_HOOKS=(vcs-detect-changes vcs-icon git-gather-data git-untracked git-aheadbehind git-stash git-branch-icon git-remotebranch git-branch git-gitdir git-tagname)
+  p9k::defined P9K_VCS_GIT_HOOKS || P9K_VCS_GIT_HOOKS=(vcs-detect-changes vcs-icon git-gather-data git-untracked git-aheadbehind git-stash git-branch-icon git-branch git-remotebranch git-gitdir git-tagname)
   zstyle ':vcs_info:git*+set-message:*' hooks ${P9K_VCS_GIT_HOOKS}
   p9k::defined P9K_VCS_HG_HOOKS || P9K_VCS_HG_HOOKS=(vcs-detect-changes vcs-icon hg-branch)
   zstyle ':vcs_info:hg*+set-message:*' hooks ${P9K_VCS_HG_HOOKS}
