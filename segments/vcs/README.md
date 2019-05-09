@@ -27,7 +27,7 @@ customization is provided via:
 |`P9K_VCS_CHANGESET_HASH_LENGTH`|`12`|How many characters of the hash / changeset to display in the segment.|
 |`P9K_VCS_SHOW_SUBMODULE_DIRTY`|`true`|Set to `false` to not reflect submodule status in the top-level repository prompt.|
 |`P9K_VCS_HIDE_TAGS`|`false`|Set to `true` to stop tags being displayed in the segment.|
-|`P9K_VCS_GIT_HOOKS`|`(vcs-detect-changes vcs-icon git-gather-data git-untracked git-aheadbehind git-stash git-branch git-remotebranch git-gitdir git-tagname)`|Layout of the segment for git repositories.|
+|`P9K_VCS_GIT_HOOKS`|`(vcs-detect-changes vcs-icon git-gather-data git-untracked git-aheadbehind git-stash git-branch-icon git-branch git-remotebranch git-gitdir git-tagname)`|Layout of the segment for git repositories.|
 |`P9K_VCS_HG_HOOKS`|`(vcs-detect-changes)`|Layout of the segment for Mercurial repositories.|
 |`P9K_VCS_SVN_HOOKS`|`(vcs-detect-changes svn-detect-changes)`|Layout of the segment for SVN repositories.|
 |`P9K_VCS_ACTIONFORMAT_FOREGROUND`|`red`|The color of the foreground font during actions (e.g., `REBASE`).|
@@ -99,6 +99,7 @@ Git hooks (`P9K_VCS_GIT_HOOKS`):
 | git-untracked      | Check for untracked files. |
 | git-aheadbehind    | Check for commits ahead/behind the repo. This does not request changes from the remote repo. Only interacts with the local repo. |
 | git-stash          | Check for stashes. |
+| git-branch-icon    | Shows an icon for the branch. |
 | git-branch         | Display the local branch and truncates it, if configured. |
 | git-remotebranch   | Checks the remote branch, and displays it, if it differs from local branch name. |
 | git-gitdir         | Responsible to find out if we are in a clobbered checkout. |
