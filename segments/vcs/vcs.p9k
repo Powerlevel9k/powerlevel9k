@@ -189,7 +189,7 @@ function +vi-git-aheadbehind() {
 }
 
 function +vi-git-branch-icon() {
-  hook_com[branch]+="${__P9K_ICONS[VCS_BRANCH]}"
+  [[ -n "${__P9K_VCS_DATA[branch]}" ]] && hook_com[branch]+="${__P9K_ICONS[VCS_BRANCH]}"
 }
 
 function +vi-git-branch() {
