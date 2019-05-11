@@ -407,6 +407,8 @@ ${__P9K_ICONS[MULTILINE_LAST_PROMPT_PREFIX]}"
     else
       RPROMPT_PREFIX='%{'${P9K_RPROMPT_PREFIX:-}'%}'
       RPROMPT_SUFFIX='%{'${P9K_RPROMPT_SUFFIX:-}'%}'
+      # Move right completion menu one line up
+      RPROMPT2='%{'$'\e[1A''%}'"${RPROMPT2}"
     fi
   else
     __p9k_unsafe_PROMPT="%f%b%k$(__p9k_build_left_prompt)"
