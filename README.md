@@ -83,7 +83,11 @@ P9K_RIGHT_PROMPT_ELEMENTS=(status root_indicator background_jobs history time)
 
 #### Stylizing Your Prompt
 
-Please read the linked secions for deatails but here is the TL;DR and some examples:
+**Always set customizations before sourcing/loading P9K! Not every option
+can be changed at runtime.**
+
+Please read the linked sections for details but here is the TL;DR for how to
+change colors and more per segment and some examples:
 ```
 # standard customizations
 #P9K_<segment>[_<state>]_[BACKGROUND|FOREGROUND|BOLD|ICON[_BOLD|_COLOR]]

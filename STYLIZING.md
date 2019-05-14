@@ -3,8 +3,8 @@
 You can configure the look and feel of your prompt easily with some built-in
 options. This includes changing foreground and background colors, replacing
 icons and separators, adding newlines...
-**Please be away that styling options should be set before loading/sourcing
-P9K and can not always be changed at runtime!**
+**Please be aware that styling options should always be set before loading/sourcing P9K!
+Not every option can be changed at runtime.**
 
 ## General Stylizing Options
 
