@@ -86,7 +86,7 @@ P9K_RIGHT_PROMPT_ELEMENTS=(status root_indicator background_jobs history time)
 Please read the linked secions for deatails but here is the TL;DR and some examples:
 ```
 # standard customizations
-#P9K_<segment>_[<state>_][BACKGROUND|FOREGROUND|BOLD|ICON[_BOLD|_COLOR]]
+#P9K_<segment>[_<state>]_[BACKGROUND|FOREGROUND|BOLD|ICON[_BOLD|_COLOR]]
 # examples
 P9K_DATE_BACKGROUND=fff8e7         # color background of stateless segment "date"
 P9K_CONTEXT_DEFAULT_FOREGROUND=133 # set foreground color for segment "context" state "default"
@@ -96,19 +96,13 @@ P9K_DIR_HOME_ICON=B                # icon for stateful segement "dir" state "HOM
 P9K_DIR_HOME_ICON_COLOR=red        # color stateful segment icon
 P9K_DIR_HOME_ICON_BOLD=true        # make icon bold (only if font supports it)
 ```
-Please refer to the segment's documentation for segement specific stuff.
+Please refer to the segment's documentation for segment specific stuff.
 
-1. [Double-Lined Prompt](STYLIZING.md#double-lined-prompt)
-2. [Adding Newline Before Each Prompt](STYLIZING.md#adding-newline-before-each-rompt)
-3. [Disable Right Prompt](STYLIZING.md#disable-right-prompt)
-4. [Light Color Theme](STYLIZING.md#light-color-theme)
-5. [Segment Color Customization](STYLIZING.md#segment-color-customization)
-5. [Special Segment Colors](STYLIZING.md#special-segment-colors)
-6. [Test Terminal Colors](STYLIZING.md#test-terminal-colors)
-7. [Changing the Prompt](STYLIZING.md#changing-the-prompt)
-8. [Icons of Segments](STYLIZING.md#icons-of-segments)
-9. [Icon Customization](STYLIZING.md#icon-customization)
-10. [Glue Segments Together](STYLIZING.md#glue-segments-together)
+1. [General Stylizing Options](STYLIZING.md#general-stylizing-options)
+2. [Per Segment Stylizing](STYLIZING.md#per-segment-stylizing)
+3. [Usable Colors](STYLIZING.md#usable-colors)
+4. [Fusing Segments](STYLIZING.md#fusing-segments)
+5. [Icon Customization](STYLIZING.md#icon-customization)
 
 #### Available Prompt Segments
 The segments that are currently available are:
