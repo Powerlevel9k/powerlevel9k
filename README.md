@@ -17,7 +17,7 @@ Desktop' threads. Use powerlevel9k.
 
 You can check out some other users' configurations in our wiki: [Show Off Your
 Config](https://github.com/bhilburn/powerlevel9k/wiki/Show-Off-Your-Config).
-Bare in mind that the configurations might be for older versions of powerlevel9k
+Bear in mind that the configurations might be for older versions of powerlevel9k
 and might not work properly with the latest version of powerlevel9k.
 
 There are a number of Powerline ZSH themes available, now. The developers of
@@ -39,7 +39,7 @@ Powerlevel9k can be used to create both very useful and beautiful terminal envir
 1. [Installation](#installation)
 2. [Customization](#prompt-customization)
     1. [Customizing Prompt Segments](#customizing-prompt-segments)
-    2. [Stylizing Your Prompt](#stylizing-Your-Prompt)
+    2. [Stylizing Your Prompt](#stylizing-your-prompt)
     3. [Available Prompt Segments](#available-prompt-segments)
     4. [Custom Prompt Segements](#custom-prompt-segements)
 3. [Troubleshooting](https://github.com/bhilburn/powerlevel9k/wiki/Troubleshooting)
@@ -66,7 +66,7 @@ are interested.
 Customizing your prompt is easy! Select the segments you want to have displayed,
 and then assign them to either the left or right prompt by adding the following
 variables to your `~/.zshrc`. Make sure to do this before you source/load P9K
-since only the segments will be loaded you need.
+since only the segments you specify will be loaded.
 
 | Variable | Default Value | Description |
 |----------|---------------|-------------|
@@ -87,16 +87,16 @@ P9K_RIGHT_PROMPT_ELEMENTS=(status root_indicator background_jobs history time)
 can be changed at runtime.**
 
 Please read the linked sections for details but here is the TL;DR for how to
-change colors and more per segment and some examples:
+change colors and more per segment with some examples:
 ```
 # standard customizations
 #P9K_<segment>[_<state>]_[BACKGROUND|FOREGROUND|BOLD|ICON[_BOLD|_COLOR]]
 # examples
-P9K_DATE_BACKGROUND=fff8e7         # color background of stateless segment "date"
+P9K_DATE_BACKGROUND='#fff8e7'      # color background of stateless segment "date"
 P9K_CONTEXT_DEFAULT_FOREGROUND=133 # set foreground color for segment "context" state "default"
-P9K_DOCKER_MACHINE_BOLD            # make stateless segment "docker_machine" bold
+P9K_DOCKER_MACHINE_BOLD=true       # make stateless segment "docker_machine" bold
 P9K_DATE_ICON=time                 # icon for stateless segement "time"
-P9K_DIR_HOME_ICON=B                # icon for stateful segement "dir" state "HOME"
+P9K_DIR_HOME_ICON=$'\uF015'        # icon for stateful segement "dir" state "HOME"
 P9K_DIR_HOME_ICON_COLOR=red        # color stateful segment icon
 P9K_DIR_HOME_ICON_BOLD=true        # make icon bold (only if font supports it)
 ```

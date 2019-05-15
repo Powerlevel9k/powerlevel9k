@@ -26,7 +26,7 @@ Not every option can be changed at runtime.**
 
 ## Per Segment Stylizing
 
-There are two kinds of segments stateless and stateful ones.
+There are two kinds of segments – stateless segments and stateful segments.
 This short expression describes how the variable naming scheme works:  
 Prefix `P9K_` + segment name + optionally segment state name + what you want to change:
 `P9K_<segment>[_<state>]_[BACKGROUND|FOREGROUND|BOLD|ICON[_BOLD|_COLOR]]`
@@ -38,12 +38,12 @@ Detailed explanation:
 |`P9K_${segment}_${state}_BACKGROUND="$color"`|color for background of stateful segment|`P9K_DIR_ETC_BACKGROUND=001`|
 |`P9K_${segment}_FOREGROUND="$color"`|color for foreground of stateless segment|`P9K_TIME_BACFOREGND=2`|
 |`P9K_${segment}_${state}_FOREGROUND="$color"`|color for foreground of stateful segment|`P9K_DIR_ETC_FOREGROUND=2`|
-|`P9K_${segment}_BOLD=true`|set stateless segment to bold|`P9K_TIME_BOLD=true`|
-|`P9K_${segment}_${state}_BOLD=true`|set stateful segment to bold|`P9K_DIR_ETC_BOLD="true"`|
+|`P9K_${segment}_BOLD=true`|set stateless segment content (excluding icon) to bold|`P9K_TIME_BOLD=true`|
+|`P9K_${segment}_${state}_BOLD=true`|set stateful segment content (excluding icon) to bold|`P9K_DIR_ETC_BOLD="true"`|
 |`P9K_${segment}_ICON="$icon"`|set icon/glyph for set stateless segment|`P9K_TIME_ICON="It's"`|
 |`P9K_${segment}_${state}_ICON="$icon"`|icon/glyph for set stateful segment|`P9K_DIR_ETC_ICON=$'\u2699'`|
-|`P9K_${segment}_ICON_BOLD=true`|icon/glyph/text to bold for stateless segment if font supports it|`P9K_TIME_ICON_BOLD=true`|
-|`P9K_${segment}_${state}_ICON_BOLD=true`|set icon/glyph/text to bold for stateful segment if font supports it|`P9K_DIR_ETC_ICON_BOLD="true"`|
+|`P9K_${segment}_ICON_BOLD=true`|icon/glyph to bold for stateless segment if font supports it|`P9K_TIME_ICON_BOLD=true`|
+|`P9K_${segment}_${state}_ICON_BOLD=true`|set icon/glyph to bold for stateful segment if font supports it|`P9K_DIR_ETC_ICON_BOLD="true"`|
 |`P9K_${segment}_ICON_COLOR="$color"`|color for icon of stateless segment|`P9K_TIME_ICON=blue`|
 |`P9K_${segment}_${state}_ICON_COLOR="$color"`|color for icon of stateful segment|`P9K_DIR_ETC_ICON="#fff8e7"`|
 
@@ -94,7 +94,7 @@ It is possible to display two segments as one, by adding `_joined` to your segme
 ```zsh
 P9K_RIGHT_PROMPT_ELEMENTS=(status background_jobs_joined)
 ```
-This works with every segment, even with custom ones and with conditional ones.
+This works with every segment, even with custom and conditional ones.
 
 ## Icon Customization
 
