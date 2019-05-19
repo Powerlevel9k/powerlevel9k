@@ -108,7 +108,9 @@ function __p9k_left_prompt_segment() {
 # @noargs
 ##
 function __p9k_left_prompt_end() {
-  if [[ -n ${CURRENT_BG} ]]; then
+  if [[ ${(U)CURRENT_BG} == 'NONE' ]]; then
+    echo -n "%k%f${__P9K_ICONS[LEFT_SEGMENT_SEPARATOR]}"
+  elif [[ -n ${CURRENT_BG}  ]]; then
     echo -n "%k%F${CURRENT_BG#%K}${__P9K_ICONS[LEFT_SEGMENT_SEPARATOR]}"
   else
     echo -n "%k"
