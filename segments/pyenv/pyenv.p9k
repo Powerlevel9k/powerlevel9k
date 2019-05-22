@@ -33,7 +33,7 @@
 ##
 prompt_pyenv() {
   if [ $commands[pyenv] ]; then
-    local pyenv_version_name="$(pyenv version-name)"
+    local pyenv_version_name="$(pyenv version-name 2>/dev/null)"
     local pyenv_global="$(pyenv global)"
     if [[ "${pyenv_version_name}" != "${pyenv_global}" || "${P9K_PYENV_PROMPT_ALWAYS_SHOW}" == "true" ]]; then
       p9k::prepare_segment "$0" "" $1 "$2" $3 "${pyenv_version_name}"
