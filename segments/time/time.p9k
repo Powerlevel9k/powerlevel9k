@@ -13,6 +13,63 @@
   #   segment_name  context  background  foreground  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
   #                                                                                                            
   p9k::register_segment "TIME" "" "${DEFAULT_COLOR_INVERTED}" "${DEFAULT_COLOR}"  ''  $'\uE12E'  $'\uF017 '  $'\uF017 '  $'\uF017 '
+
+  ################################################################
+  # Register segment default values
+  p9k::set_default P9K_TIME_FORMAT "%D{%H:%M:%S}"
+  p9k::set_default P9K_TIME_REALTIME false
+  p9k::set_default P9K_TIME_REALTIME_DELAY 60
+  p9k::set_default P9K_TIME_RESET_ON_EXEC false
+
+  ################################################################
+  # Register handler for realtime prompt resets
+  if [[ $P9K_TIME_REALTIME == true ]]; then
+    local fifo
+    fifo=$(mktemp -u "${TMPDIR:-/tmp}"/p9k.$$.pipe.time.XXXXXXXXXX)
+    typeset -giH __P9K_TIMER_FD=0
+    __p9k_start_timer() {
+      emulate -L zsh
+      setopt err_return
+      unsetopt bg_nice
+      mkfifo $fifo
+      exec {__P9K_TIMER_FD}<>$fifo
+      typeset -gfH __p9k_on_timer() {
+        # reset prompt on pipe update
+        emulate -L zsh
+        local _
+        IFS='' read -u $__P9K_TIMER_FD _ && zle && zle .reset-prompt
+      }
+      # register handler for created name pipe
+      zle -F $__P9K_TIMER_FD __p9k_on_timer
+      # start and disown a loop continuously writing to the pipe
+      # it will exit if shell is closed
+      zsh -c "while kill -0 $$; do
+                sleep $P9K_TIME_REALTIME_DELAY && echo
+              done" >&$__P9K_TIMER_FD 2>/dev/null &!
+    }
+    if ! __p9k_start_timer ; then
+      echo "powerlevel9k: failed to initialize realtime clock" >&2
+      if (( __P9K_TIMER_FD )); then
+        zle -F $__P9K_TIMER_FD
+        exec {__P9K_TIMER_FD}>&-
+      fi
+      unset __P9K_TIMER_FD
+      unset -f __p9k_on_timer
+    fi
+    rm -f "$fifo"
+  fi
+
+  ################################################################
+  # Bind the enter key to redraw the prompt (this will update the time)
+  if [[ $P9K_TIME_RESET_ON_EXEC == true ]]; then
+    __p9k_renew_prompt_accept_line() {
+      zle .reset-prompt
+      zle accept-line
+    }
+    zle -N __p9k_renew_prompt_accept_line
+    bindkey "^M" __p9k_renew_prompt_accept_line
+    ZSH_AUTOSUGGEST_CLEAR_WIDGETS+=__p9k_renew_prompt_accept_line
+  fi
 }
 
 ################################################################
@@ -25,7 +82,7 @@
 #   $3 boolean Whether the segment should be joined
 ##
 prompt_time() {
-  p9k::set_default P9K_TIME_FORMAT "%D{%H:%M:%S}"
-
+  # for performance increasments read this:
+  # https://github.com/romkatv/powerlevel10k/blob/0fa2f7ba65add69cb29149a6da8930c5179de1f7/powerlevel9k.zsh-theme#L1456
   p9k::prepare_segment "$0" "" $1 "$2" $3 "$P9K_TIME_FORMAT"
 }
