@@ -30,7 +30,7 @@ prompt_go_version() {
   go_version=$(go version 2>/dev/null | sed -E "s/.*(go[0-9.]*).*/\1/")
   go_path=$(go env GOPATH 2>/dev/null)
 
-  if [[ -n "$go_version" && "${PWD##$go_path}" != "$PWD" ]]; then
+  if [[ -n "$go_version" && ("${PWD##$go_path}" != "$PWD" || -f "$PWD/go.mod") ]]; then
     p9k::prepare_segment "$0" "" $1 "$2" $3 "$go_version"
   fi
 }
