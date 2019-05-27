@@ -221,6 +221,47 @@ function p9k::set_default() {
 
 ###############################################################
 # @description
+#   Determines the width of the rendered prompt used.
+##
+# @args
+#   $1 string The prompt string
+##
+# @returns
+#   Nothing - Returnvalue is stored in _P9K_RETVAL
+##
+# @note
+#   If we execute `print -P $1`, how many characters will be
+#   printed on the last line?
+#   Assumes that `%{%}` and `%G` don't lie.
+# 
+#   _p9k_prompt_length '' => 0
+#   _p9k_prompt_length 'abc' => 3
+#   _p9k_prompt_length $'abc\nxy' => 2
+#   _p9k_prompt_length $'\t' => 8
+#   _p9k_prompt_length '%F{red}abc' => 3
+#   _p9k_prompt_length $'%{a\b%Gb%}' => 1
+#
+##
+function p9k::prompt_length() {
+  emulate -L zsh
+  local COLUMNS=1024
+  local -i x y=$#1 m
+  if (( y )); then
+    while (( ${${(%):-$1%$y(l.1.0)}[-1]} )); do
+      x=y
+      (( y *= 2 ));
+    done
+    local xy
+    while (( y > x + 1 )); do
+      m=$(( x + (y - x) / 2 ))
+      typeset ${${(%):-$1%$m(l.x.y)}[-1]}=$m
+    done
+  fi
+  _P9K_RETVAL=$x
+}
+
+###############################################################
+# @description
 #   Converts large memory values into a human-readable unit (e.g., bytes --> GB)
 ##
 # @args
