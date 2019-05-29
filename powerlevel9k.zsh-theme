@@ -905,7 +905,8 @@ prompt_dir() {
           package_path=${$(pwd)%%/.git*}
         fi
 
-        [[ ${(L)POWERLEVEL9K_DIR_PATH_ABSOLUTE} != "true" ]] && package_path=${package_path/$HOME/"~"}
+        # it makes truncate_with_package_name STRATEGY do not work well
+        # [[ ${(L)POWERLEVEL9K_DIR_PATH_ABSOLUTE} != "true" ]] && package_path=${package_path/$HOME/"~"}
 
         # Replace the shortest possible match of the marked folder from
         # the current path. Remove the amount of characters up to the
