@@ -59,6 +59,7 @@ function __p9k_left_prompt_segment() {
   # Support for bold segment
   [[ -n ${4} ]] && [[ $__P9K_DATA[${STATEFUL_NAME}_BD] == true ]] && content="%B${4}%b" || content="${4}"
   local SEGMENT_ICON="${5}"
+  content="\${(Q)\${:-${(qqq)content}}}"
 
   local bg=$__P9K_DATA[${STATEFUL_NAME}_BG]
   local fg=$__P9K_DATA[${STATEFUL_NAME}_FG]
@@ -147,6 +148,7 @@ function __p9k_right_prompt_segment() {
   # Support for bold segment
   [[ -n "${4}" ]] && [[ $__P9K_DATA[${STATEFUL_NAME}_BD] == true ]] && content="%B${4}%b" || content="${4}"
   local SEGMENT_ICON="${5}"
+  content="\${(Q)\${:-${(qqq)content}}}"
 
   local bg=$__P9K_DATA[${STATEFUL_NAME}_BG]
   local fg=$__P9K_DATA[${STATEFUL_NAME}_FG]
