@@ -52,10 +52,9 @@ Customizations available are:
 | Strategy Name | Description |
 |---------------|-------------|
 |Default|Truncate whole directories from left. How many is defined by `P9K_DIR_SHORTEN_LENGTH`|
-|`truncate_absolute_chars`|Truncates an absolute number of characters from the left such that the number of characters that your path displays (with or without `P9K_DIR_SHORTEN_DELIMITER`) is no more than `P9K_DIR_SHORTEN_LENGTH` + the length of `P9K_DIR_SHORTEN_DELIMITER` |
+|`truncate_absolute`|Truncates everything except the last few characters in the path. E.g. if you are in a folder named `~/Projects/powerlevel9k` and you have set `P9K_DIR_SHORTEN_LENGTH=3` and `P9K_DIR_SHORTEN_DELIMITER=".."`, you will get `..l9k`.|
 |`truncate_middle`|Truncates the middle part of a folder. E.g. you are in a folder named `~/MySuperProjects/AwesomeFiles/BoringOffice`, then it will truncated to `~/MyS..cts/Awe..les/BoringOffice`, if `P9K_DIR_SHORTEN_LENGTH=3` is also set (controls the amount of characters to be left).|
 |`truncate_from_right`|Just leaves the beginning of a folder name untouched. E.g. your folders will be truncated like so: `/ro../Pr../office`. How many characters will be untouched is controlled by `P9K_DIR_SHORTEN_LENGTH`.|
-|`truncate_absolute`|Truncates everything exept the last few characters in the path. E.g. if you are in a folder named `~/Projects/powerlevel9k` and you have set `P9K_DIR_SHORTEN_LENGTH=3`, you will get `..l9k`.|
 |`truncate_to_last`|Truncates everything before the last folder in the path.|
 |`truncate_to_first_and_last`|Truncate middle directories from the path. How many directories will be untouched is controlled by `P9K_DIR_SHORTEN_LENGTH`. E.g. if you are in a folder named `~/Projects/powerlevel9k` and you have set `P9K_DIR_SHORTEN_LENGTH=1`, you will get `~/../powerlevel9k`.||
 |`truncate_to_unique`|Parse all parent path components and truncate them to the shortest unique length. If you copy & paste the result to a shell, after hitting `TAB` it should expand to the original path unambiguously.|
