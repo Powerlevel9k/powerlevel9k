@@ -12,7 +12,7 @@
   # Parameters:
   #   segment_name  context  background  foreground  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
   #                                                                                        🐍          
-  p9k::register_segment "VIRTUALENV" "" "blue" "${DEFAULT_COLOR}"  ''  $'\uE63C'  $'\uE63C'  $'\U1F40D'  $'\uE73C '
+  p9k::register_segment "VIRTUALENV" "" "blue" "${DEFAULT_COLOR}"  ''  $'\uE63C'  $'\uE63C'  $'\U1F40D'  $'\uE73C'
 }
 
 ################################################################
