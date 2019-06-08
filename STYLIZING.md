@@ -32,6 +32,7 @@ Prefix `P9K_` + segment name + optionally segment state name + what you want to 
 `P9K_<segment>[_<state>]_[BACKGROUND|FOREGROUND|BOLD|ICON[_BOLD|_COLOR]]`
 
 Detailed explanation:
+
 |Option|Explanation|Example|
 |------|-----------|-------|
 |`P9K_${segment}_BACKGROUND="$color"`|color for background of stateless segment|`P9K_TIME_BACKGROUND=001`|
@@ -48,7 +49,8 @@ Detailed explanation:
 |`P9K_${segment}_${state}_ICON_COLOR="$color"`|color for icon of stateful segment|`P9K_DIR_ETC_ICON="#fff8e7"`|
 
 List of stateful segments with their states. Please see segment documentation for detailed
-descriptions.:
+descriptions:
+
 | Segment        | State                                                      |
 |----------------|------------------------------------------------------------|
 | `BATTERY`      | `CHARGED`, `CHARGING`, `DISCONNECTED`, `LOW`               |
