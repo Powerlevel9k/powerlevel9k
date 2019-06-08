@@ -41,7 +41,7 @@ Powerlevel9k can be used to create both very useful and beautiful terminal envir
     1. [Customizing Prompt Segments](#customizing-prompt-segments)
     2. [Stylizing Your Prompt](#stylizing-your-prompt)
     3. [Available Prompt Segments](#available-prompt-segments)
-    4. [Custom Prompt Segements](#custom-prompt-segements)
+    4. [Custom Prompt Segements](#custom-prompt-segments)
 3. [Troubleshooting](https://github.com/bhilburn/powerlevel9k/wiki/Troubleshooting)
 
 Be sure to also [check out the Wiki](https://github.com/bhilburn/powerlevel9k/wiki)!
@@ -105,7 +105,7 @@ Please refer to the segment's documentation for segment specific stuff.
 1. [General Stylizing Options](STYLIZING.md#general-stylizing-options)
 2. [Per Segment Stylizing](STYLIZING.md#per-segment-stylizing)
 3. [Usable Colors](STYLIZING.md#usable-colors)
-4. [Fusing Segments](STYLIZING.md#fusing-segments)
+4. [Glue Segments Together](STYLIZING.md#glue-segments-together)
 5. [Icon Customization](STYLIZING.md#icon-customization)
 
 #### Available Prompt Segments
@@ -153,7 +153,7 @@ The segments that are currently available are:
     * [`symfony2_version`](segments/symfony2_version/README.md) - Show the current Symfony2 version, if you are in a Symfony2-Project dir.
 * **Python Segments:**
     * [`virtualenv`](segments/virtualenv/README.md) - Your Python [VirtualEnv](https://virtualenv.pypa.io/en/latest/).
-    * [`anaconda`](segments/anaconda/README.md) - Your active [Anaconda](https://www.continuum.io/why-anaconda) environment.
+    * [`anaconda`](segments/anaconda/README.md) - Your active [Anaconda](https://www.anaconda.com/why-anaconda/) environment.
     * [`pyenv`](segments/pyenv/README.md) - Your active python version as reported by the first word of [`pyenv version`](https://github.com/yyuu/pyenv). Note that the segment is not displayed if that word is _system_ i.e. the segment is inactive if you are using system python.
 * **Ruby Segments:**
     * [`chruby`](segments/chruby/README.md) - Ruby environment information using `chruby` (if one is active).
