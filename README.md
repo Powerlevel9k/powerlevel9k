@@ -224,9 +224,11 @@ information!](https://github.com/bhilburn/powerlevel9k/wiki)
 
 Would you like to contribute? We would love that! Please feel free
 to open a Pull Request.  
-For further information please see our [developers
-guide](DEVELOPERS_GUIDE.md), [styleguide](STYLEGUIDE.md) and how we write
-[tests](TESTS.md).
+For further information please see our [code of conduct](CODE_OF_CONDUCT.md),
+[developers guide](DEVELOPERS_GUIDE.md), [styleguide](STYLEGUIDE.md) and how we
+write [tests](TESTS.md).
+
+### [Changelog](CHANGELOG.md)
 
 ### License
 
