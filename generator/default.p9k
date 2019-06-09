@@ -393,32 +393,6 @@ function __p9k_prepare_prompts() {
 
   local LC_ALL="" LC_CTYPE="en_US.UTF-8" # Set the right locale to protect special characters
 
-  if [[ "${P9K_PROMPT_ON_NEWLINE:-}" == true ]]; then
-    __p9k_unsafe_PROMPT="${__P9K_ICONS[MULTILINE_FIRST_PROMPT_PREFIX]}%f%b%k$(__p9k_build_left_prompt)
-${__P9K_ICONS[MULTILINE_LAST_PROMPT_PREFIX]}"
-    if [[ "$P9K_RPROMPT_ON_NEWLINE" != true ]]; then
-      # The right prompt should be on the same line as the first line of the left
-      # prompt. To do so, there is just a quite ugly workaround: Before zsh draws
-      # the RPROMPT, we advise it, to go one line up. At the end of RPROMPT, we
-      # advise it to go one line down. See:
-      # http://superuser.com/questions/357107/zsh-right-justify-in-ps1
-      RPROMPT_PREFIX='%{'$'\e[1A'${P9K_RPROMPT_PREFIX:-}'%}' # one line up
-      RPROMPT_SUFFIX='%{'${P9K_RPROMPT_SUFFIX:-}$'\e[1B''%}' # one line down
-    else
-      RPROMPT_PREFIX='%{'${P9K_RPROMPT_PREFIX:-}'%}'
-      RPROMPT_SUFFIX='%{'${P9K_RPROMPT_SUFFIX:-}'%}'
-    fi
-  else
-    __p9k_unsafe_PROMPT="%f%b%k$(__p9k_build_left_prompt)"
-    RPROMPT_PREFIX='%{'${P9K_RPROMPT_PREFIX:-}'%}'
-    RPROMPT_SUFFIX='%{'${P9K_RPROMPT_SUFFIX:-}'%}'
-  fi
-
-  if [[ "${P9K_DISABLE_RPROMPT:-}" != true ]]; then
-    __p9k_unsafe_RPROMPT="${RPROMPT_PREFIX}%f%b%k$(__p9k_build_right_prompt)%{${reset_color}%}${RPROMPT_SUFFIX}"
-    RPROMPT='$__p9k_unsafe_RPROMPT'
-  fi
-
   # Allow iTerm integration to work
   [[ "${ITERM_SHELL_INTEGRATION_INSTALLED:-}" == "Yes" ]] \
     && __p9k_unsafe_PROMPT="%{$(iterm2_prompt_mark)%}$__p9k_unsafe_PROMPT"
@@ -431,6 +405,25 @@ local NEWLINE='
     repeat ${P9K_PROMPT_ADD_NEWLINE_COUNT:-1} { NEWLINES+=${NEWLINE} }
     __p9k_unsafe_PROMPT="$NEWLINES$__p9k_unsafe_PROMPT"
   fi
+
+  if [[ ${P9K_DISABLE_RPROMPT} != true ]]; then
+    __p9k_unsafe_RPROMPT="${P9K_RPROMPT_PREFIX}%f%b%k$(__p9k_build_right_prompt)%{${reset_color}%}${P9K_RPROMPT_SUFFIX}"
+    local right='${P9K_RPROMPT_PREFIX}${__p9k_unsafe_RPROMPT}${RPROMPT_SUFFIX}'
+    if [[ $P9K_PROMPT_ON_NEWLINE != true || $P9K_RPROMPT_ON_NEWLINE == true ]]; then
+      RPROMPT=$right
+    else
+      unset _P9K_RPROMPT_OVERRIDE
+      # Set the RIGHT prompt to _P9K_RPROMPT_OVERRIDE
+      RPROMPT="\${_P9K_RPROMPT_OVERRIDE-$right}"
+    fi
+  fi
+
+  if [[ "${P9K_PROMPT_ON_NEWLINE:-}" == true ]]; then
+    _LEFT_PROMPT_PREFIX="${__P9K_ICONS[MULTILINE_FIRST_PROMPT_PREFIX]}"
+    _LEFT_PROMPT_SUFFIX="${NEWLINE}${__P9K_ICONS[MULTILINE_LAST_PROMPT_PREFIX]}"
+  fi
+
+  __p9k_unsafe_PROMPT="${_LEFT_PROMPT_PREFIX}%f%b%k$(__p9k_build_left_prompt)%{${reset_color}%}${_LEFT_PROMPT_SUFFIX}"
 
   # By evaluating $__p9k_unsafe_PROMPT here in __p9k_prepare_prompts we avoid
   # the evaluation of $PROMPT being interrupted.
@@ -510,6 +503,23 @@ function prompt_powerlevel9k_setup() {
   fi
   if ! p9k::defined P9K_RIGHT_PROMPT_ELEMENTS; then
     P9K_RIGHT_PROMPT_ELEMENTS=(status root_indicator background_jobs history time)
+  fi
+
+  if [[ $P9K_PROMPT_ON_NEWLINE == true ]]; then
+    if [[ ${P9K_RPROMPT_ON_NEWLINE} != true && -o TRANSIENT_RPROMPT ]]; then
+      if is-at-least 5.3; then
+        function _p9k_zle_line_finish() {
+          [[ -o TRANSIENT_RPROMPT ]] || return
+          _P9K_RPROMPT_OVERRIDE=
+          zle && zle .reset-prompt && zle -R
+        }
+        autoload -Uz add-zle-hook-widget
+        zle -N _p9k_zle_line_finish
+        add-zle-hook-widget line-finish _p9k_zle_line_finish
+        add-zle-hook-widget -D line-finish user:_zsh_highlight_widget_orig-\*
+        add-zle-hook-widget -D line-finish user:_zsh_autosuggest_bound_\*
+      fi
+    fi
   fi
 
   # initialize colors
