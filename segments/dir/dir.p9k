@@ -30,7 +30,7 @@
   p9k::set_default P9K_DIR_SHORTEN_FOLDER_MARKER ".shorten_folder_marker"
   # Parse the 'name' from the package.json; if there are any problems, just
   # print the file path
-  p9k::defined P9K_DIR_PACKAGE_FILES || P9K_DIR_PACKAGE_FILES=(package.json composer.json)
+  p9k::defined P9K_DIR_PACKAGE_FILES || P9K_DIR_PACKAGE_FILES=(package.json composer.json .git)
 }
 
 ################################################################
@@ -148,7 +148,7 @@ prompt_dir() {
         # to the length of the package path's string
         subdirectory_path=$(__p9k_truncate_path "${current_path:${#${(S%%)package_path//$~zero/}}}" $P9K_DIR_SHORTEN_LENGTH $P9K_DIR_SHORTEN_DELIMITER)
 
-        local pkgFile="unknown"
+        local pkgFile
         for file in "${P9K_DIR_PACKAGE_FILES[@]}"; do
           if [[ -f "${package_path}/${file}" ]]; then
             pkgFile="${package_path}/${file}"
@@ -156,14 +156,23 @@ prompt_dir() {
           fi
         done
 
-        local packageName=$(jq '.name' ${pkgFile} 2> /dev/null \
-          || node -e 'console.log(require(process.argv[1]).name);' ${pkgFile} 2>/dev/null \
-          || cat "${pkgFile}" 2> /dev/null | grep -m 1 "\"name\"" | awk -F ':' '{print $2}' | awk -F '"' '{print $2}' 2>/dev/null \
-          )
-        if [[ -n "${packageName}" ]]; then
-          # Instead of printing out the full path, print out the name of the package
-          # from the package.json and append the current subdirectory
-          current_path="`echo ${packageName} | tr -d '"'`$subdirectory_path"
+        if [ -f "${pkgFile}" ]; then
+          local packageName=$(jq '.name' ${pkgFile} 2> /dev/null \
+            || node -e 'console.log(require(process.argv[1]).name);' ${pkgFile} 2>/dev/null \
+            || cat "${pkgFile}" 2> /dev/null | grep -m 1 "\"name\"" | awk -F ':' '{print $2}' | awk -F '"' '{print $2}' 2>/dev/null \
+            )
+          if [[ -n "${packageName}" ]]; then
+            # Instead of printing out the full path, print out the name of the package
+            # from the package.json and append the current subdirectory
+            current_path="`echo ${packageName} | tr -d '"'`$subdirectory_path"
+          fi
+        elif [ -n "${package_path}" ] && [ -n "${P9K_DIR_SHORTEN_GIT_FALLBACK}" ]; then
+          local repo_name
+          if [ -n "${P9K_DIR_SHORTEN_GIT_FALLBACK_USE_REMOTE}" ]; then
+            repo_name="${${$(command git config --get remote."${P9K_DIR_SHORTEN_GIT_FALLBACK_REMOTE_NAME-origin}".url):t}%.git}"
+          fi
+          [ -z "${repo_name}" ] && repo_name="${package_path:t}"
+          [ -n "${repo_name}" ] && current_path="${repo_name}${subdirectory_path}"
         fi
       ;;
       *)

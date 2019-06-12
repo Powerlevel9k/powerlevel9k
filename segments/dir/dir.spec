@@ -418,6 +418,107 @@ function testTruncateWithPackageNameIfRepoIsSymlinkedInsideGitDir() {
   rm -fr $BASEFOLDER
 }
 
+function testTruncateWithPackageNameFallsBackToGit() {
+  typeset -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(dir)
+  local p9kFolder=$(pwd)
+  local BASEFOLDER=/tmp/powerlevel9k-test
+  local FOLDER=$BASEFOLDER/1/12/123/1234/12345/123456/1234567/12345678/123456789/My_Repo
+  mkdir -p $FOLDER
+
+  cd "${FOLDER}"
+  git init &>/dev/null
+  mkdir -p 0/12/345/6789/abcde/f
+  cd 0/12/345/6789/abcde/f
+
+  local P9K_DIR_SHORTEN_LENGTH=2
+  local P9K_DIR_SHORTEN_STRATEGY='truncate_with_package_name'
+  local P9K_DIR_SHORTEN_GIT_FALLBACK=true
+
+  assertEquals "%K{004} %F{000}My_Repo/0/12/345/67…/ab…/f %k%F{004}%f " "$(__p9k_build_left_prompt)"
+
+  cd $p9kFolder
+  rm -fr $BASEFOLDER
+}
+
+function testTruncateWithPackageNameFallsBackToGitAndUsesRemote() {
+  typeset -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(dir)
+  local p9kFolder=$(pwd)
+  local BASEFOLDER=/tmp/powerlevel9k-test
+  local FOLDER=$BASEFOLDER/1/12/123/1234/12345/123456/1234567/12345678/123456789/My_Repo
+  mkdir -p $FOLDER
+
+  cd "${FOLDER}"
+  git init &>/dev/null
+  git remote add origin http://localhost/Remote_Repo.git
+  mkdir -p 0/12/345/6789/abcde/f
+  cd 0/12/345/6789/abcde/f
+
+  local P9K_DIR_SHORTEN_LENGTH=2
+  local P9K_DIR_SHORTEN_STRATEGY='truncate_with_package_name'
+  local P9K_DIR_SHORTEN_GIT_FALLBACK=true
+  local P9K_DIR_SHORTEN_GIT_FALLBACK_USE_REMOTE=true
+
+  assertEquals "%K{004} %F{000}Remote_Repo/0/12/345/67…/ab…/f %k%F{004}%f " "$(__p9k_build_left_prompt)"
+
+  cd $p9kFolder
+  rm -fr $BASEFOLDER
+}
+
+function testTruncateWithPackageNameFallsBackToGitAndUsesAltRemote() {
+  typeset -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(dir)
+  local p9kFolder=$(pwd)
+  local BASEFOLDER=/tmp/powerlevel9k-test
+  local FOLDER=$BASEFOLDER/1/12/123/1234/12345/123456/1234567/12345678/123456789/My_Repo
+  mkdir -p $FOLDER
+
+  cd "${FOLDER}"
+  git init &>/dev/null
+  git remote add origin http://localhost/Remote_Repo.git
+  git remote add upstream http://localhost/Upstream_Repo.git
+  mkdir -p 0/12/345/6789/abcde/f
+  cd 0/12/345/6789/abcde/f
+
+  local P9K_DIR_SHORTEN_LENGTH=2
+  local P9K_DIR_SHORTEN_STRATEGY='truncate_with_package_name'
+  local P9K_DIR_SHORTEN_GIT_FALLBACK=true
+  local P9K_DIR_SHORTEN_GIT_FALLBACK_USE_REMOTE=true
+  local P9K_DIR_SHORTEN_GIT_FALLBACK_REMOTE_NAME=upstream
+
+  assertEquals "%K{004} %F{000}Upstream_Repo/0/12/345/67…/ab…/f %k%F{004}%f " "$(__p9k_build_left_prompt)"
+
+  cd $p9kFolder
+  rm -fr $BASEFOLDER
+}
+
+function testTruncateWithPackageNameFallsBackToGitAndHandlesMissingRemote {
+  typeset -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(dir)
+  local p9kFolder=$(pwd)
+  local BASEFOLDER=/tmp/powerlevel9k-test
+  local FOLDER=$BASEFOLDER/1/12/123/1234/12345/123456/1234567/12345678/123456789/My_Repo
+  mkdir -p $FOLDER
+
+  cd "${FOLDER}"
+  git init &>/dev/null
+  git remote add origin http://localhost/Remote_Repo.git
+  mkdir -p 0/12/345/6789/abcde/f
+  cd 0/12/345/6789/abcde/f
+
+  local P9K_DIR_SHORTEN_LENGTH=2
+  local P9K_DIR_SHORTEN_STRATEGY='truncate_with_package_name'
+  local P9K_DIR_SHORTEN_GIT_FALLBACK=true
+  local P9K_DIR_SHORTEN_GIT_FALLBACK_USE_REMOTE=true
+  local P9K_DIR_SHORTEN_GIT_FALLBACK_REMOTE_NAME=upstream
+
+  assertEquals "%K{004} %F{000}My_Repo/0/12/345/67…/ab…/f %k%F{004}%f " "$(__p9k_build_left_prompt)"
+
+  cd $p9kFolder
+  rm -fr $BASEFOLDER
+}
+
 function testHomeFolderDetectionWorks() {
   typeset -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(dir)
