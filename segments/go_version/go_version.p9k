@@ -12,7 +12,11 @@
   # Parameters:
   #   segment_name  context  background  foreground  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
   #                                                                                                          
-  p9k::register_segment "GO_VERSION" '' 'green' 'grey93' 'Go'  ''  ''  '\u'${CODEPOINT_OF_DEVICONS_GIT_PULL_REQUEST}  $'\uE626'
+  p9k::register_segment "GO_VERSION" '' 'cyan' 'black' 'Go'  ''  ''  '\u'${CODEPOINT_OF_DEVICONS_GIT_PULL_REQUEST}  $'\uE626'
+
+  ################################################################
+  # Register segment default values
+  p9k::set_default P9K_GO_VERSION_PROMPT_ALWAYS_SHOW false
 }
 
 ################################################################
@@ -27,10 +31,10 @@
 prompt_go_version() {
   local go_version
   local go_path
-  go_version=$(go version 2>/dev/null | sed -E "s/.*(go[0-9.]*).*/\1/")
+  go_version=$(go version 2>/dev/null | sed -E 's/.*(go[0-9.]*).*/\1/; s/go//g')
   go_path=$(go env GOPATH 2>/dev/null)
 
-  if [[ -n "$go_version" && "${PWD##$go_path}" != "$PWD" ]]; then
+  if [[ -n "$go_version" && "${PWD##$go_path}" != "$PWD" || "${P9K_GO_VERSION_PROMPT_ALWAYS_SHOW}" == "true" ]]; then
     p9k::prepare_segment "$0" "" $1 "$2" $3 "$go_version"
   fi
 }

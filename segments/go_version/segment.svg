@@ -113,7 +113,7 @@
   <sodipodi:namedview
      id="base"
      pagecolor="#ffffff"
-     bordercolor="#666666"
+     bordercolor="#000000"
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
@@ -194,7 +194,7 @@
                   <path
                      inkscape:export-ydpi="123"
                      inkscape:export-xdpi="123"
-                     style="opacity:1;fill:#19cb00;fill-opacity:1;stroke:none;stroke-width:0.17603815;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+                     style="opacity:1;fill:#8be9fd;fill-opacity:1;stroke:none;stroke-width:0.17603815;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
                      d="M 6.1111815,5.5396667 H 29.602439 l 2.274448,2.697784 -2.274448,2.6977833 H 6.1111815 l 2.27445,-2.6977833 z"
                      id="path5215-3-3-3-0-6-2"
                      inkscape:connector-curvature="0"
@@ -205,13 +205,13 @@
                      id="text7351-0-3-2-3"
                      y="9.5009079"
                      x="9.2434807"
-                     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.16982698px;line-height:1.25;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';letter-spacing:0px;word-spacing:0px;fill:#dedede;fill-opacity:1;stroke:none;stroke-width:0.10155749;"
+                     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.16982698px;line-height:1.25;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.10155749;"
                      xml:space="preserve"><tspan
-                       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.16982698px;font-family:'Ubuntu Nerd Font';-inkscape-font-specification:'Ubuntu Nerd Font';fill:#dedede;fill-opacity:1;stroke-width:0.10155749;"
+                       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.16982698px;font-family:'Ubuntu Nerd Font';-inkscape-font-specification:'Ubuntu Nerd Font';fill:#000000;fill-opacity:1;stroke-width:0.10155749;"
                        y="9.5009079"
                        x="9.2434807"
                        id="tspan7349-6-6-6-75"
-                       sodipodi:role="line"> go1.5.3</tspan></text>
+                       sodipodi:role="line"> 1.12.1</tspan></text>
                 </g>
               </g>
             </g>
