@@ -278,7 +278,11 @@ function termColors() {
   local term_colors
 
   if which tput &>/dev/null; then
-	term_colors=$(tput colors)
+    if [[ "$OSTYPE" == "freebsd"* ]]; then
+      term_colors=$(tput Co)
+    else
+      term_colors=$(tput colors)
+    fi
   else
 	term_colors=$(echotc Co)
   fi
