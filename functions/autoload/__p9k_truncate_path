@@ -27,7 +27,8 @@ if (( ${#1} > 1 )); then
   # convert $2 from string to integer
   2=$(( $2 ))
   # set $3 to "" if not defined
-  [[ -z $3 ]] && local delim="" || local delim=$(echo -n $3)
+  local delim=""
+  [[ -n $3 ]] && print -v delim -- "${3}"
   # set $4 to "right" if not defined
   [[ -z $4 ]] && 4="right"
   # create a variable for the truncated path.
