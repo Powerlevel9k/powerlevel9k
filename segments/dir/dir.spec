@@ -176,7 +176,7 @@ function testTruncateToFirstAndLastWorks() {
   mkdir -p $FOLDER
   cd $FOLDER
 
-  assertEquals "%K{004} %F{000}\${(Q)\${:-\"/tmp/powerlevel9k-test/\\u2026/\\u2026/\\u2026/\\u2026/\\u2026/\\u2026/\\u2026/12345678/123456789\"}} %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{004} %F{000}\${(Q)\${:-\"/tmp/powerlevel9k-test/…/…/…/…/…/…/…/12345678/123456789\"}} %k%F{004}%f " "$(__p9k_build_left_prompt)"
 
   cd -
   rm -fr /tmp/powerlevel9k-test
@@ -192,7 +192,7 @@ function testTruncateAbsoluteWorks() {
   mkdir -p $FOLDER
   cd $FOLDER
 
-  assertEquals "%K{004} %F{000}\${(Q)\${:-\"\\u202689\"}} %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{004} %F{000}\${(Q)\${:-\"…89\"}} %k%F{004}%f " "$(__p9k_build_left_prompt)"
 
   cd -
   rm -fr /tmp/powerlevel9k-test
@@ -243,7 +243,7 @@ function testTruncateWithFolderMarkerWorks() {
   # Setup folder marker
   touch $BASEFOLDER/1/12/.shorten_folder_marker
   cd $FOLDER
-  assertEquals "%K{004} %F{000}\${(Q)\${:-\"/\\u2026/12/123/1234/12345/123456/1234567\"}} %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{004} %F{000}\${(Q)\${:-\"/…/12/123/1234/12345/123456/1234567\"}} %k%F{004}%f " "$(__p9k_build_left_prompt)"
 
   cd -
   rm -fr $BASEFOLDER
@@ -263,7 +263,7 @@ function testTruncateWithFolderMarkerInHome() {
   # Setup folder marker
   touch $BASEFOLDER/1/12/.shorten_folder_marker
   cd $FOLDER
-  assertEquals "%K{004} %F{000}\${(Q)\${:-\"~/\\u2026/12/123/1234/12345/123456/1234567\"}} %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{004} %F{000}\${(Q)\${:-\"~/…/12/123/1234/12345/123456/1234567\"}} %k%F{004}%f " "$(__p9k_build_left_prompt)"
 
   cd -
   rm -fr $BASEFOLDER
@@ -282,7 +282,7 @@ function testTruncateWithFolderMarkerWithChangedFolderMarker() {
   # Setup folder marker
   touch $BASEFOLDER/1/12/.xxx
   cd $FOLDER
-  assertEquals "%K{004} %F{000}\${(Q)\${:-\"/\\u2026/12/123/1234/12345/123456/1234567\"}} %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{004} %F{000}\${(Q)\${:-\"/…/12/123/1234/12345/123456/1234567\"}} %k%F{004}%f " "$(__p9k_build_left_prompt)"
 
   cd -
   rm -fr $BASEFOLDER
@@ -308,7 +308,7 @@ function testTruncateWithFolderMarkerWithSymlinks() {
   assertEquals "%K{004} %F{000}\${(Q)\${:-\"/tmp/powerlevel9k-test/link2\"}} %k%F{004}%f " "$(__p9k_build_left_prompt)"
   cd -
   cd ${BASEFOLDER}/1/12/123/link3
-  assertEquals "%K{004} %F{000}\${(Q)\${:-\"/\\u2026/12/123/link3\"}} %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{004} %F{000}\${(Q)\${:-\"/…/12/123/link3\"}} %k%F{004}%f " "$(__p9k_build_left_prompt)"
   cd -
 
   rm -fr $BASEFOLDER
@@ -326,7 +326,7 @@ function testTruncateWithFolderMarkerInMarkedFolder() {
   touch $FOLDER/.shorten_folder_marker
   cd $FOLDER
   # setopt xtrace
-  assertEquals "%K{004} %F{000}\${(Q)\${:-\"/\\u2026/12\"}} %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{004} %F{000}\${(Q)\${:-\"/…/12\"}} %k%F{004}%f " "$(__p9k_build_left_prompt)"
   # unsetopt xtrace
 
   cd -
