@@ -37,7 +37,7 @@ function testSwiftSegmentPrintsNothingIfSwiftIsNotAvailable() {
   local P9K_CUSTOM_WORLD='echo world'
   alias swift="noswift"
 
-  assertEquals "%K{015} %F{000}world %k%F{015}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{015} %F{000}\${(Q)\${:-\"world\"}} %k%F{015}%f " "$(__p9k_build_left_prompt)"
 
   unalias swift
 }
@@ -49,7 +49,7 @@ function testSwiftSegmentWorks() {
     echo "Apple Swift version 3.0.1 (swiftlang-800.0.58.6 clang-800.0.42.1)\nTarget: x86_64-apple-macosx10.9"
   }
 
-  assertEquals "%K{005} %F{015}Swift %F{015}3.0.1 %k%F{005}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{005} %F{015}Swift %F{015}\${(Q)\${:-\"3.0.1\"}} %k%F{005}%f " "$(__p9k_build_left_prompt)"
 
   unfunction swift
 }
