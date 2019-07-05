@@ -26,7 +26,7 @@ function testNodeenvSegmentPrintsNothingWithoutNode() {
   local P9K_CUSTOM_WORLD='echo world'
   alias node="nonode 2>/dev/null"
 
-  assertEquals "%K{015} %F{000}world %k%F{015}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{015} %F{000}\${(Q)\${:-\"world\"}} %k%F{015}%f " "$(__p9k_build_left_prompt)"
 
   unalias node
 }
@@ -39,7 +39,7 @@ function testNodeenvSegmentPrintsNothingIfNodeVirtualEnvIsNotSet() {
     echo "v1.2.3"
   }
 
-  assertEquals "%K{015} %F{000}world %k%F{015}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{015} %F{000}\${(Q)\${:-\"world\"}} %k%F{015}%f " "$(__p9k_build_left_prompt)"
 
   unfunction node
 }
@@ -50,7 +50,7 @@ function testNodeenvSegmentPrintsAtLeastNodeEnvWithoutNode() {
   alias node="nonode 2>/dev/null"
   NODE_VIRTUAL_ENV="node-env"
 
-  assertEquals "%K{000} %F{002}⬢ %F{002}[node-env] %k%F{000}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{000} %F{002}⬢ %F{002}\${(Q)\${:-\"[node-env]\"}} %k%F{000}%f " "$(__p9k_build_left_prompt)"
 
   unset NODE_VIRTUAL_ENV
   unalias node
@@ -64,7 +64,7 @@ function testNodeenvSegmentWorks() {
   }
   NODE_VIRTUAL_ENV="node-env"
 
-  assertEquals "%K{000} %F{002}⬢ %F{002}v1.2.3[node-env] %k%F{000}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{000} %F{002}⬢ %F{002}\${(Q)\${:-\"v1.2.3[node-env]\"}} %k%F{000}%f " "$(__p9k_build_left_prompt)"
 
   unfunction node
   unset NODE_VIRTUAL_ENV
