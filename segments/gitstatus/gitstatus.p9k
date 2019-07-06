@@ -92,7 +92,6 @@ prompt_gitstatus() {
 
   # Print nothing, if we are not in a repo, or if the gitstatus daemon sends a timeout
   [[ ! "${VCS_STATUS_RESULT}" =~ "ok-*" && "${VCS_STATUS_RESULT}" != 'tout' ]] && \
-      p9k::segment_no_print "${0}" "" "${1}" "${2}" "${3}" && \
       return
 
   local current_state="CLEAN"
