@@ -28,7 +28,9 @@ if (( ${#1} > 1 )); then
   2=$(( $2 ))
   # set $3 to "" if not defined
   local delim=""
-  [[ -n $3 ]] && print -v delim -- "${3}"
+  if [[ -n $3 ]]; then
+    (( ${__P9K_USE_PRINT_V} )) && print -v delim -- "${3}" || delim="$(echo ${3})"
+  fi
   # set $4 to "right" if not defined
   [[ -z $4 ]] && 4="right"
   # create a variable for the truncated path.
