@@ -298,7 +298,7 @@ function +vi-vcs-icon() {
     remote=$(command git ls-remote --get-url 2> /dev/null)
     vcs_segment_icon=${__P9K_ICONS[VCS_GIT]}
   elif [[ "${hook_com[vcs]}" == "hg" ]]; then
-    remote=$(command hg paths default)
+    remote=$(command hg paths default 2> /dev/null)
     vcs_segment_icon=${__P9K_ICONS[VCS_HG]}
   elif [[ "${hook_com[vcs]}" == "svn" ]]; then
     remote="${svninfo[URL]}" # Set by VCS_INFO
