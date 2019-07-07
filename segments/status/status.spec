@@ -82,7 +82,7 @@ function testStatusSegmentIntegrated() {
 
   false; __p9k_save_retvals; __p9k_prepare_prompts
 
-  assertEquals "%f%b%k%K{000} %F{001}✘ %F{001}\${(Q)\${:-\"\"}} %k%F{000}%f " "${(e)PROMPT}"
+  assertEquals "%f%b%k%K{000} %F{001}✘ %F{001} %k%F{000}%f " "${(e)PROMPT}"
 }
 
 source shunit2/shunit2
