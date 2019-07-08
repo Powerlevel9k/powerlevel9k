@@ -28,9 +28,6 @@ function tearDown() {
   rm -fr /tmp/powerlevel9k-test
   unset FOLDER
   unset P9K_HOME
-
-  # Remove IP cache file
-  rm -f ${P9K_PUBLIC_IP_FILE}
 }
 
 function testDiskUsageSegmentWhenDiskIsAlmostFull() {
@@ -41,7 +38,7 @@ function testDiskUsageSegmentWhenDiskIsAlmostFull() {
 /dev/disk1     487219288 471466944  15496344  97% /"
   }
 
-  assertEquals "%K{001} %F{015}hdd %f %F{015}97%% %k%F{001}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{001} %F{015}hdd  %F{015}97%% %k%F{001}%f " "$(__p9k_build_left_prompt)"
 
   unfunction df
 }
@@ -54,7 +51,7 @@ function testDiskUsageSegmentWhenDiskIsVeryFull() {
 /dev/disk1     487219288 471466944  15496344  94% /"
   }
 
-  assertEquals "%K{003} %F{000}hdd %f %F{000}94%% %k%F{003}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{003} %F{000}hdd  %F{000}94%% %k%F{003}%f " "$(__p9k_build_left_prompt)"
 
   unfunction df
 }
@@ -67,7 +64,7 @@ function testDiskUsageSegmentWhenDiskIsQuiteEmpty() {
 /dev/disk1     487219288 471466944  15496344  4% /"
   }
 
-  assertEquals "%K{000} %F{046}hdd %f %F{046}4%% %k%F{000}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{000} %F{046}hdd  %F{046}4%% %k%F{000}%f " "$(__p9k_build_left_prompt)"
 
   unfunction df
 }
@@ -97,7 +94,7 @@ function testDiskUsageSegmentWarningLevelCouldBeAdjusted() {
 /dev/disk1     487219288 471466944  15496344  11% /"
   }
 
-  assertEquals "%K{003} %F{000}hdd %f %F{000}11%% %k%F{003}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{003} %F{000}hdd  %F{000}11%% %k%F{003}%f " "$(__p9k_build_left_prompt)"
 
   unfunction df
 }
@@ -112,7 +109,7 @@ function testDiskUsageSegmentCriticalLevelCouldBeAdjusted() {
 /dev/disk1     487219288 471466944  15496344  11% /"
   }
 
-  assertEquals "%K{001} %F{015}hdd %f %F{015}11%% %k%F{001}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{001} %F{015}hdd  %F{015}11%% %k%F{001}%f " "$(__p9k_build_left_prompt)"
 
   unfunction df
 }

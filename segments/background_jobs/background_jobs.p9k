@@ -25,6 +25,10 @@ __p9k_background_jobs() {
   jobs_suspended=${(M)#${jobstates%%:*}:#suspended}
 }
 
+TRAPCLD() {
+  zle -I && __p9k_background_jobs && __p9k_prepare_prompts && zle .reset-prompt && zle -R
+}
+
 # initialize hooks
 autoload -Uz add-zsh-hook
 add-zsh-hook precmd __p9k_background_jobs

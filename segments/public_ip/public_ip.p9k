@@ -34,12 +34,16 @@
 [[ $(which stat) == "/usr/bin/stat" ]] && local stat_version="OSX"
 
 ################################################################
-# Public IP segment
-# Parameters:
-#   * $1 Alignment: string - left|right
-#   * $2 Index: integer
-#   * $3 Joined: bool - If the segment should be joined
+# @description
+#   Public IP segment
+##
+# @args
+#   $1 Alignment: string - left | right
+#   $2 Index: integer
+#   $3 Joined: bool - If the segment should be joined
+#   $4 Root Prefix: string - Root prefix for testing purposes
 prompt_public_ip() {
+  local ROOT_PREFIX="${4}"
   # Do we need a fresh IP?
   local refresh_ip=false
   if [[ -f $P9K_PUBLIC_IP_FILE ]]; then
@@ -60,7 +64,7 @@ prompt_public_ip() {
 
   # grab a fresh IP if needed
   local fresh_ip
-  if [[ ${refresh_ip} =~ true && -w $P9K_PUBLIC_IP_FILE ]]; then
+  if [[ ${refresh_ip} == true && -w $P9K_PUBLIC_IP_FILE ]]; then
     for method in "${P9K_PUBLIC_IP_METHODS[@]}"; do
       case ${method} in
         'dig')
@@ -95,15 +99,12 @@ prompt_public_ip() {
   if [[ -n ${public_ip} ]]; then
     local icon=''
 
-    # TODO: Where is this variable actually set?
-
     # Check VPN is on if VPN interface is set
     if [[ -n $P9K_PUBLIC_IP_VPN_INTERFACE ]]; then
-      for vpn_iface in $(/sbin/ifconfig | grep -e ^"$P9K_PUBLIC_IP_VPN_INTERFACE" | cut -d":" -f1)
-      do
+      local vpnIp="$(p9k::parseIp "${P9K_PUBLIC_IP_VPN_INTERFACE}" "${ROOT_PREFIX}")"
+      if [[ -n "$vpnIp" ]]; then
         icon="VPN_ICON"
-        break
-      done
+      fi
     fi
     p9k::prepare_segment "$0" "" $1 "$2" $3 "${public_ip}" "" "$icon"
   fi

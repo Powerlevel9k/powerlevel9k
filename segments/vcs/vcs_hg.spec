@@ -194,7 +194,7 @@ function testMercurialIconWorks() {
   # Load Powerlevel9k
   source ${P9K_HOME}/segments/vcs/vcs.p9k
 
-  assertEquals "%K{002} %F{000}HG-icon%f %F{000} default %k%F{002}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{002} %F{000}HG-icon %F{000} default %k%F{002}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testBookmarkIconWorks() {
@@ -220,6 +220,21 @@ function testBranchNameScriptingVulnerability() {
   hg commit -m "Initial commit" >/dev/null
 
   assertEquals '%K{002} %F{000} $(./evil_script.sh) %k%F{002}%f ' "$(__p9k_build_left_prompt)"
+}
+
+function testVcsSegmentDoesNotLeakPercentEscapesInMercurialRepo() {
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(vcs)
+  source "${P9K_HOME}/segments/vcs/vcs.p9k"
+
+  # Make dummy commit
+  echo "bla" > bla.txt
+  hg add bla.txt >/dev/null
+  hg commit -m "Initial Commit" >/dev/null
+
+  hg branch '%E%K{red}' >/dev/null
+
+  assertEquals "%K{002} %F{000} %%E%%K{red} %k%F{002}%f " "$(__p9k_build_left_prompt)"
 }
 
 source shunit2/shunit2

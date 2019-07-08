@@ -16,7 +16,7 @@
 
   ################################################################
   # Register segment default values
-  p9k::set_default P9K_RBENV_ALWAYS false
+  p9k::set_default P9K_RBENV_PROMPT_ALWAYS_SHOW false
 }
 
 ################################################################
@@ -29,10 +29,8 @@
 #   $3 boolean Whether the segment should be joined
 ##
 prompt_rbenv() {
-  if [[ -n "${RBENV_VERSION}" ]]; then
-    p9k::prepare_segment "$0" "" $1 "$2" $3 "${RBENV_VERSION}"
-  elif [ ${commands[rbenv]} ]; then
-    local rbenv_version_name="$(rbenv version-name)"
+  if [ ${commands[rbenv]} ]; then
+    local rbenv_version_name="$(rbenv version-name 2>/dev/null)"
     local rbenv_global="$(rbenv global)"
     if [[ "${rbenv_version_name}" != "${rbenv_global}" || "${P9K_RBENV_PROMPT_ALWAYS_SHOW}" == "true" ]]; then
       p9k::prepare_segment "$0" "" $1 "$2" $3 "${rbenv_version_name}"

@@ -92,7 +92,7 @@ function __p9k_left_prompt_segment() {
 
   # Print the visual identifier and content if any
   local visual_identifier
-  [[ -n "${SEGMENT_ICON}" ]] && visual_identifier="$__P9K_DATA[${STATEFUL_NAME}_VI]${SEGMENT_ICON}%f"
+  [[ -n "${SEGMENT_ICON}" ]] && visual_identifier="$__P9K_DATA[${STATEFUL_NAME}_VI]${SEGMENT_ICON}"
   [[ -n "${content}" ]] && content="${fg}${content}"
   [[ -n "${visual_identifier}" && -n "${content}" ]] && visual_identifier="${visual_identifier}${middle_ws}"
   echo -n "${visual_identifier}${content}${right_ws}"
@@ -182,8 +182,9 @@ function __p9k_right_prompt_segment() {
       || visual_identifier="${visual_identifier}${middle_ws}"
   fi
 
-  # Print whitespace only if segment is not joined or first right segment
-  [[ ${joined} == false ]] || [[ "${CURRENT_RIGHT_BG}" == "NONE" ]] && echo -n "${left_ws}"
+  # Print whitespace only if segment is not joined or first right segment,
+  # however, avoid double-printing whitespace if ${content} is empty
+  [[ ${joined} == false ]] || [[ "${CURRENT_RIGHT_BG}" == "NONE" ]] && [[ -n "${content}" ]] && echo -n "${left_ws}"
   # Print segment content and icon, if any
   [[ "${(L)P9K_RPROMPT_ICON_LEFT}" != "true" ]] \
     && echo -n "${content}${visual_identifier}" \
@@ -359,6 +360,20 @@ function __p9k_preexec() {
   _P9K_TIMER_START=${EPOCHREALTIME}
 }
 
+##############################################################
+# @description
+#   This function is a hook that is run before __p9k_prepare_prompts.
+#   If sets the return value(s) that is/are used in prompt_status.
+#   Since we need to get the return value of the last command, this hook
+#   has to be run before __p9k_prepare_prompts does.
+##
+# @noargs
+##
+function __p9k_save_retvals() {
+  RETVAL=$?
+  RETVALS=( "$pipestatus[@]" )
+}
+
 p9k::set_default P9K_PROMPT_ADD_NEWLINE false
 ###############################################################
 # @description
@@ -369,14 +384,6 @@ p9k::set_default P9K_PROMPT_ADD_NEWLINE false
 # @noargs
 ##
 function __p9k_prepare_prompts() {
-  # Return values. These need to be global, because
-  # they are used in prompt_status. Also, we need
-  # to get the return value of the last command at
-  # very first in this function. Do not move the
-  # lines down, otherwise the last command is not
-  # what you expected it to be.
-  RETVAL=$?
-  RETVALS=( "$pipestatus[@]" )
   local RPROMPT_PREFIX RPROMPT_SUFFIX
 
   _P9K_COMMAND_DURATION=$((EPOCHREALTIME - _P9K_TIMER_START))
@@ -395,16 +402,16 @@ ${__P9K_ICONS[MULTILINE_LAST_PROMPT_PREFIX]}"
       # the RPROMPT, we advise it, to go one line up. At the end of RPROMPT, we
       # advise it to go one line down. See:
       # http://superuser.com/questions/357107/zsh-right-justify-in-ps1
-      RPROMPT_PREFIX='%{'$'\e[1A''%}' # one line up
-      RPROMPT_SUFFIX='%{'$'\e[1B''%}' # one line down
+      RPROMPT_PREFIX='%{'$'\e[1A'${P9K_RPROMPT_PREFIX:-}'%}' # one line up
+      RPROMPT_SUFFIX='%{'${P9K_RPROMPT_SUFFIX:-}$'\e[1B''%}' # one line down
     else
-      RPROMPT_PREFIX=''
-      RPROMPT_SUFFIX=''
+      RPROMPT_PREFIX='%{'${P9K_RPROMPT_PREFIX:-}'%}'
+      RPROMPT_SUFFIX='%{'${P9K_RPROMPT_SUFFIX:-}'%}'
     fi
   else
     __p9k_unsafe_PROMPT="%f%b%k$(__p9k_build_left_prompt)"
-    RPROMPT_PREFIX=''
-    RPROMPT_SUFFIX=''
+    RPROMPT_PREFIX='%{'${P9K_RPROMPT_PREFIX:-}'%}'
+    RPROMPT_SUFFIX='%{'${P9K_RPROMPT_SUFFIX:-}'%}'
   fi
 
   if [[ "${P9K_DISABLE_RPROMPT:-}" != true ]]; then
@@ -500,11 +507,9 @@ function prompt_powerlevel9k_setup() {
 
   if ! p9k::defined P9K_LEFT_PROMPT_ELEMENTS; then
     P9K_LEFT_PROMPT_ELEMENTS=(context dir vcs)
-    P9K_PROMPT_ELEMENTS=("${P9K_LEFT_PROMPT_ELEMENTS[@]}" "${P9K_RIGHT_PROMPT_ELEMENTS[@]}")
   fi
   if ! p9k::defined P9K_RIGHT_PROMPT_ELEMENTS; then
     P9K_RIGHT_PROMPT_ELEMENTS=(status root_indicator background_jobs history time)
-    P9K_PROMPT_ELEMENTS=("${P9K_LEFT_PROMPT_ELEMENTS[@]}" "${P9K_RIGHT_PROMPT_ELEMENTS[@]}")
   fi
 
   # initialize colors
@@ -520,6 +525,7 @@ function prompt_powerlevel9k_setup() {
   autoload -Uz add-zsh-hook
 
   # prepare prompts
+  add-zsh-hook precmd __p9k_save_retvals
   add-zsh-hook precmd __p9k_prepare_prompts
   add-zsh-hook preexec __p9k_preexec
 

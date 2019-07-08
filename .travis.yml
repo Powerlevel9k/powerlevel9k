@@ -14,7 +14,7 @@ addons:
       - mercurial
       - subversion
       - jq
-      - node
+      - nodejs
       - golang
       - ruby
       - python

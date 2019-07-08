@@ -219,5 +219,8 @@ function p9k::print_icon() {
 ##
 function show_defined_icons() {
   # changed (kv) to (k) in case there are empty keys, which causes the printing to be done wrong
-  for k in ${(k)__P9K_ICONS}; do; echo "${k} -> '${__P9K_ICONS[$k]}'"; done | sort
+  print "You can copy these variables to your ~/.zshrc and modify them to your needs."
+  print -P "Know that the variable definition %F{red}must be written before the theme is sourced%f!"
+  print
+  for k in ${(k)__P9K_ICONS}; do; echo "P9K_${k}_ICON -> '${__P9K_ICONS[$k]}'"; done | sort
 }

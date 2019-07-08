@@ -19,8 +19,8 @@
   p9k::register_segment "DIR" 'HOME_SUBFOLDER'  "blue" "$DEFAULT_COLOR"   ''         $'\uE18D'  $'\uF07C'  '\u'${CODEPOINT_OF_AWESOME_FOLDER_OPEN}  $'\uF07C'
   #                                                                                                                                     
   p9k::register_segment "DIR" 'NOT_WRITABLE'    "blue" "$DEFAULT_COLOR"   $'\uE0A2'  $'\uE138'  $'\uF023'  '\u'${CODEPOINT_OF_AWESOME_LOCK}         $'\uF023'
-  #                                                                                                                                   
-  p9k::register_segment "DIR" 'ETC'             "blue" "$DEFAULT_COLOR"   $'\uE818'  $'\uF013'  $'\uF013'  '\u'${CODEPOINT_OF_AWESOME_COG}          $'\uF013'
+  #                                                                                                                                   ⚙
+  p9k::register_segment "DIR" 'ETC'             "blue" "$DEFAULT_COLOR"   $'\uE82F'  $'\uF013 ' $'\uF013'  '\u'${CODEPOINT_OF_AWESOME_COG}' '       $'\u2699'
 
   p9k::set_default P9K_DIR_PATH_SEPARATOR "/"
   p9k::set_default P9K_DIR_HOME_FOLDER_ABBREVIATION "~"
@@ -51,14 +51,14 @@ prompt_dir() {
   [[ ${current_path} == "${HOME}"* ]] && pathPrefix="~/" || pathPrefix="/"
 
   # check if the user wants to use absolute paths or "~" paths
-  [[ ${(L)P9K_DIR_PATH_ABSOLUTE} != "true" ]] && current_path=${current_path//$HOME/"~"}
+  [[ ${(L)P9K_DIR_PATH_ABSOLUTE} != "true" ]] && current_path=${current_path/#$HOME/"~"}
 
   # declare all local variables
   local directory test_dir test_dir_length trunc_path threshold
   # if we are not in "~" or "/", split the paths into an array and exclude "~"
   (( ${#current_path} > 1 )) && paths=(${(s:/:)${current_path//"~\/"/}}) || paths=()
   # only run the code if SHORTEN_DIR_LENGTH is set, or we are using the two strategies that don't rely on it.
-  if (( ${#current_path} > 1 )) && [[ -n "$P9K_DIR_SHORTEN_LENGTH" || "$P9K_DIR_SHORTEN_STRATEGY" == "truncate_with_folder_marker" || "$P9K_DIR_SHORTEN_STRATEGY" == "truncate_to_last" ]]; then
+  if (( ${#current_path} > 1 )) && [[ -n "$P9K_DIR_SHORTEN_LENGTH" || "$P9K_DIR_SHORTEN_STRATEGY" == "truncate_with_folder_marker" || "$P9K_DIR_SHORTEN_STRATEGY" == "truncate_to_last" || "$P9K_SHORTEN_STRATEGY" == "truncate_with_package_name" || "$P9K_DIR_SHORTEN_STRATEGY" == "truncate_to_unique" ]]; then
     case "$P9K_DIR_SHORTEN_STRATEGY" in
       truncate_from_right)
         # truncate characters from the right of the path
@@ -135,6 +135,7 @@ prompt_dir() {
         local -a markedFolders
         markedFolders=( $(__p9k_upsearch "(${(j:|:)P9K_DIR_PACKAGE_FILES})") )
         local package_path="${markedFolders[1]}"
+        [[ ${(L)P9K_DIR_PATH_ABSOLUTE} != "true" ]] && package_path=${package_path/$HOME/"~"}
 
         # Replace the shortest possible match of the marked folder from
         # the current path. Remove the amount of characters up to the
@@ -171,6 +172,11 @@ prompt_dir() {
     esac
   fi
 
+  # We are escaping % with %% here, to protect directories that contain a percent sign.
+  # This has to be done manually, because just quoting does not work (with the quoting
+  # flag "(q)").
+  current_path="${current_path//\%/%%}"
+
   # save state of path for highlighting and bold options
   local path_opt=$current_path
 
@@ -201,37 +207,34 @@ prompt_dir() {
   [[ ${dir_state_foreground} == "%f" ]] && dir_state_foreground=${__P9K_DATA[DIR_${current_state}_FG]}
 
   local dir_name base_name
-  # use ZSH substitution to get the dirname and basename instead of calling external functions
-  dir_name=${path_opt%/*}
-  base_name=${path_opt##*/}
+  # Split current_path into an array again (*sigh*).
+  local -a dirs=(${(s:/:)path_opt})
+  # First part up to the second last
+  dir_name="${(j:/:)dirs[1, -2]}"
+  # Last part
+  base_name="${dirs[-1]}"
+  # Reset current_path
+  current_path=""
+
+  # If neither dir_name nor base_name is set, we are in the root folder.
+  # We set base_name instead of dir_name here, to keep the opportunity
+  # to make the dir name bold or highlight it.
+  [[ -z "${dir_name}" && -z "${base_name}" ]] && base_name="/"
+  # If there are dir parts, append them to current_path with a trailing
+  # slash.
+  [[ -n "${dir_name}" ]] && current_path+="${dir_name}/"
 
   # if the user wants the last directory colored...
   if [[ -n ${P9K_DIR_PATH_HIGHLIGHT_FOREGROUND} ]]; then
     local dir_path_highlight_foreground="$(p9k::foreground_color ${P9K_DIR_PATH_HIGHLIGHT_FOREGROUND})"
-    # it the path is "/" or "~"
-    if [[ ${path_opt} == "/" || ${path_opt} == "~" ]]; then
-      current_path="${bld_on}${dir_path_highlight_foreground}${current_path}${bld_off}"
-    else # has a subfolder
-      # test if dirname != basename - they are equal if we use truncate_to_last or truncate_absolute
-      if [[ ${dir_name} != ${base_name} ]]; then
-        current_path="${dir_name}/${bld_on}${dir_path_highlight_foreground}${base_name}${bld_off}"
-      else
-        current_path="${bld_on}${dir_path_highlight_foreground}${base_name}${bld_off}"
-      fi
-    fi
+    current_path+="${bld_on}${dir_path_highlight_foreground}${base_name}${bld_off}"
   else # no coloring
-    # it the path is "/" or "~"
-    if [[ ${path_opt} == "/" || ${path_opt} == "~" ]]; then
-      current_path="${bld_on}${current_path}${bld_off}"
-    else # has a subfolder
-      # test if dirname != basename - they are equal if we use truncate_to_last or truncate_absolute
-      if [[ ${dir_name} != ${base_name} ]]; then
-        current_path="${dir_name}/${bld_on}${base_name}${bld_off}"
-      else
-        current_path="${bld_on}${base_name}${bld_off}"
-      fi
-    fi
+    current_path+="${bld_on}${base_name}${bld_off}"
   fi
+
+  # If the original path started with a slash, we need to prepend the
+  # current_path with that slash.
+  [[ "${base_name}" != "/" && "${path_opt[1]}" == '/' ]] && current_path="/${current_path}"
 
   # check if we need to omit the first character and only do it if we are not in "~" or "/"
   if [[ "${P9K_DIR_OMIT_FIRST_CHARACTER}" == "true" && ${path_opt} != "/" && ${path_opt} != "~" ]]; then
