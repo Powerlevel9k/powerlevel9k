@@ -12,11 +12,17 @@ function setUpOnce() {
 function setUp() {
   export TERM="xterm-256color"
   P9K_HOME="${PWD}"
+
   local -a P9K_RIGHT_PROMPT_ELEMENTS
   P9K_RIGHT_PROMPT_ELEMENTS=()
   # Load Powerlevel9k
   source powerlevel9k.zsh-theme
   source segments/dir/dir.p9k
+
+  # Decompose the codepoint to a regular utf-character
+  (( __P9K_USE_PRINT_V )) && \
+      print -v P9K_DIR_SHORTEN_DELIMITER -- "${P9K_DIR_SHORTEN_DELIMITER}" || \
+      P9K_DIR_SHORTEN_DELIMITER="$(echo -n ${P9K_DIR_SHORTEN_DELIMITER})"
 }
 
 function tearDown() {
