@@ -46,8 +46,7 @@ prompt_battery() {
     # use only second line
     raw_data=${raw_data[2]}
     # return if there is no battery on system
-    [[ ! $raw_data =~ "InternalBattery" ]] && \
-        return
+    [[ ! $raw_data =~ "InternalBattery" ]] && return
 
     # Time remaining on battery operation (charging/discharging)
     local tstring=${${(s: :)${${(s:; :)raw_data}[3]}}[1]}

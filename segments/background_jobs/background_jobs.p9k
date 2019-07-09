@@ -49,9 +49,7 @@ prompt_background_jobs() {
       else
         jobs_print="${total_jobs}"
       fi
+      p9k::prepare_segment "$0" "" $1 "$2" $3 "${jobs_print}"
     fi
   fi
-
-  p9k::prepare_segment "$0" "" $1 "$2" $3 "${jobs_print}" \
-      "[[ ${(L)P9K_BACKGROUND_JOBS_VERBOSE_ALWAYS} == true ]] || (( ${total_jobs} > 0 ))"
 }

@@ -327,6 +327,8 @@ function __p9k_build_segment_cache() {
       # Placeholder
       __p9k_segment_cache["${cache_key}"]="${segment}·|·${alignment}·|·${index}·|·${joined}·|·…·|··|·true"
     elif ${custom}; then
+      # Assume a segment is not going to be displayed by default
+      __P9K_DATA[SEGMENT_RESULT]="${segment}·|·${alignment}·|·${index}·|·${joined}·|··|··|·false"
       __p9k_prompt_custom "${alignment}" "${index}" "${joined}" "${segment}"
       __p9k_segment_cache["${cache_key}"]="${__P9K_DATA[SEGMENT_RESULT]}"
     elif ${async}; then
@@ -336,6 +338,8 @@ function __p9k_build_segment_cache() {
       __p9k_segment_cache["${cache_key}"]="${segment}·|·${alignment}·|·${index}·|·${joined}·|·…·|··|·true"
     else
       # TODO: Skip computation if cache is fresh for some segments?
+      # Assume a segment is not going to be displayed by default
+      __P9K_DATA[SEGMENT_RESULT]="${segment}·|·${alignment}·|·${index}·|·${joined}·|··|··|·false"
       prompt_${segment} "${alignment}" "$index" "${joined}"
       __p9k_segment_cache["${cache_key}"]="${__P9K_DATA[SEGMENT_RESULT]}"
     fi

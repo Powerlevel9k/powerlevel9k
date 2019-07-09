@@ -433,19 +433,20 @@ prompt_vcs() {
   vcs_info
   local vcs_prompt="${vcs_info_msg_0_}"
 
-  if [[ "${VCS_WORKDIR_CLOBBERED}" == true ]]; then
-    current_state='clobbered'
-  elif [[ "${VCS_WORKDIR_DIRTY}" == true ]]; then
-    current_state='modified'
-  else
-    if [[ "${VCS_WORKDIR_HALF_DIRTY}" == true ]]; then
-      current_state='untracked'
+  if [[ -n "${vcs_prompt}" ]]; then
+    if [[ "${VCS_WORKDIR_CLOBBERED}" == true ]]; then
+      current_state='clobbered'
+    elif [[ "${VCS_WORKDIR_DIRTY}" == true ]]; then
+      current_state='modified'
     else
-      current_state='clean'
+      if [[ "${VCS_WORKDIR_HALF_DIRTY}" == true ]]; then
+        current_state='untracked'
+      else
+        current_state='clean'
+      fi
     fi
+    p9k::prepare_segment ${0} ${current_state} ${1} "${2}" ${3} "${vcs_prompt}" "" "${vcs_segment_icon}"
   fi
-
-  p9k::prepare_segment ${0} ${current_state} ${1} "${2}" ${3} "${vcs_prompt}" "" "${vcs_segment_icon}" "[[ -n \"${vcs_prompt}\" ]]"
 }
 
 ################################################################

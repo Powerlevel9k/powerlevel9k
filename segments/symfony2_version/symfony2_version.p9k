@@ -25,10 +25,9 @@
 #   $3 boolean Whether the segment should be joined
 ##
 prompt_symfony2_version() {
-  local symfony2_version
   if [[ -f app/bootstrap.php.cache ]]; then
+    local symfony2_version
     symfony2_version=$(grep " VERSION " app/bootstrap.php.cache | sed -e 's/[^.0-9]*//g')
+    p9k::prepare_segment "$0" "" $1 "$2" $3 "$symfony2_version"
   fi
-
-  p9k::prepare_segment "$0" "" $1 "$2" $3 "$symfony2_version"
 }

@@ -28,5 +28,8 @@
 #   [virtualenv (Python)](https://virtualenv.pypa.io/en/latest/)
 #   for more information.
 prompt_virtualenv() {
+  # Early exit; $virtualenv_path must always be set.
+  [[ -z "${VIRTUAL_ENV:t}" ]] && return
+
   p9k::prepare_segment "$0" "" $1 "$2" $3 "${VIRTUAL_ENV:t}"
 }

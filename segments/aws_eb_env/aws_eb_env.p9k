@@ -27,5 +27,7 @@
 prompt_aws_eb_env() {
   local eb_env=${${(s: :)$(grep environment .elasticbeanstalk/config.yml 2> /dev/null)}[2]}
 
-  p9k::prepare_segment "$0" "" $1 "$2" $3 "$eb_env"
+  if [[ -n "$eb_env" ]]; then
+    p9k::prepare_segment "$0" "" $1 "$2" $3 "$eb_env"
+  fi
 }

@@ -29,11 +29,13 @@ prompt_dropbox() {
   local dropbox_status="$(dropbox-cli filestatus . | cut -d\  -f2-)"
 
   # Only show if the folder is tracked and dropbox is running
-  # If "up to date", only show the icon
-  if [[ "$dropbox_status" =~ 'up to date' ]]; then
-    dropbox_status=" "
+  if [[ "$dropbox_status" != 'unwatched' && "$dropbox_status" != "isn't running!" ]]; then
+    # If "up to date", only show the icon
+    if [[ "$dropbox_status" =~ 'up to date' ]]; then
+      dropbox_status=" "
+    fi
+
+    p9k::prepare_segment "$0" "" $1 "$2" $3 "$dropbox_status"
   fi
 
-  p9k::prepare_segment "$0" "" $1 "$2" $3 "$dropbox_status" \
-      "[[ \"${dropbox_status}\" != 'unwatched' && \"${dropbox_status}\" != \"isn't running!\" ]]"
 }

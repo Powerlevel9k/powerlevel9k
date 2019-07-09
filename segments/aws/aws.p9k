@@ -27,5 +27,7 @@
 prompt_aws() {
   local aws_profile="${AWS_PROFILE:-$P9K_AWS_DEFAULT_PROFILE}"
 
-  p9k::prepare_segment "$0" "" $1 "$2" $3 "$aws_profile"
+  if [[ -n "$aws_profile" ]]; then
+    p9k::prepare_segment "$0" "" $1 "$2" $3 "$aws_profile"
+  fi
 }

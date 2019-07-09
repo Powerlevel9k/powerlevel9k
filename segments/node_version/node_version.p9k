@@ -26,6 +26,7 @@
 ##
 prompt_node_version() {
   local node_version=$(node -v 2>/dev/null)
+  [[ -z "${node_version}" ]] && return
 
   p9k::prepare_segment "$0" "" $1 "$2" $3 "${node_version:1}"
 }

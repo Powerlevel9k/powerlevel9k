@@ -27,6 +27,7 @@
 prompt_swift_version() {
   # Get the first number as this is probably the "main" version number..
   local swift_version=$(swift --version 2>/dev/null | grep -o -E "[0-9.]+" | head -n 1)
+  [[ -z "${swift_version}" ]] && return
 
   p9k::prepare_segment "$0" "" $1 "$2" $3 "${swift_version}"
 }

@@ -31,13 +31,11 @@ source $__P9K_DIRECTORY/segments/test_stats.p9k
 #   $3 boolean Whether the segment should be joined
 ##
 prompt_symfony2_tests() {
-  local code_amount tests_amount
-  # Careful! `ls` seems to now work correctly with NULL_GLOB,
-  # as described here http://unix.stackexchange.com/a/26819
-  # This is the reason, why we do not use NULL_GLOB here.
-  code_amount=$({ls -1 src/**/*.php} 2> /dev/null | grep -vc Tests)
-  tests_amount=$({ls -1 src/**/*.php} 2> /dev/null | grep -c Tests)
+  if [[ (-d src && -d app && -f app/AppKernel.php) ]]; then
+    local code_amount tests_amount
+    code_amount=$(ls -1 src/**/*.php | grep -vc Tests)
+    tests_amount=$(ls -1 src/**/*.php | grep -c Tests)
 
-  build_test_stats "$0" "$1" $2 $3 "$code_amount" "$tests_amount" "SF2" \
-      "[[ (-d src && -d app && -f app/AppKernel.php && ${code_amount} -gt 0) ]]"
+    build_test_stats "$0" "$1" $2 $3 "$code_amount" "$tests_amount" "SF2"
+  fi
 }

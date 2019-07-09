@@ -30,13 +30,11 @@ source $__P9K_DIRECTORY/segments/test_stats.p9k
 #   $3 boolean Whether the segment should be joined
 ##
 prompt_rspec_stats() {
-  local code_amount tests_amount
-  # Careful! `ls` seems to now work correctly with NULL_GLOB,
-  # as described here http://unix.stackexchange.com/a/26819
-  # This is the reason, why we do not use NULL_GLOB here.
-  code_amount=$({ls -1 app/**/*.rb} 2> /dev/null | wc -l)
-  tests_amount=$({ls -1 spec/**/*.rb} 2> /dev/null | wc -l)
+  if [[ (-d app && -d spec) ]]; then
+    local code_amount tests_amount
+    code_amount=$(ls -1 app/**/*.rb | wc -l)
+    tests_amount=$(ls -1 spec/**/*.rb | wc -l)
 
-  build_test_stats "$1" "$0" "$2" "${3}" "$code_amount" "$tests_amount" "RSpec" \
-      "[[ (-d app && -d spec && ${code_amound} -gt 0) ]]"
+    build_test_stats "$1" "$0" "$2" "$code_amount" "$tests_amount" "RSpec"
+  fi
 }

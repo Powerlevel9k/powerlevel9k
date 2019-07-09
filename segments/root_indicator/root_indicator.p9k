@@ -25,6 +25,7 @@
 #   $3 boolean Whether the segment should be joined
 ##
 prompt_root_indicator() {
-  p9k::prepare_segment "$0" "" $1 "$2" $3 "" \
-      "[[ \"${UID}\" -eq 0 ]]"
+  if [[ "$UID" -eq 0 ]]; then
+    p9k::prepare_segment "$0" "" $1 "$2" $3 "" "[[ true ]]"
+  fi
 }
