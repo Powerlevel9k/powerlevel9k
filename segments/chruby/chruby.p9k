@@ -46,6 +46,7 @@ prompt_chruby() {
   chruby_label="${chruby_label%"${chruby_label##*[![:space:]]}"}"
 
   # Don't show anything if the chruby did not change the default ruby
-  p9k::prepare_segment "$0" "" $1 "$2" $3 "${chruby_label}" \
-      "[[ -n \"${RUBY_ENGINE}\" ]]"
+  if [[ "$RUBY_ENGINE" != "" ]]; then
+    p9k::prepare_segment "$0" "" $1 "$2" $3 "${chruby_label}"
+  fi
 }

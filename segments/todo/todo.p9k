@@ -25,13 +25,10 @@
 #   $3 boolean Whether the segment should be joined
 ##
 prompt_todo() {
-  local count
   if $(hash todo.sh 2>&-); then
     count=$(todo.sh ls | egrep "TODO: [0-9]+ of ([0-9]+) tasks shown" | awk '{ print $4 }')
-    if [[ "$count" != <-> ]]; then
-      count=''
+    if [[ "$count" = <-> ]]; then
+      p9k::prepare_segment "$0" "" $1 "$2" $3 "$count"
     fi
   fi
-
-  p9k::prepare_segment "$0" "" $1 "$2" $3 "$count"
 }

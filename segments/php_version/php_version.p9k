@@ -27,6 +27,7 @@
 prompt_php_version() {
   local php_version
   [[ "$(php -v 2>&1)" =~ "^PHP[[:blank:]]*([0-9.]+)" ]] && php_version="${match[1]}"
-
-  p9k::prepare_segment "$0" "" $1 "$2" $3 "${php_version}"
+  if [[ -n "$php_version" ]]; then
+    p9k::prepare_segment "$0" "" $1 "$2" $3 "${php_version}"
+  fi
 }

@@ -32,19 +32,11 @@
 #   [Choosing the Python Version](https://github.com/pyenv/pyenv#choosing-the-python-version)
 ##
 prompt_pyenv() {
-  local pyenv_version_name
-  local pyenv_global
-  local pyenv_root
-
   if [ $commands[pyenv] ]; then
-    pyenv_version_name="$(pyenv version-name)"
-    pyenv_global="system"
-    pyenv_root="$(pyenv root)"
-    if [[ -f "${pyenv_root}/version" ]]; then
-      pyenv_global="$(pyenv version-file-read ${pyenv_root}/version)"
+    local pyenv_version_name="$(pyenv version-name 2>/dev/null)"
+    local pyenv_global="$(pyenv global)"
+    if [[ "${pyenv_version_name}" != "${pyenv_global}" || "${P9K_PYENV_PROMPT_ALWAYS_SHOW}" == "true" ]]; then
+      p9k::prepare_segment "$0" "" $1 "$2" $3 "${pyenv_version_name}"
     fi
   fi
-
-  p9k::prepare_segment "$0" "" $1 "$2" $3 "${pyenv_version_name}" \
-      "[[ \"${pyenv_version_name}\" != \"${pyenv_global}\" || \"${P9K_PYENV_PROMPT_ALWAYS_SHOW}\" == \"true\" ]]"
 }

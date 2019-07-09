@@ -25,5 +25,5 @@
 #   $3 boolean Whether the segment should be joined
 ##
 prompt_docker_machine() {
-  p9k::prepare_segment "$0" "" $1 "$2" $3 "${DOCKER_MACHINE_NAME}"
+  [[ -n "${DOCKER_MACHINE_NAME}" ]] && p9k::prepare_segment "$0" "" $1 "$2" $3 "${DOCKER_MACHINE_NAME}"
 }

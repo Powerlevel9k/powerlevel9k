@@ -46,6 +46,8 @@ prompt_context() {
     content="${P9K_CONTEXT_TEMPLATE}"
   elif [[ "$P9K_CONTEXT_ALWAYS_SHOW_USER" == true ]]; then
     content="${me}"
+  else
+    return
   fi
 
   if [[ $(print -P "%#") == '#' ]]; then

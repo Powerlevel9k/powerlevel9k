@@ -28,5 +28,8 @@ prompt_rvm() {
   if [ $commands[rvm-prompt] ]; then
     local version_and_gemset=${$(rvm-prompt v p)/ruby-}
 
-  p9k::prepare_segment "$0" "" $1 "$2" $3 "$version_and_gemset"
+    if [[ -n "$version_and_gemset" ]]; then
+      p9k::prepare_segment "$0" "" $1 "$2" $3 "$version_and_gemset"
+    fi
+  fi
 }

@@ -62,7 +62,7 @@ prompt_status() {
 
     for ec in "${(@)RETVALS[2,-1]}"; do
       ec_text="${ec_text}|$(exit_code_or_status "$ec")"
-      ec_sum=$(( $ec_sum + $ec ))
+      ec_sum=$(( ${ec_sum:-0} + ${ec:-0} ))
     done
   else
     # We use RETVAL instead of the right-most RETVALS item because
@@ -71,19 +71,13 @@ prompt_status() {
     ec_sum=${RETVAL}
   fi
 
-  local current_state
-  local content
   if (( ec_sum > 0 )); then
     if [[ "$P9K_STATUS_CROSS" == false && "$P9K_STATUS_VERBOSE" == true ]]; then
-      current_state="ERROR_CR"
-      content="${ec_text}"
+      p9k::prepare_segment "$0" "ERROR_CR" $1 "$2" $3 "$ec_text" "[[ true ]]"
     else
-      current_state="ERROR"
+      p9k::prepare_segment "$0" "ERROR" $1 "$2" $3 "" "[[ true ]]"
     fi
   elif [[ "$P9K_STATUS_OK" == true ]] && [[ "$P9K_STATUS_VERBOSE" == true || "$P9K_STATUS_OK_IN_NON_VERBOSE" == true ]]; then
-    current_state="OK"
+    p9k::prepare_segment "$0" "OK" $1 "$2" $3  "" "[[ true ]]"
   fi
-
-  p9k::prepare_segment "$0" "${current_state}" $1 "$2" $3  "${content}" \
-      "[[ \"${P9K_STATUS_VERBOSE}\" == \"true\" || \"${current_state}\" != \"OK\" ]]"
 }
