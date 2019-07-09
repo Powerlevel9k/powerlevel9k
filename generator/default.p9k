@@ -434,8 +434,10 @@ function __p9k_render() {
   # to avoid double expansion of the contents of the PROMPT.
   typeset -gAh __p9k_unsafe=()
 
+  local cache_key data
   # Process Cache
-  for data in "${(Oa@v)__p9k_segment_cache}"; do
+  for cache_key in "${(o@kn)__p9k_segment_cache}"; do
+    data="${__p9k_segment_cache[${cache_key}]}"
     [[ -z "${data}" ]] && continue
 
     local -a segment_meta=("${(@s:·|·:)data}")
