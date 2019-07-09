@@ -366,15 +366,27 @@ function __p9k_build_segment_cache() {
 
 ###############################################################
 # @description
-#   Refresh a single item in the cache
+#   Refresh a single item/segment in the cache
 ##
 # @args
-#   $1 string The serialized segment data
+#   $1 segment name
+#   $2 boolean true to trigger prompt rendering
 ##
 function __p9k_refresh_cache_item() {
-  local -a segment_meta=("${(@s:·|·:)1}")
+  local segment="$1"
+  local alignment index joined segmentMetaVar cache_key
+  for alignment in left right; do
+    for index in $(p9k::find_in_array "${segment}" "${__P9K_DATA[${alignment}_segments]}"); do
+      joined=false
+      segmentMetaVar="P9K_${(U)alignment}_PROMPT_ELEMENTS[${index}]"
+      p9k::segment_is_tagged_as "joined" ${${(P)segmentMetaVar}%%::*} && joined=true
+      cache_key="${alignment}::${index}"
+      prompt_${segment} "${alignment}" "$index" "${joined}"
+      __p9k_segment_cache["${cache_key}"]="${__P9K_DATA[SEGMENT_RESULT]}"
+    done
+  done
 
-  __p9k_segment_cache["${segment_meta[2]}::${segment_meta[3]}"]="${1}"
+  [[ $2 == "true" ]] && __p9k_render "true"
 }
 
 ###############################################################
