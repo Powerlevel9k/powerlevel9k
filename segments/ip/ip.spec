@@ -9,10 +9,21 @@ function setUp() {
   export TERM="xterm-256color"
 
   # Test specific
+  source test/helper/build_prompt_wrapper.sh
   P9K_HOME=$(pwd)
   FOLDER=/tmp/powerlevel9k-test
   mkdir -p $FOLDER
   mkdir $FOLDER/sbin
+
+
+  local -a P9K_RIGHT_PROMPT_ELEMENTS
+  P9K_RIGHT_PROMPT_ELEMENTS=()
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=()
+
+  # Load Powerlevel9k
+  source ${P9K_HOME}/powerlevel9k.zsh-theme
+  source ${P9K_HOME}/segments/ip/ip.p9k
 }
 
 function tearDown() {
@@ -23,6 +34,9 @@ function tearDown() {
 
   unset FOLDER
   unset P9K_HOME
+
+  # Reset redeclaration of p9k::prepare_segment
+  __p9k_reset_prepare_segment
 }
 
 function fakeIfconfig() {
@@ -176,18 +190,15 @@ function testIpSegmentPrintsNothingOnOsxIfNotConnected() {
 echo "not connected"
 EOF
 
-  # Load Powerlevel9k
-  source powerlevel9k.zsh-theme
-  source segments/ip/ip.p9k
+  __p9k_make_prepare_segment_print "left" "1"
+
   local OS="OSX" # Fake OSX
 
   assertEquals "" "$(prompt_ip left 1 false "$FOLDER")"
 }
 
 function testIpSegmentPrintsNothingOnLinuxIfNotConnected() {
-  # Load Powerlevel9k
-  source powerlevel9k.zsh-theme
-  source segments/ip/ip.p9k
+  __p9k_make_prepare_segment_print "left" "1"
   local OS="Linux" # Fake Linux
 
   cat > $FOLDER/sbin/ip <<EOF
@@ -201,9 +212,7 @@ EOF
 }
 
 function testIpSegmentWorksOnOsxWithNoInterfaceSpecified() {
-  # Load Powerlevel9k
-  source powerlevel9k.zsh-theme
-  source segments/ip/ip.p9k
+  __p9k_make_prepare_segment_print "left" "1"
   local OS='OSX' # Fake OSX
 
   fakeIfconfig "eth1" "eth2"
@@ -215,19 +224,14 @@ function testIpSegmentWorksOnOsxWithInterfaceSpecified() {
   fakeIfconfig "eth1"
 
   local P9K_IP_INTERFACE="eth1"
-
-  # Load Powerlevel9k
-  source powerlevel9k.zsh-theme
-  source segments/ip/ip.p9k
+  __p9k_make_prepare_segment_print "left" "1"
   local OS='OSX' # Fake OSX
 
   assertEquals "%K{006} %F{000}IP %F{000}1.2.3.4 " "$(prompt_ip left 1 false "$FOLDER")"
 }
 
 function testIpSegmentWorksOnLinuxWithNoInterfaceSpecified() {
-    # Load Powerlevel9k
-    source powerlevel9k.zsh-theme
-    source segments/ip/ip.p9k
+    __p9k_make_prepare_segment_print "left" "1"
     local OS='Linux' # Fake Linux
 
     fakeIp "eth0"
@@ -236,13 +240,11 @@ function testIpSegmentWorksOnLinuxWithNoInterfaceSpecified() {
 }
 
 function testIpSegmentWorksOnLinuxWithInterfaceSpecified() {
+  __p9k_make_prepare_segment_print "left" "1"
   fakeIp "eth3"
 
   local P9K_IP_INTERFACE="eth3"
 
-  # Load Powerlevel9k
-  source powerlevel9k.zsh-theme
-  source segments/ip/ip.p9k
   local OS='Linux' # Fake Linux
 
   assertEquals "%K{006} %F{000}IP %F{000}1.2.3.4 " "$(prompt_ip left 1 false "$FOLDER")"

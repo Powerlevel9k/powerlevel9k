@@ -12,10 +12,8 @@ function setUp() {
   P9K_MODE=default
   local -a P9K_RIGHT_PROMPT_ELEMENTS
   P9K_RIGHT_PROMPT_ELEMENTS=()
-  # Load Powerlevel9k
-  source powerlevel9k.zsh-theme
-  # Load Stack project segment
-  source segments/stack_project/stack_project.p9k
+
+  source test/helper/build_prompt_wrapper.sh
 }
 
 function tearDown(){
@@ -62,6 +60,9 @@ function testStackProjectSegment() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(stack_project)
 
+  # Load Powerlevel9k
+  source powerlevel9k.zsh-theme
+
   assertEquals "%K{056} %F{015}λ= %F{015}Stack %k%F{056}%f " "$(__p9k_build_left_prompt)"
 
   unalias stack
@@ -73,7 +74,10 @@ function testStackProjectSegmentNoStackYaml() {
 
   local P9K_CUSTOM_WORLD='echo world'
   local -a P9K_LEFT_PROMPT_ELEMENTS
-  P9K_LEFT_PROMPT_ELEMENTS=(custom_world stack_project)
+  P9K_LEFT_PROMPT_ELEMENTS=(world::custom stack_project)
+
+  # Load Powerlevel9k
+  source powerlevel9k.zsh-theme
 
   assertEquals "%K{015} %F{000}world %k%F{015}%f " "$(__p9k_build_left_prompt)"
 
@@ -85,7 +89,10 @@ function testStackProjectSegmentIfStackIsNotAvailable() {
   alias stack=mockNoStackVersion
   local P9K_CUSTOM_WORLD='echo world'
   local -a P9K_LEFT_PROMPT_ELEMENTS
-  P9K_LEFT_PROMPT_ELEMENTS=(custom_world stack_project)
+  P9K_LEFT_PROMPT_ELEMENTS=(world::custom stack_project)
+
+  # Load Powerlevel9k
+  source powerlevel9k.zsh-theme
 
   assertEquals "%K{015} %F{000}world %k%F{015}%f " "$(__p9k_build_left_prompt)"
 
@@ -96,7 +103,10 @@ function testStackProjectSegmentPrintsNothingIfStackIsNotAvailable() {
   alias stack=noStack
   local P9K_CUSTOM_WORLD='echo world'
   local -a P9K_LEFT_PROMPT_ELEMENTS
-  P9K_LEFT_PROMPT_ELEMENTS=(custom_world stack_project)
+  P9K_LEFT_PROMPT_ELEMENTS=(world::custom stack_project)
+
+  # Load Powerlevel9k
+  source powerlevel9k.zsh-theme
 
   assertEquals "%K{015} %F{000}world %k%F{015}%f " "$(__p9k_build_left_prompt)"
 

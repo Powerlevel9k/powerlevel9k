@@ -20,9 +20,8 @@ function setUp() {
 
   local -a P9K_RIGHT_PROMPT_ELEMENTS
   P9K_RIGHT_PROMPT_ELEMENTS=()
-  # Load Powerlevel9k
-  source ${P9K_HOME}/powerlevel9k.zsh-theme
-  source ${P9K_HOME}/segments/public_ip/public_ip.p9k
+
+  source ${P9K_HOME}/test/helper/build_prompt_wrapper.sh
 }
 
 function tearDown() {
@@ -41,12 +40,15 @@ function tearDown() {
 
 function testPublicIpSegmentPrintsNothingByDefaultIfHostIsNotAvailable() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
-  P9K_LEFT_PROMPT_ELEMENTS=(public_ip custom_world)
+  P9K_LEFT_PROMPT_ELEMENTS=(public_ip world::custom)
   local P9K_PUBLIC_IP_HOST='http://unknown.xyz'
   local P9K_CUSTOM_WORLD='echo world'
   # We need to overwrite dig, as this is a fallback method that
   # uses an alternative host.
   alias dig='nodig'
+
+  # Load Powerlevel9k
+  source ${P9K_HOME}/powerlevel9k.zsh-theme
 
   assertEquals "%K{015} %F{000}world %k%F{015}%f " "$(__p9k_build_left_prompt)"
 
@@ -62,6 +64,9 @@ function testPublicIpSegmentPrintsNoticeIfNotConnected() {
   # uses an alternative host.
   alias dig='nodig'
 
+  # Load Powerlevel9k
+  source ${P9K_HOME}/powerlevel9k.zsh-theme
+
   assertEquals "%K{000} %F{015}disconnected %k%F{000}%f " "$(__p9k_build_left_prompt)"
 
   unalias dig
@@ -75,6 +80,9 @@ function testPublicIpSegmentWorksWithWget() {
   wget() {
     echo "wget 1.2.3.4"
   }
+
+  # Load Powerlevel9k
+  source ${P9K_HOME}/powerlevel9k.zsh-theme
 
   assertEquals "%K{000} %F{015}wget 1.2.3.4 %k%F{000}%f " "$(__p9k_build_left_prompt)"
 
@@ -91,6 +99,9 @@ function testPublicIpSegmentUsesCurlAsFallbackMethodIfWgetIsNotAvailable() {
   curl() {
     echo "curl 1.2.3.4"
   }
+
+  # Load Powerlevel9k
+  source ${P9K_HOME}/powerlevel9k.zsh-theme
 
   assertEquals "%K{000} %F{015}curl 1.2.3.4 %k%F{000}%f " "$(__p9k_build_left_prompt)"
 
@@ -109,6 +120,9 @@ function testPublicIpSegmentUsesDigAsFallbackMethodIfWgetAndCurlAreNotAvailable(
   }
 
   # Load Powerlevel9k
+  source ${P9K_HOME}/powerlevel9k.zsh-theme
+
+  # Load Powerlevel9k
   assertEquals "%K{000} %F{015}dig 1.2.3.4 %k%F{000}%f " "$(__p9k_build_left_prompt)"
 
   unfunction dig
@@ -123,6 +137,9 @@ function testPublicIpSegmentCachesFile() {
   dig() {
     echo "first"
   }
+
+  # Load Powerlevel9k
+  source ${P9K_HOME}/powerlevel9k.zsh-theme
 
   assertEquals "%K{000} %F{015}first %k%F{000}%f " "$(__p9k_build_left_prompt)"
 
@@ -144,6 +161,9 @@ function testPublicIpSegmentRefreshesCachesFileAfterTimeout() {
     echo "first"
   }
 
+  # Load Powerlevel9k
+  source ${P9K_HOME}/powerlevel9k.zsh-theme
+
   assertEquals "%K{000} %F{015}first %k%F{000}%f " "$(__p9k_build_left_prompt)"
 
   sleep 3
@@ -163,6 +183,9 @@ function testPublicIpSegmentRefreshesCachesFileIfEmpty() {
   dig() {
     echo "first"
   }
+
+  # Load Powerlevel9k
+  source ${P9K_HOME}/powerlevel9k.zsh-theme
 
   assertEquals "%K{000} %F{015}first %k%F{000}%f " "$(__p9k_build_left_prompt)"
 
@@ -185,6 +208,9 @@ function testPublicIpSegmentWhenGoingOnline() {
   local P9K_PUBLIC_IP_METHODS="dig"
   local P9K_PUBLIC_IP_NONE="disconnected"
   alias dig="nodig"
+
+  # Load Powerlevel9k
+  source ${P9K_HOME}/powerlevel9k.zsh-theme
 
   assertEquals "%K{000} %F{015}disconnected %k%F{000}%f " "$(__p9k_build_left_prompt)"
 

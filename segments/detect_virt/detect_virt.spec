@@ -9,16 +9,18 @@ function setUp() {
   export TERM="xterm-256color"
   local -a P9K_RIGHT_PROMPT_ELEMENTS
   P9K_RIGHT_PROMPT_ELEMENTS=()
-  # Load Powerlevel9k
-  source powerlevel9k.zsh-theme
-  source segments/detect_virt/detect_virt.p9k
+
+  source test/helper/build_prompt_wrapper.sh
 }
 
 function testDetectVirtSegmentPrintsNothingIfSystemdIsNotAvailable() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
-  P9K_LEFT_PROMPT_ELEMENTS=(detect_virt custom_world)
+  P9K_LEFT_PROMPT_ELEMENTS=(detect_virt world::custom)
   local P9K_CUSTOM_WORLD='echo world'
   alias systemd-detect-virt="novirt"
+
+  # Load Powerlevel9k
+  source powerlevel9k.zsh-theme
 
   assertEquals "%K{015} %F{000}world %k%F{015}%f " "$(__p9k_build_left_prompt)"
 
@@ -29,6 +31,9 @@ function testDetectVirtSegmentIfSystemdReturnsPlainName() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(detect_virt)
   alias systemd-detect-virt="echo 'xxx'"
+
+  # Load Powerlevel9k
+  source powerlevel9k.zsh-theme
 
   assertEquals "%K{000} %F{003}xxx %k%F{000}%f " "$(__p9k_build_left_prompt)"
 
@@ -47,6 +52,9 @@ function testDetectVirtSegmentIfRootFsIsOnExpectedInode() {
   # which translates to: Show the inode number of "/" and test if it is "2".
   alias ls="echo '2'"
 
+  # Load Powerlevel9k
+  source powerlevel9k.zsh-theme
+
   assertEquals "%K{000} %F{003}none %k%F{000}%f " "$(__p9k_build_left_prompt)"
 
   unalias ls
@@ -64,6 +72,9 @@ function testDetectVirtSegmentIfRootFsIsNotOnExpectedInode() {
   # The original command in the implementation is "ls -di / | grep -o 2",
   # which translates to: Show the inode number of "/" and test if it is "2".
   alias ls="echo '3'"
+
+  # Load Powerlevel9k
+  source powerlevel9k.zsh-theme
 
   assertEquals "%K{000} %F{003}chroot %k%F{000}%f " "$(__p9k_build_left_prompt)"
 

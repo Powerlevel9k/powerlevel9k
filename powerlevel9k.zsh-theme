@@ -24,6 +24,8 @@
 # Define the version number. This will make it easier to support as users can report this with tickets.
 readonly P9K_VERSION="0.7.0"
 
+typeset -gAH __P9K_DATA
+
 ## Turn on for Debugging
 # PS4='%s%f%b%k%F{blue}%{λ%}%L %F{240}%N:%i%(?.. %F{red}%?) %1(_.%F{yellow}%-1_ .)%s%f%b%k '
 # zstyle ':vcs_info:*+*:*' debug true
@@ -173,14 +175,7 @@ __p9k_print_deprecation_var_warning deprecated_variables
 # Choose the generator
 ################################################################
 
-case "${(L)P9K_GENERATOR}" in
-  "zsh-async")
-    source "${__P9K_DIRECTORY}/generator/zsh-async.p9k"
-  ;;
-  *)
-    source "${__P9K_DIRECTORY}/generator/default.p9k"
-  ;;
-esac
+source "${__P9K_DIRECTORY}/generator/default.p9k"
 
 ################################################################
 # Set default prompt segments
@@ -193,37 +188,91 @@ p9k::defined P9K_RIGHT_PROMPT_ELEMENTS || P9K_RIGHT_PROMPT_ELEMENTS=(status root
 # Load Prompt Segment Definitions
 ################################################################
 
+function __p9k_polyfill_segment_tags() {
+  setopt localoptions extended_glob
+  # Replace old "custom_" elements with new Tag syntax.
+  # This is done via the internal ZSH regex engine.
+  # #b enables pattern matching
+  # ? is any character
+  # ## is one or more
+  # S Flag for non-greedy matching
+  P9K_LEFT_PROMPT_ELEMENTS=("${(@)P9K_LEFT_PROMPT_ELEMENTS//(#b)custom_(?##)/${match[1]}::custom}")
+  P9K_LEFT_PROMPT_ELEMENTS=("${(@S)P9K_LEFT_PROMPT_ELEMENTS//(#b)(?##)_joined/${match[1]}::joined}")
+
+  P9K_RIGHT_PROMPT_ELEMENTS=("${(@)P9K_RIGHT_PROMPT_ELEMENTS//(#b)custom_(?##)/${match[1]}::custom}")
+  P9K_RIGHT_PROMPT_ELEMENTS=("${(@S)P9K_RIGHT_PROMPT_ELEMENTS//(#b)(?##)_joined/${match[1]}::joined}")
+
+  # echo $P9K_LEFT_PROMPT_ELEMENTS
+}
+__p9k_polyfill_segment_tags
+
 p9k::set_default P9K_CUSTOM_SEGMENT_LOCATION "$HOME/.config/powerlevel9k/segments"
 # load only the segments that are being used!
 function __p9k_load_segments() {
-  local segment
-  for segment in ${P9K_LEFT_PROMPT_ELEMENTS} ${P9K_RIGHT_PROMPT_ELEMENTS}; do
-    # Remove joined information
-    segment=${segment%_joined}
+  local segment raw_segment
+  local load_async=false
+  for alignment in left right; do
+    local segmentsVariable="P9K_${(U)alignment}_PROMPT_ELEMENTS"
+    for raw_segment in ${(P)segmentsVariable}; do
+      local -a segment_meta
+      # Split by double-colon
+      segment_meta=(${(s.::.)raw_segment})
+      # First value is always segment name
+      segment=${segment_meta[1]}
 
-    # Custom segments must be loaded by user
-    if [[ $segment[0,7] =~ "custom_" ]]; then
-      continue
-    fi
-    # check if the file exists as a core segment
-    if [[ -f ${__P9K_DIRECTORY}/segments/${segment}/${segment}.p9k ]]; then
-      source "${__P9K_DIRECTORY}/segments/${segment}/${segment}.p9k" 2>&1
-    else
-      # check if the file exists as a custom segment
-      if [[ -f "${P9K_CUSTOM_SEGMENT_LOCATION}/${segment}/${segment}.p9k" ]]; then
-        # This is not muted, as we want to show if there are issues with
-        # his custom segments.
-        source "${P9K_CUSTOM_SEGMENT_LOCATION}/${segment}/${segment}.p9k"
-      else
-        # file not found!
-        # If this happens, we remove the segment from the configured elements,
-        # so that we avoid printing errors over and over.
-        print -P "%F{yellow}Warning!%f The '%F{cyan}${segment}%f' segment was not found. Removing it from the prompt."
-        P9K_LEFT_PROMPT_ELEMENTS=("${(@)P9K_LEFT_PROMPT_ELEMENTS:#${segment}}")
-        P9K_RIGHT_PROMPT_ELEMENTS=("${(@)P9K_RIGHT_PROMPT_ELEMENTS:#${segment}}")
+      # Cache configured segments! As nested arrays are not really possible,
+      # store as single string, separated by whitespace.
+      __P9K_DATA[${alignment}_segments]+="${segment} "
+
+      # Cache segments
+      for tag in ${segment_meta[2,-1]}; do
+        __P9K_DATA[${tag}_segments]+="${segment} "
+
+        # Special Case: Remember that async lib should be loaded
+        [[ "${tag}" == "async" ]] && load_async=true
+      done
+
+      # Custom segments must be loaded by user
+      if p9k::segment_is_tagged_as "custom" "${segment}"; then
+        local STATEFUL_NAME="CUSTOM_${${(U)segment}}"
+        local command="P9K_${STATEFUL_NAME}"
+
+        p9k::register_segment "${STATEFUL_NAME}" "" "white" "black"
+
+        continue
       fi
-    fi
+
+      # check if the file exists as a core segment
+      if [[ -f ${__P9K_DIRECTORY}/segments/${segment}/${segment}.p9k ]]; then
+        source "${__P9K_DIRECTORY}/segments/${segment}/${segment}.p9k" 2>&1
+      else
+        # check if the file exists as a custom segment
+        if [[ -f "${P9K_CUSTOM_SEGMENT_LOCATION}/${segment}/${segment}.p9k" ]]; then
+          # This is not muted, as we want to show if there are issues with
+          # his custom segments.
+          source "${P9K_CUSTOM_SEGMENT_LOCATION}/${segment}/${segment}.p9k"
+        else
+          # file not found!
+          # If this happens, we remove the segment from the configured elements,
+          # so that we avoid printing errors over and over.
+          print -P "%F{yellow}Warning!%f The '%F{cyan}${segment}%f' segment was not found. Removing it from the prompt."
+          P9K_LEFT_PROMPT_ELEMENTS=("${(@)P9K_LEFT_PROMPT_ELEMENTS:#${segment}}")
+          P9K_RIGHT_PROMPT_ELEMENTS=("${(@)P9K_RIGHT_PROMPT_ELEMENTS:#${segment}}")
+        fi
+      fi
+    done
   done
+
+  # Load Async libs at last, because before initializing
+  # ZSH-Async, all functions must be defined.
+  if ${load_async}; then
+      __P9K_DATA[async]=true
+      # TODO: ZSH-ASYNC Path configurable!
+      source ${__P9K_DIRECTORY}/zsh-async/async.zsh
+      async_init
+      async_start_worker "__p9k_async_worker" -n
+      async_register_callback "__p9k_async_worker" "__p9k_async_callback"
+    fi
 }
 __p9k_load_segments
 

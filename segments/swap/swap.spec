@@ -7,16 +7,20 @@ SHUNIT_PARENT=$0
 
 function setUp() {
   export TERM="xterm-256color"
+
   local -a P9K_RIGHT_PROMPT_ELEMENTS
   P9K_RIGHT_PROMPT_ELEMENTS=()
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=()
 
   P9K_HOME=$(pwd)
+  # Load Powerlevel9k
+  source ${P9K_HOME}/powerlevel9k.zsh-theme
+  source ${P9K_HOME}/segments/swap/swap.p9k
   ### Test specific
+  source test/helper/build_prompt_wrapper.sh
   # Create default folder and git init it.
   FOLDER=/tmp/powerlevel9k-test/swap-test
-
-  source "${P9K_HOME}/powerlevel9k.zsh-theme"
-  source "${P9K_HOME}/segments/swap/swap.p9k"
 
   mkdir -p "${FOLDER}"
   cd $FOLDER
@@ -29,14 +33,16 @@ function tearDown() {
   rm -fr "${FOLDER}"
   # At least remove test folder completely
   rm -fr /tmp/powerlevel9k-test
+  # Reset redeclaration of p9k::prepare_segment
+  __p9k_reset_prepare_segment
 }
 
 function testSwapSegmentWorksOnOsx() {
-  local -a P9K_LEFT_PROMPT_ELEMENTS
-  P9K_LEFT_PROMPT_ELEMENTS=(swap)
   sysctl() {
     echo "vm.swapusage: total = 3072,00M  used = 1620,50M  free = 1451,50M  (encrypted)"
   }
+
+  __p9k_make_prepare_segment_print "left" "1"
 
   local __P9K_OS="OSX" # Fake OSX
 
@@ -46,11 +52,11 @@ function testSwapSegmentWorksOnOsx() {
 }
 
 function testSwapSegmentWorksOnLinux() {
-  local -a P9K_LEFT_PROMPT_ELEMENTS
-  P9K_LEFT_PROMPT_ELEMENTS=(swap)
   mkdir proc
   echo "SwapTotal: 1000000" > proc/meminfo
   echo "SwapFree: 1000" >> proc/meminfo
+
+  __p9k_make_prepare_segment_print "left" "1"
 
   local __P9K_OS="Linux" # Fake Linux
 

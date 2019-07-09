@@ -33,9 +33,10 @@ local last_segment_index=$2
 local -a elements
 elements=(${=3})
 
-local current_segment=${elements[$current_index]}
+local raw_current_segment=${elements[$current_index]}
+local current_segment=${raw_current_segment%%::*}
 local joined=false
-if [[ ${current_segment[-7,-1]} == '_joined' ]]; then
+if p9k::segment_is_tagged_as "joined" "${current_segment}"; then
   joined=true
   # promote segment to a full one, if the predecessing full segment
   # was conditional. So this can only be the case for segments that
@@ -47,11 +48,12 @@ if [[ ${current_segment[-7,-1]} == '_joined' ]]; then
     # segment as well.
     local examined_index=$((current_index - 1))
     while (( ${examined_index} > ${last_segment_index} )); do
-      local previous_segment=${elements[$examined_index]}
+      local raw_previous_segment=${elements[$examined_index]}
+      local previous_segment=${raw_previous_segment%%::*}
       # If one of the examined segments is not joined, then we know
       # that the current segment should not be joined, as the target
       # segment is the wrong one.
-      if [[ ${previous_segment[-7,-1]} != '_joined' ]]; then
+      if ! p9k::segment_is_tagged_as "joined" "${previous_segment}"; then
         joined=false
         break
       fi

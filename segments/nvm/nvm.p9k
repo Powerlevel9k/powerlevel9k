@@ -38,7 +38,7 @@ prompt_nvm() {
     node_version="$($(nvm which system) --version)"
     is_system=true
   fi
-  
+
   nvm_default=$(nvm_version default)
   [[ "$node_version" =~ "$nvm_default" ]] && return
 

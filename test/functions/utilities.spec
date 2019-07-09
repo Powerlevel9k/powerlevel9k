@@ -74,7 +74,7 @@ function testGetRelevantItemDoesNotReturnNotFoundItems() {
 
 function testSegmentShouldBeJoinedIfDirectPredecessingSegmentIsJoined() {
   typeset -a segments
-  segments=(a b_joined c_joined)
+  segments=(a b::joined c::joined)
   # Look at the third segment
   local current_index=3
   local last_element_index=2
@@ -88,7 +88,7 @@ function testSegmentShouldBeJoinedIfDirectPredecessingSegmentIsJoined() {
 
 function testSegmentShouldBeJoinedIfPredecessingSegmentIsJoinedTransitivley() {
   typeset -a segments
-  segments=(a b_joined c_joined)
+  segments=(a b::joined c::joined)
   # Look at the third segment
   local current_index=3
   # The last printed segment was the first one,
@@ -104,7 +104,7 @@ function testSegmentShouldBeJoinedIfPredecessingSegmentIsJoinedTransitivley() {
 
 function testSegmentShouldNotBeJoinedIfPredecessingSegmentIsNotJoinedButConditional() {
   typeset -a segments
-  segments=(a b_joined c d_joined)
+  segments=(a b::joined c d::joined)
   # Look at the fourth segment
   local current_index=4
   # The last printed segment was the first one,
@@ -249,6 +249,12 @@ function testFindingFirstDefinedOrNonEmptyVariableNyName() {
   }
 
   internal
+}
+
+function testFindInArrayFindsAllOccurrencesInArray() {
+  local -a XX=(aa bb cc aa xx zz ay ya aa tt)
+
+  assertEquals "1 4 9" "$(p9k::find_in_array "aa" "${XX}")"
 }
 
 source shunit2/shunit2

@@ -20,9 +20,8 @@ function setUp() {
 
   local -a P9K_RIGHT_PROMPT_ELEMENTS
   P9K_RIGHT_PROMPT_ELEMENTS=()
-  # Load Powerlevel9k
-  source ${P9K_HOME}/powerlevel9k.zsh-theme
-  source ${P9K_HOME}/segments/todo/todo.p9k
+
+  source test/helper/build_prompt_wrapper.sh
 }
 
 function tearDown() {
@@ -38,9 +37,12 @@ function tearDown() {
 
 function testTodoSegmentPrintsNothingIfTodoShIsNotInstalled() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
-  P9K_LEFT_PROMPT_ELEMENTS=(todo custom_world)
+  P9K_LEFT_PROMPT_ELEMENTS=(todo world::custom)
   local P9K_CUSTOM_WORLD='echo world'
   alias todo.sh="echo"
+
+  # Load Powerlevel9k
+  source ${P9K_HOME}/powerlevel9k.zsh-theme
 
   assertEquals "%K{015} %F{000}world %k%F{015}%f " "$(__p9k_build_left_prompt)"
 
@@ -54,6 +56,9 @@ function testTodoSegmentWorksAsExpected() {
   echo '#!/bin/sh' > ${FOLDER}/bin/todo.sh
   echo 'echo "TODO: 34 of 100 tasks shown";' >> ${FOLDER}/bin/todo.sh
   chmod +x ${FOLDER}/bin/todo.sh
+
+  # Load Powerlevel9k
+  source ${P9K_HOME}/powerlevel9k.zsh-theme
 
   assertEquals "%K{244} %F{000}☑ %F{000}100 %k%F{244}%f " "$(__p9k_build_left_prompt)"
 }

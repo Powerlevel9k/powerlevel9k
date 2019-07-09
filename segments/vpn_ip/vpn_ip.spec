@@ -13,6 +13,16 @@ function setUp() {
   FOLDER=/tmp/powerlevel9k-test
   mkdir -p $FOLDER
   mkdir $FOLDER/sbin
+
+  local -a P9K_RIGHT_PROMPT_ELEMENTS
+  P9K_RIGHT_PROMPT_ELEMENTS=()
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=()
+
+  source test/helper/build_prompt_wrapper.sh
+  # Load Powerlevel9k
+  source powerlevel9k.zsh-theme
+  source segments/vpn_ip/vpn_ip.p9k
 }
 
 function tearDown() {
@@ -23,6 +33,9 @@ function tearDown() {
 
   unset FOLDER
   unset P9K_HOME
+
+  # Reset redeclaration of p9k::prepare_segment
+  __p9k_reset_prepare_segment
 }
 
 function fakeIfconfig() {
@@ -124,9 +137,7 @@ EOF
 }
 
 function testVpnIpSegmentPrintsNothingOnOsxIfNotConnected() {
-  # Load Powerlevel9k
-  source powerlevel9k.zsh-theme
-  source segments/vpn_ip/vpn_ip.p9k
+  __p9k_make_prepare_segment_print "left" "1"
   local OS="OSX" # Fake OSX
 
   cat > $FOLDER/sbin/ifconfig <<EOF
@@ -140,9 +151,7 @@ EOF
 }
 
 function testVpnIpSegmentPrintsNothingOnLinuxIfNotConnected() {
-  # Load Powerlevel9k
-  source powerlevel9k.zsh-theme
-  source segments/vpn_ip/vpn_ip.p9k
+  __p9k_make_prepare_segment_print "left" "1"
   local OS="Linux" # Fake Linux
 
   cat > $FOLDER/sbin/ip <<EOF
@@ -160,9 +169,7 @@ function testVpnIpSegmentWorksOnOsxWithInterfaceSpecified() {
 
   fakeIfconfig
 
-  # Load Powerlevel9k
-  source powerlevel9k.zsh-theme
-  source segments/vpn_ip/vpn_ip.p9k
+  __p9k_make_prepare_segment_print "left" "1"
   local OS='OSX' # Fake OSX
 
   assertEquals "%K{006} %F{000}(vpn) %F{000}1.2.3.4 " "$(prompt_vpn_ip left 1 false "$FOLDER")"
@@ -173,9 +180,7 @@ function testVpnIpSegmentWorksOnLinuxWithInterfaceSpecified() {
     
     fakeIp "tun1"
 
-    # Load Powerlevel9k
-    source powerlevel9k.zsh-theme
-    source segments/vpn_ip/vpn_ip.p9k
+    __p9k_make_prepare_segment_print "left" "1"
     local OS='Linux' # Fake Linux
 
     assertEquals "%K{006} %F{000}(vpn) %F{000}1.2.3.4 " "$(prompt_vpn_ip left 1 false "$FOLDER")"
@@ -187,9 +192,7 @@ function testVpnIpSegmentWorksOnLinuxWithInterfaceSpecified() {
     
 #     fakeIp "tun0" "tun1"
 
-#     # Load Powerlevel9k
-#     source powerlevel9k.zsh-theme
-#     source segments/vpn_ip/vpn_ip.p9k
+#     __p9k_make_prepare_segment_print "left" "1"
 #     local OS='Linux' # Fake Linux
 
 # setopt xtrace

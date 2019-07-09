@@ -7,18 +7,19 @@ SHUNIT_PARENT=$0
 
 function setUp() {
   export TERM="xterm-256color"
-  source powerlevel9k.zsh-theme
+
+  source test/helper/build_prompt_wrapper.sh
 }
 
 function testAnacondaSegmentPrintsNothingIfNoAnacondaPathIsSet() {
   local P9K_CUSTOM_WORLD='echo world'
   local -a P9K_LEFT_PROMPT_ELEMENTS
-  P9K_LEFT_PROMPT_ELEMENTS=(anaconda custom_world)
+  P9K_LEFT_PROMPT_ELEMENTS=(anaconda world::custom)
   local -a P9K_RIGHT_PROMPT_ELEMENTS
   P9K_RIGHT_PROMPT_ELEMENTS=()
 
   # Load Powerlevel9k
-  source segments/anaconda/anaconda.p9k
+  source powerlevel9k.zsh-theme
 
   # Unset anacona variables
   unset CONDA_ENV_PATH
@@ -33,7 +34,7 @@ function testAnacondaSegmentWorksIfOnlyAnacondaPathIsSet() {
   local P9K_ANACONDA_ICON="icon-here"
 
   # Load Powerlevel9k
-  source segments/anaconda/anaconda.p9k
+  source powerlevel9k.zsh-theme
 
   CONDA_ENV_PATH=/tmp
   unset CONDA_PREFIX
@@ -47,7 +48,7 @@ function testAnacondaSegmentWorksIfOnlyAnacondaPrefixIsSet() {
   local P9K_ANACONDA_ICON="icon-here"
 
   # Load Powerlevel9k
-  source segments/anaconda/anaconda.p9k
+  source powerlevel9k.zsh-theme
 
   unset CONDA_ENV_PATH
   local CONDA_PREFIX="test"
@@ -61,7 +62,7 @@ function testAnacondaSegmentWorks() {
   local P9K_ANACONDA_ICON="icon-here"
 
   # Load Powerlevel9k
-  source segments/anaconda/anaconda.p9k
+  source powerlevel9k.zsh-theme
 
   local CONDA_ENV_PATH=/tmp
   local CONDA_PREFIX="test"

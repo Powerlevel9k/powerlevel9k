@@ -15,7 +15,7 @@ function setUp() {
 
 function testLeftNormalSegmentsShouldNotBeJoined() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
-  P9K_LEFT_PROMPT_ELEMENTS=(custom_world1 custom_world2 custom_world3 custom_world4_joined custom_world5 custom_world6)
+  P9K_LEFT_PROMPT_ELEMENTS=(world1::custom world2::custom world3::custom world4::custom::joined world5::custom world6::custom)
   local P9K_CUSTOM_WORLD1="echo world1"
   local P9K_CUSTOM_WORLD2="echo world2"
   local P9K_CUSTOM_WORLD3="echo " # Print nothing to simulate unmet conditions
@@ -28,7 +28,7 @@ function testLeftNormalSegmentsShouldNotBeJoined() {
 
 function testLeftJoinedSegments() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
-  P9K_LEFT_PROMPT_ELEMENTS=(custom_world1 custom_world2_joined)
+  P9K_LEFT_PROMPT_ELEMENTS=(world1::custom world2::custom::joined)
   local P9K_CUSTOM_WORLD1="echo world1"
   local P9K_CUSTOM_WORLD2="echo world2"
 
@@ -37,7 +37,7 @@ function testLeftJoinedSegments() {
 
 function testLeftTransitiveJoinedSegments() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
-  P9K_LEFT_PROMPT_ELEMENTS=(custom_world1 custom_world2_joined custom_world3_joined)
+  P9K_LEFT_PROMPT_ELEMENTS=(world1::custom world2::custom::joined world3::custom::joined)
   local P9K_CUSTOM_WORLD1="echo world1"
   local P9K_CUSTOM_WORLD2="echo world2"
   local P9K_CUSTOM_WORLD3="echo world3"
@@ -47,7 +47,7 @@ function testLeftTransitiveJoinedSegments() {
 
 function testLeftTransitiveJoiningWithConditionalJoinedSegment() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
-  P9K_LEFT_PROMPT_ELEMENTS=(custom_world1 custom_world2_joined custom_world3_joined custom_world4_joined)
+  P9K_LEFT_PROMPT_ELEMENTS=(world1::custom world2::custom::joined world3::custom::joined world4::custom::joined)
   local P9K_CUSTOM_WORLD1="echo world1"
   local P9K_CUSTOM_WORLD2="echo world2"
   local P9K_CUSTOM_WORLD3="echo " # Print nothing to simulate unmet conditions
@@ -58,7 +58,7 @@ function testLeftTransitiveJoiningWithConditionalJoinedSegment() {
 
 function testLeftPromotingSegmentWithConditionalPredecessor() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
-  P9K_LEFT_PROMPT_ELEMENTS=(custom_world1 custom_world2 custom_world3_joined)
+  P9K_LEFT_PROMPT_ELEMENTS=(world1::custom world2::custom world3::custom::joined)
   local P9K_CUSTOM_WORLD1="echo world1"
   local P9K_CUSTOM_WORLD2="echo " # Print nothing to simulate unmet conditions
   local P9K_CUSTOM_WORLD3="echo world3"
@@ -68,7 +68,7 @@ function testLeftPromotingSegmentWithConditionalPredecessor() {
 
 function testLeftPromotingSegmentWithJoinedConditionalPredecessor() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
-  P9K_LEFT_PROMPT_ELEMENTS=(custom_world1 custom_world2 custom_world3_joined custom_world4_joined)
+  P9K_LEFT_PROMPT_ELEMENTS=(world1::custom world2::custom world3::custom::joined world4::custom::joined)
   local P9K_CUSTOM_WORLD1="echo world1"
   local P9K_CUSTOM_WORLD2="echo " # Print nothing to simulate unmet conditions
   local P9K_CUSTOM_WORLD3="echo " # Print nothing to simulate unmet conditions
@@ -79,7 +79,7 @@ function testLeftPromotingSegmentWithJoinedConditionalPredecessor() {
 
 function testLeftPromotingSegmentWithDeepJoinedConditionalPredecessor() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
-  P9K_LEFT_PROMPT_ELEMENTS=(custom_world1 custom_world2 custom_world3_joined custom_world4_joined custom_world5_joined custom_world6_joined)
+  P9K_LEFT_PROMPT_ELEMENTS=(world1::custom world2::custom world3::custom::joined world4::custom::joined world5::custom::joined world6::custom::joined)
   local P9K_CUSTOM_WORLD1="echo world1"
   local P9K_CUSTOM_WORLD2="echo " # Print nothing to simulate unmet conditions
   local P9K_CUSTOM_WORLD3="echo " # Print nothing to simulate unmet conditions
@@ -92,7 +92,7 @@ function testLeftPromotingSegmentWithDeepJoinedConditionalPredecessor() {
 
 function testLeftJoiningBuiltinSegmentWorks() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
-  P9K_LEFT_PROMPT_ELEMENTS=(php_version php_version_joined)
+  P9K_LEFT_PROMPT_ELEMENTS=(php_version php_version::joined)
   alias php="echo PHP 1.2.3 "
   source segments/php_version/php_version.p9k
 
@@ -104,7 +104,7 @@ function testLeftJoiningBuiltinSegmentWorks() {
 function testRightNormalSegmentsShouldNotBeJoined() {
   local -a P9K_RIGHT_PROMPT_ELEMENTS
   local -a P9K_RIGHT_PROMPT_ELEMENTS
-  P9K_RIGHT_PROMPT_ELEMENTS=(custom_world1 custom_world2 custom_world3 custom_world4 custom_world5_joined custom_world6)
+  P9K_RIGHT_PROMPT_ELEMENTS=(world1::custom world2::custom world3::custom world4::custom world5::custom::joined world6::custom)
   local P9K_CUSTOM_WORLD1="echo world1"
   local P9K_CUSTOM_WORLD2="echo world2"
   local P9K_CUSTOM_WORLD3="echo " # Print nothing to simulate unmet conditions
@@ -118,7 +118,7 @@ function testRightNormalSegmentsShouldNotBeJoined() {
 function testRightJoinedSegments() {
   local -a P9K_RIGHT_PROMPT_ELEMENTS
   local -a P9K_RIGHT_PROMPT_ELEMENTS
-  P9K_RIGHT_PROMPT_ELEMENTS=(custom_world1 custom_world2_joined)
+  P9K_RIGHT_PROMPT_ELEMENTS=(world1::custom world2::custom::joined)
   local P9K_CUSTOM_WORLD1="echo world1"
   local P9K_CUSTOM_WORLD2="echo world2"
 
@@ -128,7 +128,7 @@ function testRightJoinedSegments() {
 function testRightTransitiveJoinedSegments() {
   local -a P9K_RIGHT_PROMPT_ELEMENTS
   local -a P9K_RIGHT_PROMPT_ELEMENTS
-  P9K_RIGHT_PROMPT_ELEMENTS=(custom_world1 custom_world2_joined custom_world3_joined)
+  P9K_RIGHT_PROMPT_ELEMENTS=(world1::custom world2::custom::joined world3::custom::joined)
   local P9K_CUSTOM_WORLD1="echo world1"
   local P9K_CUSTOM_WORLD2="echo world2"
   local P9K_CUSTOM_WORLD3="echo world3"
@@ -139,7 +139,7 @@ function testRightTransitiveJoinedSegments() {
 function testRightTransitiveJoiningWithConditionalJoinedSegment() {
   local -a P9K_RIGHT_PROMPT_ELEMENTS
   local -a P9K_RIGHT_PROMPT_ELEMENTS
-  P9K_RIGHT_PROMPT_ELEMENTS=(custom_world1 custom_world2_joined custom_world3_joined custom_world4_joined)
+  P9K_RIGHT_PROMPT_ELEMENTS=(world1::custom world2::custom::joined world3::custom::joined world4::custom::joined)
   local P9K_CUSTOM_WORLD1="echo world1"
   local P9K_CUSTOM_WORLD2="echo world2"
   local P9K_CUSTOM_WORLD3="echo " # Print nothing to simulate unmet conditions
@@ -151,7 +151,7 @@ function testRightTransitiveJoiningWithConditionalJoinedSegment() {
 function testRightPromotingSegmentWithConditionalPredecessor() {
   local -a P9K_RIGHT_PROMPT_ELEMENTS
   local -a P9K_RIGHT_PROMPT_ELEMENTS
-  P9K_RIGHT_PROMPT_ELEMENTS=(custom_world1 custom_world2 custom_world3_joined)
+  P9K_RIGHT_PROMPT_ELEMENTS=(world1::custom world2::custom world3::custom::joined)
   local P9K_CUSTOM_WORLD1="echo world1"
   local P9K_CUSTOM_WORLD2="echo " # Print nothing to simulate unmet conditions
   local P9K_CUSTOM_WORLD3="echo world3"
@@ -162,7 +162,7 @@ function testRightPromotingSegmentWithConditionalPredecessor() {
 function testRightPromotingSegmentWithJoinedConditionalPredecessor() {
   local -a P9K_RIGHT_PROMPT_ELEMENTS
   local -a P9K_RIGHT_PROMPT_ELEMENTS
-  P9K_RIGHT_PROMPT_ELEMENTS=(custom_world1 custom_world2 custom_world3_joined custom_world4_joined)
+  P9K_RIGHT_PROMPT_ELEMENTS=(world1::custom world2::custom world3::custom::joined world4::custom::joined)
   local P9K_CUSTOM_WORLD1="echo world1"
   local P9K_CUSTOM_WORLD2="echo " # Print nothing to simulate unmet conditions
   local P9K_CUSTOM_WORLD3="echo " # Print nothing to simulate unmet conditions
@@ -174,7 +174,7 @@ function testRightPromotingSegmentWithJoinedConditionalPredecessor() {
 function testRightPromotingSegmentWithDeepJoinedConditionalPredecessor() {
   local -a P9K_RIGHT_PROMPT_ELEMENTS
   local -a P9K_RIGHT_PROMPT_ELEMENTS
-  P9K_RIGHT_PROMPT_ELEMENTS=(custom_world1 custom_world2 custom_world3_joined custom_world4_joined custom_world5_joined custom_world6_joined)
+  P9K_RIGHT_PROMPT_ELEMENTS=(world1::custom world2::custom world3::custom::joined world4::custom::joined world5::custom::joined world6::custom::joined)
   local P9K_CUSTOM_WORLD1="echo world1"
   local P9K_CUSTOM_WORLD2="echo " # Print nothing to simulate unmet conditions
   local P9K_CUSTOM_WORLD3="echo " # Print nothing to simulate unmet conditions
@@ -188,7 +188,7 @@ function testRightPromotingSegmentWithDeepJoinedConditionalPredecessor() {
 function testRightJoiningBuiltinSegmentWorks() {
   local -a P9K_RIGHT_PROMPT_ELEMENTS
   local -a P9K_RIGHT_PROMPT_ELEMENTS
-  P9K_RIGHT_PROMPT_ELEMENTS=(php_version php_version_joined)
+  P9K_RIGHT_PROMPT_ELEMENTS=(php_version php_version::joined)
   alias php="echo PHP 1.2.3"
   source segments/php_version/php_version.p9k
 

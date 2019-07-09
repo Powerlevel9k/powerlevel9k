@@ -10,6 +10,7 @@ function setUp() {
 
   P9K_HOME=$(pwd)
   ### Test specific
+  source test/helper/build_prompt_wrapper.sh
 }
 
 function testNewlineDoesNotCreateExtraSegmentSeparator() {

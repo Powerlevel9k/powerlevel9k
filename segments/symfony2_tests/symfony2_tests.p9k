@@ -7,6 +7,20 @@
 # Source test stats script & icons
 source $__P9K_DIRECTORY/segments/test_stats.p9k
 
+
+(){
+  # Set the right locale to protect special characters
+  local LC_ALL="" LC_CTYPE="en_US.UTF-8"
+  ################################################################
+  # Register segment
+  # Parameters:
+  #   segment_name  context  background  foreground  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
+  #                                                                                                                                
+  p9k::register_segment "SYMFONY2_TESTS" "GOOD" "cyan"   "${DEFAULT_COLOR}"   ''  $'\uE891'  $'\uF291'  '\u'${CODEPOINT_OF_AWESOME_BUG}  $'\uF188'
+  p9k::register_segment "SYMFONY2_TESTS" "AVG"  "yellow" "${DEFAULT_COLOR}"   ''  $'\uE891'  $'\uF291'  '\u'${CODEPOINT_OF_AWESOME_BUG}  $'\uF188'
+  p9k::register_segment "SYMFONY2_TESTS" "BAD"  "red"    "${DEFAULT_COLOR}"   ''  $'\uE891'  $'\uF291'  '\u'${CODEPOINT_OF_AWESOME_BUG}  $'\uF188'
+}
+
 ################################################################
 # @description
 #   Display the current Symfony2-PHPUnit test ratio.

@@ -39,7 +39,7 @@ setopt localoptions # extendedglob
   local SEGMENT_CONDITION="P9K_${STATEFUL_NAME}_CONDITION"
   if p9k::defined "${SEGMENT_CONDITION}"; then
     CONDITION="${(P)SEGMENT_CONDITION}"
-  elif [[ -n "${USER_CONDITION}" && "${USER_CONDITION[0,1]}" == "[" ]]; then
+  elif [[ -n "${USER_CONDITION}" && ("${USER_CONDITION[0,1]}" == "[" || "${USER_CONDITION[0,1]}" == "(") ]]; then
     CONDITION="${USER_CONDITION}"
   else
     CONDITION='[[ -n "${CONTENT}" ]]'

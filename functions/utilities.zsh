@@ -221,6 +221,25 @@ function p9k::set_default() {
 
 ###############################################################
 # @description
+#   Tests if a segment is tagged as given tag.
+##
+# @args
+#   $1 string The tag to test
+#   $2 array The segments tags
+##
+# @returns
+#   0 if the segment contains the tag
+##
+function p9k::segment_is_tagged_as() {
+  local tag="${1}"
+  local segment="${2}"
+  local -a segments=(${=__P9K_DATA[${tag}_segments]:-})
+
+  [[ "${segments[(re)${segment}]:-}" == "${segment}" ]]
+}
+
+###############################################################
+# @description
 #   Converts large memory values into a human-readable unit (e.g., bytes --> GB)
 ##
 # @args
@@ -290,6 +309,42 @@ function p9k::get_relevant_item() {
 
 ###############################################################
 # @description
+#   Refresh a single item in the cache
+##
+# @args
+#   $1 string The item to search for (needle)
+#   $2 array The array to search in (haystack)
+##
+function p9k::find_in_array() {
+  local needle="${1}"
+  local -a haystack=(${=@[2,-1]})
+
+  local -a occurrences
+  local haystack_size=${#haystack}
+  local searchFrom=1
+
+  while true; do
+    # Array Expansion:
+    #   i: First index of $needle
+    #   e: Use string comparison, instead of pattern matching
+    #   n: Give us the nth match. This is done, because we only
+    #      can search for the first, or the last index.
+    var="haystack[(n:${searchFrom}:ie)${needle}]"
+    lastIndex=${(P)var}
+
+    if (( ${lastIndex} > ${haystack_size} )); then
+      # Exit condition: The last index is larger than the entire array
+      break
+    fi
+    occurrences+=${lastIndex}
+    searchFrom=$((searchFrom + 1))
+  done
+
+  echo "${(j: :)occurrences}"
+}
+
+###############################################################
+# @description
 #   Determine if the passed segment is used in either the LEFT or
 #   RIGHT prompt arrays.
 ##
@@ -297,11 +352,10 @@ function p9k::get_relevant_item() {
 #   $1 string The segment to be tested.
 ##
 function p9k::segment_in_use() {
-  local key=$1
-  [[ -n "${P9K_LEFT_PROMPT_ELEMENTS[(r)${key}]}" ||
-     -n "${P9K_LEFT_PROMPT_ELEMENTS[(r)${key}_joined]}" ||
-     -n "${P9K_RIGHT_PROMPT_ELEMENTS[(r)${key}]}" ||
-     -n "${P9K_RIGHT_PROMPT_ELEMENTS[(r)${key}_joined]}" ]]
+  local segment="${1}"
+  local -a segments=(${=__P9K_DATA[left_segments]:-} ${=__P9K_DATA[right_segments]:-})
+
+  [[ "${segments[(re)${segment}]:-}" == "${segment}" ]]
 }
 
 ###############################################################

@@ -17,9 +17,8 @@ function setUp() {
 
   local -a P9K_RIGHT_PROMPT_ELEMENTS
   P9K_RIGHT_PROMPT_ELEMENTS=()
-  # Load Powerlevel9k
-  source ${P9K_HOME}/powerlevel9k.zsh-theme
-  source ${P9K_HOME}/segments/swift_version/swift_version.p9k
+
+  source test/helper/build_prompt_wrapper.sh
 }
 
 function tearDown() {
@@ -33,9 +32,12 @@ function tearDown() {
 
 function testSwiftSegmentPrintsNothingIfSwiftIsNotAvailable() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
-  P9K_LEFT_PROMPT_ELEMENTS=(swift_version custom_world)
+  P9K_LEFT_PROMPT_ELEMENTS=(swift_version world::custom)
   local P9K_CUSTOM_WORLD='echo world'
   alias swift="noswift"
+
+  # Load Powerlevel9k
+  source "${P9K_HOME}/powerlevel9k.zsh-theme"
 
   assertEquals "%K{015} %F{000}world %k%F{015}%f " "$(__p9k_build_left_prompt)"
 
@@ -48,6 +50,9 @@ function testSwiftSegmentWorks() {
   function swift() {
     echo "Apple Swift version 3.0.1 (swiftlang-800.0.58.6 clang-800.0.42.1)\nTarget: x86_64-apple-macosx10.9"
   }
+
+  # Load Powerlevel9k
+  source "${P9K_HOME}/powerlevel9k.zsh-theme"
 
   assertEquals "%K{005} %F{015}Swift %F{015}3.0.1 %k%F{005}%f " "$(__p9k_build_left_prompt)"
 

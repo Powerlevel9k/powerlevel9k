@@ -10,11 +10,10 @@ function setUp() {
   __P9K_HOME="${PWD}"
   local -a P9K_RIGHT_PROMPT_ELEMENTS
   P9K_RIGHT_PROMPT_ELEMENTS=()
-  # Load Powerlevel9k
-  source powerlevel9k.zsh-theme
-  source segments/vagrant/vagrant.p9k
 
   # Test specific
+  source test/helper/build_prompt_wrapper.sh
+
   TEST_BASE_FOLDER=/tmp/powerlevel9k-test
   FOLDER=${TEST_BASE_FOLDER}/vagrant-test
   mkdir -p "${FOLDER}/bin"
@@ -45,21 +44,27 @@ function mockVagrantFolder() {
 
 function testVagrantSegmentPrintsNothingIfVirtualboxIsNotAvailable() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
-  P9K_LEFT_PROMPT_ELEMENTS=(vagrant custom_world)
+  P9K_LEFT_PROMPT_ELEMENTS=(vagrant world::custom)
   local P9K_CUSTOM_WORLD='echo world'
   # Change path, so that VBoxManage is not found
   local PATH=/bin:/usr/bin
+
+  # Load Powerlevel9k
+  source ${__P9K_HOME}/powerlevel9k.zsh-theme
 
   assertEquals "%K{015} %F{000}world %k%F{015}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testVagrantSegmentSaysVmIsDownIfVirtualboxIsNotAvailableButVagrantFolderExists() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
-  P9K_LEFT_PROMPT_ELEMENTS=(vagrant custom_world)
+  P9K_LEFT_PROMPT_ELEMENTS=(vagrant world::custom)
   local P9K_CUSTOM_WORLD='echo world'
   # Change path, so that VBoxManage is not found
   local PATH=/bin:/usr/bin
   mockVagrantFolder "some-id"
+
+  # Load Powerlevel9k
+  source ${__P9K_HOME}/powerlevel9k.zsh-theme
 
   assertEquals "%K{001} %F{000}V %F{000}DOWN %K{015}%F{001} %F{000}world %k%F{015}%f " "$(__p9k_build_left_prompt)"
 }
@@ -71,6 +76,9 @@ function testVagrantSegmentWorksIfVmIsUp() {
   mockVBoxManage "${vagrantId}"
   mockVagrantFolder "${vagrantId}"
 
+  # Load Powerlevel9k
+  source ${__P9K_HOME}/powerlevel9k.zsh-theme
+
   assertEquals "%K{002} %F{000}V %F{000}UP %k%F{002}%f " "$(__p9k_build_left_prompt)"
 }
 
@@ -80,6 +88,9 @@ function testVagrantSegmentWorksIfVmIsDown() {
   local vagrantId="xxx234"
   mockVBoxManage "${vagrantId}"
   mockVagrantFolder "another-vm-id"
+
+  # Load Powerlevel9k
+  source ${__P9K_HOME}/powerlevel9k.zsh-theme
 
   assertEquals "%K{001} %F{000}V %F{000}DOWN %k%F{001}%f " "$(__p9k_build_left_prompt)"
 }
@@ -94,6 +105,9 @@ function testVagrantSegmentWorksIfVmIsUpFromWithinSubdir() {
   mkdir -p "subfolder/1/2/3"
   cd subfolder/1/2/3
 
+  # Load Powerlevel9k
+  source ${__P9K_HOME}/powerlevel9k.zsh-theme
+
   assertEquals "%K{002} %F{000}V %F{000}UP %k%F{002}%f " "$(__p9k_build_left_prompt)"
 }
 
@@ -102,12 +116,15 @@ function testVagrantSegmentWithChangedString() {
   P9K_LEFT_PROMPT_ELEMENTS=(vagrant)
   local vagrantId="xxx234"
   mockVagrantFolder "${vagrantId}"
-
   local P9K_VAGRANT_DOWN_STRING="Nope"
+  local P9K_VAGRANT_UP_STRING="Yep"
+
+  # Load Powerlevel9k
+  source ${__P9K_HOME}/powerlevel9k.zsh-theme
+
   assertEquals "%K{001} %F{000}V %F{000}Nope %k%F{001}%f " "$(__p9k_build_left_prompt)"
 
   mockVBoxManage "${vagrantId}"
-  local P9K_VAGRANT_UP_STRING="Yep"
   assertEquals "%K{002} %F{000}V %F{000}Yep %k%F{002}%f " "$(__p9k_build_left_prompt)"
 }
 

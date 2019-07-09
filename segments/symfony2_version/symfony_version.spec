@@ -17,9 +17,8 @@ function setUp() {
 
   local -a P9K_RIGHT_PROMPT_ELEMENTS
   P9K_RIGHT_PROMPT_ELEMENTS=()
-  # Load Powerlevel9k
-  source ${P9K_HOME}/powerlevel9k.zsh-theme
-  source ${P9K_HOME}/segments/symfony2_version/symfony2_version.p9k
+
+  source test/helper/build_prompt_wrapper.sh
 }
 
 function tearDown() {
@@ -33,9 +32,12 @@ function tearDown() {
 
 function testSymfonyVersionSegmentPrintsNothingIfPhpIsNotAvailable() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
-  P9K_LEFT_PROMPT_ELEMENTS=(symfony2_version custom_world)
+  P9K_LEFT_PROMPT_ELEMENTS=(symfony2_version world::custom)
   local P9K_CUSTOM_WORLD='echo world'
   alias php="nophp"
+
+  # Load Powerlevel9k
+  source ${P9K_HOME}/powerlevel9k.zsh-theme
 
   assertEquals "%K{015} %F{000}world %k%F{015}%f " "$(__p9k_build_left_prompt)"
 
@@ -44,18 +46,21 @@ function testSymfonyVersionSegmentPrintsNothingIfPhpIsNotAvailable() {
 
 function testSymfonyVersionSegmentPrintsNothingIfSymfonyIsNotAvailable() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
-  P9K_LEFT_PROMPT_ELEMENTS=(symfony2_version custom_world)
+  P9K_LEFT_PROMPT_ELEMENTS=(symfony2_version world::custom)
   # "Symfony" is not a command, but rather a framework.
   # To sucessfully execute this test, we just need to
   # navigate into a folder that does not contain symfony.
   local P9K_CUSTOM_WORLD='echo world'
+
+  # Load Powerlevel9k
+  source ${P9K_HOME}/powerlevel9k.zsh-theme
 
   assertEquals "%K{015} %F{000}world %k%F{015}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testSymfonyVersionPrintsNothingIfPhpThrowsAnError() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
-  P9K_LEFT_PROMPT_ELEMENTS=(symfony2_version custom_world)
+  P9K_LEFT_PROMPT_ELEMENTS=(symfony2_version world::custom)
   local P9K_CUSTOM_WORLD='echo world'
   mkdir app
   touch app/AppKernel.php
@@ -64,6 +69,9 @@ function testSymfonyVersionPrintsNothingIfPhpThrowsAnError() {
 
     Parse error: parse error, expecting `;´ or `{´ in /Users/dr/Privat/vendor/ocramius/proxy-manager/src/ProxyManager/Configuration.php on line 97"
   }
+
+  # Load Powerlevel9k
+  source ${P9K_HOME}/powerlevel9k.zsh-theme
 
   assertEquals "%K{015} %F{000}world %k%F{015}%f " "$(__p9k_build_left_prompt)"
 
@@ -81,6 +89,9 @@ function testSymfonyVersionSegmentWorks() {
     echo "Symfony version 3.1.4 - app/dev/debug"
   }
 
+  # Load Powerlevel9k
+  source ${P9K_HOME}/powerlevel9k.zsh-theme
+
   assertEquals "%K{240} %F{000}SF%f %F{000}3.1.4 %k%F{240}%f " "$(__p9k_build_left_prompt)"
 
   unfunction php
@@ -96,6 +107,9 @@ function testSymfonyVersionSegmentWorksInNestedFolder() {
   function php() {
     echo "Symfony version 3.1.4 - app/dev/debug"
   }
+
+  # Load Powerlevel9k
+  source ${P9K_HOME}/powerlevel9k.zsh-theme
 
   mkdir -p src/P9K/AppBundle
   cd src/P9K/AppBundle

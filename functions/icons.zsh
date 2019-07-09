@@ -21,7 +21,6 @@
 # - [Powerline-Patched Font](https://github.com/Lokaltog/powerline-fonts)
 ##
 
-typeset -gAH __P9K_DATA
 typeset -gAH __P9K_ICONS
 
 if [[ "${P9K_MODE}" == "awesome-mapped-fontconfig" && -z "${AWESOME_GLYPHS_LOADED}" ]]; then

@@ -26,7 +26,7 @@ function testUsingUnsetVariables() {
 
 function testJoinedSegments() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
-  local P9K_LEFT_PROMPT_ELEMENTS=(dir dir_joined)
+  local P9K_LEFT_PROMPT_ELEMENTS=(dir dir::joined)
   cd /tmp
 
   assertEquals "%K{004} %F{000}/tmp %F{000}/tmp %k%F{004}%f " "$(__p9k_build_left_prompt)"
@@ -36,7 +36,7 @@ function testJoinedSegments() {
 
 function testTransitiveJoinedSegments() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
-  local P9K_LEFT_PROMPT_ELEMENTS=(dir root_indicator_joined dir_joined)
+  local P9K_LEFT_PROMPT_ELEMENTS=(dir root_indicator::joined dir::joined)
   source segments/root_indicator/root_indicator.p9k
   cd /tmp
 
@@ -47,7 +47,7 @@ function testTransitiveJoinedSegments() {
 
 function testJoiningWithConditionalSegment() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
-  local P9K_LEFT_PROMPT_ELEMENTS=(dir background_jobs dir_joined)
+  local P9K_LEFT_PROMPT_ELEMENTS=(dir background_jobs dir::joined)
   source segments/background_jobs/background_jobs.p9k
   local jobs_running=0
   local jobs_suspended=0
@@ -130,9 +130,9 @@ function testNewlineOnRpromptCanBeDisabled() {
   local P9K_CUSTOM_WORLD='echo world'
   local P9K_CUSTOM_RWORLD='echo rworld'
   local -a P9K_LEFT_PROMPT_ELEMENTS
-  local P9K_LEFT_PROMPT_ELEMENTS=(custom_world)
+  local P9K_LEFT_PROMPT_ELEMENTS=(world::custom)
   local -a P9K_RIGHT_PROMPT_ELEMENTS
-  local P9K_RIGHT_PROMPT_ELEMENTS=(custom_rworld)
+  local P9K_RIGHT_PROMPT_ELEMENTS=(rworld::custom)
 
   __p9k_prepare_prompts
 

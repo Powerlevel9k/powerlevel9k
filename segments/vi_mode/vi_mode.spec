@@ -9,15 +9,24 @@ function setUp() {
   export TERM="xterm-256color"
   local -a P9K_RIGHT_PROMPT_ELEMENTS
   P9K_RIGHT_PROMPT_ELEMENTS=()
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=()
+
+  source test/helper/build_prompt_wrapper.sh
   # Load Powerlevel9k
   source powerlevel9k.zsh-theme
+  source segments/vi_mode/vi_mode.p9k
+}
+
+function tearDown() {
+  # Reset redeclaration of p9k::prepare_segment
+  __p9k_reset_prepare_segment
 }
 
 function testViInsertModeWorks() {
   local KEYMAP='viins'
 
-  # Load Powerlevel9k
-  source segments/vi_mode/vi_mode.p9k
+  __p9k_make_prepare_segment_print "left" "1"
 
   assertEquals "%K{000} %F{004}INSERT " "$(prompt_vi_mode left 1 false)"
 }
@@ -25,8 +34,7 @@ function testViInsertModeWorks() {
 function testViInsertModeWorksWhenLabeledAsMain() {
   local KEYMAP='main'
 
-  # Load Powerlevel9k
-  source segments/vi_mode/vi_mode.p9k
+  __p9k_make_prepare_segment_print "left" "1"
 
   assertEquals "%K{000} %F{004}INSERT " "$(prompt_vi_mode left 1 false)"
 }
@@ -34,8 +42,7 @@ function testViInsertModeWorksWhenLabeledAsMain() {
 function testViCommandModeWorks() {
   local KEYMAP='vicmd'
 
-  # Load Powerlevel9k
-  source segments/vi_mode/vi_mode.p9k
+  __p9k_make_prepare_segment_print "left" "1"
 
   assertEquals "%K{000} %F{015}NORMAL " "$(prompt_vi_mode left 1 false)"
 }
@@ -43,8 +50,7 @@ function testViCommandModeWorks() {
 function testViInsertModeStringIsCustomizable() {
   local KEYMAP='viins'
 
-  # Load Powerlevel9k
-  source segments/vi_mode/vi_mode.p9k
+  __p9k_make_prepare_segment_print "left" "1"
 
   assertEquals "%K{000} %F{004}INSERT " "$(prompt_vi_mode left 1 false)"
 }

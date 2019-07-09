@@ -8,18 +8,23 @@ SHUNIT_PARENT=$0
 function setUp() {
   export TERM="xterm-256color"
 
+  local -a P9K_RIGHT_PROMPT_ELEMENTS
+  P9K_RIGHT_PROMPT_ELEMENTS=()
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=()
+
   P9K_HOME=$(pwd)
+  # Load Powerlevel9k
+  source ${P9K_HOME}/powerlevel9k.zsh-theme
+  source ${P9K_HOME}/segments/ram/ram.p9k
+
   ### Test specific
   # Create default folder and git init it.
   FOLDER=/tmp/powerlevel9k-test/ram-test
   mkdir -p "${FOLDER}"
   cd $FOLDER
 
-  local -a P9K_RIGHT_PROMPT_ELEMENTS
-  P9K_RIGHT_PROMPT_ELEMENTS=()
-  # Load Powerlevel9k
-  source ${P9K_HOME}/powerlevel9k.zsh-theme
-  source ${P9K_HOME}/segments/ram/ram.p9k
+  source ${P9K_HOME}/test/helper/build_prompt_wrapper.sh
 }
 
 function tearDown() {
@@ -29,6 +34,9 @@ function tearDown() {
   rm -fr "${FOLDER}"
   # At least remove test folder completely
   rm -fr /tmp/powerlevel9k-test
+
+  # Reset redeclaration of p9k::prepare_segment
+  __p9k_reset_prepare_segment
 }
 
 function testRamSegmentWorksOnOsx() {
@@ -38,6 +46,7 @@ Pages active:                           1623792.
 Pages inactive:                         1313411.
 '"
 
+  __p9k_make_prepare_segment_print "left" "1"
   local __P9K_OS="OSX" # Fake OSX
 
   assertEquals "%K{003} %F{000}RAM %F{000}6.15G " "$(prompt_ram left 1 false ${FOLDER})"
@@ -49,6 +58,7 @@ function testRamSegmentWorksOnBsd() {
   mkdir -p var/run
   echo "avail memory 5678B 299687 4444G 299" > var/run/dmesg.boot
 
+  __p9k_make_prepare_segment_print "left" "1"
   local __P9K_OS="BSD" # Fake BSD
 
   assertEquals "%K{003} %F{000}RAM %F{000}0.29M " "$(prompt_ram left 1 false ${FOLDER})"
@@ -59,6 +69,7 @@ function testRamSegmentWorksOnLinux() {
   mkdir proc
   echo "MemAvailable: 299687" > proc/meminfo
 
+  __p9k_make_prepare_segment_print "left" "1"
   local __P9K_OS="Linux" # Fake Linux
 
   assertEquals "%K{003} %F{000}RAM %F{000}0.29G " "$(prompt_ram left 1 false ${FOLDER})"
