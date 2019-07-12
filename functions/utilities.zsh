@@ -537,3 +537,27 @@ function p9k::parseIp() {
 
   return 1
 }
+
+# __p9k_wrap_zle_widget zle-keymap-select _p9k_zle_keymap_select
+__p9k_wrap_zle_widget() {
+  local widget=$1
+  local hook=$2
+  local orig=p9k-orig-$widget
+  case $widgets[$widget] in
+		user:*)
+			zle -N $orig ${widgets[$widget]#user:}
+			;;
+		builtin)
+			eval "_p9k_orig_${(q)widget}() { zle .${(q)widget} }"
+			zle -N $orig _p9k_orig_$widget
+			;;
+	esac
+
+  local wrapper=_p9k_wrapper_$widget_$hook
+  eval "function ${(q)wrapper}() {
+    ${(q)hook} \"\$@\"
+    (( \$+widgets[${(q)orig}] )) && zle ${(q)orig} -- \"\$@\"
+	}"
+
+	zle -N -- $widget $wrapper
+}
