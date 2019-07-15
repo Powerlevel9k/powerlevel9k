@@ -36,7 +36,7 @@ function testNewlineMakesPreviousSegmentEndWell() {
 
     local newline=$'\n'
 
-    assertEquals "%K{015} %F{000}\${(Q)\${:-\"world1\"}} %k%F{015}\${(Q)\${:-\"${newline}\"}}%k%FNONE%f " "$(__p9k_build_left_prompt)"
+    assertEquals "%K{015} %F{000}\${(Q)\${:-\"world1\"}} %k%F{015}\${(Q)\${:-\"${newline}\"}}%k%f " "$(__p9k_build_left_prompt)"
 }
 
 source shunit2/shunit2

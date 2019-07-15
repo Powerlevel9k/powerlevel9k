@@ -56,9 +56,15 @@ function __p9k_left_prompt_segment() {
   [[ "${3}" == "true" ]] \
       && __p9k_segment_should_be_joined ${current_index} ${last_left_element_index} "$P9K_LEFT_PROMPT_ELEMENTS" && joined=true
   local content
+  local SEGMENT_ICON
   # Support for bold segment
-  [[ -n ${4} ]] && [[ $__P9K_DATA[${STATEFUL_NAME}_BD] == true ]] && content="%B${4}%b" || content="${4}"
-  local SEGMENT_ICON="${5}"
+  [[ -n "${4}" ]] && [[ $__P9K_DATA[${STATEFUL_NAME}_BD] == true ]] \
+    && content="%B${4}%b" \
+    || content="${4}"
+  [[ -n "${5}" ]] && [[ $__P9K_DATA[${STATEFUL_NAME}_ICON_BD] == true ]] \
+    && SEGMENT_ICON="%B${5}%b" \
+    || SEGMENT_ICON="${5}"
+
   # Escape all unwanted characters. This works by quoting the content
   # and set it up as a fallback. This has to be done, as we need to
   # remove one layer of quoting when ZSH evaluates this variable.
@@ -112,7 +118,7 @@ function __p9k_left_prompt_segment() {
 # @noargs
 ##
 function __p9k_left_prompt_end() {
-  if [[ -n ${CURRENT_BG} ]]; then
+  if [[ -n ${CURRENT_BG} && ${(U)CURRENT_BG} != 'NONE' ]]; then
     echo -n "%k%F${CURRENT_BG#%K}${__P9K_ICONS[LEFT_SEGMENT_SEPARATOR]}"
   else
     echo -n "%k"
@@ -148,9 +154,15 @@ function __p9k_right_prompt_segment() {
   local joined=false
   [[ "${3}" == "true" ]] && __p9k_segment_should_be_joined ${current_index} ${last_right_element_index} "$P9K_RIGHT_PROMPT_ELEMENTS" && joined=true
   local content
+  local SEGMENT_ICON
   # Support for bold segment
-  [[ -n "${4}" ]] && [[ $__P9K_DATA[${STATEFUL_NAME}_BD] == true ]] && content="%B${4}%b" || content="${4}"
-  local SEGMENT_ICON="${5}"
+  [[ -n "${4}" ]] && [[ $__P9K_DATA[${STATEFUL_NAME}_BD] == true ]] \
+    && content="%B${4}%b" \
+    || content="${4}"
+  [[ -n "${5}" ]] && [[ $__P9K_DATA[${STATEFUL_NAME}_ICON_BD] == true ]] \
+    && SEGMENT_ICON="%B${5}%b" \
+    || SEGMENT_ICON="${5}"
+
   # Escape all unwanted characters. This works by quoting the content
   # and set it up as a fallback. This has to be done, as we need to
   # remove one layer of quoting when ZSH evaluates this variable.
