@@ -23,7 +23,7 @@ function testLeftNormalSegmentsShouldNotBeJoined() {
   local P9K_CUSTOM_WORLD5="echo " # Print nothing to simulate unmet conditions
   local P9K_CUSTOM_WORLD6="echo world6"
 
-  assertEquals "%K{015} %F{000}world1  %F{000}world2  %F{000}world4  %F{000}world6 %k%F{015}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{015} %F{000}\${(Q)\${:-\"world1\"}}  %F{000}\${(Q)\${:-\"world2\"}}  %F{000}\${(Q)\${:-\"world4\"}}  %F{000}\${(Q)\${:-\"world6\"}} %k%F{015}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testLeftJoinedSegments() {
@@ -32,7 +32,7 @@ function testLeftJoinedSegments() {
   local P9K_CUSTOM_WORLD1="echo world1"
   local P9K_CUSTOM_WORLD2="echo world2"
 
-  assertEquals "%K{015} %F{000}world1 %F{000}world2 %k%F{015}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{015} %F{000}\${(Q)\${:-\"world1\"}} %F{000}\${(Q)\${:-\"world2\"}} %k%F{015}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testLeftTransitiveJoinedSegments() {
@@ -42,7 +42,7 @@ function testLeftTransitiveJoinedSegments() {
   local P9K_CUSTOM_WORLD2="echo world2"
   local P9K_CUSTOM_WORLD3="echo world3"
 
-  assertEquals "%K{015} %F{000}world1 %F{000}world2 %F{000}world3 %k%F{015}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{015} %F{000}\${(Q)\${:-\"world1\"}} %F{000}\${(Q)\${:-\"world2\"}} %F{000}\${(Q)\${:-\"world3\"}} %k%F{015}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testLeftTransitiveJoiningWithConditionalJoinedSegment() {
@@ -53,7 +53,7 @@ function testLeftTransitiveJoiningWithConditionalJoinedSegment() {
   local P9K_CUSTOM_WORLD3="echo " # Print nothing to simulate unmet conditions
   local P9K_CUSTOM_WORLD4="echo world4"
 
-  assertEquals "%K{015} %F{000}world1 %F{000}world2 %F{000}world4 %k%F{015}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{015} %F{000}\${(Q)\${:-\"world1\"}} %F{000}\${(Q)\${:-\"world2\"}} %F{000}\${(Q)\${:-\"world4\"}} %k%F{015}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testLeftPromotingSegmentWithConditionalPredecessor() {
@@ -63,7 +63,7 @@ function testLeftPromotingSegmentWithConditionalPredecessor() {
   local P9K_CUSTOM_WORLD2="echo " # Print nothing to simulate unmet conditions
   local P9K_CUSTOM_WORLD3="echo world3"
 
-  assertEquals "%K{015} %F{000}world1  %F{000}world3 %k%F{015}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{015} %F{000}\${(Q)\${:-\"world1\"}}  %F{000}\${(Q)\${:-\"world3\"}} %k%F{015}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testLeftPromotingSegmentWithJoinedConditionalPredecessor() {
@@ -74,7 +74,7 @@ function testLeftPromotingSegmentWithJoinedConditionalPredecessor() {
   local P9K_CUSTOM_WORLD3="echo " # Print nothing to simulate unmet conditions
   local P9K_CUSTOM_WORLD4="echo world4"
 
-  assertEquals "%K{015} %F{000}world1  %F{000}world4 %k%F{015}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{015} %F{000}\${(Q)\${:-\"world1\"}}  %F{000}\${(Q)\${:-\"world4\"}} %k%F{015}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testLeftPromotingSegmentWithDeepJoinedConditionalPredecessor() {
@@ -87,7 +87,7 @@ function testLeftPromotingSegmentWithDeepJoinedConditionalPredecessor() {
   local P9K_CUSTOM_WORLD5="echo " # Print nothing to simulate unmet conditions
   local P9K_CUSTOM_WORLD6="echo world6"
 
-  assertEquals "%K{015} %F{000}world1  %F{000}world4 %F{000}world6 %k%F{015}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{015} %F{000}\${(Q)\${:-\"world1\"}}  %F{000}\${(Q)\${:-\"world4\"}} %F{000}\${(Q)\${:-\"world6\"}} %k%F{015}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testLeftJoiningBuiltinSegmentWorks() {
@@ -96,7 +96,7 @@ function testLeftJoiningBuiltinSegmentWorks() {
   alias php="echo PHP 1.2.3 "
   source segments/php_version/php_version.p9k
 
-  assertEquals "%K{013} %F{255}PHP %F{255}1.2.3 %F{255}PHP %F{255}1.2.3 %k%F{013}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{013} %F{255}PHP %F{255}\${(Q)\${:-\"1.2.3\"}} %F{255}PHP %F{255}\${(Q)\${:-\"1.2.3\"}} %k%F{013}%f " "$(__p9k_build_left_prompt)"
 
   unalias php
 }
@@ -112,7 +112,7 @@ function testRightNormalSegmentsShouldNotBeJoined() {
   local P9K_CUSTOM_WORLD5="echo " # Print nothing to simulate unmet conditions
   local P9K_CUSTOM_WORLD6="echo world6"
 
-  assertEquals "%F{015}%K{015}%F{000} world1 %F{000}%K{015}%F{000} world2 %F{000}%K{015}%F{000} world4 %F{000}%K{015}%F{000} world6 " "$(__p9k_build_right_prompt)"
+  assertEquals "%F{015}%K{015}%F{000} \${(Q)\${:-\"world1\"}} %F{000}%K{015}%F{000} \${(Q)\${:-\"world2\"}} %F{000}%K{015}%F{000} \${(Q)\${:-\"world4\"}} %F{000}%K{015}%F{000} \${(Q)\${:-\"world6\"}} " "$(__p9k_build_right_prompt)"
 }
 
 function testRightJoinedSegments() {
@@ -122,7 +122,7 @@ function testRightJoinedSegments() {
   local P9K_CUSTOM_WORLD1="echo world1"
   local P9K_CUSTOM_WORLD2="echo world2"
 
-  assertEquals "%F{015}%K{015}%F{000} world1 %K{015}%F{000}world2 " "$(__p9k_build_right_prompt)"
+  assertEquals "%F{015}%K{015}%F{000} \${(Q)\${:-\"world1\"}} %K{015}%F{000}\${(Q)\${:-\"world2\"}} " "$(__p9k_build_right_prompt)"
 }
 
 function testRightTransitiveJoinedSegments() {
@@ -133,7 +133,7 @@ function testRightTransitiveJoinedSegments() {
   local P9K_CUSTOM_WORLD2="echo world2"
   local P9K_CUSTOM_WORLD3="echo world3"
 
-  assertEquals "%F{015}%K{015}%F{000} world1 %K{015}%F{000}world2 %K{015}%F{000}world3 " "$(__p9k_build_right_prompt)"
+  assertEquals "%F{015}%K{015}%F{000} \${(Q)\${:-\"world1\"}} %K{015}%F{000}\${(Q)\${:-\"world2\"}} %K{015}%F{000}\${(Q)\${:-\"world3\"}} " "$(__p9k_build_right_prompt)"
 }
 
 function testRightTransitiveJoiningWithConditionalJoinedSegment() {
@@ -145,7 +145,7 @@ function testRightTransitiveJoiningWithConditionalJoinedSegment() {
   local P9K_CUSTOM_WORLD3="echo " # Print nothing to simulate unmet conditions
   local P9K_CUSTOM_WORLD4="echo world4"
 
-  assertEquals "%F{015}%K{015}%F{000} world1 %K{015}%F{000}world2 %K{015}%F{000}world4 " "$(__p9k_build_right_prompt)"
+  assertEquals "%F{015}%K{015}%F{000} \${(Q)\${:-\"world1\"}} %K{015}%F{000}\${(Q)\${:-\"world2\"}} %K{015}%F{000}\${(Q)\${:-\"world4\"}} " "$(__p9k_build_right_prompt)"
 }
 
 function testRightPromotingSegmentWithConditionalPredecessor() {
@@ -156,7 +156,7 @@ function testRightPromotingSegmentWithConditionalPredecessor() {
   local P9K_CUSTOM_WORLD2="echo " # Print nothing to simulate unmet conditions
   local P9K_CUSTOM_WORLD3="echo world3"
 
-  assertEquals "%F{015}%K{015}%F{000} world1 %F{000}%K{015}%F{000} world3 " "$(__p9k_build_right_prompt)"
+  assertEquals "%F{015}%K{015}%F{000} \${(Q)\${:-\"world1\"}} %F{000}%K{015}%F{000} \${(Q)\${:-\"world3\"}} " "$(__p9k_build_right_prompt)"
 }
 
 function testRightPromotingSegmentWithJoinedConditionalPredecessor() {
@@ -168,7 +168,7 @@ function testRightPromotingSegmentWithJoinedConditionalPredecessor() {
   local P9K_CUSTOM_WORLD3="echo " # Print nothing to simulate unmet conditions
   local P9K_CUSTOM_WORLD4="echo world4"
 
-  assertEquals "%F{015}%K{015}%F{000} world1 %F{000}%K{015}%F{000} world4 " "$(__p9k_build_right_prompt)"
+  assertEquals "%F{015}%K{015}%F{000} \${(Q)\${:-\"world1\"}} %F{000}%K{015}%F{000} \${(Q)\${:-\"world4\"}} " "$(__p9k_build_right_prompt)"
 }
 
 function testRightPromotingSegmentWithDeepJoinedConditionalPredecessor() {
@@ -182,7 +182,7 @@ function testRightPromotingSegmentWithDeepJoinedConditionalPredecessor() {
   local P9K_CUSTOM_WORLD5="echo " # Print nothing to simulate unmet conditions
   local P9K_CUSTOM_WORLD6="echo world6"
 
-  assertEquals "%F{015}%K{015}%F{000} world1 %F{000}%K{015}%F{000} world4 %K{015}%F{000}world6 " "$(__p9k_build_right_prompt)"
+  assertEquals "%F{015}%K{015}%F{000} \${(Q)\${:-\"world1\"}} %F{000}%K{015}%F{000} \${(Q)\${:-\"world4\"}} %K{015}%F{000}\${(Q)\${:-\"world6\"}} " "$(__p9k_build_right_prompt)"
 }
 
 function testRightJoiningBuiltinSegmentWorks() {
@@ -192,7 +192,7 @@ function testRightJoiningBuiltinSegmentWorks() {
   alias php="echo PHP 1.2.3"
   source segments/php_version/php_version.p9k
 
-  assertEquals "%F{013}%K{013}%F{255} 1.2.3 %F{255}PHP%f %K{013}%F{255}1.2.3 %F{255}PHP%f " "$(__p9k_build_right_prompt)"
+  assertEquals "%F{013}%K{013}%F{255} \${(Q)\${:-\"1.2.3\"}} %F{255}PHP%f %K{013}%F{255}\${(Q)\${:-\"1.2.3\"}} %F{255}PHP%f " "$(__p9k_build_right_prompt)"
 
   unalias php
 }

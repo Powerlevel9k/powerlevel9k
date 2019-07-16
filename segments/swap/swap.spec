@@ -40,7 +40,7 @@ function testSwapSegmentWorksOnOsx() {
 
   local __P9K_OS="OSX" # Fake OSX
 
-  assertEquals "%K{003} %F{000}SWP %F{000}1.58G " "$(prompt_swap left 1 false ${FOLDER})"
+  assertEquals "%K{003} %F{000}SWP %F{000}\${(Q)\${:-\"1.58G\"}} " "$(prompt_swap left 1 false ${FOLDER})"
 
   unfunction sysctl
 }
@@ -54,7 +54,7 @@ function testSwapSegmentWorksOnLinux() {
 
   local __P9K_OS="Linux" # Fake Linux
 
-  assertEquals "%K{003} %F{000}SWP %F{000}0.95G " "$(prompt_swap left 1 false ${FOLDER})"
+  assertEquals "%K{003} %F{000}SWP %F{000}\${(Q)\${:-\"0.95G\"}} " "$(prompt_swap left 1 false ${FOLDER})"
 }
 
 source shunit2/shunit2

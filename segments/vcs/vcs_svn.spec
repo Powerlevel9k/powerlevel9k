@@ -53,7 +53,7 @@ function testVcsSegmentDoesNotLeakPercentEscapesInSvnRepo() {
   svn checkout "${REPO_URL}" "${branchFolder}" >/dev/null
   cd "${branchFolder}"
 
-  assertEquals "%K{002} %F{000}svn-repo:1 %k%F{002}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{002} %F{000}\${(Q)\${:-\"svn-repo:1\"}} %k%F{002}%f " "$(__p9k_build_left_prompt)"
 }
 
 source shunit2/shunit2

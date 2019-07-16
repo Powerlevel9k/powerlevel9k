@@ -44,7 +44,7 @@ function testGo() {
 
   PWD="$HOME/go/src/github.com/bhilburn/powerlevel9k"
 
-  assertEquals "%K{002} %F{255}Go %F{255}go1.5.3 %k%F{002}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{002} %F{255}Go %F{255}\${(Q)\${:-\"go1.5.3\"}} %k%F{002}%f " "$(__p9k_build_left_prompt)"
 
   unset P9K_GO_ICON
   unset PWD
@@ -58,7 +58,7 @@ function testGoSegmentPrintsNothingIfEmptyGopath() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(custom_world go_version)
 
-  assertEquals "%K{015} %F{000}world %k%F{015}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{015} %F{000}\${(Q)\${:-\"world\"}} %k%F{015}%f " "$(__p9k_build_left_prompt)"
 
   unset P9K_LEFT_PROMPT_ELEMENTS
   unset P9K_CUSTOM_WORLD
@@ -71,7 +71,7 @@ function testGoSegmentPrintsNothingIfNotInGopath() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(custom_world go_version)
 
-  assertEquals "%K{015} %F{000}world %k%F{015}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{015} %F{000}\${(Q)\${:-\"world\"}} %k%F{015}%f " "$(__p9k_build_left_prompt)"
 
   unset P9K_LEFT_PROMPT_ELEMENTS
   unset P9K_CUSTOM_WORLD
@@ -83,7 +83,7 @@ function testGoSegmentPrintsNothingIfGoIsNotAvailable() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(custom_world go_version)
 
-  assertEquals "%K{015} %F{000}world %k%F{015}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{015} %F{000}\${(Q)\${:-\"world\"}} %k%F{015}%f " "$(__p9k_build_left_prompt)"
 
   unset P9K_LEFT_PROMPT_ELEMENTS
   unset P9K_CUSTOM_WORLD

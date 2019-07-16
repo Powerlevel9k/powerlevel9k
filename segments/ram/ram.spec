@@ -40,7 +40,7 @@ Pages inactive:                         1313411.
 
   local __P9K_OS="OSX" # Fake OSX
 
-  assertEquals "%K{003} %F{000}RAM %F{000}6.15G " "$(prompt_ram left 1 false ${FOLDER})"
+  assertEquals "%K{003} %F{000}RAM %F{000}\${(Q)\${:-\"6.15G\"}} " "$(prompt_ram left 1 false ${FOLDER})"
 
   unalias vm_stat
 }
@@ -51,7 +51,7 @@ function testRamSegmentWorksOnBsd() {
 
   local __P9K_OS="BSD" # Fake BSD
 
-  assertEquals "%K{003} %F{000}RAM %F{000}0.29M " "$(prompt_ram left 1 false ${FOLDER})"
+  assertEquals "%K{003} %F{000}RAM %F{000}\${(Q)\${:-\"0.29M\"}} " "$(prompt_ram left 1 false ${FOLDER})"
   return 0
 }
 
@@ -61,7 +61,7 @@ function testRamSegmentWorksOnLinux() {
 
   local __P9K_OS="Linux" # Fake Linux
 
-  assertEquals "%K{003} %F{000}RAM %F{000}0.29G " "$(prompt_ram left 1 false ${FOLDER})"
+  assertEquals "%K{003} %F{000}RAM %F{000}\${(Q)\${:-\"0.29G\"}} " "$(prompt_ram left 1 false ${FOLDER})"
 }
 
 source shunit2/shunit2

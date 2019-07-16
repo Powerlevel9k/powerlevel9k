@@ -6,6 +6,7 @@ setopt shwordsplit
 SHUNIT_PARENT=$0
 
 function setUp() {
+  emulate -L zsh
   export TERM="xterm-256color"
   local -a P9K_RIGHT_PROMPT_ELEMENTS
   P9K_RIGHT_PROMPT_ELEMENTS=()
@@ -16,6 +17,29 @@ function setUp() {
 
   # Unset mode, so that user settings
   # do not interfere with tests
+}
+
+function oneTimeSetUp() {
+  function stripEsc() {
+    local clean_string="" escape_found=false
+    for (( i = 0; i < ${#1}; i++ )); do
+      case ${1[i]}; in
+        "")  clean_string+="<Esc>"; escape_found=true ;; # escape character
+        "[")  if [[ ${escape_found} == true ]]; then
+              escape_found=false
+            else
+              clean_string+="${1[i]}"
+            fi
+            ;;
+        *)    clean_string+="${1[i]}" ;;
+      esac
+    done
+    echo "${clean_string}"
+  }
+}
+
+function oneTimeTearDown() {
+  unfunction stripEsc
 }
 
 function testUsingUnsetVariables() {
@@ -29,7 +53,7 @@ function testJoinedSegments() {
   local P9K_LEFT_PROMPT_ELEMENTS=(dir dir_joined)
   cd /tmp
 
-  assertEquals "%K{004} %F{000}/tmp %F{000}/tmp %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{004} %F{000}\${(Q)\${:-\"/tmp\"}} %F{000}\${(Q)\${:-\"/tmp\"}} %k%F{004}%f " "$(__p9k_build_left_prompt)"
 
   cd -
 }
@@ -40,7 +64,7 @@ function testTransitiveJoinedSegments() {
   source segments/root_indicator/root_indicator.p9k
   cd /tmp
 
-  assertEquals "%K{004} %F{000}/tmp %F{000}/tmp %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{004} %F{000}\${(Q)\${:-\"/tmp\"}} %F{000}\${(Q)\${:-\"/tmp\"}} %k%F{004}%f " "$(__p9k_build_left_prompt)"
 
   cd -
 }
@@ -54,7 +78,7 @@ function testJoiningWithConditionalSegment() {
 
   cd /tmp
 
-  assertEquals "%K{004} %F{000}/tmp  %F{000}/tmp %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{004} %F{000}\${(Q)\${:-\"/tmp\"}}  %F{000}\${(Q)\${:-\"/tmp\"}} %k%F{004}%f " "$(__p9k_build_left_prompt)"
 
   cd -
 }
@@ -67,7 +91,7 @@ function testDynamicColoringOfSegmentsWork() {
 
   cd /tmp
 
-  assertEquals "%K{001} %F{000}/tmp %k%F{001}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{001} %F{000}\${(Q)\${:-\"/tmp\"}} %k%F{001}%f " "$(__p9k_build_left_prompt)"
 
   cd -
 }
@@ -81,7 +105,7 @@ function testDynamicColoringOfVisualIdentifiersWork() {
 
   cd /tmp
 
-  assertEquals "%K{004} %F{002}icon-here %F{000}/tmp %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{004} %F{002}icon-here %F{000}\${(Q)\${:-\"/tmp\"}} %k%F{004}%f " "$(__p9k_build_left_prompt)"
 
   cd -
 }
@@ -101,7 +125,7 @@ function testColoringOfVisualIdentifiersDoesNotOverwriteColoringOfSegment() {
 
   cd /tmp
 
-  assertEquals "%K{003} %F{002}icon-here %F{001}/tmp %k%F{003}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{003} %F{002}icon-here %F{001}\${(Q)\${:-\"/tmp\"}} %k%F{003}%f " "$(__p9k_build_left_prompt)"
 
   cd -
 }
@@ -118,7 +142,7 @@ function testOverwritingIconsWork() {
   #cd ~/$testFolder
 
   cd /tmp
-  assertEquals "%K{004} %F{000}icon-here %F{000}/tmp %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{004} %F{000}icon-here %F{000}\${(Q)\${:-\"/tmp\"}} %k%F{004}%f " "$(__p9k_build_left_prompt)"
 
   cd -
   # rm -fr ~/$testFolder
@@ -137,9 +161,8 @@ function testNewlineOnRpromptCanBeDisabled() {
   __p9k_prepare_prompts
 
   local nl=$'\n'
-  #               ╭─[39m[0m[49m[107m [30mworld [49m[97m[39m  ╰─ [1A[39m[0m[49m[97m[107m[30m rworld [00m[1B
-  local expected="╭─[39m[0m[49m[107m [30mworld [49m[97m[39m ${nl}╰─ [1A[39m[0m[49m[97m[107m[30m rworld [00m[1B"
-  local _real="$(print -P ${PROMPT}${RPROMPT})"
+  local expected="╭─%f%b%k%K{015} %F{000}\${(Q)\${:-\"world\"}} %k%F{015}%f ${nl}╰─ %{<Esc>1A%}%f%b%k%F{015}%K{015}%F{000} \${(Q)\${:-\"rworld\"}} %{<Esc>00m%}%{<Esc>1B%"
+  local _real=$(stripEsc "${PROMPT}${RPROMPT}")
 
   # use this to debug output with special escape sequences
   # new lines for escape codes that move output one line above
@@ -151,8 +174,7 @@ function testNewlineOnRpromptCanBeDisabled() {
   # echo "\n__3__\n"
   # set +vx;
 
-  assertEquals "$expected" "$_real"
-
+  assertEquals "${expected}" "${_real}"
 }
 
 source shunit2/shunit2

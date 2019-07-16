@@ -51,6 +51,10 @@ else
 fi
 #readonly __P9K_DIRECTORY
 
+autoload -U is-at-least
+__P9K_USE_PRINT_V=false
+is-at-least 5.3 && __P9K_USE_PRINT_V=true
+
 ################################################################
 # Source utility functions
 ################################################################
