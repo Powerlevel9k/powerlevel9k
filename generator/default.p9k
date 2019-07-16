@@ -450,6 +450,9 @@ local NEWLINE='
     repeat ${P9K_PROMPT_ADD_NEWLINE_COUNT:-1} { NEWLINES+=${NEWLINE} }
     PROMPT="${NEWLINES}${PROMPT}"
   fi
+
+  # Make icons appear properly
+  PROMPT="$(echo -n "${PROMPT}")"
 }
 
 p9k::set_default P9K_IGNORE_TERM_COLORS false
