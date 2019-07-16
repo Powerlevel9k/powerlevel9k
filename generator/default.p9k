@@ -404,8 +404,6 @@ p9k::set_default P9K_PROMPT_ADD_NEWLINE false
 # @noargs
 ##
 function __p9k_prepare_prompts() {
-  local RPROMPT_PREFIX RPROMPT_SUFFIX
-
   _P9K_COMMAND_DURATION=$((EPOCHREALTIME - _P9K_TIMER_START))
 
   # Reset start time
@@ -426,10 +424,10 @@ local NEWLINE='
     PROMPT="${NEWLINES}${PROMPT}"
   fi
 
-  if [[ ${P9K_DISABLE_RPROMPT} != true ]]; then
-    RPROMPT="${P9K_RPROMPT_PREFIX}%f%b%k$(__p9k_build_right_prompt)%{${reset_color}%}${P9K_RPROMPT_SUFFIX}"
-    local right="${P9K_RPROMPT_PREFIX}${RPROMPT}${RPROMPT_SUFFIX}"
-    if [[ $P9K_PROMPT_ON_NEWLINE != true || $P9K_RPROMPT_ON_NEWLINE == true ]]; then
+  if [[ ${P9K_DISABLE_RPROMPT:-} != true ]]; then
+    RPROMPT="${P9K_RPROMPT_PREFIX:-}%f%b%k$(__p9k_build_right_prompt)%{${reset_color}%}${P9K_RPROMPT_SUFFIX:-}"
+    local right="${P9K_RPROMPT_PREFIX:-}${RPROMPT}${P9K_RPROMPT_SUFFIX:-}"
+    if [[ ${P9K_PROMPT_ON_NEWLINE:-} != true || ${P9K_RPROMPT_ON_NEWLINE:-} == true ]]; then
       RPROMPT=$right
     else
       unset _P9K_RPROMPT_OVERRIDE
@@ -443,7 +441,7 @@ local NEWLINE='
     _LEFT_PROMPT_SUFFIX="${NEWLINE}${__P9K_ICONS[MULTILINE_LAST_PROMPT_PREFIX]}"
   fi
 
-  PROMPT="${_LEFT_PROMPT_PREFIX}%f%b%k$(__p9k_build_left_prompt)%{${reset_color}%}${_LEFT_PROMPT_SUFFIX}"
+  PROMPT="${_LEFT_PROMPT_PREFIX:-}%f%b%k$(__p9k_build_left_prompt)%{${reset_color}%}${_LEFT_PROMPT_SUFFIX:-}"
 }
 
 p9k::set_default P9K_IGNORE_TERM_COLORS false
