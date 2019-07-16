@@ -22,7 +22,7 @@ function setUp() {
 function oneTimeSetUp() {
   function stripEsc() {
     local clean_string="" escape_found=false
-    for (( i = 0; i < ${#1}; i++ )); do
+    for (( i = 1; i <= ${#1}; i++ )); do
       case ${1[i]}; in
         "")  clean_string+="<Esc>"; escape_found=true ;; # escape character
         "[")  if [[ ${escape_found} == true ]]; then
@@ -106,7 +106,7 @@ function testStatusSegmentIntegrated() {
   false; __p9k_save_retvals; __p9k_prepare_prompts
 
   local _actual=$(stripEsc "${(e)PROMPT}")
-  assertEquals "%f%b%k%K{000} %F{001}✘ %k%F{000}%f %{<Esc>00m%" "${_actual}"
+  assertEquals "%f%b%k%K{000} %F{001}✘ %k%F{000}%f %{<Esc>00m%}" "${_actual}"
 }
 
 source shunit2/shunit2

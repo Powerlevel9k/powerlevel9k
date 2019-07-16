@@ -22,7 +22,7 @@ function setUp() {
 function oneTimeSetUp() {
   function stripEsc() {
     local clean_string="" escape_found=false
-    for (( i = 0; i < ${#1}; i++ )); do
+    for (( i = 1; i <= ${#1}; i++ )); do
       case ${1[i]}; in
         "")  clean_string+="<Esc>"; escape_found=true ;; # escape character
         "[")  if [[ ${escape_found} == true ]]; then
@@ -161,7 +161,7 @@ function testNewlineOnRpromptCanBeDisabled() {
   __p9k_prepare_prompts
 
   local nl=$'\n'
-  local expected="╭─%f%b%k%K{015} %F{000}\${(Q)\${:-\"world\"}} %k%F{015}%f %{<Esc>00m%}${nl}╰─ %f%b%k%F{015}%K{015}%F{000} \${(Q)\${:-\"rworld\"}} %{<Esc>00m%"
+  local expected="╭─%f%b%k%K{015} %F{000}\${(Q)\${:-\"world\"}} %k%F{015}%f %{<Esc>00m%}${nl}╰─ %f%b%k%F{015}%K{015}%F{000} \${(Q)\${:-\"rworld\"}} %{<Esc>00m%}"
   local _real=$(stripEsc "${PROMPT}${RPROMPT}")
 
   # use this to debug output with special escape sequences
