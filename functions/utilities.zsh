@@ -101,10 +101,14 @@ function __p9k_detect_terminal() {
       fi
       local pid=$$ termtest=''
       while true; do
+        if test "$pid" = "1" -o "$pid" = ""; then
+          __P9K_TERMINAL="unknown"
+          return
+        fi
         proc_stat=(${(@f)$(</proc/${pid}/stat)})
         termtest=${proc_stat[2]//[()]/}
         case "${termtest}" in
-          gnome-terminal|guake|konsole|rxvt|termite|urxvt|xterm|yakuake)
+          gnome-terminal|guake|konsole|rxvt|termite|urxvt|xterm|yakuake|xfce4-terminal)
             __P9K_TERMINAL="${termtest}"
             return
           ;;
@@ -116,10 +120,6 @@ function __p9k_detect_terminal() {
             fi
           ;;
         esac
-        if test "$pid" = "1" -o "$pid" = ""; then
-          __P9K_TERMINAL="unknown"
-          return
-        fi
         pid=${proc_stat[4]}
       done
     fi

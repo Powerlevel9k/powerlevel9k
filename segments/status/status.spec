@@ -34,7 +34,7 @@ function testStatusWorksAsExpectedIfReturnCodeIsZeroAndVerboseIsSet() {
   local P9K_STATUS_HIDE_SIGNAME=true
   local P9K_LEFT_PROMPT_ELEMENTS=(status)
 
-  assertEquals "%K{000} %F{002}✔ %F{002}\${(Q)\${:-\"\"}} %k%F{000}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{000} %F{002}✔ %k%F{000}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testStatusInGeneralErrorCase() {
@@ -63,7 +63,7 @@ function testStatusCrossWinsOverVerbose() {
   local P9K_STATUS_VERBOSE=true
   local P9K_STATUS_CROSS=true
 
-  assertEquals "%K{000} %F{001}✘ %F{001}\${(Q)\${:-\"\"}} %k%F{000}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{000} %F{001}✘ %k%F{000}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testStatusShowsSignalNameInErrorCase() {
@@ -82,7 +82,7 @@ function testStatusSegmentIntegrated() {
 
   false; __p9k_save_retvals; __p9k_prepare_prompts
 
-  assertEquals "%f%b%k%K{000} %F{001}✘ %F{001} %k%F{000}%f " "${(e)PROMPT}"
+  assertEquals "%f%b%k%K{000} %F{001}✘ %k%F{000}%f " "${(e)PROMPT}"
 }
 
 source shunit2/shunit2

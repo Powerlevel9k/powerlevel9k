@@ -47,7 +47,7 @@ function testBackgroundJobsSegmentWorksWithOneBackgroundJob() {
 
   # Load Powerlevel9k
   source segments/background_jobs/background_jobs.p9k
-  assertEquals "%K{003} %F{000}⚙ %F{000}\${(Q)\${:-\"\"}} %k%F{003}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{003} %F{000}⚙ %k%F{003}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testBackgroundJobsSegmentWorksWithMultipleBackgroundJobs() {
