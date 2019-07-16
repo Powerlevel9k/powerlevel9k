@@ -68,7 +68,7 @@ function __p9k_left_prompt_segment() {
   # Escape all unwanted characters. This works by quoting the content
   # and set it up as a fallback. This has to be done, as we need to
   # remove one layer of quoting when ZSH evaluates this variable.
-  content="\${(Q)\${:-${(qqq)content}}}"
+  [[ -n "${4}" ]] && content="\${(Q)\${:-${(qqq)content}}}"
 
   local bg=$__P9K_DATA[${STATEFUL_NAME}_BG]
   local fg=$__P9K_DATA[${STATEFUL_NAME}_FG]
@@ -166,7 +166,7 @@ function __p9k_right_prompt_segment() {
   # Escape all unwanted characters. This works by quoting the content
   # and set it up as a fallback. This has to be done, as we need to
   # remove one layer of quoting when ZSH evaluates this variable.
-  content="\${(Q)\${:-${(qqq)content}}}"
+  [[ -n "${4}" ]] && content="\${(Q)\${:-${(qqq)content}}}"
 
   local bg=$__P9K_DATA[${STATEFUL_NAME}_BG]
   local fg=$__P9K_DATA[${STATEFUL_NAME}_FG]
