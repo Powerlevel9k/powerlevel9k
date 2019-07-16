@@ -47,7 +47,7 @@ function testSegmentOnRightSide() {
   __p9k_prepare_prompts
 
   local _actual=$(stripEsc "${(e)RPROMPT}")
-  assertEquals "%{%}%f%b%k%F{015}%K{015}%F{000} world1 %F{000}%K{015}%F{000} world2 %{<Esc>00m%}%{%" "${_actual}"
+  assertEquals "%f%b%k%F{015}%K{015}%F{000} world1 %F{000}%K{015}%F{000} world2 %{<Esc>00m%" "${_actual}"
 }
 
 function testDisablingRightPrompt() {
@@ -73,7 +73,8 @@ function testLeftMultilinePrompt() {
   __p9k_prepare_prompts
 
   local nl=$'\n'
-  assertEquals "╭─%f%b%k%K{015} %F{000}world1 %k%F{015}%f ${nl}╰─ " "${(e)PROMPT}"
+  local _actual=$(stripEsc "${(e)PROMPT}")
+  assertEquals "╭─%f%b%k%K{015} %F{000}world1 %k%F{015}%f %{<Esc>00m%}${nl}╰─" "${_actual}"
 }
 
 function testRightPromptOnSameLine() {
@@ -89,7 +90,7 @@ function testRightPromptOnSameLine() {
   __p9k_prepare_prompts
 
   local _actual=$(stripEsc "${(e)RPROMPT}")
-  assertEquals "%{<Esc>1A%}%f%b%k%F{015}%K{015}%F{000} world1 %{<Esc>00m%}%{<Esc>1B%" "${_actual}"
+  assertEquals "%f%b%k%F{015}%K{015}%F{000} world1 %{<Esc>00m%" "${_actual}"
 }
 
 function testPrefixingFirstLineOnLeftPrompt() {
@@ -104,7 +105,8 @@ function testPrefixingFirstLineOnLeftPrompt() {
   __p9k_prepare_prompts
 
   local nl=$'\n'
-  assertEquals "XXX%f%b%k%K{015} %F{000}world1 %k%F{015}%f ${nl}╰─ " "${(e)PROMPT}"
+  local _actual=$(stripEsc "${(e)PROMPT}")
+  assertEquals "XXX%f%b%k%K{015} %F{000}world1 %k%F{015}%f %{<Esc>00m%}${nl}╰─" "${_actual}"
 }
 
 function testPrefixingSecondLineOnLeftPrompt() {
@@ -119,7 +121,8 @@ function testPrefixingSecondLineOnLeftPrompt() {
   __p9k_prepare_prompts
 
   local nl=$'\n'
-  assertEquals "╭─%f%b%k%K{015} %F{000}world1 %k%F{015}%f ${nl}XXX" "${(e)PROMPT}"
+  local _actual=$(stripEsc "${(e)PROMPT}")
+  assertEquals "╭─%f%b%k%K{015} %F{000}world1 %k%F{015}%f %{<Esc>00m%}${nl}XX" "${_actual}"
 }
 
 function testCustomStartEndSymbolsOnEdgeSegments() {

@@ -17,7 +17,30 @@ function setUp() {
   # Resets if someone has set these in his/hers env
   unset P9K_STATUS_VERBOSE
   unset P9K_STATUS_OK_IN_NON_VERBOSE
+}
+
+function oneTimeSetUp() {
+  function stripEsc() {
+    local clean_string="" escape_found=false
+    for (( i = 0; i < ${#1}; i++ )); do
+      case ${1[i]}; in
+        "")  clean_string+="<Esc>"; escape_found=true ;; # escape character
+        "[")  if [[ ${escape_found} == true ]]; then
+              escape_found=false
+            else
+              clean_string+="${1[i]}"
+            fi
+            ;;
+        *)    clean_string+="${1[i]}" ;;
+      esac
+    done
+    echo "${clean_string}"
   }
+}
+
+function oneTimeTearDown() {
+  unfunction stripEsc
+}
 
 function testStatusPrintsNothingIfReturnCodeIsZeroAndVerboseIsUnset() {
   local P9K_CUSTOM_WORLD='echo world'
@@ -82,7 +105,8 @@ function testStatusSegmentIntegrated() {
 
   false; __p9k_save_retvals; __p9k_prepare_prompts
 
-  assertEquals "%f%b%k%K{000} %F{001}✘ %k%F{000}%f " "${(e)PROMPT}"
+  local _actual=$(stripEsc "${(e)PROMPT}")
+  assertEquals "%f%b%k%K{000} %F{001}✘ %k%F{000}%f %{<Esc>00m%" "${_actual}"
 }
 
 source shunit2/shunit2
