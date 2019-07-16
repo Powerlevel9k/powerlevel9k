@@ -16,7 +16,7 @@
 
   ################################################################
   # Register segment default values
-  p9k::set_default P9K_VPN_IP_INTERFACE "tun"
+  p9k::set_default P9K_VPN_IP_INTERFACE "tun[^ ]*"
 }
 
 ################################################################

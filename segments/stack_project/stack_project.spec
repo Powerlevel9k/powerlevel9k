@@ -62,7 +62,7 @@ function testStackProjectSegment() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(stack_project)
 
-  assertEquals "%K{056} %F{015}λ= %F{015}Stack %k%F{056}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{056} %F{015}λ= %F{015}\${(Q)\${:-\"Stack\"}} %k%F{056}%f " "$(__p9k_build_left_prompt)"
 
   unalias stack
 }
@@ -75,7 +75,7 @@ function testStackProjectSegmentNoStackYaml() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(custom_world stack_project)
 
-  assertEquals "%K{015} %F{000}world %k%F{015}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{015} %F{000}\${(Q)\${:-\"world\"}} %k%F{015}%f " "$(__p9k_build_left_prompt)"
 
   unalias stack
   unalias __p9k_upsearch
@@ -87,7 +87,7 @@ function testStackProjectSegmentIfStackIsNotAvailable() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(custom_world stack_project)
 
-  assertEquals "%K{015} %F{000}world %k%F{015}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{015} %F{000}\${(Q)\${:-\"world\"}} %k%F{015}%f " "$(__p9k_build_left_prompt)"
 
   unalias stack
 }
@@ -98,7 +98,7 @@ function testStackProjectSegmentPrintsNothingIfStackIsNotAvailable() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(custom_world stack_project)
 
-  assertEquals "%K{015} %F{000}world %k%F{015}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{015} %F{000}\${(Q)\${:-\"world\"}} %k%F{015}%f " "$(__p9k_build_left_prompt)"
 
   unalias stack
 }

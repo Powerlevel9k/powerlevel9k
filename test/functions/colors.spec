@@ -37,6 +37,12 @@ function testIsSameColorDoesNotYieldNotEqualColorsTruthy() {
   assertFalse "p9k::is_same_color 'green' '003'"
 }
 
+function testGetColorCodeWithTrueColor() {
+  assertEquals '#fff8e7' "$(p9k::get_color '#fff8e7')"  # truecolor (hex)
+  assertEquals '137' "$(p9k::get_color '137')"          # number (dec)
+  assertEquals '100' "$(p9k::get_color 'yellow4')"      # named
+}
+
 function testBrightColorsWork() {
   # We had some code in the past that equalized bright colors
   # with normal ones. This code is now gone, and this test should

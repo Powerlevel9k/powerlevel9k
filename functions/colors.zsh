@@ -317,7 +317,7 @@ function __p9k_term_colors() {
 ##
 function p9k::get_color() {
   # no need to check numerical values
-  [[ "$1" != <-> ]] && 1=$(p9k::get_color_code $1)
+  [[ "$1" != <-> ]] && [[ "$1" != '#'* ]] && 1=$(p9k::get_color_code $1)
   echo -n "$1"
 }
 
