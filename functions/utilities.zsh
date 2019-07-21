@@ -203,14 +203,12 @@ function p9k::defined() {
 ##
 # @args
 #   $1 string The name of the variable that should be checked.
-#   $2 string The default value.
+#   $2 string flags, starting with a dash (like -a for array).
+#      Takes the same flags as typeset.
+#   $3 string The default value.
 ##
 # @returns
 #   Nothing.
-##
-# @note
-#   Typeset cannot set the value for an array, so this will only work
-#   for scalar values.
 ##
 function p9k::set_default() {
   emulate -L zsh
