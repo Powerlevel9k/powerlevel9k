@@ -13,7 +13,7 @@ Not every option can be changed at runtime.**
 |`P9K_PROMPT_ON_NEWLINE`|`false`|Display the prompt on the next line. Also check out the `newline` segment.|
 |`P9K_RPROMPT_ON_NEWLINE`|`false`|Display `RPROMPT` on the same line as `PROMPT` if `P9K_PROMPT_ON_NEWLINE=true`|
 |`P9K_MULTILINE_FIRST_PROMPT_PREFIX_ICON`|`╭─`|If the prompt is more than one line, this will be the prefix for the first line.|
-|`P9K_MULTILINE_NEWLINE_PROMPT_PREFIX_ICON`|`?`|If the prompt is at least tree lines, this will be the prefix for all lines that are neither the first nor the last.|
+|`P9K_MULTILINE_NEWLINE_PROMPT_PREFIX_ICON`|`├─`|If the prompt is at least tree lines, this will be the prefix for all lines that are neither the first nor the last.|
 |`P9K_MULTILINE_LAST_PROMPT_PREFIX_ICON`|`╰─`|If the prompt is more than one line, this will be the prefix for the last line.|
 |`P9K_PROMPT_ADD_NEWLINE`|`false`|Adds a newline before displaying the prompt|
 |`P9K_PROMPT_ADD_NEWLINE_COUNT`|`1`|Change the amound of newlines added if `P9K_PROMPT_ADD_NEWLINE=true`.|
