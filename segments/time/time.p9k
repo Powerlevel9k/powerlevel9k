@@ -15,6 +15,7 @@
   p9k::register_segment "TIME" "" "${DEFAULT_COLOR_INVERTED}" "${DEFAULT_COLOR}"  ''  $'\uE12E'  $'\uF017 '  $'\uF017 '  $'\uF017 '
 }
 
+p9k::set_default P9K_TIME_FORMAT "%D{%H:%M:%S}"
 ################################################################
 # @description
 #   Display the system time.
@@ -25,7 +26,5 @@
 #   $3 boolean Whether the segment should be joined
 ##
 prompt_time() {
-  p9k::set_default P9K_TIME_FORMAT "%D{%H:%M:%S}"
-
   p9k::prepare_segment "$0" "" $1 "$2" $3 "$P9K_TIME_FORMAT"
 }
