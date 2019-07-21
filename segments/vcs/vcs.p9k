@@ -180,6 +180,7 @@ function +vi-git-aheadbehind() {
   hook_com[misc]+=${(j::)gitstatus}
 }
 
+p9k::set_default P9K_VCS_SHORTEN_DELIMITER $'\u2026'
 function +vi-git-remotebranch() {
   local remote
   local branch_name="${hook_com[branch]}"
@@ -188,8 +189,6 @@ function +vi-git-remotebranch() {
   remote=${$(command git rev-parse --verify HEAD@{upstream} --symbolic-full-name 2>/dev/null)/refs\/(remotes|heads)\/}
 
   if [[ -n "$P9K_VCS_SHORTEN_LENGTH" ]] && [[ -n "$P9K_VCS_SHORTEN_MIN_LENGTH" ]]; then
-    p9k::set_default P9K_VCS_SHORTEN_DELIMITER $'\u2026'
-
     if [ ${#hook_com[branch]} -gt ${P9K_VCS_SHORTEN_MIN_LENGTH} ] && [ ${#hook_com[branch]} -gt ${P9K_VCS_SHORTEN_LENGTH} ]; then
       case "$P9K_VCS_SHORTEN_STRATEGY" in
         truncate_middle)
