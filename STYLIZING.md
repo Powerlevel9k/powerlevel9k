@@ -37,7 +37,7 @@ Detailed explanation:
 |------|-----------|-------|
 |`P9K_${segment}_BACKGROUND="$color"`|color for background of stateless segment|`P9K_TIME_BACKGROUND=001`|
 |`P9K_${segment}_${state}_BACKGROUND="$color"`|color for background of stateful segment|`P9K_DIR_ETC_BACKGROUND=001`|
-|`P9K_${segment}_FOREGROUND="$color"`|color for foreground of stateless segment|`P9K_TIME_BACFOREGND=2`|
+|`P9K_${segment}_FOREGROUND="$color"`|foreground color for stateless segment|`P9K_TIME_FOREGROUND=2`|
 |`P9K_${segment}_${state}_FOREGROUND="$color"`|color for foreground of stateful segment|`P9K_DIR_ETC_FOREGROUND=2`|
 |`P9K_${segment}_BOLD=true`|set stateless segment content (excluding icon) to bold|`P9K_TIME_BOLD=true`|
 |`P9K_${segment}_${state}_BOLD=true`|set stateful segment content (excluding icon) to bold|`P9K_DIR_ETC_BOLD="true"`|
