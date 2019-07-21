@@ -19,10 +19,9 @@ Not every option can be changed at runtime.**
 |`P9K_PROMPT_ADD_NEWLINE_COUNT`|`1`|Change the amound of newlines added if `P9K_PROMPT_ADD_NEWLINE=true`.|
 |`P9K_DISABLE_RPROMPT`|`false`|Disables `RPROMPT`.|
 |`P9K_COLOR_SCHEME`|unset|Set to `light` to invert default background and foreground color.|
-|`P9K_{LEFT,RIGHT}_SEGMENT_SEPARATOR_ICON`|`?`|This is the separator between two segments of different color.|
-|`P9K_{LEFT,RIGHT}_SUBSEGMENT_SEPARATOR_ICON`|`?`|This is the separator between two segments of the same color.|
+|`P9K_{LEFT,RIGHT}_SEGMENT_SEPARATOR_ICON`|``,``|This is the separator between two segments of different color.|
+|`P9K_{LEFT,RIGHT}_SUBSEGMENT_SEPARATOR_ICON`|``,``|This is the separator between two segments of the same color.|
 |`P9K_WHITESPACE_BETWEEN_{LEFT,RIGHT}_SEGMENTS`|` `|How much space there is between segment text and segment separator.|
-|``|``||
 
 ## Per Segment Stylizing
 
@@ -48,25 +47,7 @@ Detailed explanation:
 |`P9K_${segment}_ICON_COLOR="$color"`|color for icon of stateless segment|`P9K_TIME_ICON=blue`|
 |`P9K_${segment}_${state}_ICON_COLOR="$color"`|color for icon of stateful segment|`P9K_DIR_ETC_ICON="#fff8e7"`|
 
-List of stateful segments with their states. Please see segment documentation for detailed
-descriptions:
-
-| Segment        | State                                                      |
-|----------------|------------------------------------------------------------|
-| `BATTERY`      | `CHARGED`, `CHARGING`, `DISCONNECTED`, `LOW`               |
-| `CONTEXT`      | `DEFAULT`, `REMOTE`, `REMOTE_SUDO`, `ROOT`, `SUDO`         |
-| `DIR`          | `DEFAULT`, `ETC`, `HOME`, `HOME_SUBFOLDER`, `NOT_WRITABLE` |
-| `DIR_WRITABLE` | `FORBIDDEN`                                                |
-| `DISK_USAGE`   | `CRITICAL`, `NORMAL`, `WARNING`                            |
-| `GITSTATUS`    | `CLEAN`, `MODIFIED`, `UNTRACKED`                           |
-| `HOST`         | `LOCAL`, `REMOTE`                                          |
-| `LOAD`         | `CRITICAL`, `NORMAL`, `WARNING`                            |
-| `STATUS`       | `ERROR`, `ERROR_CR`, `OK`                                  |
-| `TEST_STATS`   | `AVG`, `BAD`, `GOOD`                                       |
-| `USER`         | `DEFAULT`, `REMOTE`, `REMOTE_SUDO`, `ROOT`, `SUDO`         |
-| `VAGRANT`      | `DOWN`, `UP`                                               |
-| `VCS`          | `CLEAN`, `CLOBBERED`, `MODIFIED`, `UNTRACKED`              |
-| `VI_MODE`      | `INSERT`, `NORMAL`, `SEARCH`, `VISUAL`                     |
+You can find the list of all states with their detailed decription in their respective segment's documentation.
 
 ## Usable Colors
 
