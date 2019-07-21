@@ -13,9 +13,14 @@
   #   segment_name  context  background  foreground  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
   #                                                                                                            
   p9k::register_segment "TIME" "" "${DEFAULT_COLOR_INVERTED}" "${DEFAULT_COLOR}"  ''  $'\uE12E'  $'\uF017 '  $'\uF017 '  $'\uF017 '
+
+  ################################################################
+  # Register segment default values
+  p9k::set_default P9K_TIME_FORMAT "%D{%H:%M:%S}"
+  # Expand segment values
+  p9k::expand P9K_TIME_FORMAT
 }
 
-p9k::set_default P9K_TIME_FORMAT "%D{%H:%M:%S}"
 ################################################################
 # @description
 #   Display the system time.

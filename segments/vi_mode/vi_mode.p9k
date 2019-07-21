@@ -22,6 +22,11 @@
   p9k::set_default P9K_VI_MODE_INSERT_STRING 'INSERT'
   p9k::set_default P9K_VI_MODE_SEARCH_STRING 'SEARCH'
   p9k::set_default P9K_VI_MODE_VISUAL_STRING 'VISUAL'
+  # Expand segment values
+  p9k::expand P9K_VI_MODE_NORMAL_STRING
+  p9k::expand P9K_VI_MODE_INSERT_STRING
+  p9k::expand P9K_VI_MODE_SEARCH_STRING
+  p9k::expand P9K_VI_MODE_VISUAL_STRING
 }
 
 ###############################################################

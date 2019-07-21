@@ -27,6 +27,8 @@
   p9k::set_default P9K_USER_ALWAYS_SHOW false
   p9k::set_default P9K_USER_ALWAYS_SHOW_USER false
   p9k::set_default P9K_USER_TEMPLATE "%n"
+  # Expand segment values
+  p9k::expand P9K_USER_TEMPLATE
 }
 
 ################################################################
