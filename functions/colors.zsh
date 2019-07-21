@@ -11,7 +11,7 @@
 # use color names by default to allow dark/light themes to adjust colors based on names
 # http://plumbum.readthedocs.io/en/latest/colors.html
 # alternate color names assigned where there are duplicates.
-__P9K_COLORS=(
+typeset -gAh __P9K_COLORS=(
   black 000
   red 001
   maroon 001 # alt name
