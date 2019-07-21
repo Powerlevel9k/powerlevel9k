@@ -37,7 +37,7 @@ function testSymfonyVersionSegmentPrintsNothingIfPhpIsNotAvailable() {
   local P9K_CUSTOM_WORLD='echo world'
   alias php="nophp"
 
-  assertEquals "%K{015} %F{000}\${(Q)\${:-\"world\"}} %k%F{015}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{015} %F{000}\${:-\"world\"} %k%F{015}%f " "$(__p9k_build_left_prompt)"
 
   unalias php
 }
@@ -50,7 +50,7 @@ function testSymfonyVersionSegmentPrintsNothingIfSymfonyIsNotAvailable() {
   # navigate into a folder that does not contain symfony.
   local P9K_CUSTOM_WORLD='echo world'
 
-  assertEquals "%K{015} %F{000}\${(Q)\${:-\"world\"}} %k%F{015}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{015} %F{000}\${:-\"world\"} %k%F{015}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testSymfonyVersionPrintsNothingIfPhpThrowsAnError() {
@@ -65,7 +65,7 @@ function testSymfonyVersionPrintsNothingIfPhpThrowsAnError() {
     Parse error: parse error, expecting `;´ or `{´ in /Users/dr/Privat/vendor/ocramius/proxy-manager/src/ProxyManager/Configuration.php on line 97"
   }
 
-  assertEquals "%K{015} %F{000}\${(Q)\${:-\"world\"}} %k%F{015}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{015} %F{000}\${:-\"world\"} %k%F{015}%f " "$(__p9k_build_left_prompt)"
 
   unfunction php
 }
@@ -81,7 +81,7 @@ function testSymfonyVersionSegmentWorks() {
     echo "Symfony version 3.1.4 - app/dev/debug"
   }
 
-  assertEquals "%K{240} %F{000}SF%f %F{000}\${(Q)\${:-\"3.1.4\"}} %k%F{240}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{240} %F{000}SF%f %F{000}\${:-\"3.1.4\"} %k%F{240}%f " "$(__p9k_build_left_prompt)"
 
   unfunction php
 }
@@ -100,7 +100,7 @@ function testSymfonyVersionSegmentWorksInNestedFolder() {
   mkdir -p src/P9K/AppBundle
   cd src/P9K/AppBundle
 
-  assertEquals "%K{240} %F{000}SF%f %F{000}\${(Q)\${:-\"3.1.4\"}} %k%F{240}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{240} %F{000}SF%f %F{000}\${:-\"3.1.4\"} %k%F{240}%f " "$(__p9k_build_left_prompt)"
 
   unfunction php
 }

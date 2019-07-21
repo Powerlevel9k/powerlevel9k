@@ -208,7 +208,7 @@ function testIpSegmentWorksOnOsxWithNoInterfaceSpecified() {
 
   fakeIfconfig "eth1" "eth2"
 
-  assertEquals "%K{006} %F{000}IP %F{000}\${(Q)\${:-\"1.2.3.4\"}} " "$(prompt_ip left 1 false "$FOLDER")"
+  assertEquals "%K{006} %F{000}IP %F{000}\${:-\"1.2.3.4\"} " "$(prompt_ip left 1 false "$FOLDER")"
 }
 
 function testIpSegmentWorksOnOsxWithInterfaceSpecified() {
@@ -221,7 +221,7 @@ function testIpSegmentWorksOnOsxWithInterfaceSpecified() {
   source segments/ip/ip.p9k
   local OS='OSX' # Fake OSX
 
-  assertEquals "%K{006} %F{000}IP %F{000}\${(Q)\${:-\"1.2.3.4\"}} " "$(prompt_ip left 1 false "$FOLDER")"
+  assertEquals "%K{006} %F{000}IP %F{000}\${:-\"1.2.3.4\"} " "$(prompt_ip left 1 false "$FOLDER")"
 }
 
 function testIpSegmentWorksOnLinuxWithNoInterfaceSpecified() {
@@ -232,7 +232,7 @@ function testIpSegmentWorksOnLinuxWithNoInterfaceSpecified() {
 
     fakeIp "eth0"
 
-    assertEquals "%K{006} %F{000}IP %F{000}\${(Q)\${:-\"1.2.3.4\"}} " "$(prompt_ip left 1 false "$FOLDER")"
+    assertEquals "%K{006} %F{000}IP %F{000}\${:-\"1.2.3.4\"} " "$(prompt_ip left 1 false "$FOLDER")"
 }
 
 function testIpSegmentWorksOnLinuxWithInterfaceSpecified() {
@@ -245,7 +245,7 @@ function testIpSegmentWorksOnLinuxWithInterfaceSpecified() {
   source segments/ip/ip.p9k
   local OS='Linux' # Fake Linux
 
-  assertEquals "%K{006} %F{000}IP %F{000}\${(Q)\${:-\"1.2.3.4\"}} " "$(prompt_ip left 1 false "$FOLDER")"
+  assertEquals "%K{006} %F{000}IP %F{000}\${:-\"1.2.3.4\"} " "$(prompt_ip left 1 false "$FOLDER")"
 }
 
 source shunit2/shunit2

@@ -24,7 +24,7 @@ function testSshSegmentPrintsNothingIfNoSshConnection() {
   unset SSH_CLIENT
   unset SSH_TTY
 
-  assertEquals "%K{015} %F{000}\${(Q)\${:-\"world\"}} %k%F{015}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{015} %F{000}\${:-\"world\"} %k%F{015}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testSshSegmentWorksIfOnlySshClientIsSet() {

@@ -24,7 +24,7 @@ function testAnacondaSegmentPrintsNothingIfNoAnacondaPathIsSet() {
   unset CONDA_ENV_PATH
   unset CONDA_PREFIX
 
-  assertEquals "%K{015} %F{000}\${(Q)\${:-\"world\"}} %k%F{015}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{015} %F{000}\${:-\"world\"} %k%F{015}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testAnacondaSegmentWorksIfOnlyAnacondaPathIsSet() {
@@ -38,7 +38,7 @@ function testAnacondaSegmentWorksIfOnlyAnacondaPathIsSet() {
   CONDA_ENV_PATH=/tmp
   unset CONDA_PREFIX
 
-  assertEquals "%K{004} %F{000}icon-here %F{000}\${(Q)\${:-\"(tmp)\"}} %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{004} %F{000}icon-here %F{000}\${:-\"(tmp)\"} %k%F{004}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testAnacondaSegmentWorksIfOnlyAnacondaPrefixIsSet() {
@@ -52,7 +52,7 @@ function testAnacondaSegmentWorksIfOnlyAnacondaPrefixIsSet() {
   unset CONDA_ENV_PATH
   local CONDA_PREFIX="test"
 
-  assertEquals "%K{004} %F{000}icon-here %F{000}\${(Q)\${:-\"(test)\"}} %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{004} %F{000}icon-here %F{000}\${:-\"(test)\"} %k%F{004}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testAnacondaSegmentWorks() {
@@ -66,7 +66,7 @@ function testAnacondaSegmentWorks() {
   local CONDA_ENV_PATH=/tmp
   local CONDA_PREFIX="test"
 
-  assertEquals "%K{004} %F{000}icon-here %F{000}\${(Q)\${:-\"(tmptest)\"}} %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{004} %F{000}icon-here %F{000}\${:-\"(tmptest)\"} %k%F{004}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testAnacondaDoesNotLeadTermcapChars() {
@@ -80,7 +80,7 @@ function testAnacondaDoesNotLeadTermcapChars() {
   local CONDA_ENV_PATH=/tmp
   local CONDA_PREFIX="\r\n%K{blue}leaking%F{red}string"
 
-  assertEquals "%K{004} %F{000}icon-here %F{000}\${(Q)\${:-\"(tmp\\r\\n%%K{blue}leaking%%F{red}string)\"}} %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{004} %F{000}icon-here %F{000}\${:-\"(tmp\\r\\n%%K{blue}leaking%%F{red}string)\"} %k%F{004}%f " "$(__p9k_build_left_prompt)"
 }
 
 source shunit2/shunit2
