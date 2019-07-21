@@ -24,6 +24,7 @@ P9K_LEFT_PROMPT_ELEMENTS=(context time battery dir vcs virtualenv custom_wifi_si
 ```
 
 ### Function as Segment
+
 If you prefer, you can also define the function in your `.zshrc` rather than
 putting it in-line with the variable export, as shown above. Just don't forget
 to invoke your function from your segment! Example code that achieves the same
