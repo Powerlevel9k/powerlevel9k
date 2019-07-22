@@ -241,6 +241,9 @@ function p9k::set_default() {
 #   _p9k_prompt_length '%F{red}abc' => 3
 #   _p9k_prompt_length $'%{a\b%Gb%}' => 1
 #
+# @see
+#     [zsh length of a string](https://stackoverflow.com/a/57141646/1095235)
+#
 ##
 function p9k::prompt_length() {
   emulate -L zsh

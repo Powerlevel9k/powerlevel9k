@@ -361,7 +361,7 @@ function __p9k_build_right_prompt() {
     last_symbol="%K{none}%F${CURRENT_RIGHT_BG#%K}${P9K_RIGHT_PROMPT_LAST_SEGMENT_END_SYMBOL}"
   fi
 
-  echo -n "${__P9K_DATA[LAST_WHITESPACE]}${last_symbol}"
+  echo -n "${__P9K_DATA[LAST_WHITESPACE]}${last_symbol}%f%k%b"
 }
 
 ###############################################################
@@ -411,37 +411,57 @@ function __p9k_prepare_prompts() {
 
   local LC_ALL="" LC_CTYPE="en_US.UTF-8" # Set the right locale to protect special characters
 
-  # Allow iTerm integration to work
-  [[ "${ITERM_SHELL_INTEGRATION_INSTALLED:-}" == "Yes" ]] \
-    && PROMPT="%{$(iterm2_prompt_mark)%}${PROMPT}"
-
 local NEWLINE='
 '
 
+  local left
   if [[ "${P9K_PROMPT_ADD_NEWLINE:-}" == true ]]; then
     NEWLINES=""
     repeat ${P9K_PROMPT_ADD_NEWLINE_COUNT:-1} { NEWLINES+=${NEWLINE} }
-    PROMPT="${NEWLINES}${PROMPT}"
+    left="${NEWLINES}"
   fi
 
+  left+="%f%b%k"
+  if [[ "${P9K_PROMPT_ON_NEWLINE:-}" == true ]]; then
+    left+="${__P9K_ICONS[MULTILINE_FIRST_PROMPT_PREFIX]}"
+  fi
+
+  left+="$(__p9k_build_left_prompt)"
   if [[ ${P9K_DISABLE_RPROMPT:-} != true ]]; then
-    RPROMPT="${P9K_RPROMPT_PREFIX:-}%f%b%k$(__p9k_build_right_prompt)%{${reset_color}%}${P9K_RPROMPT_SUFFIX:-}"
-    local right="${P9K_RPROMPT_PREFIX:-}${RPROMPT}${P9K_RPROMPT_SUFFIX:-}"
+    local right="${P9K_RPROMPT_PREFIX:-}%f%b%k$(__p9k_build_right_prompt)${P9K_RPROMPT_SUFFIX:-}"
     if [[ ${P9K_PROMPT_ON_NEWLINE:-} != true || ${P9K_RPROMPT_ON_NEWLINE:-} == true ]]; then
-      RPROMPT=$right
+      RPROMPT="${right}${reset_color}"
     else
       unset _P9K_RPROMPT_OVERRIDE
-      # Set the RIGHT prompt to _P9K_RPROMPT_OVERRIDE
-      RPROMPT="${_P9K_RPROMPT_OVERRIDE-$right}"
+      local spacerWidth
+      p9k::prompt_length "${(e)left}"
+      local leftPromptWidth=${_P9K_RETVAL}
+      p9k::prompt_length "${(e)right}"
+      local rightPromptWidth=${_P9K_RETVAL}
+      spacerWidth=$(( COLUMNS - (leftPromptWidth + rightPromptWidth) ))
+      local spacerChar=' '
+      [[ "$spacerChar" == '.' ]] && local padSeparator=',' || local padSeparator='.'
+      # We left pad the spacer here (flag "l") and the syntax for that is
+      # ${(l:<length>::<char>:)}, where colons are here the separators
+      # that need to differ from the char.
+      left+='${(pl'${padSeparator}${spacerWidth}${padSeparator}${padSeparator}${spacerChar}${padSeparator}')}'
+      # Inject the RIGHT prompt into the left one, if
+      # P9K_RPROMPT_ON_NEWLINE is set. This is done with
+      # the help of a ZLE widget (_p9k_zle_line_finish)
+      # that sets _P9K_RPROMPT_OVERRIDE.
+      left+="${_P9K_RPROMPT_OVERRIDE-$right}"
+
+      if [[ "${P9K_PROMPT_ON_NEWLINE:-}" == true ]]; then
+        left+="${NEWLINE}${__P9K_ICONS[MULTILINE_LAST_PROMPT_PREFIX]}"
+      fi
     fi
   fi
 
-  if [[ "${P9K_PROMPT_ON_NEWLINE:-}" == true ]]; then
-    _LEFT_PROMPT_PREFIX="${__P9K_ICONS[MULTILINE_FIRST_PROMPT_PREFIX]}"
-    _LEFT_PROMPT_SUFFIX="${NEWLINE}${__P9K_ICONS[MULTILINE_LAST_PROMPT_PREFIX]}"
-  fi
+  PROMPT="${left}${reset_color}"
 
-  PROMPT="${_LEFT_PROMPT_PREFIX:-}%f%b%k$(__p9k_build_left_prompt)%{${reset_color}%}${_LEFT_PROMPT_SUFFIX:-}"
+  # Allow iTerm integration to work
+  [[ "${ITERM_SHELL_INTEGRATION_INSTALLED:-}" == "Yes" ]] \
+    && PROMPT="%{$(iterm2_prompt_mark)%}${PROMPT}"
 }
 
 p9k::set_default P9K_IGNORE_TERM_COLORS false
