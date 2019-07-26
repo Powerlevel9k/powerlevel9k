@@ -58,7 +58,7 @@ function testJoinedSegments() {
   local P9K_LEFT_PROMPT_ELEMENTS=(dir dir_joined)
   cd /tmp
 
-  assertEquals "%K{004} %F{000}\${(Q)\${:-\"/tmp\"}} %F{000}\${(Q)\${:-\"/tmp\"}} %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{004} %F{000}\${:-\"/tmp\"} %F{000}\${:-\"/tmp\"} %k%F{004}%f " "$(__p9k_build_left_prompt)"
 
   cd -
 }
@@ -69,7 +69,7 @@ function testTransitiveJoinedSegments() {
   source segments/root_indicator/root_indicator.p9k
   cd /tmp
 
-  assertEquals "%K{004} %F{000}\${(Q)\${:-\"/tmp\"}} %F{000}\${(Q)\${:-\"/tmp\"}} %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{004} %F{000}\${:-\"/tmp\"} %F{000}\${:-\"/tmp\"} %k%F{004}%f " "$(__p9k_build_left_prompt)"
 
   cd -
 }
@@ -83,7 +83,7 @@ function testJoiningWithConditionalSegment() {
 
   cd /tmp
 
-  assertEquals "%K{004} %F{000}\${(Q)\${:-\"/tmp\"}}  %F{000}\${(Q)\${:-\"/tmp\"}} %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{004} %F{000}\${:-\"/tmp\"}  %F{000}\${:-\"/tmp\"} %k%F{004}%f " "$(__p9k_build_left_prompt)"
 
   cd -
 }
@@ -96,7 +96,7 @@ function testDynamicColoringOfSegmentsWork() {
 
   cd /tmp
 
-  assertEquals "%K{001} %F{000}\${(Q)\${:-\"/tmp\"}} %k%F{001}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{001} %F{000}\${:-\"/tmp\"} %k%F{001}%f " "$(__p9k_build_left_prompt)"
 
   cd -
 }
@@ -110,7 +110,7 @@ function testDynamicColoringOfVisualIdentifiersWork() {
 
   cd /tmp
 
-  assertEquals "%K{004} %F{002}icon-here %F{000}\${(Q)\${:-\"/tmp\"}} %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{004} %F{002}icon-here %F{000}\${:-\"/tmp\"} %k%F{004}%f " "$(__p9k_build_left_prompt)"
 
   cd -
 }
@@ -130,7 +130,7 @@ function testColoringOfVisualIdentifiersDoesNotOverwriteColoringOfSegment() {
 
   cd /tmp
 
-  assertEquals "%K{003} %F{002}icon-here %F{001}\${(Q)\${:-\"/tmp\"}} %k%F{003}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{003} %F{002}icon-here %F{001}\${:-\"/tmp\"} %k%F{003}%f " "$(__p9k_build_left_prompt)"
 
   cd -
 }
@@ -147,13 +147,16 @@ function testOverwritingIconsWork() {
   #cd ~/$testFolder
 
   cd /tmp
-  assertEquals "%K{004} %F{000}icon-here %F{000}\${(Q)\${:-\"/tmp\"}} %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{004} %F{000}icon-here %F{000}\${:-\"/tmp\"} %k%F{004}%f " "$(__p9k_build_left_prompt)"
 
   cd -
   # rm -fr ~/$testFolder
 }
 
 function testNewlineOnRpromptCanBeDisabled() {
+  # Fake environment
+  local COLUMNS=100
+
   local P9K_PROMPT_ON_NEWLINE=true
   local P9K_RPROMPT_ON_NEWLINE=false
   local P9K_CUSTOM_WORLD='echo world'
@@ -166,7 +169,7 @@ function testNewlineOnRpromptCanBeDisabled() {
   __p9k_prepare_prompts
 
   local nl=$'\n'
-  local expected="╭─%f%b%k%K{015} %F{000}\${(Q)\${:-\"world\"}} %k%F{015}%f %{<Esc>00m%}${nl}╰─ %f%b%k%F{015}%K{015}%F{000} \${(Q)\${:-\"rworld\"}} %{<Esc>00m%}"
+  local expected="%f%b%k╭─%K{015} %F{000}\${:-\"world\"} %k%F{015}%f \${(pl.80.. .)}%f%b%k%F{015}%K{015}%F{000} \${:-\"rworld\"} %f%k%b${nl}╰─ %f%b%k"
   local _real=$(stripEsc "${PROMPT}${RPROMPT}")
 
   # use this to debug output with special escape sequences

@@ -40,7 +40,7 @@ function testDirDoesNotLeadTermcapChars() {
   mkdir -p "${TEST_DIR}"
   cd "${TEST_DIR}"
 
-  assertEquals "%K{004} %F{000}\${(Q)\${:-\"/tmp/powerlevel9k-test/\\r\\n%%K{blue}leaking%%F{red}string/test\"}} %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{004} %F{000}\${:-\"/tmp/powerlevel9k-test/\\r\\n%%K{blue}leaking%%F{red}string/test\"} %k%F{004}%f " "$(__p9k_build_left_prompt)"
   cd -
 }
 
@@ -51,10 +51,10 @@ function testDirPathAbsoluteWorks() {
 
   cd ~
   local absoluteDir="${PWD}"
-  assertEquals "%K{004} %F{000}\${(Q)\${:-\"${absoluteDir}\"}} %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{004} %F{000}\${:-\"${absoluteDir}\"} %k%F{004}%f " "$(__p9k_build_left_prompt)"
 
   local P9K_DIR_PATH_ABSOLUTE=false
-  assertEquals "%K{004} %F{000}\${(Q)\${:-\"~\"}} %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{004} %F{000}\${:-\"~\"} %k%F{004}%f " "$(__p9k_build_left_prompt)"
 
   typeset -a _strategies
   # Do not check truncate_to_last and truncate_to_unique
@@ -63,10 +63,10 @@ function testDirPathAbsoluteWorks() {
   for strategy in ${_strategies}; do
     local P9K_DIR_PATH_ABSOLUTE=true
     P9K_DIR_SHORTEN_STRATEGY=${strategy}
-    assertEquals "${strategy} failed rendering absolute dir" "%K{004} %F{000}\${(Q)\${:-\"${absoluteDir}\"}} %k%F{004}%f " "$(__p9k_build_left_prompt)"
+    assertEquals "${strategy} failed rendering absolute dir" "%K{004} %F{000}\${:-\"${absoluteDir}\"} %k%F{004}%f " "$(__p9k_build_left_prompt)"
 
     local P9K_DIR_PATH_ABSOLUTE=false
-    assertEquals "${strategy} failed rendering relative dir" "%K{004} %F{000}\${(Q)\${:-\"~\"}} %k%F{004}%f " "$(__p9k_build_left_prompt)"
+    assertEquals "${strategy} failed rendering relative dir" "%K{004} %F{000}\${:-\"~\"} %k%F{004}%f " "$(__p9k_build_left_prompt)"
   done
   cd -
 }
@@ -83,7 +83,7 @@ function testTruncateFoldersWorks() {
   mkdir -p $FOLDER
   cd $FOLDER
 
-  assertEquals "%K{004} %F{000}\${(Q)\${:-\"…/12345678/123456789\"}} %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{004} %F{000}\${:-\"…/12345678/123456789\"} %k%F{004}%f " "$(__p9k_build_left_prompt)"
 
   cd -
   rm -fr /tmp/powerlevel9k-test
@@ -102,7 +102,7 @@ function testTruncateFolderWithHomeDirWorks() {
   # Switch back to home folder as this causes the problem.
   cd ..
 
-  assertEquals "%K{004} %F{000}\${(Q)\${:-\"~\"}} %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{004} %F{000}\${:-\"~\"} %k%F{004}%f " "$(__p9k_build_left_prompt)"
 
   rmdir $FOLDER
   cd ${CURRENT_DIR}
@@ -118,7 +118,7 @@ function testTruncationFromRightWorks() {
   mkdir -p $FOLDER
   cd $FOLDER
 
-  assertEquals "%K{004} %F{000}\${(Q)\${:-\"/tmp/po…/1/12/123/12…/12…/12…/12…/12…/123456789\"}} %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{004} %F{000}\${:-\"/tmp/po…/1/12/123/12…/12…/12…/12…/12…/123456789\"} %k%F{004}%f " "$(__p9k_build_left_prompt)"
 
   cd -
   rm -fr /tmp/powerlevel9k-test
@@ -134,7 +134,7 @@ function testTruncateMiddleWorks() {
   mkdir -p $FOLDER
   cd $FOLDER
 
-  assertEquals "%K{004} %F{000}\${(Q)\${:-\"/tmp/po…st/1/12/123/1234/12…45/12…56/12…67/12…78/123456789\"}} %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{004} %F{000}\${:-\"/tmp/po…st/1/12/123/1234/12…45/12…56/12…67/12…78/123456789\"} %k%F{004}%f " "$(__p9k_build_left_prompt)"
 
   cd -
   rm -fr /tmp/powerlevel9k-test
@@ -150,7 +150,7 @@ function testTruncationFromLeftWorks() {
   mkdir -p $FOLDER
   cd $FOLDER
 
-  assertEquals "%K{004} %F{000}\${(Q)\${:-\"/tmp/…st/1/12/123/…34/…45/…56/…67/…78/123456789\"}} %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{004} %F{000}\${:-\"/tmp/…st/1/12/123/…34/…45/…56/…67/…78/123456789\"} %k%F{004}%f " "$(__p9k_build_left_prompt)"
 
   cd -
   rm -fr /tmp/powerlevel9k-test
@@ -166,7 +166,7 @@ function testTruncateToLastWorks() {
   mkdir -p $FOLDER
   cd $FOLDER
 
-  assertEquals "%K{004} %F{000}\${(Q)\${:-\"123456789\"}} %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{004} %F{000}\${:-\"123456789\"} %k%F{004}%f " "$(__p9k_build_left_prompt)"
 
   cd -
   rm -fr /tmp/powerlevel9k-test
@@ -182,7 +182,7 @@ function testTruncateToFirstAndLastWorks() {
   mkdir -p $FOLDER
   cd $FOLDER
 
-  assertEquals "%K{004} %F{000}\${(Q)\${:-\"/tmp/powerlevel9k-test/…/…/…/…/…/…/…/12345678/123456789\"}} %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{004} %F{000}\${:-\"/tmp/powerlevel9k-test/…/…/…/…/…/…/…/12345678/123456789\"} %k%F{004}%f " "$(__p9k_build_left_prompt)"
 
   cd -
   rm -fr /tmp/powerlevel9k-test
@@ -198,7 +198,7 @@ function testTruncateAbsoluteWorks() {
   mkdir -p $FOLDER
   cd $FOLDER
 
-  assertEquals "%K{004} %F{000}\${(Q)\${:-\"…89\"}} %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{004} %F{000}\${:-\"…89\"} %k%F{004}%f " "$(__p9k_build_left_prompt)"
 
   cd -
   rm -fr /tmp/powerlevel9k-test
@@ -215,7 +215,7 @@ function testTruncationFromRightWithEmptyDelimiter() {
   mkdir -p $FOLDER
   cd $FOLDER
 
-  assertEquals "%K{004} %F{000}\${(Q)\${:-\"/tmp/po/1/12/123/12/12/12/12/12/123456789\"}} %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{004} %F{000}\${:-\"/tmp/po/1/12/123/12/12/12/12/12/123456789\"} %k%F{004}%f " "$(__p9k_build_left_prompt)"
 
   cd -
   rm -fr /tmp/powerlevel9k-test
@@ -232,7 +232,7 @@ function testTruncationFromLeftWithEmptyDelimiter() {
   mkdir -p $FOLDER
   cd $FOLDER
 
-  assertEquals "%K{004} %F{000}\${(Q)\${:-\"/tmp/st/1/12/123/34/45/56/67/78/123456789\"}} %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{004} %F{000}\${:-\"/tmp/st/1/12/123/34/45/56/67/78/123456789\"} %k%F{004}%f " "$(__p9k_build_left_prompt)"
 
   cd -
   rm -fr /tmp/powerlevel9k-test
@@ -249,7 +249,7 @@ function testTruncateWithFolderMarkerWorks() {
   # Setup folder marker
   touch $BASEFOLDER/1/12/.shorten_folder_marker
   cd $FOLDER
-  assertEquals "%K{004} %F{000}\${(Q)\${:-\"/…/12/123/1234/12345/123456/1234567\"}} %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{004} %F{000}\${:-\"/…/12/123/1234/12345/123456/1234567\"} %k%F{004}%f " "$(__p9k_build_left_prompt)"
 
   cd -
   rm -fr $BASEFOLDER
@@ -269,7 +269,7 @@ function testTruncateWithFolderMarkerInHome() {
   # Setup folder marker
   touch $BASEFOLDER/1/12/.shorten_folder_marker
   cd $FOLDER
-  assertEquals "%K{004} %F{000}\${(Q)\${:-\"~/…/12/123/1234/12345/123456/1234567\"}} %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{004} %F{000}\${:-\"~/…/12/123/1234/12345/123456/1234567\"} %k%F{004}%f " "$(__p9k_build_left_prompt)"
 
   cd -
   rm -fr $BASEFOLDER
@@ -288,7 +288,7 @@ function testTruncateWithFolderMarkerWithChangedFolderMarker() {
   # Setup folder marker
   touch $BASEFOLDER/1/12/.xxx
   cd $FOLDER
-  assertEquals "%K{004} %F{000}\${(Q)\${:-\"/…/12/123/1234/12345/123456/1234567\"}} %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{004} %F{000}\${:-\"/…/12/123/1234/12345/123456/1234567\"} %k%F{004}%f " "$(__p9k_build_left_prompt)"
 
   cd -
   rm -fr $BASEFOLDER
@@ -308,13 +308,13 @@ function testTruncateWithFolderMarkerWithSymlinks() {
   ln -sf ${BASEFOLDER}/1/12/123 ${BASEFOLDER}/link2
   ln -sf ${BASEFOLDER}/1/12/123/1234/12345 ${BASEFOLDER}/1/12/123/link3
   cd ${BASEFOLDER}/link
-  assertEquals "%K{004} %F{000}\${(Q)\${:-\"/tmp/powerlevel9k-test/link\"}} %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{004} %F{000}\${:-\"/tmp/powerlevel9k-test/link\"} %k%F{004}%f " "$(__p9k_build_left_prompt)"
   cd -
   cd ${BASEFOLDER}/link2
-  assertEquals "%K{004} %F{000}\${(Q)\${:-\"/tmp/powerlevel9k-test/link2\"}} %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{004} %F{000}\${:-\"/tmp/powerlevel9k-test/link2\"} %k%F{004}%f " "$(__p9k_build_left_prompt)"
   cd -
   cd ${BASEFOLDER}/1/12/123/link3
-  assertEquals "%K{004} %F{000}\${(Q)\${:-\"/…/12/123/link3\"}} %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{004} %F{000}\${:-\"/…/12/123/link3\"} %k%F{004}%f " "$(__p9k_build_left_prompt)"
   cd -
 
   rm -fr $BASEFOLDER
@@ -332,7 +332,7 @@ function testTruncateWithFolderMarkerInMarkedFolder() {
   touch $FOLDER/.shorten_folder_marker
   cd $FOLDER
   # setopt xtrace
-  assertEquals "%K{004} %F{000}\${(Q)\${:-\"/…/12\"}} %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{004} %F{000}\${:-\"/…/12\"} %k%F{004}%f " "$(__p9k_build_left_prompt)"
   # unsetopt xtrace
 
   cd -
@@ -362,7 +362,7 @@ function testTruncateWithPackageNameWorks() {
   local P9K_DIR_SHORTEN_LENGTH=2
   local P9K_DIR_SHORTEN_STRATEGY='truncate_with_package_name'
 
-  assertEquals "%K{004} %F{000}\${(Q)\${:-\"My_Package/1/12/123/12…/12…/12…/12…/12…/123456789\"}} %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{004} %F{000}\${:-\"My_Package/1/12/123/12…/12…/12…/12…/12…/123456789\"} %k%F{004}%f " "$(__p9k_build_left_prompt)"
 
   # Go back
   cd $p9kFolder
@@ -399,7 +399,7 @@ function testTruncateWithPackageNameIfRepoIsSymlinkedInsideDeepFolder() {
   local P9K_DIR_SHORTEN_LENGTH=2
   local P9K_DIR_SHORTEN_STRATEGY='truncate_with_package_name'
 
-  assertEquals "%K{004} %F{000}\${(Q)\${:-\"My_Package/as…/qwerqwer\"}} %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{004} %F{000}\${:-\"My_Package/as…/qwerqwer\"} %k%F{004}%f " "$(__p9k_build_left_prompt)"
 
   # Go back
   cd $p9kFolder
@@ -432,7 +432,7 @@ function testTruncateWithPackageNameIfRepoIsSymlinkedInsideGitDir() {
   local P9K_DIR_SHORTEN_LENGTH=2
   local P9K_DIR_SHORTEN_STRATEGY='truncate_with_package_name'
 
-  assertEquals "%K{004} %F{000}\${(Q)\${:-\"My_Package/.g…/re…/heads\"}} %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{004} %F{000}\${:-\"My_Package/.g…/re…/heads\"} %k%F{004}%f " "$(__p9k_build_left_prompt)"
 
   # Go back
   cd $p9kFolder
@@ -447,7 +447,7 @@ function testHomeFolderDetectionWorks() {
   source segments/dir/dir.p9k
 
   cd ~
-  assertEquals "%K{004} %F{000}home-icon %F{000}\${(Q)\${:-\"~\"}} %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{004} %F{000}home-icon %F{000}\${:-\"~\"} %k%F{004}%f " "$(__p9k_build_left_prompt)"
 
   cd -
 }
@@ -462,7 +462,7 @@ function testHomeSubfolderDetectionWorks() {
   local FOLDER=~/powerlevel9k-test
   mkdir $FOLDER
   cd $FOLDER
-  assertEquals "%K{004} %F{000}sub-icon %F{000}\${(Q)\${:-\"~/powerlevel9k-test\"}} %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{004} %F{000}sub-icon %F{000}\${:-\"~/powerlevel9k-test\"} %k%F{004}%f " "$(__p9k_build_left_prompt)"
 
   cd -
   rm -fr $FOLDER
@@ -478,7 +478,7 @@ function testOtherFolderDetectionWorks() {
   local FOLDER=/tmp/powerlevel9k-test
   mkdir $FOLDER
   cd $FOLDER
-  assertEquals "%K{004} %F{000}folder-icon %F{000}\${(Q)\${:-\"/tmp/powerlevel9k-test\"}} %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{004} %F{000}folder-icon %F{000}\${:-\"/tmp/powerlevel9k-test\"} %k%F{004}%f " "$(__p9k_build_left_prompt)"
 
   cd -
   rm -fr $FOLDER
@@ -492,7 +492,7 @@ function testChangingDirPathSeparator() {
   mkdir -p $FOLDER
   cd $FOLDER
 
-  assertEquals "%K{004} %F{000}\${(Q)\${:-\"xXxtmpxXxpowerlevel9k-testxXx1xXx2\"}} %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{004} %F{000}\${:-\"xXxtmpxXxpowerlevel9k-testxXx1xXx2\"} %k%F{004}%f " "$(__p9k_build_left_prompt)"
 
   cd -
   rm -fr /tmp/powerlevel9k-test
@@ -513,26 +513,26 @@ function testHomeFolderAbbreviation() {
   cd ~/
   # default
   local P9K_DIR_HOME_FOLDER_ABBREVIATION='~'
-  assertEquals "%K{004} %F{000}\${(Q)\${:-\"~\"}} %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{004} %F{000}\${:-\"~\"} %k%F{004}%f " "$(__p9k_build_left_prompt)"
 
   # substituted
   local P9K_DIR_HOME_FOLDER_ABBREVIATION='qQq'
-  assertEquals "%K{004} %F{000}\${(Q)\${:-\"qQq\"}} %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{004} %F{000}\${:-\"qQq\"} %k%F{004}%f " "$(__p9k_build_left_prompt)"
 
   cd /tmp
   # default
   local P9K_DIR_HOME_FOLDER_ABBREVIATION='~'
-  assertEquals "%K{004} %F{000}\${(Q)\${:-\"/tmp\"}} %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{004} %F{000}\${:-\"/tmp\"} %k%F{004}%f " "$(__p9k_build_left_prompt)"
 
   # substituted
   local P9K_DIR_HOME_FOLDER_ABBREVIATION='qQq'
-  assertEquals "%K{004} %F{000}\${(Q)\${:-\"/tmp\"}} %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{004} %F{000}\${:-\"/tmp\"} %k%F{004}%f " "$(__p9k_build_left_prompt)"
 
   # Make a directory named tilde directly under HOME
   mkdir ~/~
   cd ~/~
   local P9K_DIR_HOME_FOLDER_ABBREVIATION='qQq'
-  assertEquals "%K{004} %F{000}\${(Q)\${:-\"qQq/~\"}} %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{004} %F{000}\${:-\"qQq/~\"} %k%F{004}%f " "$(__p9k_build_left_prompt)"
 
   HOME="${SAVED_HOME}"
   rm -fr $BASEFOLDER
@@ -549,7 +549,7 @@ function testOmittingFirstCharacterWorks() {
 
   cd /tmp
 
-  assertEquals "%K{004} %F{000}folder-icon %F{000}\${(Q)\${:-\"tmp\"}} %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{004} %F{000}folder-icon %F{000}\${:-\"tmp\"} %k%F{004}%f " "$(__p9k_build_left_prompt)"
 
   cd -
 }
@@ -566,7 +566,7 @@ function testOmittingFirstCharacterWorksWithChangingPathSeparator() {
   mkdir -p /tmp/powerlevel9k-test/1/2
   cd /tmp/powerlevel9k-test/1/2
 
-  assertEquals "%K{004} %F{000}folder-icon %F{000}\${(Q)\${:-\"tmpxXxpowerlevel9k-testxXx1xXx2\"}} %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{004} %F{000}folder-icon %F{000}\${:-\"tmpxXxpowerlevel9k-testxXx1xXx2\"} %k%F{004}%f " "$(__p9k_build_left_prompt)"
 
   cd -
   rm -fr /tmp/powerlevel9k-test
@@ -589,7 +589,7 @@ function testOmittingFirstCharacterWorksWithChangingPathSeparatorAndDefaultTrunc
   mkdir -p /tmp/powerlevel9k-test/1/2
   cd /tmp/powerlevel9k-test/1/2
 
-  assertEquals "%K{004} %F{000}\${(Q)\${:-\"xXx1xXx2\"}} %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{004} %F{000}\${:-\"xXx1xXx2\"} %k%F{004}%f " "$(__p9k_build_left_prompt)"
 
   cd -
   rm -fr /tmp/powerlevel9k-test
@@ -605,7 +605,7 @@ function testOmittingFirstCharacterWorksWithChangingPathSeparatorAndMiddleTrunca
   mkdir -p /tmp/powerlevel9k-test/1/2
   cd /tmp/powerlevel9k-test/1/2
 
-  assertEquals "%K{004} %F{000}\${(Q)\${:-\"tmpxXxpo…stxXx1xXx2\"}} %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{004} %F{000}\${:-\"tmpxXxpo…stxXx1xXx2\"} %k%F{004}%f " "$(__p9k_build_left_prompt)"
 
   cd -
   rm -fr /tmp/powerlevel9k-test
@@ -621,7 +621,7 @@ function testOmittingFirstCharacterWorksWithChangingPathSeparatorAndRightTruncat
   mkdir -p /tmp/powerlevel9k-test/1/2
   cd /tmp/powerlevel9k-test/1/2
 
-  assertEquals "%K{004} %F{000}\${(Q)\${:-\"tmpxXxpo…xXx1xXx2\"}} %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{004} %F{000}\${:-\"tmpxXxpo…xXx1xXx2\"} %k%F{004}%f " "$(__p9k_build_left_prompt)"
 
   cd -
   rm -fr /tmp/powerlevel9k-test
@@ -647,7 +647,7 @@ function testTruncateToUniqueWorks() {
 
   cd /tmp/powerlevel9k-test/alice/devl
 
-  assertEquals "%K{004} %F{000}\${(Q)\${:-\"${test_path}xXxalxXxde\"}} %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{004} %F{000}\${:-\"${test_path}xXxalxXxde\"} %k%F{004}%f " "$(__p9k_build_left_prompt)"
 
   cd -
   rm -fr /tmp/powerlevel9k-test
@@ -659,7 +659,7 @@ function testBoldHomeDirWorks() {
   local P9K_DIR_PATH_HIGHLIGHT_BOLD=true
   cd ~
 
-  assertEquals "%K{004} %F{000}\${(Q)\${:-\"%B~%b\"}} %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{004} %F{000}\${:-\"%B~%b\"} %k%F{004}%f " "$(__p9k_build_left_prompt)"
 
   cd -
 }
@@ -671,7 +671,7 @@ function testBoldHomeSubdirWorks() {
   mkdir -p ~/powerlevel9k-test
   cd ~/powerlevel9k-test
 
-  assertEquals "%K{004} %F{000}\${(Q)\${:-\"~/%Bpowerlevel9k-test%b\"}} %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{004} %F{000}\${:-\"~/%Bpowerlevel9k-test%b\"} %k%F{004}%f " "$(__p9k_build_left_prompt)"
 
   cd -
   rm -fr ~/powerlevel9k-test
@@ -683,7 +683,7 @@ function testBoldRootDirWorks() {
   local P9K_DIR_PATH_HIGHLIGHT_BOLD=true
   cd /
 
-  assertEquals "%K{004} %F{000}\${(Q)\${:-\"%B/%b\"}} %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{004} %F{000}\${:-\"%B/%b\"} %k%F{004}%f " "$(__p9k_build_left_prompt)"
 
   cd -
 }
@@ -694,7 +694,7 @@ function testBoldRootSubdirWorks() {
   local P9K_DIR_PATH_HIGHLIGHT_BOLD=true
   cd /tmp
 
-  assertEquals "%K{004} %F{000}\${(Q)\${:-\"/%Btmp%b\"}} %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{004} %F{000}\${:-\"/%Btmp%b\"} %k%F{004}%f " "$(__p9k_build_left_prompt)"
 
   cd -
 }
@@ -706,7 +706,7 @@ function testBoldRootSubSubdirWorks() {
   mkdir -p /tmp/powerlevel9k-test
   cd /tmp/powerlevel9k-test
 
-  assertEquals "%K{004} %F{000}\${(Q)\${:-\"/tmp/%Bpowerlevel9k-test%b\"}} %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{004} %F{000}\${:-\"/tmp/%Bpowerlevel9k-test%b\"} %k%F{004}%f " "$(__p9k_build_left_prompt)"
 
   cd -
   rm -fr /tmp/powerlevel9k-test
@@ -718,7 +718,7 @@ function testHighlightHomeWorks() {
   local P9K_DIR_PATH_HIGHLIGHT_FOREGROUND='red'
   cd ~
 
-  assertEquals "%K{004} %F{000}\${(Q)\${:-\"%F{001}~\"}} %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{004} %F{000}\${:-\"%F{001}~\"} %k%F{004}%f " "$(__p9k_build_left_prompt)"
 
   cd -
 }
@@ -730,7 +730,7 @@ function testHighlightHomeSubdirWorks() {
   mkdir -p ~/powerlevel9k-test
   cd ~/powerlevel9k-test
 
-  assertEquals "%K{004} %F{000}\${(Q)\${:-\"~/%F{001}powerlevel9k-test\"}} %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{004} %F{000}\${:-\"~/%F{001}powerlevel9k-test\"} %k%F{004}%f " "$(__p9k_build_left_prompt)"
 
   cd -
   rm -fr ~/powerlevel9k-test
@@ -742,7 +742,7 @@ function testHighlightRootWorks() {
   local P9K_DIR_PATH_HIGHLIGHT_FOREGROUND='red'
   cd /
 
-  assertEquals "%K{004} %F{000}\${(Q)\${:-\"%F{001}/\"}} %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{004} %F{000}\${:-\"%F{001}/\"} %k%F{004}%f " "$(__p9k_build_left_prompt)"
 
   cd -
 }
@@ -753,7 +753,7 @@ function testHighlightRootSubdirWorks() {
   local P9K_DIR_PATH_HIGHLIGHT_FOREGROUND='red'
   cd /tmp
 
-  assertEquals "%K{004} %F{000}\${(Q)\${:-\"/%F{001}tmp\"}} %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{004} %F{000}\${:-\"/%F{001}tmp\"} %k%F{004}%f " "$(__p9k_build_left_prompt)"
   cd -
 }
 
@@ -764,7 +764,7 @@ function testHighlightRootSubSubdirWorks() {
   mkdir /tmp/powerlevel9k-test
   cd /tmp/powerlevel9k-test
 
-  assertEquals "%K{004} %F{000}\${(Q)\${:-\"/tmp/%F{001}powerlevel9k-test\"}} %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{004} %F{000}\${:-\"/tmp/%F{001}powerlevel9k-test\"} %k%F{004}%f " "$(__p9k_build_left_prompt)"
 
   cd -
   rm -fr /tmp/powerlevel9k-test
@@ -777,7 +777,7 @@ function testDirSeparatorColorHomeSubdirWorks() {
   mkdir -p ~/powerlevel9k-test
   cd ~/powerlevel9k-test
 
-  assertEquals "%K{004} %F{000}\${(Q)\${:-\"~%F{001}/%F{000}powerlevel9k-test\"}} %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{004} %F{000}\${:-\"~%F{001}/%F{000}powerlevel9k-test\"} %k%F{004}%f " "$(__p9k_build_left_prompt)"
 
   cd -
   rm -fr ~/powerlevel9k-test
@@ -790,7 +790,7 @@ function testDirSeparatorColorRootSubSubdirWorks() {
   mkdir -p /tmp/powerlevel9k-test
   cd /tmp/powerlevel9k-test
 
-  assertEquals "%K{004} %F{000}\${(Q)\${:-\"%F{001}/%F{000}tmp%F{001}/%F{000}powerlevel9k-test\"}} %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{004} %F{000}\${:-\"%F{001}/%F{000}tmp%F{001}/%F{000}powerlevel9k-test\"} %k%F{004}%f " "$(__p9k_build_left_prompt)"
 
   cd -
   rm -fr /tmp/powerlevel9k-test
@@ -807,7 +807,7 @@ function testDirHomeTruncationWorksOnlyAtTheBeginning() {
   mkdir -p $FOLDER
   # Setup folder marker
   cd $FOLDER
-  assertEquals "%K{004} %F{000}\${(Q)\${:-\"/tmp/p9ktest\"}} %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{004} %F{000}\${:-\"/tmp/p9ktest\"} %k%F{004}%f " "$(__p9k_build_left_prompt)"
 
   cd -
   rm -fr $FOLDER
@@ -825,7 +825,7 @@ function testDirSegmentWithDirectoryThatContainsFormattingInstructions() {
 
   mkdir -p $FOLDER
   cd $FOLDER
-  assertEquals "%K{004} %F{000}\${(Q)\${:-\"~/'%%E%%K{red}'\"}} %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{004} %F{000}\${:-\"~/'%%E%%K{red}'\"} %k%F{004}%f " "$(__p9k_build_left_prompt)"
 
   cd -
   rm -fr $BASEFOLDER
@@ -843,7 +843,7 @@ function testDirSegmentWithDirectoryNamedTilde() {
 
   mkdir -p $FOLDER
   cd $FOLDER
-  assertEquals "%K{004} %F{000}\${(Q)\${:-\"~/~/~\"}} %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{004} %F{000}\${:-\"~/~/~\"} %k%F{004}%f " "$(__p9k_build_left_prompt)"
 
   cd -
   rm -fr $BASEFOLDER
@@ -862,7 +862,7 @@ function testDirSegmentWithDirectoryNamedTildeOmittingFirstCharacter() {
 
   mkdir -p $FOLDER
   cd $FOLDER
-  assertEquals "%K{004} %F{000}\${(Q)\${:-\"/~\"}} %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{004} %F{000}\${:-\"/~\"} %k%F{004}%f " "$(__p9k_build_left_prompt)"
 
   cd -
   rm -fr $BASEFOLDER
@@ -882,7 +882,7 @@ function testDirSegmentWithDirectoryNamedTildeOmittingFirstCharacterInBoldMode()
 
   mkdir -p $FOLDER
   cd $FOLDER
-  assertEquals "%K{004} %F{000}\${(Q)\${:-\"/%B~%b\"}} %k%F{004}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{004} %F{000}\${:-\"/%B~%b\"} %k%F{004}%f " "$(__p9k_build_left_prompt)"
 
   cd -
   rm -fr $BASEFOLDER

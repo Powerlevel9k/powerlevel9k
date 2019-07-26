@@ -32,7 +32,7 @@ local globModifiers="${2}N"
 
 # First search in current directory.
 local -a resolvedGlobs
-resolvedGlobs=( ${currentDir}/${1}(${globModifiers}) )
+resolvedGlobs=( ${(q)currentDir}/${(q)1}(${globModifiers}) )
 # There is at least one match in that directory
 [[ ${#resolvedGlobs} > 0 ]] && results+=("${currentDir}")
 

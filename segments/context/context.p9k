@@ -23,6 +23,8 @@
   p9k::set_default P9K_CONTEXT_ALWAYS_SHOW false
   p9k::set_default P9K_CONTEXT_ALWAYS_SHOW_USER false
   p9k::set_default P9K_CONTEXT_TEMPLATE "%n@%m"
+  # Expand segment values
+  p9k::expand P9K_CONTEXT_TEMPLATE
 }
 
 ################################################################

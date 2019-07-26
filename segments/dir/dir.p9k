@@ -31,6 +31,10 @@
   # Parse the 'name' from the package.json; if there are any problems, just
   # print the file path
   p9k::defined P9K_DIR_PACKAGE_FILES || P9K_DIR_PACKAGE_FILES=(package.json composer.json)
+  # Expand segment values
+  p9k::expand P9K_DIR_PATH_SEPARATOR
+  p9k::expand P9K_DIR_HOME_FOLDER_ABBREVIATION
+  p9k::expand P9K_DIR_SHORTEN_DELIMITER
 }
 
 ################################################################

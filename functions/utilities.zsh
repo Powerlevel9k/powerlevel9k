@@ -203,20 +203,59 @@ function p9k::defined() {
 ##
 # @args
 #   $1 string The name of the variable that should be checked.
-#   $2 string The default value.
+#   $2 string flags, starting with a dash (like -a for array).
+#      Takes the same flags as typeset.
+#   $3 string The default value.
 ##
 # @returns
 #   Nothing.
 ##
-# @note
-#   Typeset cannot set the value for an array, so this will only work
-#   for scalar values.
-##
 function p9k::set_default() {
-  local varname="$1"
-  local default_value="$2"
+  emulate -L zsh
+  local -a flags=(-g)
+  while true; do
+    case $1 in
+      --) shift; break;;
+      -*) flags+=$1; shift;;
+      *) break;
+    esac
+  done
 
-  p9k::defined "$varname" || typeset -g "$varname"="$default_value"
+  local varname=$1
+  shift
+  if [[ -n ${(tP)varname} ]]; then
+    typeset $flags $varname
+  elif [[ "$flags" == *[aA]* ]]; then
+    eval "typeset ${(@q)flags} ${(q)varname}=(${(qq)@})"
+  else
+    typeset $flags $varname="$*"
+  fi
+}
+
+###############################################################
+# @description
+#   This function expands the given parameter. This has to be
+#   done, as some people write P9K_DIR_PATH_SEPARATOR='\uNNNN'
+#   instead of P9K_DIR_PATH_SEPARATOR=$'\uNNNN'.
+##
+# @args
+#   $1 string The value to be expanded
+##
+# @returns
+#   Nothing.
+##
+function p9k::expand() {
+  (( $+parameters[$1] )) || return
+  local -a ts=("${=$(typeset -p $1)}")
+  shift ts
+  local x
+  for x in "${ts[@]}"; do
+    [[ $x == -* ]] || break
+    # Don't change readonly variables. Ideally, we shouldn't modify any variables at all,
+    # but for now this will do.
+    [[ $x == -*r* ]] && return
+  done
+  typeset -g $1=${(g::)${(P)1}}
 }
 
 ###############################################################

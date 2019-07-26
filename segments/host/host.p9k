@@ -19,6 +19,8 @@
   ################################################################
   # Register segment default values
   p9k::set_default P9K_HOST_TEMPLATE "%m"
+  # Expand segment values
+  p9k::expand P9K_HOST_TEMPLATE
 }
 
 ################################################################

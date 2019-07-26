@@ -47,7 +47,7 @@ function testSegmentOnRightSide() {
   __p9k_prepare_prompts
 
   local _actual=$(stripEsc "${(e)RPROMPT}")
-  assertEquals "%f%b%k%F{015}%K{015}%F{000} world1 %F{000}%K{015}%F{000} world2 %{<Esc>00m%}" "${_actual}"
+  assertEquals "%f%b%k%F{015}%K{015}%F{000} world1 %F{000}%K{015}%F{000} world2 %f%k%b" "${_actual}"
 }
 
 function testDisablingRightPrompt() {
@@ -65,6 +65,9 @@ function testDisablingRightPrompt() {
 }
 
 function testLeftMultilinePrompt() {
+  # Fake environment
+  local COlUMNS=10
+
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(custom_world1)
   local P9K_CUSTOM_WORLD1='echo world1'
@@ -74,12 +77,16 @@ function testLeftMultilinePrompt() {
 
   local nl=$'\n'
   local _actual=$(stripEsc "${(e)PROMPT}")
-  assertEquals "╭─%f%b%k%K{015} %F{000}world1 %k%F{015}%f %{<Esc>00m%}${nl}╰─ " "${_actual}"
+  assertEquals "%f%b%k╭─%K{015} %F{000}world1 %k%F{015}%f                                                                     %f%b%k${nl}╰─ " "${_actual}"
 }
 
 function testRightPromptOnSameLine() {
-  # Reset RPROMPT, so a running P9K does not interfere with the test
-  local RPROMPT=
+  # Fake environment
+  local COLUMNS=10
+  # Reset PROMPT, so a running P9K does not interfere with the test
+  local PROMPT=
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=()
   local -a P9K_RIGHT_PROMPT_ELEMENTS
   P9K_RIGHT_PROMPT_ELEMENTS=(custom_world1)
   local P9K_CUSTOM_WORLD1='echo world1'
@@ -89,11 +96,17 @@ function testRightPromptOnSameLine() {
 
   __p9k_prepare_prompts
 
-  local _actual=$(stripEsc "${(e)RPROMPT}")
-  assertEquals "%f%b%k%F{015}%K{015}%F{000} world1 %{<Esc>00m%}" "${_actual}"
+  local nl=$'\n'
+  # The right prompt gets integrated in the left prompt in
+  # this setup, hence we have to test PROMPT instead of RPROMPT.
+  local _actual=$(stripEsc "${(e)PROMPT}")
+  assertEquals "%f%b%k╭─ %f%b%k%F{015}%K{015}%F{000} world1 %f%k%b${nl}╰─ " "${_actual}"
 }
 
 function testPrefixingFirstLineOnLeftPrompt() {
+  # Fake environment
+  local COLUMNS=10
+
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(custom_world1)
   local P9K_CUSTOM_WORLD1='echo world1'
@@ -106,10 +119,13 @@ function testPrefixingFirstLineOnLeftPrompt() {
 
   local nl=$'\n'
   local _actual=$(stripEsc "${(e)PROMPT}")
-  assertEquals "XXX%f%b%k%K{015} %F{000}world1 %k%F{015}%f %{<Esc>00m%}${nl}╰─ " "${_actual}"
+  assertEquals "%f%b%kXXX%K{015} %F{000}world1 %k%F{015}%f    %f%b%k${nl}╰─ " "${_actual}"
 }
 
 function testPrefixingSecondLineOnLeftPrompt() {
+  # Fake environment
+  local COLUMNS=10
+
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(custom_world1)
   local P9K_CUSTOM_WORLD1='echo world1'
@@ -122,7 +138,8 @@ function testPrefixingSecondLineOnLeftPrompt() {
 
   local nl=$'\n'
   local _actual=$(stripEsc "${(e)PROMPT}")
-  assertEquals "╭─%f%b%k%K{015} %F{000}world1 %k%F{015}%f %{<Esc>00m%}${nl}XXX" "${_actual}"
+  assertEquals "%f%b%k╭─%K{015} %F{000}world1 %k%F{015}%f   %f%b%k
+XXX" "${_actual}"
 }
 
 function testCustomStartEndSymbolsOnEdgeSegments() {
@@ -141,9 +158,9 @@ function testCustomStartEndSymbolsOnEdgeSegments() {
   local P9K_RIGHT_PROMPT_LAST_SEGMENT_END_SYMBOL="_]_"
   local P9K_RIGHT_PROMPT_LAST_SEGMENT_END_WHITESPACE="_B_"
 
-  assertEquals "%K{NONE}%F{015}_[_%K{015}_A_%F{000}\${(Q)\${:-\"world1\"}}  %F{000}\${(Q)\${:-\"world2\"}} %k%F{015}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{NONE}%F{015}_[_%K{015}_A_%F{000}\${:-\"world1\"}  %F{000}\${:-\"world2\"} %k%F{015}%f " "$(__p9k_build_left_prompt)"
   local _right=$(stripEsc "$(__p9k_build_right_prompt)")
-  assertEquals "%F{015}%K{015}%F{000} \${(Q)\${:-\"world1\"}} %F{000}%K{015}%F{000} \${(Q)\${:-\"world2\"}}_B_%K{none}%F{015}_]_" "${_right}"
+  assertEquals "%F{015}%K{015}%F{000} \${:-\"world1\"} %F{000}%K{015}%F{000} \${:-\"world2\"}_B_%K{none}%F{015}_]_%f%k%b" "${_right}"
 }
 
 function testCustomWhitespaceOfSegments() {
@@ -166,8 +183,8 @@ function testCustomWhitespaceOfSegments() {
   local P9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS="_[R]_"
   local P9K_MIDDLE_WHITESPACE_OF_RIGHT_SEGMENTS="_[M]_"
 
-  assertEquals "%K{015}_[L]_%F{000}{1}_[M]_%F{000}\${(Q)\${:-\"world1\"}}_[L]__[L]_%F{000}\${(Q)\${:-\"world2\"}}_[L]__[L]_%F{000}{3}_[M]_%F{000}\${(Q)\${:-\"world3\"}}_[L]_%k%F{015}%f " "$(__p9k_build_left_prompt)"
-  assertEquals "%F{015}%K{015}%F{000}_[R]_\${(Q)\${:-\"world1\"}}_[M]_%F{000}{1}%f_[R]_%F{000}%K{015}%F{000}_[R]_\${(Q)\${:-\"world2\"}}_[R]_%F{000}%K{015}%F{000}_[R]_\${(Q)\${:-\"world3\"}}_[M]_%F{000}{3}%f_[R]_" "$(stripEsc "$(__p9k_build_right_prompt)")"
+  assertEquals "%K{015}_[L]_%F{000}{1}_[M]_%F{000}\${:-\"world1\"}_[L]__[L]_%F{000}\${:-\"world2\"}_[L]__[L]_%F{000}{3}_[M]_%F{000}\${:-\"world3\"}_[L]_%k%F{015}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%F{015}%K{015}%F{000}_[R]_\${:-\"world1\"}_[M]_%F{000}{1}%f_[R]_%F{000}%K{015}%F{000}_[R]_\${:-\"world2\"}_[R]_%F{000}%K{015}%F{000}_[R]_\${:-\"world3\"}_[M]_%F{000}{3}%f_[R]_%f%k%b" "$(stripEsc "$(__p9k_build_right_prompt)")"
 }
 
 function testCustomWhitespaceOfLeftAndRightSegments() {
@@ -192,8 +209,8 @@ function testCustomWhitespaceOfLeftAndRightSegments() {
   local P9K_MIDDLE_WHITESPACE_OF_RIGHT_SEGMENTS="_[RM]_"
   local P9K_RIGHT_WHITESPACE_OF_RIGHT_SEGMENTS="_[RR]_"
 
-  assertEquals "%K{015}_[LL]_%F{000}{1}_[LM]_%F{000}\${(Q)\${:-\"world1\"}}_[LR]__[LL]_%F{000}\${(Q)\${:-\"world2\"}}_[LR]__[LL]_%F{000}{3}_[LM]_%F{000}\${(Q)\${:-\"world3\"}}_[LR]_%k%F{015}%f " "$(__p9k_build_left_prompt)"
-  assertEquals "%F{015}%K{015}%F{000}_[RL]_\${(Q)\${:-\"world1\"}}_[RM]_%F{000}{1}%f_[RR]_%F{000}%K{015}%F{000}_[RL]_\${(Q)\${:-\"world2\"}}_[RR]_%F{000}%K{015}%F{000}_[RL]_\${(Q)\${:-\"world3\"}}_[RM]_%F{000}{3}%f_[RR]_" "$(stripEsc "$(__p9k_build_right_prompt)")"
+  assertEquals "%K{015}_[LL]_%F{000}{1}_[LM]_%F{000}\${:-\"world1\"}_[LR]__[LL]_%F{000}\${:-\"world2\"}_[LR]__[LL]_%F{000}{3}_[LM]_%F{000}\${:-\"world3\"}_[LR]_%k%F{015}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%F{015}%K{015}%F{000}_[RL]_\${:-\"world1\"}_[RM]_%F{000}{1}%f_[RR]_%F{000}%K{015}%F{000}_[RL]_\${:-\"world2\"}_[RR]_%F{000}%K{015}%F{000}_[RL]_\${:-\"world3\"}_[RM]_%F{000}{3}%f_[RR]_%f%k%b" "$(stripEsc "$(__p9k_build_right_prompt)")"
 }
 
 function testCustomWhitespaceOfCustomSegments() {
@@ -222,8 +239,8 @@ function testCustomWhitespaceOfCustomSegments() {
   local P9K_CUSTOM_WORLD3_MIDDLE_WHITESPACE="_[M3]_"
   local P9K_CUSTOM_WORLD3_RIGHT_WHITESPACE="_[R3]_"
 
-  assertEquals "%K{015}_[L1]_%F{000}{1}_[M1]_%F{000}\${(Q)\${:-\"world1\"}}_[R1]__[L2]_%F{000}\${(Q)\${:-\"world2\"}}_[R2]__[L3]_%F{000}{3}_[M3]_%F{000}\${(Q)\${:-\"world3\"}}_[R3]_%k%F{015}%f " "$(__p9k_build_left_prompt)"
-  assertEquals "%F{015}%K{015}%F{000}_[L1]_\${(Q)\${:-\"world1\"}}_[M1]_%F{000}{1}%f_[R1]_%F{000}%K{015}%F{000}_[L2]_\${(Q)\${:-\"world2\"}}_[R2]_%F{000}%K{015}%F{000}_[L3]_\${(Q)\${:-\"world3\"}}_[M3]_%F{000}{3}%f_[R3]_" "$(stripEsc "$(__p9k_build_right_prompt)")"
+  assertEquals "%K{015}_[L1]_%F{000}{1}_[M1]_%F{000}\${:-\"world1\"}_[R1]__[L2]_%F{000}\${:-\"world2\"}_[R2]__[L3]_%F{000}{3}_[M3]_%F{000}\${:-\"world3\"}_[R3]_%k%F{015}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%F{015}%K{015}%F{000}_[L1]_\${:-\"world1\"}_[M1]_%F{000}{1}%f_[R1]_%F{000}%K{015}%F{000}_[L2]_\${:-\"world2\"}_[R2]_%F{000}%K{015}%F{000}_[L3]_\${:-\"world3\"}_[M3]_%F{000}{3}%f_[R3]_%f%k%b" "$(stripEsc "$(__p9k_build_right_prompt)")"
 }
 
 function testCustomWhitespaceWithIconOnLeft() {
@@ -245,7 +262,7 @@ function testCustomWhitespaceWithIconOnLeft() {
   local P9K_MIDDLE_WHITESPACE_OF_RIGHT_SEGMENTS="_[M]_"
   local P9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS="_[R]_"
 
-  assertEquals "%F{015}%K{015}%F{000}_[R]_%F{000}{1}%f_[M]_%F{000}\${(Q)\${:-\"world1\"}}_[R]_%F{000}%K{015}%F{000}_[R]_%F{000}\${(Q)\${:-\"world2\"}}_[R]_%F{000}%K{015}%F{000}_[R]_%F{000}{3}%f_[M]_%F{000}\${(Q)\${:-\"world3\"}}_[R]_" "$(stripEsc "$(__p9k_build_right_prompt)")"
+  assertEquals "%F{015}%K{015}%F{000}_[R]_%F{000}{1}%f_[M]_%F{000}\${:-\"world1\"}_[R]_%F{000}%K{015}%F{000}_[R]_%F{000}\${:-\"world2\"}_[R]_%F{000}%K{015}%F{000}_[R]_%F{000}{3}%f_[M]_%F{000}\${:-\"world3\"}_[R]_%f%k%b" "$(stripEsc "$(__p9k_build_right_prompt)")"
 }
 
 source shunit2/shunit2

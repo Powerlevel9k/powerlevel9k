@@ -18,6 +18,9 @@
   # Register segment default values
   p9k::set_default P9K_ANACONDA_LEFT_DELIMITER "("
   p9k::set_default P9K_ANACONDA_RIGHT_DELIMITER ")"
+  # Expand segment values
+  p9k::expand P9K_ANACONDA_LEFT_DELIMITER
+  p9k::expand P9K_ANACONDA_RIGHT_DELIMITER
 }
 
 ################################################################

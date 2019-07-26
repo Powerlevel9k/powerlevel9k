@@ -24,7 +24,7 @@ function testCommandExecutionTimeIsNotShownIfTimeIsBelowThreshold() {
   P9K_CUSTOM_WORLD='echo world'
   local _P9K_COMMAND_DURATION=2
 
-  assertEquals "%K{015} %F{000}\${(Q)\${:-\"world\"}} %k%F{015}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{015} %F{000}\${:-\"world\"} %k%F{015}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testCommandExecutionTimeThresholdCouldBeChanged() {
@@ -34,7 +34,7 @@ function testCommandExecutionTimeThresholdCouldBeChanged() {
   local _P9K_COMMAND_DURATION=2.03
   local LC_ALL="en_US.utf8"
 
-  assertEquals "%K{001} %F{226}Dur %F{226}\${(Q)\${:-\"2.03s\"}} %k%F{001}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{001} %F{226}Dur %F{226}\${:-\"2.03s\"} %k%F{001}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testCommandExecutionTimeThresholdCouldBeSetToZero() {
@@ -44,7 +44,7 @@ function testCommandExecutionTimeThresholdCouldBeSetToZero() {
   local _P9K_COMMAND_DURATION=0.03
   local LC_ALL="en_US.utf8"
 
-  assertEquals "%K{001} %F{226}Dur %F{226}\${(Q)\${:-\"0.03s\"}} %k%F{001}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{001} %F{226}Dur %F{226}\${:-\"0.03s\"} %k%F{001}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testCommandExecutionTimePrecisionCouldBeChanged() {
@@ -55,7 +55,7 @@ function testCommandExecutionTimePrecisionCouldBeChanged() {
   local _P9K_COMMAND_DURATION=0.0001
   local LC_ALL="en_US.utf8"
 
-  assertEquals "%K{001} %F{226}Dur %F{226}\${(Q)\${:-\"0.0001s\"}} %k%F{001}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{001} %F{226}Dur %F{226}\${:-\"0.0001s\"} %k%F{001}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testCommandExecutionTimePrecisionCouldBeSetToZero() {
@@ -65,7 +65,7 @@ function testCommandExecutionTimePrecisionCouldBeSetToZero() {
   local _P9K_COMMAND_DURATION=23.5001
   local LC_ALL="en_US.utf8"
 
-  assertEquals "%K{001} %F{226}Dur %F{226}\${(Q)\${:-\"24s\"}} %k%F{001}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{001} %F{226}Dur %F{226}\${:-\"24s\"} %k%F{001}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testCommandExecutionTimeIsFormattedHumandReadbleForMinuteLongCommand() {
@@ -74,7 +74,7 @@ function testCommandExecutionTimeIsFormattedHumandReadbleForMinuteLongCommand() 
   local _P9K_COMMAND_DURATION=180
   local LC_ALL="en_US.utf8"
 
-  assertEquals "%K{001} %F{226}Dur %F{226}\${(Q)\${:-\"03:00\"}} %k%F{001}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{001} %F{226}Dur %F{226}\${:-\"03:00\"} %k%F{001}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testCommandExecutionTimeIsFormattedHumandReadbleForHourLongCommand() {
@@ -83,7 +83,7 @@ function testCommandExecutionTimeIsFormattedHumandReadbleForHourLongCommand() {
   local _P9K_COMMAND_DURATION=7200
   local LC_ALL="en_US.utf8"
 
-  assertEquals "%K{001} %F{226}Dur %F{226}\${(Q)\${:-\"02:00:00\"}} %k%F{001}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{001} %F{226}Dur %F{226}\${:-\"02:00:00\"} %k%F{001}%f " "$(__p9k_build_left_prompt)"
 }
 
 source shunit2/shunit2

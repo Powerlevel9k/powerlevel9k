@@ -20,7 +20,7 @@ function testPhpVersionSegmentPrintsNothingIfPhpIsNotAvailable() {
   local P9K_CUSTOM_WORLD='echo world'
   alias php="nophp"
 
-  assertEquals "%K{015} %F{000}\${(Q)\${:-\"world\"}} %k%F{015}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{015} %F{000}\${:-\"world\"} %k%F{015}%f " "$(__p9k_build_left_prompt)"
 
   unalias php
 }
@@ -33,7 +33,7 @@ Copyright (c) 1997-2016 The PHP Group
 Zend Engine v2.6.0, Copyright (c) 1998-2016 Zend Technologies
 '"
 
-  assertEquals "%K{013} %F{255}PHP %F{255}\${(Q)\${:-\"5.6.27\"}} %k%F{013}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{013} %F{255}PHP %F{255}\${:-\"5.6.27\"} %k%F{013}%f " "$(__p9k_build_left_prompt)"
 
   unalias php
 }
