@@ -250,6 +250,11 @@ function p9k::prompt_length() {
   local COLUMNS=1024
   local -i x y=$#1 m
   if (( y )); then
+    # This tests if each character was printed and counts them.
+    # The magic is in %$y(l.1.0), which outputs a 1 if the
+    # character was printed, or 0 if not.
+    # This is done via a binary search, so there is two loops.
+    # See https://www.reddit.com/r/zsh/comments/cgbm24/multiline_prompt_the_missing_ingredient/
     while (( ${${(%):-$1%$y(l.1.0)}[-1]} )); do
       x=y
       (( y *= 2 ));
