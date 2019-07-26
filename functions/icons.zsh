@@ -59,6 +59,8 @@ function p9k::register_icon() {
   local map
   local ICON_USER_VARIABLE="P9K_${1}_ICON"
   if p9k::defined "${ICON_USER_VARIABLE}"; then # check for icon override first
+    # Expand user Icon
+    p9k::expand "$ICON_USER_VARIABLE"
     map="${(P)ICON_USER_VARIABLE}"
   else # use the icons that are registered by the segment
     case ${P9K_MODE} in
