@@ -430,7 +430,7 @@ local NEWLINE='
   if [[ ${P9K_DISABLE_RPROMPT:-} != true ]]; then
     local right="${P9K_RPROMPT_PREFIX:-}%f%b%k$(__p9k_build_right_prompt)${P9K_RPROMPT_SUFFIX:-}"
     if [[ ${P9K_PROMPT_ON_NEWLINE:-} != true || ${P9K_RPROMPT_ON_NEWLINE:-} == true ]]; then
-      RPROMPT="${right}${reset_color}"
+      RPROMPT="${right}"
     else
       unset _P9K_RPROMPT_OVERRIDE
       local spacerWidth
@@ -457,7 +457,7 @@ local NEWLINE='
     fi
   fi
 
-  PROMPT="${left}${reset_color}"
+  PROMPT="${left}"
 
   # Allow iTerm integration to work
   [[ "${ITERM_SHELL_INTEGRATION_INSTALLED:-}" == "Yes" ]] \
