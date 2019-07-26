@@ -45,7 +45,7 @@ function testGitstatusRemoteBranchIsDisplayedIfLocalAndRemoteDiffer() {
   local VCS_STATUS_LOCAL_BRANCH='master'
   local VCS_STATUS_REMOTE_BRANCH='remotes/somebody/master'
 
-  assertEquals "%K{002} %F{000}\${(Q)\${:-\" master →remotes/somebody/master\"}} %k%F{002}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{002} %F{000}\${:-\" master →remotes/somebody/master\"} %k%F{002}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testGitstatusRemoteBranchIsHiddenIfLocalAndRemoteAreEqual() {
@@ -57,7 +57,7 @@ function testGitstatusRemoteBranchIsHiddenIfLocalAndRemoteAreEqual() {
   local VCS_STATUS_LOCAL_BRANCH='master'
   local VCS_STATUS_REMOTE_BRANCH='master'
 
-  assertEquals "%K{002} %F{000}\${(Q)\${:-\" master\"}} %k%F{002}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{002} %F{000}\${:-\" master\"} %k%F{002}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testGitstatusActionformat() {
@@ -69,7 +69,7 @@ function testGitstatusActionformat() {
   local VCS_STATUS_LOCAL_BRANCH='%E%K{blue}'
   local VCS_STATUS_ACTION="merge"
 
-  assertEquals "%K{002} %F{000}\${(Q)\${:-\" %%E%%K{blue} %F{001}| merge%f%F{}\"}} %k%F{002}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{002} %F{000}\${:-\" %%E%%K{blue} %F{001}| merge%f%F{}\"} %k%F{002}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testNoPercentEscapesLeak() {
@@ -80,7 +80,7 @@ function testNoPercentEscapesLeak() {
   local VCS_STATUS_RESULT="ok-sync"
   local VCS_STATUS_LOCAL_BRANCH='%E%K{red}'
 
-  assertEquals "%K{002} %F{000}\${(Q)\${:-\" %%E%%K{red}\"}} %k%F{002}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{002} %F{000}\${:-\" %%E%%K{red}\"} %k%F{002}%f " "$(__p9k_build_left_prompt)"
 }
 
 function testGitstatusVisualIdentifier() {
@@ -93,22 +93,22 @@ function testGitstatusVisualIdentifier() {
   local P9K_GITSTATUS_GIT_ICON='Git-icon'
   source "${P9K_HOME}/segments/gitstatus/gitstatus.p9k"
   local VCS_STATUS_REMOTE_URL="https://some.unknown/url"
-  assertEquals "%K{002} %F{000}Git-icon %F{000}\${(Q)\${:-\" master\"}} %k%F{002}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{002} %F{000}Git-icon %F{000}\${:-\" master\"} %k%F{002}%f " "$(__p9k_build_left_prompt)"
 
   local P9K_GITSTATUS_BITBUCKET_ICON='BB-icon'
   source "${P9K_HOME}/segments/gitstatus/gitstatus.p9k"
   local VCS_STATUS_REMOTE_URL="https://dritter@bitbucket.org/dritter/dr-test.git"
-  assertEquals "%K{002} %F{000}BB-icon %F{000}\${(Q)\${:-\" master\"}} %k%F{002}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{002} %F{000}BB-icon %F{000}\${:-\" master\"} %k%F{002}%f " "$(__p9k_build_left_prompt)"
 
   local P9K_GITSTATUS_GITLAB_ICON='GL-icon'
   source "${P9K_HOME}/segments/gitstatus/gitstatus.p9k"
   local VCS_STATUS_REMOTE_URL="https://gitlab.com/dritter/gitlab-test-project.git"
-  assertEquals "%K{002} %F{000}GL-icon %F{000}\${(Q)\${:-\" master\"}} %k%F{002}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{002} %F{000}GL-icon %F{000}\${:-\" master\"} %k%F{002}%f " "$(__p9k_build_left_prompt)"
 
   local P9K_GITSTATUS_GITHUB_ICON='GH-icon'
   source "${P9K_HOME}/segments/gitstatus/gitstatus.p9k"
   local VCS_STATUS_REMOTE_URL="https://github.com/dritter/test.git"
-  assertEquals "%K{002} %F{000}GH-icon %F{000}\${(Q)\${:-\" master\"}} %k%F{002}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{002} %F{000}GH-icon %F{000}\${:-\" master\"} %k%F{002}%f " "$(__p9k_build_left_prompt)"
 }
 
 source shunit2/shunit2

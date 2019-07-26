@@ -19,7 +19,7 @@ function testViInsertModeWorks() {
   # Load Powerlevel9k
   source segments/vi_mode/vi_mode.p9k
 
-  assertEquals "%K{000} %F{004}\${(Q)\${:-\"INSERT\"}} " "$(prompt_vi_mode left 1 false)"
+  assertEquals "%K{000} %F{004}\${:-\"INSERT\"} " "$(prompt_vi_mode left 1 false)"
 }
 
 function testViInsertModeWorksWhenLabeledAsMain() {
@@ -28,7 +28,7 @@ function testViInsertModeWorksWhenLabeledAsMain() {
   # Load Powerlevel9k
   source segments/vi_mode/vi_mode.p9k
 
-  assertEquals "%K{000} %F{004}\${(Q)\${:-\"INSERT\"}} " "$(prompt_vi_mode left 1 false)"
+  assertEquals "%K{000} %F{004}\${:-\"INSERT\"} " "$(prompt_vi_mode left 1 false)"
 }
 
 function testViCommandModeWorks() {
@@ -37,7 +37,7 @@ function testViCommandModeWorks() {
   # Load Powerlevel9k
   source segments/vi_mode/vi_mode.p9k
 
-  assertEquals "%K{000} %F{015}\${(Q)\${:-\"NORMAL\"}} " "$(prompt_vi_mode left 1 false)"
+  assertEquals "%K{000} %F{015}\${:-\"NORMAL\"} " "$(prompt_vi_mode left 1 false)"
 }
 
 function testViInsertModeStringIsCustomizable() {
@@ -46,7 +46,7 @@ function testViInsertModeStringIsCustomizable() {
   # Load Powerlevel9k
   source segments/vi_mode/vi_mode.p9k
 
-  assertEquals "%K{000} %F{004}\${(Q)\${:-\"INSERT\"}} " "$(prompt_vi_mode left 1 false)"
+  assertEquals "%K{000} %F{004}\${:-\"INSERT\"} " "$(prompt_vi_mode left 1 false)"
 }
 
 source shunit2/shunit2

@@ -38,7 +38,7 @@ function testDiskUsageSegmentWhenDiskIsAlmostFull() {
 /dev/disk1     487219288 471466944  15496344  97% /"
   }
 
-  assertEquals "%K{001} %F{015}hdd  %F{015}\${(Q)\${:-\"97%%\"}} %k%F{001}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{001} %F{015}hdd  %F{015}\${:-\"97%%\"} %k%F{001}%f " "$(__p9k_build_left_prompt)"
 
   unfunction df
 }
@@ -51,7 +51,7 @@ function testDiskUsageSegmentWhenDiskIsVeryFull() {
 /dev/disk1     487219288 471466944  15496344  94% /"
   }
 
-  assertEquals "%K{003} %F{000}hdd  %F{000}\${(Q)\${:-\"94%%\"}} %k%F{003}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{003} %F{000}hdd  %F{000}\${:-\"94%%\"} %k%F{003}%f " "$(__p9k_build_left_prompt)"
 
   unfunction df
 }
@@ -64,7 +64,7 @@ function testDiskUsageSegmentWhenDiskIsQuiteEmpty() {
 /dev/disk1     487219288 471466944  15496344  4% /"
   }
 
-  assertEquals "%K{000} %F{046}hdd  %F{046}\${(Q)\${:-\"4%%\"}} %k%F{000}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{000} %F{046}hdd  %F{046}\${:-\"4%%\"} %k%F{000}%f " "$(__p9k_build_left_prompt)"
 
   unfunction df
 }
@@ -80,7 +80,7 @@ function testDiskUsageSegmentPrintsNothingIfDiskIsQuiteEmptyAndOnlyWarningsShoul
   local P9K_DISK_USAGE_ONLY_WARNING=true
   local P9K_CUSTOM_WORLD='echo world'
 
-  assertEquals "%K{015} %F{000}\${(Q)\${:-\"world\"}} %k%F{015}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{015} %F{000}\${:-\"world\"} %k%F{015}%f " "$(__p9k_build_left_prompt)"
 
   unfunction df
 }
@@ -94,7 +94,7 @@ function testDiskUsageSegmentWarningLevelCouldBeAdjusted() {
 /dev/disk1     487219288 471466944  15496344  11% /"
   }
 
-  assertEquals "%K{003} %F{000}hdd  %F{000}\${(Q)\${:-\"11%%\"}} %k%F{003}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{003} %F{000}hdd  %F{000}\${:-\"11%%\"} %k%F{003}%f " "$(__p9k_build_left_prompt)"
 
   unfunction df
 }
@@ -109,7 +109,7 @@ function testDiskUsageSegmentCriticalLevelCouldBeAdjusted() {
 /dev/disk1     487219288 471466944  15496344  11% /"
   }
 
-  assertEquals "%K{001} %F{015}hdd  %F{015}\${(Q)\${:-\"11%%\"}} %k%F{001}%f " "$(__p9k_build_left_prompt)"
+  assertEquals "%K{001} %F{015}hdd  %F{015}\${:-\"11%%\"} %k%F{001}%f " "$(__p9k_build_left_prompt)"
 
   unfunction df
 }
