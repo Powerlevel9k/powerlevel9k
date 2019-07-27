@@ -462,7 +462,7 @@ function p9k::find_first_defined() {
 ###############################################################
 # @description
 #   Takes a list of variable names and returns the value of the 
-#   the first non empty one. 
+#   the first non empty one.
 # @args
 #   $1 optional flag '-n' as first argument will make function to 
 #   return variable name instead of it's value.
@@ -538,7 +538,14 @@ function p9k::parseIp() {
   return 1
 }
 
-# __p9k_wrap_zle_widget zle-keymap-select _p9k_zle_keymap_select
+###############################################################
+# @description
+#   Wrap a ZLE widget safely.
+# @args
+#   $1 function name of the widget
+# @example
+#   __p9k_wrap_zle_widget zle-keymap-select _p9k_zle_keymap_select
+##
 __p9k_wrap_zle_widget() {
   local widget=$1
   local hook=$2
