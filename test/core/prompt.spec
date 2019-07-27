@@ -66,7 +66,7 @@ function testDisablingRightPrompt() {
 
 function testLeftMultilinePrompt() {
   # Fake environment
-  local COlUMNS=10
+  local COLUMNS=10
 
   local -a P9K_LEFT_PROMPT_ELEMENTS
   P9K_LEFT_PROMPT_ELEMENTS=(custom_world1)
@@ -77,7 +77,7 @@ function testLeftMultilinePrompt() {
 
   local nl=$'\n'
   local _actual=$(stripEsc "${(e)PROMPT}")
-  assertEquals "%f%b%k╭─%K{015} %F{000}world1 %k%F{015}%f                                                                     %f%b%k${nl}╰─ " "${_actual}"
+  assertEquals "%f%b%k╭─%K{015} %F{000}world1 %k%F{015}%f   %f%b%k${nl}╰─ " "${_actual}"
 }
 
 function testRightPromptOnSameLine() {
