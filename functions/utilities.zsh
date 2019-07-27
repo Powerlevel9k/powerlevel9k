@@ -483,10 +483,15 @@ function p9k::find_first_non_empty() {
   done
 }
 
-# Parse IP address from ifconfig on OSX and from IP on Linux
-# Parameters:
-#  $1 - string The desired Interface
-#  $2 - string A root prefix for testing purposes
+###############################################################
+# @description
+#   Parse IP address from ifconfig on OSX and from IP on Linux
+# @args
+#   $1 - string The desired Interface
+#   $2 - string A root prefix for testing purposes
+# @returns
+#   The parsed IP address
+##
 function p9k::parseIp() {
   local desiredInterface="${1}"
 
