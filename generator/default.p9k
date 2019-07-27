@@ -431,23 +431,27 @@ local NEWLINE='
       RPROMPT="${right}"
     else
       unset _P9K_RPROMPT_OVERRIDE
-      local spacerWidth
       p9k::prompt_length "${(e)left}"
       local leftPromptWidth=${_P9K_RETVAL}
       p9k::prompt_length "${(e)right}"
       local rightPromptWidth=${_P9K_RETVAL}
-      spacerWidth=$(( COLUMNS - (leftPromptWidth + rightPromptWidth) ))
-      local spacerChar=' '
-      [[ "$spacerChar" == '.' ]] && local padSeparator=',' || local padSeparator='.'
-      # We left pad the spacer here (flag "l") and the syntax for that is
-      # ${(l:<length>::<char>:)}, where colons are here the separators
-      # that need to differ from the char.
-      left+='${(pl'${padSeparator}${spacerWidth}${padSeparator}${padSeparator}${spacerChar}${padSeparator}')}'
-      # Inject the RIGHT prompt into the left one, if
-      # P9K_RPROMPT_ON_NEWLINE is set. This is done with
-      # the help of a ZLE widget (_p9k_zle_line_finish)
-      # that sets _P9K_RPROMPT_OVERRIDE.
-      left+="${_P9K_RPROMPT_OVERRIDE-$right}"
+      local spacerWidth=$(( COLUMNS - (leftPromptWidth + rightPromptWidth) ))
+      if (( spacerWidth > 0 )); then
+        local spacerChar=' '
+        [[ "$spacerChar" == '.' ]] && local padSeparator=',' || local padSeparator='.'
+        # We left pad the spacer here (flag "l") and the syntax for that is
+        # ${(l:<length>::<char>:)}, where colons are here the separators
+        # that need to differ from the char.
+        left+='${(pl'${padSeparator}${spacerWidth}${padSeparator}${padSeparator}${spacerChar}${padSeparator}')}'
+        # _P9K_RPROMPT_OVERRIDE is for removing the RPROMPT
+        # in older prompts. This mimics the TRANSIENT_RPROMPT
+        # setting from ZSH. The variable is set to an empty
+        # value in a ZLE widget (_p9k_zle_line_finish), which
+        # leads to the right prompt not being printed. As this
+        # is written as variable in our PROMPT, we remove the
+        # old right prompts.
+        left+="${_P9K_RPROMPT_OVERRIDE-$right}"
+      fi
 
       if [[ "${P9K_PROMPT_ON_NEWLINE:-}" == true ]]; then
         left+="${NEWLINE}${__P9K_ICONS[MULTILINE_LAST_PROMPT_PREFIX]}"
