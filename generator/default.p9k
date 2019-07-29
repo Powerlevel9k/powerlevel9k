@@ -430,10 +430,10 @@ local NEWLINE='
     if [[ ${P9K_PROMPT_ON_NEWLINE:-} != true || ${P9K_RPROMPT_ON_NEWLINE:-} == true ]]; then
       RPROMPT="${right}"
     else
-      unset _P9K_RPROMPT_OVERRIDE
       p9k::prompt_length "${(e)left}"
       local leftPromptWidth=${_P9K_RETVAL}
-      p9k::prompt_length "${(e)right}"
+      __P9K_RPROMPT="${(e)right}"
+      p9k::prompt_length "${__P9K_RPROMPT}"
       local rightPromptWidth=${_P9K_RETVAL}
       local spacerWidth=$(( COLUMNS - (leftPromptWidth + rightPromptWidth) ))
       if (( spacerWidth > 0 )); then
@@ -450,7 +450,7 @@ local NEWLINE='
         # leads to the right prompt not being printed. As this
         # is written as variable in our PROMPT, we remove the
         # old right prompts.
-        left+="${_P9K_RPROMPT_OVERRIDE-$right}"
+        left+='${_P9K_RPROMPT_OVERRIDE-${__P9K_RPROMPT}}'
       fi
 
       if [[ "${P9K_PROMPT_ON_NEWLINE:-}" == true ]]; then
@@ -460,6 +460,8 @@ local NEWLINE='
   fi
 
   PROMPT="${left}"
+
+  unset _P9K_RPROMPT_OVERRIDE
 
   # Allow iTerm integration to work
   [[ "${ITERM_SHELL_INTEGRATION_INSTALLED:-}" == "Yes" ]] \
