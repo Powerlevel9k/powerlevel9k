@@ -101,7 +101,7 @@ function __p9k_detect_terminal() {
       fi
       local pid=$$ termtest=''
       while true; do
-        if test "$pid" = "1" -o "$pid" = ""; then
+        if test "$pid" = "1" -o "$pid" = "" -o ! -d /proc/${pid}; then
           __P9K_TERMINAL="unknown"
           return
         fi
