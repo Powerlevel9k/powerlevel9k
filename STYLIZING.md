@@ -19,8 +19,8 @@ Not every option can be changed at runtime.**
 |`P9K_PROMPT_ADD_NEWLINE_COUNT`|`1`|Change the amound of newlines added if `P9K_PROMPT_ADD_NEWLINE=true`.|
 |`P9K_DISABLE_RPROMPT`|`false`|Disables `RPROMPT`.|
 |`P9K_COLOR_SCHEME`|unset|Set to `light` to invert default background and foreground color.|
-|`P9K_{LEFT,RIGHT}_SEGMENT_SEPARATOR_ICON`|``,``|This is the separator between two segments of different color.|
-|`P9K_{LEFT,RIGHT}_SUBSEGMENT_SEPARATOR_ICON`|``,``|This is the separator between two segments of the same color.|
+|`P9K_{LEFT,RIGHT}_SEGMENT_SEPARATOR_ICON`| ![image](https://user-images.githubusercontent.com/16988672/62417083-99285000-b647-11e9-9b3f-88f8e9bae963.png) |This is the separator between two segments of different color.|
+|`P9K_{LEFT,RIGHT}_SUBSEGMENT_SEPARATOR_ICON`| ![image](https://user-images.githubusercontent.com/16988672/62417099-d5f44700-b647-11e9-93d0-150266610b22.png) |This is the separator between two segments of the same color.|
 |`P9K_WHITESPACE_BETWEEN_{LEFT,RIGHT}_SEGMENTS`|` `|How much space there is between segment text and segment separator.|
 
 ## Per Segment Stylizing
