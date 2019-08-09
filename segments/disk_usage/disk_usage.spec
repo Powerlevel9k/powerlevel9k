@@ -71,7 +71,7 @@ function testDiskUsageSegmentWhenDiskIsQuiteEmpty() {
 
 function testDiskUsageSegmentPrintsNothingIfDiskIsQuiteEmptyAndOnlyWarningsShouldBeDisplayed() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
-  P9K_LEFT_PROMPT_ELEMENTS=(disk_usage custom_world)
+  P9K_LEFT_PROMPT_ELEMENTS=(disk_usage world::custom)
   df() {
       echo "Filesystem     1K-blocks      Used Available Use% Mounted on
 /dev/disk1     487219288 471466944  15496344  4% /"

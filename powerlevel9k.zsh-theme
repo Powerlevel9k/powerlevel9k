@@ -197,16 +197,37 @@ p9k::defined P9K_RIGHT_PROMPT_ELEMENTS || P9K_RIGHT_PROMPT_ELEMENTS=(status root
 # Load Prompt Segment Definitions
 ################################################################
 
+function __p9k_polyfill_segment_tags() {
+  setopt localoptions extended_glob
+  # Replace old "custom_" elements with new Tag syntax.
+  # This is done via the internal ZSH regex engine.
+  # #b enables pattern matching
+  # ? is any character
+  # ## is one or more
+  # S Flag for non-greedy matching
+  P9K_LEFT_PROMPT_ELEMENTS=("${(@)P9K_LEFT_PROMPT_ELEMENTS//(#b)custom_(?##)/${match[1]}::custom}")
+  P9K_LEFT_PROMPT_ELEMENTS=("${(@S)P9K_LEFT_PROMPT_ELEMENTS//(#b)(?##)_joined/${match[1]}::joined}")
+
+  P9K_RIGHT_PROMPT_ELEMENTS=("${(@)P9K_RIGHT_PROMPT_ELEMENTS//(#b)custom_(?##)/${match[1]}::custom}")
+  P9K_RIGHT_PROMPT_ELEMENTS=("${(@S)P9K_RIGHT_PROMPT_ELEMENTS//(#b)(?##)_joined/${match[1]}::joined}")
+
+  # echo $P9K_LEFT_PROMPT_ELEMENTS
+}
+__p9k_polyfill_segment_tags
+
 p9k::set_default P9K_CUSTOM_SEGMENT_LOCATION "$HOME/.config/powerlevel9k/segments"
 # load only the segments that are being used!
 function __p9k_load_segments() {
-  local segment
-  for segment in ${P9K_LEFT_PROMPT_ELEMENTS} ${P9K_RIGHT_PROMPT_ELEMENTS}; do
-    # Remove joined information
-    segment=${segment%_joined}
+  local segment raw_segment
+  for raw_segment in ${P9K_LEFT_PROMPT_ELEMENTS} ${P9K_RIGHT_PROMPT_ELEMENTS}; do
+    local -a segment_meta
+    # Split by double-colon
+    segment_meta=(${(s.::.)raw_segment})
+    # First value is always segment name
+    segment=${segment_meta[1]}
 
     # Custom segments must be loaded by user
-    if [[ $segment[0,7] =~ "custom_" ]]; then
+    if p9k::segment_is_tagged_as "custom" "${segment_meta}"; then
       continue
     fi
     # check if the file exists as a core segment

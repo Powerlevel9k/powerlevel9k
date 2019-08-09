@@ -38,7 +38,7 @@ function tearDown() {
 
 function testTodoSegmentPrintsNothingIfTodoShIsNotInstalled() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
-  P9K_LEFT_PROMPT_ELEMENTS=(todo custom_world)
+  P9K_LEFT_PROMPT_ELEMENTS=(todo world::custom)
   local P9K_CUSTOM_WORLD='echo world'
   alias todo.sh="echo"
 

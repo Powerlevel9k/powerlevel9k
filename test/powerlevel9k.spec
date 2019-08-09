@@ -50,7 +50,7 @@ function testUsingUnsetVariables() {
 
 function testJoinedSegments() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
-  local P9K_LEFT_PROMPT_ELEMENTS=(dir dir_joined)
+  local P9K_LEFT_PROMPT_ELEMENTS=(dir dir::joined)
   cd /tmp
 
   assertEquals "%K{004} %F{000}\${:-\"/tmp\"} %F{000}\${:-\"/tmp\"} %k%F{004}%f " "$(__p9k_build_left_prompt)"
@@ -60,7 +60,7 @@ function testJoinedSegments() {
 
 function testTransitiveJoinedSegments() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
-  local P9K_LEFT_PROMPT_ELEMENTS=(dir root_indicator_joined dir_joined)
+  P9K_LEFT_PROMPT_ELEMENTS=(dir root_indicator::joined dir::joined)
   source segments/root_indicator/root_indicator.p9k
   cd /tmp
 
@@ -71,7 +71,7 @@ function testTransitiveJoinedSegments() {
 
 function testJoiningWithConditionalSegment() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
-  local P9K_LEFT_PROMPT_ELEMENTS=(dir background_jobs dir_joined)
+  P9K_LEFT_PROMPT_ELEMENTS=(dir background_jobs dir::joined)
   source segments/background_jobs/background_jobs.p9k
   local jobs_running=0
   local jobs_suspended=0
@@ -81,6 +81,20 @@ function testJoiningWithConditionalSegment() {
   assertEquals "%K{004} %F{000}\${:-\"/tmp\"}  %F{000}\${:-\"/tmp\"} %k%F{004}%f " "$(__p9k_build_left_prompt)"
 
   cd -
+}
+
+function testTaggingSegments() {
+  local -a configured_segments=(s1 s2::a s3::b s4::a::b s5::b::a s6)
+  local -a tagged_segments=(s2 s4 s5)
+
+  for segment in ${configured_segments}; do
+    local -a segment_meta=("${(s.::.)segment}")
+    local segment_name="${segment_meta[1]}"
+    if p9k::segment_is_tagged_as "a" "${segment_meta}"; then
+      [[ -z "${tagged_segments[(r)${segment_name}]}" ]] && \
+          fail "Segment ${segment_name} should be recognised to be tagged."
+    fi
+  done
 }
 
 function testDynamicColoringOfSegmentsWork() {
@@ -98,7 +112,7 @@ function testDynamicColoringOfSegmentsWork() {
 
 function testDynamicColoringOfVisualIdentifiersWork() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
-  local P9K_LEFT_PROMPT_ELEMENTS=(dir)
+  P9K_LEFT_PROMPT_ELEMENTS=(dir)
   local P9K_DIR_DEFAULT_ICON_COLOR='green'
   local P9K_DIR_DEFAULT_ICON="icon-here"
   source segments/dir/dir.p9k
@@ -112,7 +126,7 @@ function testDynamicColoringOfVisualIdentifiersWork() {
 
 function testColoringOfVisualIdentifiersDoesNotOverwriteColoringOfSegment() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
-  local P9K_LEFT_PROMPT_ELEMENTS=(dir)
+  P9K_LEFT_PROMPT_ELEMENTS=(dir)
   local P9K_DIR_DEFAULT_ICON_COLOR='green'
   local P9K_DIR_DEFAULT_FOREGROUND='red'
   local P9K_DIR_DEFAULT_BACKGROUND='yellow'
@@ -132,7 +146,7 @@ function testColoringOfVisualIdentifiersDoesNotOverwriteColoringOfSegment() {
 
 function testOverwritingIconsWork() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
-  local P9K_LEFT_PROMPT_ELEMENTS=(dir)
+  P9K_LEFT_PROMPT_ELEMENTS=(dir)
   local P9K_DIR_DEFAULT_ICON='icon-here'
   source segments/dir/dir.p9k
   #local testFolder=$(mktemp -d -p p9k)
@@ -154,9 +168,9 @@ function testNewlineOnRpromptCanBeDisabled() {
   local P9K_CUSTOM_WORLD='echo world'
   local P9K_CUSTOM_RWORLD='echo rworld'
   local -a P9K_LEFT_PROMPT_ELEMENTS
-  local P9K_LEFT_PROMPT_ELEMENTS=(custom_world)
+  P9K_LEFT_PROMPT_ELEMENTS=(world::custom)
   local -a P9K_RIGHT_PROMPT_ELEMENTS
-  local P9K_RIGHT_PROMPT_ELEMENTS=(custom_rworld)
+  P9K_RIGHT_PROMPT_ELEMENTS=(rworld::custom)
 
   __p9k_prepare_prompts
 

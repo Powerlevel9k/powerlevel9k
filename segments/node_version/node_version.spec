@@ -16,7 +16,7 @@ function setUp() {
 
 function testNodeVersionSegmentPrintsNothingWithoutNode() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
-  P9K_LEFT_PROMPT_ELEMENTS=(node_version custom_world)
+  P9K_LEFT_PROMPT_ELEMENTS=(node_version world::custom)
   local P9K_CUSTOM_WORLD='echo world'
   alias node="nonode 2>/dev/null"
 

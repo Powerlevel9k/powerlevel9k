@@ -40,7 +40,7 @@ function testSegmentOnRightSide() {
   # Reset RPROMPT, so a running P9K does not interfere with the test
   local RPROMPT=
   local -a P9K_RIGHT_PROMPT_ELEMENTS
-  P9K_RIGHT_PROMPT_ELEMENTS=(custom_world1 custom_world2)
+  P9K_RIGHT_PROMPT_ELEMENTS=(world1::custom world2::custom)
   local P9K_CUSTOM_WORLD1='echo world1'
   local P9K_CUSTOM_WORLD2='echo world2'
 
@@ -54,7 +54,7 @@ function testDisablingRightPrompt() {
   # Reset RPROMPT, so a running P9K does not interfere with the test
   local RPROMPT=
   local -a P9K_RIGHT_PROMPT_ELEMENTS
-  P9K_RIGHT_PROMPT_ELEMENTS=(custom_world1 custom_world2)
+  P9K_RIGHT_PROMPT_ELEMENTS=(world1::custom world2::custom)
   local P9K_CUSTOM_WORLD1='echo world1'
   local P9K_CUSTOM_WORLD2='echo world2'
   local P9K_DISABLE_RPROMPT=true
@@ -66,7 +66,7 @@ function testDisablingRightPrompt() {
 
 function testLeftMultilinePrompt() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
-  P9K_LEFT_PROMPT_ELEMENTS=(custom_world1)
+  P9K_LEFT_PROMPT_ELEMENTS=(world1::custom)
   local P9K_CUSTOM_WORLD1='echo world1'
   local P9K_PROMPT_ON_NEWLINE=true
 
@@ -80,7 +80,7 @@ function testRightPromptOnSameLine() {
   # Reset RPROMPT, so a running P9K does not interfere with the test
   local RPROMPT=
   local -a P9K_RIGHT_PROMPT_ELEMENTS
-  P9K_RIGHT_PROMPT_ELEMENTS=(custom_world1)
+  P9K_RIGHT_PROMPT_ELEMENTS=(world1::custom)
   local P9K_CUSTOM_WORLD1='echo world1'
 
   local P9K_PROMPT_ON_NEWLINE=true
@@ -94,7 +94,7 @@ function testRightPromptOnSameLine() {
 
 function testPrefixingFirstLineOnLeftPrompt() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
-  P9K_LEFT_PROMPT_ELEMENTS=(custom_world1)
+  P9K_LEFT_PROMPT_ELEMENTS=(world1::custom)
   local P9K_CUSTOM_WORLD1='echo world1'
 
   local P9K_PROMPT_ON_NEWLINE=true
@@ -109,7 +109,7 @@ function testPrefixingFirstLineOnLeftPrompt() {
 
 function testPrefixingSecondLineOnLeftPrompt() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
-  P9K_LEFT_PROMPT_ELEMENTS=(custom_world1)
+  P9K_LEFT_PROMPT_ELEMENTS=(world1::custom)
   local P9K_CUSTOM_WORLD1='echo world1'
 
   local P9K_PROMPT_ON_NEWLINE=true
@@ -128,8 +128,8 @@ function testCustomStartEndSymbolsOnEdgeSegments() {
   local RPROMPT=
   local -a P9K_LEFT_PROMPT_ELEMENTS
   local -a P9K_RIGHT_PROMPT_ELEMENTS
-  P9K_LEFT_PROMPT_ELEMENTS=(custom_world1 custom_world2)
-  P9K_RIGHT_PROMPT_ELEMENTS=(custom_world1 custom_world2)
+  P9K_LEFT_PROMPT_ELEMENTS=(world1::custom world2::custom)
+  P9K_RIGHT_PROMPT_ELEMENTS=(world1::custom world2::custom)
   local P9K_CUSTOM_WORLD1='echo world1'
   local P9K_CUSTOM_WORLD2='echo world2'
 
@@ -149,8 +149,8 @@ function testCustomWhitespaceOfSegments() {
   local RPROMPT=
   local -a P9K_LEFT_PROMPT_ELEMENTS
   local -a P9K_RIGHT_PROMPT_ELEMENTS
-  P9K_LEFT_PROMPT_ELEMENTS=(custom_world1 custom_world2 custom_world3)
-  P9K_RIGHT_PROMPT_ELEMENTS=(custom_world1 custom_world2 custom_world3)
+  P9K_LEFT_PROMPT_ELEMENTS=(world1::custom world2::custom world3::custom)
+  P9K_RIGHT_PROMPT_ELEMENTS=(world1::custom world2::custom world3::custom)
   local P9K_CUSTOM_WORLD1='echo world1'
   local P9K_CUSTOM_WORLD1_ICON='{1}'
   local P9K_CUSTOM_WORLD2='echo world2'
@@ -173,8 +173,8 @@ function testCustomWhitespaceOfLeftAndRightSegments() {
   local RPROMPT=
   local -a P9K_LEFT_PROMPT_ELEMENTS
   local -a P9K_RIGHT_PROMPT_ELEMENTS
-  P9K_LEFT_PROMPT_ELEMENTS=(custom_world1 custom_world2 custom_world3)
-  P9K_RIGHT_PROMPT_ELEMENTS=(custom_world1 custom_world2 custom_world3)
+  P9K_LEFT_PROMPT_ELEMENTS=(world1::custom world2::custom world3::custom)
+  P9K_RIGHT_PROMPT_ELEMENTS=(world1::custom world2::custom world3::custom)
   local P9K_CUSTOM_WORLD1='echo world1'
   local P9K_CUSTOM_WORLD1_ICON='{1}'
   local P9K_CUSTOM_WORLD2='echo world2'
@@ -199,8 +199,8 @@ function testCustomWhitespaceOfCustomSegments() {
   local RPROMPT=
   local -a P9K_LEFT_PROMPT_ELEMENTS
   local -a P9K_RIGHT_PROMPT_ELEMENTS
-  P9K_LEFT_PROMPT_ELEMENTS=(custom_world1 custom_world2 custom_world3)
-  P9K_RIGHT_PROMPT_ELEMENTS=(custom_world1 custom_world2 custom_world3)
+  P9K_LEFT_PROMPT_ELEMENTS=(world1::custom world2::custom world3::custom)
+  P9K_RIGHT_PROMPT_ELEMENTS=(world1::custom world2::custom world3::custom)
   local P9K_CUSTOM_WORLD1='echo world1'
   local P9K_CUSTOM_WORLD1_ICON='{1}'
   local P9K_CUSTOM_WORLD2='echo world2'
@@ -229,8 +229,8 @@ function testCustomWhitespaceWithIconOnLeft() {
   local RPROMPT=
   local -a P9K_LEFT_PROMPT_ELEMENTS
   local -a P9K_RIGHT_PROMPT_ELEMENTS
-  P9K_LEFT_PROMPT_ELEMENTS=(custom_world1 custom_world2 custom_world3)
-  P9K_RIGHT_PROMPT_ELEMENTS=(custom_world1 custom_world2 custom_world3)
+  P9K_LEFT_PROMPT_ELEMENTS=(world1::custom world2::custom world3::custom)
+  P9K_RIGHT_PROMPT_ELEMENTS=(world1::custom world2::custom world3::custom)
   local P9K_CUSTOM_WORLD1='echo world1'
   local P9K_CUSTOM_WORLD1_ICON='{1}'
   local P9K_CUSTOM_WORLD2='echo world2'

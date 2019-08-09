@@ -45,7 +45,7 @@ function mockVagrantFolder() {
 
 function testVagrantSegmentPrintsNothingIfVirtualboxIsNotAvailable() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
-  P9K_LEFT_PROMPT_ELEMENTS=(vagrant custom_world)
+  P9K_LEFT_PROMPT_ELEMENTS=(vagrant world::custom)
   local P9K_CUSTOM_WORLD='echo world'
   # Change path, so that VBoxManage is not found
   local PATH=/bin:/usr/bin
@@ -55,7 +55,7 @@ function testVagrantSegmentPrintsNothingIfVirtualboxIsNotAvailable() {
 
 function testVagrantSegmentSaysVmIsDownIfVirtualboxIsNotAvailableButVagrantFolderExists() {
   local -a P9K_LEFT_PROMPT_ELEMENTS
-  P9K_LEFT_PROMPT_ELEMENTS=(vagrant custom_world)
+  P9K_LEFT_PROMPT_ELEMENTS=(vagrant world::custom)
   local P9K_CUSTOM_WORLD='echo world'
   # Change path, so that VBoxManage is not found
   local PATH=/bin:/usr/bin

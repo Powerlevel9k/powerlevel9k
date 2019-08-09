@@ -81,6 +81,23 @@ your `~/.zshrc`:
 P9K_LEFT_PROMPT_ELEMENTS=(context dir vcs)
 P9K_RIGHT_PROMPT_ELEMENTS=(status root_indicator background_jobs history time)
 ```
+
+#### Tagging segments
+
+It is possible to mark segments to add some functionality. This process is called
+`tagging`. The tags are simple strings appended to the segment name in your
+`P9K_LEFT_PROMPT_ELEMENTS` or `P9K_RIGHT_PROMPT_ELEMENTS`. So, if you want to tag
+a `dir` segment, just append the tags, separated by double colons to the segments
+name. `dir` becomes `dir::tag1::tag2`. The order of tags does not matter.
+
+| Tag      | Description |
+|----------|--------------
+| `joined` | This causes the current segment to be joined with the previous one. So no segment separator will be printed between the two segments. |
+| `custom` | Use this tag, if you want to add the output of an arbitrary command as [Custom Segment](#custom_segments). |
+
+Caveat: All double colons will be interpreted as tags, so if your original segment
+name contains `::`, that would probably not work.
+
 #### Available Prompt Segments
 The segments that are currently available are:
 
@@ -151,7 +168,7 @@ The segments that are currently available are:
 * [`dropbox`](segments/dropbox/README.md) - Indicates Dropbox directory and syncing status using `dropbox-cli`
 
 **Other:**
-* [`custom_command`](#custom_command) - Create a custom segment to display the
+* [Custom Segment](#custom_segments) - Create a custom segment to display the
   output of an arbitrary command.
 * [`command_execution_time`](segments/command_execution_time/README.md) - Display the time the current command took to execute.
 * [`todo`](segments/todo/README.md) - Shows the number of tasks in your [todo.txt](http://todotxt.com/) tasks file.
@@ -162,12 +179,12 @@ The segments that are currently available are:
 
 --------------------------------------------------------------------------------
 
-##### custom_command
+##### Custom Segments
 
-The `custom_...` segment allows you to turn the output of a custom command into
+Segments tagged as `::custom` allows you to turn the output of a custom command into
 a prompt segment. As an example, if you wanted to create a custom segment to
 display your WiFi signal strength, you might define a custom segment called
-`custom_wifi_signal` like this:
+`wifi_signal::custom` like this:
 ```zsh
 P9K_LEFT_PROMPT_ELEMENTS=(context time battery dir vcs virtualenv custom_wifi_signal)
 P9K_CUSTOM_WIFI_SIGNAL="echo signal: \$(nmcli device wifi | grep yes | awk '{print \$8}')"
@@ -188,7 +205,7 @@ zsh_wifi_signal(){
 }
 
 P9K_CUSTOM_WIFI_SIGNAL="zsh_wifi_signal"
-P9K_LEFT_PROMPT_ELEMENTS=(context time battery dir vcs virtualenv custom_wifi_signal)
+P9K_LEFT_PROMPT_ELEMENTS=(context time battery dir vcs virtualenv wifi_signal::custom)
 ```
 The command, above, gives you the wireless signal segment shown below:
 
