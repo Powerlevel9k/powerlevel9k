@@ -184,7 +184,7 @@ zsh_wifi_signal(){
     local color='%F{yellow}'
     [[ $signal -gt 75 ]] && color='%F{green}'
     [[ $signal -lt 50 ]] && color='%F{red}'
-    echo -n "%{$color%}\uf230  $signal%{%f%}" # \uf230 is 
+    echo -n "$color\uf230  $signal%f" # \uf230 is 
 }
 
 P9K_CUSTOM_WIFI_SIGNAL="zsh_wifi_signal"

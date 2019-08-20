@@ -465,7 +465,7 @@ local NEWLINE='
 
   # Allow iTerm integration to work
   [[ "${ITERM_SHELL_INTEGRATION_INSTALLED:-}" == "Yes" ]] \
-    && PROMPT="%{$(iterm2_prompt_mark)%}${PROMPT}"
+    && PROMPT="$(iterm2_prompt_mark)${PROMPT}"
 }
 
 p9k::set_default P9K_IGNORE_TERM_COLORS false
