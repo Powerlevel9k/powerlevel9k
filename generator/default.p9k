@@ -440,6 +440,10 @@ local NEWLINE='
       if (( spacerWidth > 0 )); then
         local spacerChar=' '
         [[ "$spacerChar" == '.' ]] && local padSeparator=',' || local padSeparator='.'
+        # We left pad the spacer here (flag "l") and the syntax for that is
+        # ${(l:<length>::<char>:)}, where colons are here the separators
+        # that need to differ from the char.
+        left+='${(pl'${padSeparator}$((spacerWidth - 1))${padSeparator}${padSeparator}${spacerChar}${padSeparator}')}'
         # _P9K_RPROMPT_OVERRIDE is for removing the RPROMPT
         # in older prompts. This mimics the TRANSIENT_RPROMPT
         # setting from ZSH. The variable is set to an empty
@@ -447,7 +451,7 @@ local NEWLINE='
         # leads to the right prompt not being printed. As this
         # is written as variable in our PROMPT, we remove the
         # old right prompts.
-        [[ -o transient_rprompt ]] && left+='${_P9K_RPROMPT_OVERRIDE-${(pl'${padSeparator}$((spacerWidth - 1))${padSeparator}${padSeparator}${spacerChar}${padSeparator}')}${__P9K_RPROMPT}}' || left+='${__P9K_RPROMPT}'
+        [[ -o TRANSIENT_RPROMPT ]] && left+='${_P9K_RPROMPT_OVERRIDE-${__P9K_RPROMPT}}' || left+='${__P9K_RPROMPT}'
       fi
 
       if [[ "${P9K_PROMPT_ON_NEWLINE:-}" == true ]]; then
