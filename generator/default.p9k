@@ -454,10 +454,10 @@ local NEWLINE='
         [[ -o TRANSIENT_RPROMPT ]] && left+='${_P9K_RPROMPT_OVERRIDE-${__P9K_RPROMPT}}' || left+='${__P9K_RPROMPT}'
       fi
 
-      if [[ "${P9K_PROMPT_ON_NEWLINE:-}" == true ]]; then
-        left+="${NEWLINE}${__P9K_ICONS[MULTILINE_LAST_PROMPT_PREFIX]}"
-      fi
     fi
+  fi
+  if [[ "${P9K_PROMPT_ON_NEWLINE:-}" == true ]]; then
+    left+="${NEWLINE}${__P9K_ICONS[MULTILINE_LAST_PROMPT_PREFIX]}"
   fi
 
   PROMPT="${left}"
