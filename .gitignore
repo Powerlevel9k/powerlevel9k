@@ -1,4 +1,5 @@
 test-vm/.vagrant
 *.swp
 .idea
+.DS_STORE
 *.zwc
