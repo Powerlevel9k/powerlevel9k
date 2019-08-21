@@ -169,7 +169,8 @@ function testNewlineOnRpromptCanBeDisabled() {
   __p9k_prepare_prompts
 
   local nl=$'\n'
-  local expected="%f%b%k╭─%K{015} %F{000}\${:-\"world\"} %k%F{015}%f \${(pl.80.. .)}%f%b%k%F{015}%K{015}%F{000} \${:-\"rworld\"} %f%k%b${nl}╰─ %f%b%k"
+  local expected='%f%b%k╭─%K{015} %F{000}${:-"world"} %k%F{015}%f ${(pl.79.. .)}${__P9K_RPROMPT}
+╰─ %f%b%k'
   local _real=$(stripEsc "${PROMPT}${RPROMPT}")
 
   # use this to debug output with special escape sequences

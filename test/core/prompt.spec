@@ -77,12 +77,12 @@ function testLeftMultilinePrompt() {
 
   local nl=$'\n'
   local _actual=$(stripEsc "${(e)PROMPT}")
-  assertEquals "%f%b%k╭─%K{015} %F{000}world1 %k%F{015}%f   %f%b%k${nl}╰─ " "${_actual}"
+  assertEquals "%f%b%k╭─%K{015} %F{000}world1 %k%F{015}%f ${nl}╰─ " "${_actual}"
 }
 
 function testRightPromptOnSameLine() {
   # Fake environment
-  local COLUMNS=10
+  local COLUMNS=20
   # Reset PROMPT, so a running P9K does not interfere with the test
   local PROMPT=
   local -a P9K_LEFT_PROMPT_ELEMENTS
@@ -100,7 +100,7 @@ function testRightPromptOnSameLine() {
   # The right prompt gets integrated in the left prompt in
   # this setup, hence we have to test PROMPT instead of RPROMPT.
   local _actual=$(stripEsc "${(e)PROMPT}")
-  assertEquals "%f%b%k╭─ %f%b%k%F{015}%K{015}%F{000} world1 %f%k%b${nl}╰─ " "${_actual}"
+  assertEquals "%f%b%k╭─        %f%b%k%F{015}%K{015}%F{000} world1 %f%k%b${nl}╰─ " "${_actual}"
 }
 
 function testPrefixingFirstLineOnLeftPrompt() {
@@ -119,7 +119,7 @@ function testPrefixingFirstLineOnLeftPrompt() {
 
   local nl=$'\n'
   local _actual=$(stripEsc "${(e)PROMPT}")
-  assertEquals "%f%b%kXXX%K{015} %F{000}world1 %k%F{015}%f    %f%b%k${nl}╰─ " "${_actual}"
+  assertEquals "%f%b%kXXX%K{015} %F{000}world1 %k%F{015}%f ${nl}╰─ " "${_actual}"
 }
 
 function testPrefixingSecondLineOnLeftPrompt() {
@@ -138,7 +138,7 @@ function testPrefixingSecondLineOnLeftPrompt() {
 
   local nl=$'\n'
   local _actual=$(stripEsc "${(e)PROMPT}")
-  assertEquals "%f%b%k╭─%K{015} %F{000}world1 %k%F{015}%f   %f%b%k
+  assertEquals "%f%b%k╭─%K{015} %F{000}world1 %k%F{015}%f 
 XXX" "${_actual}"
 }
 
