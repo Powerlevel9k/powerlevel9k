@@ -359,7 +359,14 @@ function __p9k_build_right_prompt() {
     last_symbol="%K{none}%F${CURRENT_RIGHT_BG#%K}${P9K_RIGHT_PROMPT_LAST_SEGMENT_END_SYMBOL}"
   fi
 
-  echo -n "${__P9K_DATA[LAST_WHITESPACE]}${last_symbol}%f%k%b"
+  echo -n "${__P9K_DATA[LAST_WHITESPACE]}${last_symbol}"
+
+  if ! p9k::defined ZLE_RPROMPT_INDENT; then
+    # Extend the RPROMPT to the end (with %E).
+    echo -n "%E"
+  fi
+
+  echo -n "%f%k%b"
 }
 
 ###############################################################
@@ -409,10 +416,12 @@ function __p9k_prepare_prompts() {
 
   local LC_ALL="" LC_CTYPE="en_US.UTF-8" # Set the right locale to protect special characters
 
-local NEWLINE='
-'
+local NEWLINE=$'\n'
 
   local left
+  if [[ ${rpromptIndent} -eq 0 ]]; then
+    unset ZLE_RPROMPT_INDENT
+  fi
   if [[ "${P9K_PROMPT_ADD_NEWLINE:-}" == true ]]; then
     NEWLINES=""
     repeat ${P9K_PROMPT_ADD_NEWLINE_COUNT:-1} { NEWLINES+=${NEWLINE} }
@@ -436,7 +445,7 @@ local NEWLINE='
       local leftPromptWidth=${_P9K_RETVAL}
       p9k::prompt_length "${__P9K_RPROMPT}"
       local rightPromptWidth=${_P9K_RETVAL}
-      local spacerWidth=$(( COLUMNS - (leftPromptWidth + rightPromptWidth) ))
+      local spacerWidth=$(( COLUMNS - (leftPromptWidth + rightPromptWidth + ZLE_RPROMPT_INDENT) ))
       if (( spacerWidth > 0 )); then
         local spacerChar=' '
         [[ "$spacerChar" == '.' ]] && local padSeparator=',' || local padSeparator='.'
