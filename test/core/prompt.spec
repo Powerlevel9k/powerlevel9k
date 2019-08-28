@@ -47,7 +47,7 @@ function testSegmentOnRightSide() {
   __p9k_prepare_prompts
 
   local _actual=$(stripEsc "${(e)RPROMPT}")
-  assertEquals "%f%b%k%F{015}%K{015}%F{000} world1 %F{000}%K{015}%F{000} world2 %f%k%b" "${_actual}"
+  assertEquals "%f%b%k%F{015}%K{015}%F{000} world1 %F{000}%K{015}%F{000} world2 %E%f%k%b" "${_actual}"
 }
 
 function testDisablingRightPrompt() {
@@ -100,7 +100,7 @@ function testRightPromptOnSameLine() {
   # The right prompt gets integrated in the left prompt in
   # this setup, hence we have to test PROMPT instead of RPROMPT.
   local _actual=$(stripEsc "${(e)PROMPT}")
-  assertEquals "%f%b%k╭─        %f%b%k%F{015}%K{015}%F{000} world1 %f%k%b${nl}╰─ " "${_actual}"
+  assertEquals "%f%b%k╭─        %f%b%k%F{015}%K{015}%F{000} world1 %E%f%k%b${nl}╰─ " "${_actual}"
 }
 
 function testPrefixingFirstLineOnLeftPrompt() {
@@ -160,7 +160,7 @@ function testCustomStartEndSymbolsOnEdgeSegments() {
 
   assertEquals "%K{NONE}%F{015}_[_%K{015}_A_%F{000}\${:-\"world1\"}  %F{000}\${:-\"world2\"} %k%F{015}%f " "$(__p9k_build_left_prompt)"
   local _right=$(stripEsc "$(__p9k_build_right_prompt)")
-  assertEquals "%F{015}%K{015}%F{000} \${:-\"world1\"} %F{000}%K{015}%F{000} \${:-\"world2\"}_B_%K{none}%F{015}_]_%f%k%b" "${_right}"
+  assertEquals "%F{015}%K{015}%F{000} \${:-\"world1\"} %F{000}%K{015}%F{000} \${:-\"world2\"}_B_%K{none}%F{015}_]_%E%f%k%b" "${_right}"
 }
 
 function testCustomWhitespaceOfSegments() {
@@ -184,7 +184,7 @@ function testCustomWhitespaceOfSegments() {
   local P9K_MIDDLE_WHITESPACE_OF_RIGHT_SEGMENTS="_[M]_"
 
   assertEquals "%K{015}_[L]_%F{000}{1}_[M]_%F{000}\${:-\"world1\"}_[L]__[L]_%F{000}\${:-\"world2\"}_[L]__[L]_%F{000}{3}_[M]_%F{000}\${:-\"world3\"}_[L]_%k%F{015}%f " "$(__p9k_build_left_prompt)"
-  assertEquals "%F{015}%K{015}%F{000}_[R]_\${:-\"world1\"}_[M]_%F{000}{1}%f_[R]_%F{000}%K{015}%F{000}_[R]_\${:-\"world2\"}_[R]_%F{000}%K{015}%F{000}_[R]_\${:-\"world3\"}_[M]_%F{000}{3}%f_[R]_%f%k%b" "$(stripEsc "$(__p9k_build_right_prompt)")"
+  assertEquals "%F{015}%K{015}%F{000}_[R]_\${:-\"world1\"}_[M]_%F{000}{1}%f_[R]_%F{000}%K{015}%F{000}_[R]_\${:-\"world2\"}_[R]_%F{000}%K{015}%F{000}_[R]_\${:-\"world3\"}_[M]_%F{000}{3}%f_[R]_%E%f%k%b" "$(stripEsc "$(__p9k_build_right_prompt)")"
 }
 
 function testCustomWhitespaceOfLeftAndRightSegments() {
@@ -210,7 +210,7 @@ function testCustomWhitespaceOfLeftAndRightSegments() {
   local P9K_RIGHT_WHITESPACE_OF_RIGHT_SEGMENTS="_[RR]_"
 
   assertEquals "%K{015}_[LL]_%F{000}{1}_[LM]_%F{000}\${:-\"world1\"}_[LR]__[LL]_%F{000}\${:-\"world2\"}_[LR]__[LL]_%F{000}{3}_[LM]_%F{000}\${:-\"world3\"}_[LR]_%k%F{015}%f " "$(__p9k_build_left_prompt)"
-  assertEquals "%F{015}%K{015}%F{000}_[RL]_\${:-\"world1\"}_[RM]_%F{000}{1}%f_[RR]_%F{000}%K{015}%F{000}_[RL]_\${:-\"world2\"}_[RR]_%F{000}%K{015}%F{000}_[RL]_\${:-\"world3\"}_[RM]_%F{000}{3}%f_[RR]_%f%k%b" "$(stripEsc "$(__p9k_build_right_prompt)")"
+  assertEquals "%F{015}%K{015}%F{000}_[RL]_\${:-\"world1\"}_[RM]_%F{000}{1}%f_[RR]_%F{000}%K{015}%F{000}_[RL]_\${:-\"world2\"}_[RR]_%F{000}%K{015}%F{000}_[RL]_\${:-\"world3\"}_[RM]_%F{000}{3}%f_[RR]_%E%f%k%b" "$(stripEsc "$(__p9k_build_right_prompt)")"
 }
 
 function testCustomWhitespaceOfCustomSegments() {
@@ -240,7 +240,7 @@ function testCustomWhitespaceOfCustomSegments() {
   local P9K_CUSTOM_WORLD3_RIGHT_WHITESPACE="_[R3]_"
 
   assertEquals "%K{015}_[L1]_%F{000}{1}_[M1]_%F{000}\${:-\"world1\"}_[R1]__[L2]_%F{000}\${:-\"world2\"}_[R2]__[L3]_%F{000}{3}_[M3]_%F{000}\${:-\"world3\"}_[R3]_%k%F{015}%f " "$(__p9k_build_left_prompt)"
-  assertEquals "%F{015}%K{015}%F{000}_[L1]_\${:-\"world1\"}_[M1]_%F{000}{1}%f_[R1]_%F{000}%K{015}%F{000}_[L2]_\${:-\"world2\"}_[R2]_%F{000}%K{015}%F{000}_[L3]_\${:-\"world3\"}_[M3]_%F{000}{3}%f_[R3]_%f%k%b" "$(stripEsc "$(__p9k_build_right_prompt)")"
+  assertEquals "%F{015}%K{015}%F{000}_[L1]_\${:-\"world1\"}_[M1]_%F{000}{1}%f_[R1]_%F{000}%K{015}%F{000}_[L2]_\${:-\"world2\"}_[R2]_%F{000}%K{015}%F{000}_[L3]_\${:-\"world3\"}_[M3]_%F{000}{3}%f_[R3]_%E%f%k%b" "$(stripEsc "$(__p9k_build_right_prompt)")"
 }
 
 function testCustomWhitespaceWithIconOnLeft() {
@@ -262,7 +262,7 @@ function testCustomWhitespaceWithIconOnLeft() {
   local P9K_MIDDLE_WHITESPACE_OF_RIGHT_SEGMENTS="_[M]_"
   local P9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS="_[R]_"
 
-  assertEquals "%F{015}%K{015}%F{000}_[R]_%F{000}{1}%f_[M]_%F{000}\${:-\"world1\"}_[R]_%F{000}%K{015}%F{000}_[R]_%F{000}\${:-\"world2\"}_[R]_%F{000}%K{015}%F{000}_[R]_%F{000}{3}%f_[M]_%F{000}\${:-\"world3\"}_[R]_%f%k%b" "$(stripEsc "$(__p9k_build_right_prompt)")"
+  assertEquals "%F{015}%K{015}%F{000}_[R]_%F{000}{1}%f_[M]_%F{000}\${:-\"world1\"}_[R]_%F{000}%K{015}%F{000}_[R]_%F{000}\${:-\"world2\"}_[R]_%F{000}%K{015}%F{000}_[R]_%F{000}{3}%f_[M]_%F{000}\${:-\"world3\"}_[R]_%E%f%k%b" "$(stripEsc "$(__p9k_build_right_prompt)")"
 }
 
 source shunit2/shunit2
