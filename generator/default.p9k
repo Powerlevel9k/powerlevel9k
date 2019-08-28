@@ -419,7 +419,8 @@ function __p9k_prepare_prompts() {
 local NEWLINE=$'\n'
 
   local left
-  if [[ ${rpromptIndent} -eq 0 ]]; then
+
+  if [[ ${ZLE_RPROMPT_INDENT} -eq 0 ]]; then
     unset ZLE_RPROMPT_INDENT
   fi
   if [[ "${P9K_PROMPT_ADD_NEWLINE:-}" == true ]]; then
