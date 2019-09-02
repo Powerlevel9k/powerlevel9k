@@ -45,7 +45,7 @@ P9K_LEFT_PROMPT_ELEMENTS=(context time battery dir vcs virtualenv custom_wifi_si
 
 The command, above, gives you the wireless signal segment shown below:
 
-![signal](http://i.imgur.com/hviMATC.png)
+![Signal_Strength](https://user-images.githubusercontent.com/1544760/64135201-3234bd00-cde6-11e9-8e05-cd2939486bf2.png)
 
 You can define as many custom segments as you wish. If you think you have
 a segment that others would find useful, please consider upstreaming it to the
