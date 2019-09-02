@@ -58,10 +58,10 @@ function __p9k_left_prompt_segment() {
   local content
   local SEGMENT_ICON
   # Support for bold segment
-  [[ -n "${4}" ]] && [[ $__P9K_DATA[${STATEFUL_NAME}_BD] == true ]] \
+  [[ -n "${4}" ]] && [[ ${__P9K_DATA[${STATEFUL_NAME}_BD]:-} == true ]] \
     && content="%B${4}%b" \
     || content="${4}"
-  [[ -n "${5}" ]] && [[ $__P9K_DATA[${STATEFUL_NAME}_ICON_BD] == true ]] \
+  [[ -n "${5}" ]] && [[ ${__P9K_DATA[${STATEFUL_NAME}_ICON_BD]:-} == true ]] \
     && SEGMENT_ICON="%B${5}%b" \
     || SEGMENT_ICON="${5}"
 
@@ -92,7 +92,7 @@ function __p9k_left_prompt_segment() {
     # custom white space that follows it
     local first_symbol=""
     local first_ws="$__P9K_DATA[FIRST_WHITESPACE]"
-    if [[ -n "$P9K_LEFT_PROMPT_FIRST_SEGMENT_START_SYMBOL" ]]; then
+    if [[ -n "${P9K_LEFT_PROMPT_FIRST_SEGMENT_START_SYMBOL:-}" ]]; then
       first_symbol="%K{${CURRENT_BG}}%F${bg#%K}$P9K_LEFT_PROMPT_FIRST_SEGMENT_START_SYMBOL"
     fi
 
@@ -235,22 +235,22 @@ function p9k::prepare_segment() {
   [[ -n "${2}" ]] && STATEFUL_NAME="${STATEFUL_NAME}_${(U)2}"
 
   # Precompile condition.
-  if __p9k_segment_should_be_printed "${STATEFUL_NAME}" "${7}" "${6}"; then
+  if __p9k_segment_should_be_printed "${STATEFUL_NAME}" "${7:-true}" "${6}"; then
     local SEGMENT_ICON
-    if [[ -z "${8}" ]]; then
+    if [[ -z "${8:-}" ]]; then
       SEGMENT_ICON=${__P9K_ICONS[${STATEFUL_NAME}]}
     else
       # check if it is a named icon
-      SEGMENT_ICON=${__P9K_ICONS[${8}]}
+      SEGMENT_ICON=${__P9K_ICONS[${8:-}]}
       # otherwise use it literally
       [[ -z "${SEGMENT_ICON}" ]] && SEGMENT_ICON=$(echo ${8})
     fi
 
     # Background overide
-    [[ -n "${9}" ]] && __P9K_DATA[${STATEFUL_NAME}_BG]="${9}"
+    [[ -n "${9:-}" ]] && __P9K_DATA[${STATEFUL_NAME}_BG]="${9}"
 
     # Foreground overide
-    [[ -n "${10}" ]] && __P9K_DATA[${STATEFUL_NAME}_FG]="${10}"
+    [[ -n "${10:-}" ]] && __P9K_DATA[${STATEFUL_NAME}_FG]="${10}"
 
     "__p9k_${3}_prompt_segment" "${STATEFUL_NAME}" "${4}" "${5}" "${6}" "${SEGMENT_ICON}"
   fi
@@ -420,7 +420,7 @@ local NEWLINE=$'\n'
 
   local left
 
-  if [[ ${ZLE_RPROMPT_INDENT} -eq 0 ]]; then
+  if [[ ${ZLE_RPROMPT_INDENT:-} -eq 0 ]]; then
     unset ZLE_RPROMPT_INDENT
   fi
   if [[ "${P9K_PROMPT_ADD_NEWLINE:-}" == true ]]; then

@@ -43,14 +43,17 @@ function oneTimeTearDown() {
 }
 
 function testUsingUnsetVariables() {
-  startSkipping # Skip test
+  local P9K_CUSTOM_WORLD='echo world'
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  local P9K_LEFT_PROMPT_ELEMENTS=(custom_world)
+  local -a P9K_RIGHT_PROMPT_ELEMENTS
+  local P9K_RIGHT_PROMPT_ELEMENTS=()
 
-  # setopt local_options
-  # set -u
-  # __p9k_prepare_prompts
+  setopt local_options
+  set -u
+  local result="$(__p9k_prepare_prompts 2>&1)"
 
-  # Stupid: To show tests as "skipped", we need to do an assertion.
-  assertEquals "false" "true"
+  assertEquals "" "${result}"
 }
 
 function testJoinedSegments() {
