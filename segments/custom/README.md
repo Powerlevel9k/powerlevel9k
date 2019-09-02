@@ -6,10 +6,10 @@ This is not an ordinary segment that can just be installed. This is the
 documentation for the mechanism that is used to create your own custom segments
 that can display the output of arbitrary commands. In this documentation we
 will create a custom segment – `custom_wifi_signal` – to display the current
-signal strenght. You can replace this code with your own if you want to
+signal strength. You can replace this code with your own if you want to
 achieve something different. You have to preserve the prefixes though.
 This means `P9K_CUSTOM_*` for variables and `custom_*` when putting the
-custom segemnt into your `P9K_LEFT_PROMPT_ELEMENTS` or
+custom segment into your `P9K_LEFT_PROMPT_ELEMENTS` or
 `P9K_RIGHT_PROMPT_ELEMENTS`.
 
 ## Configuration

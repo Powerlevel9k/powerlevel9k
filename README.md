@@ -41,7 +41,7 @@ Powerlevel9k can be used to create both very useful and beautiful terminal envir
     1. [Customizing Prompt Segments](#customizing-prompt-segments)
     2. [Stylizing Your Prompt](#stylizing-your-prompt)
     3. [Available Prompt Segments](#available-prompt-segments)
-    4. [Custom Prompt Segements](#custom-prompt-segments)
+    4. [Custom Prompt Segments](#custom-prompt-segments)
 3. [Troubleshooting](https://github.com/bhilburn/powerlevel9k/wiki/Troubleshooting)
 
 Be sure to also [check out the Wiki](https://github.com/bhilburn/powerlevel9k/wiki)!
@@ -95,8 +95,8 @@ change colors and more per segment with some examples:
 P9K_DATE_BACKGROUND='#fff8e7'      # color background of stateless segment "date"
 P9K_CONTEXT_DEFAULT_FOREGROUND=133 # set foreground color for segment "context" state "default"
 P9K_DOCKER_MACHINE_BOLD=true       # make stateless segment "docker_machine" bold
-P9K_DATE_ICON=time                 # icon for stateless segement "time"
-P9K_DIR_HOME_ICON=$'\uF015'        # icon for stateful segement "dir" state "HOME"
+P9K_DATE_ICON=time                 # icon for stateless segment "time"
+P9K_DIR_HOME_ICON=$'\uF015'        # icon for stateful segment "dir" state "HOME"
 P9K_DIR_HOME_ICON_COLOR=red        # color stateful segment icon
 P9K_DIR_HOME_ICON_BOLD=true        # make icon bold (only if font supports it)
 ```

@@ -16,7 +16,7 @@ Not every option can be changed at runtime.**
 |`P9K_MULTILINE_NEWLINE_PROMPT_PREFIX_ICON`|`├─`|If the prompt is at least tree lines, this will be the prefix for all lines that are neither the first nor the last.|
 |`P9K_MULTILINE_LAST_PROMPT_PREFIX_ICON`|`╰─`|If the prompt is more than one line, this will be the prefix for the last line.|
 |`P9K_PROMPT_ADD_NEWLINE`|`false`|Adds a newline before displaying the prompt|
-|`P9K_PROMPT_ADD_NEWLINE_COUNT`|`1`|Change the amound of newlines added if `P9K_PROMPT_ADD_NEWLINE=true`.|
+|`P9K_PROMPT_ADD_NEWLINE_COUNT`|`1`|Change the amount of newlines added if `P9K_PROMPT_ADD_NEWLINE=true`.|
 |`P9K_DISABLE_RPROMPT`|`false`|Disables `RPROMPT`.|
 |`P9K_COLOR_SCHEME`|unset|Set to `light` to invert default background and foreground color.|
 |`P9K_{LEFT,RIGHT}_SEGMENT_SEPARATOR_ICON`| ![image](https://user-images.githubusercontent.com/16988672/62417083-99285000-b647-11e9-9b3f-88f8e9bae963.png) |This is the separator between two segments of different color.|

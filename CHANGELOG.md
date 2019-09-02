@@ -440,7 +440,7 @@ to `true`, the segments does not get rendered.
 
 ### `load` changes
 
-The `load` segement was split and a new segment `ram` was extracted. This new
+The `load` segment was split and a new segment `ram` was extracted. This new
 segment is able to show the free ram and used swap.
 
 ### `vcs` changes
@@ -487,7 +487,7 @@ set `POWERLEVEL9K_STATUS_VERBOSE=false` (this is the same behavior as the old
 All icons can now be overridden by setting a variable named by the internal icon
 name. You can get a full list of icon name by calling `get_icon_names`.
 
-### Same color segements get visual separator
+### Same color segments get visual separator
 
 This separator can be controlled by setting `POWERLEVEL9K_LEFT_SUBSEGMENT_SEPARATOR`
 or `POWERLEVEL9K_RIGHT_SUBSEGMENT_SEPARATOR`. By default this separator is
