@@ -61,7 +61,7 @@ P9K_CUSTOM_WIFI_SIGNAL_BACKGROUND='blue'
 
 ### Customize Icon
 
-It can be changed by setting:
+The icon can be changed by setting:
 ```zsh
 P9K_CUSTOM_WIFI_SIGNAL_ICON="my_icon"
 ```
