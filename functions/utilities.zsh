@@ -488,3 +488,19 @@ function p9k::parseIp() {
 
   return 1
 }
+###############################################################
+# @description
+#   Unsets every P9K Variable and restores installation defaults
+# @noargs
+##
+function p9k::reset_prompt() {
+  while read p9kVariablePair; do
+    local p9kVariable=(${(@s/=/)p9kVariablePair})
+    local p9kVariableName=${p9kVariable[1]}
+    if [[ "${p9kVariableName}" != "P9K_VERSION" ]]; then
+      unset $p9kVariableName;
+    fi
+  done < <(setopt ; set | egrep --color=never -i "^p9k_")
+   
+  source "${__P9K_DIRECTORY}/functions/defaults.zsh"
+}
