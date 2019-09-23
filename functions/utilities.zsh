@@ -260,6 +260,55 @@ function p9k::expand() {
 
 ###############################################################
 # @description
+#   Determines the width of the rendered prompt used.
+##
+# @args
+#   $1 string The prompt string
+##
+# @returns
+#   Nothing - Returnvalue is stored in _P9K_RETVAL
+##
+# @note
+#   If we execute `print -P $1`, how many characters will be
+#   printed on the last line?
+#   Assumes that `%{%}` and `%G` don't lie.
+# 
+#   _p9k_prompt_length '' => 0
+#   _p9k_prompt_length 'abc' => 3
+#   _p9k_prompt_length $'abc\nxy' => 2
+#   _p9k_prompt_length $'\t' => 8
+#   _p9k_prompt_length '%F{red}abc' => 3
+#   _p9k_prompt_length $'%{a\b%Gb%}' => 1
+#
+# @see
+#     [zsh length of a string](https://stackoverflow.com/a/57141646/1095235)
+#
+##
+function p9k::prompt_length() {
+  emulate -L zsh
+  local COLUMNS=1024
+  local -i x y=$#1 m
+  if (( y )); then
+    # This tests if each character was printed and counts them.
+    # The magic is in %$y(l.1.0), which outputs a 1 if the
+    # character was printed, or 0 if not.
+    # This is done via a binary search, so there is two loops.
+    # See https://www.reddit.com/r/zsh/comments/cgbm24/multiline_prompt_the_missing_ingredient/
+    while (( ${${(%):-$1%$y(l.1.0)}[-1]} )); do
+      x=y
+      (( y *= 2 ));
+    done
+    local xy
+    while (( y > x + 1 )); do
+      m=$(( x + (y - x) / 2 ))
+      typeset ${${(%):-$1%$m(l.x.y)}[-1]}=$m
+    done
+  fi
+  _P9K_RETVAL=$x
+}
+
+###############################################################
+# @description
 #   Converts large memory values into a human-readable unit (e.g., bytes --> GB)
 ##
 # @args
@@ -413,7 +462,7 @@ function p9k::find_first_defined() {
 ###############################################################
 # @description
 #   Takes a list of variable names and returns the value of the 
-#   the first non empty one. 
+#   the first non empty one.
 # @args
 #   $1 optional flag '-n' as first argument will make function to 
 #   return variable name instead of it's value.
@@ -434,10 +483,15 @@ function p9k::find_first_non_empty() {
   done
 }
 
-# Parse IP address from ifconfig on OSX and from IP on Linux
-# Parameters:
-#  $1 - string The desired Interface
-#  $2 - string A root prefix for testing purposes
+###############################################################
+# @description
+#   Parse IP address from ifconfig on OSX and from IP on Linux
+# @args
+#   $1 - string The desired Interface
+#   $2 - string A root prefix for testing purposes
+# @returns
+#   The parsed IP address
+##
 function p9k::parseIp() {
   local desiredInterface="${1}"
 
@@ -487,4 +541,35 @@ function p9k::parseIp() {
   fi
 
   return 1
+}
+
+###############################################################
+# @description
+#   Wrap a ZLE widget safely.
+# @args
+#   $1 function name of the widget
+# @example
+#   __p9k_wrap_zle_widget zle-keymap-select _p9k_zle_keymap_select
+##
+__p9k_wrap_zle_widget() {
+  local widget=$1
+  local hook=$2
+  local orig=p9k-orig-$widget
+  case $widgets[$widget] in
+		user:*)
+			zle -N $orig ${widgets[$widget]#user:}
+			;;
+		builtin)
+			eval "_p9k_orig_${(q)widget}() { zle .${(q)widget} }"
+			zle -N $orig _p9k_orig_$widget
+			;;
+	esac
+
+  local wrapper=_p9k_wrapper_$widget_$hook
+  eval "function ${(q)wrapper}() {
+    ${(q)hook} \"\$@\"
+    (( \$+widgets[${(q)orig}] )) && zle ${(q)orig} -- \"\$@\"
+	}"
+
+	zle -N -- $widget $wrapper
 }

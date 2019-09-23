@@ -41,7 +41,7 @@ function testVisualIdentifierAppearsAfterSegmentContentOnRightSegments() {
   local P9K_CUSTOM_WORLD1='echo world1'
   local P9K_CUSTOM_WORLD1_ICON='icon-here'
 
-  assertEquals "%F{015}%K{015}%F{000} \${:-\"world1\"} %F{000}icon-here%f " "$(__p9k_build_right_prompt)"
+  assertEquals "%F{015}%K{015}%F{000} \${:-\"world1\"} %F{000}icon-here%f %E%f%k%b" "$(__p9k_build_right_prompt)"
 }
 
 function testVisualIdentifierPrintsNothingIfNotAvailable() {

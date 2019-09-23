@@ -195,7 +195,6 @@ a prompt segment. As an example you could create a custom segment
 You can take a look at [how to create a custom segment
 here](segments/custom/README.md).
 
-
 ### Disabling / Enabling Powerlevel9k
 
 You can disable P9k and return to a very basic prompt at any time simply by

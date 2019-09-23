@@ -63,7 +63,7 @@ function p9k::register_icon() {
     p9k::expand "$ICON_USER_VARIABLE"
     map="${(P)ICON_USER_VARIABLE}"
   else # use the icons that are registered by the segment
-    case ${P9K_MODE} in
+    case ${P9K_MODE:-} in
       'flat'|'awesome-patched')                   map=$3 ;;
       'awesome-fontconfig')                       map=$4 ;;
       'awesome-mapped-fontconfig')                map=$5 ;;
@@ -122,7 +122,7 @@ function p9k::register_segment() {
     __P9K_DATA[${STATEFUL_NAME}_FG]="$(p9k::foreground_color $4)"
   fi
 
-  p9k::register_icon "${STATEFUL_NAME}" "${5}" "${6}" "${7}" "${8}" "${9}"
+  p9k::register_icon "${STATEFUL_NAME}" "${5:-}" "${6:-}" "${7:-}" "${8:-}" "${9:-}"
 
   local ICON_COLOR_VARIABLE="P9K_${STATEFUL_NAME}_ICON_COLOR"
   if p9k::defined "${ICON_COLOR_VARIABLE}"; then
@@ -159,10 +159,10 @@ function p9k::register_segment() {
 
   # Overwrite given bold directive by user defined variable for this segment.
   local BOLD_USER_VARIABLE="P9K_${STATEFUL_NAME}_BOLD"
-  local BOLD="${(P)BOLD_USER_VARIABLE}"
+  local BOLD="${(P)BOLD_USER_VARIABLE:-}"
   [[ -z "${BOLD}" ]] || __P9K_DATA[${STATEFUL_NAME}_BD]=true
   local BOLD_ICON_USER_VARIABLE="P9K_${STATEFUL_NAME}_ICON_BOLD"
-  local BOLD_ICON="${(P)BOLD_ICON_USER_VARIABLE}"
+  local BOLD_ICON="${(P)BOLD_ICON_USER_VARIABLE:-}"
   [[ -z "${BOLD_ICON}" ]] || __P9K_DATA[${STATEFUL_NAME}_ICON_BD]=true
 }
 

@@ -22,7 +22,7 @@ function setUp() {
 function oneTimeSetUp() {
   function stripEsc() {
     local clean_string="" escape_found=false
-    for (( i = 0; i < ${#1}; i++ )); do
+    for (( i = 1; i <= ${#1}; i++ )); do
       case ${1[i]}; in
         "")  clean_string+="<Esc>"; escape_found=true ;; # escape character
         "[")  if [[ ${escape_found} == true ]]; then
@@ -43,9 +43,17 @@ function oneTimeTearDown() {
 }
 
 function testUsingUnsetVariables() {
+  local P9K_CUSTOM_WORLD='echo world'
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  local P9K_LEFT_PROMPT_ELEMENTS=(custom_world)
+  local -a P9K_RIGHT_PROMPT_ELEMENTS
+  local P9K_RIGHT_PROMPT_ELEMENTS=()
+
   setopt local_options
   set -u
-  __p9k_prepare_prompts
+  local result="$(__p9k_prepare_prompts 2>&1)"
+
+  assertEquals "" "${result}"
 }
 
 function testJoinedSegments() {
@@ -149,6 +157,9 @@ function testOverwritingIconsWork() {
 }
 
 function testNewlineOnRpromptCanBeDisabled() {
+  # Fake environment
+  local COLUMNS=100
+
   local P9K_PROMPT_ON_NEWLINE=true
   local P9K_RPROMPT_ON_NEWLINE=false
   local P9K_CUSTOM_WORLD='echo world'
@@ -161,7 +172,8 @@ function testNewlineOnRpromptCanBeDisabled() {
   __p9k_prepare_prompts
 
   local nl=$'\n'
-  local expected="╭─%f%b%k%K{015} %F{000}\${:-\"world\"} %k%F{015}%f ${nl}╰─ %{<Esc>1A%}%f%b%k%F{015}%K{015}%F{000} \${:-\"rworld\"} %{<Esc>00m%}%{<Esc>1B%"
+  local expected='%f%b%k╭─%K{015} %F{000}${:-"world"} %k%F{015}%f ${(pl.79.. .)}${__P9K_RPROMPT}
+╰─ %f%b%k'
   local _real=$(stripEsc "${PROMPT}${RPROMPT}")
 
   # use this to debug output with special escape sequences
