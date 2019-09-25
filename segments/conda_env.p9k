@@ -1,0 +1,27 @@
+# vim:ft=zsh ts=2 sw=2 sts=2 et fenc=utf-8
+################################################################
+# @title powerlevel9k Segment - Python Environment
+# @source [powerlevel9k](https://github.com/bhilburn/powerlevel9k)
+##
+
+################################################################
+# Register segment
+# Parameters:
+#   segment_name  context  background  foreground  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
+#                                                                               🐍          
+p9k::register_segment "CONDA_ENV" "" "blue" "$DEFAULT_COLOR" ''  $'\uE63C'  $'\uE63C'  $'\U1F40D'  $'\uE73C '
+
+################################################################
+# Register segment default values
+p9k::set_default P9K_CONDA_ENV_PROMPT_ALWAYS_SHOW false
+
+################################################################
+# @description
+#   Display the current active python version
+
+prompt_conda_env() {
+  if [["${P9K_PYENV_PROMPT_ALWAYS_SHOW}" == "true" ]]; then
+      conda_py_version=$(python -c 'import sys; print(str(sys.version_info[0])+"."+str(sys.version_info[1]))')
+      p9k::prepare_segment "$0" "" $1 "$2" $3 "${conda_py_version}"
+  fi
+}
