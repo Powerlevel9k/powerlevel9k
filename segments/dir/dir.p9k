@@ -139,7 +139,6 @@ prompt_dir() {
         local -a markedFolders
         markedFolders=( $(__p9k_upsearch "(${(j:|:)P9K_DIR_PACKAGE_FILES})") )
         local package_path="${markedFolders[1]}"
-        [[ ${(L)P9K_DIR_PATH_ABSOLUTE} != "true" ]] && package_path=${package_path/$HOME/"~"}
 
         # Replace the shortest possible match of the marked folder from
         # the current path. Remove the amount of characters up to the
@@ -150,7 +149,9 @@ prompt_dir() {
         # Then, find the length of the package_path string, and save the
         # subdirectory path as a substring of the current directory's path from 0
         # to the length of the package path's string
-        subdirectory_path=$(__p9k_truncate_path "${current_path:${#${(S%%)package_path//$~zero/}}}" $P9K_DIR_SHORTEN_LENGTH $P9K_DIR_SHORTEN_DELIMITER)
+        local package_trun_path="${package_path}"
+        [[ ${(L)P9K_DIR_PATH_ABSOLUTE} != "true" ]] && package_trunc_path=${package_path/$HOME/"~"}
+        subdirectory_path=$(__p9k_truncate_path "${current_path:${#${(S%%)package_trunc_path//$~zero/}}}" $P9K_DIR_SHORTEN_LENGTH $P9K_DIR_SHORTEN_DELIMITER)
 
         local pkgFile="unknown"
         for file in "${P9K_DIR_PACKAGE_FILES[@]}"; do
