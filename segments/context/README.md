@@ -40,10 +40,11 @@ end of the hostname.
 
 | Variable | Default Value | Description |
 |----------|---------------|-------------|
-|`DEFAULT_USER`|None|Username to consider a "default context" (you can also set `$USER`).|
-|`P9K_CONTEXT_ALWAYS_SHOW`|false|Always show this segment, including $USER and hostname.|
+|`DEFAULT_USER`|None|Username to consider a "default context".|
+|`P9K_CONTEXT_ALWAYS_SHOW`|false|Always show this segment, including `$USER` and hostname.|
 |`P9K_CONTEXT_ALWAYS_SHOW_USER`|false|Always show the username, but conditionalize the hostname.|
 |`P9K_CONTEXT_TEMPLATE`|%n@%m|Default context prompt (username@machine). Refer to the [ZSH Documentation](http://zsh.sourceforge.net/Doc/Release/Prompt-Expansion.html) for all possible expansions, including deeper host depths.|
+|`P9K_CONTEXT_TEMPLATE_DEFAULT_USER`|$P9K_CONTEXT_TEMPLATE|Default context prompt when current username is `$DEFAULT_USER`.|
 
 This segment can have different states. They might help you to visualize your
 different privileges.
