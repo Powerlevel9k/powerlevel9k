@@ -803,7 +803,7 @@ prompt_dir() {
   # declare all local variables
   local paths directory test_dir test_dir_length trunc_path threshhold
   # if we are not in "~" or "/", split the paths into an array and exclude "~"
-  (( ${#current_path} > 1 )) && paths=(${(s:/:)${current_path//"~\/"/}}) || paths=()
+  (( ${#current_path} > 1 )) && paths=(${(s:/:)${current_path/"~\/"/}}) || paths=()
   # only run the code if SHORTEN_DIR_LENGTH is set, or we are using the two strategies that don't rely on it.
   if [[ -n "$POWERLEVEL9K_SHORTEN_DIR_LENGTH" || "$POWERLEVEL9K_SHORTEN_STRATEGY" == "truncate_with_folder_marker" || "$POWERLEVEL9K_SHORTEN_STRATEGY" == "truncate_to_last" || "$POWERLEVEL9K_SHORTEN_STRATEGY" == "truncate_with_package_name" ]]; then
     set_default POWERLEVEL9K_SHORTEN_DELIMITER "\u2026"
@@ -857,7 +857,7 @@ prompt_dir() {
           # cheating here to retain ~ as home folder
           local home_path="$(getUniqueFolder $HOME)"
           trunc_path="$(getUniqueFolder $PWD)"
-          [[ $current_path == "~"* ]] && current_path="~${trunc_path//${home_path}/}" || current_path="/${trunc_path}"
+          [[ $current_path == "~"* ]] && current_path="~${trunc_path/${home_path}/}" || current_path="/${trunc_path}"
         fi
       ;;
       truncate_with_folder_marker)
@@ -1129,7 +1129,7 @@ prompt_laravel_version() {
   local laravel_version="$(php artisan --version 2> /dev/null)"
   if [[ -n "${laravel_version}" && "${laravel_version}" =~ "Laravel Framework" ]]; then
     # Strip out everything but the version
-    laravel_version="${laravel_version//Laravel Framework /}"
+    laravel_version="${laravel_version/Laravel Framework /}"
     "$1_prompt_segment" "$0" "$2" "maroon" "white" "${laravel_version}" 'LARAVEL_ICON'
   fi
 }
