@@ -310,7 +310,10 @@ function __p9k_build_left_prompt() {
 
     # Remove joined information in direct calls
     element="${element%_joined}"
-
+    disabled_flag="P9K_$element:u_DISABLED"
+    if [[ "${(P)disabled_flag}" == "1" ]]; then
+        continue;
+    fi
     # Check if it is a custom command, otherwise interpet it as
     # a prompt.
     if [[ $element[0,7] =~ "custom_" ]]; then
@@ -342,7 +345,10 @@ function __p9k_build_right_prompt() {
 
     # Remove joined information in direct calls
     element="${element%_joined}"
-
+    disabled_flag="P9K_$element:u_DISABLED"
+    if [[ "${(P)disabled_flag}" == "1" ]]; then
+        continue;
+    fi
     # Check if it is a custom command, otherwise interpet it as a prompt.
     if [[ $element[0,7] =~ "custom_" ]]; then
       "__p9k_prompt_custom" "right" "$index" ${joined} $element[8,-1]
