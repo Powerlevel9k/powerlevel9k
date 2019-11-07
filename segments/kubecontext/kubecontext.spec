@@ -101,4 +101,44 @@ function testKubeContextPrintsNothingIfKubectlNotAvailable() {
   unalias kubectl
 }
 
+function mockKubectlEKS() {
+  case "$1" in
+    'version')
+      echo 'non-empty text'
+      ;;
+    'config')
+      case "$2" in
+        'view')
+          case "$3" in
+            '-o=jsonpath={.current-context}')
+              echo 'arn:aws:eks:us-east-1:123456789012:cluster/eksname'
+              ;;
+            '-o=jsonpath={.contexts'*)
+              echo ''
+              ;;
+            *)
+              echo "Mock value missed"
+              exit 1
+              ;;
+          esac
+          ;;
+      esac
+      ;;
+  esac
+}
+
+function testStripEKS() {
+  alias kubectl=mockKubectlEKS
+
+  P9K_KUBECONTEXT_STRIPEKS=true
+
+  local -a P9K_LEFT_PROMPT_ELEMENTS
+  P9K_LEFT_PROMPT_ELEMENTS=(kubecontext)
+
+  assertEquals "%K{004} %F{015}⎈ %F{015}eksname/default %k%F{004}%f " "$(__p9k_build_left_prompt)"
+
+  unset P9K_LEFT_PROMPT_ELEMENTS
+  unalias kubectl
+}
+
 source shunit2/shunit2

@@ -36,6 +36,12 @@ prompt_kubecontext() {
       cur_namespace="default"
     fi
 
+    # Extract cluster name and namespace from AWS ARN, if enabled.
+    # Example eks cluster string: arn:aws:eks:us-east-1:123456789012:cluster/eksname
+    if [[ "$P9K_KUBECONTEXT_STRIPEKS" == true ]]; then
+      cur_ctx=${cur_ctx#*cluster/}
+    fi
+
     local k8s_final_text=""
 
     if [[ "$cur_ctx" == "$cur_namespace" ]]; then
