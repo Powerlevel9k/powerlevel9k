@@ -13,6 +13,7 @@
   #   segment_name  context  background  foreground  Generic  Flat/Awesome-Patched  Awesome-FontConfig  Awesome-Mapped-FontConfig  NerdFont
   #                                                                                                        
   p9k::register_segment 'AWS' '' red white 'AWS:'  $'\uE895'  $'\uF270'  '\u'${CODEPOINT_OF_AWESOME_AMAZON}  $'\uF270'
+  p9k::set_default P9K_AWS_DELIMITER "|"
 }
 
 ################################################################
@@ -26,8 +27,25 @@
 ##
 prompt_aws() {
   local aws_profile="${AWS_PROFILE:-$P9K_AWS_DEFAULT_PROFILE}"
+  # If profile is not set by env and included, then set as "default"
+  if [[ -n "$P9K_AWS_INCLUDE_PROFILE" && -z "$aws_profile" ]]; then
+    local aws_profile="default"
+  fi
+
+  local aws_region="${AWS_REGION:-$AWS_DEFAULT_REGION}"
+  # If region is not set by env and awscli is installed, get region from awscli
+  if [[ -n "$P9K_AWS_INCLUDE_REGION" && -z "$aws_region" ]]; then
+    which aws > /dev/null 2>&1 
+    if [[ $? -eq 0 && -n "$aws_profile" ]]; then
+      local aws_region="$(aws --profile ${aws_profile} configure get region 2> /dev/null)"
+    fi
+  fi
+
+  if [[ -n "$aws_region" ]]; then
+    local aws_delimiter="${P9K_AWS_DELIMITER:-|}"
+  fi
 
   if [[ -n "$aws_profile" ]]; then
-    p9k::prepare_segment "$0" "" $1 "$2" $3 "$aws_profile"
+    p9k::prepare_segment "$0" "" $1 "$2" $3 "$aws_profile$aws_delimiter$aws_region"
   fi
 }
