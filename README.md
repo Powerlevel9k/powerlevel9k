@@ -162,9 +162,9 @@ The segments that are currently available are:
 ##### anaconda
 
 This segment shows your active anaconda environment. It relies on either the
-`CONDA_ENV_PATH` or the `CONDA_PREFIX` (depending on the `conda` version)
-environment variable to be set which happens when you properly `source
-activate` an environment.
+`CONDA_PROMPT_MODIFIER`, `CONDA_ENV_PATH`, or `CONDA_PREFIX` (depending on the
+`conda` version) environment variable to be set which happens when you properly
+`source activate` an environment.
 
 Special configuration variables:
 

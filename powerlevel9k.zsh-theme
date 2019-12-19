@@ -299,14 +299,22 @@ right_prompt_segment() {
 ################################################################
 # Anaconda Environment
 prompt_anaconda() {
-  # Depending on the conda version, either might be set. This
-  # variant works even if both are set.
-  local _path=$CONDA_ENV_PATH$CONDA_PREFIX
-  if ! [ -z "$_path" ]; then
-    # config - can be overwritten in users' zshrc file.
-    set_default POWERLEVEL9K_ANACONDA_LEFT_DELIMITER "("
-    set_default POWERLEVEL9K_ANACONDA_RIGHT_DELIMITER ")"
-    "$1_prompt_segment" "$0" "$2" "blue" "$DEFAULT_COLOR" "$POWERLEVEL9K_ANACONDA_LEFT_DELIMITER$(basename $_path)$POWERLEVEL9K_ANACONDA_RIGHT_DELIMITER" 'PYTHON_ICON'
+  local modifier
+  if [ -n "$CONDA_PROMPT_MODIFIER" ]; then
+    modifier="$CONDA_PROMPT_MODIFIER"
+  else
+    # Depending on the conda version, either might be set. This
+    # variant works even if both are set.
+    local _path=$CONDA_ENV_PATH$CONDA_PREFIX
+    if ! [ -z "$_path" ]; then
+      # config - can be overwritten in users' zshrc file.
+      set_default POWERLEVEL9K_ANACONDA_LEFT_DELIMITER "("
+      set_default POWERLEVEL9K_ANACONDA_RIGHT_DELIMITER ")"
+      modifier="$POWERLEVEL9K_ANACONDA_LEFT_DELIMITER$(basename $_path)$POWERLEVEL9K_ANACONDA_RIGHT_DELIMITER"
+    fi
+  fi
+  if [ -n "$modifier" ]; then
+    "$1_prompt_segment" "$0" "$2" "blue" "$DEFAULT_COLOR" "$modifier" 'PYTHON_ICON'
   fi
 }
 
