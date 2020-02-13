@@ -176,6 +176,7 @@ The segments that are currently available are:
 * [`docker_machine`](segments/docker_machine/README.md) - The current Docker Machine.
 * [`kubecontext`](segments/kubecontext/README.md) - The current context of your `kubectl` configuration.
 * [`dropbox`](segments/dropbox/README.md) - Indicates Dropbox directory and syncing status using `dropbox-cli`
+* [`azure`](segments/azure/README.md) - The current active MS Azure subscription.
 
 **Other:**
 * [`custom_*`](segments/custom/README.md) - Create a custom segment to display the
