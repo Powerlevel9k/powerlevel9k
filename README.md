@@ -1,3 +1,5 @@
+## Powerlevel9k is deprecated and now unmaintained. Please use [Powerlevel10k](https://github.com/romkatv/powerlevel10k)!
+---
 ![](https://raw.githubusercontent.com/bhilburn/powerlevel9k-logo/master/logo-banner.png)
 ---
 [![Build Status](https://travis-ci.org/bhilburn/powerlevel9k.svg?branch=master)](https://travis-ci.org/bhilburn/powerlevel9k)
