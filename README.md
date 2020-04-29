@@ -175,7 +175,7 @@ Special configuration variables:
 |`POWERLEVEL9K_ANACONDA_LEFT_DELIMITER`|"("|The left delimiter just before the environment name.|
 |`POWERLEVEL9K_ANACONDA_RIGHT_DELIMITER`|")"|The right delimiter just after the environment name.|
 
-Additionally the following segment specific parameters can be used to customize
+Additionally, the following segment specific parameters can be used to customize
 it: `POWERLEVEL9K_PYTHON_ICON`, `POWERLEVEL9K_ANACONDA_BACKGROUND`, and
 `POWERLEVEL9K_ANACONDA_FOREGROUND`.
 
@@ -405,7 +405,7 @@ Customizations available are:
 |----------|---------------|-------------|
 |`POWERLEVEL9K_DIR_PATH_ABSOLUTE`|None|If set to `true`, will use absolute paths instead of home folder abbreviation `~`|
 |`POWERLEVEL9K_SHORTEN_DIR_LENGTH`|`2`|If your shorten strategy, below, is entire directories, this field determines how many directories to leave at the end. If your shorten strategy is by character count, this field determines how many characters to allow per directory string.|
-|`POWERLEVEL9K_SHORTEN_STRATEGY`|None|How the directory strings should be truncated. See the table below for more informations.|
+|`POWERLEVEL9K_SHORTEN_STRATEGY`|None|How the directory strings should be truncated. See the table below for more information.|
 |`POWERLEVEL9K_SHORTEN_DELIMITER`|`..`|Delimiter to use in truncated strings. This can be any string you choose, including an empty string if you wish to have no delimiter.|
 
 | Strategy Name | Description |
@@ -414,7 +414,7 @@ Customizations available are:
 |`truncate_absolute_chars`|Truncates an absolute number of characters from the left such that the number of characters that your path displays (with or without `POWERLEVEL9K_SHORTEN_DELIMITER`) is no more than `POWERLEVEL9K_SHORTEN_DIR_LENGTH` + the length of `POWERLEVEL9K_SHORTEN_DELIMITER` |
 |`truncate_middle`|Truncates the middle part of a folder. E.g. you are in a folder named `~/MySuperProjects/AwesomeFiles/BoringOffice`, then it will truncated to `~/MyS..cts/Awe..les/BoringOffice`, if `POWERLEVEL9K_SHORTEN_DIR_LENGTH=3` is also set (controls the amount of characters to be left).|
 |`truncate_from_right`|Just leaves the beginning of a folder name untouched. E.g. your folders will be truncated like so: `/ro../Pr../office`. How many characters will be untouched is controlled by `POWERLEVEL9K_SHORTEN_DIR_LENGTH`.|
-|`truncate_absolute`|Truncates everything exept the last few characters in the path. E.g. if you are in a folder named `~/Projects/powerlevel9k` and you have set `POWERLEVEL9K_SHORTEN_DIR_LENGTH=3`, you will get `..l9k`.|
+|`truncate_absolute`|Truncates everything except the last few characters in the path. E.g. if you are in a folder named `~/Projects/powerlevel9k` and you have set `POWERLEVEL9K_SHORTEN_DIR_LENGTH=3`, you will get `..l9k`.|
 |`truncate_to_last`|Truncates everything before the last folder in the path.|
 |`truncate_to_first_and_last`|Truncate middle directories from the path. How many directories will be untouched is controlled by `POWERLEVEL9K_SHORTEN_DIR_LENGTH`. E.g. if you are in a folder named `~/Projects/powerlevel9k` and you have set `POWERLEVEL9K_SHORTEN_DIR_LENGTH=1`, you will get `~/../powerlevel9k`.||
 |`truncate_to_unique`|Parse all parent path components and truncate them to the shortest unique length. If you copy & paste the result to a shell, after hitting `TAB` it should expand to the original path unambiguously.|
@@ -428,7 +428,7 @@ POWERLEVEL9K_SHORTEN_DIR_LENGTH=1
 POWERLEVEL9K_SHORTEN_DELIMITER=""
 POWERLEVEL9K_SHORTEN_STRATEGY="truncate_from_right"
 ```
-In each case you have to specify the length you want to shorten the directory
+In each case, you have to specify the length you want to shorten the directory
 to. So in some cases `POWERLEVEL9K_SHORTEN_DIR_LENGTH` means characters, in
 others whole directories.
 
