@@ -266,6 +266,38 @@ function testTruncateWithPackageNameWorks() {
   cd $p9kFolder
   rm -fr $BASEFOLDER
 }
+function testTruncateWithPackageNameWorksIfNoPackageNameIsSet() {
+  local p9kFolder=$(pwd)
+  local BASEFOLDER=/tmp/powerlevel9k-test
+  local FOLDER=$BASEFOLDER/1/12/123/1234/12345/123456/1234567/12345678/123456789
+  mkdir -p $FOLDER
+
+  cd /tmp/powerlevel9k-test
+  echo '
+{
+  "private": true
+}
+' > package.json
+  # Unfortunately: The main folder must be a git repo..
+  git init &>/dev/null
+
+  # Go back to deeper folder
+  cd "${FOLDER}"
+
+  local -a POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
+  POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(dir)
+  local POWERLEVEL9K_SHORTEN_DIR_LENGTH=2
+  local POWERLEVEL9K_SHORTEN_STRATEGY='truncate_with_package_name'
+
+  # Load Powerlevel9k
+  source ${P9K_HOME}/powerlevel9k.zsh-theme
+
+  assertEquals "%K{004} %F{000}powerlevel9k-test/1/12/123/12…/12…/12…/12…/12…/123456789 %k%F{004}%f " "$(build_left_prompt)"
+
+  # Go back
+  cd $p9kFolder
+  rm -fr $BASEFOLDER
+}
 
 function testTruncateWithPackageNameIfRepoIsSymlinkedInsideDeepFolder() {
   local p9kFolder=$(pwd)
