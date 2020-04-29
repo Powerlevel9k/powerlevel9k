@@ -874,7 +874,7 @@ prompt_dir() {
               trunc_path="/"
             elif [[ "$marked_folder" == "$HOME" ]]; then
               # If we reached home folder, stop upsearch.
-              trunc_path="~"
+              trunc_path=""
             elif [[ "${marked_folder%/*}" == $last_marked_folder ]]; then
               trunc_path="${trunc_path%/}/${marked_folder##*/}"
             else
