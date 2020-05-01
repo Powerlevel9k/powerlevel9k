@@ -380,12 +380,12 @@ function upsearch () {
 function p9k::parseIp() {
   local desiredInterface="${1}"
 
-  if [[ -z "${desiredInterface}" ]]; then
-    desiredInterface="^[^ ]+"
-  fi
-
   local ROOT_PREFIX="${2}"
   if [[ "$OS" == "OSX" ]]; then
+    if [[ -z "${desiredInterface}" ]]; then
+        desiredInterface="^[^ ]+"
+    fi
+
     # Get a plain list of all interfaces
     local rawInterfaces="$(${ROOT_PREFIX}/sbin/ifconfig -l 2>/dev/null)"
     # Parse into array (split by whitespace)
@@ -414,14 +414,66 @@ function p9k::parseIp() {
       fi
     done
   else
-    local -a interfaces
-    interfaces=( "${(f)$(${ROOT_PREFIX}/sbin/ip -brief -4 a show 2>/dev/null)}" )
-    local pattern="^${desiredInterface}[ ]+UP[ ]+([^/ ]+)"
-    for interface in "${(@)interfaces}"; do
-      if [[ "$interface" =~ $pattern ]]; then
-        echo "${match[1]}"
-        return 0
-      fi
+    # Define the various expressions used to build patterns
+    local -A pattern
+    local pattern[interfaceName]="([a-zA-Z0-9\:]+)"
+    local pattern[macAddress]="([a-fA-F0-9]{2}:){5}[a-fA-F0-9]{2}"
+    
+    ### https://stackoverflow.com/a/17871737/1871306
+    local pattern[IPV4SEG]="(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])"
+    local pattern[ipV4Address]="(${pattern[IPV4SEG]}\.){3,3}${pattern[IPV4SEG]}"
+    local pattern[ipV6Address]="(([0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:)|fe80:(:[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]{1,}|::(ffff(:0{1,4}){0,1}:){0,1}((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])|([0-9a-fA-F]{1,4}:){1,4}:((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]))"
+    local pattern[ipAddress]="(${pattern[ipV4Address]})|(${pattern[ipV6Address]})"
+    ### https://stackoverflow.com/a/17871737/1871306
+
+    # Check if a desired interface has NOT been specified; if so, use a generic pattern to select the first interface
+    if [[ -z "${desiredInterface}" ]]; then
+        #interfaceName="[a-zA-Z0-9\:]+"
+        interfaceName="^[^ ]+"
+
+        # Define the pattern used to extract interface name
+        local statusPattern
+        statusPattern="^(${interfaceName})[ ]+${pattern[macAddress]}[ ]+"
+        # REFERENCE STRING: eth6             f4:8e:38:b0:2c:98 <BROADCAST,MULTICAST,UP>
+
+        local -a interfaceStatus
+			  local interfaceStatus=( "${(f)$(${ROOT_PREFIX}/sbin/ip -brief link show 2>/dev/null)}" )
+        # Iterate over interfaces, retrieving the first one that is UP
+        for interface in "${(@)interfaceStatus}" ; do
+            if [[ "$interface" =~ $statusPattern ]] ; then
+                interfaceName="${match[1]}"
+                break
+            fi
+        done
+    else
+        interfaceName="${desiredInterface}"
+    fi
+
+    local -a addressPatterns
+    # Define the pattern used to extract interface IP address, Multi-lined for ease of reading
+    #
+    # A ^ indicates the beginning of a pattern (inclusive of the character directly above it).
+    # The digit following ^ indicates which entry in the below array matches that segment.
+    # A $ indicates the end of a pattern (inclusive of the character directly above it).
+    #
+    # REFERENCE STRING: 21: eth6    inet 172.16.205.1/24 brd 172.16.205.255 scope global dynamic \       valid_lft 86285sec preferred_lft 86285sec
+    ##################  ^1 $^2     $^3                  $^4 $^5            $
+    addressPatterns[1]="^[0-9]+\:[ ]+"
+    addressPatterns[2]="${interfaceName}[ ]+"
+    addressPatterns[3]="inet[ ]+(${pattern[ipAddress]})\/[0-9]{1,2}[ ]+"
+    addressPatterns[4]="[a-zA-Z]+[ ]+"
+    addressPatterns[5]="${pattern[ipAddress]}[ ]+"
+
+    #addressPattern="${addressPatterns[*]}"
+    addressPattern=$(IFS=; echo "${addressPatterns[*]}")
+    #="${addressPatterns[*]}"
+    local -a interfaceAddr
+		local interfaceAddr=( "${(f)$(${ROOT_PREFIX}/sbin/ip -o -f inet addr show ${interfaceName} 2>/dev/null)}" )
+    for addr in "${(@)interfaceAddr}"; do
+        if [[ "$addr" =~ $addressPattern ]]; then
+            echo "${match[2]}"
+            return 0
+        fi
     done
   fi
 
