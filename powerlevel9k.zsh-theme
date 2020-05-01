@@ -734,30 +734,21 @@ prompt_command_execution_time() {
   set_default POWERLEVEL9K_COMMAND_EXECUTION_TIME_THRESHOLD 3
   set_default POWERLEVEL9K_COMMAND_EXECUTION_TIME_PRECISION 2
 
-  # Print time in human readable format
-  # For that use `strftime` and convert
-  # the duration (float) to an seconds
-  # (integer).
-  # See http://unix.stackexchange.com/a/89748
-  local humanReadableDuration
-  if (( _P9K_COMMAND_DURATION > 3600 )); then
-    humanReadableDuration=$(TZ=GMT; strftime '%H:%M:%S' $(( int(rint(_P9K_COMMAND_DURATION)) )))
-  elif (( _P9K_COMMAND_DURATION > 60 )); then
-    humanReadableDuration=$(TZ=GMT; strftime '%M:%S' $(( int(rint(_P9K_COMMAND_DURATION)) )))
-  else
-    # If the command executed in seconds, print as float.
-    # Convert to float
-    if [[ "${POWERLEVEL9K_COMMAND_EXECUTION_TIME_PRECISION}" == "0" ]]; then
-      # If user does not want microseconds, then we need to convert
-      # the duration to an integer.
-      typeset -i humanReadableDuration
-    else
-      typeset -F ${POWERLEVEL9K_COMMAND_EXECUTION_TIME_PRECISION} humanReadableDuration
-    fi
-    humanReadableDuration=$_P9K_COMMAND_DURATION
-  fi
-
   if (( _P9K_COMMAND_DURATION >= POWERLEVEL9K_COMMAND_EXECUTION_TIME_THRESHOLD )); then
+    # Print time in human readable format
+    # For that use `strftime` and convert
+    # the duration (float) to an seconds
+    # (integer).
+    # See http://unix.stackexchange.com/a/89748
+    local humanReadableDuration
+    if (( _P9K_COMMAND_DURATION > 3600 )); then
+      humanReadableDuration=$(TZ=GMT; strftime '%H:%M:%S' $(( int(rint(_P9K_COMMAND_DURATION)) )))
+    elif (( _P9K_COMMAND_DURATION > 60 )); then
+      humanReadableDuration=$(TZ=GMT; strftime '%M:%S' $(( int(rint(_P9K_COMMAND_DURATION)) )))
+    else
+      # If the command executed in seconds, round to desired precision and append "s"
+      humanReadableDuration=$(printf %.${POWERLEVEL9K_COMMAND_EXECUTION_TIME_PRECISION}f%s $_P9K_COMMAND_DURATION s)
+    fi
     "$1_prompt_segment" "$0" "$2" "red" "yellow1" "${humanReadableDuration}" 'EXECUTION_TIME_ICON'
   fi
 }
