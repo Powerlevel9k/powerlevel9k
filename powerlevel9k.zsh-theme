@@ -1696,6 +1696,10 @@ prompt_kubecontext() {
   if [[ -n "$kubectl_version" ]]; then
     # Get the current Kuberenetes context
     local cur_ctx=$(kubectl config view -o=jsonpath='{.current-context}')
+    if [[ -z "${cur_ctx}" ]]; then
+      return
+    fi
+    
     cur_namespace="$(kubectl config view -o=jsonpath="{.contexts[?(@.name==\"${cur_ctx}\")].context.namespace}")"
     # If the namespace comes back empty set it default.
     if [[ -z "${cur_namespace}" ]]; then
