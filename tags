@@ -1,0 +1,204 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_OUTPUT_MODE	u-ctags	/u-ctags or e-ctags/
+!_TAG_PROGRAM_AUTHOR	Universal Ctags Team	//
+!_TAG_PROGRAM_NAME	Universal Ctags	/Derived from Exuberant Ctags/
+!_TAG_PROGRAM_URL	https://ctags.io/	/official site/
+!_TAG_PROGRAM_VERSION	0.0.0	/45968eff/
++vi-git-aheadbehind	functions/vcs.zsh	/^function +vi-git-aheadbehind() {$/;"	f
++vi-git-remotebranch	functions/vcs.zsh	/^function +vi-git-remotebranch() {$/;"	f
++vi-git-stash	functions/vcs.zsh	/^function +vi-git-stash() {$/;"	f
++vi-git-tagname	functions/vcs.zsh	/^function +vi-git-tagname() {$/;"	f
++vi-git-untracked	functions/vcs.zsh	/^function +vi-git-untracked() {$/;"	f
++vi-hg-bookmarks	functions/vcs.zsh	/^function +vi-hg-bookmarks() {$/;"	f
++vi-svn-detect-changes	functions/vcs.zsh	/^function +vi-svn-detect-changes() {$/;"	f
++vi-vcs-detect-changes	functions/vcs.zsh	/^function +vi-vcs-detect-changes() {$/;"	f
+Add debug script for font issues	CHANGELOG.md	/^### Add debug script for font issues$/;"	S
+Add debug script for iTerm2 issues	CHANGELOG.md	/^### Add debug script for iTerm2 issues$/;"	S
+Add new segments `host` and `user`	CHANGELOG.md	/^### Add new segments `host` and `user`$/;"	S
+Added ability for "joined" segments	CHANGELOG.md	/^### Added ability for "joined" segments$/;"	S
+Added the ability to have empty left or right prompts	CHANGELOG.md	/^### Added the ability to have empty left or right prompts$/;"	S
+Attribution	CODE_OF_CONDUCT.md	/^## Attribution$/;"	s
+Automated Tests	TESTS.md	/^## Automated Tests$/;"	s
+Available Prompt Segments	README.md	/^#### Available Prompt Segments$/;"	t
+Before Opening a Bug	.github/ISSUE_TEMPLATE/ISSUE_TEMPLATE.md	/^### Before Opening a Bug$/;"	S
+Contributor Covenant Code of Conduct	CODE_OF_CONDUCT.md	/^# Contributor Covenant Code of Conduct$/;"	c
+Customizing Prompt Segments	README.md	/^#### Customizing Prompt Segments$/;"	t
+Describe Your Issue	.github/ISSUE_TEMPLATE/ISSUE_TEMPLATE.md	/^#### Describe Your Issue$/;"	t
+Description	.github/PULL_REQUEST_TEMPLATE.md	/^#### Description$/;"	t
+Development changes	CHANGELOG.md	/^### Development changes$/;"	S
+Disabling / Enabling Powerlevel9k	README.md	/^### Disabling \/ Enabling Powerlevel9k$/;"	S
+Docker	TESTS.md	/^### Docker$/;"	S
+Double quotes are important here!	README.md	/^# Double quotes are important here!$/;"	c
+Enforcement	CODE_OF_CONDUCT.md	/^## Enforcement$/;"	s
+Environment Information	.github/ISSUE_TEMPLATE/ISSUE_TEMPLATE.md	/^#### Environment Information$/;"	t
+Executing tests	TESTS.md	/^### Executing tests$/;"	S
+General Test Structure	TESTS.md	/^### General Test Structure$/;"	S
+Have you tried to debug or fix it?	.github/ISSUE_TEMPLATE/ISSUE_TEMPLATE.md	/^#### Have you tried to debug or fix it?$/;"	t
+How Fast is Fast	.github/ISSUE_TEMPLATE/PERFORMANCE_ISSUE_TEMPLATE.md	/^### How Fast is Fast$/;"	S
+Icon overriding mechanism added	CHANGELOG.md	/^### Icon overriding mechanism added$/;"	S
+Installation	README.md	/^### Installation$/;"	S
+Installation	TESTS.md	/^### Installation$/;"	S
+Installation	test-vm/README.md	/^## Installation$/;"	s
+Introduced "visual identifiers" to the segments	CHANGELOG.md	/^### Introduced "visual identifiers" to the segments$/;"	S
+Issues with Fonts & Icons	.github/ISSUE_TEMPLATE/ISSUE_TEMPLATE.md	/^#### Issues with Fonts & Icons$/;"	t
+License	README.md	/^### License$/;"	S
+Manual Testing	TESTS.md	/^## Manual Testing$/;"	s
+New Font Option: nerd-fonts	CHANGELOG.md	/^### New Font Option: nerd-fonts$/;"	S
+New Segment: `kubecontext`	CHANGELOG.md	/^### New Segment: `kubecontext`$/;"	S
+New Segment: `laravel_version`	CHANGELOG.md	/^### New Segment: `laravel_version`$/;"	S
+New Segment: `newline`	CHANGELOG.md	/^### New Segment: `newline`$/;"	S
+New Segment: `vpn`	CHANGELOG.md	/^### New Segment: `vpn`$/;"	S
+New Segments: `host` and `user`	CHANGELOG.md	/^### New Segments: `host` and `user`$/;"	S
+New segment `anaconda` added	CHANGELOG.md	/^### New segment `anaconda` added$/;"	S
+New segment `aws_eb_env` added	CHANGELOG.md	/^### New segment `aws_eb_env` added$/;"	S
+New segment `battery` added	CHANGELOG.md	/^### New segment `battery` added$/;"	S
+New segment `chruby` added	CHANGELOG.md	/^### New segment `chruby` added$/;"	S
+New segment `command_execution_time` added	CHANGELOG.md	/^### New segment `command_execution_time` added$/;"	S
+New segment `custom_command` added	CHANGELOG.md	/^### New segment `custom_command` added$/;"	S
+New segment `detect_virt` added	CHANGELOG.md	/^### New segment `detect_virt` added$/;"	S
+New segment `dir_writable` added	CHANGELOG.md	/^### New segment `dir_writable` added$/;"	S
+New segment `disk_usage` added	CHANGELOG.md	/^### New segment `disk_usage` added$/;"	S
+New segment `docker_machine` added	CHANGELOG.md	/^### New segment `docker_machine` added$/;"	S
+New segment `go_version` added	CHANGELOG.md	/^### New segment `go_version` added$/;"	S
+New segment `ip` added	CHANGELOG.md	/^### New segment `ip` added$/;"	S
+New segment `load` added	CHANGELOG.md	/^### New segment `load` added$/;"	S
+New segment `nodeenv` added	CHANGELOG.md	/^### New segment `nodeenv` added$/;"	S
+New segment `nvm` added	CHANGELOG.md	/^### New segment `nvm` added$/;"	S
+New segment `os_icon` added	CHANGELOG.md	/^### New segment `os_icon` added$/;"	S
+New segment `php_version` added	CHANGELOG.md	/^### New segment `php_version` added$/;"	S
+New segment `public_ip` added	CHANGELOG.md	/^### New segment `public_ip` added$/;"	S
+New segment `pyenv` added	CHANGELOG.md	/^## New segment `pyenv` added$/;"	s
+New segment `rust_version` added	CHANGELOG.md	/^### New segment `rust_version` added$/;"	S
+New segment `swap` added	CHANGELOG.md	/^### New segment `swap` added$/;"	S
+New segment `swift_version` added	CHANGELOG.md	/^### New segment `swift_version` added$/;"	S
+New segment `todo` added	CHANGELOG.md	/^### New segment `todo` added$/;"	S
+New segment `vi_mode` added	CHANGELOG.md	/^### New segment `vi_mode` added$/;"	S
+Our Pledge	CODE_OF_CONDUCT.md	/^## Our Pledge$/;"	s
+Our Responsibilities	CODE_OF_CONDUCT.md	/^## Our Responsibilities$/;"	s
+Our Standards	CODE_OF_CONDUCT.md	/^## Our Standards$/;"	s
+Output time, date, and a symbol from the "Awesome Powerline Font" set	README.md	/^# Output time, date, and a symbol from the "Awesome Powerline Font" set$/;"	c
+Prompt Customization	README.md	/^### Prompt Customization$/;"	S
+Questions	.github/PULL_REQUEST_TEMPLATE.md	/^#### Questions$/;"	t
+Reversed time format	README.md	/^# Reversed time format$/;"	c
+Running	test-vm/README.md	/^## Running$/;"	s
+Same color segements get visual separator	CHANGELOG.md	/^### Same color segements get visual separator$/;"	S
+Scope	CODE_OF_CONDUCT.md	/^## Scope$/;"	s
+Table of Contents	README.md	/^### Table of Contents$/;"	S
+Test Antigen with the oldest version of ZSH	TESTS.md	/^# Test Antigen with the oldest version of ZSH$/;"	c
+Test Prezto with ZSH version 5.2	TESTS.md	/^# Test Prezto with ZSH version 5.2$/;"	c
+Test-VM for powerlevel9k	test-vm/README.md	/^# Test-VM for powerlevel9k$/;"	c
+Testing	test-vm/README.md	/^## Testing$/;"	s
+Tests	TESTS.md	/^# Tests$/;"	c
+Title	.github/PULL_REQUEST_TEMPLATE.md	/^#### Title$/;"	t
+Travis	TESTS.md	/^### Travis$/;"	S
+Unit Test Ratios	README.md	/^#### Unit Test Ratios$/;"	t
+Vagrant	TESTS.md	/^### Vagrant$/;"	S
+Virtualization	.github/ISSUE_TEMPLATE/PERFORMANCE_ISSUE_TEMPLATE.md	/^### Virtualization$/;"	S
+Your Hardware	.github/ISSUE_TEMPLATE/PERFORMANCE_ISSUE_TEMPLATE.md	/^### Your Hardware$/;"	S
+\x21[](https://raw.githubusercontent.com/bhilburn/powerlevel9k-logo/master/logo-banner.png)	README.md	/^![](https:\/\/raw.githubusercontent.com\/bhilburn\/powerlevel9k-logo\/master\/logo-banner.png)$/;"	s
+`anaconda` changes	CHANGELOG.md	/^## `anaconda` changes$/;"	s
+`background_jobs` changes	CHANGELOG.md	/^### `background_jobs` changes$/;"	S
+`dir` Shortening Strategies	CHANGELOG.md	/^### `dir` Shortening Strategies$/;"	S
+`dir` changes	CHANGELOG.md	/^### `dir` changes$/;"	S
+`dir` segment has different strategies for truncation	CHANGELOG.md	/^### `dir` segment has different strategies for truncation$/;"	S
+`load` and `ram` changes	CHANGELOG.md	/^### `load` and `ram` changes$/;"	S
+`load` changes	CHANGELOG.md	/^### `load` changes$/;"	S
+`longstatus` is now `status`	CHANGELOG.md	/^### `longstatus` is now `status`$/;"	S
+`node`, `nvm` Segments	CHANGELOG.md	/^### `node`, `nvm` Segments$/;"	S
+`ram` changes	CHANGELOG.md	/^### `ram` changes$/;"	S
+`rbenv` changes	CHANGELOG.md	/^### `rbenv` changes$/;"	S
+`rvm` changes	CHANGELOG.md	/^### `rvm` changes$/;"	S
+`status` changes	CHANGELOG.md	/^### `status` changes$/;"	S
+`truncate_with_package_name` now searches for `composer.json` as well	CHANGELOG.md	/^#### `truncate_with_package_name` now searches for `composer.json` as well$/;"	t
+`vcs` changes	CHANGELOG.md	/^### `vcs` changes$/;"	S
+`virtualenv` changes	CHANGELOG.md	/^### `virtualenv` changes$/;"	S
+anaconda	README.md	/^##### anaconda$/;"	T
+aws	README.md	/^##### aws$/;"	T
+backgroundColor	functions/colors.zsh	/^function backgroundColor() {$/;"	f
+background_jobs	README.md	/^##### background_jobs$/;"	T
+battery	README.md	/^##### battery$/;"	T
+build_and_run	test-in-docker	/^build_and_run() {$/;"	f
+check_for_known_issues	test-in-docker	/^check_for_known_issues() {$/;"	f
+chruby	README.md	/^##### chruby$/;"	T
+cmd	test-in-docker	/^cmd() {$/;"	f
+command_execution_time	README.md	/^##### command_execution_time$/;"	T
+context	README.md	/^##### context$/;"	T
+custom_command	README.md	/^##### custom_command$/;"	T
+date	README.md	/^##### date$/;"	T
+defined	functions/utilities.zsh	/^function defined() {$/;"	f
+dir	README.md	/^##### dir$/;"	T
+disk_usage	README.md	/^##### disk_usage$/;"	T
+docker0	test/segments/ip.spec	/^docker0: flags=4099<DOWN,BROADCAST,MULTICAST>  mtu 1500$/;"	t
+docker0	test/segments/public_ip.spec	/^docker0: flags=4099<UP,BROADCAST,MULTICAST>  mtu 1500$/;"	t
+docker0	test/segments/vpn_ip.spec	/^docker0: flags=4099<UP,BROADCAST,MULTICAST>  mtu 1500$/;"	t
+err	test-in-docker	/^err()$/;"	f
+foregroundColor	functions/colors.zsh	/^function foregroundColor() {$/;"	f
+getColor	functions/colors.zsh	/^function getColor() {$/;"	f
+getColorCode	functions/colors.zsh	/^function getColorCode() {$/;"	f
+getRelevantItem	functions/utilities.zsh	/^function getRelevantItem() {$/;"	f
+get_icon_names	functions/icons.zsh	/^get_icon_names() {$/;"	f
+get_ppid	debug/font-issues.zsh	/^get_ppid() {$/;"	f
+get_process_name	debug/font-issues.zsh	/^get_process_name() {$/;"	f
+get_term	debug/font-issues.zsh	/^get_term() {$/;"	f
+get_term_font	debug/font-issues.zsh	/^get_term_font() {$/;"	f
+host	README.md	/^##### host$/;"	T
+i]=	test-in-docker	/^  [[ "${frameworks[$i]}" == base-* ]] && frameworks[$i]=()$/;"	f
+ip	README.md	/^##### ip$/;"	T
+isSameColor	functions/colors.zsh	/^function isSameColor() {$/;"	f
+lo	test/segments/ip.spec	/^lo: flags=73<UP,LOOPBACK,RUNNING>  mtu 65536$/;"	t
+lo	test/segments/public_ip.spec	/^lo: flags=73<UP,LOOPBACK,RUNNING>  mtu 65536$/;"	t
+lo	test/segments/vpn_ip.spec	/^lo: flags=73<UP,LOOPBACK,RUNNING>  mtu 65536$/;"	t
+load	README.md	/^##### load$/;"	T
+mate_get	debug/font-issues.zsh	/^                mate_get() {$/;"	f
+newline	README.md	/^##### newline$/;"	T
+nodeenv	README.md	/^##### nodeenv$/;"	T
+p9k::parseIp	functions/utilities.zsh	/^function p9k::parseIp() {$/;"	f
+printSizeHumanReadable	functions/utilities.zsh	/^printSizeHumanReadable() {$/;"	f
+print_deprecation_warning	functions/utilities.zsh	/^print_deprecation_warning() {$/;"	f
+print_icon	functions/icons.zsh	/^function print_icon() {$/;"	f
+public_ip	README.md	/^##### public_ip$/;"	T
+pyenv	README.md	/^##### pyenv$/;"	T
+ram	README.md	/^##### ram$/;"	T
+rbenv	README.md	/^##### rbenv$/;"	T
+resolve_framework	test-in-docker	/^resolve_framework() {$/;"	f
+resolve_version	test-in-docker	/^resolve_version() {$/;"	f
+rspec_stats	README.md	/^##### rspec_stats$/;"	T
+segmentShouldBeJoined	functions/utilities.zsh	/^function segmentShouldBeJoined() {$/;"	f
+segment_in_use	functions/utilities.zsh	/^segment_in_use() {$/;"	f
+set_default	functions/utilities.zsh	/^function set_default() {$/;"	f
+show_help	test-in-docker	/^show_help() {$/;"	f
+status	README.md	/^##### status$/;"	T
+symfony2_tests	README.md	/^##### symfony2_tests$/;"	T
+termColors	functions/colors.zsh	/^function termColors() {$/;"	f
+time	README.md	/^##### time$/;"	T
+tl; dr	README.md	/^### tl; dr$/;"	S
+trim	debug/font-issues.zsh	/^trim() {$/;"	f
+trim_quotes	debug/font-issues.zsh	/^trim_quotes() {$/;"	f
+truncatePath	functions/utilities.zsh	/^function truncatePath() {$/;"	f
+truncatePathFromRight	functions/utilities.zsh	/^function truncatePathFromRight() {$/;"	f
+tun1	test/segments/ip.spec	/^tun1: flags=4099<DOWN,BROADCAST,MULTICAST>  mtu 1500$/;"	t
+tun1	test/segments/ip.spec	/^tun1: flags=4099<UP,BROADCAST,MULTICAST>  mtu 1500$/;"	t
+tun1	test/segments/vpn_ip.spec	/^tun1: flags=4099<UP,BROADCAST,MULTICAST>  mtu 1500$/;"	t
+upsearch	functions/utilities.zsh	/^function upsearch () {$/;"	f
+user	README.md	/^##### user$/;"	T
+v0.1.0	CHANGELOG.md	/^## v0.1.0$/;"	s
+v0.2.0	CHANGELOG.md	/^## v0.2.0$/;"	s
+v0.3.0	CHANGELOG.md	/^## v0.3.0$/;"	s
+v0.3.1	CHANGELOG.md	/^## v0.3.1$/;"	s
+v0.3.2	CHANGELOG.md	/^## v0.3.2$/;"	s
+v0.4.0	CHANGELOG.md	/^## v0.4.0$/;"	s
+v0.5.0	CHANGELOG.md	/^## v0.5.0$/;"	s
+v0.6.0	CHANGELOG.md	/^## v0.6.0$/;"	s
+v0.6.2	CHANGELOG.md	/^## v0.6.2$/;"	s
+v0.6.3	CHANGELOG.md	/^## v0.6.3$/;"	s
+v0.6.4	CHANGELOG.md	/^## v0.6.4$/;"	s
+v0.6.5	CHANGELOG.md	/^## v0.6.5$/;"	s
+v0.6.6	CHANGELOG.md	/^## v0.6.6$/;"	s
+v0.6.7	CHANGELOG.md	/^## v0.6.7$/;"	s
+vcs	README.md	/^##### vcs$/;"	T
+vcs symbols	README.md	/^##### vcs symbols$/;"	T
+vcs truncation	README.md	/^##### vcs truncation$/;"	T
+vi_mode	README.md	/^##### vi_mode$/;"	T
+virtualenv	README.md	/^##### virtualenv$/;"	T
+vpn_ip	README.md	/^##### vpn_ip$/;"	T
