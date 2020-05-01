@@ -66,4 +66,19 @@ function testAnacondaSegmentWorks() {
     assertEquals "%K{004} %F{000}icon-here %F{000}(tmptest) %k%F{004}%f " "$(build_left_prompt)"
 }
 
+function testAnacondaSegmentWorksIfCondaPromptModifierIsSet() {
+    local -a POWERLEVEL9K_LEFT_PROMPT_ELEMENTS
+    POWERLEVEL9K_LEFT_PROMPT_ELEMENTS=(anaconda)
+    local POWERLEVEL9K_PYTHON_ICON="icon-here"
+
+    # Load Powerlevel9k
+    source powerlevel9k.zsh-theme
+
+    local CONDA_PROMPT_MODIFIER="(modifier)"
+    local CONDA_ENV_PATH=/tmp
+    local CONDA_PREFIX="test"
+
+    assertEquals "%K{004} %F{000}icon-here %F{000}(modifier) %k%F{004}%f " "$(build_left_prompt)"
+}
+
 source shunit2/shunit2
