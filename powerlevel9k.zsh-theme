@@ -96,7 +96,7 @@ fi
 # The `CURRENT_BG` variable is used to remember what the last BG color used was
 # when building the left-hand prompt. Because the RPROMPT is created from
 # right-left but reads the opposite, this isn't necessary for the other side.
-CURRENT_BG='NONE'
+CURRENT_BG='-2'
 
 # Begin a left prompt segment
 # Takes four arguments:
@@ -139,7 +139,7 @@ left_prompt_segment() {
   [[ -n "${backgroundColor}" ]] && background="$(backgroundColor ${backgroundColor})" || background="%k"
   [[ -n "${foregroundColor}" ]] && foreground="$(foregroundColor ${foregroundColor})" || foreground="%f"
 
-  if [[ $CURRENT_BG != 'NONE' ]] && ! isSameColor "${backgroundColor}" "$CURRENT_BG"; then
+  if [[ $CURRENT_BG != '-2' ]] && ! isSameColor "${backgroundColor}" "$CURRENT_BG"; then
     echo -n "${background}%F{$CURRENT_BG}"
     if [[ $joined == false ]]; then
       # Middle segment
@@ -197,7 +197,7 @@ left_prompt_end() {
   CURRENT_BG=''
 }
 
-CURRENT_RIGHT_BG='NONE'
+CURRENT_RIGHT_BG='-2'
 
 # Begin a right prompt segment
 # Takes four arguments:
@@ -241,14 +241,14 @@ right_prompt_segment() {
   [[ -n "${backgroundColor}" ]] && background="$(backgroundColor ${backgroundColor})" || background="%k"
   [[ -n "${foregroundColor}" ]] && foreground="$(foregroundColor ${foregroundColor})" || foreground="%f"
 
-  # If CURRENT_RIGHT_BG is "NONE", we are the first right segment.
+  # If CURRENT_RIGHT_BG is "-2", we are the first right segment.
 
-  if [[ "$CURRENT_RIGHT_BG" != "NONE" ]]; then
+  if [[ "$CURRENT_RIGHT_BG" != "-2" ]]; then
     # This is the closing whitespace for the previous segment
     echo -n "${POWERLEVEL9K_WHITESPACE_BETWEEN_RIGHT_SEGMENTS}%f"
   fi
 
-  if [[ $joined == false ]] || [[ "$CURRENT_RIGHT_BG" == "NONE" ]]; then
+  if [[ $joined == false ]] || [[ "$CURRENT_RIGHT_BG" == "-2" ]]; then
     if isSameColor "$CURRENT_RIGHT_BG" "${backgroundColor}"; then
       # Middle segment with same color as previous segment
       # We take the current foreground color as color for our
