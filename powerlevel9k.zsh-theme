@@ -1288,6 +1288,11 @@ prompt_rbenv() {
 # Segment to display chruby information
 # see https://github.com/postmodern/chruby/issues/245 for chruby_auto issue with ZSH
 prompt_chruby() {
+  set_default POWERLEVEL9K_CHRUBY_SHOW_DEFAULT true
+  if [[ "$POWERLEVEL9K_CHRUBY_SHOW_DEFAULT" == false ]] && ! [[ -r ".ruby-version" ]]; then
+    return
+  fi
+
   # Uses $RUBY_VERSION and $RUBY_ENGINE set by chruby
   set_default POWERLEVEL9K_CHRUBY_SHOW_VERSION true
   set_default POWERLEVEL9K_CHRUBY_SHOW_ENGINE true
